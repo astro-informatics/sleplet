@@ -7,6 +7,7 @@ import scipy.io as sio
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
+
 class ShiftingConvolution:
     def __init__(self, L, m, gamma, beta, alpha):
         self.L = L
@@ -24,7 +25,7 @@ class ShiftingConvolution:
 
     # Generate spherical harmonics.
     def random_flm(self):
-        flm = np.random.randn(self.L * self.L) +\
+        flm = np.random.randn(self.L * self.L) + \
               1j * np.random.randn(self.L * self.L)
         flm_np = self.north_pole(flm)
 
@@ -51,46 +52,21 @@ class ShiftingConvolution:
 
         return flm_rot
 
-    def rot_plot(self, f, f_rot, filename):
-        f_plot, mask_array, f_plot_imag, mask_array_imag = ssht.mollweide_projection(
-            f, self.L, resolution=200, rot=[0.0, np.pi, np.pi])
-
-        plt.figure()
-        plt.subplot(1, 2, 1)
-        imgplot = plt.imshow(f_plot, interpolation='nearest')
-        plt.colorbar(imgplot, fraction=0.025, pad=0.04)
-        plt.imshow(mask_array, interpolation='nearest', cmap=cm.gray, vmin=-1., vmax=1.)
-        plt.gca().set_aspect("equal")
-        plt.title("f")
-        plt.axis('off')
-
-        f_plot, mask_array, f_plot_imag, mask_array_imag = ssht.mollweide_projection(
-            f_rot, self.L, resolution=200, rot=[0.0, np.pi, np.pi])
-
-        plt.subplot(1, 2, 2)
-        imgplot = plt.imshow(f_plot, interpolation='nearest')
-        plt.colorbar(imgplot, fraction=0.025, pad=0.04)
-        plt.imshow(mask_array, interpolation='nearest', cmap=cm.gray, vmin=-1., vmax=1.)
-        plt.gca().set_aspect("equal")
-        plt.title("f rot")
-        plt.axis('off')
-
-        plt.savefig(filename + '.png', bbox_inches='tight')
-        plt.show()
-
     def dirac_delta_plot(self):
         flm = self.dirac_delta()
         f = self.func_on_spher(flm)
         flm_rot = self.rotate(flm)
         f_rot = self.func_on_spher(flm_rot)
-        sc.rot_plot(f, f_rot, 'diracdelta')
+        ssht.plot_sphere(f.real, self.L, Output_File='diracdelta_north.png')
+        ssht.plot_sphere(f_rot.real, self.L, Output_File='diracdelta_rot.png')
 
     def random_func_plot(self):
         flm = self.random_flm()
         f = self.func_on_spher(flm)
         flm_rot = self.rotate(flm)
         f_rot = self.func_on_spher(flm_rot)
-        sc.rot_plot(f, f_rot, 'randomfunc')
+        ssht.plot_sphere(f.real, self.L, Output_File='gaussian_north.png')
+        ssht.plot_sphere(f_rot.real, self.L, Output_File='gaussian_rot.png')
 
 
 if __name__ == '__main__':
@@ -98,9 +74,9 @@ if __name__ == '__main__':
     L = 64
     m = 0
     gamma = 0
-    beta = -np.pi / 2
-    alpha = 0
+    beta = np.pi / 4  # theta
+    alpha = -np.pi / 4  # phi
 
-    sc = ShiftingConvolution(L,m,gamma,beta,alpha)
+    sc = ShiftingConvolution(L, m, gamma, beta, alpha)
     sc.dirac_delta_plot()
-    sc.random_func_plot()
+    # sc.random_func_plot()
