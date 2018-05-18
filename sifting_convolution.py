@@ -132,28 +132,44 @@ class ShiftingConvolution:
         if show:
             plt.show()
 
-        trace = [
-            go.Surface(
+        data = Data([
+            Surface(
                 x=x,
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale='Viridis',
+                colorscale='Jet',
                 cmin=vmin,
                 cmax=vmax,
             )
-        ]
+        ])
 
-        py.plot(trace)
+        axis = dict(title='')
+
+        layout = Layout(
+            scene=Scene(
+                camera=dict(
+                    eye=dict(x=1.25, y=-1.25, z=1.25)
+                ),
+                xaxis=XAxis(axis),
+                yaxis=YAxis(axis),
+                zaxis=ZAxis(axis)
+            )
+        )
+
+        fig = Figure(data=data, layout=layout)
+
+        py.plot(fig)
 
     def dirac_delta_plot(self):
-        flm = self.dirac_delta()
-        f = self.func_on_spher(flm)
-        flm_rot = self.rotate(flm)
-        f_rot = self.func_on_spher(flm_rot)
+        flm = self.dirac_delta(self.L_comp)
+        f = self.func_on_spher(flm, self.L_comp)
+        flm_rot = self.rotate(flm, self.L_comp)
+        f_rot = self.func_on_spher(flm_rot, self.L_comp)
         # ssht.plot_sphere(f.real, self.L, Output_File='diracdelta_north.png')
         # ssht.plot_sphere(f_rot.real, 64, Output_File='diracdelta_rot.png')
-        self.test_plot(f.real, self.L, parametric=True, output_file='diracdelta_northpole_parametric.png')
+        # self.test_plot(f.real, self.L_plot, parametric=False, output_file='diracdelta_northpole.png')
+        self.test_plot(f_rot.real, self.L_plot, close=False, output_file='diracdelta_rotated.png')
 
     def random_func_plot(self):
         flm = self.random_flm()
