@@ -5,37 +5,38 @@ from pylab import cm
 import scipy.io as sio
 from matplotlib import cm, colors, colorbar, gridspec
 import plotly.offline as py
-import plotly.graph_objs as go
+from plotly.graph_objs import *
 
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
 
 class ShiftingConvolution:
-    def __init__(self, L, m, gamma, beta, alpha):
-        self.L = L
+    def __init__(self, L_comp, L_plot, m, gamma, beta, alpha):
+        self.L_comp = L_comp
+        self.L_plot = L_plot
         self.m = m
         self.gamma = gamma
         self.beta = beta
         self.alpha = alpha
 
     # Generate spherical harmonics.
-    def dirac_delta(self):
-        flm = np.zeros((self.L * self.L), dtype=complex)
-        flm_np = self.north_pole(flm)
+    def dirac_delta(self, L):
+        flm = np.zeros((L * L), dtype=complex)
+        flm_np = self.north_pole(flm, L)
 
         return flm_np
 
     # Generate spherical harmonics.
-    def random_flm(self):
-        flm = np.random.randn(self.L * self.L) + \
-              1j * np.random.randn(self.L * self.L)
-        flm_np = self.north_pole(flm)
+    def random_flm(self, L):
+        flm = np.random.randn(L * L) + \
+              1j * np.random.randn(L * L)
+        flm_np = self.north_pole(flm, L)
 
         return flm_np
 
-    def north_pole(self, flm):
-        for el in range(self.L):
+    def north_pole(self, flm, L):
+        for el in range(L):
             ind = ssht.elm2ind(el, self.m)
             north_pole = np.sqrt((2 * el + 1) / (4 * np.pi))
             flm[ind] = north_pole * (1.0 + 1j * 0.0)
@@ -43,15 +44,15 @@ class ShiftingConvolution:
         return flm
 
     # Compute function on the sphere.
-    def func_on_spher(self, flm):
-        f = ssht.inverse(flm, self.L)
+    def func_on_spher(self, flm, L):
+        f = ssht.inverse(flm, L)
 
         return f
 
     # Rotate spherical harmonic
-    def rotate(self, flm):
+    def rotate(self, flm, L):
         flm_rot = ssht.rotate_flms(
-            flm, self.alpha, self.beta, self.gamma, self.L)
+            flm, self.alpha, self.beta, self.gamma, L)
 
         return flm_rot
 
@@ -165,12 +166,13 @@ class ShiftingConvolution:
 
 if __name__ == '__main__':
     # Define parameters.
-    L = 64
+    L_comp = 64
+    L_plot = 64
     m = 0
     gamma = 0
     beta = np.pi / 4  # theta
     alpha = -np.pi / 4  # phi
 
-    sc = ShiftingConvolution(L, m, gamma, beta, alpha)
+    sc = ShiftingConvolution(L_comp, L_plot, m, gamma, beta, alpha)
     sc.dirac_delta_plot()
     # sc.random_func_plot()
