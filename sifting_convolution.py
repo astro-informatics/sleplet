@@ -21,22 +21,22 @@ class ShiftingConvolution:
         self.alpha = alpha
 
     # Generate spherical harmonics.
-    def dirac_delta(self, L):
-        flm = np.zeros((L * L), dtype=complex)
-        flm_np = self.north_pole(flm, L)
+    def dirac_delta(self, L_comp, L_plot):
+        flm = np.zeros((L_plot * L_plot), dtype=complex)
+        flm_np = self.north_pole(flm, L_comp)
 
         return flm_np
 
     # Generate spherical harmonics.
-    def random_flm(self, L):
-        flm = np.random.randn(L * L) + \
-              1j * np.random.randn(L * L)
-        flm_np = self.north_pole(flm, L)
+    def random_flm(self, L_comp, L_plot):
+        flm = np.random.randn(L_plot * L_plot) + \
+              1j * np.random.randn(L_plot * L_plot)
+        flm_np = self.north_pole(flm, L_comp)
 
         return flm_np
 
-    def north_pole(self, flm, L):
-        for el in range(L):
+    def north_pole(self, flm, L_comp):
+        for el in range(L_comp):
             ind = ssht.elm2ind(el, self.m)
             north_pole = np.sqrt((2 * el + 1) / (4 * np.pi))
             flm[ind] = north_pole * (1.0 + 1j * 0.0)
@@ -44,19 +44,19 @@ class ShiftingConvolution:
         return flm
 
     # Compute function on the sphere.
-    def func_on_spher(self, flm, L):
-        f = ssht.inverse(flm, L)
+    def func_on_spher(self, flm, L_plot):
+        f = ssht.inverse(flm, L_plot)
 
         return f
 
     # Rotate spherical harmonic
-    def rotate(self, flm, L):
+    def rotate(self, flm, L_plot):
         flm_rot = ssht.rotate_flms(
-            flm, self.alpha, self.beta, self.gamma, L)
+            flm, self.alpha, self.beta, self.gamma, L_plot)
 
         return flm_rot
 
-    def test_plot(self, f, L, method='MW', close=True, parametric=False,
+    def test_plot(self, f, L_plot, old_plot=False, method='MW', close=True, parametric=False,
                   parametric_scaling=[0.0, 0.5], output_file=None, show=True,
                   color_bar=True, units=None, color_range=None, axis=True):
         # add ability to choose color bar min max
@@ -68,7 +68,7 @@ class ShiftingConvolution:
             else:
                 f, f_sp, phi_sp = f
 
-        (thetas, phis) = ssht.sample_positions(L, Method=method, Grid=True);
+        (thetas, phis) = ssht.sample_positions(L_plot, Method=method, Grid=True);
 
         if (thetas.size != f.size):
             raise Exception('Band limit L deos not match that of f')
@@ -94,7 +94,7 @@ class ShiftingConvolution:
 
         # % Close plot.
         if close:
-            (n_theta, n_phi) = ssht.sample_shape(L, Method=method)
+            (n_theta, n_phi) = ssht.sample_shape(L_plot, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(f_normalised, n_phi, f_normalised[:, 0], axis=1)
@@ -107,30 +107,31 @@ class ShiftingConvolution:
         else:
             (x, y, z) = ssht.s2_to_cart(thetas, phis)
 
-        # % Plot.
-        fig = plt.figure(figsize=plt.figaspect(1.1))
-        gs = gridspec.GridSpec(2, 1, height_ratios=[10, 0.5])
-        ax = fig.add_subplot(gs[0], projection='3d')
-        ax_cbar = fig.add_subplot(gs[1])
-        norm = colors.Normalize()
-        surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=cm.jet(norm(f_plot)))
-        if not axis:
-            ax.set_axis_off()
+        if old_plot:
+            # % Plot.
+            fig = plt.figure(figsize=plt.figaspect(1.1))
+            gs = gridspec.GridSpec(2, 1, height_ratios=[10, 0.5])
+            ax = fig.add_subplot(gs[0], projection='3d')
+            ax_cbar = fig.add_subplot(gs[1])
+            norm = colors.Normalize()
+            surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=cm.jet(norm(f_plot)))
+            if not axis:
+                ax.set_axis_off()
 
-        if color_bar:
-            cmap = cm.jet
-            norm = colors.Normalize(vmin=vmin, vmax=vmax)
-            cb1 = colorbar.ColorbarBase(ax_cbar, cmap=cmap,
-                                        norm=norm,
-                                        orientation='horizontal')
-            if units != None:
-                cb1.set_label(units)
+            if color_bar:
+                cmap = cm.jet
+                norm = colors.Normalize(vmin=vmin, vmax=vmax)
+                cb1 = colorbar.ColorbarBase(ax_cbar, cmap=cmap,
+                                            norm=norm,
+                                            orientation='horizontal')
+                if units != None:
+                    cb1.set_label(units)
 
-        # output (to file and screan)
-        if output_file != None:
-            plt.savefig(output_file)
-        if show:
-            plt.show()
+            # output (to file and screan)
+            if output_file != None:
+                plt.savefig(output_file)
+            if show:
+                plt.show()
 
         data = Data([
             Surface(
@@ -162,14 +163,14 @@ class ShiftingConvolution:
         py.plot(fig)
 
     def dirac_delta_plot(self):
-        flm = self.dirac_delta(self.L_comp)
-        f = self.func_on_spher(flm, self.L_comp)
-        flm_rot = self.rotate(flm, self.L_comp)
-        f_rot = self.func_on_spher(flm_rot, self.L_comp)
+        flm = self.dirac_delta(self.L_comp, self.L_plot)
+        f = self.func_on_spher(flm, self.L_plot)
+        flm_rot = self.rotate(flm, self.L_plot)
+        f_rot = self.func_on_spher(flm_rot, self.L_plot)
         # ssht.plot_sphere(f.real, self.L, Output_File='diracdelta_north.png')
         # ssht.plot_sphere(f_rot.real, 64, Output_File='diracdelta_rot.png')
-        # self.test_plot(f.real, self.L_plot, parametric=False, output_file='diracdelta_northpole.png')
-        self.test_plot(f_rot.real, self.L_plot, close=False, output_file='diracdelta_rotated.png')
+        self.test_plot(f.real, self.L_plot)
+        self.test_plot(f_rot.real, self.L_plot)
 
     def random_func_plot(self):
         flm = self.random_flm()
@@ -182,8 +183,8 @@ class ShiftingConvolution:
 
 if __name__ == '__main__':
     # Define parameters.
-    L_comp = 64
-    L_plot = 64
+    L_comp = 2 ** 6
+    L_plot = 2 ** 9
     m = 0
     gamma = 0
     beta = np.pi / 4  # theta
