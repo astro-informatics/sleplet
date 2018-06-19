@@ -22,39 +22,65 @@ class ShiftingConvolution:
 
     # Generate spherical harmonics.
     def dirac_delta(self, L):
+        fun = lambda l, m: 1
+        flm = self.north_pole(L, fun)
+
+        return flm
+
+    def gaussian(self, L, sig=1):
+        fun = lambda l, m: np.exp(-l * (l + 1)) / (2 * sig * sig)
+        flm = self.north_pole(L, fun)
+
+        return flm
+
+    def squashed_gaussian(self, L, sig=1):
+        fun = lambda l, m: np.sin(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
+        flm = self.north_pole(L, fun)
+
+        return flm
+
+    def north_pole(self, L, fun):
         flm = np.zeros((L * L), dtype=complex)
-        flm_np = self.north_pole(flm, L)
 
-        return flm_np
-
-    # Generate spherical harmonics.
-    def random_flm(self, L):
-        flm = np.random.randn(L * L) + \
-              1j * np.random.randn(L * L)
-        flm_np = self.north_pole(flm, L)
-
-        return flm_np
-
-    def north_pole(self, flm, L):
         for el in range(L):
-            ind = ssht.elm2ind(el, self.m)
-            north_pole = np.sqrt((2 * el + 1) / (4 * np.pi))
-            flm[ind] = north_pole * (1.0 + 1j * 0.0)
+            for em in range(-el, el + 1):
+                ind = ssht.elm2ind(el, m=0)
+                factor = np.sqrt((2 * el + 1) / (4 * np.pi))
+                flm[ind] = factor * fun(el, m=3) * (1.0 + 1j * 0.0)
+
+        return flm
+
+    def earth(self):
+        matfile = os.path.join(
+            os.environ['SSHT'], 'src', 'matlab', 'data',
+            'EGM2008_Topography_flms_L0128')
+        mat_contents = sio.loadmat(matfile)
+        flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
 
         return flm
 
     # Compute function on the sphere.
-    def func_on_spher(self, flm, L):
+    def func_on_sphere(self, flm, L):
         f = ssht.inverse(flm, L)
 
         return f
 
     # Rotate spherical harmonic
-    def rotate(self, flm, L):
+    def rotate(self, flm, L, alpha, beta, gamma):
         flm_rot = ssht.rotate_flms(
-            flm, self.alpha, self.beta, self.gamma, L)
+            flm, alpha, beta, gamma, L)
 
         return flm_rot
+
+    def sift_conv(self, flm, L):
+        flm_conv = np.zeros((L * L), dtype=complex)
+
+        for el in range(L):
+            for m in range(-el, el + 1):
+                ind = ssht.elm2ind(el, m)
+        #         flm[ind] = f * 1j
+        # flm_conv = flm * 1j
+        return flm_conv
 
     def test_plot(self, f, L, method='MW', close=True, parametric=False,
                   parametric_scaling=[0.0, 0.5], output_file=None, show=True,
@@ -163,21 +189,39 @@ class ShiftingConvolution:
 
     def dirac_delta_plot(self):
         flm = self.dirac_delta(self.L_comp)
-        f = self.func_on_spher(flm, self.L_comp)
-        flm_rot = self.rotate(flm, self.L_comp)
-        f_rot = self.func_on_spher(flm_rot, self.L_comp)
+        f = self.func_on_sphere(flm, self.L_comp)
+        flm_rot = self.rotate(flm, self.L_comp, self.alpha, self.beta, self.gamma)
+        f_rot = self.func_on_sphere(flm_rot, self.L_comp)
+        # flm_conv = self.sift_conv(flm, self.L_comp, self.alpha, self.beta, self.gamma)
+        # f_conv = self.func_on_spher(flm_conv, self.L_comp)
         # ssht.plot_sphere(f.real, self.L, Output_File='diracdelta_north.png')
         # ssht.plot_sphere(f_rot.real, 64, Output_File='diracdelta_rot.png')
-        # self.test_plot(f.real, self.L_plot, parametric=False, output_file='diracdelta_northpole.png')
-        self.test_plot(f_rot.real, self.L_plot, close=False, output_file='diracdelta_rotated.png')
+        self.test_plot(f.real, self.L_plot, parametric=False, output_file='diracdelta_northpole.png')
+        # self.test_plot(f_rot.real, self.L_plot, close=False, output_file='diracdelta_rotated.png')
 
-    def random_func_plot(self):
-        flm = self.random_flm()
-        f = self.func_on_spher(flm)
-        flm_rot = self.rotate(flm)
-        f_rot = self.func_on_spher(flm_rot)
-        ssht.plot_sphere(f.real, self.L, Output_File='gaussian_north.png')
-        ssht.plot_sphere(f_rot.real, self.L, Output_File='gaussian_rot.png')
+    def gaussian_plot(self):
+        flm = self.gaussian(self.L_comp)
+        f = self.func_on_sphere(flm, self.L_comp)
+        flm_rot = self.rotate(flm, self.L_comp, self.alpha, self.beta, self.gamma)
+        f_rot = self.func_on_sphere(flm_rot, self.L_comp)
+        self.test_plot(f.real, self.L_plot)
+        self.test_plot(f_rot.real, self.L_plot)
+
+    def squashed_gaussian_plot(self):
+        flm = self.squashed_gaussian(self.L_comp)
+        f = self.func_on_sphere(flm, self.L_comp)
+        flm_rot = self.rotate(flm, self.L_comp, self.alpha, self.beta, self.gamma)
+        f_rot = self.func_on_sphere(flm_rot, self.L_comp)
+        self.test_plot(f.real, self.L_plot)
+        self.test_plot(f_rot.real, self.L_plot)
+
+    def earth_plot(self):
+        flm = self.earth()
+        f = self.func_on_sphere(flm, self.L_comp)
+        flm_rot = self.rotate(flm, self.L_comp, self.alpha, self.beta, self.gamma)
+        f_rot = self.func_on_sphere(flm_rot, self.L_comp)
+        self.test_plot(f.real, self.L_plot)
+        self.test_plot(f_rot.real, self.L_plot)
 
 
 if __name__ == '__main__':
@@ -186,9 +230,11 @@ if __name__ == '__main__':
     L_plot = 64
     m = 0
     gamma = 0
-    beta = np.pi / 4  # theta
-    alpha = -np.pi / 4  # phi
+    beta = -np.pi / 4  # theta
+    alpha = np.pi / 4  # phi
 
     sc = ShiftingConvolution(L_comp, L_plot, m, gamma, beta, alpha)
-    sc.dirac_delta_plot()
-    # sc.random_func_plot()
+    # sc.dirac_delta_plot()
+    # sc.gaussian_plot()
+    # sc.squashed_gaussian_plot()
+    sc.earth_plot()
