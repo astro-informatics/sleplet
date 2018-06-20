@@ -12,40 +12,41 @@ import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, L_comp, L_plot, m, gamma, beta, alpha):
+    def __init__(self, L_comp, L_plot, gamma, beta, alpha):
         self.L_comp = L_comp
         self.L_plot = L_plot
-        self.m = m
         self.gamma = gamma
         self.beta = beta
         self.alpha = alpha
 
+    def north_pole(self, fun, L_comp, L_plot):
+        m = 0
+        flm = np.zeros((L_plot * L_plot), dtype=complex)
+        for el in range(L_comp):
+            ind = ssht.elm2ind(el, m)
+            north_pole = np.sqrt((2 * el + 1) / (4 * np.pi))
+            flm[ind] = fun(el, m) * north_pole * (1.0 + 1j * 0.0)
+
+        return flm
+
     # Generate spherical harmonics.
     def dirac_delta(self, L_comp, L_plot):
-        flm = np.zeros((L_plot * L_plot), dtype=complex)
-        flm_np = self.north_pole(flm, L_comp)
+        fun = lambda l, m: 1
+        flm = self.north_pole(fun, L_comp, L_plot)
 
-        return flm_np
+        return flm
 
-    def gaussian(self, L, sig=1):
+    def gaussian(self, L_comp, L_plot, sig=1):
         fun = lambda l, m: np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(L, fun)
+        flm = self.north_pole(fun, L_comp, L_plot)
 
         return flm
 
-    def squashed_gaussian(self, L, sig=1):
+    def squashed_gaussian(self, L_comp, L_plot, sig=1):
         fun = lambda l, m: np.sin(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(L, fun)
+        flm = self.north_pole(fun, L_comp, L_plot)
 
         return flm
-
-    # Generate spherical harmonics.
-    def random_flm(self, L_comp, L_plot):
-        flm = np.random.randn(L_plot * L_plot) + \
-              1j * np.random.randn(L_plot * L_plot)
-        flm_np = self.north_pole(flm, L_comp)
-
-        return flm_np
 
     def earth(self):
         matfile = os.path.join(
@@ -53,14 +54,6 @@ class SiftingConvolution:
             'EGM2008_Topography_flms_L0128')
         mat_contents = sio.loadmat(matfile)
         flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
-
-        return flm
-
-    def north_pole(self, flm, L_comp):
-        for el in range(L_comp):
-            ind = ssht.elm2ind(el, self.m)
-            north_pole = np.sqrt((2 * el + 1) / (4 * np.pi))
-            flm[ind] = north_pole * (1.0 + 1j * 0.0)
 
         return flm
 
@@ -202,19 +195,19 @@ class SiftingConvolution:
         # f_conv = self.func_on_spher(flm_conv, self.L_comp)
         # ssht.plot_sphere(f.real, self.L, Output_File='diracdelta_north.png')
         # ssht.plot_sphere(f_rot.real, 64, Output_File='diracdelta_rot.png')
-        self.test_plot(f.real, self.L_plot, parametric=False, output_file='diracdelta_northpole.png')
-        # self.test_plot(f_rot.real, self.L_plot, close=False, output_file='diracdelta_rotated.png')
+        self.test_plot(f.real, self.L_plot, parametric=False)
+        self.test_plot(f_rot.real, self.L_plot)
 
     def gaussian_plot(self):
-        flm = self.gaussian(self.L_comp)
+        flm = self.gaussian(self.L_comp, self.L_plot)
         f = self.func_on_sphere(flm, self.L_plot)
         flm_rot = self.rotate(flm, self.L_plot)
         f_rot = self.func_on_sphere(flm_rot, self.L_plot)
         self.test_plot(f.real, self.L_plot)
-        self.test_plot(f_rot.real, self.L_plot)
+        # self.test_plot(f_rot.real, self.L_plot)
 
     def squashed_gaussian_plot(self):
-        flm = self.squashed_gaussian(self.L_comp)
+        flm = self.squashed_gaussian(self.L_comp, self.L_plot)
         f = self.func_on_sphere(flm, self.L_plot)
         flm_rot = self.rotate(flm, self.L_plot)
         f_rot = self.func_on_sphere(flm_rot, self.L_plot)
@@ -229,25 +222,16 @@ class SiftingConvolution:
         self.test_plot(f.real, self.L_plot)
         self.test_plot(f_rot.real, self.L_plot)
 
-    def random_func_plot(self):
-        flm = self.random_flm()
-        f = self.func_on_sphere(flm, self.L_plot)
-        flm_rot = self.rotate(flm, self.L_plot)
-        f_rot = self.func_on_sphere(flm_rot, self.L_plot)
-        ssht.plot_sphere(f.real, self.L_plot, Output_File='gaussian_north.png')
-        ssht.plot_sphere(f_rot.real, self.L_plot, Output_File='gaussian_rot.png')
-
 
 if __name__ == '__main__':
     # Define parameters.
     L_comp = 2 ** 6
     L_plot = 2 ** 9
-    m = 0
     gamma = 0
-    beta = -np.pi / 4  # theta
-    alpha = np.pi / 4  # phi
+    beta = np.pi / 4  # theta
+    alpha = -np.pi / 4  # phi
 
-    sc = SiftingConvolution(L_comp, L_plot, m, gamma, beta, alpha)
+    sc = SiftingConvolution(L_comp, L_plot, gamma, beta, alpha)
     sc.dirac_delta_plot()
     # sc.gaussian_plot()
     # sc.squashed_gaussian_plot()
