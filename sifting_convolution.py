@@ -1,7 +1,6 @@
 import sys, os
 import numpy as np
 import matplotlib.pyplot as plt
-from pylab import cm
 import scipy.io as sio
 from matplotlib import cm, colors, colorbar, gridspec
 import plotly.offline as py
@@ -18,6 +17,19 @@ class SiftingConvolution:
         self.gamma = gamma
         self.beta = beta
         self.alpha = alpha
+
+    @staticmethod
+    def matplotlib_to_plotly(colour, pl_entries=255):
+        cmap = cm.get_cmap(colour)
+
+        h = 1.0 / (pl_entries - 1)
+        pl_colorscale = []
+
+        for k in range(pl_entries):
+            C = map(np.uint8, np.array(cmap(k * h)[:3]) * 255)
+            pl_colorscale.append([k * h, 'rgb' + str((C[0], C[1], C[2]))])
+
+        return pl_colorscale
 
     def north_pole(self, fun, L_comp, L_plot):
         m = 0
@@ -163,7 +175,7 @@ class SiftingConvolution:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale='Jet',
+                colorscale=self.matplotlib_to_plotly('viridis'),
                 cmin=vmin,
                 cmax=vmax,
             )
@@ -195,7 +207,7 @@ class SiftingConvolution:
         # f_conv = self.func_on_spher(flm_conv, self.L_comp)
         # ssht.plot_sphere(f.real, self.L, Output_File='diracdelta_north.png')
         # ssht.plot_sphere(f_rot.real, 64, Output_File='diracdelta_rot.png')
-        self.test_plot(f.real, self.L_plot, parametric=False)
+        # self.test_plot(f.real, self.L_plot, parametric=False)
         self.test_plot(f_rot.real, self.L_plot)
 
     def gaussian_plot(self):
@@ -233,6 +245,6 @@ if __name__ == '__main__':
 
     sc = SiftingConvolution(L_comp, L_plot, gamma, beta, alpha)
     sc.dirac_delta_plot()
-    # sc.gaussian_plot()
+    sc.gaussian_plot()
     # sc.squashed_gaussian_plot()
     # sc.earth_plot()
