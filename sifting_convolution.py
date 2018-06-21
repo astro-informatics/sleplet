@@ -31,32 +31,41 @@ class SiftingConvolution:
 
         return pl_colorscale
 
-    def north_pole(self, fun, L_comp, L_plot):
-        m = 0
+    @staticmethod
+    def fill_flm(flm, fun, el, m):
+        factor = np.sqrt((2 * el + 1) / (4 * np.pi))
+        ind = ssht.elm2ind(el, m)
+        flm[ind] = fun(el, m) * factor * (1.0 + 1j * 0.0)
+
+        return flm
+
+    def north_pole(self, fun, L_comp, L_plot, m_zero=False):
         flm = np.zeros((L_plot * L_plot), dtype=complex)
         for el in range(L_comp):
-            ind = ssht.elm2ind(el, m)
-            north_pole = np.sqrt((2 * el + 1) / (4 * np.pi))
-            flm[ind] = fun(el, m) * north_pole * (1.0 + 1j * 0.0)
+            if not m_zero:
+                for m in range(-el, el + 1):
+                    flm = self.fill_flm(flm, fun, el, m)
+            else:
+                flm = self.fill_flm(flm, fun, el, m=0)
 
         return flm
 
     # Generate spherical harmonics.
     def dirac_delta(self, L_comp, L_plot):
         fun = lambda l, m: 1
-        flm = self.north_pole(fun, L_comp, L_plot)
+        flm = self.north_pole(fun, L_comp, L_plot, m_zero=True)
 
         return flm
 
     def gaussian(self, L_comp, L_plot, sig=1):
         fun = lambda l, m: np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(fun, L_comp, L_plot)
+        flm = self.north_pole(fun, L_comp, L_plot, m_zero=False)
 
         return flm
 
     def squashed_gaussian(self, L_comp, L_plot, sig=1):
-        fun = lambda l, m: np.sin(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(fun, L_comp, L_plot)
+        fun = lambda l, m: np.exp(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
+        flm = self.north_pole(fun, L_comp, L_plot, m_zero=False)
 
         return flm
 
