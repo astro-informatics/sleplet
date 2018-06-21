@@ -84,22 +84,22 @@ class SiftingConvolution:
 
         return f
 
-    def sift_conv(self, flm, L):
-        flm_conv = np.zeros((L * L), dtype=complex)
-
-        for el in range(L):
-            for m in range(-el, el + 1):
-                ind = ssht.elm2ind(el, m)
-        #         flm[ind] = f * 1j
-        # flm_conv = flm * 1j
-        return flm_conv
-
     # Rotate spherical harmonic
     def rotate(self, flm, L_plot):
         flm_rot = ssht.rotate_flms(
             flm, self.alpha, self.beta, self.gamma, L_plot)
 
         return flm_rot
+
+    def sift_conv(self, flm, L_plot):
+        flm_conv = flm.copy()
+
+        for el in range(L_plot):
+            for m in range(-el, el + 1):
+                ind = ssht.elm2ind(el, m)
+                flm_conv[ind] = flm[ind]
+
+        return flm_conv
 
     def test_plot(self, f, L_plot, old_plot=False, method='MW', close=True, parametric=False,
                   parametric_scaling=[0.0, 0.5], output_file=None, show=True,
@@ -212,12 +212,11 @@ class SiftingConvolution:
         f = self.func_on_sphere(flm, self.L_plot)
         flm_rot = self.rotate(flm, self.L_plot)
         f_rot = self.func_on_sphere(flm_rot, self.L_plot)
-        # flm_conv = self.sift_conv(flm, self.L_comp, self.alpha, self.beta, self.gamma)
-        # f_conv = self.func_on_spher(flm_conv, self.L_comp)
-        # ssht.plot_sphere(f.real, self.L, Output_File='diracdelta_north.png')
-        # ssht.plot_sphere(f_rot.real, 64, Output_File='diracdelta_rot.png')
+        flm_conv = self.sift_conv(flm, self.L_plot)
+        f_conv = self.func_on_sphere(flm_conv, self.L_plot)
         # self.test_plot(f.real, self.L_plot, parametric=False)
         self.test_plot(f_rot.real, self.L_plot)
+        self.test_plot(f_conv.real, self.L_plot)
 
     def gaussian_plot(self):
         flm = self.gaussian(self.L_comp, self.L_plot)
@@ -225,7 +224,7 @@ class SiftingConvolution:
         flm_rot = self.rotate(flm, self.L_plot)
         f_rot = self.func_on_sphere(flm_rot, self.L_plot)
         self.test_plot(f.real, self.L_plot)
-        # self.test_plot(f_rot.real, self.L_plot)
+        self.test_plot(f_rot.real, self.L_plot)
 
     def squashed_gaussian_plot(self):
         flm = self.squashed_gaussian(self.L_comp, self.L_plot)
@@ -254,6 +253,6 @@ if __name__ == '__main__':
 
     sc = SiftingConvolution(L_comp, L_plot, gamma, beta, alpha)
     sc.dirac_delta_plot()
-    sc.gaussian_plot()
+    # sc.gaussian_plot()
     # sc.squashed_gaussian_plot()
     # sc.earth_plot()
