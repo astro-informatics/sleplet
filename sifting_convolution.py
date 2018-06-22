@@ -93,11 +93,13 @@ class SiftingConvolution:
 
     def sift_conv(self, flm, L_plot):
         flm_conv = flm.copy()
+        phi_idx = ssht.phi_to_index(self.alpha, L_plot)
+        theta_idx = ssht.theta_to_index(self.beta, L_plot)
 
         for el in range(L_plot):
             for m in range(-el, el + 1):
                 ind = ssht.elm2ind(el, m)
-                flm_conv[ind] = flm[ind]
+                flm_conv[ind] = flm[ind] * (1.0 + 1j * 0.0)
 
         return flm_conv
 
