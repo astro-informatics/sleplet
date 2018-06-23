@@ -31,17 +31,24 @@ class SiftingConvolution:
 
         return pl_colorscale
 
-    @staticmethod
-    def fill_flm(flm, fun, el, m):
+    def fill_flm(self, flm, fun, el, m):
         factor = np.sqrt((2 * el + 1) / (4 * np.pi))
         ind = ssht.elm2ind(el, m)
-        flm[ind] = fun(el, m) * factor * (1.0 + 1j * 0.0)
+        ylm = self.spherical_harm(el, m)
+        flm[ind] = factor * fun(el, m) * ylm[ind]
 
         return flm
 
-    def north_pole(self, fun, L_comp, L_plot, m_zero=False):
-        flm = np.zeros((L_plot * L_plot), dtype=complex)
-        for el in range(L_comp):
+    def spherical_harm(self, el, m):
+        ylm = np.zeros((self.L_plot * self.L_plot), dtype=complex)
+        ind = ssht.elm2ind(el, m)
+        ylm[ind] = 1
+
+        return ylm
+
+    def north_pole(self, fun, m_zero=False):
+        flm = np.zeros((self.L_plot * self.L_plot), dtype=complex)
+        for el in range(self.L_comp):
             if not m_zero:
                 for m in range(-el, el + 1):
                     flm = self.fill_flm(flm, fun, el, m)
@@ -50,22 +57,21 @@ class SiftingConvolution:
 
         return flm
 
-    # Generate spherical harmonics.
-    def dirac_delta(self, L_comp, L_plot):
+    def dirac_delta(self):
         fun = lambda l, m: 1
-        flm = self.north_pole(fun, L_comp, L_plot, m_zero=True)
+        flm = self.north_pole(fun, m_zero=True)
 
         return flm
 
-    def gaussian(self, L_comp, L_plot, sig=1):
+    def gaussian(self, sig=1):
         fun = lambda l, m: np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(fun, L_comp, L_plot, m_zero=False)
+        flm = self.north_pole(fun, m_zero=False)
 
         return flm
 
-    def squashed_gaussian(self, L_comp, L_plot, sig=1):
+    def squashed_gaussian(self, sig=1):
         fun = lambda l, m: np.exp(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(fun, L_comp, L_plot, m_zero=False)
+        flm = self.north_pole(fun, m_zero=False)
 
         return flm
 
@@ -78,32 +84,28 @@ class SiftingConvolution:
 
         return flm
 
-    # Compute function on the sphere.
-    def func_on_sphere(self, flm, L_plot):
-        f = ssht.inverse(flm, L_plot)
-
-        return f
-
     # Rotate spherical harmonic
-    def rotate(self, flm, L_plot):
+    def rotate(self, flm):
         flm_rot = ssht.rotate_flms(
-            flm, self.alpha, self.beta, self.gamma, L_plot)
+            flm, self.alpha, self.beta, self.gamma, self.L_plot)
 
         return flm_rot
 
-    def sift_conv(self, flm, L_plot):
+    def sift_conv(self, flm):
         flm_conv = flm.copy()
-        phi_idx = ssht.phi_to_index(self.alpha, L_plot)
-        theta_idx = ssht.theta_to_index(self.beta, L_plot)
+        pix_i = ssht.phi_to_index(self.alpha, self.L_plot)
+        pix_j = ssht.theta_to_index(self.beta, self.L_plot)
 
-        for el in range(L_plot):
+        for el in range(self.L_plot):
             for m in range(-el, el + 1):
                 ind = ssht.elm2ind(el, m)
-                flm_conv[ind] = flm[ind] * (1.0 + 1j * 0.0)
+                ylm = self.spherical_harm(el, m)
+                harm = ssht.inverse(ylm, self.L_plot)
+                flm_conv[ind] = flm[ind] * harm[pix_i, pix_j]
 
         return flm_conv
 
-    def test_plot(self, f, L_plot, old_plot=False, method='MW', close=True, parametric=False,
+    def test_plot(self, f, old_plot=False, method='MW', close=True, parametric=False,
                   parametric_scaling=[0.0, 0.5], output_file=None, show=True,
                   color_bar=True, units=None, color_range=None, axis=True):
         # add ability to choose color bar min max
@@ -115,7 +117,7 @@ class SiftingConvolution:
             else:
                 f, f_sp, phi_sp = f
 
-        (thetas, phis) = ssht.sample_positions(L_plot, Method=method, Grid=True);
+        (thetas, phis) = ssht.sample_positions(self.L_plot, Method=method, Grid=True);
 
         if (thetas.size != f.size):
             raise Exception('Band limit L deos not match that of f')
@@ -210,39 +212,39 @@ class SiftingConvolution:
         py.plot(fig)
 
     def dirac_delta_plot(self):
-        flm = self.dirac_delta(self.L_comp, self.L_plot)
-        f = self.func_on_sphere(flm, self.L_plot)
-        flm_rot = self.rotate(flm, self.L_plot)
-        f_rot = self.func_on_sphere(flm_rot, self.L_plot)
-        flm_conv = self.sift_conv(flm, self.L_plot)
-        f_conv = self.func_on_sphere(flm_conv, self.L_plot)
-        # self.test_plot(f.real, self.L_plot, parametric=False)
-        self.test_plot(f_rot.real, self.L_plot)
-        self.test_plot(f_conv.real, self.L_plot)
+        flm = self.dirac_delta()
+        f = ssht.inverse(flm, self.L_plot)
+        flm_rot = self.rotate(flm)
+        f_rot = ssht.inverse(flm_rot, self.L_plot)
+        flm_conv = self.sift_conv(flm)
+        f_conv = ssht.inverse(flm_conv, self.L_plot)
+        # self.test_plot(f.real, parametric=False)
+        # self.test_plot(f_rot.real)
+        self.test_plot(f_conv.real)
 
     def gaussian_plot(self):
-        flm = self.gaussian(self.L_comp, self.L_plot)
-        f = self.func_on_sphere(flm, self.L_plot)
-        flm_rot = self.rotate(flm, self.L_plot)
-        f_rot = self.func_on_sphere(flm_rot, self.L_plot)
-        self.test_plot(f.real, self.L_plot)
-        self.test_plot(f_rot.real, self.L_plot)
+        flm = self.gaussian()
+        f = ssht.inverse(flm, self.L_plot)
+        flm_rot = self.rotate(flm)
+        f_rot = ssht.inverse(flm_rot, self.L_plot)
+        self.test_plot(f.real)
+        # self.test_plot(f_rot.real)
 
     def squashed_gaussian_plot(self):
-        flm = self.squashed_gaussian(self.L_comp, self.L_plot)
-        f = self.func_on_sphere(flm, self.L_plot)
-        flm_rot = self.rotate(flm, self.L_plot)
-        f_rot = self.func_on_sphere(flm_rot, self.L_plot)
-        self.test_plot(f.real, self.L_plot)
-        self.test_plot(f_rot.real, self.L_plot)
+        flm = self.squashed_gaussian()
+        f = ssht.inverse(flm, self.L_plot)
+        flm_rot = self.rotate(flm)
+        f_rot = ssht.inverse(flm_rot, self.L_plot)
+        self.test_plot(f.real)
+        self.test_plot(f_rot.real)
 
     def earth_plot(self):
         flm = self.earth()
-        f = self.func_on_sphere(flm, self.L_comp)
-        flm_rot = self.rotate(flm, self.L_plot)
-        f_rot = self.func_on_sphere(flm_rot, self.L_plot)
-        self.test_plot(f.real, self.L_plot)
-        self.test_plot(f_rot.real, self.L_plot)
+        f = self.func_on_sphere(flm)
+        flm_rot = self.rotate(flm)
+        f_rot = self.func_on_sphere(flm_rot)
+        self.test_plot(f.real)
+        self.test_plot(f_rot.real)
 
 
 if __name__ == '__main__':
