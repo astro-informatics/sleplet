@@ -240,17 +240,17 @@ class SiftingConvolution:
 
     def earth_plot(self):
         flm = self.earth()
-        f = self.func_on_sphere(flm)
+        f = ssht.inverse(flm, self.L_plot)
         flm_rot = self.rotate(flm)
-        f_rot = self.func_on_sphere(flm_rot)
+        f_rot = ssht.inverse(flm_rot, self.L_plot)
         self.test_plot(f.real)
         self.test_plot(f_rot.real)
 
 
 if __name__ == '__main__':
     # Define parameters.
-    L_comp = 2 ** 6
-    L_plot = 2 ** 9
+    L_comp = 2 ** 3
+    L_plot = 2 ** 6
     gamma = 0
     beta = np.pi / 4  # theta
     alpha = -np.pi / 4  # phi
