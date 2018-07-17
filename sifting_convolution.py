@@ -151,19 +151,6 @@ class SiftingConvolution:
         # self.plotly_plot(f_rot.real)
         self.plotly_plot(f_conv.real)
 
-    @staticmethod
-    def matplotlib_to_plotly(colour, pl_entries=255):
-        cmap = cm.get_cmap(colour)
-
-        h = 1.0 / (pl_entries - 1)
-        pl_colorscale = []
-
-        for k in range(pl_entries):
-            C = map(np.uint8, np.array(cmap(k * h)[:3]) * 255)
-            pl_colorscale.append([k * h, 'rgb' + str((C[0], C[1], C[2]))])
-
-        return pl_colorscale
-
     def matplotlib_plot(self, f, axis=True, color_bar=True,
                         units=None, output_file=None, show=True):
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
@@ -281,10 +268,10 @@ class SiftingConvolution:
         xs, ys, zs, f_plots, vmins, vmaxs = \
             [], [], [], [], [], []
 
-        angles = [(a, b) for a in alphas for b in betas]
+        angles = np.array([(a, b) for a in alphas for b in betas])
 
-        for a in alpha:
-            for b in beta:
+        for a in alphas:
+            for b in betas:
                 print(a, b)
                 flm = self.dirac_delta()
                 flm_conv = self.sift_conv(flm, a, b)
@@ -297,62 +284,46 @@ class SiftingConvolution:
                 vmins.append(vmin)
                 vmaxs.append(vmax)
 
-        data = Data([
+        data = [
             Surface(
-                x=xs[0],
-                y=ys[0],
-                z=zs[0],
-                surfacecolor=f_plots[0],
+                x=xs[i],
+                y=ys[i],
+                z=zs[i],
+                surfacecolor=f_plots[i],
                 colorscale=self.matplotlib_to_plotly('viridis'),
-                cmin=vmins[0],
-                cmax=vmaxs[0],
-            )
-        ])
-
-        frames = [Frames(
-            data=Data([
-                Surface(
-                    x=xs[i],
-                    y=ys[i],
-                    z=zs[i],
-                    surfacecolor=f_plots[i],
-                    colorscale=self.matplotlib_to_plotly('viridis'),
-                    cmin=vmins[i],
-                    cmax=vmaxs[i],
-                )
-            ]),
-            name='frame{}'.format(i)
-        ) for i in range(len(angles))]
+                cmin=vmins[i],
+                cmax=vmaxs[i],
+                visible=False
+            ) for i in range(len(
+                [(a, b) for a in alphas for b in betas]))]
+        self.curr_a_val = alphas[0]
+        self.curr_b_val = betas[0]
+        self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+        data[self.idx]['visible'] = True
 
         axis = dict(title='')
 
-        alpha_steps = [dict(
-            args=[['frame{}'.format(i)],
-                  dict(
-                      frame=dict(
-                          duration=50,
-                          redraw=False),
-                      mode='immediate',
-                      transition=dict(
-                          duration=0)
-                  )],
-            label='$\\alpha={}$'.format(angles[i][0]),
-            method='animate',
-        ) for i in range(len(angles))]
+        alpha_steps = []
+        for a in alphas:
+            self.curr_a_val = a
+            self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+            step = dict(
+                method='restyle',
+                args=['visible', [False] * len(angles)]
+            )
+            step['args'][1][self.idx] = True
+            alpha_steps.append(step)
 
-        beta_steps = [dict(
-            args=[['frame{}'.format(i)],
-                  dict(
-                      frame=dict(
-                          duration=50,
-                          redraw=False),
-                      mode='immediate',
-                      transition=dict(
-                          duration=0)
-                  )],
-            label='$\\beta={}$'.format(angles[i][1]),
-            method='animate',
-        ) for i in range(len(angles))]
+        beta_steps = []
+        for b in betas:
+            self.curr_b_val = b
+            self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+            step = dict(
+                method='restyle',
+                args=['visible', [False] * len(angles)]
+            )
+            step['args'][1][self.idx] = True
+            beta_steps.append(step)
 
         sliders = [
             # alpha
@@ -360,9 +331,8 @@ class SiftingConvolution:
                 active=0,
                 currentvalue=dict(
                     prefix='$\\alpha$:',
-                    visible=True,
                 ),
-                transition=dict(duration=0),
+                pad={"t": 0},
                 steps=alpha_steps
             ),
             # beta
@@ -370,9 +340,8 @@ class SiftingConvolution:
                 active=0,
                 currentvalue=dict(
                     prefix='$\\beta$:',
-                    visible=True,
                 ),
-                transition=dict(duration=0),
+                pad={"t": 0},
                 steps=beta_steps
             ),
         ]
@@ -386,43 +355,10 @@ class SiftingConvolution:
                 yaxis=YAxis(axis),
                 zaxis=ZAxis(axis)
             ),
-            updatemenus=[dict(
-                buttons=[
-                    dict(
-                        args=[
-                            None,
-                            dict(
-                                frame=dict(
-                                    duration=30,
-                                    redraw=False),
-                                fromcurrent=True,
-                                transition=dict(duration=0),
-                                mode='immediate'
-                            )],
-                        label='Play',
-                        method='animate',
-                    ),
-                    dict(
-                        args=[
-                            [None],
-                            dict(
-                                frame=dict(
-                                    duration=0,
-                                    redraw=False),
-                                fromcurrent=True,
-                                transition=dict(duration=0),
-                                mode='immediate'
-                            )],
-                        label='Pause',
-                        method='animate',
-                    )],
-                showactive=False,
-                type='buttons'
-            )],
             sliders=sliders
         )
 
-        fig = Figure(data=data, layout=layout, frames=frames)
+        fig = Figure(data=data, layout=layout)
 
         py.plot(fig)
 
