@@ -12,12 +12,9 @@ import time
 
 
 class SiftingConvolution:
-    def __init__(self, L_comp, L_plot, gamma, beta, alpha):
-        self.L_comp = L_comp
-        self.L_plot = L_plot
-        self.gamma = gamma
-        self.beta = beta
-        self.alpha = alpha
+    def __init__(self, L, resolution):
+        self.L = L
+        self.resolution = resolution
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
@@ -41,29 +38,29 @@ class SiftingConvolution:
         return flm
 
     def spherical_harm(self, el, m):
-        ylm = np.zeros((self.L_comp * self.L_comp), dtype=complex)
+        ylm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(el, m)
         ylm[ind] = 1
 
         return ylm
 
-    def sift_conv(self, flm):
+    def sift_conv(self, flm, alpha, beta):
         flm_conv = flm.copy()
-        pix_i = ssht.phi_to_index(self.alpha, self.L_comp)
-        pix_j = ssht.theta_to_index(self.beta, self.L_comp)
+        pix_i = ssht.phi_to_index(alpha, self.L)
+        pix_j = ssht.theta_to_index(beta, self.L)
 
-        for el in range(self.L_comp):
+        for el in range(self.L):
             for m in range(-el, el + 1):
                 ind = ssht.elm2ind(el, m)
                 ylm = self.spherical_harm(el, m)
-                harm = ssht.inverse(ylm, self.L_comp)
+                harm = ssht.inverse(ylm, self.L)
                 flm_conv[ind] = flm[ind] * harm[pix_i, pix_j]
 
         return flm_conv
 
     def north_pole(self, fun, m_zero=False):
-        flm = np.zeros((self.L_plot * self.L_plot), dtype=complex)
-        for el in range(self.L_comp):
+        flm = np.zeros((self.resolution * self.resolution), dtype=complex)
+        for el in range(self.L):
             if not m_zero:
                 for m in range(-el, el + 1):
                     flm = self.fill_flm(flm, fun, el, m)
@@ -100,49 +97,59 @@ class SiftingConvolution:
         return flm
 
     # Rotate spherical harmonic
-    def rotate(self, flm):
+    def rotate(self, flm, alpha, beta, gamma=0):
         flm_rot = ssht.rotate_flms(
-            flm, self.alpha, self.beta, self.gamma, self.L_plot)
+            flm, alpha, beta, gamma, self.resolution)
 
         return flm_rot
 
-    def dirac_delta_plot(self):
+    def dirac_delta_plot(self, alpha, beta, gamma=0):
         flm = self.dirac_delta()
-        f = ssht.inverse(flm, self.L_plot)
-        flm_rot = self.rotate(flm)
-        f_rot = ssht.inverse(flm_rot, self.L_plot)
-        flm_conv = self.sift_conv(flm)
-        f_conv = ssht.inverse(flm_conv, self.L_plot)
-        # self.test_plot(f.real, parametric=False)
-        # self.test_plot(f_rot.real)
-        self.test_plot(f_conv.real)
+        f = ssht.inverse(flm, self.resolution)
+        flm_rot = ssht.rotate_flms(
+            flm, alpha, beta, gamma, self.resolution)
+        f_rot = ssht.inverse(flm_rot, self.resolution)
+        flm_conv = self.sift_conv(flm, alpha, beta)
+        f_conv = ssht.inverse(flm_conv, self.resolution)
+        # self.plotly_plot(f.real)
+        # self.plotly_plot(f_rot.real)
+        self.plotly_plot(f_conv.real)
 
-    def gaussian_plot(self):
+    def gaussian_plot(self, alpha, beta, gamma=0):
         flm = self.gaussian()
-        f = ssht.inverse(flm, self.L_plot)
-        flm_rot = self.rotate(flm)
-        f_rot = ssht.inverse(flm_rot, self.L_plot)
-        flm_conv = self.sift_conv(flm)
-        f_conv = ssht.inverse(flm_conv, self.L_plot)
-        # self.test_plot(f.real)
-        # self.test_plot(f_rot.real)
-        self.test_plot(f_conv.real)
+        f = ssht.inverse(flm, self.resolution)
+        flm_rot = ssht.rotate_flms(
+            flm, alpha, beta, gamma, self.resolution)
+        f_rot = ssht.inverse(flm_rot, self.resolution)
+        flm_conv = self.sift_conv(flm, alpha, beta)
+        f_conv = ssht.inverse(flm_conv, self.resolution)
+        # self.plotly_plot(f.real)
+        # self.plotly_plot(f_rot.real)
+        self.plotly_plot(f_conv.real)
 
-    def squashed_gaussian_plot(self):
+    def squashed_gaussian_plot(self, alpha, beta, gamma=0):
         flm = self.squashed_gaussian()
-        f = ssht.inverse(flm, self.L_plot)
-        flm_rot = self.rotate(flm)
-        f_rot = ssht.inverse(flm_rot, self.L_plot)
-        self.test_plot(f.real)
-        self.test_plot(f_rot.real)
+        f = ssht.inverse(flm, self.resolution)
+        flm_rot = ssht.rotate_flms(
+            flm, alpha, beta, gamma, self.resolution)
+        f_rot = ssht.inverse(flm_rot, self.resolution)
+        flm_conv = self.sift_conv(flm, alpha, beta)
+        f_conv = ssht.inverse(flm_conv, self.resolution)
+        # self.plotly_plot(f.real)
+        # self.plotly_plot(f_rot.real)
+        self.plotly_plot(f_conv.real)
 
-    def earth_plot(self):
+    def earth_plot(self, alpha, beta, gamma=0):
         flm = self.earth()
-        f = ssht.inverse(flm, self.L_plot)
-        flm_rot = self.rotate(flm)
-        f_rot = ssht.inverse(flm_rot, self.L_plot)
-        self.test_plot(f.real)
-        self.test_plot(f_rot.real)
+        f = ssht.inverse(flm, self.resolution)
+        flm_rot = ssht.rotate_flms(
+            flm, alpha, beta, gamma, self.resolution)
+        f_rot = ssht.inverse(flm_rot, self.resolution)
+        flm_conv = self.sift_conv(flm, alpha, beta)
+        f_conv = ssht.inverse(flm_conv, self.resolution)
+        # self.plotly_plot(f.real)
+        # self.plotly_plot(f_rot.real)
+        self.plotly_plot(f_conv.real)
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
@@ -157,82 +164,37 @@ class SiftingConvolution:
 
         return pl_colorscale
 
-    def test_plot(self, f, old_plot=False, method='MW', close=True, parametric=False,
-                  parametric_scaling=[0.0, 0.5], output_file=None, show=True,
-                  color_bar=True, units=None, color_range=None, axis=True):
-        # add ability to choose color bar min max
-        # and sort out shapes of the plots
+    def matplotlib_plot(self, f, axis=True, color_bar=True,
+                        units=None, output_file=None, show=True):
+        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
-        if method == 'MW_pole':
-            if len(f) == 2:
-                f, f_sp = f
-            else:
-                f, f_sp, phi_sp = f
+        # % Plot.
+        fig = plt.figure(figsize=plt.figaspect(1.1))
+        gs = gridspec.GridSpec(2, 1, height_ratios=[10, 0.5])
+        ax = fig.add_subplot(gs[0], projection='3d')
+        ax_cbar = fig.add_subplot(gs[1])
+        norm = colors.Normalize()
+        surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=cm.jet(norm(f_plot)))
+        if not axis:
+            ax.set_axis_off()
 
-        (thetas, phis) = ssht.sample_positions(self.L_plot, Method=method, Grid=True);
+        if color_bar:
+            cmap = cm.jet
+            norm = colors.Normalize(vmin=vmin, vmax=vmax)
+            cb1 = colorbar.ColorbarBase(ax_cbar, cmap=cmap,
+                                        norm=norm,
+                                        orientation='horizontal')
+            if units != None:
+                cb1.set_label(units)
 
-        if (thetas.size != f.size):
-            raise Exception('Band limit L deos not match that of f')
+        # output (to file and screen)
+        if output_file != None:
+            plt.savefig(output_file)
+        if show:
+            plt.show()
 
-        f_plot = f.copy()
-
-        f_max = f_plot.max()
-        f_min = f_plot.min()
-
-        if color_range is None:
-            vmin = f_min
-            vmax = f_max
-        else:
-            vmin = color_range[0]
-            vmax = color_range[1]
-            f_plot[f_plot < color_range[0]] = color_range[0]
-            f_plot[f_plot > color_range[1]] = color_range[1]
-            f_plot[f_plot == -1.56E30] = np.nan
-
-        # % Compute position scaling for parametric plot.
-        if parametric:
-            f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[1] + parametric_scaling[0]
-
-        # % Close plot.
-        if close:
-            (n_theta, n_phi) = ssht.sample_shape(self.L_plot, Method=method)
-            f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
-            if parametric:
-                f_normalised = np.insert(f_normalised, n_phi, f_normalised[:, 0], axis=1)
-            thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
-            phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
-
-        # % Compute location of vertices.
-        if parametric:
-            (x, y, z) = ssht.spherical_to_cart(f_normalised, thetas, phis)
-        else:
-            (x, y, z) = ssht.s2_to_cart(thetas, phis)
-
-        if old_plot:
-            # % Plot.
-            fig = plt.figure(figsize=plt.figaspect(1.1))
-            gs = gridspec.GridSpec(2, 1, height_ratios=[10, 0.5])
-            ax = fig.add_subplot(gs[0], projection='3d')
-            ax_cbar = fig.add_subplot(gs[1])
-            norm = colors.Normalize()
-            surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=cm.jet(norm(f_plot)))
-            if not axis:
-                ax.set_axis_off()
-
-            if color_bar:
-                cmap = cm.jet
-                norm = colors.Normalize(vmin=vmin, vmax=vmax)
-                cb1 = colorbar.ColorbarBase(ax_cbar, cmap=cmap,
-                                            norm=norm,
-                                            orientation='horizontal')
-                if units != None:
-                    cb1.set_label(units)
-
-            # output (to file and screan)
-            if output_file != None:
-                plt.savefig(output_file)
-            if show:
-                plt.show()
+    def plotly_plot(self, f):
+        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
         data = Data([
             Surface(
@@ -263,21 +225,225 @@ class SiftingConvolution:
 
         py.plot(fig)
 
+    def setup_plot(self, f, method='MW', close=True, parametric=False,
+                   parametric_scaling=[0.0, 0.5], color_range=None):
+        # add ability to choose color bar min max
+        # and sort out shapes of the plots
+
+        if method == 'MW_pole':
+            if len(f) == 2:
+                f, f_sp = f
+            else:
+                f, f_sp, phi_sp = f
+
+        (thetas, phis) = ssht.sample_positions(self.resolution, Method=method, Grid=True);
+
+        if (thetas.size != f.size):
+            raise Exception('Band limit L deos not match that of f')
+
+        f_plot = f.copy()
+
+        f_max = f_plot.max()
+        f_min = f_plot.min()
+
+        if color_range is None:
+            vmin = f_min
+            vmax = f_max
+        else:
+            vmin = color_range[0]
+            vmax = color_range[1]
+            f_plot[f_plot < color_range[0]] = color_range[0]
+            f_plot[f_plot > color_range[1]] = color_range[1]
+            f_plot[f_plot == -1.56E30] = np.nan
+
+        # % Compute position scaling for parametric plot.
+        if parametric:
+            f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[1] + parametric_scaling[0]
+
+        # % Close plot.
+        if close:
+            (n_theta, n_phi) = ssht.sample_shape(self.resolution, Method=method)
+            f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
+            if parametric:
+                f_normalised = np.insert(f_normalised, n_phi, f_normalised[:, 0], axis=1)
+            thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
+            phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
+
+        # % Compute location of vertices.
+        if parametric:
+            (x, y, z) = ssht.spherical_to_cart(f_normalised, thetas, phis)
+        else:
+            (x, y, z) = ssht.s2_to_cart(thetas, phis)
+
+        return x, y, z, f_plot, vmin, vmax
+
+    def animation(self, alphas, betas):
+        xs, ys, zs, f_plots, vmins, vmaxs = \
+            [], [], [], [], [], []
+
+        angles = [(a, b) for a in alphas for b in betas]
+
+        for a in alpha:
+            for b in beta:
+                print(a, b)
+                flm = self.dirac_delta()
+                flm_conv = self.sift_conv(flm, a, b)
+                f = ssht.inverse(flm_conv, self.resolution)
+                x, y, z, f_plot, vmin, vmax = self.setup_plot(f.real)
+                xs.append(x)
+                ys.append(y)
+                zs.append(z)
+                f_plots.append(f_plot)
+                vmins.append(vmin)
+                vmaxs.append(vmax)
+
+        data = Data([
+            Surface(
+                x=xs[0],
+                y=ys[0],
+                z=zs[0],
+                surfacecolor=f_plots[0],
+                colorscale=self.matplotlib_to_plotly('viridis'),
+                cmin=vmins[0],
+                cmax=vmaxs[0],
+            )
+        ])
+
+        frames = [Frames(
+            data=Data([
+                Surface(
+                    x=xs[i],
+                    y=ys[i],
+                    z=zs[i],
+                    surfacecolor=f_plots[i],
+                    colorscale=self.matplotlib_to_plotly('viridis'),
+                    cmin=vmins[i],
+                    cmax=vmaxs[i],
+                )
+            ]),
+            name='frame{}'.format(i)
+        ) for i in range(len(angles))]
+
+        axis = dict(title='')
+
+        alpha_steps = [dict(
+            args=[['frame{}'.format(i)],
+                  dict(
+                      frame=dict(
+                          duration=50,
+                          redraw=False),
+                      mode='immediate',
+                      transition=dict(
+                          duration=0)
+                  )],
+            label='$\\alpha={}$'.format(angles[i][0]),
+            method='animate',
+        ) for i in range(len(angles))]
+
+        beta_steps = [dict(
+            args=[['frame{}'.format(i)],
+                  dict(
+                      frame=dict(
+                          duration=50,
+                          redraw=False),
+                      mode='immediate',
+                      transition=dict(
+                          duration=0)
+                  )],
+            label='$\\beta={}$'.format(angles[i][1]),
+            method='animate',
+        ) for i in range(len(angles))]
+
+        sliders = [
+            # alpha
+            dict(
+                active=0,
+                currentvalue=dict(
+                    prefix='$\\alpha$:',
+                    visible=True,
+                ),
+                transition=dict(duration=0),
+                steps=alpha_steps
+            ),
+            # beta
+            dict(
+                active=0,
+                currentvalue=dict(
+                    prefix='$\\beta$:',
+                    visible=True,
+                ),
+                transition=dict(duration=0),
+                steps=beta_steps
+            ),
+        ]
+
+        layout = Layout(
+            scene=Scene(
+                camera=dict(
+                    eye=dict(x=1.25, y=-1.25, z=1.25)
+                ),
+                xaxis=XAxis(axis),
+                yaxis=YAxis(axis),
+                zaxis=ZAxis(axis)
+            ),
+            updatemenus=[dict(
+                buttons=[
+                    dict(
+                        args=[
+                            None,
+                            dict(
+                                frame=dict(
+                                    duration=30,
+                                    redraw=False),
+                                fromcurrent=True,
+                                transition=dict(duration=0),
+                                mode='immediate'
+                            )],
+                        label='Play',
+                        method='animate',
+                    ),
+                    dict(
+                        args=[
+                            [None],
+                            dict(
+                                frame=dict(
+                                    duration=0,
+                                    redraw=False),
+                                fromcurrent=True,
+                                transition=dict(duration=0),
+                                mode='immediate'
+                            )],
+                        label='Pause',
+                        method='animate',
+                    )],
+                showactive=False,
+                type='buttons'
+            )],
+            sliders=sliders
+        )
+
+        fig = Figure(data=data, layout=layout, frames=frames)
+
+        py.plot(fig)
+
 
 if __name__ == '__main__':
     # Define parameters.
-    L_comp = 2 ** 5
-    L_plot = L_comp * 2 ** 3
+    L = 2 ** 5
+    resolution = L * 2 ** 3
     gamma = 0
     beta = np.pi / 4  # theta
     # beta = 0
     alpha = -np.pi / 4  # phi
     # alpha = 0
 
-    sc = SiftingConvolution(L_comp, L_plot, gamma, beta, alpha)
+    sc = SiftingConvolution(L, resolution)
     t0 = time.time()
-    sc.dirac_delta_plot()
+    # sc.dirac_delta_plot(alpha, beta)
     # sc.gaussian_plot()
+    alphas = np.linspace(-np.pi, np.pi, 17)
+    betas = np.linspace(0, np.pi, 9)
+    sc.animation(alphas[:3], betas[:3])
     t1 = time.time()
     print('TIME:', t1 - t0)
     # sc.squashed_gaussian_plot()
