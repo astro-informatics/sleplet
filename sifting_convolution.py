@@ -270,19 +270,18 @@ class SiftingConvolution:
 
         angles = np.array([(a, b) for a in alphas for b in betas])
 
-        for a in alphas:
-            for b in betas:
-                print(a, b)
-                flm = self.dirac_delta()
-                flm_conv = self.sift_conv(flm, a, b)
-                f = ssht.inverse(flm_conv, self.resolution)
-                x, y, z, f_plot, vmin, vmax = self.setup_plot(f.real)
-                xs.append(x)
-                ys.append(y)
-                zs.append(z)
-                f_plots.append(f_plot)
-                vmins.append(vmin)
-                vmaxs.append(vmax)
+        for angle in angles:
+            print(angle[0], angle[1])
+            flm = self.dirac_delta()
+            flm_conv = self.sift_conv(flm, angle[0], angle[1])
+            f = ssht.inverse(flm_conv, self.resolution)
+            x, y, z, f_plot, vmin, vmax = self.setup_plot(f.real)
+            xs.append(x)
+            ys.append(y)
+            zs.append(z)
+            f_plots.append(f_plot)
+            vmins.append(vmin)
+            vmaxs.append(vmax)
 
         data = [
             Surface(
@@ -294,57 +293,78 @@ class SiftingConvolution:
                 cmin=vmins[i],
                 cmax=vmaxs[i],
                 visible=False
-            ) for i in range(len(
-                [(a, b) for a in alphas for b in betas]))]
-        self.curr_a_val = alphas[0]
-        self.curr_b_val = betas[0]
-        self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
-        data[self.idx]['visible'] = True
+            ) for i in range(len(angles))]
+        curr_a_val = 0
+        curr_b_val = 0
+        idx = np.where((angles == (curr_a_val, curr_b_val)).all(axis=1))[0][0]
+        data[idx]['visible'] = True
 
-        axis = dict(title='')
+        # alpha_steps = []
+        # for a in alphas:
+        #     self.curr_a_val = a
+        #     self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+        #     step = dict(
+        #         method='restyle',
+        #         args=['visible', [False] * len(angles)]
+        #     )
+        #     step['args'][1][self.idx] = True
+        #     alpha_steps.append(step)
+        #
+        # beta_steps = []
+        # for b in betas:
+        #     self.curr_b_val = b
+        #     self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+        #     step = dict(
+        #         method='restyle',
+        #         args=['visible', [False] * len(angles)]
+        #     )
+        #     step['args'][1][self.idx] = True
+        #     beta_steps.append(step)
 
-        alpha_steps = []
-        for a in alphas:
-            self.curr_a_val = a
-            self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+        steps = []
+        for c, angle in enumerate(angles):
+            # self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
             step = dict(
                 method='restyle',
-                args=['visible', [False] * len(angles)]
+                args=['visible', [False] * len(angles)],
+                label=str(angle),
             )
-            step['args'][1][self.idx] = True
-            alpha_steps.append(step)
+            step['args'][1][c] = True
+            steps.append(step)
 
-        beta_steps = []
-        for b in betas:
-            self.curr_b_val = b
-            self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
-            step = dict(
-                method='restyle',
-                args=['visible', [False] * len(angles)]
-            )
-            step['args'][1][self.idx] = True
-            beta_steps.append(step)
+        # sliders = [
+        #     # alpha
+        #     dict(
+        #         active=0,
+        #         currentvalue=dict(
+        #             prefix='$\\alpha$:',
+        #         ),
+        #         pad={"t": 0},
+        #         steps=alpha_steps
+        #     ),
+        #     # beta
+        #     dict(
+        #         active=0,
+        #         currentvalue=dict(
+        #             prefix='$\\beta$:',
+        #         ),
+        #         pad={"t": 0},
+        #         steps=beta_steps
+        #     ),
+        # ]
 
         sliders = [
-            # alpha
             dict(
                 active=0,
                 currentvalue=dict(
-                    prefix='$\\alpha$:',
+                    prefix='(alpha,beta):',
                 ),
                 pad={"t": 0},
-                steps=alpha_steps
-            ),
-            # beta
-            dict(
-                active=0,
-                currentvalue=dict(
-                    prefix='$\\beta$:',
-                ),
-                pad={"t": 0},
-                steps=beta_steps
-            ),
+                steps=steps
+            )
         ]
+
+        axis = dict(title='')
 
         layout = Layout(
             scene=Scene(
@@ -379,7 +399,7 @@ if __name__ == '__main__':
     # sc.gaussian_plot()
     alphas = np.linspace(-np.pi, np.pi, 17)
     betas = np.linspace(0, np.pi, 9)
-    sc.animation(alphas[:3], betas[:3])
+    sc.animation(alphas, betas)
     t1 = time.time()
     print('TIME:', t1 - t0)
     # sc.squashed_gaussian_plot()
