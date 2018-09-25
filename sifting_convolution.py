@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 import scipy.io as sio
 from matplotlib import cm, colors, colorbar, gridspec
 import plotly.offline as py
-from plotly.graph_objs import *
+from plotly.graph_objs import Data, Figure, Surface, Layout
+from plotly.graph_objs.layout import Scene
+from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
@@ -385,7 +387,7 @@ class SiftingConvolution:
 
 if __name__ == '__main__':
     # Define parameters.
-    L = 2 ** 5
+    L = 2 ** 2
     resolution = L * 2 ** 3
     gamma = 0
     beta = np.pi / 4  # theta
