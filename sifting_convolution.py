@@ -1,10 +1,11 @@
-import sys, os
+import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
 from matplotlib import cm, colors, colorbar, gridspec
 import plotly.offline as py
-from plotly.graph_objs import Data, Figure, Surface, Layout
+from plotly.graph_objs import Figure, Surface, Layout
 from plotly.graph_objs.layout import Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
@@ -72,19 +73,20 @@ class SiftingConvolution:
         return flm
 
     def dirac_delta(self):
-        fun = lambda l, m: 1
+        def fun(l, m): return 1
         flm = self.north_pole(fun, m_zero=True)
 
         return flm
 
     def gaussian(self, sig=1):
-        fun = lambda l, m: np.exp(-l * (l + 1)) / (2 * sig * sig)
+        def fun(l, m): return np.exp(-l * (l + 1)) / (2 * sig * sig)
         flm = self.north_pole(fun, m_zero=False)
 
         return flm
 
     def squashed_gaussian(self, sig=1):
-        fun = lambda l, m: np.exp(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
+        def fun(l, m): return np.exp(m) * \
+            np.exp(-l * (l + 1)) / (2 * sig * sig)
         flm = self.north_pole(fun, m_zero=False)
 
         return flm
@@ -163,7 +165,8 @@ class SiftingConvolution:
         ax = fig.add_subplot(gs[0], projection='3d')
         ax_cbar = fig.add_subplot(gs[1])
         norm = colors.Normalize()
-        surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=cm.jet(norm(f_plot)))
+        surf = ax.plot_surface(x, y, z, rstride=1, cstride=1,
+                               facecolors=cm.jet(norm(f_plot)))
         if not axis:
             ax.set_axis_off()
 
@@ -185,7 +188,7 @@ class SiftingConvolution:
     def plotly_plot(self, f):
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
-        data = Data([
+        data = [
             Surface(
                 x=x,
                 y=y,
@@ -194,8 +197,7 @@ class SiftingConvolution:
                 colorscale=self.matplotlib_to_plotly('viridis'),
                 cmin=vmin,
                 cmax=vmax,
-            )
-        ])
+            )]
 
         axis = dict(title='')
 
@@ -225,7 +227,8 @@ class SiftingConvolution:
             else:
                 f, f_sp, phi_sp = f
 
-        (thetas, phis) = ssht.sample_positions(self.resolution, Method=method, Grid=True);
+        (thetas, phis) = ssht.sample_positions(
+            self.resolution, Method=method, Grid=True)
 
         if (thetas.size != f.size):
             raise Exception('Band limit L deos not match that of f')
@@ -247,14 +250,17 @@ class SiftingConvolution:
 
         # % Compute position scaling for parametric plot.
         if parametric:
-            f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[1] + parametric_scaling[0]
+            f_normalised = (f_plot - vmin / (vmax - vmin)) * \
+                parametric_scaling[1] + parametric_scaling[0]
 
         # % Close plot.
         if close:
-            (n_theta, n_phi) = ssht.sample_shape(self.resolution, Method=method)
+            (n_theta, n_phi) = ssht.sample_shape(
+                self.resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
-                f_normalised = np.insert(f_normalised, n_phi, f_normalised[:, 0], axis=1)
+                f_normalised = np.insert(
+                    f_normalised, n_phi, f_normalised[:, 0], axis=1)
             thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
             phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
 
@@ -296,8 +302,8 @@ class SiftingConvolution:
                 cmax=vmaxs[i],
                 visible=False
             ) for i in range(len(angles))]
-        curr_a_val = 0
-        curr_b_val = 0
+        curr_a_val = alphas.min()
+        curr_b_val = betas.min()
         idx = np.where((angles == (curr_a_val, curr_b_val)).all(axis=1))[0][0]
         data[idx]['visible'] = True
 
@@ -359,7 +365,7 @@ class SiftingConvolution:
             dict(
                 active=0,
                 currentvalue=dict(
-                    prefix='(alpha,beta):',
+                    prefix='(alpha/phi,beta/theta):',
                 ),
                 pad={"t": 0},
                 steps=steps
@@ -399,8 +405,10 @@ if __name__ == '__main__':
     t0 = time.time()
     # sc.dirac_delta_plot(alpha, beta)
     # sc.gaussian_plot()
-    alphas = np.linspace(-np.pi, np.pi, 17)
+    # alphas = np.linspace(-np.pi, np.pi, 17)
+    alphas = np.linspace(-np.pi, -np.pi, 1)
     betas = np.linspace(0, np.pi, 9)
+    # betas = np.linspace(np.pi, np.pi, 1)
     sc.animation(alphas, betas)
     t1 = time.time()
     print('TIME:', t1 - t0)
