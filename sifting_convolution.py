@@ -291,6 +291,9 @@ class SiftingConvolution:
             vmins.append(vmin)
             vmaxs.append(vmax)
 
+        colour_bar_min = vmins[0]
+        colour_bar_max = vmaxs[0]
+
         data = [
             Surface(
                 x=xs[i],
@@ -298,12 +301,12 @@ class SiftingConvolution:
                 z=zs[i],
                 surfacecolor=f_plots[i],
                 colorscale=self.matplotlib_to_plotly('viridis'),
-                cmin=vmins[i],
-                cmax=vmaxs[i],
+                cmin=vmins[i] if vmins[i] < colour_bar_min else colour_bar_min,
+                cmax=vmaxs[i] if vmaxs[i] > colour_bar_max else colour_bar_max,
                 visible=False
             ) for i in range(len(angles))]
-        curr_a_val = alphas.min()
-        curr_b_val = betas.min()
+        curr_a_val = alphas[0]
+        curr_b_val = betas[0]
         idx = np.where((angles == (curr_a_val, curr_b_val)).all(axis=1))[0][0]
         data[idx]['visible'] = True
 
@@ -329,17 +332,6 @@ class SiftingConvolution:
         #     step['args'][1][self.idx] = True
         #     beta_steps.append(step)
 
-        steps = []
-        for c, angle in enumerate(angles):
-            # self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
-            step = dict(
-                method='restyle',
-                args=['visible', [False] * len(angles)],
-                label=str(angle),
-            )
-            step['args'][1][c] = True
-            steps.append(step)
-
         # sliders = [
         #     # alpha
         #     dict(
@@ -361,16 +353,96 @@ class SiftingConvolution:
         #     ),
         # ]
 
-        sliders = [
-            dict(
-                active=0,
-                currentvalue=dict(
-                    prefix='(alpha/phi,beta/theta):',
-                ),
-                pad={"t": 0},
-                steps=steps
-            )
-        ]
+        steps = []
+        for count_a, alpha in enumerate(alphas):
+            for count_b, beta in enumerate(betas):
+                # self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+                step = dict(
+                    method='restyle',
+                    args=['visible', [False] * len(angles)],
+                    label=str((alpha, beta)),
+                )
+                idx = count_a + count_b * len(alphas)
+                step['args'][1][idx] = True
+                steps.append(step)
+
+        beta_steps = []
+        for count_b, beta in enumerate(betas):
+            for count_a, alpha in enumerate(alphas):
+                # self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
+                step = dict(
+                    method='restyle',
+                    args=['visible', [False] * len(betas)],
+                    label=str(beta),
+                )
+                idx = (count_b + count_a * len(betas)) % len(betas)
+                step['args'][1][idx] = True
+                beta_steps.append(step)
+
+        slider = [dict(
+            active=0,
+            currentvalue=dict(
+                prefix='(alpha,beta):',
+            ),
+            pad={"t": 0},
+            steps=steps
+        )]
+        beta_sliders = dict(
+            active=0,
+            currentvalue=dict(
+                prefix='beta/theta:',
+            ),
+            pad={"t": 100},
+            steps=beta_steps
+        )
+
+        update_menus = []
+        alpha_button = dict(
+            x=-0.05,
+            y=0.8,
+            buttons=[
+
+            ]
+        )
+        beta_button = dict(
+            x=-0.05,
+            y=1,
+            buttons=[]
+        )
+        update_menus.append(alpha_button)
+        update_menus.append(beta_button)
+
+        for count_b, beta in enumerate(betas):
+            for count_a, alpha in enumerate(alphas):
+                args = [False] * len(angles)
+                idx = count_a + count_b * len(alphas)
+                args[idx] = True
+
+                # alpha
+                update_menus[0]['buttons'].append(
+                    dict(
+                        # alpha=alphas[count_a],
+                        # beta=betas[count_b],
+                        method='restyle',
+                        args=args,
+                        label='(alpha,beta)=()',
+                    ),
+                )
+
+                # beta
+                update_menus[1]['buttons'].append(
+                    dict(
+                        # alpha=alphas[count_a],
+                        # beta=betas[count_b],
+                        method='restyle',
+                        args=args,
+                        label='(alpha,beta)=()',
+                    ),
+                )
+
+        # sliders = []
+        # sliders.append(alpha_sliders)
+        # sliders.append(beta_sliders)
 
         axis = dict(title='')
 
@@ -383,7 +455,8 @@ class SiftingConvolution:
                 yaxis=YAxis(axis),
                 zaxis=ZAxis(axis)
             ),
-            sliders=sliders
+            # sliders=slider
+            updatemenus=update_menus
         )
 
         fig = Figure(data=data, layout=layout)
@@ -405,8 +478,8 @@ if __name__ == '__main__':
     t0 = time.time()
     # sc.dirac_delta_plot(alpha, beta)
     # sc.gaussian_plot()
-    # alphas = np.linspace(-np.pi, np.pi, 17)
-    alphas = np.linspace(-np.pi, -np.pi, 1)
+    alphas = np.linspace(-np.pi, np.pi, 17)
+    # alphas = np.linspace(np.pi, np.pi, 1)
     betas = np.linspace(0, np.pi, 9)
     # betas = np.linspace(np.pi, np.pi, 1)
     sc.animation(alphas, betas)
