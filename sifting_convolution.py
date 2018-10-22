@@ -21,6 +21,19 @@ class SiftingConvolution:
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
+        '''
+        converts matplotlib colourscale to a plotly colourscale
+        
+        Arguments:
+            colour {string} -- matplotlib colour
+        
+        Keyword Arguments:
+            pl_entries {bits} -- colour type (default: {255})
+        
+        Returns:
+            plotly colour -- used in plotly plots
+        '''
+
         cmap = cm.get_cmap(colour)
 
         h = 1.0 / (pl_entries - 1)
@@ -32,61 +45,128 @@ class SiftingConvolution:
 
         return pl_colorscale
 
-    def fill_flm(self, flm, fun, el, m):
-        factor = np.sqrt((2 * el + 1) / (4 * np.pi))
-        ind = ssht.elm2ind(el, m)
-        ylm = self.spherical_harm(el, m)
-        flm[ind] = factor * fun(el, m) * ylm[ind]
+    def fill_flm(self, fun, ell, m):
+        # initialise flm
+        flm = np.zeros((self.resolution * self.resolution), dtype=complex)
+
+        ind = ssht.elm2ind(ell, m)
+        ylm = self.spherical_harmonic(ell, m)
+        flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi)) * fun(ell, m) * ylm[ind]
 
         return flm
 
-    def spherical_harm(self, el, m):
+    def spherical_harmonic(self, ell, m):
+        '''
+        generates harmonic space representation of spherical harmonic
+        
+        Arguments:
+            ell {integer} -- current multipole value
+            m {integer} -- m <= |el|
+        
+        Returns:
+            array -- square array shape: L x L
+        '''
+
         ylm = np.zeros((self.L * self.L), dtype=complex)
-        ind = ssht.elm2ind(el, m)
+        ind = ssht.elm2ind(ell, m)
         ylm[ind] = 1
 
         return ylm
 
-    def sift_conv(self, flm, alpha, beta):
+    def sifting_convolution(self, flm, alpha, beta):
+        '''
+        applies the sifting convolution to a given flm
+        
+        Arguments:
+            flm {array} -- square array shape: res x res
+            alpha {float} -- the phi angle direction
+            beta {float} -- the theta angle direction
+        
+        Returns:
+            array -- the new flm after the convolution
+        '''
+
         flm_conv = flm.copy()
         pix_i = ssht.phi_to_index(alpha, self.L)
         pix_j = ssht.theta_to_index(beta, self.L)
 
-        for el in range(self.L):
-            for m in range(-el, el + 1):
-                ind = ssht.elm2ind(el, m)
-                ylm = self.spherical_harm(el, m)
-                harm = ssht.inverse(ylm, self.L)
-                flm_conv[ind] = flm[ind] * harm[pix_i, pix_j]
+        for ell in range(self.L):
+            for m in range(-ell, ell + 1):
+                ind = ssht.elm2ind(ell, m)
+                ylm_harmonic = self.spherical_harmonic(ell, m)
+                ylm_real = ssht.inverse(ylm_harmonic, self.L)
+                flm_conv[ind] = flm[ind] * ylm_real[pix_i, pix_j]
 
         return flm_conv
 
     def north_pole(self, fun, m_zero=False):
+        '''
+        calculates a given function on the north pole of the sphere
+        
+        Arguments:
+            fun {function} -- the function to go on the north pole
+        
+        Keyword Arguments:
+            m_zero {bool} -- whether m = 0 (default: {False})
+        
+        Returns:
+            array -- new flm on the north pole
+        '''
+
         flm = np.zeros((self.resolution * self.resolution), dtype=complex)
-        for el in range(self.L):
+        for count_ell, ell in enumerate(range(self.L)):
             if not m_zero:
-                for m in range(-el, el + 1):
-                    flm = self.fill_flm(flm, fun, el, m)
+                for count_m, m in enumerate(range(-ell, ell + 1)):
+                    flm = self.fill_flm(fun, ell, m)
             else:
-                flm = self.fill_flm(flm, fun, el, m=0)
+                flm = self.fill_flm(fun, ell, m=0)
 
         return flm
 
     def dirac_delta(self):
-        def fun(l, m): return 1
+        '''
+        places a dirac delta function on the sphere
+        
+        Returns:
+            array -- flm on the north pole
+        '''
+
+        def fun(l, m):
+            return 1
         flm = self.north_pole(fun, m_zero=True)
 
         return flm
 
     def gaussian(self, sig=1):
-        def fun(l, m): return np.exp(-l * (l + 1)) / (2 * sig * sig)
+        '''
+        places a Gaussian function on the sphere
+        
+        Keyword Arguments:
+            sig {int} -- standard deviation (default: {1})
+        
+        Returns:
+            array -- flm on the north pole
+        '''
+
+        def fun(l, m): 
+            return np.exp(-l * (l + 1)) / (2 * sig * sig)
         flm = self.north_pole(fun, m_zero=False)
 
         return flm
 
     def squashed_gaussian(self, sig=1):
-        def fun(l, m): return np.exp(m) * \
-            np.exp(-l * (l + 1)) / (2 * sig * sig)
+        '''
+        places a squashed Gaussian on the sphere
+        
+        Keyword Arguments:
+            sig {int} -- standard deviation (default: {1})
+        
+        Returns:
+            array -- flm on the north pole
+        '''
+
+        def fun(l, m): 
+            return np.exp(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
         flm = self.north_pole(fun, m_zero=False)
 
         return flm
@@ -102,6 +182,21 @@ class SiftingConvolution:
 
     # Rotate spherical harmonic
     def rotate(self, flm, alpha, beta, gamma=0):
+        '''
+        rotates a given flm on the sphere
+        
+        Arguments:
+            flm {array} -- flm to be rotated
+            alpha {float} -- phi angle direction
+            beta {float} -- theta angle direction
+        
+        Keyword Arguments:
+            gamma {float} -- psi angle direction (default: {0})
+        
+        Returns:
+            array -- rotated flm
+        '''
+
         flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.resolution)
 
@@ -113,7 +208,7 @@ class SiftingConvolution:
         flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.resolution)
         f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sift_conv(flm, alpha, beta)
+        flm_conv = self.sifting_convolution(flm, alpha, beta)
         f_conv = ssht.inverse(flm_conv, self.resolution)
         # self.plotly_plot(f.real)
         # self.plotly_plot(f_rot.real)
@@ -125,7 +220,7 @@ class SiftingConvolution:
         flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.resolution)
         f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sift_conv(flm, alpha, beta)
+        flm_conv = self.sifting_convolution(flm, alpha, beta)
         f_conv = ssht.inverse(flm_conv, self.resolution)
         # self.plotly_plot(f.real)
         # self.plotly_plot(f_rot.real)
@@ -137,7 +232,7 @@ class SiftingConvolution:
         flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.resolution)
         f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sift_conv(flm, alpha, beta)
+        flm_conv = self.sifting_convolution(flm, alpha, beta)
         f_conv = ssht.inverse(flm_conv, self.resolution)
         # self.plotly_plot(f.real)
         # self.plotly_plot(f_rot.real)
@@ -149,7 +244,7 @@ class SiftingConvolution:
         flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.resolution)
         f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sift_conv(flm, alpha, beta)
+        flm_conv = self.sifting_convolution(flm, alpha, beta)
         f_conv = ssht.inverse(flm_conv, self.resolution)
         # self.plotly_plot(f.real)
         # self.plotly_plot(f_rot.real)
@@ -281,7 +376,7 @@ class SiftingConvolution:
         for angle in angles:
             print(angle[0], angle[1])
             flm = self.dirac_delta()
-            flm_conv = self.sift_conv(flm, angle[0], angle[1])
+            flm_conv = self.sifting_convolution(flm, angle[0], angle[1])
             f = ssht.inverse(flm_conv, self.resolution)
             x, y, z, f_plot, vmin, vmax = self.setup_plot(f.real)
             xs.append(x)
