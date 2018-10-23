@@ -8,14 +8,14 @@ import plotly.offline as py
 from plotly.graph_objs import Figure, Surface, Layout
 from plotly.graph_objs.layout import Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
-
+import time
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
-import time
 
 
-class SiftingConvolution:
-    def __init__(self, L, resolution):
+class SiftingConvolution(object):
+    def __init__(self, fun, L, resolution):
+        self.fun = fun
         self.L = L
         self.resolution = resolution
 
@@ -23,7 +23,7 @@ class SiftingConvolution:
     def matplotlib_to_plotly(colour, pl_entries=255):
         '''
         converts matplotlib colourscale to a plotly colourscale
-        
+
         Arguments:
             colour {string} -- matplotlib colour
         
@@ -45,23 +45,13 @@ class SiftingConvolution:
 
         return pl_colorscale
 
-    def fill_flm(self, fun, ell, m):
-        # initialise flm
-        flm = np.zeros((self.resolution * self.resolution), dtype=complex)
-
-        ind = ssht.elm2ind(ell, m)
-        ylm = self.spherical_harmonic(ell, m)
-        flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi)) * fun(ell, m) * ylm[ind]
-
-        return flm
-
     def spherical_harmonic(self, ell, m):
         '''
         generates harmonic space representation of spherical harmonic
         
         Arguments:
-            ell {integer} -- current multipole value
-            m {integer} -- m <= |el|
+            ell {int} -- current multipole value
+            m {int} -- m <= |el|
         
         Returns:
             array -- square array shape: L x L
@@ -73,33 +63,7 @@ class SiftingConvolution:
 
         return ylm
 
-    def sifting_convolution(self, flm, alpha, beta):
-        '''
-        applies the sifting convolution to a given flm
-        
-        Arguments:
-            flm {array} -- square array shape: res x res
-            alpha {float} -- the phi angle direction
-            beta {float} -- the theta angle direction
-        
-        Returns:
-            array -- the new flm after the convolution
-        '''
-
-        flm_conv = flm.copy()
-        pix_i = ssht.phi_to_index(alpha, self.L)
-        pix_j = ssht.theta_to_index(beta, self.L)
-
-        for ell in range(self.L):
-            for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                ylm_harmonic = self.spherical_harmonic(ell, m)
-                ylm_real = ssht.inverse(ylm_harmonic, self.L)
-                flm_conv[ind] = flm[ind] * ylm_real[pix_i, pix_j]
-
-        return flm_conv
-
-    def north_pole(self, fun, m_zero=False):
+    def north_pole(self, m_zero=False):
         '''
         calculates a given function on the north pole of the sphere
         
@@ -113,13 +77,33 @@ class SiftingConvolution:
             array -- new flm on the north pole
         '''
 
+        def helper(self, flm, ell, m):
+            '''
+            calculates the value of flm at a particular value of ell and m
+            
+            Arguments:
+                flm {array} -- initially array of zeros, gradually populated
+                fun {function} -- the function to go on the sphere
+                ell {int} -- the given value in the loop
+                m {int} -- the given value in the loop
+            
+            Returns:
+                array -- the flm after particular index has been set
+            '''
+
+            ind = ssht.elm2ind(ell, m)
+            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi)) * self.fun(ell, m)
+            return flm
+
+        # initiliase flm
         flm = np.zeros((self.resolution * self.resolution), dtype=complex)
-        for count_ell, ell in enumerate(range(self.L)):
+
+        for ell in range(self.L):
             if not m_zero:
-                for count_m, m in enumerate(range(-ell, ell + 1)):
-                    flm = self.fill_flm(fun, ell, m)
+                for m in range(-ell, ell + 1):
+                    flm = helper(self, flm, ell, m)
             else:
-                flm = self.fill_flm(fun, ell, m=0)
+                flm = helper(self, flm, ell, m=0)
 
         return flm
 
@@ -148,7 +132,7 @@ class SiftingConvolution:
             array -- flm on the north pole
         '''
 
-        def fun(l, m): 
+        def fun(l, m):
             return np.exp(-l * (l + 1)) / (2 * sig * sig)
         flm = self.north_pole(fun, m_zero=False)
 
@@ -165,11 +149,37 @@ class SiftingConvolution:
             array -- flm on the north pole
         '''
 
-        def fun(l, m): 
+        def fun(l, m):
             return np.exp(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
         flm = self.north_pole(fun, m_zero=False)
 
         return flm
+
+    def sifting_convolution(self, flm, alpha, beta):
+        '''
+        applies the sifting convolution to a given flm
+        
+        Arguments:
+            flm {array} -- square array shape: res x res
+            alpha {float} -- the phi angle direction
+            beta {float} -- the theta angle direction
+        
+        Returns:
+            array -- the new flm after the convolution
+        '''
+
+        flm_conv = flm.copy()
+        pix_i = ssht.phi_to_index(alpha, self.L)
+        pix_j = ssht.theta_to_index(beta, self.L)
+
+        for ell in range(self.L):
+            for m in range(-ell, ell + 1):
+                ind = ssht.elm2ind(ell, m)
+                ylm_harmonic = self.spherical_harmonic(ell, m)
+                ylm_real = ssht.inverse(ylm_harmonic, self.L)
+                flm_conv[ind] = flm[ind] * ylm_real[pix_i, pix_j]
+
+        return flm_conv
 
     def earth(self):
         matfile = os.path.join(
@@ -179,28 +189,6 @@ class SiftingConvolution:
         flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
 
         return flm
-
-    # Rotate spherical harmonic
-    def rotate(self, flm, alpha, beta, gamma=0):
-        '''
-        rotates a given flm on the sphere
-        
-        Arguments:
-            flm {array} -- flm to be rotated
-            alpha {float} -- phi angle direction
-            beta {float} -- theta angle direction
-        
-        Keyword Arguments:
-            gamma {float} -- psi angle direction (default: {0})
-        
-        Returns:
-            array -- rotated flm
-        '''
-
-        flm_rot = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.resolution)
-
-        return flm_rot
 
     def dirac_delta_plot(self, alpha, beta, gamma=0):
         flm = self.dirac_delta()
@@ -402,31 +390,8 @@ class SiftingConvolution:
         idx = np.where((angles == (curr_a_val, curr_b_val)).all(axis=1))[0][0]
         data[idx]['visible'] = True
 
-        # alpha_steps = []
-        # for a in alphas:
-        #     self.curr_a_val = a
-        #     self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
-        #     step = dict(
-        #         method='restyle',
-        #         args=['visible', [False] * len(angles)]
-        #     )
-        #     step['args'][1][self.idx] = True
-        #     alpha_steps.append(step)
-        #
-        # beta_steps = []
-        # for b in betas:
-        #     self.curr_b_val = b
-        #     self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
-        #     step = dict(
-        #         method='restyle',
-        #         args=['visible', [False] * len(angles)]
-        #     )
-        #     step['args'][1][self.idx] = True
-        #     beta_steps.append(step)
-
         steps = []
         for c, angle in enumerate(angles):
-            # self.idx = np.where((angles == (self.curr_a_val, self.curr_b_val)).all(axis=1))[0][0]
             step = dict(
                 method='restyle',
                 args=['visible', [False] * len(angles)],
