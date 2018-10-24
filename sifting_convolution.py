@@ -3,21 +3,20 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
-from matplotlib import cm, colors, colorbar, gridspec
+from matplotlib import cm
 import plotly.offline as py
 from plotly.graph_objs import Figure, Surface, Layout
 from plotly.graph_objs.layout import Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
-import time
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
 
 class SiftingConvolution(object):
-    def __init__(self, fun, L, resolution):
-        self.fun = fun
+    def __init__(self, L, resolution, fun=None):
         self.L = L
         self.resolution = resolution
+        self.fun = fun
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
@@ -107,54 +106,6 @@ class SiftingConvolution(object):
 
         return flm
 
-    def dirac_delta(self):
-        '''
-        places a dirac delta function on the sphere
-        
-        Returns:
-            array -- flm on the north pole
-        '''
-
-        def fun(l, m):
-            return 1
-        flm = self.north_pole(fun, m_zero=True)
-
-        return flm
-
-    def gaussian(self, sig=1):
-        '''
-        places a Gaussian function on the sphere
-        
-        Keyword Arguments:
-            sig {int} -- standard deviation (default: {1})
-        
-        Returns:
-            array -- flm on the north pole
-        '''
-
-        def fun(l, m):
-            return np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(fun, m_zero=False)
-
-        return flm
-
-    def squashed_gaussian(self, sig=1):
-        '''
-        places a squashed Gaussian on the sphere
-        
-        Keyword Arguments:
-            sig {int} -- standard deviation (default: {1})
-        
-        Returns:
-            array -- flm on the north pole
-        '''
-
-        def fun(l, m):
-            return np.exp(m) * np.exp(-l * (l + 1)) / (2 * sig * sig)
-        flm = self.north_pole(fun, m_zero=False)
-
-        return flm
-
     def sifting_convolution(self, flm, alpha, beta):
         '''
         applies the sifting convolution to a given flm
@@ -181,126 +132,28 @@ class SiftingConvolution(object):
 
         return flm_conv
 
-    def earth(self):
-        matfile = os.path.join(
-            os.environ['SSHT'], 'src', 'matlab', 'data',
-            'EGM2008_Topography_flms_L0128')
-        mat_contents = sio.loadmat(matfile)
-        flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
-
-        return flm
-
-    def dirac_delta_plot(self, alpha, beta, gamma=0):
-        flm = self.dirac_delta()
-        f = ssht.inverse(flm, self.resolution)
-        flm_rot = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.resolution)
-        f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sifting_convolution(flm, alpha, beta)
-        f_conv = ssht.inverse(flm_conv, self.resolution)
-        # self.plotly_plot(f.real)
-        # self.plotly_plot(f_rot.real)
-        self.plotly_plot(f_conv.real)
-
-    def gaussian_plot(self, alpha, beta, gamma=0):
-        flm = self.gaussian()
-        f = ssht.inverse(flm, self.resolution)
-        flm_rot = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.resolution)
-        f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sifting_convolution(flm, alpha, beta)
-        f_conv = ssht.inverse(flm_conv, self.resolution)
-        # self.plotly_plot(f.real)
-        # self.plotly_plot(f_rot.real)
-        self.plotly_plot(f_conv.real)
-
-    def squashed_gaussian_plot(self, alpha, beta, gamma=0):
-        flm = self.squashed_gaussian()
-        f = ssht.inverse(flm, self.resolution)
-        flm_rot = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.resolution)
-        f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sifting_convolution(flm, alpha, beta)
-        f_conv = ssht.inverse(flm_conv, self.resolution)
-        # self.plotly_plot(f.real)
-        # self.plotly_plot(f_rot.real)
-        self.plotly_plot(f_conv.real)
-
-    def earth_plot(self, alpha, beta, gamma=0):
-        flm = self.earth()
-        f = ssht.inverse(flm, self.resolution)
-        flm_rot = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.resolution)
-        f_rot = ssht.inverse(flm_rot, self.resolution)
-        flm_conv = self.sifting_convolution(flm, alpha, beta)
-        f_conv = ssht.inverse(flm_conv, self.resolution)
-        # self.plotly_plot(f.real)
-        # self.plotly_plot(f_rot.real)
-        self.plotly_plot(f_conv.real)
-
-    def matplotlib_plot(self, f, axis=True, color_bar=True,
-                        units=None, output_file=None, show=True):
-        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
-
-        # % Plot.
-        fig = plt.figure(figsize=plt.figaspect(1.1))
-        gs = gridspec.GridSpec(2, 1, height_ratios=[10, 0.5])
-        ax = fig.add_subplot(gs[0], projection='3d')
-        ax_cbar = fig.add_subplot(gs[1])
-        norm = colors.Normalize()
-        surf = ax.plot_surface(x, y, z, rstride=1, cstride=1,
-                               facecolors=cm.jet(norm(f_plot)))
-        if not axis:
-            ax.set_axis_off()
-
-        if color_bar:
-            cmap = cm.jet
-            norm = colors.Normalize(vmin=vmin, vmax=vmax)
-            cb1 = colorbar.ColorbarBase(ax_cbar, cmap=cmap,
-                                        norm=norm,
-                                        orientation='horizontal')
-            if units != None:
-                cb1.set_label(units)
-
-        # output (to file and screen)
-        if output_file != None:
-            plt.savefig(output_file)
-        if show:
-            plt.show()
-
-    def plotly_plot(self, f):
-        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
-
-        data = [
-            Surface(
-                x=x,
-                y=y,
-                z=z,
-                surfacecolor=f_plot,
-                colorscale=self.matplotlib_to_plotly('viridis'),
-                cmin=vmin,
-                cmax=vmax,
-            )]
-
-        axis = dict(title='')
-
-        layout = Layout(
-            scene=Scene(
-                camera=dict(
-                    eye=dict(x=1.25, y=-1.25, z=1.25)
-                ),
-                xaxis=XAxis(axis),
-                yaxis=YAxis(axis),
-                zaxis=ZAxis(axis)
-            )
-        )
-
-        fig = Figure(data=data, layout=layout)
-
-        py.plot(fig)
-
     def setup_plot(self, f, method='MW', close=True, parametric=False,
                    parametric_scaling=[0.0, 0.5], color_range=None):
+        '''
+        function which creates the data for the matplotlib/plotly plot
+        
+        Arguments:
+            f {function} -- inverse of flm
+        
+        Keyword Arguments:
+            method {str} -- sampling scheme (default: {'MW'})
+            close {bool} -- if true the full sphere is plotted without a gap (default: {True})
+            parametric {bool} -- the radius of the object at a certain point is defined by the function (default: {False})
+            parametric_scaling {list} -- used if Parametric=True, defines the radius of the shape at a particular angle (default: {[0.0, 0.5]})
+            color_range {list} -- if set saturates the color bar in that range, else the function min and max is used (default: {None})
+        
+        Raises:
+            Exception -- if band limit L is not the same size as function f
+        
+        Returns:
+            tuple -- values for the plotting
+        '''
+
         # add ability to choose color bar min max
         # and sort out shapes of the plots
 
@@ -355,7 +208,46 @@ class SiftingConvolution(object):
 
         return x, y, z, f_plot, vmin, vmax
 
-    def animation(self, alphas, betas):
+    def plotly_plot(self, f):
+        '''
+        creates basic plotly plot rather than matplotlib
+        
+        Arguments:
+            f {function} -- inverse flm
+        '''
+
+        # get values from the setup
+        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
+
+        data = [
+            Surface(
+                x=x,
+                y=y,
+                z=z,
+                surfacecolor=f_plot,
+                colorscale=self.matplotlib_to_plotly('viridis'),
+                cmin=vmin,
+                cmax=vmax,
+            )]
+
+        axis = dict(title='')
+
+        layout = Layout(
+            scene=Scene(
+                camera=dict(
+                    eye=dict(x=1.25, y=-1.25, z=1.25)
+                ),
+                xaxis=XAxis(axis),
+                yaxis=YAxis(axis),
+                zaxis=ZAxis(axis)
+            )
+        )
+
+        fig = Figure(data=data, layout=layout)
+
+        py.plot(fig)
+
+    def animation(self, flm, alphas, betas):
         xs, ys, zs, f_plots, vmins, vmaxs = \
             [], [], [], [], [], []
 
@@ -363,7 +255,6 @@ class SiftingConvolution(object):
 
         for angle in angles:
             print(angle[0], angle[1])
-            flm = self.dirac_delta()
             flm_conv = self.sifting_convolution(flm, angle[0], angle[1])
             f = ssht.inverse(flm_conv, self.resolution)
             x, y, z, f_plot, vmin, vmax = self.setup_plot(f.real)
@@ -449,57 +340,3 @@ class SiftingConvolution(object):
         fig = Figure(data=data, layout=layout)
 
         py.plot(fig)
-
-
-if __name__ == '__main__':
-    # Define parameters.
-    L = 2 ** 2
-    resolution = L * 2 ** 3
-    gamma = 0
-    beta = np.pi / 4  # theta
-    # beta = 0
-    alpha = -np.pi / 4  # phi
-    # alpha = 0
-
-    sc = SiftingConvolution(L, resolution)
-    t0 = time.time()
-    # sc.dirac_delta_plot(alpha, beta)
-    # sc.gaussian_plot()
-    # alphas = np.linspace(-np.pi, np.pi, 17)
-    alphas = np.linspace(-np.pi, -np.pi, 1)
-    betas = np.linspace(0, np.pi, 9)
-    # betas = np.linspace(np.pi, np.pi, 1)
-    sc.animation(alphas, betas)
-    t1 = time.time()
-    print('TIME:', t1 - t0)
-    # sc.squashed_gaussian_plot()
-    # sc.earth_plot()
-
-    # beta = np.linspace(0, np.pi, 9)
-    # alpha = np.linspace(0, 2 * np.pi, 17)
-    # pos = [(b, a) for b in beta for a in alpha]
-    # f_conv = []
-    # for p in pos:
-    #     sc = SiftingConvolution(L_comp, L_plot, gamma, p[0], p[1])
-    #     f_conv.append(sc.dirac_delta_plot())
-    # frames = [dict(data=dict(f_conv))]
-
-    # sliders=[
-    #     # beta
-    #     dict(
-    #         active=0,
-    #         currentvalue={'prefix': '$\\beta$: '},
-    #         pad={'t': 50},
-    #         steps=[dict(
-    #             args=,
-    #             method=
-    #         ) for c, b in enumerate(beta)]
-    #     ),
-    #     # alpha
-    #     dict(
-    #         active=0,
-    #         currentvalue={'prefix': '$\\alpha$: '},
-    #         pad={'t': 50},
-    #         steps=alpha
-    #     )
-    # ]

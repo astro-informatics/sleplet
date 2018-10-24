@@ -6,7 +6,7 @@ import pyssht as ssht
 from sifting_convolution import SiftingConvolution
 
 
-def dirac_delta(ell, m):
+def gaussian(ell, m, sig=1):
     '''
     function to place on the sphere
     
@@ -14,15 +14,18 @@ def dirac_delta(ell, m):
         ell {int} -- current multipole value
         m {int} -- m <= |ell|
     
+    Keyword Arguments:
+        sig {int} -- standard deviation (default: {1})
+    
     Returns:
         float -- function to pass to SiftingConvolution
     '''
 
-    return 1
+    return np.exp(-ell * (ell + 1)) / (2 * sig * sig)
 
 
 def single_plot(L, resolution, alpha, beta, f_type='std', gamma=0):
-    sc = SiftingConvolution(L, resolution, dirac_delta)
+    sc = SiftingConvolution(L, resolution, gaussian)
     flm = sc.north_pole(m_zero=True)
 
     if f_type == 'real':
@@ -39,7 +42,7 @@ def single_plot(L, resolution, alpha, beta, f_type='std', gamma=0):
     
 
 def multi_plot(L, resolution, alphas, betas):
-    sc = SiftingConvolution(L, resolution, dirac_delta)
+    sc = SiftingConvolution(L, resolution, gaussian)
     flm = sc.north_pole(m_zero=True)
     sc.animation(flm, alphas, betas)
 

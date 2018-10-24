@@ -1,29 +1,31 @@
 import sys
 import os
 import numpy as np
+import scipy.io as sio
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 from sifting_convolution import SiftingConvolution
 
 
-def dirac_delta(ell, m):
+def earth():
     '''
-    function to place on the sphere
-    
-    Arguments:
-        ell {int} -- current multipole value
-        m {int} -- m <= |ell|
+    get the flm of the Earth from matlab file
     
     Returns:
-        float -- function to pass to SiftingConvolution
+        array -- the Earth flm
     '''
 
-    return 1
+    matfile = os.path.join(
+        os.environ['SSHT'], 'src', 'matlab', 'data', 'EGM2008_Topography_flms_L0128')
+    mat_contents = sio.loadmat(matfile)
+    flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
+
+    return flm
 
 
 def single_plot(L, resolution, alpha, beta, f_type='std', gamma=0):
-    sc = SiftingConvolution(L, resolution, dirac_delta)
-    flm = sc.north_pole(m_zero=True)
+    flm = earth()
+    sc = SiftingConvolution(L, resolution)
 
     if f_type == 'real':
         f = ssht.inverse(flm, resolution)
@@ -39,14 +41,14 @@ def single_plot(L, resolution, alpha, beta, f_type='std', gamma=0):
     
 
 def multi_plot(L, resolution, alphas, betas):
-    sc = SiftingConvolution(L, resolution, dirac_delta)
-    flm = sc.north_pole(m_zero=True)
+    flm = earth()
+    sc = SiftingConvolution(L, resolution)
     sc.animation(flm, alphas, betas)
 
 
 if __name__ == '__main__':
     # single plot
-    L = 2 ** 5
+    L = 2 ** 4  # don't use 5 for Earth
     resolution = L * 2 ** 3
     alpha = -np.pi / 4  # phi
     beta = np.pi / 4  # theta
