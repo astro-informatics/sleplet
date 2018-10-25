@@ -106,9 +106,9 @@ class SiftingConvolution(object):
 
         return flm
 
-    def sifting_convolution(self, flm, alpha, beta):
+    def translation(self, flm, alpha, beta):
         '''
-        applies the sifting convolution to a given flm
+        applies the translation operator to a given flm
         
         Arguments:
             flm {array} -- square array shape: res x res
@@ -116,7 +116,7 @@ class SiftingConvolution(object):
             beta {float} -- the theta angle direction
         
         Returns:
-            array -- the new flm after the convolution
+            array -- the new flm after the translation
         '''
 
         flm_conv = flm.copy()
@@ -247,96 +247,34 @@ class SiftingConvolution(object):
 
         py.plot(fig)
 
-    def animation(self, flm, alphas, betas):
-        xs, ys, zs, f_plots, vmins, vmaxs = \
-            [], [], [], [], [], []
+    def fun_plot(self, alpha, beta, f_type='north', gamma=0):
+        # place function on the north pole on the sphere
+        flm = self.north_pole(m_zero=True)
 
-        angles = np.array([(a, b) for a in alphas for b in betas])
+        if f_type == 'north':
+            f = ssht.inverse(flm, self.resolution)
+            self.plotly_plot(f.real)
+        elif f_type == 'rotate':
+            flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.resolution)
+            f_rot = ssht.inverse(flm_rot, self.resolution)
+            self.plotly_plot(f_rot.real)
+        elif f_type == 'translate':
+            flm_conv = self.translation(flm, alpha, beta)
+            f_conv = ssht.inverse(flm_conv, self.resolution)
+            self.plotly_plot(f_conv.real)
 
-        for angle in angles:
-            print(angle[0], angle[1])
-            flm_conv = self.sifting_convolution(flm, angle[0], angle[1])
-            f = ssht.inverse(flm_conv, self.resolution)
-            x, y, z, f_plot, vmin, vmax = self.setup_plot(f.real)
-            xs.append(x)
-            ys.append(y)
-            zs.append(z)
-            f_plots.append(f_plot)
-            vmins.append(vmin)
-            vmaxs.append(vmax)
+    def flm_plot(self, alpha, beta, f_type='standard', gamma=0):
+        # get the flm passed to the class
+        flm = self.fun()
 
-        data = [
-            Surface(
-                x=xs[i],
-                y=ys[i],
-                z=zs[i],
-                surfacecolor=f_plots[i],
-                colorscale=self.matplotlib_to_plotly('viridis'),
-                cmin=vmins[i],
-                cmax=vmaxs[i],
-                visible=False
-            ) for i in range(len(angles))]
-        curr_a_val = alphas.min()
-        curr_b_val = betas.min()
-        idx = np.where((angles == (curr_a_val, curr_b_val)).all(axis=1))[0][0]
-        data[idx]['visible'] = True
-
-        steps = []
-        for c, angle in enumerate(angles):
-            step = dict(
-                method='restyle',
-                args=['visible', [False] * len(angles)],
-                label=str(angle),
-            )
-            step['args'][1][c] = True
-            steps.append(step)
-
-        # sliders = [
-        #     # alpha
-        #     dict(
-        #         active=0,
-        #         currentvalue=dict(
-        #             prefix='$\\alpha$:',
-        #         ),
-        #         pad={"t": 0},
-        #         steps=alpha_steps
-        #     ),
-        #     # beta
-        #     dict(
-        #         active=0,
-        #         currentvalue=dict(
-        #             prefix='$\\beta$:',
-        #         ),
-        #         pad={"t": 0},
-        #         steps=beta_steps
-        #     ),
-        # ]
-
-        sliders = [
-            dict(
-                active=0,
-                currentvalue=dict(
-                    prefix='(alpha/phi,beta/theta):',
-                ),
-                pad={"t": 0},
-                steps=steps
-            )
-        ]
-
-        axis = dict(title='')
-
-        layout = Layout(
-            scene=Scene(
-                camera=dict(
-                    eye=dict(x=1.25, y=-1.25, z=1.25)
-                ),
-                xaxis=XAxis(axis),
-                yaxis=YAxis(axis),
-                zaxis=ZAxis(axis)
-            ),
-            sliders=sliders
-        )
-
-        fig = Figure(data=data, layout=layout)
-
-        py.plot(fig)
+        if f_type == 'standard':
+            f = ssht.inverse(flm, self.resolution)
+            self.plotly_plot(f.real)
+        elif f_type == 'rotate':
+            flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.resolution)
+            f_rot = ssht.inverse(flm_rot, self.resolution)
+            self.plotly_plot(f_rot.real)
+        elif f_type == 'translate':
+            flm_conv = self.translation(flm, alpha, beta)
+            f_conv = ssht.inverse(flm_conv, self.resolution)
+            self.plotly_plot(f_conv.real)
