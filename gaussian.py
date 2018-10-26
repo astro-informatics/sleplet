@@ -31,9 +31,11 @@ if __name__ == '__main__':
     sc = SiftingConvolution(L, resolution, gaussian)
 
     # apply rotation/translation
-    alpha = -np.pi / 4  # phi
-    beta = np.pi / 4  # theta
+    alpha = 0  # phi
+    # alpha = np.pi  # phi
+    # beta = 0  # theta
+    beta = np.pi  # theta
 
-    sc.fun_plot(alpha, beta)  # north pole
+    # sc.fun_plot(alpha, beta)  # north pole
     # sc.fun_plot(alpha, beta, 'rotate')  # rotate
-    # sc.fun_plot(alpha, beta, 'translate')  # translate
+    sc.fun_plot(alpha, beta, 'translate')  # translate
