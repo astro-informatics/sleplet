@@ -44,24 +44,6 @@ class SiftingConvolution(object):
 
         return pl_colorscale
 
-    def spherical_harmonic(self, ell, m):
-        '''
-        generates harmonic space representation of spherical harmonic
-        
-        Arguments:
-            ell {int} -- current multipole value
-            m {int} -- m <= |el|
-        
-        Returns:
-            array -- square array shape: L x L
-        '''
-
-        ylm = np.zeros((self.L * self.L), dtype=complex)
-        ind = ssht.elm2ind(ell, m)
-        ylm[ind] = 1
-
-        return ylm
-
     def north_pole(self, m_zero=False):
         '''
         calculates a given function on the north pole of the sphere
@@ -76,7 +58,7 @@ class SiftingConvolution(object):
             array -- new flm on the north pole
         '''
 
-        def helper(self, flm, ell, m):
+        def helper(fun, flm, ell, m):
             '''
             calculates the value of flm at a particular value of ell and m
             
@@ -91,7 +73,7 @@ class SiftingConvolution(object):
             '''
 
             ind = ssht.elm2ind(ell, m)
-            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi)) * self.fun(ell, m)
+            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi)) * fun(ell, m)
             return flm
 
         # initiliase flm
@@ -100,9 +82,9 @@ class SiftingConvolution(object):
         for ell in range(self.L):
             if not m_zero:
                 for m in range(-ell, ell + 1):
-                    flm = helper(self, flm, ell, m)
+                    flm = helper(self.fun, flm, ell, m)
             else:
-                flm = helper(self, flm, ell, m=0)
+                flm = helper(self.fun, flm, ell, m=0)
 
         return flm
 
@@ -119,6 +101,24 @@ class SiftingConvolution(object):
             array -- the new flm after the translation
         '''
 
+        def helper(L, ell, m):
+            '''
+            generates harmonic space representation of spherical harmonic
+            
+            Arguments:
+                ell {int} -- current multipole value
+                m {int} -- m <= |el|
+            
+            Returns:
+                array -- square array shape: L x L
+            '''
+
+            ylm = np.zeros((L * L), dtype=complex)
+            ind = ssht.elm2ind(ell, m)
+            ylm[ind] = 1
+
+            return ylm
+
         flm_conv = flm.copy()
         pix_i = ssht.theta_to_index(beta, self.L)
         pix_j = ssht.phi_to_index(alpha, self.L)
@@ -126,7 +126,7 @@ class SiftingConvolution(object):
         for ell in range(self.L):
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                ylm_harmonic = self.spherical_harmonic(ell, m)
+                ylm_harmonic = helper(self.L, ell, m)
                 ylm_real = ssht.inverse(ylm_harmonic, self.L)
                 flm_conv[ind] = flm[ind] * ylm_real[pix_i, pix_j]
 
@@ -230,12 +230,19 @@ class SiftingConvolution(object):
                 cmax=vmax,
             )]
 
-        axis = dict(title='')
+        axis = dict(
+            title='',
+            showgrid=False,
+            zeroline=False,
+            ticks='',
+            showticklabels=False
+        )
 
+        zoom = 1.4
         layout = Layout(
             scene=Scene(
                 camera=dict(
-                    eye=dict(x=1.25, y=-1.25, z=1.25)
+                    eye=dict(x=1 / zoom, y=-1 / zoom, z=1 / zoom)
                 ),
                 xaxis=XAxis(axis),
                 yaxis=YAxis(axis),
