@@ -119,7 +119,7 @@ class SiftingConvolution(object):
 
             return ylm
 
-        flm_conv = flm.copy()
+        flm_conv = np.zeros((self.resolution * self.resolution), dtype=complex)
         pix_i = ssht.theta_to_index(beta, self.L)
         pix_j = ssht.phi_to_index(alpha, self.L)
 
