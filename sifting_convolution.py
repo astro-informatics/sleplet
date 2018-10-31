@@ -101,36 +101,19 @@ class SiftingConvolution(object):
             array -- the new flm after the translation
         '''
 
-        def helper(L, ell, m):
-            '''
-            generates harmonic space representation of spherical harmonic
-            
-            Arguments:
-                ell {int} -- current multipole value
-                m {int} -- m <= |el|
-            
-            Returns:
-                array -- square array shape: L x L
-            '''
-
-            ylm = np.zeros((L * L), dtype=complex)
-            ind = ssht.elm2ind(ell, m)
-            ylm[ind] = 1
-
-            return ylm
-
-        flm_conv = np.zeros((self.resolution * self.resolution), dtype=complex)
+        flm_trans = flm.copy()
         pix_i = ssht.theta_to_index(beta, self.L)
-        pix_j = ssht.phi_to_index(alpha, self.L)
+        pix_j = ssht.phi_to_index(-alpha, self.L)
 
         for ell in range(self.L):
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                ylm_harmonic = helper(self.L, ell, m)
-                ylm_real = ssht.inverse(ylm_harmonic, self.L)
-                flm_conv[ind] = flm[ind] * ylm_real[pix_i, pix_j]
+                ylm_harm = np.zeros((self.L * self.L), dtype=complex)
+                ylm_harm[ind] = 1
+                ylm_real = ssht.inverse(ylm_harm, self.L)
+                flm_trans[ind] = flm[ind] * ylm_real[pix_i, pix_j]
 
-        return flm_conv
+        return flm_trans
 
     def setup_plot(self, f, method='MW', close=True, parametric=False,
                    parametric_scaling=[0.0, 0.5], color_range=None):
