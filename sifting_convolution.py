@@ -239,25 +239,32 @@ class SiftingConvolution(object):
 
     def fun_plot(self, alpha, beta, f_type='north', gamma=0):
         # place function on the north pole on the sphere
-        flm = self.north_pole(m_zero=True)
-        filename = 'files/' + self.fun.func_name + '_' + f_type + '.html'
+        filename = 'figures/' + self.fun.func_name + '_' + f_type + '.html'
 
         if f_type == 'north':
-            f = ssht.inverse(flm, self.resolution)
-            self.plotly_plot(f.real, filename)
+            flm = self.north_pole(m_zero=True)  # place on north pole
+            f = ssht.inverse(flm, self.resolution)  # calc function
+            self.plotly_plot(abs(f), filename)  # plot
         elif f_type == 'rotate':
-            flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.resolution)
-            f_rot = ssht.inverse(flm_rot, self.resolution)
-            self.plotly_plot(f_rot.real, filename)
+            flm = self.north_pole(m_zero=True)  # place on north pole
+            flm_rot = ssht.rotate_flms(
+                flm, alpha, beta, gamma, self.resolution)  # rotate
+            f_rot = ssht.inverse(flm_rot, self.resolution)  # calc function
+            self.plotly_plot(abs(f_rot), filename)  # plot
         elif f_type == 'translate':
-            flm_conv = self.translation(flm, alpha, beta)
-            f_conv = ssht.inverse(flm_conv, self.resolution)
-            self.plotly_plot(f_conv.real, filename)
+            flm = np.zeros((self.resolution * self.resolution), dtype=complex)
+            for ell in range(self.L):
+                for m in range(-ell, ell + 1):
+                    ind = ssht.elm2ind(ell, m)
+                    flm[ind] = self.fun(ell, m)
+            flm_trans = self.translation(flm, alpha, beta)
+            f_trans = ssht.inverse(flm_trans, self.resolution)
+            self.plotly_plot(abs(f_trans), filename)
 
     def flm_plot(self, alpha, beta, f_type='standard', gamma=0):
         # get the flm passed to the class
         flm = self.fun()
-        filename = self.get_filename(f_type)
+        filename = 'figures/' + self.fun.func_name + '_' + f_type + '.html'
 
         if f_type == 'standard':
             f = ssht.inverse(flm, self.resolution)
