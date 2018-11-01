@@ -44,47 +44,37 @@ class SiftingConvolution(object):
 
         return pl_colorscale
 
-    def north_pole(self, m_zero=False):
+    def place_on_sphere(self, north_pole=False):
         '''
-        calculates a given function on the north pole of the sphere
+        calculates a given function on the the sphere
         
         Arguments:
-            fun {function} -- the function to go on the north pole
+            fun {function} -- the function to go on the sphere
         
         Keyword Arguments:
-            m_zero {bool} -- whether m = 0 (default: {False})
+            north_pole {bool} -- whether to place on north pole (default: {False})
         
         Returns:
-            array -- new flm on the north pole
+            array -- new flm on the sphere
         '''
-
-        def helper(fun, flm, ell, m):
-            '''
-            calculates the value of flm at a particular value of ell and m
-            
-            Arguments:
-                flm {array} -- initially array of zeros, gradually populated
-                fun {function} -- the function to go on the sphere
-                ell {int} -- the given value in the loop
-                m {int} -- the given value in the loop
-            
-            Returns:
-                array -- the flm after particular index has been set
-            '''
-
-            ind = ssht.elm2ind(ell, m)
-            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi)) * fun(ell, m)
-            return flm
 
         # initiliase flm
         flm = np.zeros((self.resolution * self.resolution), dtype=complex)
 
         for ell in range(self.L):
-            if not m_zero:
-                for m in range(-ell, ell + 1):
-                    flm = helper(self.fun, flm, ell, m)
+            # place on north pole
+            if north_pole:
+                m = 0
+                factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
+                # calc flm at index
+                ind = ssht.elm2ind(ell, m)
+                flm[ind] = factor * self.fun(ell, m)
+            # place on the sphere
             else:
-                flm = helper(self.fun, flm, ell, m=0)
+                for m in range(-ell, ell + 1):
+                    # calc flm at index
+                    ind = ssht.elm2ind(ell, m)
+                    flm[ind] = self.fun(ell, m)
 
         return flm
 
@@ -242,38 +232,48 @@ class SiftingConvolution(object):
         filename = 'figures/' + self.fun.func_name + '_' + f_type + '.html'
 
         if f_type == 'north':
-            flm = self.north_pole(m_zero=True)  # place on north pole
-            f = ssht.inverse(flm, self.resolution)  # calc function
-            self.plotly_plot(abs(f), filename)  # plot
+            # place on north pole
+            flm = self.place_on_sphere(north_pole=True)
+            # inverse & plot
+            f = ssht.inverse(flm, self.resolution)
+            self.plotly_plot(abs(f), filename)
         elif f_type == 'rotate':
-            flm = self.north_pole(m_zero=True)  # place on north pole
+            # place on north pole
+            flm = self.place_on_sphere(north_pole=True)
+            # rotate by alpha, beta, gamma
             flm_rot = ssht.rotate_flms(
-                flm, alpha, beta, gamma, self.resolution)  # rotate
-            f_rot = ssht.inverse(flm_rot, self.resolution)  # calc function
-            self.plotly_plot(abs(f_rot), filename)  # plot
+                flm, alpha, beta, gamma, self.resolution)
+            # inverse & plot
+            f_rot = ssht.inverse(flm_rot, self.resolution)
+            self.plotly_plot(abs(f_rot), filename)
         elif f_type == 'translate':
-            flm = np.zeros((self.resolution * self.resolution), dtype=complex)
-            for ell in range(self.L):
-                for m in range(-ell, ell + 1):
-                    ind = ssht.elm2ind(ell, m)
-                    flm[ind] = self.fun(ell, m)
+            # place on sphere
+            flm = self.place_on_sphere(north_pole=False)
+            # translate by alpha, beta
             flm_trans = self.translation(flm, alpha, beta)
+            # inverse & plot
             f_trans = ssht.inverse(flm_trans, self.resolution)
             self.plotly_plot(abs(f_trans), filename)
 
-    def flm_plot(self, alpha, beta, f_type='standard', gamma=0):
+    def flm_plot(self, alpha, beta, f_type='standard', reality=False, gamma=0):
         # get the flm passed to the class
         flm = self.fun()
         filename = 'figures/' + self.fun.func_name + '_' + f_type + '.html'
 
         if f_type == 'standard':
-            f = ssht.inverse(flm, self.resolution)
-            self.plotly_plot(f.real. filename)
+            # inverse & plot
+            f = ssht.inverse(flm, self.resolution, Reality=reality)
+            self.plotly_plot(abs(f), filename)
         elif f_type == 'rotate':
-            flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.resolution)
-            f_rot = ssht.inverse(flm_rot, self.resolution)
-            self.plotly_plot(f_rot.real, filename)
+            # rotate by alpha, beta, gamma
+            flm_rot = ssht.rotate_flms(
+                flm, alpha, beta, gamma, self.resolution)
+            # inverse & plot
+            f_rot = ssht.inverse(flm_rot, self.resolution, Reality=reality)
+            self.plotly_plot(abs(f_rot), filename)
         elif f_type == 'translate':
+            # translate by alpha, beta
             flm_conv = self.translation(flm, alpha, beta)
-            f_conv = ssht.inverse(flm_conv, self.resolution)
-            self.plotly_plot(f_conv.real, filename)
+            # inverse & plot
+            f_conv = ssht.inverse(flm_conv, self.resolution, Reality=reality)
+            self.plotly_plot(abs(f_conv), filename)
