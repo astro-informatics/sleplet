@@ -25,10 +25,10 @@ class SiftingConvolution(object):
 
         Arguments:
             colour {string} -- matplotlib colour
-        
+
         Keyword Arguments:
             pl_entries {bits} -- colour type (default: {255})
-        
+
         Returns:
             plotly colour -- used in plotly plots
         '''
@@ -47,13 +47,13 @@ class SiftingConvolution(object):
     def place_on_sphere(self, north_pole=False):
         '''
         calculates a given function on the the sphere
-        
+
         Arguments:
             fun {function} -- the function to go on the sphere
-        
+
         Keyword Arguments:
             north_pole {bool} -- whether to place on north pole (default: {False})
-        
+
         Returns:
             array -- new flm on the sphere
         '''
@@ -81,12 +81,12 @@ class SiftingConvolution(object):
     def translation(self, flm, alpha, beta):
         '''
         applies the translation operator to a given flm
-        
+
         Arguments:
             flm {array} -- square array shape: res x res
             alpha {float} -- the phi angle direction
             beta {float} -- the theta angle direction
-        
+
         Returns:
             array -- the new flm after the translation
         '''
@@ -109,20 +109,20 @@ class SiftingConvolution(object):
                    parametric_scaling=[0.0, 0.5], color_range=None):
         '''
         function which creates the data for the matplotlib/plotly plot
-        
+
         Arguments:
             f {function} -- inverse of flm
-        
+
         Keyword Arguments:
             method {str} -- sampling scheme (default: {'MW'})
             close {bool} -- if true the full sphere is plotted without a gap (default: {True})
             parametric {bool} -- the radius of the object at a certain point is defined by the function (default: {False})
             parametric_scaling {list} -- used if Parametric=True, defines the radius of the shape at a particular angle (default: {[0.0, 0.5]})
             color_range {list} -- if set saturates the color bar in that range, else the function min and max is used (default: {None})
-        
+
         Raises:
             Exception -- if band limit L is not the same size as function f
-        
+
         Returns:
             tuple -- values for the plotting
         '''
@@ -184,7 +184,7 @@ class SiftingConvolution(object):
     def plotly_plot(self, f, html_name='temp-plot'):
         '''
         creates basic plotly plot rather than matplotlib
-        
+
         Arguments:
             f {function} -- inverse flm
         '''
@@ -227,53 +227,39 @@ class SiftingConvolution(object):
 
         py.plot(fig, filename=html_name)
 
-    def fun_plot(self, alpha, beta, f_type='north', gamma=0):
-        # place function on the north pole on the sphere
-        filename = 'figures/' + self.fun.func_name + '_' + f_type + '.html'
+    def plot(self, alpha, beta, plotting_type='real', method='north', gamma=0):
+        filename = 'figures/' + self.fun.func_name + \
+            '_' + method + '_' + plotting_type + '.html'
 
-        if f_type == 'north':
+        # test for plotting method
+        if method == 'north':
             # place on north pole
             flm = self.place_on_sphere(north_pole=True)
             # inverse & plot
             f = ssht.inverse(flm, self.resolution)
-            self.plotly_plot(abs(f), filename)
-        elif f_type == 'rotate':
+        elif method == 'rotate':
             # place on north pole
             flm = self.place_on_sphere(north_pole=True)
             # rotate by alpha, beta, gamma
             flm_rot = ssht.rotate_flms(
                 flm, alpha, beta, gamma, self.resolution)
             # inverse & plot
-            f_rot = ssht.inverse(flm_rot, self.resolution)
-            self.plotly_plot(abs(f_rot), filename)
-        elif f_type == 'translate':
+            f = ssht.inverse(flm_rot, self.resolution)
+        elif method == 'translate':
             # place on sphere
             flm = self.place_on_sphere(north_pole=False)
             # translate by alpha, beta
             flm_trans = self.translation(flm, alpha, beta)
             # inverse & plot
-            f_trans = ssht.inverse(flm_trans, self.resolution)
-            self.plotly_plot(abs(f_trans), filename)
+            f = ssht.inverse(flm_trans, self.resolution)
 
-    def flm_plot(self, alpha, beta, f_type='standard', reality=False, gamma=0):
-        # get the flm passed to the class
-        flm = self.fun()
-        filename = 'figures/' + self.fun.func_name + '_' + f_type + '.html'
+        # check for plotting type
+        if plotting_type == 'real':
+            plot = f.real
+        elif plotting_type == 'imag':
+            plot = f.imag
+        elif plotting_type == 'abs':
+            plot = abs(f)
 
-        if f_type == 'standard':
-            # inverse & plot
-            f = ssht.inverse(flm, self.resolution, Reality=reality)
-            self.plotly_plot(abs(f), filename)
-        elif f_type == 'rotate':
-            # rotate by alpha, beta, gamma
-            flm_rot = ssht.rotate_flms(
-                flm, alpha, beta, gamma, self.resolution)
-            # inverse & plot
-            f_rot = ssht.inverse(flm_rot, self.resolution, Reality=reality)
-            self.plotly_plot(abs(f_rot), filename)
-        elif f_type == 'translate':
-            # translate by alpha, beta
-            flm_conv = self.translation(flm, alpha, beta)
-            # inverse & plot
-            f_conv = ssht.inverse(flm_conv, self.resolution, Reality=reality)
-            self.plotly_plot(abs(f_conv), filename)
+        # do plot
+        self.plotly_plot(plot, filename)
