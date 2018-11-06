@@ -28,11 +28,14 @@ if __name__ == '__main__':
     sc = SiftingConvolution(L, resolution, dirac_delta)
 
     # apply rotation/translation
-    alpha = 0  # phi
+    # alpha = 0  # phi
     # alpha = np.pi  # phi
+    alpha = np.pi * 7 / 4
     # beta = 0  # theta
-    beta = np.pi  # theta
+    # beta = np.pi  # theta
+    beta = np.pi / 4
 
-    # sc.fun_plot(alpha, beta)  # north pole
-    # sc.fun_plot(alpha, beta, 'rotate')  # rotate
-    sc.fun_plot(alpha, beta, 'translate')  # translate
+    dir = os.path.expanduser('~') + '/Dropbox/cosmoinformatics/'
+    # sc.fun_plot(dir, alpha, beta, 'imag')  # north pole
+    # sc.fun_plot(dir, alpha, beta, 'imag', 'rotate')  # rotate
+    sc.fun_plot(dir, alpha, beta, 'real', 'translate')  # translate

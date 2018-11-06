@@ -29,10 +29,7 @@ if __name__ == '__main__':
     resolution = L * 2 ** 3
     sc = SiftingConvolution(L, resolution, earth)
 
-    # apply rotation/translation
-    alpha = -np.pi / 4  # phi
-    beta = np.pi / 4  # theta
-
-    sc.flm_plot(alpha, beta)  # standard
-    # sc.flm_plot(alpha, beta, 'rotate')  # rotate
-    # sc.flm_plot(alpha, beta, 'translate')  # translate
+    flm = earth()
+    f = ssht.inverse(flm, sc.resolution, Reality=True)
+    filename = os.path.expanduser('~') + '/Dropbox/cosmoinformatics/earth.html'
+    sc.plotly_plot(f, filename)
