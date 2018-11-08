@@ -227,8 +227,8 @@ class SiftingConvolution(object):
 
         py.plot(fig, filename=html_name)
 
-    def plot(self, alpha, beta, plotting_type='real', method='north', gamma=0):
-        filename = 'figures/' + self.fun.func_name + \
+    def plot(self, dir, alpha, beta, plotting_type='real', method='north', gamma=0):
+        filename = dir + self.fun.func_name + \
             '_' + method + '_' + plotting_type + '.html'
 
         # test for plotting method
