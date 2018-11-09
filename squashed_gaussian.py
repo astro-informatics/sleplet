@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # beta = np.pi  # theta
     beta = np.pi / 4
 
-    dir = os.path.expanduser('~') + '/Dropbox/cosmoinformatics/'
+    dir = 'figures/'
     # sc.plot(dir, alpha, beta, 'imag')  # north pole
     # sc.plot(dir, alpha, beta, 'imag', 'rotate')  # rotate
     sc.plot(dir, alpha, beta, 'real', 'translate')  # translate
