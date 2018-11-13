@@ -6,8 +6,9 @@ import scipy.io as sio
 from matplotlib import cm
 import plotly.offline as py
 from plotly.graph_objs import Figure, Surface, Layout
-from plotly.graph_objs.layout import Scene
+from plotly.graph_objs.layout import Scene, Margin
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
+import plotly.io as pio
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
@@ -181,7 +182,7 @@ class SiftingConvolution(object):
 
         return x, y, z, f_plot, vmin, vmax
 
-    def plotly_plot(self, f, html_name='temp-plot'):
+    def plotly_plot(self, f, auto_open, html_name='temp-plot', pdf_name=None):
         '''
         creates basic plotly plot rather than matplotlib
 
@@ -200,7 +201,7 @@ class SiftingConvolution(object):
                 surfacecolor=f_plot,
                 colorscale=self.matplotlib_to_plotly('viridis'),
                 cmin=vmin,
-                cmax=vmax,
+                cmax=vmax
             )]
 
         axis = dict(
@@ -220,24 +221,72 @@ class SiftingConvolution(object):
                 xaxis=XAxis(axis),
                 yaxis=YAxis(axis),
                 zaxis=ZAxis(axis)
+            ),
+            margin=Margin(
+                l=0,
+                r=0,
+                b=0,
+                t=0
             )
         )
 
         fig = Figure(data=data, layout=layout)
 
-        py.plot(fig, filename=html_name)
+        if pdf_name:
+            pio.write_image(fig, pdf_name)
 
-    def plot(self, dir, alpha, beta, plotting_type='real', method='north', gamma=0):
-        filename = dir + self.fun.func_name + \
-            '_' + method + '_' + plotting_type + '.html'
+        py.plot(fig, filename=html_name, auto_open=auto_open)
+
+    @staticmethod
+    def filename_angle(alpha, beta):
+        # get fraction for filename
+        alpha_num, alpha_den = (alpha / np.pi).as_integer_ratio()
+        beta_num, beta_den = (beta / np.pi).as_integer_ratio()
+
+        def helper(numerator, denominator):
+            # if whole number
+            if denominator == 1:
+                # if 1 * pi
+                if numerator == 1:
+                    filename = 'pi'
+                else:
+                    filename = str(numerator) + 'pi'
+            else:
+                filename = str(numerator) + 'pi' + str(denominator)
+            return filename
+
+        if not alpha_num and not beta_num:
+            filename = '_alpha-0_beta-0_'
+        elif not alpha_num:
+            filename = '_alpha-0_beta-'
+            filename += helper(beta_num, beta_den)
+            filename += '_'
+        elif not beta_num:
+            filename = '_alpha-'
+            filename += helper(alpha_num, alpha_den)
+            filename += 'beta-0_'
+        else:
+            filename = '_alpha-'
+            filename += helper(alpha_num, alpha_den)
+            filename += '_beta-'
+            filename += helper(beta_num, beta_den)
+            filename += '_'
+        return filename
+
+    def plot(self, dir, alpha, beta, plotting_type='real', auto_open=True, method='north', gamma=0):
+        filename = dir + self.fun.func_name + '_' + method
 
         # test for plotting method
         if method == 'north':
+            # adjust filename
+            filename += '_'
             # place on north pole
-            flm = self.place_on_sphere(north_pole=True)
+            flm = self.place_on_sphere(north_pole=False)
             # inverse & plot
             f = ssht.inverse(flm, self.resolution)
         elif method == 'rotate':
+            # adjust filename
+            filename += self.filename_angle(alpha, beta)
             # place on north pole
             flm = self.place_on_sphere(north_pole=True)
             # rotate by alpha, beta, gamma
@@ -246,6 +295,8 @@ class SiftingConvolution(object):
             # inverse & plot
             f = ssht.inverse(flm_rot, self.resolution)
         elif method == 'translate':
+            # adjust filename
+            filename += self.filename_angle(alpha, beta)
             # place on sphere
             flm = self.place_on_sphere(north_pole=False)
             # translate by alpha, beta
@@ -262,4 +313,6 @@ class SiftingConvolution(object):
             plot = abs(f)
 
         # do plot
-        self.plotly_plot(plot, filename)
+        filename += plotting_type
+        self.plotly_plot(plot, auto_open, filename +
+                         '.html', filename + '.pdf')
