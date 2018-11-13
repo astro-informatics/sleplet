@@ -9,11 +9,11 @@ from sifting_convolution import SiftingConvolution
 def dirac_delta(ell, m):
     '''
     function to place on the sphere
-    
+
     Arguments:
         ell {int} -- current multipole value
         m {int} -- m <= |ell|
-    
+
     Returns:
         float -- function to pass to SiftingConvolution
     '''
@@ -36,6 +36,14 @@ if __name__ == '__main__':
     # beta = np.pi / 4
 
     dir = 'figures/'
-    # sc.plot(dir), alpha, beta, 'imag')  # north pole
-    sc.plot(dir, alpha, beta, 'imag', 'rotate')  # rotate
-    # sc.plot(dir, alpha, beta, 'real', 'translate')  # translate
+    auto_open = True
+    # north pole
+    sc.plot(dir, 0, 0, 'abs', auto_open, 'north')
+    sc.plot(dir, 0, 0, 'real', auto_open, 'north')
+    sc.plot(dir, 0, 0, 'imag', auto_open, 'north')
+    for alpha in [np.pi * x / 4.0 for x in range(9)]:
+        for beta in [np.pi * x / 4.0 for x in range(5)]:
+            for plot in ['abs', 'real', 'imag']:
+                for method in ['rotate', 'translate']:
+                    print(alpha, beta, plot, method)
+                    sc.plot(dir, alpha, beta, plot, auto_open, method)
