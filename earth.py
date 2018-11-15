@@ -31,5 +31,5 @@ if __name__ == '__main__':
 
     flm = earth()
     f = ssht.inverse(flm, sc.resolution, Reality=True)
-    filename = 'figures/earth.html'
+    filename = os.path.join('figures', 'earth.html')
     sc.plotly_plot(f, filename)

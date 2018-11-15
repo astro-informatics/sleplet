@@ -35,15 +35,16 @@ if __name__ == '__main__':
     # beta = np.pi  # theta
     # beta = np.pi / 4
 
-    dir = 'figures/'
-    auto_open = True
+    dir = 'figures'
+    auto_open = False
+    save_fig = True
     # north pole
-    sc.plot(dir, 0, 0, 'abs', auto_open, 'north')
-    sc.plot(dir, 0, 0, 'real', auto_open, 'north')
-    sc.plot(dir, 0, 0, 'imag', auto_open, 'north')
+    sc.plot(dir, 0, 0, 'abs', auto_open, save_fig, 'north')
+    sc.plot(dir, 0, 0, 'real', auto_open, save_fig, 'north')
+    sc.plot(dir, 0, 0, 'imag', auto_open, save_fig, 'north')
     for alpha in [np.pi * x / 4.0 for x in range(9)]:
         for beta in [np.pi * x / 4.0 for x in range(5)]:
             for plot in ['abs', 'real', 'imag']:
                 for method in ['rotate', 'translate']:
                     print(alpha, beta, plot, method)
-                    sc.plot(dir, alpha, beta, plot, auto_open, method)
+                    sc.plot(dir, alpha, beta, plot, auto_open, save_fig, method)
