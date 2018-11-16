@@ -6,9 +6,10 @@ import pyssht as ssht
 from sifting_convolution import SiftingConvolution
 
 
-def dirac_delta(ell, m):
+def dirac_delta(L, resolution):
     '''
-    function to place on the sphere
+    flm to place on the sphere
+    (T_{\omega'} \delta) (\omega) \equiv \sum_{\ell=0}^{\infty} \sum_{m=-\ell}^{\ell} \overline{Y_{\ell m}(\omega')} Y_{\ell m} (\omega)
 
     Arguments:
         ell {int} -- current multipole value
@@ -18,8 +19,15 @@ def dirac_delta(ell, m):
         float -- function to pass to SiftingConvolution
     '''
 
-    return 1
+    # initiliase flm
+    flm = np.zeros((resolution * resolution), dtype=complex)
 
+    for ell in range(L):
+        for m in range(-ell, ell + 1):
+            ind = ssht.elm2ind(ell, m)
+            flm[ind] = 1
+
+    return flm
 
 if __name__ == '__main__':
     # initialise class
