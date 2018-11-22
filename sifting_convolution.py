@@ -14,10 +14,10 @@ import pyssht as ssht
 
 
 class SiftingConvolution(object):
-    def __init__(self, L, resolution, fun=None):
+    def __init__(self, flm, L, resolution):
+        self.flm = flm
         self.L = L
         self.resolution = resolution
-        self.fun = fun
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
@@ -45,37 +45,50 @@ class SiftingConvolution(object):
 
         return pl_colorscale
 
-    def place_on_sphere(self, north_pole=False):
-        '''
-        calculates a given function on the the sphere
+    # def place_on_sphere(self, north_pole=False):
+    #     '''
+    #     calculates a given function on the the sphere
 
-        Arguments:
-            fun {function} -- the function to go on the sphere
+    #     Arguments:
+    #         fun {function} -- the function to go on the sphere
 
-        Keyword Arguments:
-            north_pole {bool} -- whether to place on north pole (default: {False})
+    #     Keyword Arguments:
+    #         north_pole {bool} -- whether to place on north pole (default: {False})
 
-        Returns:
-            array -- new flm on the sphere
-        '''
+    #     Returns:
+    #         array -- new flm on the sphere
+    #     '''
 
-        # initiliase flm
-        flm = np.zeros((self.resolution * self.resolution), dtype=complex)
+    #     # initiliase flm
+    #     flm = np.zeros((self.resolution * self.resolution), dtype=complex)
+
+    #     for ell in range(self.L):
+    #         # place on north pole
+    #         if north_pole:
+    #             m = 0
+    #             factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
+    #             # calc flm at index
+    #             ind = ssht.elm2ind(ell, m)
+    #             flm[ind] = factor * self.flm(ell, m)
+    #         # place on the sphere
+    #         else:
+    #             for m in range(-ell, ell + 1):
+    #                 # calc flm at index
+    #                 ind = ssht.elm2ind(ell, m)
+    #                 flm[ind] = self.fun(ell, m)
+    #     return flm
+
+    def place_flm_on_north_pole(self, flm):
+        if flm.func_name == 'dirac_delta':
+            return flm
 
         for ell in range(self.L):
-            # place on north pole
-            if north_pole:
-                m = 0
-                factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
-                # calc flm at index
+            for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                flm[ind] = factor * self.fun(ell, m)
-            # place on the sphere
-            else:
-                for m in range(-ell, ell + 1):
-                    # calc flm at index
-                    ind = ssht.elm2ind(ell, m)
-                    flm[ind] = self.fun(ell, m)
+                if m == 0:
+                    flm[ind] *= np.sqrt((2 * ell + 1) / (4 * np.pi))
+                else:
+                    flm[ind] = 0
 
         return flm
 
@@ -279,21 +292,21 @@ class SiftingConvolution(object):
         return filename
 
     def plot(self, dir, alpha, beta, plotting_type='real', auto_open=True, save_fig=False, method='north', gamma=0):
-        filename = self.fun.func_name + '_' + method
+        filename = self.flm.func_name + '_' + method
 
         # test for plotting method
         if method == 'north':
             # adjust filename
             filename += '_'
             # place on north pole
-            flm = self.place_on_sphere(north_pole=True)
+            flm = self.place_flm_on_north_pole(self.flm)
             # inverse & plot
             f = ssht.inverse(flm, self.resolution)
         elif method == 'rotate':
             # adjust filename
             filename += self.filename_angle(alpha, beta)
             # place on north pole
-            flm = self.place_on_sphere(north_pole=True)
+            flm = self.place_flm_on_north_pole(self.flm)
             # rotate by alpha, beta, gamma
             flm_rot = ssht.rotate_flms(
                 flm, alpha, beta, gamma, self.resolution)
@@ -302,10 +315,8 @@ class SiftingConvolution(object):
         elif method == 'translate':
             # adjust filename
             filename += self.filename_angle(alpha, beta)
-            # place on sphere
-            flm = self.place_on_sphere(north_pole=False)
             # translate by alpha, beta
-            flm_trans = self.translation(flm, alpha, beta)
+            flm_trans = self.translation(self.flm, alpha, beta)
             # inverse & plot
             f = ssht.inverse(flm_trans, self.resolution)
 
