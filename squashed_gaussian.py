@@ -18,7 +18,8 @@ def setup():
 
 def squashed_gaussian(sig=1):
     config = setup()
-    L, resolution = config['L'], config['resolution']
+    L = config['L']
+    resolution = L * 2 ** 3
     flm = np.zeros((resolution * resolution), dtype=complex)
 
     for ell in range(L):
@@ -29,5 +30,5 @@ def squashed_gaussian(sig=1):
 
 
 if __name__ == '__main__':
-    sc = SiftingConvolution(gaussian, setup())
+    sc = SiftingConvolution(squashed_gaussian, setup())
     sc.plot()
