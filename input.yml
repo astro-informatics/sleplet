@@ -1,0 +1,10 @@
+fig_directory: 'figures'
+L: 32
+auto_open: True
+save_fig: False
+# method: 'north'
+method: 'rotate'
+# method: 'translate'
+plotting_type: 'abs'
+# plotting_type: 'real'
+# plotting_type: 'imag'
