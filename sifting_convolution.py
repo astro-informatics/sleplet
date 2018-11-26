@@ -1,8 +1,6 @@
 import sys
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-import scipy.io as sio
 from matplotlib import cm
 import plotly.offline as py
 from plotly.graph_objs import Figure, Surface, Layout
@@ -11,7 +9,6 @@ from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
-from argparse import ArgumentParser
 
 
 class SiftingConvolution(object):
@@ -27,28 +24,13 @@ class SiftingConvolution(object):
         self.func_name = flm.func_name
         self.flm = flm()
         self.L = config_dict['L']
-        self.resolution = self.L * 2 ** 3
+        self.resolution = config_dict['resolution']
+        self.reality = config_dict['reality']
         self.plotting_type = config_dict['plotting_type']
         self.method = config_dict['method']
         self.auto_open = config_dict['auto_open']
         self.save_fig = config_dict['save_fig']
         self.fig_directory = config_dict['fig_directory']
-
-        # check if rotation or translation in which case
-        # alpha/beta are required
-        if self.method != 'north':
-            parser = ArgumentParser(description='Create SSHT plot')
-            parser.add_argument('alpha', metavar='alpha',
-                                type=float, help='alpha/phi value')
-            parser.add_argument('beta', metavar='beta',
-                                type=float, help='beta/theta value')
-            arguments = parser.parse_args()
-
-            # x_pi_fraction for filename, x for rotation/translation
-            self.alpha_pi_fraction = arguments.alpha
-            self.alpha = self.alpha_pi_fraction * np.pi
-            self.beta_pi_fraction = arguments.beta
-            self.beta = self.beta_pi_fraction * np.pi
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
@@ -96,7 +78,7 @@ class SiftingConvolution(object):
                     flm[ind] = 0
         return flm
 
-    def rotation(self, flm, gamma=0):
+    def rotation(self, flm, alpha, beta, gamma=0):
         '''
         rotates given flm on the sphere by alpha/beta
         
@@ -111,10 +93,10 @@ class SiftingConvolution(object):
         '''
 
         flm = ssht.rotate_flms(
-            flm, self.alpha, self.beta, gamma, self.resolution)
+            flm, alpha, beta, gamma, self.resolution)
         return flm
 
-    def translation(self, flm):
+    def translation(self, flm, alpha, beta):
         '''
         tranlsates given flm on the sphere by alpha/beta
 
@@ -125,8 +107,8 @@ class SiftingConvolution(object):
             array -- translated flm
         '''
 
-        pix_i = ssht.theta_to_index(self.beta, self.L)
-        pix_j = -ssht.phi_to_index(self.alpha, self.L)
+        pix_i = ssht.theta_to_index(beta, self.L)
+        pix_j = -ssht.phi_to_index(alpha, self.L)
 
         for ell in range(self.L):
             for m in range(-ell, ell + 1):
@@ -276,10 +258,10 @@ class SiftingConvolution(object):
                 pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
-        py.plot(fig, filename=os.path.join(directory,
-                                           filename + '.html'), auto_open=self.auto_open)
+        html_filename = os.path.join(directory, 'html', filename + '.html')
+        py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
-    def filename_angle(self):
+    def filename_angle(self, alpha_pi_fraction, beta_pi_fraction):
         '''
         middle part of filename
         
@@ -288,8 +270,8 @@ class SiftingConvolution(object):
         '''
 
         # get numerator/denominator for filename
-        alpha_num, alpha_den = self.alpha_pi_fraction.as_integer_ratio()
-        beta_num, beta_den = self.beta_pi_fraction.as_integer_ratio()
+        alpha_num, alpha_den = alpha_pi_fraction.as_integer_ratio()
+        beta_num, beta_den = beta_pi_fraction.as_integer_ratio()
 
         def helper(numerator, denominator):
             '''

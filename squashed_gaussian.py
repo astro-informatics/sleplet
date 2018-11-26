@@ -2,6 +2,7 @@ import sys
 import os
 import numpy as np
 import yaml
+from argparse import ArgumentParser
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 from sifting_convolution import SiftingConvolution
@@ -30,5 +31,18 @@ def squashed_gaussian(sig=1):
 
 
 if __name__ == '__main__':
-    sc = SiftingConvolution(squashed_gaussian, setup())
-    sc.plot()
+    config = setup()
+    sc = SiftingConvolution(squashed_gaussian, config)
+
+    # add from command line
+    if config['method'] != 'north':
+        parser = ArgumentParser(description='Create SSHT plot')
+        parser.add_argument('alpha', metavar='alpha',
+                            type=float, help='alpha/phi pi fraction')
+        parser.add_argument('beta', metavar='beta',
+                            type=float, help='beta/theta pi fraction')
+        args = parser.parse_args()
+        alpha_pi_fraction, beta_pi_fraction = args.alpha, args.beta
+        sc.plot(alpha_pi_fraction, beta_pi_fraction)
+    else:
+        sc.plot()
