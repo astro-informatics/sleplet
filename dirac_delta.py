@@ -20,7 +20,7 @@ def setup():
 def dirac_delta():
     config = setup()
     L = config['L']
-    resolution = L * 2 ** 3
+    resolution = config['resolution']
     flm = np.zeros((resolution * resolution), dtype=complex)
 
     for ell in range(L):

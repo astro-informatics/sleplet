@@ -325,7 +325,7 @@ class SiftingConvolution(object):
 
         alpha = alpha_pi_fraction * np.pi
         beta = beta_pi_fraction * np.pi
-        filename = self.func_name
+        filename = self.func_name + '_'
 
         # test for plotting method
         if self.method == 'north':
@@ -348,8 +348,6 @@ class SiftingConvolution(object):
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
         elif self.method == 'original':
-            # adjust filename
-            filename += '_'
             # same structure as above
             flm = self.flm
 

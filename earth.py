@@ -4,8 +4,6 @@ import numpy as np
 import yaml
 from argparse import ArgumentParser
 import scipy.io as sio
-sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
-import pyssht as ssht
 from sifting_convolution import SiftingConvolution
 
 
