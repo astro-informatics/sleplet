@@ -318,37 +318,43 @@ class SiftingConvolution(object):
             filename += '_'
         return filename
 
-    def plot(self):
+    def plot(self, alpha_pi_fraction=0, beta_pi_fraction=0):
         '''
         master plotting method
         '''
 
-        filename = self.func_name + '_' + self.method
+        alpha = alpha_pi_fraction * np.pi
+        beta = beta_pi_fraction * np.pi
+        filename = self.func_name
 
         # test for plotting method
         if self.method == 'north':
             # adjust filename
-            filename += '_'
+            filename += self.method + '_'
             # place on north pole
-            flm_north = self.place_flm_on_north_pole(self.flm)
-            # inverse & plot
-            f = ssht.inverse(flm_north, self.resolution)
+            flm = self.place_flm_on_north_pole(self.flm)
         elif self.method == 'rotate':
             # adjust filename
-            filename += self.filename_angle()
+            filename += self.method + '_'
+            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction)
             # place on north pole
             flm_north = self.place_flm_on_north_pole(self.flm)
             # rotate by alpha, beta
-            flm_rot = self.rotation(self.flm)
-            # inverse & plot
-            f = ssht.inverse(flm_rot, self.resolution)
+            flm = self.rotation(flm_north, alpha, beta)
         elif self.method == 'translate':
             # adjust filename
-            filename += self.filename_angle()
+            filename += self.method + '_'
+            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction)
             # translate by alpha, beta
-            flm_trans = self.translation(self.flm)
-            # inverse & plot
-            f = ssht.inverse(flm_trans, self.resolution)
+            flm = self.translation(self.flm, alpha, beta)
+        elif self.method == 'original':
+            # adjust filename
+            filename += '_'
+            # same structure as above
+            flm = self.flm
+
+        # inverse & plot
+        f = ssht.inverse(flm, self.resolution, Reality=self.reality)
 
         # check for plotting type
         if self.plotting_type == 'real':

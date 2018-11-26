@@ -1,8 +1,9 @@
 import sys
 import os
 import numpy as np
-import scipy.io as sio
 import yaml
+from argparse import ArgumentParser
+import scipy.io as sio
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 from sifting_convolution import SiftingConvolution
@@ -11,7 +12,7 @@ from sifting_convolution import SiftingConvolution
 def setup():
     __location__ = os.path.realpath(os.path.join(
         os.getcwd(), os.path.dirname(__file__)))
-    yaml_file = os.path.join(__location__, 'input.yml')
+    yaml_file = os.path.join(__location__, 'earth.yml')
     content = open(yaml_file)
     config_dict = yaml.load(content)
     return config_dict
@@ -23,7 +24,6 @@ def earth():
     mat_contents = sio.loadmat(matfile)
     flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
     return flm
-
 
 if __name__ == '__main__':
     sc = SiftingConvolution(earth, setup())
