@@ -7,6 +7,7 @@ from plotly.graph_objs import Figure, Surface, Layout
 from plotly.graph_objs.layout import Scene, Margin
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
+from fractions import Fraction
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
@@ -224,14 +225,17 @@ class SiftingConvolution(object):
             showgrid=False,
             zeroline=False,
             ticks='',
-            showticklabels=False
+            showticklabels=False,
+            autorange='reversed'
         )
 
         zoom = 1.4
         layout = Layout(
             scene=Scene(
+                dragmode='orbit',
                 camera=dict(
-                    eye=dict(x=1 / zoom, y=-1 / zoom, z=1 / zoom)
+                    up=dict(x=0, y=0, z=-1),
+                    eye=dict(x=-1 / zoom, y=1 / zoom, z=-1 / zoom)
                 ),
                 xaxis=XAxis(axis),
                 yaxis=YAxis(axis),
@@ -270,8 +274,10 @@ class SiftingConvolution(object):
         '''
 
         # get numerator/denominator for filename
-        alpha_num, alpha_den = alpha_pi_fraction.as_integer_ratio()
-        beta_num, beta_den = beta_pi_fraction.as_integer_ratio()
+        alpha = Fraction(alpha_pi_fraction).limit_denominator()
+        beta = Fraction(beta_pi_fraction).limit_denominator()
+        alpha_num, alpha_den = alpha.numerator, alpha.denominator
+        beta_num, beta_den = beta.numerator, beta.denominator
 
         def helper(numerator, denominator):
             '''
@@ -298,29 +304,33 @@ class SiftingConvolution(object):
 
         # if alpha = beta = 0
         if not alpha_num and not beta_num:
-            filename = '_alpha-0_beta-0_'
+            filename = 'alpha-0_beta-0_'
         # if alpha = 0
         elif not alpha_num:
-            filename = '_alpha-0_beta-'
+            filename = 'alpha-0_beta-'
             filename += helper(beta_num, beta_den)
             filename += '_'
         # if beta = 0
         elif not beta_num:
-            filename = '_alpha-'
+            filename = 'alpha-'
             filename += helper(alpha_num, alpha_den)
             filename += '_beta-0_'
         # if alpha != 0 && beta !=0
         else:
-            filename = '_alpha-'
+            filename = 'alpha-'
             filename += helper(alpha_num, alpha_den)
             filename += '_beta-'
             filename += helper(beta_num, beta_den)
             filename += '_'
         return filename
 
-    def plot(self, alpha_pi_fraction=0, beta_pi_fraction=0):
+    def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
         '''
         master plotting method
+
+        Keyword Arguments:
+            alpha_pi_fraction {float} -- fraction of pi i.e. 1.75 (default: {0.0})
+            beta_pi_fraction {float} -- fraction of pi i.e. 0.25 (default: {0.0})
         '''
 
         alpha = alpha_pi_fraction * np.pi
@@ -353,6 +363,8 @@ class SiftingConvolution(object):
 
         # inverse & plot
         f = ssht.inverse(flm, self.resolution, Reality=self.reality)
+        filename += 'L-' + str(self.L) + '_'
+        filename += 'res-' + str(self.resolution) + '_'
 
         # check for plotting type
         if self.plotting_type == 'real':
