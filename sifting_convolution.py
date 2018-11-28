@@ -27,6 +27,7 @@ class SiftingConvolution(object):
         self.L = config_dict['L']
         self.resolution = config_dict['resolution']
         self.reality = config_dict['reality']
+        self.inverted = config_dict['inverted']
         self.plotting_type = config_dict['plotting_type']
         self.method = config_dict['method']
         self.auto_open = config_dict['auto_open']
@@ -225,18 +226,23 @@ class SiftingConvolution(object):
             showgrid=False,
             zeroline=False,
             ticks='',
-            showticklabels=False,
-            autorange='reversed'
+            showticklabels=False
         )
 
         zoom = 1.4
+        camera = dict(
+            up=dict(x=0, y=0, z=1),
+            eye=dict(x=-1 / zoom, y=1 / zoom, z=-1 / zoom)
+        )
+
+        if self.inverted:
+            axis['autorange'] = 'reversed'
+            camera['up']['z'] = -1
+
         layout = Layout(
             scene=Scene(
                 dragmode='orbit',
-                camera=dict(
-                    up=dict(x=0, y=0, z=-1),
-                    eye=dict(x=-1 / zoom, y=1 / zoom, z=-1 / zoom)
-                ),
+                camera=camera,
                 xaxis=XAxis(axis),
                 yaxis=YAxis(axis),
                 zaxis=ZAxis(axis)
