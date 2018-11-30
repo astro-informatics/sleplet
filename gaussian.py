@@ -16,8 +16,8 @@ def setup():
     config_dict = yaml.load(content)
 
     parser = ArgumentParser(description='Create SSHT plot')
-    parser.add_argument('method', metavar='method', type=str, default='original', help='plotting method i.e. north')
-    parser.add_argument('type', metavar='type', type=str, default='abs', help='plotting method i.e. real')
+    parser.add_argument('method', metavar='method', type=str, nargs='?', default='north', const='north', choices=['north', 'rotate', 'translate'], help='plotting method i.e. north', )
+    parser.add_argument('type', metavar='type', type=str, nargs='?', default='abs', const='north', choices=['abs', 'real', 'imag'], help='plotting method i.e. real')
     parser.add_argument('--alpha', '-a', metavar='alpha', type=float,
                         default=0.0, help='alpha/phi pi fraction')
     parser.add_argument('--beta', '-b', metavar='beta', type=float,
@@ -28,16 +28,15 @@ def setup():
 
 
 def gaussian(sig=1):
-    config = setup()
+    config, _ = setup()
     L = config['L']
     resolution = config['resolution']
     flm = np.zeros((resolution * resolution), dtype=complex)
 
     for ell in range(L):
         ind = ssht.elm2ind(ell, m=0)
-        flm[ind] = np.exp(-ell * (ell + 1)) / (2 * sig * sig)
+        flm[ind] = np.exp(-ell * (ell + 1) / (2 * sig * sig))
     return flm
-
 
 if __name__ == '__main__':
     config, args = setup()

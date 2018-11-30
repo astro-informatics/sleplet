@@ -2,7 +2,6 @@ import sys
 import os
 import numpy as np
 import yaml
-from argparse import ArgumentParser
 import scipy.io as sio
 from sifting_convolution import SiftingConvolution
 

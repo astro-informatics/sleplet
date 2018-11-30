@@ -25,7 +25,7 @@ class SiftingConvolution(object):
         self.func_name = flm.func_name
         self.flm = flm()
         self.L = config_dict['L']
-        self.resolution = config_dict['resolution']
+        self.res = config_dict['resolution']
         self.reality = config_dict['reality']
         self.inverted = config_dict['inverted']
         self.plotting_type = config_dict['plotting_type']
@@ -95,7 +95,7 @@ class SiftingConvolution(object):
         '''
 
         flm = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.resolution)
+            flm, alpha, beta, gamma, self.res)
         return flm
 
     def translation(self, flm, alpha, beta):
@@ -144,9 +144,6 @@ class SiftingConvolution(object):
             tuple -- values for the plotting
         '''
 
-        # add ability to choose color bar min max
-        # and sort out shapes of the plots
-
         if method == 'MW_pole':
             if len(f) == 2:
                 f, f_sp = f
@@ -154,7 +151,7 @@ class SiftingConvolution(object):
                 f, f_sp, phi_sp = f
 
         (thetas, phis) = ssht.sample_positions(
-            self.resolution, Method=method, Grid=True)
+            self.res, Method=method, Grid=True)
 
         if (thetas.size != f.size):
             raise Exception('Band limit L deos not match that of f')
@@ -182,7 +179,7 @@ class SiftingConvolution(object):
         # % Close plot.
         if close:
             (n_theta, n_phi) = ssht.sample_shape(
-                self.resolution, Method=method)
+                self.res, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
@@ -210,6 +207,23 @@ class SiftingConvolution(object):
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
+        zoom = 1.4
+        camera = dict(
+            up=dict(x=0, y=0, z=1),
+            eye=dict(x=1 / zoom, y=-1 / zoom, z=1 / zoom)
+        )
+
+        # some flm are inverted i.e. topography map of the Earth
+        if self.inverted:
+            # invert axis
+            x *= -1
+            y *= -1
+            z *= -1
+            # invert camera view
+            camera['up']['z'] = -1
+            for coord in camera['eye']:
+                camera['eye'][coord] *= -1
+
         data = [
             Surface(
                 x=x,
@@ -228,16 +242,6 @@ class SiftingConvolution(object):
             ticks='',
             showticklabels=False
         )
-
-        zoom = 1.4
-        camera = dict(
-            up=dict(x=0, y=0, z=1),
-            eye=dict(x=-1 / zoom, y=1 / zoom, z=-1 / zoom)
-        )
-
-        if self.inverted:
-            axis['autorange'] = 'reversed'
-            camera['up']['z'] = -1
 
         layout = Layout(
             scene=Scene(
@@ -258,14 +262,12 @@ class SiftingConvolution(object):
         fig = Figure(data=data, layout=layout)
         directory = os.path.join(os.pardir, os.pardir, self.fig_directory)
 
-        # if save_fig then print as png and pdf in respective directories
+        # if save_fig is true then print as png and pdf in their directories
         if self.save_fig:
             png_filename = os.path.join(directory, 'png', filename + '.png')
-            if not os.path.isfile(png_filename):
-                pio.write_image(fig, png_filename)
+            pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(directory, 'pdf', filename + '.pdf')
-            if not os.path.isfile(pdf_filename):
-                pio.write_image(fig, pdf_filename)
+            pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
         html_filename = os.path.join(directory, 'html', filename + '.html')
@@ -368,9 +370,9 @@ class SiftingConvolution(object):
             flm = self.flm
 
         # inverse & plot
-        f = ssht.inverse(flm, self.resolution, Reality=self.reality)
+        f = ssht.inverse(flm, self.res, Reality=self.reality)
         filename += 'L-' + str(self.L) + '_'
-        filename += 'res-' + str(self.resolution) + '_'
+        filename += 'res-' + str(self.res) + '_'
 
         # check for plotting type
         if self.plotting_type == 'real':
