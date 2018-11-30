@@ -35,9 +35,14 @@ def dirac_delta():
 
     # impose reality on flms
     for ell in range(L):
-        for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
-            flm[ind] = 1
+        m = 0
+        ind = ssht.elm2ind(ell, m)
+        flm[ind] = 1
+        for m in range(1, ell + 1):
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            flm[ind_pm] = 1
+            flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
     return flm
 
 if __name__ == '__main__':

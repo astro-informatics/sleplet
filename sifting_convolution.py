@@ -109,17 +109,41 @@ class SiftingConvolution(object):
             array -- translated flm
         '''
 
+        # compute pixels of \omega'
         pix_i = ssht.theta_to_index(beta, self.L)
-        pix_j = -ssht.phi_to_index(alpha, self.L)
+        pix_j = ssht.phi_to_index(alpha, self.L)
+
+        def helper(ind):
+            '''
+            computes the value of the spherical harmonic at omega'
+
+            Arguments:
+                flm {array} -- harmonic representation of function
+                ind {int} -- index of l & m
+
+            Returns:
+                float -- Y_{\ell m}(\omega')
+            '''
+
+            ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
+            ylm_harmonic[ind] = 1
+            ylm_pixel = ssht.inverse(ylm_harmonic, self.L)
+            ylm_omega = ylm_pixel[pix_i, pix_j]
+            if self.func_name == 'dirac_delta':
+                return np.conj(ylm_omega)
+            else:
+                return ylm_omega
 
         for ell in range(self.L):
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                ylm_harm = np.zeros((self.L * self.L), dtype=complex)
-                ylm_harm[ind] = 1
-                ylm_real = ssht.inverse(ylm_harm, self.L)
-                flm[ind] *= ylm_real[pix_i, pix_j]
-
+                if self.func_name == 'dirac_delta':
+                    flm[ind] = helper(ind)
+                else:
+                    if m == 0:
+                        flm[ind] *= helper(ind)
+                    else:
+                        flm[ind] = helper(ind)
         return flm
 
     def setup_plot(self, f, method='MW', close=True, parametric=False,
