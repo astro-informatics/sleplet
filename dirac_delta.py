@@ -56,7 +56,6 @@ if __name__ == '__main__':
     sc = SiftingConvolution(dirac_delta, config)
 
     if config['method'] != 'north':
-        alpha_pi_fraction, beta_pi_fraction = args.alpha, args.beta
-        sc.plot(alpha_pi_fraction, beta_pi_fraction)
+        sc.plot(args.alpha, args.beta)
     else:
         sc.plot()

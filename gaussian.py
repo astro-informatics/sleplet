@@ -16,27 +16,32 @@ def setup():
     config_dict = yaml.load(content)
 
     parser = ArgumentParser(description='Create SSHT plot')
-    parser.add_argument('method', metavar='method', type=str, nargs='?', default='north', const='north', choices=['north', 'rotate', 'translate'], help='plotting method i.e. north', )
-    parser.add_argument('type', metavar='type', type=str, nargs='?', default='abs', const='north', choices=['abs', 'real', 'imag'], help='plotting method i.e. real')
+    parser.add_argument('method', metavar='method', type=str, nargs='?', default='north', const='north', choices=[
+                        'north', 'rotate', 'translate'], help='plotting method i.e. north')
+    parser.add_argument('type', metavar='type', type=str, nargs='?', default='abs',
+                        const='north', choices=['abs', 'real', 'imag'], help='plotting method i.e. real')
     parser.add_argument('--alpha', '-a', metavar='alpha', type=float,
                         default=0.0, help='alpha/phi pi fraction')
     parser.add_argument('--beta', '-b', metavar='beta', type=float,
                         default=0.0, help='beta/theta pi fraction')
+    parser.add_argument('--sigma', '-s', metavar='sigma', type=int,
+                        default=1, help='standard deviation')
     args = parser.parse_args()
 
     return config_dict, args
 
 
-def gaussian(sig=1):
-    config, _ = setup()
+def gaussian():
+    config, args = setup()
     L = config['L']
     resolution = config['resolution']
     flm = np.zeros((resolution * resolution), dtype=complex)
 
     for ell in range(L):
         ind = ssht.elm2ind(ell, m=0)
-        flm[ind] = np.exp(-ell * (ell + 1) / (2 * sig * sig))
+        flm[ind] = np.exp(-ell * (ell + 1) / (2 * args.sigma * args.sigma))
     return flm
+
 
 if __name__ == '__main__':
     config, args = setup()
@@ -46,10 +51,10 @@ if __name__ == '__main__':
     if 'plotting_type' not in config:
         config['plotting_type'] = args.type
 
-    sc = SiftingConvolution(gaussian, config)
+    extra_filename = 'sig-' + str(args.sigma) + '_'
+    sc = SiftingConvolution(gaussian, config, extra_filename)
 
     if config['method'] != 'north':
-        alpha_pi_fraction, beta_pi_fraction = args.alpha, args.beta
-        sc.plot(alpha_pi_fraction, beta_pi_fraction)
+        sc.plot(args.alpha, args.beta)
     else:
         sc.plot()

@@ -13,7 +13,7 @@ import pyssht as ssht
 
 
 class SiftingConvolution(object):
-    def __init__(self, flm, config_dict):
+    def __init__(self, flm, config_dict, extra_filename=None):
         '''
         initialise class
         
@@ -26,6 +26,7 @@ class SiftingConvolution(object):
         self.flm = flm()
         self.L = config_dict['L']
         self.res = config_dict['resolution']
+        self.gamma_pi_fraction = config_dict['gamma_pi_fraction']
         self.reality = config_dict['reality']
         self.inverted = config_dict['inverted']
         self.plotting_type = config_dict['plotting_type']
@@ -33,6 +34,7 @@ class SiftingConvolution(object):
         self.auto_open = config_dict['auto_open']
         self.save_fig = config_dict['save_fig']
         self.fig_directory = config_dict['fig_directory']
+        self.extra_filename = extra_filename
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
@@ -80,15 +82,12 @@ class SiftingConvolution(object):
                     flm[ind] = 0
         return flm
 
-    def rotation(self, flm, alpha, beta, gamma=0):
+    def rotation(self, flm, alpha, beta, gamma):
         '''
-        rotates given flm on the sphere by alpha/beta
+        rotates given flm on the sphere by alpha/beta/gamma
         
         Arguments:
             flm {array} -- harmonic representation of function
-        
-        Keyword Arguments:
-            gamma {int} -- third Euler angle, not used in translation (default: {0})
         
         Returns:
             array -- rotated flm
@@ -297,7 +296,7 @@ class SiftingConvolution(object):
         html_filename = os.path.join(directory, 'html', filename + '.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
-    def filename_angle(self, alpha_pi_fraction, beta_pi_fraction):
+    def filename_angle(self, alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction):
         '''
         middle part of filename
         
@@ -308,8 +307,10 @@ class SiftingConvolution(object):
         # get numerator/denominator for filename
         alpha = Fraction(alpha_pi_fraction).limit_denominator()
         beta = Fraction(beta_pi_fraction).limit_denominator()
+        gamma = Fraction(gamma_pi_fraction).limit_denominator()
         alpha_num, alpha_den = alpha.numerator, alpha.denominator
         beta_num, beta_den = beta.numerator, beta.denominator
+        gamma_num, gamma_den = gamma.numerator, gamma.denominator
 
         def helper(numerator, denominator):
             '''
@@ -354,6 +355,12 @@ class SiftingConvolution(object):
             filename += '_beta-'
             filename += helper(beta_num, beta_den)
             filename += '_'
+
+        # if rotation with gamma != 0
+        if gamma_num:
+            filename += 'gamma-'
+            filename += helper(gamma_num, gamma_den)
+            filename += '_'
         return filename
 
     def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
@@ -367,31 +374,38 @@ class SiftingConvolution(object):
 
         alpha = alpha_pi_fraction * np.pi
         beta = beta_pi_fraction * np.pi
+        gamma = self.gamma_pi_fraction * np.pi
         filename = self.func_name + '_'
+        if self.extra_filename:
+            filename += self.extra_filename
 
         # test for plotting method
         if self.method == 'north':
-            # adjust filename
-            filename += self.method + '_'
-            # place on north pole
-            flm = self.place_flm_on_north_pole(self.flm)
+            # Dirac delta not defined on sphere
+            if self.func_name == 'dirac_delta':
+                flm = self.place_flm_on_north_pole(self.flm)
+                # adjust filename
+                filename += self.method + '_'
+            else:
+                flm = self.flm
         elif self.method == 'rotate':
             # adjust filename
             filename += self.method + '_'
-            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction)
-            # place on north pole
-            flm_north = self.place_flm_on_north_pole(self.flm)
+            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction, self.gamma_pi_fraction)
+            # Dirac delta not defined on sphere
+            if self.func_name == 'dirac_delta':
+                flm = self.place_flm_on_north_pole(self.flm)
+            else:
+                flm = self.flm
             # rotate by alpha, beta
-            flm = self.rotation(flm_north, alpha, beta)
+            flm = self.rotation(flm, alpha, beta, gamma)
         elif self.method == 'translate':
             # adjust filename
             filename += self.method + '_'
-            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction)
+            # don't add gamma if translation
+            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction=0.0)
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
-        elif self.method == 'original':
-            # same structure as above
-            flm = self.flm
 
         # inverse & plot
         f = ssht.inverse(flm, self.res, Reality=self.reality)
