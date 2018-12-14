@@ -19,7 +19,7 @@ def setup():
     parser.add_argument('method', metavar='method', type=str, nargs='?', default='north', const='north', choices=[
                         'north', 'rotate_north', 'rotate', 'translate', 'original'], help='plotting method i.e. north', )
     parser.add_argument('type', metavar='type', type=str, nargs='?', default='abs',
-                        const='north', choices=['abs', 'real', 'imag'], help='plotting method i.e. real')
+                        const='north', choices=['abs', 'real', 'imag', 'sum'], help='plotting method i.e. real')
     parser.add_argument('--alpha', '-a', metavar='alpha', type=float,
                         default=0.0, help='alpha/phi pi fraction')
     parser.add_argument('--beta', '-b', metavar='beta', type=float,
@@ -53,7 +53,8 @@ if __name__ == '__main__':
     extra_filename = 'l' + str(args.l) + '_m' + str(args.m) + '_'
     sc = SiftingConvolution(spherical_harmonic, config, extra_filename)
 
+    reality = False
     if config['method'] != 'north':
-        sc.plot(args.alpha, args.beta)
+        sc.plot(reality, args.alpha, args.beta)
     else:
-        sc.plot()
+        sc.plot(reality)

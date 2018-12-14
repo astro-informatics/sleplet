@@ -5,4 +5,4 @@ gamma_pi_fraction: 0
 reality: True
 inverted: False
 auto_open: True
-save_fig: False
+save_fig: True

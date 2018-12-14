@@ -27,7 +27,6 @@ class SiftingConvolution(object):
         self.L = config_dict['L']
         self.res = config_dict['resolution']
         self.gamma_pi_fraction = config_dict['gamma_pi_fraction']
-        self.reality = config_dict['reality']
         self.inverted = config_dict['inverted']
         self.plotting_type = config_dict['plotting_type']
         self.method = config_dict['method']
@@ -363,7 +362,7 @@ class SiftingConvolution(object):
             filename += '_'
         return filename
 
-    def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
+    def plot(self, reality, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
         '''
         master plotting method
 
@@ -408,7 +407,7 @@ class SiftingConvolution(object):
             flm = self.translation(self.flm, alpha, beta)
 
         # inverse & plot
-        f = ssht.inverse(flm, self.res, Reality=self.reality)
+        f = ssht.inverse(flm, self.res, Reality=reality)
         filename += 'L-' + str(self.L) + '_'
         filename += 'res-' + str(self.res) + '_'
 
@@ -419,6 +418,8 @@ class SiftingConvolution(object):
             plot = f.imag
         elif self.plotting_type == 'abs':
             plot = abs(f)
+        elif self.plotting_type == 'sum':
+            plot = f.real + f.imag
 
         # do plot
         filename += self.plotting_type

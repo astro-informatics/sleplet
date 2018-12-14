@@ -24,4 +24,4 @@ def earth():
 
 if __name__ == '__main__':
     sc = SiftingConvolution(earth, setup())
-    sc.plot()
+    sc.plot(reality=True)
