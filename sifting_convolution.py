@@ -16,7 +16,7 @@ class SiftingConvolution(object):
     def __init__(self, flm, config_dict, extra_filename=None):
         '''
         initialise class
-        
+
         Arguments:
             flm {array} -- harmonic representation of function
             config_dict {dictionary} -- config options for class
@@ -64,10 +64,10 @@ class SiftingConvolution(object):
     def place_flm_on_north_pole(self, flm):
         '''
         place given flm on the north pole of the sphere
-        
+
         Arguments:
             flm {array} -- harmonic representation of function
-        
+
         Returns:
             array -- flm on the north pole
         '''
@@ -84,10 +84,10 @@ class SiftingConvolution(object):
     def rotation(self, flm, alpha, beta, gamma):
         '''
         rotates given flm on the sphere by alpha/beta/gamma
-        
+
         Arguments:
             flm {array} -- harmonic representation of function
-        
+
         Returns:
             array -- rotated flm
         '''
@@ -298,7 +298,7 @@ class SiftingConvolution(object):
     def filename_angle(self, alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction):
         '''
         middle part of filename
-        
+
         Returns:
             str -- filename
         '''
@@ -314,11 +314,11 @@ class SiftingConvolution(object):
         def helper(numerator, denominator):
             '''
             create filename for alpha/beta as multiple of pi
-            
+
             Arguments:
                 numerator {int} -- alpha/beta numerator
                 denominator {int} -- alpha/beta denominator
-            
+
             Returns:
                 str -- middle of filename
             '''
@@ -362,7 +362,7 @@ class SiftingConvolution(object):
             filename += '_'
         return filename
 
-    def plot(self, reality, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
+    def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0, reality=False):
         '''
         master plotting method
 
@@ -390,7 +390,8 @@ class SiftingConvolution(object):
         elif self.method == 'rotate':
             # adjust filename
             filename += self.method + '_'
-            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction, self.gamma_pi_fraction)
+            filename += self.filename_angle(alpha_pi_fraction,
+                                            beta_pi_fraction, self.gamma_pi_fraction)
             # Dirac delta not defined on sphere
             if self.func_name == 'dirac_delta':
                 flm = self.place_flm_on_north_pole(self.flm)
@@ -402,7 +403,8 @@ class SiftingConvolution(object):
             # adjust filename
             filename += self.method + '_'
             # don't add gamma if translation
-            filename += self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction=0.0)
+            filename += self.filename_angle(alpha_pi_fraction,
+                                            beta_pi_fraction, gamma_pi_fraction=0.0)
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
 

@@ -54,9 +54,4 @@ if __name__ == '__main__':
         config['plotting_type'] = args.type
 
     sc = SiftingConvolution(dirac_delta, config)
-
-    # reality = False
-    if config['method'] != 'north':
-        sc.plot(reality=False, args.alpha, args.beta)
-    else:
-        sc.plot(reality=False)
+    sc.plot(args.alpha, args.beta, reality=True)

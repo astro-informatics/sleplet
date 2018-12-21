@@ -52,9 +52,4 @@ if __name__ == '__main__':
 
     extra_filename = 'l' + str(args.l) + '_m' + str(args.m) + '_'
     sc = SiftingConvolution(spherical_harmonic, config, extra_filename)
-
-    reality = False
-    if config['method'] != 'north':
-        sc.plot(reality, args.alpha, args.beta)
-    else:
-        sc.plot(reality)
+    sc.plot(args.alpha, args.beta, reality=False)

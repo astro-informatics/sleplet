@@ -53,9 +53,4 @@ if __name__ == '__main__':
 
     extra_filename = 'sig-' + str(args.sigma) + '_'
     sc = SiftingConvolution(gaussian, config, extra_filename)
-
-    reality = True
-    if config['method'] != 'north':
-        sc.plot(reality, args.alpha, args.beta)
-    else:
-        sc.plot(reality)
+    sc.plot(args.alpha, args.beta, reality=True)
