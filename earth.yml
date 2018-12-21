@@ -5,6 +5,6 @@ gamma_pi_fraction: 0
 reality: True
 inverted: True
 auto_open: True
-save_fig: True
+save_fig: False
 method: 'north'
 plotting_type: 'real'
