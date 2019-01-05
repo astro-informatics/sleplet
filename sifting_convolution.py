@@ -12,7 +12,7 @@ sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
 
-class SiftingConvolution(object):
+class SiftingConvolution:
     def __init__(self, flm, config_dict, extra_filename=None):
         '''
         initialise class
@@ -22,7 +22,7 @@ class SiftingConvolution(object):
             config_dict {dictionary} -- config options for class
         '''
 
-        self.func_name = flm.func_name
+        self.func_name = flm.__name__
         self.flm = flm()
         self.L = config_dict['L']
         self.res = config_dict['resolution']
@@ -52,11 +52,11 @@ class SiftingConvolution(object):
 
         cmap = cm.get_cmap(colour)
 
-        h = 1.0 / (pl_entries - 1)
+        h = 1 / (pl_entries - 1)
         pl_colorscale = []
 
         for k in range(pl_entries):
-            C = map(np.uint8, np.array(cmap(k * h)[:3]) * 255)
+            C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
             pl_colorscale.append([k * h, 'rgb' + str((C[0], C[1], C[2]))])
 
         return pl_colorscale
