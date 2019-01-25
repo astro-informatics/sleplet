@@ -24,22 +24,29 @@ def setup():
                         default=0.0, help='alpha/phi pi fraction')
     parser.add_argument('--beta', '-b', metavar='beta', type=float,
                         default=0.0, help='beta/theta pi fraction')
-    parser.add_argument('--sigma', '-s', metavar='sigma', type=int,
-                        default=1, help='standard deviation')
     args = parser.parse_args()
 
     return config_dict, args
+
+
+def grid_fun(x, x0=0, x_sig=1):
+    return np.exp(-0.5 * ((x - x0) / x_sig) ** 2)
 
 
 def gaussian():
     config, args = setup()
     L = config['L']
     resolution = config['resolution']
-    flm = np.zeros((resolution * resolution), dtype=complex)
 
+    # thetas, _ = ssht.sample_positions(resolution, Grid=True)
+    # f = grid_fun(thetas)
+    # flm = ssht.forward(f, resolution, Reality=True)
+
+    flm = np.zeros((resolution * resolution), dtype=complex)
     for ell in range(L):
         ind = ssht.elm2ind(ell, m=0)
-        flm[ind] = np.exp(-ell * (ell + 1) / (2 * args.sigma * args.sigma))
+        # Gaussian with sigma=1
+        flm[ind] = np.exp(-ell * (ell + 1) / 2)
     return flm
 
 
@@ -51,6 +58,5 @@ if __name__ == '__main__':
     if 'plotting_type' not in config:
         config['plotting_type'] = args.type
 
-    extra_filename = 'sig-' + str(args.sigma) + '_'
-    sc = SiftingConvolution(gaussian, config, extra_filename)
+    sc = SiftingConvolution(gaussian, config)
     sc.plot(args.alpha, args.beta, reality=True)
