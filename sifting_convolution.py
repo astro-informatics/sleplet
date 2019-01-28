@@ -96,6 +96,55 @@ class SiftingConvolution:
             flm, alpha, beta, gamma, self.res)
         return flm
 
+    def dirac_delta_translation(self, flm, alpha, beta):
+        '''
+        tranlsates the dirac delta on the sphere by alpha/beta
+
+        Arguments:
+            flm {array} -- harmonic representation of function
+
+        Returns:
+            array -- translated flm
+        '''
+
+        # create Dirac delta unless already created
+        if self.func_name != 'dirac_delta':
+            flm = np.zeros((self.res * self.res), dtype=complex)
+            # impose reality on flms
+            for ell in range(self.L):
+                m = 0
+                ind = ssht.elm2ind(ell, m)
+                flm[ind] = 1
+                for m in range(1, ell + 1):
+                    ind_pm = ssht.elm2ind(ell, m)
+                    ind_nm = ssht.elm2ind(ell, -m)
+                    flm[ind_pm] = 1
+                    flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
+
+        # compute pixels of \omega'
+        pix_i = ssht.theta_to_index(beta, self.L)
+        pix_j = ssht.phi_to_index(alpha, self.L)
+
+        # loop through l, m
+        for ell in range(self.L):
+            for m in range(-ell, ell + 1):
+                ind = ssht.elm2ind(ell, m)
+                # create Ylm corresponding to index
+                ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
+                ylm_harmonic[ind] = 1
+                # convert Ylm from pixel to harmonic space
+                ylm_pixel = ssht.inverse(ylm_harmonic, self.L)
+                # get value at pixel (i, j)
+                ylm_omega = ylm_pixel[pix_i, pix_j]
+                # conjugate of pixel value
+                flm[ind] = np.conj(ylm_omega)
+
+        return flm
+
+    @staticmethod
+    def convolution(flm, glm):
+        return flm * np.conj(glm)
+
     def translation(self, flm, alpha, beta):
         '''
         tranlsates given flm on the sphere by alpha/beta
@@ -107,41 +156,14 @@ class SiftingConvolution:
             array -- translated flm
         '''
 
-        # compute pixels of \omega'
-        pix_i = ssht.theta_to_index(beta, self.L)
-        pix_j = ssht.phi_to_index(alpha, self.L)
+        glm = self.dirac_delta_translation(flm, alpha, beta)
 
-        def helper(ind):
-            '''
-            computes the value of the spherical harmonic at omega'
+        if self.func_name == 'dirac_delta':
+            flm = glm
+        else:
+            # sifting convolution
+            flm = self.convolution(flm, glm)
 
-            Arguments:
-                flm {array} -- harmonic representation of function
-                ind {int} -- index of l & m
-
-            Returns:
-                float -- Y_{\ell m}(\omega')
-            '''
-
-            ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
-            ylm_harmonic[ind] = 1
-            ylm_pixel = ssht.inverse(ylm_harmonic, self.L)
-            ylm_omega = ylm_pixel[pix_i, pix_j]
-            if self.func_name == 'dirac_delta':
-                return np.conj(ylm_omega)
-            else:
-                return ylm_omega
-
-        for ell in range(self.L):
-            for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                if self.func_name == 'dirac_delta':
-                    flm[ind] = helper(ind)
-                else:
-                    if m == 0:
-                        flm[ind] *= helper(ind)
-                    else:
-                        flm[ind] = helper(ind)
         return flm
 
     def setup_plot(self, f, method='MW', close=True, parametric=False,
@@ -232,7 +254,7 @@ class SiftingConvolution:
         zoom = 1.4
         camera = dict(
             up=dict(x=0, y=0, z=1),
-            eye=dict(x=1 / zoom, y=-1 / zoom, z=1 / zoom)
+            eye=dict(x=-1 / zoom, y=1 / zoom, z=1 / zoom)
         )
 
         # some flm are inverted i.e. topography map of the Earth
@@ -252,7 +274,7 @@ class SiftingConvolution:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self.matplotlib_to_plotly('viridis'),
+                colorscale=self.matplotlib_to_plotly('magma'),
                 cmin=vmin,
                 cmax=vmax
             )]
