@@ -29,15 +29,15 @@ def setup():
     return config_dict, args
 
 
-def grid_fun(x, y, x0=0, y0=0, x_sig=1, y_sig=1):
-    return np.exp(-(0.5 * ((x - x0) / x_sig) ** 2 + 0.5 * ((y - y0) / y_sig) ** 2))
+def grid_fun(theta, phi, theta_0=0, phi_0=0, theta_sig=1, phi_sig=1):
+    return np.exp(-(0.5 * ((theta - theta_0) / theta_sig) ** 2 + 0.5 * ((phi - phi_0) / phi_sig) ** 2))
 
 
 def elongated_gaussian():
     config, args = setup()
     L = config['L']
     resolution = config['resolution']
-``
+
     thetas, phis = ssht.sample_positions(resolution, Grid=True)
     f = grid_fun(thetas, phis)
     flm = ssht.forward(f, resolution, Reality=True)

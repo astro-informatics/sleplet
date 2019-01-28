@@ -29,8 +29,8 @@ def setup():
     return config_dict, args
 
 
-def grid_fun(x, x0=0, x_sig=1):
-    return np.exp(-0.5 * ((x - x0) / x_sig) ** 2)
+def grid_fun(theta, theta_0=0, theta_sig=1):
+    return np.exp(-0.5 * ((theta - theta_0) / theta_sig) ** 2)
 
 
 def gaussian():
