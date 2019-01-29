@@ -18,7 +18,7 @@ def setup():
     parser = ArgumentParser(description='Create SSHT plot')
     parser.add_argument('method', metavar='method', type=str, nargs='?', default='north', const='north', choices=[
                         'north', 'rotate_north', 'rotate', 'translate', 'original'], help='plotting method i.e. north')
-    parser.add_argument('type', metavar='type', type=str, nargs='?', default='abs', const='north', choices=[
+    parser.add_argument('type', metavar='type', type=str, nargs='?', default='real', const='real', choices=[
                         'abs', 'real', 'imag', 'sum'], help='plotting method i.e. real')
     parser.add_argument('--alpha', '-a', metavar='alpha', type=float,
                         default=0.0, help='alpha/phi pi fraction')
