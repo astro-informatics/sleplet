@@ -2,7 +2,6 @@ fig_directory: 'figures'
 L: 256
 resolution: 256
 gamma_pi_fraction: 0
-reality: True
 inverted: True
 auto_open: True
 save_fig: False
