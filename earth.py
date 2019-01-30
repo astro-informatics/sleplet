@@ -1,9 +1,10 @@
+from sifting_convolution import SiftingConvolution
+import pyssht as ssht
 import sys
 import os
 import numpy as np
 import yaml
 import scipy.io as sio
-from sifting_convolution import SiftingConvolution
 
 
 def setup():
