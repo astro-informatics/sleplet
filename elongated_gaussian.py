@@ -7,6 +7,12 @@ import numpy as np
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 
 
+def extra_setup():
+    config, parser = setup()
+    args = parser.parse_args()
+    return config, args
+
+
 def grid_fun(theta, phi, theta_0=0, phi_0=0, theta_sig=1, phi_sig=1):
     return np.exp(-(0.5 * ((theta - theta_0) / theta_sig) ** 2 + 0.5 * ((phi - phi_0) / phi_sig) ** 2))
 
@@ -24,8 +30,7 @@ def elongated_gaussian():
 
 
 if __name__ == '__main__':
-    config, parser = setup()
-    args = parser.parse_args()
+    config, args = extra_setup()
 
     if 'method' not in config:
         config['method'] = args.method

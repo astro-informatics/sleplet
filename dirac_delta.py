@@ -7,6 +7,12 @@ import numpy as np
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 
 
+def extra_setup():
+    config, parser = setup()
+    args = parser.parse_args()
+    return config, args
+
+
 def dirac_delta():
     config, _ = setup()
     L = config['L']
@@ -27,8 +33,7 @@ def dirac_delta():
     return flm
 
 if __name__ == '__main__':
-    config, parser = setup()
-    args = parser.parse_args()
+    config, args = extra_setup()
 
     if 'method' not in config:
         config['method'] = args.method
