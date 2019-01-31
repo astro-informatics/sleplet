@@ -13,11 +13,11 @@ def extra_setup():
     return config, args
 
 
-def grid_fun(theta, theta_0=0, theta_sig=1):
+def grid_fun(theta, theta_0=0, theta_sig=0.1):
     return np.exp(-0.5 * ((theta - theta_0) / theta_sig) ** 2)
 
 
-def gaussian():
+def gaussian(sig=10):
     config, _ = setup()
     L = config['L']
     resolution = config['resolution']
@@ -29,8 +29,7 @@ def gaussian():
     flm = np.zeros((resolution * resolution), dtype=complex)
     for ell in range(L):
         ind = ssht.elm2ind(ell, m=0)
-        # Gaussian with sigma=1
-        flm[ind] = np.exp(-ell * (ell + 1) / 2)
+        flm[ind] = np.exp(-ell * (ell + 1) / (2 * sig * sig))
 
     return flm
 

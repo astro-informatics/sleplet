@@ -13,7 +13,7 @@ def extra_setup():
     return config, args
 
 
-def grid_fun(theta, phi, theta_0=0, theta_sig=1):
+def grid_fun(theta, phi, theta_0=0, theta_sig=0.1):
     return np.exp(-0.5 * ((theta - theta_0) / theta_sig) ** 2) * np.sin(phi)
 
 
