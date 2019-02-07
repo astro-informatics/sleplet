@@ -13,7 +13,7 @@ import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, flm, config_dict, extra_filename=None):
+    def __init__(self, flm, flm_config, conv_fun=None):
         '''
         initialise class
 
@@ -22,19 +22,31 @@ class SiftingConvolution:
             config_dict {dictionary} -- config options for class
         '''
 
-        self.func_name = flm.__name__
-        self.flm = flm()
-        self.L = config_dict['L']
-        self.res = config_dict['resolution']
-        self.gamma_pi_fraction = config_dict['gamma_pi_fraction']
-        self.colour = config_dict['colour']
-        self.inverted = config_dict['inverted']
-        self.plotting_type = config_dict['plotting_type']
-        self.method = config_dict['method']
-        self.auto_open = config_dict['auto_open']
-        self.save_fig = config_dict['save_fig']
-        self.fig_directory = config_dict['fig_directory']
-        self.extra_filename = extra_filename
+        self.flm = flm
+        self.fig_directory = 'figures'
+        self.conv_fun = conv_fun
+        self.f_name = flm_config['func_name']
+        self.L = flm_config['L']
+        self.res = flm_config['resolution']
+        self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
+        self.auto_open = flm_config['auto_open']
+        self.save_fig = flm_config['save_fig']
+
+        # if convolving with some glm
+        if self.conv_fun is not None:
+            self.glm, glm_config = self.conv_fun()
+            self.g_name = glm_config['func_name']
+            self.colour = glm_config['colour']
+            self.reality = glm_config['reality']
+            self.inverted = glm_config['inverted']
+            self.plotting_type = glm_config['plotting_type']
+            self.method = glm_config['method']
+        else:
+            self.colour = flm_config['colour']
+            self.reality = flm_config['reality']
+            self.inverted = flm_config['inverted']
+            self.plotting_type = flm_config['plotting_type']
+            self.method = flm_config['method']
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
@@ -109,7 +121,7 @@ class SiftingConvolution:
         '''
 
         # create Dirac delta unless already created
-        if self.func_name != 'dirac_delta':
+        if self.f_name != 'dirac_delta':
             flm = np.zeros((self.res * self.res), dtype=complex)
             # impose reality on flms
             for ell in range(self.L):
@@ -159,7 +171,7 @@ class SiftingConvolution:
 
         glm = self.dirac_delta_translation(flm, alpha, beta)
 
-        if self.func_name == 'dirac_delta':
+        if self.f_name == 'dirac_delta':
             flm = glm
         else:
             # sifting convolution
@@ -385,26 +397,24 @@ class SiftingConvolution:
             filename += '_'
         return filename
 
-    def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0, reality=False):
+    def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
         '''
         master plotting method
 
         Keyword Arguments:
-            alpha_pi_fraction {float} -- fraction of pi i.e. 1.75 (default: {0.0})
+            alpha_pi_fraction {float} -- fraction of pi i.e. 0.75 (default: {0.0})
             beta_pi_fraction {float} -- fraction of pi i.e. 0.25 (default: {0.0})
         '''
 
         alpha = alpha_pi_fraction * np.pi
         beta = beta_pi_fraction * np.pi
         gamma = self.gamma_pi_fraction * np.pi
-        filename = self.func_name + '_'
-        if self.extra_filename:
-            filename += self.extra_filename
+        filename = self.f_name + '_'
 
         # test for plotting method
         if self.method == 'north':
             # Dirac delta not defined on sphere
-            if self.func_name == 'dirac_delta':
+            if self.f_name == 'dirac_delta':
                 flm = self.place_flm_on_north_pole(self.flm)
                 # adjust filename
                 filename += self.method + '_'
@@ -416,7 +426,7 @@ class SiftingConvolution:
             filename += self.filename_angle(alpha_pi_fraction,
                                             beta_pi_fraction, self.gamma_pi_fraction)
             # Dirac delta not defined on sphere
-            if self.func_name == 'dirac_delta':
+            if self.f_name == 'dirac_delta':
                 flm = self.place_flm_on_north_pole(self.flm)
             else:
                 flm = self.flm
@@ -431,10 +441,20 @@ class SiftingConvolution:
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
 
+        # L/resolution fixed so unimportant
+        if self.f_name != 'earth':
+            filename += 'L-' + str(self.L) + '_'
+            filename += 'res-' + str(self.res) + '_'
+
+        # perform convolution
+        if self.conv_fun is not None:
+            # shrink flm so same shape
+            flm_reduced = flm[range(self.glm.size)]
+            flm = self.convolution(flm_reduced, self.glm)
+            filename += 'convolved_' + self.g_name + '_'
+
         # inverse & plot
-        f = ssht.inverse(flm, self.res, Reality=reality)
-        filename += 'L-' + str(self.L) + '_'
-        filename += 'res-' + str(self.res) + '_'
+        f = ssht.inverse(flm, self.res, Reality=self.reality)
 
         # check for plotting type
         if self.plotting_type == 'real':
