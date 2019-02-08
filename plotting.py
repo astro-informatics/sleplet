@@ -21,16 +21,16 @@ def read_yaml(yaml_file):
 def read_args(spherical_harmonic=False):
     parser = ArgumentParser(description='Create SSHT plot')
     parser.add_argument('flm', metavar='flm', type=valid_plotting,
-                        help='flm to plot on the sphere: ' + ', '.join(functions.keys()))
+                        help='flm to plot on the sphere: ' + ', '.join(functions.keys()) + ', ' + ','.join(maps.keys()))
     parser.add_argument('type', metavar='type', type=str, nargs='?', default='real', const='real', choices=[
-                        'abs', 'real', 'imag', 'sum'], help='plotting method i.e. real')
+                        'abs', 'real', 'imag', 'sum'], help='plotting type: real, imag, abs, sum - defaults to real')
     parser.add_argument('method', metavar='method', type=str, nargs='?', default='north', const='north', choices=[
-                        'north', 'rotate', 'translate'], help='plotting method i.e. north')
+                        'north', 'rotate', 'translate'], help='plotting method: north, rotate, translate - defaults to north')
     parser.add_argument('--alpha', '-a', metavar='alpha', type=float,
-                        default=0.0, help='alpha/phi pi fraction')
+                        default=0.0, help='alpha/phi pi fraction - defaults to 0')
     parser.add_argument('--beta', '-b', metavar='beta', type=float,
-                        default=0.0, help='beta/theta pi fraction')
-    parser.add_argument('--convolve', '-c', metavar='glm', type=valid_maps,
+                        default=0.0, help='beta/theta pi fraction - defaults to 0')
+    parser.add_argument('--convolve', metavar='glm', type=valid_maps,
                         help='flm to perform sifting convolution with i.e. flm x glm*')
 
     # extra args for spherical harmonics
