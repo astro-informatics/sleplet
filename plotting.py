@@ -46,7 +46,8 @@ def read_args(spherical_harmonic=False):
 def dirac_delta():
     # setup
     config = read_yaml('input.yml')
-    L, resolution = config['L'], config['resolution']
+    L, pow2_res2L = config['L'], config['pow2_res2L']
+    resolution = L * 2 ** pow2_res2L
     config['func_name'] = 'dirac_delta'
 
     # create flm
@@ -68,7 +69,8 @@ def dirac_delta():
 def gaussian(sig=10):
     # setup
     config = read_yaml('input.yml')
-    L, resolution = config['L'], config['resolution']
+    L, pow2_res2L = config['L'], config['pow2_res2L']
+    resolution = L * 2 ** pow2_res2L
     config['func_name'] = 'gaussian'
 
     # create flm
@@ -83,7 +85,8 @@ def gaussian(sig=10):
 def squashed_gaussian():
     # setup
     config = read_yaml('input.yml')
-    resolution = config['resolution']
+    L, pow2_res2L = config['L'], config['pow2_res2L']
+    resolution = L * 2 ** pow2_res2L
     config['func_name'] = 'squashed_gaussian'
 
     # function on the grid
@@ -100,7 +103,8 @@ def squashed_gaussian():
 def elongated_gaussian():
     # setup
     config = read_yaml('input.yml')
-    resolution = config['resolution']
+    L, pow2_res2L = config['L'], config['pow2_res2L']
+    resolution = L * 2 ** pow2_res2L
     config['func_name'] = 'elongated_gaussian'
 
     # function on the grid
@@ -117,7 +121,8 @@ def elongated_gaussian():
 def spherical_harmonic(ell, m):
     # setup
     config = read_yaml('input.yml')
-    resolution = config['resolution']
+    L, pow2_res2L = config['L'], config['pow2_res2L']
+    resolution = L * 2 ** pow2_res2L
     config['func_name'] = 'spherical_harmonic_l' + str(ell) + '_m' + str(m)
     config['reality'] = False
 

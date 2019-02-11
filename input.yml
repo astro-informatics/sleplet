@@ -1,5 +1,5 @@
 L: 32
-resolution: 256
+pow2_res2L: 3
 gamma_pi_fraction: 0
 colour: 'magma'
 reality: True

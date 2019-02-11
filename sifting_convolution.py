@@ -27,7 +27,7 @@ class SiftingConvolution:
         self.conv_fun = conv_fun
         self.f_name = flm_config['func_name']
         self.L = flm_config['L']
-        self.res = flm_config['resolution']
+        self.res = self.L * 2 ** flm_config['pow2_res2L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
         self.auto_open = flm_config['auto_open']
         self.save_fig = flm_config['save_fig']
