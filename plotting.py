@@ -23,8 +23,10 @@ def read_args(spherical_harmonic=False):
     parser = ArgumentParser(description='Create SSHT plot')
     parser.add_argument('flm', type=valid_plotting, choices=list(
         total.keys()), help='flm to plot on the sphere')
-    parser.add_argument('--type', '-t', type=str, nargs='?', default='real', const='real', choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
-    parser.add_argument('--method', '-m', type=str, nargs='?', default='north', const='north', choices=['north', 'rotate', 'translate'], help='plotting method: defaults to north')
+    parser.add_argument('--type', '-t', type=str, nargs='?', default='real', const='real',
+                        choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
+    parser.add_argument('--method', '-m', type=str, nargs='?', default='north', const='north',
+                        choices=['north', 'rotate', 'translate'], help='plotting method: defaults to north')
     parser.add_argument('--alpha', '-a', type=float, default=0.0,
                         help='alpha/phi pi fraction - defaults to 0')
     parser.add_argument('--beta', '-b', type=float, default=0.0,
@@ -142,6 +144,7 @@ def earth():
         os.environ['SSHT'], 'src', 'matlab', 'data', 'EGM2008_Topography_flms_L0128')
     mat_contents = sio.loadmat(matfile)
     flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
+    config['L'] = mat_contents['L'][0][0]
 
     return flm, config
 
