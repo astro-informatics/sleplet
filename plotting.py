@@ -149,6 +149,39 @@ def earth():
     return flm, config
 
 
+def wmap_helper(file_ending):
+    # setup
+    config = read_yaml('wmap.yml')
+    L = config['L']
+
+    # create flm
+    matfile = os.path.join(
+        os.environ['SSHT'], 'src', 'matlab', 'data', 'wmap' + file_ending)
+    mat_contents = sio.loadmat(matfile)
+    cl = np.ascontiguousarray(mat_contents['cl'][:, 0])
+
+    # Simulate CMB in harmonic space.
+    flm = np.zeros((L * L), dtype=complex)
+    for ell in range(2, L):
+        cl[ell - 1] = cl[ell - 1] * 2 * np.pi / (ell * (ell + 1))
+        for m in range(-ell, ell + 1):
+            ind = ssht.elm2ind(ell, m)
+            if m == 0:
+                flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
+            else:
+                flm[ind] = np.sqrt(cl[ell - 1] / 2) * np.random.randn() + \
+                    1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
+
+    return flm, config
+
+
+def wmap():
+    # file_ending = '_lcdm_pl_model_yr1_v1'
+    # file_ending = '_tt_spectrum_7yr_v4p1'
+    file_ending = '_lcdm_pl_model_wmap7baoh0'
+    return wmap_helper(file_ending)
+
+
 def valid_plotting(func_name):
     # check if valid function
     if func_name in total:
@@ -173,7 +206,8 @@ functions = {
     'spherical_harmonic': spherical_harmonic
 }
 maps = {
-    'earth': earth
+    'earth': earth,
+    'wmap': wmap
 }
 total = {**functions, **maps}
 
