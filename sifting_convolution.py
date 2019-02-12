@@ -451,9 +451,9 @@ class SiftingConvolution:
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
 
-        # L/resolution fixed so unimportant
-        if self.f_name != 'earth':
-            filename += 'L-' + str(self.L) + '_'
+        filename += 'L-' + str(self.L) + '_'
+        # only add res to filename if different to L
+        if self.L != self.res:
             filename += 'res-' + str(self.res) + '_'
 
         # perform convolution
