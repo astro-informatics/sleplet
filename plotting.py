@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from sifting_convolution import SiftingConvolution
 import pyssht as ssht
 import sys
@@ -20,18 +21,16 @@ def read_yaml(yaml_file):
 
 def read_args(spherical_harmonic=False):
     parser = ArgumentParser(description='Create SSHT plot')
-    parser.add_argument('flm', metavar='flm', type=valid_plotting,
-                        help='flm to plot on the sphere: ' + ', '.join(functions.keys()) + ', ' + ','.join(maps.keys()))
-    parser.add_argument('type', metavar='type', type=str, nargs='?', default='real', const='real', choices=[
-                        'abs', 'real', 'imag', 'sum'], help='plotting type: real, imag, abs, sum - defaults to real')
-    parser.add_argument('method', metavar='method', type=str, nargs='?', default='north', const='north', choices=[
-                        'north', 'rotate', 'translate'], help='plotting method: north, rotate, translate - defaults to north')
-    parser.add_argument('--alpha', '-a', metavar='alpha', type=float,
-                        default=0.0, help='alpha/phi pi fraction - defaults to 0')
-    parser.add_argument('--beta', '-b', metavar='beta', type=float,
-                        default=0.0, help='beta/theta pi fraction - defaults to 0')
-    parser.add_argument('--convolve', metavar='glm', type=valid_maps,
-                        help='flm to perform sifting convolution with i.e. flm x glm*')
+    parser.add_argument('flm', type=valid_plotting, choices=list(
+        total.keys()), help='flm to plot on the sphere')
+    parser.add_argument('--type', '-t', type=str, nargs='?', default='real', const='real', choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
+    parser.add_argument('--method', '-m', type=str, nargs='?', default='north', const='north', choices=['north', 'rotate', 'translate'], help='plotting method: defaults to north')
+    parser.add_argument('--alpha', '-a', type=float, default=0.0,
+                        help='alpha/phi pi fraction - defaults to 0')
+    parser.add_argument('--beta', '-b', type=float, default=0.0,
+                        help='beta/theta pi fraction - defaults to 0')
+    parser.add_argument('--convolve', '-c', type=valid_maps, choices=list(maps.keys(
+    )), help='glm to perform sifting convolution with i.e. flm x glm*')
 
     # extra args for spherical harmonics
     if spherical_harmonic:
@@ -148,23 +147,17 @@ def earth():
 
 
 def valid_plotting(func_name):
-    # strip white space
-    name = func_name.lstrip()
     # check if valid function
-    if name in functions:
-        return functions[name]
-    elif name in maps:
-        return maps[name]
+    if func_name in total:
+        return func_name
     else:
         raise ValueError('Not a valid function name to plot')
 
 
 def valid_maps(func_name):
-    # strip white space
-    name = func_name.lstrip()
     # check if valid function
-    if name in maps:
-        return maps[name]
+    if func_name in maps:
+        return func_name
     else:
         raise ValueError('Not a valid map name to convolve')
 
@@ -179,19 +172,24 @@ functions = {
 maps = {
     'earth': earth
 }
+total = {**functions, **maps}
 
 if __name__ == '__main__':
     if sys.argv[1] == 'spherical_harmonic':
         args = read_args(True)
-        flm, flm_config = args.flm(args.l, args.m)
+        flm_input = total[args.flm]
+        flm, flm_config = flm_input(args.l, args.m)
     else:
         args = read_args()
-        flm, flm_config = args.flm()
+        flm_input = total[args.flm]
+        flm, flm_config = flm_input()
 
     if 'method' not in flm_config:
         flm_config['method'] = args.method
     if 'plotting_type' not in flm_config:
         flm_config['plotting_type'] = args.type
 
-    sc = SiftingConvolution(flm, flm_config, args.convolve)
+    # if convolving function passed otherwise return None
+    glm = maps.get(args.convolve)
+    sc = SiftingConvolution(flm, flm_config, glm)
     sc.plot(args.alpha, args.beta)
