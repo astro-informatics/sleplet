@@ -48,6 +48,16 @@ class SiftingConvolution:
             self.plotting_type = flm_config['plotting_type']
             self.method = flm_config['method']
 
+        # if colour bar values passed set min/max
+        if all(k in flm_config for k in ('cbar_min', 'cbar_max')):
+            # absolute values aren't negative
+            if self.plotting_type == 'abs':
+                flm_config['cbar_min'] = 0
+            self.cbar_range = [flm_config['cbar_min'], flm_config['cbar_max']]
+        else:
+            # if nothing passed use function min/max
+            self.cbar_range = None
+
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
         '''
@@ -262,7 +272,7 @@ class SiftingConvolution:
         '''
 
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
+        x, y, z, f_plot, vmin, vmax = self.setup_plot(f, color_range=self.cbar_range)
 
         zoom = 1.4
         camera = dict(

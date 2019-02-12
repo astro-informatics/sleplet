@@ -1,4 +1,6 @@
 pow2_res2L: 0
+cbar_min: -2500
+cbar_max: 2500
 gamma_pi_fraction: 0
 colour: 'viridis'
 reality: True
