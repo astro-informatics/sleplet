@@ -8,6 +8,6 @@ reality: True
 inverted: False
 func_name: 'wmap'
 plotting_type: 'real'
-method: 'north'
+routine: 'north'
 auto_open: True
 save_fig: False

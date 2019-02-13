@@ -25,8 +25,8 @@ def read_args(spherical_harmonic=False):
         total.keys()), help='flm to plot on the sphere')
     parser.add_argument('--type', '-t', type=str, nargs='?', default='real', const='real',
                         choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
-    parser.add_argument('--method', '-m', type=str, nargs='?', default='north', const='north',
-                        choices=['north', 'rotate', 'translate'], help='plotting method: defaults to north')
+    parser.add_argument('--routine', '-r', type=str, nargs='?', default='north', const='north',
+                        choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')
     parser.add_argument('--alpha', '-a', type=float, default=0.0,
                         help='alpha/phi pi fraction - defaults to 0')
     parser.add_argument('--beta', '-b', type=float, default=0.0,
@@ -196,7 +196,7 @@ def valid_maps(func_name):
         return func_name
     else:
         raise ValueError('Not a valid map name to convolve')
-
+4
 
 functions = {
     'dirac_delta': dirac_delta,
@@ -209,6 +209,7 @@ maps = {
     'earth': earth,
     'wmap': wmap
 }
+# form dictionary of all functions
 total = {**functions, **maps}
 
 if __name__ == '__main__':
@@ -221,8 +222,8 @@ if __name__ == '__main__':
         flm_input = total[args.flm]
         flm, flm_config = flm_input()
 
-    if 'method' not in flm_config:
-        flm_config['method'] = args.method
+    if 'routine' not in flm_config:
+        flm_config['routine'] = args.routine
     if 'plotting_type' not in flm_config:
         flm_config['plotting_type'] = args.type
 

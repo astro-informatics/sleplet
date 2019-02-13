@@ -29,8 +29,6 @@ class SiftingConvolution:
         self.L = flm_config['L']
         self.res = self.L * 2 ** flm_config['pow2_res2L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
-        self.auto_open = flm_config['auto_open']
-        self.save_fig = flm_config['save_fig']
 
         # if convolving with some glm
         if self.conv_fun is not None:
@@ -40,13 +38,17 @@ class SiftingConvolution:
             self.reality = glm_config['reality']
             self.inverted = glm_config['inverted']
             self.plotting_type = glm_config['plotting_type']
-            self.method = glm_config['method']
+            self.routine = glm_config['routine']
+            self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
+            self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
         else:
             self.colour = flm_config['colour']
             self.reality = flm_config['reality']
             self.inverted = flm_config['inverted']
             self.plotting_type = flm_config['plotting_type']
-            self.method = flm_config['method']
+            self.routine = flm_config['routine']
+            self.auto_open = flm_config['auto_open']
+            self.save_fig = flm_config['save_fig']
 
         # if colour bar values passed set min/max
         if all(k in flm_config for k in ('cbar_min', 'cbar_max')):
@@ -421,18 +423,18 @@ class SiftingConvolution:
         gamma = self.gamma_pi_fraction * np.pi
         filename = self.f_name + '_'
 
-        # test for plotting method
-        if self.method == 'north':
+        # test for plotting routine
+        if self.routine == 'north':
             # Dirac delta not defined on sphere
             if self.f_name == 'dirac_delta':
                 flm = self.place_flm_on_north_pole(self.flm)
                 # adjust filename
-                filename += self.method + '_'
+                filename += self.routine + '_'
             else:
                 flm = self.flm
-        elif self.method == 'rotate':
+        elif self.routine == 'rotate':
             # adjust filename
-            filename += self.method + '_'
+            filename += self.routine + '_'
             filename += self.filename_angle(alpha_pi_fraction,
                                             beta_pi_fraction, self.gamma_pi_fraction)
             # Dirac delta not defined on sphere
@@ -442,9 +444,9 @@ class SiftingConvolution:
                 flm = self.flm
             # rotate by alpha, beta
             flm = self.rotation(flm, alpha, beta, gamma)
-        elif self.method == 'translate':
+        elif self.routine == 'translate':
             # adjust filename
-            filename += self.method + '_'
+            filename += self.routine + '_'
             # don't add gamma if translation
             filename += self.filename_angle(alpha_pi_fraction,
                                             beta_pi_fraction, gamma_pi_fraction=0.0)
