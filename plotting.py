@@ -196,7 +196,6 @@ def valid_maps(func_name):
         return func_name
     else:
         raise ValueError('Not a valid map name to convolve')
-4
 
 functions = {
     'dirac_delta': dirac_delta,
