@@ -29,6 +29,7 @@ class SiftingConvolution:
         self.L = flm_config['L']
         self.res = self.L * 2 ** flm_config['pow2_res2L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
+        self.inverted = flm_config['inverted']
 
         # if convolving with some glm
         if self.conv_fun is not None:
@@ -36,7 +37,6 @@ class SiftingConvolution:
             self.g_name = glm_config['func_name']
             self.colour = glm_config['colour']
             self.reality = glm_config['reality']
-            self.inverted = glm_config['inverted']
             self.plotting_type = glm_config['plotting_type']
             self.routine = glm_config['routine']
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
@@ -44,7 +44,6 @@ class SiftingConvolution:
         else:
             self.colour = flm_config['colour']
             self.reality = flm_config['reality']
-            self.inverted = flm_config['inverted']
             self.plotting_type = flm_config['plotting_type']
             self.routine = flm_config['routine']
             self.auto_open = flm_config['auto_open']
@@ -282,17 +281,6 @@ class SiftingConvolution:
             eye=dict(x=-1 / zoom, y=1 / zoom, z=1 / zoom)
         )
 
-        # some flm are inverted i.e. topography map of the Earth
-        if self.inverted:
-            # invert axis
-            x *= -1
-            y *= -1
-            z *= -1
-            # invert camera view
-            camera['up']['z'] = -1
-            for coord in camera['eye']:
-                camera['eye'][coord] *= -1
-
         data = [
             Surface(
                 x=x,
@@ -467,6 +455,10 @@ class SiftingConvolution:
 
         # inverse & plot
         f = ssht.inverse(flm, self.res, Reality=self.reality)
+
+        # some flm are inverted i.e. topography map of the Earth
+        if self.inverted:
+            f = np.fliplr(f)
 
         # check for plotting type
         if self.plotting_type == 'real':
