@@ -36,7 +36,7 @@ class SiftingConvolution:
             self.g_name = glm_config['func_name']
             self.colour = glm_config['colour']
             self.reality = flm_config['reality'] or glm_config['reality']
-            self.plotting_type = glm_config['plotting_type']
+            self.type = glm_config['type']
             self.routine = glm_config['routine']
             self.inverted = flm_config['inverted'] or glm_config['inverted']
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
@@ -44,7 +44,7 @@ class SiftingConvolution:
         else:
             self.colour = flm_config['colour']
             self.reality = flm_config['reality']
-            self.plotting_type = flm_config['plotting_type']
+            self.type = flm_config['type']
             self.routine = flm_config['routine']
             self.inverted = flm_config['inverted']
             self.auto_open = flm_config['auto_open']
@@ -53,7 +53,7 @@ class SiftingConvolution:
         # if colour bar values passed set min/max
         if all(k in flm_config for k in ('cbar_min', 'cbar_max')):
             # absolute values aren't negative
-            if self.plotting_type == 'abs':
+            if self.type == 'abs':
                 flm_config['cbar_min'] = 0
             self.cbar_range = [flm_config['cbar_min'], flm_config['cbar_max']]
         else:
@@ -462,15 +462,15 @@ class SiftingConvolution:
             f = np.fliplr(f)
 
         # check for plotting type
-        if self.plotting_type == 'real':
+        if self.type == 'real':
             plot = f.real
-        elif self.plotting_type == 'imag':
+        elif self.type == 'imag':
             plot = f.imag
-        elif self.plotting_type == 'abs':
+        elif self.type == 'abs':
             plot = abs(f)
-        elif self.plotting_type == 'sum':
+        elif self.type == 'sum':
             plot = f.real + f.imag
 
         # do plot
-        filename += self.plotting_type
+        filename += self.type
         self.plotly_plot(plot, filename)

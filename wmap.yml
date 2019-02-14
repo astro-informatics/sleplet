@@ -7,7 +7,7 @@ colour: 'magma'
 reality: True
 inverted: False
 func_name: 'wmap'
-plotting_type: 'real'
+type: 'real'
 routine: 'north'
 auto_open: True
 save_fig: False

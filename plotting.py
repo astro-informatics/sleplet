@@ -223,8 +223,8 @@ if __name__ == '__main__':
 
     if 'routine' not in flm_config:
         flm_config['routine'] = args.routine
-    if 'plotting_type' not in flm_config:
-        flm_config['plotting_type'] = args.type
+    if 'type' not in flm_config:
+        flm_config['type'] = args.type
 
     # if convolving function passed otherwise return None
     glm = maps.get(args.convolve)

@@ -6,7 +6,7 @@ colour: 'magma'
 reality: True
 inverted: True
 func_name: 'earth'
-plotting_type: 'real'
+type: 'real'
 routine: 'north'
 auto_open: True
 save_fig: False
