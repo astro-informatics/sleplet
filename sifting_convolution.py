@@ -29,16 +29,16 @@ class SiftingConvolution:
         self.L = flm_config['L']
         self.res = self.L * 2 ** flm_config['pow2_res2L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
-        self.inverted = flm_config['inverted']
 
         # if convolving with some glm
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
             self.g_name = glm_config['func_name']
             self.colour = glm_config['colour']
-            self.reality = glm_config['reality']
+            self.reality = flm_config['reality'] or glm_config['reality']
             self.plotting_type = glm_config['plotting_type']
             self.routine = glm_config['routine']
+            self.inverted = flm_config['inverted'] or glm_config['inverted']
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
             self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
         else:
@@ -46,6 +46,7 @@ class SiftingConvolution:
             self.reality = flm_config['reality']
             self.plotting_type = flm_config['plotting_type']
             self.routine = flm_config['routine']
+            self.inverted = flm_config['inverted']
             self.auto_open = flm_config['auto_open']
             self.save_fig = flm_config['save_fig']
 
