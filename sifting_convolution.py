@@ -24,6 +24,7 @@ class SiftingConvolution:
 
         self.flm = flm
         self.fig_directory = 'figures'
+        self.colour = 'magma'
         self.conv_fun = conv_fun
         self.f_name = flm_config['func_name']
         self.L = flm_config['L']
@@ -34,7 +35,6 @@ class SiftingConvolution:
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
             self.g_name = glm_config['func_name']
-            self.colour = glm_config['colour']
             self.reality = flm_config['reality'] or glm_config['reality']
             self.type = glm_config['type']
             self.routine = glm_config['routine']
@@ -42,7 +42,6 @@ class SiftingConvolution:
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
             self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
         else:
-            self.colour = flm_config['colour']
             self.reality = flm_config['reality']
             self.type = flm_config['type']
             self.routine = flm_config['routine']
