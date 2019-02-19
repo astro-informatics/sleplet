@@ -416,8 +416,6 @@ class SiftingConvolution:
             # Dirac delta not defined on sphere
             if self.f_name == 'dirac_delta':
                 flm = self.place_flm_on_north_pole(self.flm)
-                # adjust filename
-                filename += self.routine + '_'
             else:
                 flm = self.flm
         elif self.routine == 'rotate':
