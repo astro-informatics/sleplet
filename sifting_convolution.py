@@ -121,6 +121,62 @@ class SiftingConvolution:
             flm, alpha, beta, gamma, self.res)
         return flm
 
+    @staticmethod
+    def create_dirac_delta(L, resolution):
+        '''
+        creates Dirac delta for translation of general f
+
+        Arguments:
+            L {int} -- band-limit
+            resolution {int} -- resolution for plotting
+
+        Returns:
+            array -- flm of Dirac delta
+        '''
+
+        flm = np.zeros((resolution * resolution), dtype=complex)
+        # impose reality on flms
+        for ell in range(L):
+            m = 0
+            ind = ssht.elm2ind(ell, m)
+            flm[ind] = 1
+            for m in range(1, ell + 1):
+                ind_pm = ssht.elm2ind(ell, m)
+                ind_nm = ssht.elm2ind(ell, -m)
+                flm[ind_pm] = 1
+                flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
+        return flm
+
+    @staticmethod
+    def translate_dirac_delta(L, flm, pix_i, pix_j):
+        '''
+        computes Dirac delta on sphere (T_{\omega'}\delta)(\omega)
+
+        Arguments:
+            L {int} -- band-limit
+            flm {array} -- flm of Dirac delta
+            pix_i {int} -- index of beta pixel
+            pix_j {int} -- index of alpha pixel
+
+        Returns:
+            [type] -- [description]
+        '''
+
+        # loop through l, m
+        for ell in range(L):
+            for m in range(-ell, ell + 1):
+                ind = ssht.elm2ind(ell, m)
+                # create Ylm corresponding to index
+                ylm_harmonic = np.zeros((L * L), dtype=complex)
+                ylm_harmonic[ind] = 1
+                # convert Ylm from pixel to harmonic space
+                ylm_pixel = ssht.inverse(ylm_harmonic, L)
+                # get value at pixel (i, j)
+                ylm_omega = ylm_pixel[pix_i, pix_j]
+                # conjugate of pixel value
+                flm[ind] = np.conj(ylm_omega)
+        return flm
+
     def dirac_delta_translation(self, flm, alpha, beta):
         '''
         tranlsates the dirac delta on the sphere by alpha/beta
@@ -134,40 +190,30 @@ class SiftingConvolution:
 
         # create Dirac delta unless already created
         if self.f_name != 'dirac_delta':
-            flm = np.zeros((self.res * self.res), dtype=complex)
-            # impose reality on flms
-            for ell in range(self.L):
-                m = 0
-                ind = ssht.elm2ind(ell, m)
-                flm[ind] = 1
-                for m in range(1, ell + 1):
-                    ind_pm = ssht.elm2ind(ell, m)
-                    ind_nm = ssht.elm2ind(ell, -m)
-                    flm[ind_pm] = 1
-                    flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
+            flm = self.create_dirac_delta(self.L, self.res)
 
         # compute pixels of \omega'
         pix_i = ssht.theta_to_index(beta, self.L)
         pix_j = ssht.phi_to_index(alpha, self.L)
 
-        # loop through l, m
-        for ell in range(self.L):
-            for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                # create Ylm corresponding to index
-                ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
-                ylm_harmonic[ind] = 1
-                # convert Ylm from pixel to harmonic space
-                ylm_pixel = ssht.inverse(ylm_harmonic, self.L)
-                # get value at pixel (i, j)
-                ylm_omega = ylm_pixel[pix_i, pix_j]
-                # conjugate of pixel value
-                flm[ind] = np.conj(ylm_omega)
+        # compute translation
+        flm = self.compute_dirac_delta(self.L, flm, pix_i, pix_j)
 
         return flm
 
     @staticmethod
     def convolution(flm, glm):
+        '''
+        computes the sifting convolution of two arrays
+
+        Arguments:
+            flm {array} -- input flm of the class
+            glm {array} -- kernal map to convolve with
+
+        Returns:
+            array -- convolved output
+        '''
+
         return flm * np.conj(glm)
 
     def translation(self, flm, alpha, beta):
@@ -176,6 +222,8 @@ class SiftingConvolution:
 
         Arguments:
             flm {array} -- harmonic representation of function
+            alpha {float} -- fraction of pi (phi)
+            beta {float} -- fraction of pi (theta)
 
         Returns:
             array -- translated flm
@@ -334,6 +382,11 @@ class SiftingConvolution:
     def filename_angle(self, alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction):
         '''
         middle part of filename
+
+        Arguments:
+            alpha_pi_fraction {float} -- fraction of pi (phi)
+            beta_pi_fraction {float} -- fraction of pi (theta)
+            gamma_pi_fraction {float} -- fraction of pi
 
         Returns:
             str -- filename
