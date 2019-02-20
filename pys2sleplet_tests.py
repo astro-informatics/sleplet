@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from sifting_convolution import SiftingConvolution
 from plotting import dirac_delta
 import numpy as np
