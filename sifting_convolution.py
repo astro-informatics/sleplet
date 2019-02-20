@@ -196,7 +196,7 @@ class SiftingConvolution:
         pix_j = ssht.phi_to_index(alpha, self.L)
 
         # compute translation
-        flm = self.compute_dirac_delta(self.L, flm, pix_i, pix_j)
+        flm = self.translate_dirac_delta(self.L, flm, pix_i, pix_j)
 
         return flm
 
