@@ -28,7 +28,7 @@ class SiftingConvolution:
         self.conv_fun = conv_fun
         self.f_name = flm_config['func_name']
         self.L = flm_config['L']
-        self.res = self.L * 2 ** flm_config['pow2_res2L']
+        self.resolution = self.L * 2 ** flm_config['pow2_res2L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
 
         # if convolving with some glm
@@ -117,25 +117,20 @@ class SiftingConvolution:
         '''
 
         flm = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.res)
+            flm, alpha, beta, gamma, self.L)
         return flm
 
-    @staticmethod
-    def create_dirac_delta(L, resolution):
+    def create_dirac_delta(self):
         '''
         creates Dirac delta for translation of general f
-
-        Arguments:
-            L {int} -- band-limit
-            resolution {int} -- resolution for plotting
 
         Returns:
             array -- flm of Dirac delta
         '''
 
-        flm = np.zeros((resolution * resolution), dtype=complex)
+        flm = np.zeros((self.L * self.L), dtype=complex)
         # impose reality on flms
-        for ell in range(L):
+        for ell in range(self.L):
             m = 0
             ind = ssht.elm2ind(ell, m)
             flm[ind] = 1
@@ -146,13 +141,11 @@ class SiftingConvolution:
                 flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
-    @staticmethod
-    def translate_dirac_delta(L, flm, pix_i, pix_j):
+    def translate_dirac_delta(self, flm, pix_i, pix_j):
         '''
         computes Dirac delta on sphere (T_{\omega'}\delta)(\omega)
 
         Arguments:
-            L {int} -- band-limit
             flm {array} -- flm of Dirac delta
             pix_i {int} -- index of beta pixel
             pix_j {int} -- index of alpha pixel
@@ -162,14 +155,14 @@ class SiftingConvolution:
         '''
 
         # loop through l, m
-        for ell in range(L):
+        for ell in range(self.L):
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 # create Ylm corresponding to index
-                ylm_harmonic = np.zeros((L * L), dtype=complex)
+                ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
                 ylm_harmonic[ind] = 1
                 # convert Ylm from pixel to harmonic space
-                ylm_pixel = ssht.inverse(ylm_harmonic, L)
+                ylm_pixel = ssht.inverse(ylm_harmonic, self.L)
                 # get value at pixel (i, j)
                 ylm_omega = ylm_pixel[pix_i, pix_j]
                 # conjugate of pixel value
@@ -189,14 +182,14 @@ class SiftingConvolution:
 
         # create Dirac delta unless already created
         if self.f_name != 'dirac_delta':
-            flm = self.create_dirac_delta(self.L, self.res)
+            flm = self.create_dirac_delta()
 
         # compute pixels of \omega'
         pix_i = ssht.theta_to_index(beta, self.L)
         pix_j = ssht.phi_to_index(alpha, self.L)
 
         # compute translation
-        flm = self.translate_dirac_delta(self.L, flm, pix_i, pix_j)
+        flm = self.translate_dirac_delta(flm, pix_i, pix_j)
 
         return flm
 
@@ -267,10 +260,10 @@ class SiftingConvolution:
                 f, f_sp, phi_sp = f
 
         (thetas, phis) = ssht.sample_positions(
-            self.res, Method=method, Grid=True)
+            self.resolution, Method=method, Grid=True)
 
         if (thetas.size != f.size):
-            raise Exception('Band limit L deos not match that of f')
+            raise Exception('Band-limit L deos not match that of f')
 
         f_plot = f.copy()
 
@@ -295,7 +288,7 @@ class SiftingConvolution:
         # % Close plot.
         if close:
             (n_theta, n_phi) = ssht.sample_shape(
-                self.res, Method=method)
+                self.resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
@@ -492,10 +485,11 @@ class SiftingConvolution:
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
 
+        # add band-limit to name
         filename += 'L-' + str(self.L) + '_'
-        # only add res to filename if different to L
-        if self.L != self.res:
-            filename += 'res-' + str(self.res) + '_'
+        # only add resolution to filename if different to L
+        if self.resolution != self.L:
+            filename += 'res-' + str(self.resolution) + '_'
 
         # perform convolution
         if self.conv_fun is not None:
@@ -504,8 +498,13 @@ class SiftingConvolution:
             flm = self.convolution(flm_reduced, self.glm)
             filename += 'convolved_' + self.g_name + '_'
 
+        # boost resolution
+        if self.resolution != self.L:
+            boost = self.resolution * self.resolution - self.L * self.L
+            flm = np.pad(flm, (0, boost), 'constant')
+
         # inverse & plot
-        f = ssht.inverse(flm, self.res, Reality=self.reality)
+        f = ssht.inverse(flm, self.resolution, Reality=self.reality)
 
         # some flm are inverted i.e. topography map of the Earth
         if self.inverted:

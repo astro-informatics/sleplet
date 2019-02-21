@@ -47,12 +47,11 @@ def read_args(spherical_harmonic=False):
 def dirac_delta():
     # setup
     config = read_yaml('input.yml')
-    L, pow2_res2L = config['L'], config['pow2_res2L']
-    resolution = L * 2 ** pow2_res2L
+    L = config['L']
     config['func_name'] = 'dirac_delta'
 
     # create flm
-    flm = np.zeros((resolution * resolution), dtype=complex)
+    flm = np.zeros((L * L), dtype=complex)
     # impose reality on flms
     for ell in range(L):
         m = 0
@@ -70,12 +69,11 @@ def dirac_delta():
 def gaussian(sig=10):
     # setup
     config = read_yaml('input.yml')
-    L, pow2_res2L = config['L'], config['pow2_res2L']
-    resolution = L * 2 ** pow2_res2L
+    L = config['L']
     config['func_name'] = 'gaussian'
 
     # create flm
-    flm = np.zeros((resolution * resolution), dtype=complex)
+    flm = np.zeros((L * L), dtype=complex)
     for ell in range(L):
         ind = ssht.elm2ind(ell, m=0)
         flm[ind] = np.exp(-ell * (ell + 1) / (2 * sig * sig))
@@ -86,17 +84,16 @@ def gaussian(sig=10):
 def squashed_gaussian():
     # setup
     config = read_yaml('input.yml')
-    L, pow2_res2L = config['L'], config['pow2_res2L']
-    resolution = L * 2 ** pow2_res2L
+    L = config['L']
     config['func_name'] = 'squashed_gaussian'
 
     # function on the grid
     def fun(theta, phi, theta_0=0, theta_sig=0.1):
         return np.exp(-0.5 * ((theta - theta_0) / theta_sig) ** 2) * np.sin(phi)
 
-    thetas, phis = ssht.sample_positions(resolution, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True)
     f = fun(thetas, phis)
-    flm = ssht.forward(f, resolution, Reality=True)
+    flm = ssht.forward(f, L, Reality=True)
 
     return flm, config
 
@@ -104,17 +101,16 @@ def squashed_gaussian():
 def elongated_gaussian():
     # setup
     config = read_yaml('input.yml')
-    L, pow2_res2L = config['L'], config['pow2_res2L']
-    resolution = L * 2 ** pow2_res2L
+    L = config['L']
     config['func_name'] = 'elongated_gaussian'
 
     # function on the grid
     def fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=0.1, phi_sig=1):
         return np.exp(-(0.5 * ((theta - theta_0) / theta_sig) ** 2 + 0.5 * ((phi - phi_0) / phi_sig) ** 2))
 
-    thetas, phis = ssht.sample_positions(resolution, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True)
     f = fun(thetas, phis)
-    flm = ssht.forward(f, resolution, Reality=True)
+    flm = ssht.forward(f, L, Reality=True)
 
     return flm, config
 
@@ -122,13 +118,12 @@ def elongated_gaussian():
 def spherical_harmonic(ell, m):
     # setup
     config = read_yaml('input.yml')
-    L, pow2_res2L = config['L'], config['pow2_res2L']
-    resolution = L * 2 ** pow2_res2L
+    L = config['L']
     config['func_name'] = 'spherical_harmonic_l' + str(ell) + '_m' + str(m)
     config['reality'] = False
 
     # create flm
-    flm = np.zeros((resolution * resolution), dtype=complex)
+    flm = np.zeros((L * L), dtype=complex)
     ind = ssht.elm2ind(ell, m)
     flm[ind] = 1
 
