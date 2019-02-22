@@ -28,7 +28,6 @@ class SiftingConvolution:
         self.conv_fun = conv_fun
         self.f_name = flm_config['func_name']
         self.L = flm_config['L']
-        self.resolution = self.L * 2 ** flm_config['pow2_res2L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
 
         # if convolving with some glm
@@ -41,6 +40,10 @@ class SiftingConvolution:
             self.inverted = flm_config['inverted'] or glm_config['inverted']
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
             self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
+            self.L_glm = glm_config['L']
+            flm_res = self.L * 2 ** flm_config['pow2_res2L']
+            glm_res = self.L_glm * 2 ** glm_config['pow2_res2L']
+            self.resolution = flm_res if flm_res > glm_res else glm_res
         else:
             self.reality = flm_config['reality']
             self.type = flm_config['type']
@@ -48,6 +51,7 @@ class SiftingConvolution:
             self.inverted = flm_config['inverted']
             self.auto_open = flm_config['auto_open']
             self.save_fig = flm_config['save_fig']
+            self.resolution = self.L * 2 ** flm_config['pow2_res2L']
 
         # if colour bar values passed set min/max
         if all(k in flm_config for k in ('cbar_min', 'cbar_max')):
@@ -457,6 +461,9 @@ class SiftingConvolution:
         gamma = self.gamma_pi_fraction * np.pi
         filename = self.f_name + '_'
 
+        # add band-limit to name
+        filename += 'L-' + str(self.L) + '_'
+
         # test for plotting routine
         if self.routine == 'north':
             # Dirac delta not defined on sphere
@@ -485,23 +492,28 @@ class SiftingConvolution:
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
 
-        # add band-limit to name
-        filename += 'L-' + str(self.L) + '_'
-        # only add resolution to filename if different to L
-        if self.resolution != self.L:
-            filename += 'res-' + str(self.resolution) + '_'
-
         # perform convolution
         if self.conv_fun is not None:
-            # shrink flm so same shape
-            flm_reduced = flm[range(self.glm.size)]
-            flm = self.convolution(flm_reduced, self.glm)
+            # shrink flm
+            if flm.size > self.glm.size:
+                glm = self.glm
+                flm = flm[range(glm.size)]
+            # shrink glm if L less than or keep the same
+            elif flm.size <= self.glm.size:
+                glm = self.glm[range(flm.size)]
+            # perform convolution
+            flm = self.convolution(flm, glm)
+            # adjust filename
             filename += 'convolved_' + self.g_name + '_'
+            filename += 'L-' + str(self.L_glm) + '_'
 
         # boost resolution
         if self.resolution != self.L:
             boost = self.resolution * self.resolution - self.L * self.L
             flm = np.pad(flm, (0, boost), 'constant')
+
+        # add resolution to filename
+        filename += 'res-' + str(self.resolution) + '_'
 
         # inverse & plot
         f = ssht.inverse(flm, self.resolution, Reality=self.reality)
