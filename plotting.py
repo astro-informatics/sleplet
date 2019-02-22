@@ -139,7 +139,7 @@ def earth():
         os.environ['SSHT'], 'src', 'matlab', 'data', 'EGM2008_Topography_flms_L0128')
     mat_contents = sio.loadmat(matfile)
     flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
-    config['L'] = mat_contents['L'][0][0]
+    config['L'] = int(mat_contents['L'][0][0])
 
     return flm, config
 
