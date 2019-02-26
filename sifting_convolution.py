@@ -29,6 +29,7 @@ class SiftingConvolution:
         self.f_name = flm_config['func_name']
         self.L = flm_config['L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
+        self.method = flm_config['sampling']
 
         # if convolving with some glm
         if self.conv_fun is not None:
@@ -135,8 +136,7 @@ class SiftingConvolution:
         flm = np.zeros((self.L * self.L), dtype=complex)
         # impose reality on flms
         for ell in range(self.L):
-            m = 0
-            ind = ssht.elm2ind(ell, m)
+            ind = ssht.elm2ind(ell, m=0)
             flm[ind] = 1
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
@@ -166,7 +166,8 @@ class SiftingConvolution:
                 ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
                 ylm_harmonic[ind] = 1
                 # convert Ylm from pixel to harmonic space
-                ylm_pixel = ssht.inverse(ylm_harmonic, self.L)
+                ylm_pixel = ssht.inverse(
+                    ylm_harmonic, self.L, Method=self.method)
                 # get value at pixel (i, j)
                 ylm_omega = ylm_pixel[pix_i, pix_j]
                 # conjugate of pixel value
@@ -189,8 +190,8 @@ class SiftingConvolution:
             flm = self.create_dirac_delta()
 
         # compute pixels of \omega'
-        pix_i = ssht.theta_to_index(beta, self.L)
-        pix_j = ssht.phi_to_index(alpha, self.L)
+        pix_i = ssht.theta_to_index(beta, self.L, Method=self.method)
+        pix_j = ssht.phi_to_index(alpha, self.L, Method=self.method)
 
         # compute translation
         flm = self.translate_dirac_delta(flm, pix_i, pix_j)
@@ -235,7 +236,7 @@ class SiftingConvolution:
 
         return flm
 
-    def setup_plot(self, f, method='MW', close=True, parametric=False,
+    def setup_plot(self, f, close=True, parametric=False,
                    parametric_scaling=[0.0, 0.5], color_range=None):
         '''
         function which creates the data for the matplotlib/plotly plot
@@ -257,14 +258,14 @@ class SiftingConvolution:
             tuple -- values for the plotting
         '''
 
-        if method == 'MW_pole':
+        if self.method == 'MW_pole':
             if len(f) == 2:
                 f, f_sp = f
             else:
                 f, f_sp, phi_sp = f
 
         (thetas, phis) = ssht.sample_positions(
-            self.resolution, Method=method, Grid=True)
+            self.resolution, Method=self.method, Grid=True)
 
         if (thetas.size != f.size):
             raise Exception('Band-limit L deos not match that of f')
@@ -292,7 +293,7 @@ class SiftingConvolution:
         # % Close plot.
         if close:
             (n_theta, n_phi) = ssht.sample_shape(
-                self.resolution, Method=method)
+                self.resolution, Method=self.method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
@@ -318,7 +319,8 @@ class SiftingConvolution:
         '''
 
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self.setup_plot(f, color_range=self.cbar_range)
+        x, y, z, f_plot, vmin, vmax = self.setup_plot(
+            f, color_range=self.cbar_range)
 
         zoom = 1.4
         camera = dict(
@@ -516,7 +518,8 @@ class SiftingConvolution:
         filename += 'res-' + str(self.resolution) + '_'
 
         # inverse & plot
-        f = ssht.inverse(flm, self.resolution, Reality=self.reality)
+        f = ssht.inverse(flm, self.resolution,
+                         Method=self.method, Reality=self.reality)
 
         # some flm are inverted i.e. topography map of the Earth
         if self.inverted:

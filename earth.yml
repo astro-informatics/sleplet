@@ -4,6 +4,7 @@ cbar_max: 2500
 gamma_pi_fraction: 0
 reality: True
 inverted: True
+sampling: 'MWSS'
 func_name: 'earth'
 type: 'real'
 routine: 'north'
