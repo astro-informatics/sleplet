@@ -24,7 +24,8 @@ def test_dirac_delta_rotate_translate():
     flm_trans_norm = flm_trans / np.linalg.norm(flm_trans)
 
     # perform test
-    np.testing.assert_allclose(flm_rot_norm, flm_trans_norm, atol=0.15)
+    np.testing.assert_allclose(flm_rot, flm_trans, atol=2.5)
+    np.testing.assert_allclose(flm_rot_norm, flm_trans_norm, atol=0.14)
 
 if __name__ == '__main__':
     test_dirac_delta_rotate_translate()
