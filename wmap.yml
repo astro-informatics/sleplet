@@ -5,7 +5,7 @@ cbar_max: 80
 gamma_pi_fraction: 0
 reality: True
 inverted: False
-sampling: 'MWSS'
+sampling: 'MW'
 func_name: 'wmap'
 type: 'real'
 routine: 'north'

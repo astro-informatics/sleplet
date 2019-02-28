@@ -245,7 +245,6 @@ class SiftingConvolution:
             f {function} -- inverse of flm
 
         Keyword Arguments:
-            method {str} -- sampling scheme (default: {'MW'})
             close {bool} -- if true the full sphere is plotted without a gap (default: {True})
             parametric {bool} -- the radius of the object at a certain point is defined by the function (default: {False})
             parametric_scaling {list} -- used if Parametric=True, defines the radius of the shape at a particular angle (default: {[0.0, 0.5]})
@@ -458,13 +457,20 @@ class SiftingConvolution:
             beta_pi_fraction {float} -- fraction of pi i.e. 0.25 (default: {0.0})
         '''
 
-        alpha = alpha_pi_fraction * np.pi
-        beta = beta_pi_fraction * np.pi
+        # setup
         gamma = self.gamma_pi_fraction * np.pi
         filename = self.f_name + '_'
-
-        # add band-limit to name
         filename += 'L-' + str(self.L) + '_'
+
+        # calculate nearest index of alpha/beta for translation
+        # this is due to calculating \omega' through the pixel
+        # values - the translation needs to be at the same position
+        # as the rotation such that the difference error is small
+        thetas, phis = ssht.sample_positions(self.L, Method=self.method)
+        alpha_idx = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
+        alpha = phis[alpha_idx]
+        beta_idx = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
+        beta = thetas[beta_idx]
 
         # test for plotting routine
         if self.routine == 'north':

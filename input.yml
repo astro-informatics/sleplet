@@ -3,6 +3,6 @@ pow2_res2L: 3
 gamma_pi_fraction: 0
 reality: True
 inverted: False
-sampling: 'MWSS'
+sampling: 'MW'
 auto_open: True
 save_fig: False
