@@ -520,7 +520,8 @@ class SiftingConvolution:
             boost = self.resolution * self.resolution - self.L * self.L
             flm = np.pad(flm, (0, boost), 'constant')
 
-        # add resolution to filename
+        # add sampling/resolution to filename
+        filename += 'samp-' + str(self.method) + '_'
         filename += 'res-' + str(self.resolution) + '_'
 
         # inverse & plot
