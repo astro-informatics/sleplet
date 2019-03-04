@@ -376,6 +376,11 @@ class SiftingConvolution:
         html_filename = os.path.join(directory, 'html', filename + '.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
+    @staticmethod
+    def get_angle_num_dem(angle_fraction):
+        angle = Fraction(angle_fraction).limit_denominator()
+        return angle.numerator, angle.denominator
+
     def filename_angle(self, alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction):
         '''
         middle part of filename
@@ -390,12 +395,9 @@ class SiftingConvolution:
         '''
 
         # get numerator/denominator for filename
-        alpha = Fraction(alpha_pi_fraction).limit_denominator()
-        beta = Fraction(beta_pi_fraction).limit_denominator()
-        gamma = Fraction(gamma_pi_fraction).limit_denominator()
-        alpha_num, alpha_den = alpha.numerator, alpha.denominator
-        beta_num, beta_den = beta.numerator, beta.denominator
-        gamma_num, gamma_den = gamma.numerator, gamma.denominator
+        alpha_num, alpha_den = self.get_angle_num_dem(alpha_pi_fraction)
+        beta_num, beta_den = self.get_angle_num_dem(beta_pi_fraction)
+        gamma_num, gamma_den = self.get_angle_num_dem(gamma_pi_fraction)
 
         def helper(numerator, denominator):
             '''
