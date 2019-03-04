@@ -7,7 +7,22 @@ import numpy as np
 import yaml
 from argparse import ArgumentParser
 import scipy.io as sio
+from fractions import Fraction
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
+
+
+def get_angle_num_dem(angle_fraction):
+    angle = Fraction(angle_fraction).limit_denominator()
+    return angle.numerator, angle.denominator
+
+
+def filename_std_dev(angle, arg_name):
+    filename = '_'
+    num, dem = get_angle_num_dem(angle)
+    filename += str(num) + arg_name
+    if angle < 1:
+        filename += str(dem)
+    return filename
 
 
 def read_yaml(yaml_file):
@@ -106,6 +121,8 @@ def elongated_gaussian():
 
     # function on the grid
     def fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=0.1, phi_sig=1):
+        config['func_name'] += filename_std_dev(theta_sig, 'tsig')
+        config['func_name'] += filename_std_dev(phi_sig, 'psig')
         return np.exp(-(0.5 * ((theta - theta_0) / theta_sig) ** 2 + 0.5 * ((phi - phi_0) / phi_sig) ** 2))
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
