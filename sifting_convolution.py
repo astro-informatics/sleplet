@@ -448,6 +448,11 @@ class SiftingConvolution:
             filename += '_'
         return filename
 
+    def resolution_boost(self, flm):
+        boost = self.resolution * self.resolution - self.L * self.L
+        flm = np.pad(flm, (0, boost), 'constant')
+        return flm
+
     def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
         '''
         master plotting method
@@ -517,8 +522,7 @@ class SiftingConvolution:
 
         # boost resolution
         if self.resolution != self.L:
-            boost = self.resolution * self.resolution - self.L * self.L
-            flm = np.pad(flm, (0, boost), 'constant')
+            flm = self.resolution_boost(flm)
 
         # add sampling/resolution to filename
         filename += 'samp-' + str(self.method) + '_'
