@@ -86,6 +86,7 @@ def gaussian(sig=10):
     config = read_yaml('input.yml')
     L = config['L']
     config['func_name'] = 'gaussian'
+    config['func_name'] += filename_std_dev(sig, 'sig')
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -103,11 +104,13 @@ def squashed_gaussian():
     config['func_name'] = 'squashed_gaussian'
 
     # function on the grid
-    def fun(theta, phi, theta_0=0, theta_sig=0.1):
-        return np.exp(-0.5 * ((theta - theta_0) / theta_sig) ** 2) * np.sin(phi)
+    def grid_fun(theta, phi, theta_0=0, theta_sig=0.1):
+        config['func_name'] += filename_std_dev(theta_sig, 'tsig')
+        f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(phi)
+        return f
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
-    f = fun(thetas, phis)
+    f = grid_fun(thetas, phis)
     flm = ssht.forward(f, L, Method=method, Reality=True)
 
     return flm, config
@@ -120,13 +123,15 @@ def elongated_gaussian():
     config['func_name'] = 'elongated_gaussian'
 
     # function on the grid
-    def fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=0.1, phi_sig=1):
+    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=0.1, phi_sig=1):
         config['func_name'] += filename_std_dev(theta_sig, 'tsig')
         config['func_name'] += filename_std_dev(phi_sig, 'psig')
-        return np.exp(-(0.5 * ((theta - theta_0) / theta_sig) ** 2 + 0.5 * ((phi - phi_0) / phi_sig) ** 2))
+        f = np.exp(-((((theta - theta_0) / theta_sig) **
+                      2 + ((phi - phi_0) / phi_sig) ** 2) / 2))
+        return f
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
-    f = fun(thetas, phis)
+    f = grid_fun(thetas, phis)
     flm = ssht.forward(f, L, Method=method, Reality=True)
 
     return flm, config
@@ -208,6 +213,7 @@ def valid_maps(func_name):
         return func_name
     else:
         raise ValueError('Not a valid map name to convolve')
+
 
 functions = {
     'dirac_delta': dirac_delta,
