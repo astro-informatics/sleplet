@@ -378,6 +378,16 @@ class SiftingConvolution:
 
     @staticmethod
     def get_angle_num_dem(angle_fraction):
+        '''
+        ger numerator and denominator for a given decimal
+
+        Arguments:
+            angle_fraction {float} -- fraction of pi
+
+        Returns:
+            (int, int) -- (fraction numerator, fraction denominator)
+        '''
+
         angle = Fraction(angle_fraction).limit_denominator()
         return angle.numerator, angle.denominator
 
