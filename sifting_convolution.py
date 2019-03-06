@@ -314,7 +314,7 @@ class SiftingConvolution:
 
         return x, y, z, f_plot, vmin, vmax
 
-    def plotly_plot(self, f, filename):
+    def plotly_plot(self, f, filename, save_figure):
         '''
         creates basic plotly plot rather than matplotlib
 
@@ -372,7 +372,7 @@ class SiftingConvolution:
         directory = os.path.join(os.pardir, os.pardir, self.fig_directory)
 
         # if save_fig is true then print as png and pdf in their directories
-        if self.save_fig:
+        if save_figure:
             png_filename = os.path.join(directory, 'png', filename + '.png')
             pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(directory, 'pdf', filename + '.pdf')
@@ -566,4 +566,4 @@ class SiftingConvolution:
 
         # do plot
         filename += self.type
-        self.plotly_plot(plot, filename)
+        self.plotly_plot(plot, filename, self.save_fig)
