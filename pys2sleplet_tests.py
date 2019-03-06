@@ -4,33 +4,51 @@ from plotting import dirac_delta
 import numpy as np
 import sys
 import os
-import pyssht as ssht
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
+import pyssht as ssht
 
 
-def test_dirac_delta_rotate_translate():
+def test_dirac_delta_rotate_translate(save_fig):
     # setup
     flm, config = dirac_delta()
-    config.update(dict.fromkeys(['routine', 'type'], None))
+    config['routine'], config['type'] = None, 'abs'
     sc = SiftingConvolution(flm, config)
-    L, method, reality = config['L'], config['sampling'], config['reality']
-    resolution = L * 2 ** config['pow2_res2L']
-    alpha, beta = 0.75, 0.25
+    alpha_pi_fraction, beta_pi_fraction = 0.75, 0.25
+
+    # translate to grid point
+    alpha, beta = sc.calc_nearest_grid_point(
+        alpha_pi_fraction, beta_pi_fraction)
+
+    # place dirac delta on north pole
+    flm_north = sc.place_flm_on_north_pole(flm)
 
     # rotation
-    flm_rot = sc.rotation(flm, alpha, beta, gamma=0)
+    flm_rot = sc.rotation(flm_north, alpha, beta, gamma=0)
+    flm_rot_boost = sc.resolution_boost(flm_rot)
+    f_rot = ssht.inverse(flm_rot_boost, sc.resolution,
+                         Method=sc.method, Reality=sc.reality)
+
     # translation
     flm_trans = sc.translation(flm, alpha, beta)
+    flm_trans_boost = sc.resolution_boost(flm_trans)
+    f_trans = ssht.inverse(flm_trans_boost, sc.resolution,
+                           Method=sc.method, Reality=sc.reality)
 
-    # difference plot
-    filename = 'difference_dirac_delta_f_rot-f_trans'
+    # filename
+    filename = 'dirac_delta_L-' + str(sc.L) + '_diff_rot_trans_samp-' + str(
+        sc.method) + '_res-' + str(sc.resolution) + '_' + str(sc.type)
+
+    # calculate difference
     flm_diff = flm_rot - flm_trans
-    flm = sc.resolution_boost(flm_diff)
-    f = ssht.inverse(flm, resolution, Method=method, Reality=reality)
-    sc.plotly_plot(f, filename)
+    f_diff = f_rot - f_trans
 
     # perform test
-    np.testing.assert_allclose(flm_rot, flm_trans, atol=2.8)
+    np.testing.assert_allclose(flm_rot, flm_trans, rtol=1e-10)
+    np.testing.assert_allclose(f_rot, f_trans, rtol=1e-9)
+
+    # create plot
+    sc.plotly_plot(f_diff, filename, save_fig)
+
 
 if __name__ == '__main__':
-    test_dirac_delta_rotate_translate()
+    test_dirac_delta_rotate_translate(save_fig=False)
