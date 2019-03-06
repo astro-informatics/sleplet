@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from sifting_convolution import SiftingConvolution
-import pyssht as ssht
 import sys
 import os
 import numpy as np
@@ -9,6 +8,7 @@ from argparse import ArgumentParser
 import scipy.io as sio
 from fractions import Fraction
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
+import pyssht as ssht
 
 
 def get_angle_num_dem(angle_fraction):
