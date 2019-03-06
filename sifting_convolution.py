@@ -99,14 +99,17 @@ class SiftingConvolution:
             array -- flm on the north pole
         '''
 
+        # don't modify outside of function
+        flm_north = flm.copy()
+
         for ell in range(self.L):
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 if m == 0:
-                    flm[ind] *= np.sqrt((2 * ell + 1) / (4 * np.pi))
+                    flm_north[ind] *= np.sqrt((2 * ell + 1) / (4 * np.pi))
                 else:
-                    flm[ind] = 0
-        return flm
+                    flm_north[ind] = 0
+        return flm_north
 
     def rotation(self, flm, alpha, beta, gamma):
         '''
@@ -119,9 +122,9 @@ class SiftingConvolution:
             array -- rotated flm
         '''
 
-        flm = ssht.rotate_flms(
+        flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.L)
-        return flm
+        return flm_rot
 
     def create_dirac_delta(self):
         '''
@@ -153,8 +156,11 @@ class SiftingConvolution:
             pix_j {int} -- index of alpha pixel
 
         Returns:
-            [type] -- [description]
+            array -- translated flm
         '''
+
+        # don't modify outside of function
+        flm_trans = flm.copy()
 
         # loop through l, m
         for ell in range(self.L):
@@ -169,8 +175,8 @@ class SiftingConvolution:
                 # get value at pixel (i, j)
                 ylm_omega = ylm_pixel[pix_i, pix_j]
                 # conjugate of pixel value
-                flm[ind] = np.conj(ylm_omega)
-        return flm
+                flm_trans[ind] = np.conj(ylm_omega)
+        return flm_trans
 
     def dirac_delta_translation(self, flm, alpha, beta):
         '''
@@ -185,16 +191,18 @@ class SiftingConvolution:
 
         # create Dirac delta unless already created
         if self.f_name != 'dirac_delta':
-            flm = self.create_dirac_delta()
+            flm_dd = self.create_dirac_delta()
+        else:
+            flm_dd = flm.copy()
 
         # compute pixels of \omega'
         pix_i = ssht.theta_to_index(beta, self.L, Method=self.method)
         pix_j = ssht.phi_to_index(alpha, self.L, Method=self.method)
 
         # compute translation
-        flm = self.translate_dirac_delta(flm, pix_i, pix_j)
+        flm_trans = self.translate_dirac_delta(flm_dd, pix_i, pix_j)
 
-        return flm
+        return flm_trans
 
     @staticmethod
     def convolution(flm, glm):
@@ -227,12 +235,12 @@ class SiftingConvolution:
         glm = self.dirac_delta_translation(flm, alpha, beta)
 
         if self.f_name == 'dirac_delta':
-            flm = glm
+            flm_conv = glm
         else:
             # sifting convolution
-            flm = self.convolution(flm, glm)
+            flm_conv = self.convolution(flm, glm)
 
-        return flm
+        return flm_conv
 
     def setup_plot(self, f, close=True, parametric=False,
                    parametric_scaling=[0.0, 0.5], color_range=None):
