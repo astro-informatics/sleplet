@@ -468,8 +468,30 @@ class SiftingConvolution:
 
     def resolution_boost(self, flm):
         boost = self.resolution * self.resolution - self.L * self.L
-        flm = np.pad(flm, (0, boost), 'constant')
-        return flm
+        flm_boost = np.pad(flm, (0, boost), 'constant')
+        return flm_boost
+
+    def calc_nearest_grid_point(self, alpha_pi_fraction, beta_pi_fraction):
+        '''
+        calculate nearest index of alpha/beta for translation
+        this is due to calculating \omega' through the pixel
+        values - the translation needs to be at the same position
+        as the rotation such that the difference error is small
+
+        Arguments:
+            alpha_pi_fraction {float} -- fraction of pi
+            beta_pi_fraction {float} -- fraction of pi
+
+        Returns:
+            [type] -- [description]
+        '''
+
+        thetas, phis = ssht.sample_positions(self.L, Method=self.method)
+        alpha_idx = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
+        alpha = phis[alpha_idx]
+        beta_idx = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
+        beta = thetas[beta_idx]
+        return alpha, beta
 
     def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
         '''
@@ -486,14 +508,8 @@ class SiftingConvolution:
         filename += 'L-' + str(self.L) + '_'
 
         # calculate nearest index of alpha/beta for translation
-        # this is due to calculating \omega' through the pixel
-        # values - the translation needs to be at the same position
-        # as the rotation such that the difference error is small
-        thetas, phis = ssht.sample_positions(self.L, Method=self.method)
-        alpha_idx = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
-        alpha = phis[alpha_idx]
-        beta_idx = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
-        beta = thetas[beta_idx]
+        alpha, beta = self.calc_nearest_grid_point(
+            alpha_pi_fraction, beta_pi_fraction)
 
         # test for plotting routine
         if self.routine == 'north':
