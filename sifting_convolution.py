@@ -42,9 +42,7 @@ class SiftingConvolution:
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
             self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
             self.L_glm = glm_config['L']
-            flm_res = self.L * 2 ** flm_config['pow2_res2L']
-            glm_res = self.L_glm * 2 ** glm_config['pow2_res2L']
-            self.resolution = flm_res if flm_res > glm_res else glm_res
+            self.resolution = self.L_glm * 2 ** glm_config['pow2_res2L']
         else:
             self.reality = flm_config['reality']
             self.type = flm_config['type']
