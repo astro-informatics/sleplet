@@ -45,6 +45,8 @@ def test_dirac_delta_rotate_translate(save_fig):
     # perform test
     np.testing.assert_allclose(flm_rot, flm_trans, rtol=1e-10)
     np.testing.assert_allclose(f_rot, f_trans, rtol=1e-9)
+    print('Translation/rotation difference max error:',
+          np.max(np.abs(flm_rot - flm_trans)))
 
     # create plot
     sc.plotly_plot(f_diff, filename, save_fig)
