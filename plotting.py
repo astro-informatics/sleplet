@@ -123,7 +123,7 @@ def elongated_gaussian():
     config['func_name'] = 'elongated_gaussian'
 
     # function on the grid
-    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=0.1, phi_sig=1):
+    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=10 ** -1, phi_sig=10 ** 0):
         config['func_name'] += filename_std_dev(theta_sig, 'tsig')
         config['func_name'] += filename_std_dev(phi_sig, 'psig')
         f = np.exp(-((((theta - theta_0) / theta_sig) **
