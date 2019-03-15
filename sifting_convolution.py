@@ -146,6 +146,20 @@ class SiftingConvolution:
                 flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
+    def calc_pixel_value(self, ind, pix_i, pix_j):
+        # create Ylm corresponding to index
+        ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
+        ylm_harmonic[ind] = 1
+
+        # convert Ylm from pixel to harmonic space
+        ylm_pixel = ssht.inverse(
+            ylm_harmonic, self.L, Method=self.method)
+
+        # get value at pixel (i, j)
+        ylm_omega = ylm_pixel[pix_i, pix_j]
+
+        return np.conj(ylm_omega)
+
     def translate_dirac_delta(self, flm, pix_i, pix_j):
         '''
         computes Dirac delta on sphere (T_{\omega'}\delta)(\omega)
@@ -162,20 +176,30 @@ class SiftingConvolution:
         # don't modify outside of function
         flm_trans = flm.copy()
 
-        # loop through l, m
         for ell in range(self.L):
-            for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                # create Ylm corresponding to index
-                ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
-                ylm_harmonic[ind] = 1
-                # convert Ylm from pixel to harmonic space
-                ylm_pixel = ssht.inverse(
-                    ylm_harmonic, self.L, Method=self.method)
-                # get value at pixel (i, j)
-                ylm_omega = ylm_pixel[pix_i, pix_j]
-                # conjugate of pixel value
-                flm_trans[ind] = np.conj(ylm_omega)
+            m = 0
+            ind = ssht.elm2ind(ell, m)
+            conj_pixel_val = self.calc_pixel_value(ind, pix_i, pix_j)
+            flm_trans[ind] = conj_pixel_val
+            # odd numbers
+            # the negative index is the negative
+            # complex conjugate of the positive index
+            for m in range(1, ell + 1, 2):
+                ind_pm = ssht.elm2ind(ell, m)
+                ind_nm = ssht.elm2ind(ell, -m)
+                conj_pixel_val = self.calc_pixel_value(ind_pm, pix_i, pix_j)
+                flm_trans[ind_pm] = conj_pixel_val
+                flm_trans[ind_nm] = -conj_pixel_val.conjugate()
+            # even numbers
+            # the negative index is the
+            # complex conjugate of the positive index
+            for m in range(2, ell + 1, 2):
+                ind_pm = ssht.elm2ind(ell, m)
+                ind_nm = ssht.elm2ind(ell, -m)
+                conj_pixel_val = self.calc_pixel_value(ind_pm, pix_i, pix_j)
+                flm_trans[ind_pm] = conj_pixel_val
+                flm_trans[ind_nm] = conj_pixel_val.conjugate()
+
         return flm_trans
 
     def dirac_delta_translation(self, flm, alpha, beta):
