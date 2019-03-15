@@ -100,8 +100,8 @@ def gaussian(sig=10):
 def squashed_gaussian():
     # setup
     config = read_yaml('input.yml')
-    L, method = config['L'], config['sampling']
-    config['func_name'] = 'squashed_gaussian'
+    L, method, reality = config['L'], config['sampling'], config['reality']
+    config['func_name'], = 'squashed_gaussian'
 
     # function on the grid
     def grid_fun(theta, phi, theta_0=0, theta_sig=0.1):
@@ -111,7 +111,7 @@ def squashed_gaussian():
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
     f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Method=method, Reality=True)
+    flm = ssht.forward(f, L, Method=method, Reality=reality)
 
     return flm, config
 
@@ -119,7 +119,7 @@ def squashed_gaussian():
 def elongated_gaussian():
     # setup
     config = read_yaml('input.yml')
-    L, method = config['L'], config['sampling']
+    L, method, reality = config['L'], config['sampling'], config['reality']
     config['func_name'] = 'elongated_gaussian'
 
     # function on the grid
@@ -132,7 +132,7 @@ def elongated_gaussian():
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
     f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Method=method, Reality=True)
+    flm = ssht.forward(f, L, Method=method, Reality=reality)
 
     return flm, config
 
