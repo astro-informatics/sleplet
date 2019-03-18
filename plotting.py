@@ -101,7 +101,7 @@ def squashed_gaussian():
     # setup
     config = read_yaml('input.yml')
     L, method, reality = config['L'], config['sampling'], config['reality']
-    config['func_name'], = 'squashed_gaussian'
+    config['func_name'] = 'squashed_gaussian'
 
     # function on the grid
     def grid_fun(theta, phi, theta_0=0, theta_sig=0.1):
