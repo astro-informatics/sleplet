@@ -183,7 +183,7 @@ class SiftingConvolution:
         for ell in range(self.L):
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                conj_pixel_val = self.calc_pixel_value(ind, pix_i, pix_j)
+                conj_pixel_val = self.calc_pixel_value(ind)
                 flm[ind] = conj_pixel_val
         return flm
 
