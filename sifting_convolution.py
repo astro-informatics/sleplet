@@ -158,24 +158,15 @@ class SiftingConvolution:
             ind = ssht.elm2ind(ell, m)
             conj_pixel_val = self.calc_pixel_value(ind)
             flm[ind] = conj_pixel_val
-            # odd numbers
-            # the negative index is the negative
+            # odd/even numbers
+            # the negative index is the negative/positive
             # complex conjugate of the positive index
-            for m in range(1, ell + 1, 2):
+            for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                conj_pixel_val = self.calc_pixel_value(ind)
+                conj_pixel_val = self.calc_pixel_value(ind_pm)
                 flm[ind_pm] = conj_pixel_val
-                flm[ind_nm] = -conj_pixel_val.conjugate()
-            # even numbers
-            # the negative index is the
-            # complex conjugate of the positive index
-            for m in range(2, ell + 1, 2):
-                ind_pm = ssht.elm2ind(ell, m)
-                ind_nm = ssht.elm2ind(ell, -m)
-                conj_pixel_val = self.calc_pixel_value(ind)
-                flm[ind_pm] = conj_pixel_val
-                flm[ind_nm] = conj_pixel_val.conjugate()
+                flm[ind_nm] = (-1) ** m * np.conj(conj_pixel_val)
         return flm
 
     def complex_translation(self, flm):
@@ -417,7 +408,7 @@ class SiftingConvolution:
         ylm_pixel = ssht.inverse(ylm_harmonic, self.L, Method=self.method)
 
         # get value at pixel (i, j)
-        ylm_omega = np.conjugate(ylm_pixel[self.pix_i, self.pix_j])
+        ylm_omega = np.conj(ylm_pixel[self.pix_i, self.pix_j])
 
         return ylm_omega
 
