@@ -166,7 +166,7 @@ class SiftingConvolution:
                 ind_nm = ssht.elm2ind(ell, -m)
                 conj_pixel_val = self.calc_pixel_value(ind_pm)
                 flm[ind_pm] = conj_pixel_val
-                flm[ind_nm] = (-1) ** m * np.conj(conj_pixel_val)
+                flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
     def complex_translation(self, flm):
