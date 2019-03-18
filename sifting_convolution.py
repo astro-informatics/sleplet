@@ -132,24 +132,22 @@ class SiftingConvolution:
             flm = self.create_dirac_delta()
 
         # compute pixels of \omega'
-        pix_i = ssht.theta_to_index(beta, self.L, Method=self.method)
-        pix_j = ssht.phi_to_index(alpha, self.L, Method=self.method)
+        self.pix_i = ssht.theta_to_index(beta, self.L, Method=self.method)
+        self.pix_j = ssht.phi_to_index(alpha, self.L, Method=self.method)
 
         # compute translation, speed up if function is real
         if self.reality:
-            flm_trans = self.real_translation(flm, pix_i, pix_j)
+            flm_trans = self.real_translation(flm)
         else:
-            flm_trans = self.complex_translation(flm, pix_i, pix_j)
+            flm_trans = self.complex_translation(flm)
         return flm_trans
 
-    def real_translation(self, flm, pix_i, pix_j):
+    def real_translation(self, flm):
         '''
         computes Dirac delta on sphere (T_{\omega'}\delta)(\omega)
 
         Arguments:
             flm {array} -- flm of Dirac delta
-            pix_i {int} -- index of beta pixel
-            pix_j {int} -- index of alpha pixel
 
         Returns:
             array -- translated flm
@@ -158,7 +156,7 @@ class SiftingConvolution:
         for ell in range(self.L):
             m = 0
             ind = ssht.elm2ind(ell, m)
-            conj_pixel_val = self.calc_pixel_value(ind, pix_i, pix_j)
+            conj_pixel_val = self.calc_pixel_value(ind)
             flm[ind] = conj_pixel_val
             # odd numbers
             # the negative index is the negative
@@ -166,7 +164,7 @@ class SiftingConvolution:
             for m in range(1, ell + 1, 2):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                conj_pixel_val = self.calc_pixel_value(ind, pix_i, pix_j)
+                conj_pixel_val = self.calc_pixel_value(ind)
                 flm[ind_pm] = conj_pixel_val
                 flm[ind_nm] = -conj_pixel_val.conjugate()
             # even numbers
@@ -175,19 +173,17 @@ class SiftingConvolution:
             for m in range(2, ell + 1, 2):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                conj_pixel_val = self.calc_pixel_value(ind, pix_i, pix_j)
+                conj_pixel_val = self.calc_pixel_value(ind)
                 flm[ind_pm] = conj_pixel_val
                 flm[ind_nm] = conj_pixel_val.conjugate()
         return flm
 
-    def complex_translation(self, flm, pix_i, pix_j):
+    def complex_translation(self, flm):
         '''
         computes Dirac delta on sphere (T_{\omega'}\delta)(\omega)
 
         Arguments:
             flm {array} -- flm of Dirac delta
-            pix_i {int} -- index of beta pixel
-            pix_j {int} -- index of alpha pixel
 
         Returns:
             array -- translated flm
@@ -402,14 +398,12 @@ class SiftingConvolution:
                 flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
-    def calc_pixel_value(self, ind, pix_beta, pix_alpha):
+    def calc_pixel_value(self, ind):
         '''
         calculate the ylm(omega') which defines the translation
 
         Arguments:
             ind {int} -- index in array
-            pix_beta {int} -- index in theta
-            pix_alpha {int} -- index in phi
 
         Returns:
             complex float -- the value of ylm(omega')
@@ -423,7 +417,7 @@ class SiftingConvolution:
         ylm_pixel = ssht.inverse(ylm_harmonic, self.L, Method=self.method)
 
         # get value at pixel (i, j)
-        ylm_omega = np.conjugate(ylm_pixel[pix_beta, pix_alpha])
+        ylm_omega = np.conjugate(ylm_pixel[self.pix_i, self.pix_j])
 
         return ylm_omega
 
