@@ -1,5 +1,4 @@
 L: 256
-pow2_res2L: 1
 cbar_min: -80
 cbar_max: 80
 gamma_pi_fraction: 0

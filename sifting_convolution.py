@@ -41,7 +41,7 @@ class SiftingConvolution:
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
             self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
             self.L_glm = glm_config['L']
-            self.resolution = self.L_glm * 2 ** glm_config['pow2_res2L']
+            self.resolution = self.calc_resolution(glm_config)
         # if not convolving
         else:
             self.reality = flm_config['reality']
@@ -50,7 +50,7 @@ class SiftingConvolution:
             self.inverted = flm_config['inverted']
             self.auto_open = flm_config['auto_open']
             self.save_fig = flm_config['save_fig']
-            self.resolution = self.L * 2 ** flm_config['pow2_res2L']
+            self.resolution = self.calc_resolution(flm_config)
         # colourbar
         self.cbar_range = self.calc_cbar_range(flm_config, self.type)
 
@@ -491,6 +491,39 @@ class SiftingConvolution:
 
         angle = Fraction(angle_fraction).limit_denominator()
         return angle.numerator, angle.denominator
+
+    @staticmethod
+    def calc_resolution(flm_config):
+        '''
+        calculate appropriate resolution for given L
+
+        Arguments:
+            flm_config {dict} -- config dictionary
+
+        Returns:
+            int -- resolution
+        '''
+
+        if 'pow2_res2L' in flm_config:
+            exponent = flm_config['pow2_res2L']
+        else:
+            if flm_config['L'] == 1:
+                exponent = 6
+            elif flm_config['L'] < 4:
+                exponent = 5
+            elif flm_config['L'] < 8:
+                exponent = 4
+            elif flm_config['L'] < 128:
+                exponent = 3
+            elif flm_config['L'] < 512:
+                exponent = 2
+            elif flm_config['L'] < 1024:
+                exponent = 1
+            else:
+                exponent = 0
+        resolution = flm_config['L'] * 2 ** exponent
+
+        return resolution
 
     @staticmethod
     def calc_cbar_range(flm_config, plot_type):
