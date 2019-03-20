@@ -177,6 +177,9 @@ def wmap_helper(file_ending):
     mat_contents = sio.loadmat(matfile)
     cl = np.ascontiguousarray(mat_contents['cl'][:, 0])
 
+    # same random seed
+    np.random.seed(0)
+
     # Simulate CMB in harmonic space.
     flm = np.zeros((L * L), dtype=complex)
     for ell in range(2, L):
