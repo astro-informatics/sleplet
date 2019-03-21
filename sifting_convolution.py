@@ -115,7 +115,9 @@ class SiftingConvolution:
         # translation is slow for large L
         if os.path.exists(filename):
             glm = np.load(filename)
-            if len(glm) < self.L * self.L:
+            size = self.L * self.L
+            glm = glm[:size]
+            if len(glm) < size:
                 glm = self.translate_dirac_delta(alpha, beta, filename)
         else:
             glm = self.translate_dirac_delta(alpha, beta, filename)
