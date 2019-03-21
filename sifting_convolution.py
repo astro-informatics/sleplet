@@ -20,6 +20,9 @@ class SiftingConvolution:
         Arguments:
             flm {array} -- harmonic representation of function
             config_dict {dictionary} -- config options for class
+
+        Keyword Arguments:
+            conv_fun {array} -- map to convolve with (default: {None})
         '''
 
         self.flm = flm
@@ -84,6 +87,9 @@ class SiftingConvolution:
 
         Arguments:
             flm {array} -- harmonic representation of function
+            alpha {float} -- phi angle
+            beta {float} -- theta angle
+            gamma {float} -- gamma angle
 
         Returns:
             array -- rotated flm
@@ -95,7 +101,7 @@ class SiftingConvolution:
 
     def translation(self, flm, alpha, beta):
         '''
-        tranlsates given flm on the sphere by alpha/beta
+        translates given flm on the sphere by alpha/beta
 
         Arguments:
             flm {array} -- harmonic representation of function
@@ -107,7 +113,8 @@ class SiftingConvolution:
         '''
 
         # numpy binary filename
-        filename = 'trans_dd_' + self.filename_angle() + 'samp-' + str(
+        filename = 'trans_dd_L-' + str(self.L) + '_' + self.filename_angle(
+            self.alpha_pi_fraction, self.beta_pi_fraction) + 'samp-' + str(
             self.method) + '.npy'
 
         # check if file of translated dirac delta already
@@ -115,10 +122,6 @@ class SiftingConvolution:
         # translation is slow for large L
         if os.path.exists(filename):
             glm = np.load(filename)
-            size = self.L * self.L
-            glm = glm[:size]
-            if len(glm) < size:
-                glm = self.translate_dirac_delta(alpha, beta, filename)
         else:
             glm = self.translate_dirac_delta(alpha, beta, filename)
 
@@ -131,12 +134,14 @@ class SiftingConvolution:
 
     def translate_dirac_delta(self, alpha, beta, filename=None):
         '''
-        tranlsates the dirac delta on the sphere by alpha/beta
+        translates the dirac delta on the sphere to alpha/beta
 
         Arguments:
-            flm {array} -- harmonic representation of function
             alpha {int} -- alpha pi fraction
             beta {beta} -- beta pi fraction
+
+        Keyword Arguments:
+            filename {str} -- filename to save array (default: {None})
 
         Returns:
             array -- translated flm
@@ -196,6 +201,7 @@ class SiftingConvolution:
         Arguments:
             f {function} -- inverse flm
             filename {str} -- filename for html/png/pdf plot
+            save_figure {bool} -- flag to save figure
         '''
 
         # get values from the setup
@@ -267,14 +273,13 @@ class SiftingConvolution:
         '''
 
         # setup
-        self.alpha_pi_fraction = alpha_pi_fraction
-        self.beta_pi_fraction = beta_pi_fraction
         gamma = self.gamma_pi_fraction * np.pi
         filename = self.f_name + '_'
         filename += 'L-' + str(self.L) + '_'
 
         # calculate nearest index of alpha/beta for translation
-        alpha, beta = self.calc_nearest_grid_point()
+        alpha, beta = self.calc_nearest_grid_point(
+            alpha_pi_fraction, beta_pi_fraction)
 
         # test for plotting routine
         if self.routine == 'north':
@@ -286,7 +291,8 @@ class SiftingConvolution:
         elif self.routine == 'rotate':
             # adjust filename
             filename += self.routine + '_'
-            filename += self.filename_angle(self.gamma_pi_fraction)
+            filename += self.filename_angle(
+                alpha_pi_fraction, beta_pi_fraction, self.gamma_pi_fraction)
             # Dirac delta not defined on sphere
             if self.f_name == 'dirac_delta':
                 flm = self.place_flm_on_north_pole(self.flm)
@@ -298,7 +304,8 @@ class SiftingConvolution:
             # adjust filename
             filename += self.routine + '_'
             # don't add gamma if translation
-            filename += self.filename_angle()
+            filename += self.filename_angle(
+                alpha_pi_fraction, beta_pi_fraction)
             # translate by alpha, beta
             flm = self.translation(self.flm, alpha, beta)
 
@@ -357,13 +364,15 @@ class SiftingConvolution:
 
         Arguments:
             ind {int} -- index in array
+            pix_i {int} -- theta index
+            pix_j {int} -- phi index
 
         Returns:
             complex float -- the value of ylm(omega')
         '''
 
         # create Ylm corresponding to index
-        ylm_harmonic = np.zeros((self.L * self.L), dtype=complex)
+        ylm_harmonic = np.zeros(self.L * self.L, dtype=complex)
         ylm_harmonic[ind] = 1
 
         # convert Ylm from pixel to harmonic space
@@ -374,22 +383,31 @@ class SiftingConvolution:
 
         return ylm_omega
 
-    def calc_nearest_grid_point(self):
+    def calc_nearest_grid_point(self, alpha_pi_fraction, beta_pi_fraction):
         '''
         calculate nearest index of alpha/beta for translation
         this is due to calculating \omega' through the pixel
         values - the translation needs to be at the same position
         as the rotation such that the difference error is small
 
+        Arguments:
+            alpha_pi_fraction {float} -- fraction of pi (phi)
+            beta_pi_fraction {float} -- fraction of pi (theta)
+
         Returns:
             (float, float) -- value nearest given fraction
         '''
 
         thetas, phis = ssht.sample_positions(self.L, Method=self.method)
-        alpha_idx = (np.abs(phis - self.alpha_pi_fraction * np.pi)).argmin()
+        alpha_idx = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
         alpha = phis[alpha_idx]
-        beta_idx = (np.abs(thetas - self.beta_pi_fraction * np.pi)).argmin()
+        beta_idx = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
         beta = thetas[beta_idx]
+
+        # to be used outside of class i.e. tests
+        self.alpha_pi_fraction = alpha_pi_fraction
+        self.beta_pi_fraction = beta_pi_fraction
+
         return alpha, beta
 
     # -----------------------------------------------
@@ -534,11 +552,13 @@ class SiftingConvolution:
         flm_boost = np.pad(flm, (0, boost), 'constant')
         return flm_boost
 
-    def filename_angle(self, gamma_pi_fraction=0):
+    def filename_angle(self, alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction=0):
         '''
         middle part of filename
 
         Arguments:
+            alpha_pi_fraction {float} -- fraction of pi
+            beta_pi_fraction {float} -- fraction of pi
             gamma_pi_fraction {float} -- fraction of pi
 
         Returns:
@@ -546,8 +566,8 @@ class SiftingConvolution:
         '''
 
         # get numerator/denominator for filename
-        alpha_num, alpha_den = self.get_angle_num_dem(self.alpha_pi_fraction)
-        beta_num, beta_den = self.get_angle_num_dem(self.beta_pi_fraction)
+        alpha_num, alpha_den = self.get_angle_num_dem(alpha_pi_fraction)
+        beta_num, beta_den = self.get_angle_num_dem(beta_pi_fraction)
         gamma_num, gamma_den = self.get_angle_num_dem(gamma_pi_fraction)
 
         # if alpha = beta = 0
