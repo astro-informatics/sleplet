@@ -107,9 +107,8 @@ class SiftingConvolution:
         '''
 
         # numpy binary filename
-        filename = 'trans_dd_L-' + str(
-            self.L) + '_' + self.filename_angle() + 'samp-' + str(
-                self.method) + '.npy'
+        filename = 'trans_dd_' + self.filename_angle() + 'samp-' + str(
+            self.method) + '.npy'
 
         # check if file of translated dirac delta already
         # exists otherwise calculate translated dirac delta
