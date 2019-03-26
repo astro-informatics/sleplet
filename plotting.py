@@ -81,7 +81,7 @@ def dirac_delta():
     return flm, config
 
 
-def gaussian(sig=10):
+def gaussian(sig=1e3):
     # setup
     config = read_yaml('input.yml')
     L = config['L']
@@ -104,7 +104,7 @@ def squashed_gaussian():
     config['func_name'] = 'squashed_gaussian'
 
     # function on the grid
-    def grid_fun(theta, phi, theta_0=0, theta_sig=0.1):
+    def grid_fun(theta, phi, theta_0=0, theta_sig=1e-2):
         config['func_name'] += filename_std_dev(theta_sig, 'tsig')
         f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(phi)
         return f
@@ -123,7 +123,7 @@ def elongated_gaussian():
     config['func_name'] = 'elongated_gaussian'
 
     # function on the grid
-    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=10 ** -1, phi_sig=10 ** 0):
+    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=1e-2, phi_sig=1e0):
         config['func_name'] += filename_std_dev(theta_sig, 'tsig')
         config['func_name'] += filename_std_dev(phi_sig, 'psig')
         f = np.exp(-((((theta - theta_0) / theta_sig) **

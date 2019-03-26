@@ -11,7 +11,7 @@ import pyssht as ssht
 def test_dirac_delta_rotate_translate(save_fig):
     # setup
     flm, config = dirac_delta()
-    config['routine'], config['type'] = None, 'abs'
+    config['routine'], config['type'] = None, 'real'
     sc = SiftingConvolution(flm, config)
     alpha_pi_fraction, beta_pi_fraction = 0.75, 0.25
 
@@ -36,7 +36,7 @@ def test_dirac_delta_rotate_translate(save_fig):
 
     # filename
     filename = 'dirac_delta_L-' + str(sc.L) + '_diff_rot_trans_samp-' + str(
-        sc.method) + '_res-' + str(sc.resolution) + '_' + str(sc.type)
+        sc.method) + '_res-' + str(sc.resolution)
 
     # calculate difference
     flm_diff = flm_rot - flm_trans
