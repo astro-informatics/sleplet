@@ -1,9 +1,1 @@
-trans_dd_L-256_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-32_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-4_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-128_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-1_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-64_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-8_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-16_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
-trans_dd_L-2_alpha-3pi4_beta-1pi4_samp-MW.npy filter=lfs diff=lfs merge=lfs -text
+*.npy filter=lfs diff=lfs merge=lfs -text
