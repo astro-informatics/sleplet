@@ -42,6 +42,8 @@ def read_args(spherical_harmonic=False):
                         choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
     parser.add_argument('--routine', '-r', type=str, nargs='?', default='north', const='north',
                         choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')
+    parser.add_argument('--extra_args', '-e', type=float,
+                        nargs='+', help='list of extra args for functions')
     parser.add_argument('--alpha', '-a', type=float, default=0.0,
                         help='alpha/phi pi fraction - defaults to 0')
     parser.add_argument('--beta', '-b', type=float, default=0.0,
@@ -81,8 +83,9 @@ def dirac_delta():
     return flm, config
 
 
-def gaussian(sig=1e3):
+def gaussian(args=1e3):
     # setup
+    sig = args[0]
     config = read_yaml('input.yml')
     L = config['L']
     config['func_name'] = 'gaussian'
@@ -97,16 +100,24 @@ def gaussian(sig=1e3):
     return flm, config
 
 
-def squashed_gaussian():
+def squashed_gaussian(args=[1e-2, 1e-1]):
     # setup
+        # setup
+    try:
+        t_sig, freq = args
+    except ValueError:
+        print('function requires two extra args')
+        raise
     config = read_yaml('input.yml')
     L, method, reality = config['L'], config['sampling'], config['reality']
     config['func_name'] = 'squashed_gaussian'
 
     # function on the grid
-    def grid_fun(theta, phi, theta_0=0, theta_sig=1e-2):
+    def grid_fun(theta, phi, theta_0=0, theta_sig=t_sig, freq=freq):
         config['func_name'] += filename_std_dev(theta_sig, 'tsig')
-        f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(phi)
+        config['func_name'] += filename_std_dev(freq, 'freq')
+        f = np.exp(
+            -((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
@@ -116,14 +127,19 @@ def squashed_gaussian():
     return flm, config
 
 
-def elongated_gaussian():
+def elongated_gaussian(args=[1e-2, 1e0]):
     # setup
+    try:
+        t_sig, p_sig = args
+    except ValueError:
+        print('function requires two extra args')
+        raise
     config = read_yaml('input.yml')
     L, method, reality = config['L'], config['sampling'], config['reality']
     config['func_name'] = 'elongated_gaussian'
 
     # function on the grid
-    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=1e-2, phi_sig=1e0):
+    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=t_sig, phi_sig=p_sig):
         config['func_name'] += filename_std_dev(theta_sig, 'tsig')
         config['func_name'] += filename_std_dev(phi_sig, 'psig')
         f = np.exp(-((((theta - theta_0) / theta_sig) **
@@ -240,7 +256,11 @@ if __name__ == '__main__':
     else:
         args = read_args()
         flm_input = total[args.flm]
-        flm, flm_config = flm_input()
+        num_args = flm_input.__code__.co_argcount
+        if args.extra_args is None or num_args == 0:
+            flm, flm_config = flm_input()
+        else:
+            flm, flm_config = flm_input(args.extra_args)
 
     if 'routine' not in flm_config:
         flm_config['routine'] = args.routine
