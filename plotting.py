@@ -83,9 +83,9 @@ def dirac_delta():
     return flm, config
 
 
-def gaussian(args=1e3):
+def gaussian(args=3):
     # setup
-    sig = args[0]
+    sig = 10 ** args[0]
     config = read_yaml('input.yml')
     L = config['L']
     config['func_name'] = 'gaussian'
@@ -100,11 +100,11 @@ def gaussian(args=1e3):
     return flm, config
 
 
-def squashed_gaussian(args=[1e-2, 1e-1]):
+def squashed_gaussian(args=[-2, -1]):
     # setup
         # setup
     try:
-        t_sig, freq = args
+        t_sig, freq = [10 ** x for x in args]
     except ValueError:
         print('function requires two extra args')
         raise
@@ -127,10 +127,10 @@ def squashed_gaussian(args=[1e-2, 1e-1]):
     return flm, config
 
 
-def elongated_gaussian(args=[1e-2, 1e0]):
+def elongated_gaussian(args=[-2, 0]):
     # setup
     try:
-        t_sig, p_sig = args
+        t_sig, p_sig = [10 ** x for x in args]
     except ValueError:
         print('function requires two extra args')
         raise

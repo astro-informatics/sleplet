@@ -17,6 +17,9 @@ for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for r in 
 # spherical harmonics
 for l in {0..3}; do for m in $(seq -$l $l); do for t in real imag abs sum; do echo $l, $m, $t; ./plotting.py spherical_harmonic -l $l -m $m -t $t; done; done; done
 
+# elongated gaussian
+for t in $(seq -2 2); do for p in $(seq -2 2); do ./plotting.py elongated_gaussian -e $t $p; ./plotting.py elongated_gaussian -e $t $p -r translate -a 0.75 -b 0.25; ./plotting.py elongated_gaussian -e $t $p -c earth; echo $t, $p; done; done
+
 # presentation rotation demo
 echo 'remember to create Y_{43} and rotate (alpha,beta,gamma)='
 echo '(0,0,pi/4)'
