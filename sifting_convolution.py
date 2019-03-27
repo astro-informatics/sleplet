@@ -250,17 +250,16 @@ class SiftingConvolution:
         )
 
         fig = Figure(data=data, layout=layout)
-        directory = os.path.join(os.pardir, os.pardir, self.fig_directory)
 
         # if save_fig is true then print as png and pdf in their directories
         if save_figure:
-            png_filename = os.path.join(directory, 'png', filename + '.png')
+            png_filename = os.path.join(self.fig_directory, 'png', filename + '.png')
             pio.write_image(fig, png_filename)
-            pdf_filename = os.path.join(directory, 'pdf', filename + '.pdf')
+            pdf_filename = os.path.join(self.fig_directory, 'pdf', filename + '.pdf')
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
-        html_filename = os.path.join(directory, 'html', filename + '.html')
+        html_filename = os.path.join(self.fig_directory, 'html', filename + '.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
     def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
