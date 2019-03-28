@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
 
-def test_dirac_delta_rotate_translate(save_fig):
+def test_dirac_delta_rotate_translate():
     # setup
     flm, config = dirac_delta()
     config['routine'], config['type'] = None, 'real'
@@ -49,8 +49,8 @@ def test_dirac_delta_rotate_translate(save_fig):
           np.max(np.abs(flm_rot - flm_trans)))
 
     # create plot
-    sc.plotly_plot(f_diff, filename, save_fig)
+    sc.plotly_plot(f_diff, filename, config['save_fig'])
 
 
 if __name__ == '__main__':
-    test_dirac_delta_rotate_translate(save_fig=False)
+    test_dirac_delta_rotate_translate()
