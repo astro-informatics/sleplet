@@ -2,8 +2,3 @@
 *
 # Except this file
 !.gitignore
-
-# and these directories
-!html
-!pdf
-!png
