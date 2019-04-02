@@ -30,7 +30,7 @@ def read_yaml(yaml_file):
         os.getcwd(), os.path.dirname(__file__)))
     yaml_file = os.path.join(__location__, yaml_file)
     content = open(yaml_file)
-    config_dict = yaml.load(content)
+    config_dict = yaml.load(content, Loader=yaml.FullLoader)
     return config_dict
 
 
