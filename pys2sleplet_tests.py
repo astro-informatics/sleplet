@@ -29,7 +29,7 @@ def test_dirac_delta_rotate_translate():
                          Method=sc.method, Reality=sc.reality)
 
     # translation
-    flm_trans = sc.translation(flm, alpha, beta)
+    flm_trans = sc.translation(flm)
     flm_trans_boost = sc.resolution_boost(flm_trans)
     f_trans = ssht.inverse(flm_trans_boost, sc.resolution,
                            Method=sc.method, Reality=sc.reality)

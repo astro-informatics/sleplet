@@ -99,14 +99,12 @@ class SiftingConvolution:
             flm, alpha, beta, gamma, self.L)
         return flm_rot
 
-    def translation(self, flm, alpha, beta):
+    def translation(self, flm):
         '''
         translates given flm on the sphere by alpha/beta
 
         Arguments:
             flm {array} -- harmonic representation of function
-            alpha {float} -- fraction of pi (phi)
-            beta {float} -- fraction of pi (theta)
 
         Returns:
             array -- translated flm
@@ -122,7 +120,7 @@ class SiftingConvolution:
         if os.path.exists(filename):
             glm = np.load(filename)
         else:
-            glm = self.translate_dirac_delta(alpha, beta, filename)
+            glm = self.translate_dirac_delta(filename)
 
         # convolve with flm
         if self.f_name == 'dirac_delta':
@@ -131,13 +129,9 @@ class SiftingConvolution:
             flm_conv = self.convolution(flm, glm)
         return flm_conv
 
-    def translate_dirac_delta(self, alpha, beta, filename=None):
+    def translate_dirac_delta(self, filename=None):
         '''
         translates the dirac delta on the sphere to alpha/beta
-
-        Arguments:
-            alpha {int} -- alpha pi fraction
-            beta {beta} -- beta pi fraction
 
         Keyword Arguments:
             filename {str} -- filename to save array (default: {None})
@@ -149,23 +143,17 @@ class SiftingConvolution:
         # initialise array
         flm_trans = np.zeros((self.L * self.L), dtype=complex)
 
-        # compute pixels of \omega'
-        pix_i = ssht.theta_to_index(beta, self.L, Method=self.method)
-        pix_j = ssht.phi_to_index(alpha, self.L, Method=self.method)
-
         # Dirac delta is real so we can take advantage of the
         # conjugate symmetry relationship for all flm
         for ell in range(self.L):
             m = 0
             ind = ssht.elm2ind(ell, m)
-            conj_pixel_val = self.calc_pixel_value(
-                ind, pix_i, pix_j)
+            conj_pixel_val = self.calc_pixel_value(ind)
             flm_trans[ind] = conj_pixel_val
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                conj_pixel_val = self.calc_pixel_value(
-                    ind_pm, pix_i, pix_j)
+                conj_pixel_val = self.calc_pixel_value(ind_pm)
                 flm_trans[ind_pm] = conj_pixel_val
                 flm_trans[ind_nm] = (-1) ** m * np.conj(flm_trans[ind_pm])
 
@@ -308,7 +296,7 @@ class SiftingConvolution:
             filename += self.filename_angle(
                 alpha_pi_fraction, beta_pi_fraction)
             # translate by alpha, beta
-            flm = self.translation(self.flm, alpha, beta)
+            flm = self.translation(self.flm)
 
         # perform convolution
         if self.conv_fun is not None:
@@ -359,14 +347,12 @@ class SiftingConvolution:
     # ---------- translation helper functions ----------
     # --------------------------------------------------
 
-    def calc_pixel_value(self, ind, pix_i, pix_j):
+    def calc_pixel_value(self, ind):
         '''
         calculate the ylm(omega') which defines the translation
 
         Arguments:
             ind {int} -- index in array
-            pix_i {int} -- theta index
-            pix_j {int} -- phi index
 
         Returns:
             complex float -- the value of ylm(omega')
@@ -380,7 +366,7 @@ class SiftingConvolution:
         ylm_pixel = ssht.inverse(ylm_harmonic, self.L, Method=self.method)
 
         # get value at pixel (i, j)
-        ylm_omega = np.conj(ylm_pixel[pix_i, pix_j])
+        ylm_omega = np.conj(ylm_pixel[self.pix_i, self.pix_j])
 
         return ylm_omega
 
@@ -400,10 +386,10 @@ class SiftingConvolution:
         '''
 
         thetas, phis = ssht.sample_positions(self.L, Method=self.method)
-        alpha_idx = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
-        alpha = phis[alpha_idx]
-        beta_idx = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
-        beta = thetas[beta_idx]
+        self.pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
+        self.pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
+        alpha = phis[self.pix_j]
+        beta = thetas[self.pix_i]
 
         # to be used outside of class i.e. tests
         self.alpha_pi_fraction = alpha_pi_fraction
