@@ -11,4 +11,4 @@ before_install:
     - git checkout "$TRAVIS_BRANCH"
 
 script:
-    - docker run --rm "$DOCKER_USERNAME"/cosmoinformatics /bin/sh -c "python pys2sleplet_tests.py"
+    - python pys2sleplet_tests.py
