@@ -5,10 +5,10 @@ python:
 services:
     - docker
 
-before_script:
+before_install:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker pull "$DOCKER_USERNAME"/cosmoinformatics
     - git checkout "$TRAVIS_BRANCH"
 
 script:
-    - python pys2sleplet_tests.py
+    - docker run --rm "$DOCKER_USERNAME"/cosmoinformatics /bin/sh -c "python pys2sleplet_tests.py"
