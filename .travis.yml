@@ -7,9 +7,9 @@ services:
 
 before_install:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker pull paddyroddy/cosmoinformatics
-    - docker run -it --rm paddyroddy/cosmoinformatics
+    - docker pull "$DOCKER_USERNAME"/cosmoinformatics
     - git checkout "$TRAVIS_BRANCH"
+    - docker run --rm "$DOCKER_USERNAME"/cosmoinformatics /bin/sh -c 'git checkout "$TRAVIS_BRANCH"; python pys2sleplet_tests.py'
 
 script:
     - python pys2sleplet_tests.py
