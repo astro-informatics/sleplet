@@ -83,7 +83,7 @@ def dirac_delta():
     return flm, config
 
 
-def gaussian(args=3):
+def gaussian(args=[3]):
     # setup
     sig = 10 ** args[0]
     config = read_yaml('input.yml')
