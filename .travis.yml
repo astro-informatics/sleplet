@@ -1,14 +1,9 @@
-language: python
-python:
-    - '3.6'
-
 services:
     - docker
 
-before_install:
+before_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker pull "$DOCKER_USERNAME"/cosmoinformatics
-    - git checkout "$TRAVIS_BRANCH"
 
 script:
-    - python pys2sleplet_tests.py
+    - docker run --rm "$DOCKER_USERNAME"/cosmoinformatics /bin/sh -c 'git checkout "$TRAVIS_BRANCH"; python pys2sleplet_tests.py'
