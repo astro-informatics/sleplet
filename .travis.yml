@@ -9,8 +9,9 @@ install:
     - docker run --name run_test -t -d "$DOCKER_USERNAME"/cosmoinformatics
 
 before_script:
-    - docker exec run_test mkdir s2sleplet
-    - docker cp . run_test:s2sleplet
+    - docker exec run_test mkdir /home/s2sleplet
+    - docker exec run_test cd /home/s2sleplet
+    - docker cp . run_test:.
     - docker exec run_test sed -i "s/32/512/" input.yml
 
 script:
