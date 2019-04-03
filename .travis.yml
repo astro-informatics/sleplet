@@ -1,9 +1,17 @@
 services:
     - docker
 
-before_script:
+before_install:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+install:
     - docker pull "$DOCKER_USERNAME"/cosmoinformatics
+    - docker run --name run_test -t -d "$DOCKER_USERNAME"/cosmoinformatics
+
+before_script:
+    - docker exec run_test mkdir s2sleplet
+    - docker cp . run_test:s2sleplet
+    - docker exec run_test sed -i "s/32/512/" input.yml
 
 script:
-    - docker run --rm "$DOCKER_USERNAME"/cosmoinformatics /bin/sh -c "git checkout ${TRAVIS_BRANCH}; git pull; sed -i 's/32/512/' input.yml; ./pys2sleplet_tests.py"
+    - docker exec run_test ./pys2sleplet_tests.py
