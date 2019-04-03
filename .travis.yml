@@ -6,4 +6,4 @@ before_script:
     - docker pull "$DOCKER_USERNAME"/cosmoinformatics
 
 script:
-    - docker run --rm "$DOCKER_USERNAME"/cosmoinformatics /bin/sh -c "git checkout ${TRAVIS_BRANCH}; sed -i 's/32/512/' input.yml; ./pys2sleplet_tests.py"
+    - docker run --rm "$DOCKER_USERNAME"/cosmoinformatics /bin/sh -c "git checkout ${TRAVIS_BRANCH}; git pull; sed -i 's/32/512/' input.yml; ./pys2sleplet_tests.py"
