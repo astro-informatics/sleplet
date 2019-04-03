@@ -32,6 +32,7 @@ class SiftingConvolution:
         self.f_name = flm_config['func_name']
         self.L = flm_config['L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
+        self.inverted = flm_config['inverted']
         self.method = flm_config['sampling']
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -42,7 +43,6 @@ class SiftingConvolution:
             self.reality = flm_config['reality'] or glm_config['reality']
             self.type = glm_config['type']
             self.routine = glm_config['routine']
-            self.inverted = flm_config['inverted'] or glm_config['inverted']
             self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
             self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
             self.L_glm = glm_config['L']
@@ -52,7 +52,6 @@ class SiftingConvolution:
             self.reality = flm_config['reality']
             self.type = flm_config['type']
             self.routine = flm_config['routine']
-            self.inverted = flm_config['inverted']
             self.auto_open = flm_config['auto_open']
             self.save_fig = flm_config['save_fig']
             self.resolution = self.calc_resolution(flm_config)
