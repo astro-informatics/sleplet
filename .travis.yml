@@ -2,16 +2,16 @@ services:
     - docker
 
 before_install:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
 
 install:
-    - docker pull "$DOCKER_USERNAME"/cosmoinformatics
-    - docker run --name run_test -t -d "$DOCKER_USERNAME"/cosmoinformatics
+    - docker pull ${DOCKER_USERNAME}/${DOCKER_IMAGE}
+    - docker run --name ${CONTAINER_NAME} -t -d ${DOCKER_USERNAME}/${DOCKER_IMAGE}
 
 before_script:
-    - docker exec run_test mkdir /home/s2sleplet
-    - docker cp . run_test:/home/s2sleplet
-    - docker exec run_test sed -i "s/32/512/" /home/s2sleplet/input.yml
+    - docker exec ${CONTAINER_NAME} mkdir ${S2SLEPLET}
+    - docker cp . ${CONTAINER_NAME}:${S2SLEPLET}
+    - docker exec ${CONTAINER_NAME} sed -i 's/32/512/' ${S2SLEPLET}/input.yml
 
 script:
-    - docker exec run_test python /home/s2sleplet/pys2sleplet_tests.py
+    - docker exec run_test python ${S2SLEPLET}/pys2sleplet_tests.py
