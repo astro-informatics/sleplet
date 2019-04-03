@@ -11,8 +11,7 @@ install:
 before_script:
     - docker exec run_test mkdir /home/s2sleplet
     - docker cp . run_test:/home/s2sleplet
-    - docker exec run_test /bin/sh -c "cd /home/s2sleplet"
-    - docker exec run_test sed -i "s/32/512/" input.yml
+    - docker exec run_test sed -i "s/32/512/" /home/s2sleplet/input.yml
 
 script:
-    - docker exec run_test ./pys2sleplet_tests.py
+    - docker exec run_test ./home/s2sleplet/pys2sleplet_tests.py

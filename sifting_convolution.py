@@ -33,6 +33,8 @@ class SiftingConvolution:
         self.L = flm_config['L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
         self.method = flm_config['sampling']
+        self.location = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
         # if convolving with some glm
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
@@ -111,7 +113,7 @@ class SiftingConvolution:
         '''
 
         # numpy binary filename
-        filename = os.path.join('npy', 'trans_dd_L-' + str(self.L) + '_' + self.filename_angle(
+        filename = os.path.join(self.location, 'npy', 'trans_dd_L-' + str(self.L) + '_' + self.filename_angle(
             self.alpha_pi_fraction, self.beta_pi_fraction) + 'samp-' + str(self.method) + '.npy')
 
         # check if file of translated dirac delta already
@@ -241,15 +243,15 @@ class SiftingConvolution:
         # if save_fig is true then print as png and pdf in their directories
         if save_figure:
             png_filename = os.path.join(
-                self.fig_directory, 'png', filename + '.png')
+                self.location, self.fig_directory, 'png', filename + '.png')
             pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(
-                self.fig_directory, 'pdf', filename + '.pdf')
+                self.location, self.fig_directory, 'pdf', filename + '.pdf')
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
         html_filename = os.path.join(
-            self.fig_directory, 'html', filename + '.html')
+            self.location, self.fig_directory, 'html', filename + '.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
     def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):

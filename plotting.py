@@ -25,10 +25,10 @@ def filename_std_dev(angle, arg_name):
     return filename
 
 
-def read_yaml(yaml_file):
+def read_yaml(yaml_name):
     __location__ = os.path.realpath(os.path.join(
         os.getcwd(), os.path.dirname(__file__)))
-    yaml_file = os.path.join(__location__, yaml_file)
+    yaml_file = os.path.join(__location__, yaml_name)
     content = open(yaml_file)
     config_dict = yaml.load(content, Loader=yaml.FullLoader)
     return config_dict
