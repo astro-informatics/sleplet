@@ -14,4 +14,4 @@ before_script:
     - docker exec run_test sed -i "s/32/512/" /home/s2sleplet/input.yml
 
 script:
-    - docker exec run_test ./home/s2sleplet/pys2sleplet_tests.py
+    - docker exec run_test python /home/s2sleplet/pys2sleplet_tests.py
