@@ -1,8 +1,8 @@
+L: 128
 cbar_min: -2500
 cbar_max: 2500
 gamma_pi_fraction: 0
 reality: True
-inverted: True
 sampling: 'MW'
 func_name: 'earth'
 type: 'real'

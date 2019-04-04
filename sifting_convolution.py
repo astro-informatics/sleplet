@@ -32,8 +32,8 @@ class SiftingConvolution:
         self.f_name = flm_config['func_name']
         self.L = flm_config['L']
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
-        self.inverted = flm_config['inverted']
         self.method = flm_config['sampling']
+        self.inverted = False
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
         # if convolving with some glm
@@ -163,8 +163,7 @@ class SiftingConvolution:
 
         return flm_trans
 
-    @staticmethod
-    def convolution(flm, glm):
+    def convolution(self, flm, glm):
         '''
         computes the sifting convolution of two arrays
 
@@ -176,6 +175,11 @@ class SiftingConvolution:
             array -- convolved output
         '''
 
+        # conjugate flips map so if the glms
+        # have imaginary parts then flip the
+        # opposite way to just plotting the map
+        if sum(glm.imag == 0) != 0:
+            self.inverted = not self.inverted
         return flm * np.conj(glm)
 
     # --------------------------------------------------
@@ -326,7 +330,8 @@ class SiftingConvolution:
         f = ssht.inverse(flm, self.resolution,
                          Method=self.method, Reality=self.reality)
 
-        # some flm are inverted i.e. topography map of the Earth
+        # some flm are inverted i.e.
+        # convolution with topograpic map of the Earth
         if self.inverted:
             f = np.fliplr(f)
 
