@@ -28,7 +28,7 @@ def filename_std_dev(angle, arg_name):
 def read_yaml(yaml_name):
     __location__ = os.path.realpath(os.path.join(
         os.getcwd(), os.path.dirname(__file__)))
-    yaml_file = os.path.join(__location__, yaml_name)
+    yaml_file = os.path.join(__location__, 'yaml', yaml_name)
     content = open(yaml_file)
     config_dict = yaml.load(content, Loader=yaml.FullLoader)
     return config_dict
