@@ -10,6 +10,10 @@ from fractions import Fraction
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
+global __location__
+__location__ = os.path.realpath(os.path.join(
+    os.getcwd(), os.path.dirname(__file__)))
+
 
 def get_angle_num_dem(angle_fraction):
     angle = Fraction(angle_fraction).limit_denominator()
@@ -26,8 +30,6 @@ def filename_std_dev(angle, arg_name):
 
 
 def read_yaml(yaml_name):
-    __location__ = os.path.realpath(os.path.join(
-        os.getcwd(), os.path.dirname(__file__)))
     yaml_file = os.path.join(__location__, 'yaml', yaml_name)
     content = open(yaml_file)
     config_dict = yaml.load(content, Loader=yaml.FullLoader)
@@ -42,7 +44,7 @@ def read_args(spherical_harmonic=False):
                         choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
     parser.add_argument('--routine', '-r', type=str, nargs='?', default='north', const='north',
                         choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')
-    parser.add_argument('--extra_args', '-e', type=float,
+    parser.add_argument('--extra_args', '-e', type=int,
                         nargs='+', help='list of extra args for functions')
     parser.add_argument('--alpha', '-a', type=float, default=0.0,
                         help='alpha/phi pi fraction - defaults to 0')
@@ -127,7 +129,7 @@ def squashed_gaussian(args=[-2, -1]):
     return flm, config
 
 
-def elongated_gaussian(args=[-2, 0]):
+def elongated_gaussian(args=[0, -3]):
     # setup
     try:
         t_sig, p_sig = [10 ** x for x in args]
@@ -171,13 +173,16 @@ def spherical_harmonic(ell, m):
 def earth():
     # setup
     config = read_yaml('earth.yml')
+    L = config['L']
 
-    # create flm
+    # extract flm
     matfile = os.path.join(
-        os.environ['SSHT'], 'src', 'matlab', 'data', 'EGM2008_Topography_flms_L0128')
+        __location__, 'data', 'EGM2008_Topography_flms_L2190')
     mat_contents = sio.loadmat(matfile)
-    flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
-    config['L'] = int(mat_contents['L'][0][0])
+    arr = np.ascontiguousarray(mat_contents['flm'][:, 0])
+
+    # don't take the full L
+    flm = np.conj(arr[:L * L])
 
     return flm, config
 
