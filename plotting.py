@@ -29,8 +29,8 @@ def filename_std_dev(angle, arg_name):
     return filename
 
 
-def read_yaml(yaml_name):
-    yaml_file = os.path.join(__location__, 'yaml', yaml_name)
+def read_yaml():
+    yaml_file = os.path.join(__location__, 'input.yml')
     content = open(yaml_file)
     config_dict = yaml.load(content, Loader=yaml.FullLoader)
     return config_dict
@@ -65,9 +65,13 @@ def read_args(spherical_harmonic=False):
 
 def dirac_delta():
     # setup
-    config = read_yaml('input.yml')
+    yaml = read_yaml()
+    extra = dict(
+        func_name='dirac_delta',
+        reality=True
+    )
+    config = {**yaml, **extra}
     L = config['L']
-    config['func_name'] = 'dirac_delta'
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -86,12 +90,22 @@ def dirac_delta():
 
 
 def gaussian(args=[3]):
+    # args
+    try:
+        sig = 10 ** args[0]
+    except ValueError:
+        print('function requires one extra arg')
+        raise
+
     # setup
-    sig = 10 ** args[0]
-    config = read_yaml('input.yml')
+    yaml = read_yaml()
+    extra = dict(
+        func_name='gaussian' + filename_std_dev(
+            sig, 'sig'),
+        reality=True
+    )
+    config = {**yaml, **extra}
     L = config['L']
-    config['func_name'] = 'gaussian'
-    config['func_name'] += filename_std_dev(sig, 'sig')
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -103,21 +117,27 @@ def gaussian(args=[3]):
 
 
 def squashed_gaussian(args=[-2, -1]):
-    # setup
-        # setup
+    # args
     try:
         t_sig, freq = [10 ** x for x in args]
     except ValueError:
         print('function requires two extra args')
         raise
-    config = read_yaml('input.yml')
-    L, method, reality = config['L'], config['sampling'], config['reality']
-    config['func_name'] = 'squashed_gaussian'
+
+    # setup
+    yaml = read_yaml()
+    extra = dict(
+        func_name='squashed_gaussian' + filename_std_dev(
+            t_sig, 'tsig') + filename_std_dev(
+                freq, 'freq'),
+        reality=True
+    )
+    config = {**yaml, **extra}
+    L = config['L']
+    method, reality = config['sampling'], config['reality']
 
     # function on the grid
     def grid_fun(theta, phi, theta_0=0, theta_sig=t_sig, freq=freq):
-        config['func_name'] += filename_std_dev(theta_sig, 'tsig')
-        config['func_name'] += filename_std_dev(freq, 'freq')
         f = np.exp(
             -((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
@@ -130,20 +150,27 @@ def squashed_gaussian(args=[-2, -1]):
 
 
 def elongated_gaussian(args=[0, -3]):
-    # setup
+    # args
     try:
         t_sig, p_sig = [10 ** x for x in args]
     except ValueError:
         print('function requires two extra args')
         raise
-    config = read_yaml('input.yml')
-    L, method, reality = config['L'], config['sampling'], config['reality']
-    config['func_name'] = 'elongated_gaussian'
+
+    # setup
+    yaml = read_yaml()
+    extra = dict(
+        func_name='elongated_gaussian' + filename_std_dev(
+            t_sig, 'tsig') + filename_std_dev(
+                p_sig, 'psig'),
+        reality=True
+    )
+    config = {**yaml, **extra}
+    L = config['L']
+    method, reality = config['sampling'], config['reality']
 
     # function on the grid
     def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=t_sig, phi_sig=p_sig):
-        config['func_name'] += filename_std_dev(theta_sig, 'tsig')
-        config['func_name'] += filename_std_dev(phi_sig, 'psig')
         f = np.exp(-((((theta - theta_0) / theta_sig) **
                       2 + ((phi - phi_0) / phi_sig) ** 2) / 2))
         return f
@@ -157,10 +184,14 @@ def elongated_gaussian(args=[0, -3]):
 
 def spherical_harmonic(ell, m):
     # setup
-    config = read_yaml('input.yml')
+    yaml = read_yaml()
+    extra = dict(
+        func_name='spherical_harmonic_l' + str(
+            ell) + '_m' + str(m),
+        reality=False
+    )
+    config = {**yaml, **extra}
     L = config['L']
-    config['func_name'] = 'spherical_harmonic_l' + str(ell) + '_m' + str(m)
-    config['reality'] = False
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -172,7 +203,16 @@ def spherical_harmonic(ell, m):
 
 def earth():
     # setup
-    config = read_yaml('earth.yml')
+    yaml = read_yaml()
+    extra = dict(
+        cbar_max=2500,
+        cbar_min=-2500,
+        func_name='earth',
+        reality=True,
+        routine='north',
+        type='real'
+    )
+    config = {**yaml, **extra}
     L = config['L']
 
     # extract flm
@@ -189,12 +229,21 @@ def earth():
 
 def wmap_helper(file_ending):
     # setup
-    config = read_yaml('wmap.yml')
+    yaml = read_yaml()
+    extra = dict(
+        cbar_max=80,
+        cbar_min=-80,
+        func_name='wmap',
+        reality=True,
+        routine='north',
+        type='real'
+    )
+    config = {**yaml, **extra}
     L = config['L']
 
     # create flm
-    matfile = os.path.join(
-        os.environ['SSHT'], 'src', 'matlab', 'data', 'wmap' + file_ending)
+    matfile = os.path.join(os.environ[
+        'SSHT'], 'src', 'matlab', 'data', 'wmap' + file_ending)
     mat_contents = sio.loadmat(matfile)
     cl = np.ascontiguousarray(mat_contents['cl'][:, 0])
 

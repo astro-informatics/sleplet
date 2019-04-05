@@ -25,36 +25,30 @@ class SiftingConvolution:
             conv_fun {array} -- map to convolve with (default: {None})
         '''
 
-        self.flm = flm
-        self.fig_directory = 'figures'
-        self.colour = 'magma'
+        self.auto_open = flm_config['auto_open']
         self.conv_fun = conv_fun
         self.f_name = flm_config['func_name']
-        self.L = flm_config['L']
+        self.flm = flm
         self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
-        self.method = flm_config['sampling']
         self.inverted = False
+        self.L = flm_config['L']
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        self.method = flm_config['sampling']
+        self.resolution = self.calc_resolution(flm_config)
+        self.save_fig = flm_config['save_fig']
         # if convolving with some glm
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
             self.g_name = glm_config['func_name']
-            self.reality = flm_config['reality'] or glm_config['reality']
-            self.type = glm_config['type']
+            self.reality = flm_config['reality'] and glm_config['reality']
             self.routine = glm_config['routine']
-            self.auto_open = flm_config['auto_open'] or glm_config['auto_open']
-            self.save_fig = flm_config['save_fig'] or glm_config['save_fig']
-            self.L_glm = glm_config['L']
-            self.resolution = self.calc_resolution(glm_config)
+            self.type = glm_config['type']
         # if not convolving
         else:
             self.reality = flm_config['reality']
-            self.type = flm_config['type']
             self.routine = flm_config['routine']
-            self.auto_open = flm_config['auto_open']
-            self.save_fig = flm_config['save_fig']
-            self.resolution = self.calc_resolution(flm_config)
+            self.type = flm_config['type']
         # colourbar
         self.cbar_range = self.calc_cbar_range(flm_config, self.type)
 
@@ -212,7 +206,7 @@ class SiftingConvolution:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self.matplotlib_to_plotly(self.colour),
+                colorscale=self.matplotlib_to_plotly('magma'),
                 cmin=vmin,
                 cmax=vmax
             )]
@@ -246,15 +240,15 @@ class SiftingConvolution:
         # if save_fig is true then print as png and pdf in their directories
         if save_figure:
             png_filename = os.path.join(
-                self.location, self.fig_directory, 'png', filename + '.png')
+                self.location, 'figures', 'png', filename + '.png')
             pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(
-                self.location, self.fig_directory, 'pdf', filename + '.pdf')
+                self.location, 'figures', 'pdf', filename + '.pdf')
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
         html_filename = os.path.join(
-            self.location, self.fig_directory, 'html', filename + '.html')
+            self.location, 'figures', 'html', filename + '.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
     def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
@@ -303,20 +297,12 @@ class SiftingConvolution:
             # translate by alpha, beta
             flm = self.translation(self.flm)
 
-        # perform convolution
         if self.conv_fun is not None:
-            # shrink flm
-            if flm.size > self.glm.size:
-                glm = self.glm
-                flm = flm[range(glm.size)]
-            # shrink glm if L less than or keep the same
-            elif flm.size <= self.glm.size:
-                glm = self.glm[range(flm.size)]
             # perform convolution
-            flm = self.convolution(flm, glm)
+            flm = self.convolution(flm, self.glm)
             # adjust filename
             filename += 'convolved_' + self.g_name + '_'
-            filename += 'L-' + str(self.L_glm) + '_'
+            filename += 'L-' + str(self.L) + '_'
 
         # boost resolution
         if self.resolution != self.L:
