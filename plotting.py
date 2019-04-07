@@ -205,8 +205,6 @@ def earth():
     # setup
     yaml = read_yaml()
     extra = dict(
-        cbar_max=2500,
-        cbar_min=-2500,
         func_name='earth',
         reality=True,
         routine='north',
@@ -231,8 +229,6 @@ def wmap_helper(file_ending):
     # setup
     yaml = read_yaml()
     extra = dict(
-        cbar_max=80,
-        cbar_min=-80,
         func_name='wmap',
         reality=True,
         routine='north',

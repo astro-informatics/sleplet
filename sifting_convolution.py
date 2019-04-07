@@ -49,8 +49,6 @@ class SiftingConvolution:
             self.reality = flm_config['reality']
             self.routine = flm_config['routine']
             self.type = flm_config['type']
-        # colourbar
-        self.cbar_range = self.calc_cbar_range(flm_config, self.type)
 
     # -----------------------------------
     # ---------- flm functions ----------
@@ -191,8 +189,7 @@ class SiftingConvolution:
         '''
 
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self.setup_plot(
-            f, color_range=self.cbar_range)
+        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
         zoom = 1.4
         camera = dict(
@@ -464,31 +461,6 @@ class SiftingConvolution:
         resolution = flm_config['L'] * 2 ** exponent
 
         return resolution
-
-    @staticmethod
-    def calc_cbar_range(flm_config, plot_type):
-        '''
-        clculate colour brar limits
-
-        Arguments:
-            flm_config {dict} -- config dictionary
-            plot_type {str} -- real/imag/abs
-
-        Returns:
-            list -- limits or None if no limits passed
-        '''
-
-        # if colour bar values passed set min/max
-        if all(k in flm_config for k in ('cbar_min', 'cbar_max')):
-            # absolute values aren't negative
-            if plot_type == 'abs':
-                flm_config['cbar_min'] = 0
-            cbar_range = [flm_config['cbar_min'], flm_config['cbar_max']]
-        else:
-            # if nothing passed use function min/max
-            cbar_range = None
-
-        return cbar_range
 
     @staticmethod
     def matplotlib_to_plotly(colour, pl_entries=255):
