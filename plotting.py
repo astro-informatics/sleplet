@@ -46,9 +46,9 @@ def read_args(spherical_harmonic=False):
                         choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')
     parser.add_argument('--extra_args', '-e', type=int,
                         nargs='+', help='list of extra args for functions')
-    parser.add_argument('--alpha', '-a', type=float, default=0.0,
+    parser.add_argument('--alpha', '-a', type=float, default=0.75,
                         help='alpha/phi pi fraction - defaults to 0')
-    parser.add_argument('--beta', '-b', type=float, default=0.0,
+    parser.add_argument('--beta', '-b', type=float, default=0.25,
                         help='beta/theta pi fraction - defaults to 0')
     parser.add_argument('--convolve', '-c', type=valid_maps, choices=list(maps.keys(
     )), help='glm to perform sifting convolution with i.e. flm x glm*')
