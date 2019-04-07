@@ -167,11 +167,15 @@ class SiftingConvolution:
             array -- convolved output
         '''
 
-        # conjugate flips map so if the glms
-        # have imaginary parts then flip the
-        # opposite way to just plotting the map
-        if sum(glm.imag == 0) != 0:
-            self.inverted = not self.inverted
+        # the conjugate flips map with imag parts
+        # no effect if map is just real coefficients
+        self.inverted = not self.inverted
+
+        # convolution means that reality flag
+        # cannot be used as conjugate relation
+        # no longer holds
+        self.reality = False
+
         return flm * np.conj(glm)
 
     # --------------------------------------------------

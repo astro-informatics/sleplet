@@ -188,7 +188,7 @@ def spherical_harmonic(ell, m):
     extra = dict(
         func_name='spherical_harmonic_l' + str(
             ell) + '_m' + str(m),
-        reality=False
+        reality=True
     )
     config = {**yaml, **extra}
     L = config['L']
