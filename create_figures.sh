@@ -15,7 +15,7 @@ for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for t in 
 for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for r in rotate translate; do for t in real imag abs; do echo $f, $r, $t; ./plotting.py $f -t $t -r $r; done; done; done
 
 # spherical harmonics
-for l in {0..3}; do for m in $(seq -$l $l); do for t in real imag abs sum; do echo $l, $m, $t; ./plotting.py spherical_harmonic -l $l -m $m -t $t; done; done; done
+for l in {0..3}; do for m in $(seq -$l $l); do echo $l, $m; ./plotting.py spherical_harmonic -l $l -m $m -t real; done; done
 
 # elongated gaussian
 for t in $(seq -2 2); do for p in $(seq -2 2); do ./plotting.py elongated_gaussian -e $t $p; ./plotting.py elongated_gaussian -e $t $p -r translate; ./plotting.py elongated_gaussian -e $t $p -c earth; echo $t, $p; done; done
