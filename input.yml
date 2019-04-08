@@ -1,5 +1,4 @@
 L: 128
-gamma_pi_fraction: 0
 sampling: 'MW'
 auto_open: True
 save_fig: False

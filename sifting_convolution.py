@@ -29,7 +29,6 @@ class SiftingConvolution:
         self.conv_fun = conv_fun
         self.f_name = flm_config['func_name']
         self.flm = flm
-        self.gamma_pi_fraction = flm_config['gamma_pi_fraction']
         self.inverted = False
         self.L = flm_config['L']
         self.location = os.path.realpath(
@@ -252,17 +251,18 @@ class SiftingConvolution:
             self.location, 'figures', 'html', filename + '.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
-    def plot(self, alpha_pi_fraction=0.0, beta_pi_fraction=0.0):
+    def plot(self, alpha_pi_fraction=0.75, beta_pi_fraction=0.25, gamma_pi_fraction=0):
         '''
         master plotting method
 
         Keyword Arguments:
-            alpha_pi_fraction {float} -- fraction of pi i.e. 0.75 (default: {0.0})
-            beta_pi_fraction {float} -- fraction of pi i.e. 0.25 (default: {0.0})
+            alpha_pi_fraction {float} -- fraction of pi (default: {0.75})
+            beta_pi_fraction {float} -- fraction of pi (default: {0.25})
+            gamma_pi_fraction {float} -- fraction of pi (default: {0.0})
         '''
 
         # setup
-        gamma = self.gamma_pi_fraction * np.pi
+        gamma = gamma_pi_fraction * np.pi
         filename = self.f_name + '_'
         filename += 'L-' + str(self.L) + '_'
 
@@ -281,7 +281,7 @@ class SiftingConvolution:
             # adjust filename
             filename += self.routine + '_'
             filename += self.filename_angle(
-                alpha_pi_fraction, beta_pi_fraction, self.gamma_pi_fraction)
+                alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
             # Dirac delta not defined on sphere
             if self.f_name == 'dirac_delta':
                 flm = self.place_flm_on_north_pole(self.flm)
@@ -397,11 +397,11 @@ class SiftingConvolution:
     @staticmethod
     def pi_in_filename(numerator, denominator):
         '''
-        create filename for alpha/beta as multiple of pi
+        create filename for angle as multiple of pi
 
         Arguments:
-            numerator {int} -- alpha/beta numerator
-            denominator {int} -- alpha/beta denominator
+            numerator {int} -- angle numerator
+            denominator {int} -- angle denominator
 
         Returns:
             str -- middle of filename

@@ -21,7 +21,11 @@ for l in {0..3}; do for m in $(seq -$l $l); do for t in real imag abs sum; do ec
 for t in $(seq -2 2); do for p in $(seq -2 2); do ./plotting.py elongated_gaussian -e $t $p; ./plotting.py elongated_gaussian -e $t $p -r translate; ./plotting.py elongated_gaussian -e $t $p -c earth; echo $t, $p; done; done
 
 # presentation rotation demo
-echo 'remember to create Y_{43} and rotate (alpha,beta,gamma)='
-echo '(0,0,pi/4)'
-echo '(0,pi/4,pi/4)'
-echo '(pi/4,pi/4,pi/4)'
+echo Y_{43}
+./plotting.py spherical_harmonic -l 4 -m 3
+echo Y_{43} rot 0 0 0.25
+./plotting.py spherical_harmonic -l 4 -m 3 -r rotate -a 0 -b 0 -g 0.25
+echo Y_{43} rot 0 0.25 0.25
+./plotting.py spherical_harmonic -l 4 -m 3 -r rotate -a 0 -b 0.25 -g 0.25
+echo Y_{43} rot 0.25 0.25 0.25
+./plotting.py spherical_harmonic -l 4 -m 3 -r rotate -a 0.25 -b 0.25 -g 0.25
