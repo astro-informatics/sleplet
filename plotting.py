@@ -50,6 +50,8 @@ def read_args(spherical_harmonic=False):
                         help='alpha/phi pi fraction - defaults to 0')
     parser.add_argument('--beta', '-b', type=float, default=0.25,
                         help='beta/theta pi fraction - defaults to 0')
+    parser.add_argument('--gamma', '-g', type=float, default=0,
+                        help='gamma pi fraction - defaults to 0 - rotation only')
     parser.add_argument('--convolve', '-c', type=valid_maps, choices=list(maps.keys(
     )), help='glm to perform sifting convolution with i.e. flm x glm*')
 
@@ -188,7 +190,7 @@ def spherical_harmonic(ell, m):
     extra = dict(
         func_name='spherical_harmonic_l' + str(
             ell) + '_m' + str(m),
-        reality=True
+        reality=False
     )
     config = {**yaml, **extra}
     L = config['L']
@@ -320,4 +322,4 @@ if __name__ == '__main__':
     # if convolving function passed otherwise return None
     glm = maps.get(args.convolve)
     sc = SiftingConvolution(flm, flm_config, glm)
-    sc.plot(args.alpha, args.beta)
+    sc.plot(args.alpha, args.beta, args.gamma)
