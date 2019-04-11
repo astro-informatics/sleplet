@@ -40,7 +40,7 @@ class SiftingConvolution:
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
             self.g_name = glm_config['func_name']
-            self.reality = flm_config['reality'] and glm_config['reality']
+            self.reality = False
             self.routine = glm_config['routine']
             self.type = glm_config['type']
         # if not convolving
