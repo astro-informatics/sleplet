@@ -70,6 +70,7 @@ def dirac_delta():
     yaml = read_yaml()
     extra = dict(
         func_name='dirac_delta',
+        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -104,6 +105,7 @@ def gaussian(args=[3]):
     extra = dict(
         func_name='gaussian' + filename_std_dev(
             sig, 'sig'),
+        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -132,6 +134,7 @@ def squashed_gaussian(args=[-2, -1]):
         func_name='squashed_gaussian' + filename_std_dev(
             t_sig, 'tsig') + filename_std_dev(
                 freq, 'freq'),
+        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -165,6 +168,7 @@ def elongated_gaussian(args=[0, -3]):
         func_name='elongated_gaussian' + filename_std_dev(
             t_sig, 'tsig') + filename_std_dev(
                 p_sig, 'psig'),
+        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -190,6 +194,7 @@ def spherical_harmonic(ell, m):
     extra = dict(
         func_name='spherical_harmonic_l' + str(
             ell) + '_m' + str(m),
+        inverted=False,
         reality=False
     )
     config = {**yaml, **extra}
@@ -208,6 +213,7 @@ def earth():
     yaml = read_yaml()
     extra = dict(
         func_name='earth',
+        inverted=True,
         reality=True,
         routine='north',
         type='real'
@@ -230,7 +236,7 @@ def earth():
             flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
 
     # don't take the full L
-    flm = np.conj(flm[:L * L])
+    flm = flm[:L * L]
 
     return flm, config
 
@@ -240,6 +246,7 @@ def wmap_helper(file_ending):
     yaml = read_yaml()
     extra = dict(
         func_name='wmap',
+        inverted=False,
         reality=True,
         routine='north',
         type='real'
