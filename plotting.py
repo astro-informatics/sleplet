@@ -219,10 +219,18 @@ def earth():
     matfile = os.path.join(
         __location__, 'data', 'EGM2008_Topography_flms_L2190')
     mat_contents = sio.loadmat(matfile)
-    arr = np.ascontiguousarray(mat_contents['flm'][:, 0])
+    flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
+
+    # fill in negative m components so as to
+    # avoid confusion with zero values
+    for ell in range(L):
+        for m in range(1, ell + 1):
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
 
     # don't take the full L
-    flm = np.conj(arr[:L * L])
+    flm = np.conj(flm[:L * L])
 
     return flm, config
 
