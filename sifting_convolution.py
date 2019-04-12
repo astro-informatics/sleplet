@@ -34,20 +34,17 @@ class SiftingConvolution:
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
         self.method = flm_config['sampling']
         self.resolution = self.calc_resolution(flm_config)
+        self.routine = flm_config['routine']
         self.save_fig = flm_config['save_fig']
+        self.type = flm_config['type']
         # if convolving with some glm
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
             self.g_name = glm_config['func_name']
             self.reality = False
-            self.routine = glm_config['routine']
-            self.type = glm_config['type']
         # if not convolving
         else:
-            self.inverted = flm_config['inverted']
             self.reality = flm_config['reality']
-            self.routine = flm_config['routine']
-            self.type = flm_config['type']
 
     # -----------------------------------
     # ---------- flm functions ----------

@@ -288,12 +288,12 @@ def valid_plotting(func_name):
         raise ValueError('Not a valid function name to plot')
 
 
-def valid_maps(func_name):
+def valid_kernels(func_name):
     # check if valid function
-    if func_name in maps:
+    if func_name in functions:
         return func_name
     else:
-        raise ValueError('Not a valid map name to convolve')
+        raise ValueError('Not a valid kernel name to convolve')
 
 
 functions = {
@@ -330,6 +330,6 @@ if __name__ == '__main__':
         flm_config['type'] = args.type
 
     # if convolving function passed otherwise return None
-    glm = maps.get(args.convolve)
+    glm = functions.get(args.convolve)
     sc = SiftingConvolution(flm, flm_config, glm)
     sc.plot(args.alpha, args.beta, args.gamma)
