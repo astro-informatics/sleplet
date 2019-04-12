@@ -39,7 +39,6 @@ class SiftingConvolution:
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
             self.g_name = glm_config['func_name']
-            self.inverted = glm_config['inverted']
             self.reality = False
             self.routine = glm_config['routine']
             self.type = glm_config['type']
@@ -165,10 +164,6 @@ class SiftingConvolution:
         Returns:
             array -- convolved output
         '''
-
-        # the conjugate flips map with imag parts
-        # no effect if map is just real coefficients
-        self.inverted = not self.inverted
 
         return flm * np.conj(glm)
 
@@ -311,11 +306,6 @@ class SiftingConvolution:
         # inverse & plot
         f = ssht.inverse(flm, self.resolution,
                          Method=self.method, Reality=self.reality)
-
-        # some flm are inverted i.e.
-        # convolution with topograpic map of the Earth
-        if self.inverted:
-            f = np.fliplr(f)
 
         # check for plotting type
         if self.type == 'real':

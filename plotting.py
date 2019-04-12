@@ -38,22 +38,24 @@ def read_yaml():
 
 def read_args(spherical_harmonic=False):
     parser = ArgumentParser(description='Create SSHT plot')
-    parser.add_argument('flm', type=valid_plotting, choices=list(
-        total.keys()), help='flm to plot on the sphere')
-    parser.add_argument('--type', '-t', type=str, nargs='?', default='real', const='real',
-                        choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
-    parser.add_argument('--routine', '-r', type=str, nargs='?', default='north', const='north',
-                        choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')
-    parser.add_argument('--extra_args', '-e', type=int,
-                        nargs='+', help='list of extra args for functions')
-    parser.add_argument('--alpha', '-a', type=float, default=0.75,
-                        help='alpha/phi pi fraction - defaults to 0')
-    parser.add_argument('--beta', '-b', type=float, default=0.25,
-                        help='beta/theta pi fraction - defaults to 0')
-    parser.add_argument('--gamma', '-g', type=float, default=0,
-                        help='gamma pi fraction - defaults to 0 - rotation only')
-    parser.add_argument('--convolve', '-c', type=valid_maps, choices=list(maps.keys(
-    )), help='glm to perform sifting convolution with i.e. flm x glm*')
+    parser.add_argument(
+        'flm', type=valid_plotting, choices=list(total.keys()), help='flm to plot on the sphere')
+    parser.add_argument(
+        '--type', '-t', type=str, nargs='?', default='real', const='real',
+        choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
+    parser.add_argument(
+        '--routine', '-r', type=str, nargs='?', default='north', const='north',
+        choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')
+    parser.add_argument(
+        '--extra_args', '-e', type=int, nargs='+', help='list of extra args for functions')
+    parser.add_argument(
+        '--alpha', '-a', type=float, default=0.75, help='alpha/phi pi fraction - defaults to 0')
+    parser.add_argument(
+        '--beta', '-b', type=float, default=0.25, help='beta/theta pi fraction - defaults to 0')
+    parser.add_argument(
+        '--gamma', '-g', type=float, default=0, help='gamma pi fraction - defaults to 0 - rotation only')
+    parser.add_argument(
+        '--convolve', '-c', type=valid_kernels, choices=list(functions.keys()), help='glm to perform sifting convolution with i.e. flm x glm*')
 
     # extra args for spherical harmonics
     if spherical_harmonic:
@@ -70,7 +72,6 @@ def dirac_delta():
     yaml = read_yaml()
     extra = dict(
         func_name='dirac_delta',
-        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -104,7 +105,6 @@ def gaussian(args=[3]):
     extra = dict(
         func_name='gaussian' + filename_std_dev(
             sig, 'sig'),
-        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -133,7 +133,6 @@ def squashed_gaussian(args=[-2, -1]):
         func_name='squashed_gaussian' + filename_std_dev(
             t_sig, 'tsig') + filename_std_dev(
                 freq, 'freq'),
-        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -167,7 +166,6 @@ def elongated_gaussian(args=[0, -3]):
         func_name='elongated_gaussian' + filename_std_dev(
             t_sig, 'tsig') + filename_std_dev(
                 p_sig, 'psig'),
-        inverted=False,
         reality=True
     )
     config = {**yaml, **extra}
@@ -193,7 +191,6 @@ def spherical_harmonic(ell, m):
     extra = dict(
         func_name='spherical_harmonic_l' + str(
             ell) + '_m' + str(m),
-        inverted=False,
         reality=False
     )
     config = {**yaml, **extra}
@@ -212,7 +209,6 @@ def earth():
     yaml = read_yaml()
     extra = dict(
         func_name='earth',
-        inverted=True,
         reality=True,
         routine='north',
         type='real'
@@ -235,7 +231,8 @@ def earth():
             flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
 
     # don't take the full L
-    flm = flm[:L * L]
+    # invert dataset as Earth backwards
+    flm = np.conj(flm[:L * L])
 
     return flm, config
 
@@ -245,7 +242,6 @@ def wmap_helper(file_ending):
     yaml = read_yaml()
     extra = dict(
         func_name='wmap',
-        inverted=False,
         reality=True,
         routine='north',
         type='real'
