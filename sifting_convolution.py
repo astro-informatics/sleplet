@@ -39,7 +39,7 @@ class SiftingConvolution:
         if self.conv_fun is not None:
             self.glm, glm_config = self.conv_fun()
             self.g_name = glm_config['func_name']
-            self.inverted = glm_config['func_name']
+            self.inverted = glm_config['inverted']
             self.reality = False
             self.routine = glm_config['routine']
             self.type = glm_config['type']
@@ -139,8 +139,7 @@ class SiftingConvolution:
         # Dirac delta is real so we can take advantage of the
         # conjugate symmetry relationship for all flm
         for ell in range(self.L):
-            m = 0
-            ind = ssht.elm2ind(ell, m)
+            ind = ssht.elm2ind(ell, m=0)
             conj_pixel_val = self.calc_pixel_value(ind)
             flm_trans[ind] = conj_pixel_val
             for m in range(1, ell + 1):
@@ -170,11 +169,6 @@ class SiftingConvolution:
         # the conjugate flips map with imag parts
         # no effect if map is just real coefficients
         self.inverted = not self.inverted
-
-        # convolution means that reality flag
-        # cannot be used as conjugate relation
-        # no longer holds
-        self.reality = False
 
         return flm * np.conj(glm)
 

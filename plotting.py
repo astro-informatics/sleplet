@@ -80,8 +80,7 @@ def dirac_delta():
     flm = np.zeros((L * L), dtype=complex)
     # impose reality on flms
     for ell in range(L):
-        m = 0
-        ind = ssht.elm2ind(ell, m)
+        ind = ssht.elm2ind(ell, m=0)
         flm[ind] = 1
         for m in range(1, ell + 1):
             ind_pm = ssht.elm2ind(ell, m)
