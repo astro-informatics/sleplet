@@ -6,7 +6,7 @@ echo 'wmap'
 ./plotting.py wmap
 
 # convolutions
-for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for m in wmap earth; do echo $f, $m; ./plotting.py $f -c $m; done; done
+for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for m in wmap earth; do echo $f, $m; ./plotting.py $m -c $f; done; done
 
 # north
 for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for t in real imag abs; do echo $f, $t; ./plotting.py $f -t $t -r north; done; done
