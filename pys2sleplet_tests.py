@@ -54,10 +54,10 @@ def test_dirac_delta_rotate_translate():
 
 def test_earth_identity_convolution():
     # get Earth flm
-    glm, config = earth()
+    flm, flm_config = earth()
 
     # create identity function for test
-    def identity(glm):
+    def identity():
         # setup
         yaml = read_yaml()
         extra = dict(
@@ -69,24 +69,19 @@ def test_earth_identity_convolution():
         L = config['L']
 
         # create identity
-        flm = np.ones((L * L)) + 1j * np.zeros((L * L))
+        glm = np.ones((L * L)) + 1j * np.zeros((L * L))
 
-        return flm, config
+        return glm, config
 
     # setup
-    flm, config = identity(glm)
-    config['routine'], config['type'] = None, 'real'
-    sc = SiftingConvolution(flm, config, earth)
+    glm, glm_config = identity()
+    sc = SiftingConvolution(flm, flm_config, glm, glm_config)
 
     # convolution
-    # conjugate in convolution flips map so
-    # need to flip back such that flms are equal for test
-    # but need flipped for plot
     flm_conv = sc.convolution(flm, glm)
-    flm_conj_conv = np.conj(flm_conv)
 
     # perform test
-    np.testing.assert_equal(flm_conj_conv, glm)
+    np.testing.assert_equal(flm_conv, flm)
     print('Identity convolution passed test')
 
     # prepare
@@ -97,10 +92,10 @@ def test_earth_identity_convolution():
     # filename
     filename = 'identity_L-' + str(sc.L) + '_convolved_earth_L-' + str(
         sc.L) + '_samp-' + str(sc.method) + '_res-' + str(
-            sc.resolution) + '_' + config['type']
+            sc.resolution) + '_' + flm_config['type']
 
     # create plot
-    sc.plotly_plot(f_conv.real, filename, config['save_fig'])
+    sc.plotly_plot(f_conv.real, filename, flm_config['save_fig'])
 
 
 if __name__ == '__main__':

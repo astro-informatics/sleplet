@@ -13,22 +13,23 @@ import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, flm, flm_config, conv_fun=None):
+    def __init__(self, flm, flm_config, glm=None, glm_config=None):
         '''
         initialise class
 
         Arguments:
             flm {array} -- harmonic representation of function
-            config_dict {dictionary} -- config options for class
+            flm_config {dictionary} -- config options for class
 
         Keyword Arguments:
-            conv_fun {array} -- map to convolve with (default: {None})
+            glm {array} -- kernel to convolve with (default: {None})
+            glm_config {array} -- config options of kernel (default: {None})
         '''
 
         self.auto_open = flm_config['auto_open']
-        self.conv_fun = conv_fun
         self.f_name = flm_config['func_name']
         self.flm = flm
+        self.glm = glm
         self.L = flm_config['L']
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -38,8 +39,7 @@ class SiftingConvolution:
         self.save_fig = flm_config['save_fig']
         self.type = flm_config['type']
         # if convolving with some glm
-        if self.conv_fun is not None:
-            self.glm, glm_config = self.conv_fun()
+        if self.glm is not None:
             self.g_name = glm_config['func_name']
             self.reality = False
         # if not convolving
@@ -285,7 +285,7 @@ class SiftingConvolution:
             # translate by alpha, beta
             flm = self.translation(self.flm)
 
-        if self.conv_fun is not None:
+        if self.glm is not None:
             # perform convolution
             flm = self.convolution(flm, self.glm)
             # adjust filename

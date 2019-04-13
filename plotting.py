@@ -318,18 +318,28 @@ if __name__ == '__main__':
     else:
         args = read_args()
         flm_input = total[args.flm]
-        num_args = flm_input.__code__.co_argcount
-        if args.extra_args is None or num_args == 0:
-            flm, flm_config = flm_input()
+        glm_input = functions.get(args.convolve)
+        # if not a convolution
+        if glm_input is None:
+            glm, glm_config = None, None
+            num_args = flm_input.__code__.co_argcount
+            if args.extra_args is None or num_args == 0:
+                flm, flm_config = flm_input()
+            else:
+                flm, flm_config = flm_input(args.extra_args)
+        # if convolution then flm is a map so no extra args
         else:
-            flm, flm_config = flm_input(args.extra_args)
+            flm, flm_config = flm_input()
+            num_args = glm_input.__code__.co_argcount
+            if args.extra_args is None or num_args == 0:
+                glm, glm_config = glm_input()
+            else:
+                glm, glm_config = glm_input(args.extra_args)
 
     if 'routine' not in flm_config:
         flm_config['routine'] = args.routine
     if 'type' not in flm_config:
         flm_config['type'] = args.type
 
-    # if convolving function passed otherwise return None
-    glm = functions.get(args.convolve)
-    sc = SiftingConvolution(flm, flm_config, glm)
+    sc = SiftingConvolution(flm, flm_config, glm, glm_config)
     sc.plot(args.alpha, args.beta, args.gamma)

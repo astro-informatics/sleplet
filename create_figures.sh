@@ -18,7 +18,7 @@ for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for r in 
 for l in {0..3}; do for m in $(seq -$l $l); do echo $l, $m; ./plotting.py spherical_harmonic -l $l -m $m -t real; done; done
 
 # elongated gaussian
-for t in $(seq -2 2); do for p in $(seq -3 1); do ./plotting.py elongated_gaussian -e $t $p; ./plotting.py elongated_gaussian -e $t $p -r translate; ./plotting.py elongated_gaussian -e $t $p -c earth; echo $t, $p; done; done
+for t in $(seq -2 2); do for p in $(seq -3 1); do echo $t $p; ./plotting.py elongated_gaussian -e $t $p; ./plotting.py elongated_gaussian -e $t $p -r translate; ./plotting.py earth -c elongated_gaussian -e $t $p; done; done
 
 # presentation rotation demo
 echo Y_{43}
