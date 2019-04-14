@@ -181,10 +181,9 @@ class SiftingConvolution:
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
-        zoom = 1.4
+        zoom = 1.15
         camera = dict(
-            up=dict(x=0, y=0, z=1),
-            eye=dict(x=-1 / zoom, y=1 / zoom, z=1 / zoom)
+            eye=dict(x=-1 / zoom, y=-0.1 / zoom, z=1 / zoom)
         )
 
         data = [
