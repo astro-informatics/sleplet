@@ -311,6 +311,11 @@ maps = {
 total = {**functions, **maps}
 
 if __name__ == '__main__':
+    # initialise to None
+    glm, glm_config = None, None
+
+    # if flm is spherical harmonics then
+    # obviously not a convolution
     if sys.argv[1] == 'spherical_harmonic':
         args = read_args(True)
         flm_input = total[args.flm]
@@ -321,7 +326,6 @@ if __name__ == '__main__':
         glm_input = functions.get(args.convolve)
         # if not a convolution
         if glm_input is None:
-            glm, glm_config = None, None
             num_args = flm_input.__code__.co_argcount
             if args.extra_args is None or num_args == 0:
                 flm, flm_config = flm_input()
@@ -336,6 +340,7 @@ if __name__ == '__main__':
             else:
                 glm, glm_config = glm_input(args.extra_args)
 
+    # if using input from argparse
     if 'routine' not in flm_config:
         flm_config['routine'] = args.routine
     if 'type' not in flm_config:
