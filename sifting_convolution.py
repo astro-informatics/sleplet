@@ -8,6 +8,7 @@ from plotly.graph_objs.layout import Scene, Margin
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 from fractions import Fraction
+import scipy.special as sp
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
@@ -132,9 +133,32 @@ class SiftingConvolution:
         # initialise array
         flm_trans = np.zeros((self.L * self.L), dtype=complex)
 
-        # Dirac delta is real so we can take advantage of the
-        # conjugate symmetry relationship for all flm
-        for ell in range(self.L):
+        # used in scipy
+        alpha, beta = self.calc_nearest_grid_point(
+            self.alpha_pi_fraction, self.beta_pi_fraction)
+
+        # scipy fails above L = 86
+        L_scipy_max = 86
+        if self.L < L_scipy_max + 1:
+            L_max = self.L
+        else:
+            L_max = L_scipy_max
+
+        # use scipy
+        for ell in range(L_max):
+            m = 0
+            ind = ssht.elm2ind(ell, m)
+            flm_trans[ind] = sp.sph_harm(
+                m, ell, -alpha, beta)
+            for m in range(1, ell + 1):
+                ind_pm = ssht.elm2ind(ell, m)
+                ind_nm = ssht.elm2ind(ell, -m)
+                flm_trans[ind_pm] = sp.sph_harm(
+                    m, ell, -alpha, beta)
+                flm_trans[ind_nm] = (-1) ** m * np.conj(flm_trans[ind_pm])
+
+        # use ssht
+        for ell in range(L_scipy_max, self.L):
             ind = ssht.elm2ind(ell, m=0)
             conj_pixel_val = self.calc_pixel_value(ind)
             flm_trans[ind] = conj_pixel_val
@@ -145,6 +169,7 @@ class SiftingConvolution:
                 flm_trans[ind_pm] = conj_pixel_val
                 flm_trans[ind_nm] = (-1) ** m * np.conj(flm_trans[ind_pm])
 
+        # save to speed up for future
         if filename is not None:
             np.save(filename, flm_trans)
 
