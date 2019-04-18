@@ -67,6 +67,24 @@ def read_args(spherical_harmonic=False):
     return args
 
 
+def identity():
+    # filename
+    func_name = 'identity'
+
+    # setup
+    yaml = read_yaml()
+    extra = dict(
+        reality=False
+    )
+    config = {**yaml, **extra}
+    L = config['L']
+
+    # create identity
+    flm = np.ones((L * L)) + 1j * np.zeros((L * L))
+
+    return flm, func_name, config
+
+
 def dirac_delta():
     # setup
     yaml = read_yaml()
@@ -299,6 +317,7 @@ def valid_kernels(func_name):
 functions = {
     'dirac_delta': dirac_delta,
     'gaussian': gaussian,
+    'identity': identity,
     'squashed_gaussian': squashed_gaussian,
     'elongated_gaussian': elongated_gaussian,
     'spherical_harmonic': spherical_harmonic

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from sifting_convolution import SiftingConvolution
-from plotting import dirac_delta, earth, read_yaml
+from plotting import dirac_delta, earth, identity, read_yaml
 import numpy as np
 import sys
 import os
@@ -55,23 +55,6 @@ def test_dirac_delta_rotate_translate():
 def test_earth_identity_convolution():
     # get Earth flm
     flm, flm_config = earth()
-
-    # create identity function for test
-    def identity():
-        # setup
-        yaml = read_yaml()
-        extra = dict(
-            func_name='identity',
-            inverted=False,
-            reality=False
-        )
-        config = {**yaml, **extra}
-        L = config['L']
-
-        # create identity
-        glm = np.ones((L * L)) + 1j * np.zeros((L * L))
-
-        return glm, config
 
     # setup
     glm, glm_config = identity()
