@@ -10,9 +10,9 @@ import pyssht as ssht
 
 def test_dirac_delta_rotate_translate():
     # setup
-    flm, config = dirac_delta()
-    config['routine'], config['type'] = None, 'real'
-    sc = SiftingConvolution(flm, config)
+    flm, name, config = dirac_delta()
+    config['routine'], config['type'] = None, None
+    sc = SiftingConvolution(flm, name, config)
     alpha_pi_fraction, beta_pi_fraction = 0.75, 0.25
 
     # translate to grid point
@@ -23,7 +23,7 @@ def test_dirac_delta_rotate_translate():
     flm_north = sc.place_flm_on_north_pole(flm)
 
     # rotation
-    flm_rot = sc.rotation(flm_north, alpha, beta, gamma=0)
+    flm_rot = sc.rotation(flm, alpha, beta, gamma=0)
     flm_rot_boost = sc.resolution_boost(flm_rot)
     f_rot = ssht.inverse(flm_rot_boost, sc.resolution,
                          Method=sc.method, Reality=sc.reality)
@@ -53,12 +53,11 @@ def test_dirac_delta_rotate_translate():
 
 
 def test_earth_identity_convolution():
-    # get Earth flm
-    flm, flm_config = earth()
-
     # setup
-    glm, glm_config = identity()
-    sc = SiftingConvolution(flm, flm_config, glm, glm_config)
+    flm, flm_name, config = earth()
+    glm, glm_name, _ = identity()
+    config['routine'], config['type'] = None, None
+    sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
 
     # convolution
     flm_conv = sc.convolution(flm, glm)
@@ -75,10 +74,10 @@ def test_earth_identity_convolution():
     # filename
     filename = 'identity_L-' + str(sc.L) + '_convolved_earth_L-' + str(
         sc.L) + '_samp-' + str(sc.method) + '_res-' + str(
-            sc.resolution) + '_' + flm_config['type']
+            sc.resolution) + '_real'
 
     # create plot
-    sc.plotly_plot(f_conv.real, filename, flm_config['save_fig'])
+    sc.plotly_plot(f_conv.real, filename, config['save_fig'])
 
 
 if __name__ == '__main__':

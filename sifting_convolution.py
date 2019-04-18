@@ -14,38 +14,35 @@ import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, flm, flm_config, glm=None, glm_config=None):
+    def __init__(self, flm, flm_name, config, glm=None, glm_name=None):
         '''
         initialise class
 
         Arguments:
             flm {array} -- harmonic representation of function
-            flm_config {dictionary} -- config options for class
+            flm_name {str} -- function name of flm
+            config {dictionary} -- config options for class
 
         Keyword Arguments:
             glm {array} -- kernel to convolve with (default: {None})
-            glm_config {array} -- config options of kernel (default: {None})
+            glm_name {array} -- function name of glm (default: {None})
         '''
 
-        self.auto_open = flm_config['auto_open']
-        self.f_name = flm_config['func_name']
+        self.auto_open = config['auto_open']
+        self.flm_name = flm_name
         self.flm = flm
         self.glm = glm
-        self.L = flm_config['L']
+        self.L = config['L']
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        self.method = flm_config['sampling']
-        self.resolution = self.calc_resolution(flm_config)
-        self.routine = flm_config['routine']
-        self.save_fig = flm_config['save_fig']
-        self.type = flm_config['type']
-        # if convolving with some glm
+        self.method = config['sampling']
+        self.reality = config['reality']
+        self.resolution = self.calc_resolution(config)
+        self.routine = config['routine']
+        self.save_fig = config['save_fig']
+        self.type = config['type']
         if self.glm is not None:
-            self.g_name = glm_config['func_name']
-            self.reality = False
-        # if not convolving
-        else:
-            self.reality = flm_config['reality']
+            self.glm_name = glm_name
 
     # -----------------------------------
     # ---------- flm functions ----------
@@ -113,7 +110,7 @@ class SiftingConvolution:
             glm = self.translate_dirac_delta(filename)
 
         # convolve with flm
-        if self.f_name == 'dirac_delta':
+        if self.flm_name == 'dirac_delta':
             flm_conv = glm
         else:
             flm_conv = self.convolution(flm, glm)
@@ -278,7 +275,7 @@ class SiftingConvolution:
 
         # setup
         gamma = gamma_pi_fraction * np.pi
-        filename = self.f_name + '_'
+        filename = self.flm_name + '_'
         filename += 'L-' + str(self.L) + '_'
 
         # calculate nearest index of alpha/beta for translation
@@ -287,23 +284,14 @@ class SiftingConvolution:
 
         # test for plotting routine
         if self.routine == 'north':
-            # Dirac delta not defined on sphere
-            if self.f_name == 'dirac_delta':
-                flm = self.place_flm_on_north_pole(self.flm)
-            else:
-                flm = self.flm
+            flm = self.flm
         elif self.routine == 'rotate':
             # adjust filename
             filename += self.routine + '_'
             filename += self.filename_angle(
                 alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
-            # Dirac delta not defined on sphere
-            if self.f_name == 'dirac_delta':
-                flm = self.place_flm_on_north_pole(self.flm)
-            else:
-                flm = self.flm
             # rotate by alpha, beta
-            flm = self.rotation(flm, alpha, beta, gamma)
+            flm = self.rotation(self.flm, alpha, beta, gamma)
         elif self.routine == 'translate':
             # adjust filename
             filename += self.routine + '_'
@@ -317,7 +305,7 @@ class SiftingConvolution:
             # perform convolution
             flm = self.convolution(flm, self.glm)
             # adjust filename
-            filename += 'convolved_' + self.g_name + '_'
+            filename += 'convolved_' + self.glm_name + '_'
             filename += 'L-' + str(self.L) + '_'
 
         # boost resolution
@@ -444,35 +432,35 @@ class SiftingConvolution:
         return angle.numerator, angle.denominator
 
     @staticmethod
-    def calc_resolution(flm_config):
+    def calc_resolution(config):
         '''
         calculate appropriate resolution for given L
 
         Arguments:
-            flm_config {dict} -- config dictionary
+            config {dict} -- config dictionary
 
         Returns:
             int -- resolution
         '''
 
-        if 'pow2_res2L' in flm_config:
-            exponent = flm_config['pow2_res2L']
+        if 'pow2_res2L' in config:
+            exponent = config['pow2_res2L']
         else:
-            if flm_config['L'] == 1:
+            if config['L'] == 1:
                 exponent = 6
-            elif flm_config['L'] < 4:
+            elif config['L'] < 4:
                 exponent = 5
-            elif flm_config['L'] < 8:
+            elif config['L'] < 8:
                 exponent = 4
-            elif flm_config['L'] < 128:
+            elif config['L'] < 128:
                 exponent = 3
-            elif flm_config['L'] < 512:
+            elif config['L'] < 512:
                 exponent = 2
-            elif flm_config['L'] < 1024:
+            elif config['L'] < 1024:
                 exponent = 1
             else:
                 exponent = 0
-        resolution = flm_config['L'] * 2 ** exponent
+        resolution = config['L'] * 2 ** exponent
 
         return resolution
 
