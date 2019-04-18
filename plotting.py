@@ -103,7 +103,7 @@ def dirac_delta():
         ind = ssht.elm2ind(ell, m=0)
         flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
 
-    return flm, config
+    return flm, func_name, config
 
 
 def gaussian(args=[3]):

@@ -48,26 +48,6 @@ class SiftingConvolution:
     # ---------- flm functions ----------
     # -----------------------------------
 
-    def place_flm_on_north_pole(self, flm):
-        '''
-        place given flm on the north pole of the sphere
-
-        Arguments:
-            flm {array} -- harmonic representation of function
-
-        Returns:
-            array -- flm on the north pole
-        '''
-
-        for ell in range(self.L):
-            for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                if m == 0:
-                    flm[ind] *= np.sqrt((2 * ell + 1) / (4 * np.pi))
-                else:
-                    flm[ind] = 0
-        return flm
-
     def rotation(self, flm, alpha, beta, gamma):
         '''
         rotates given flm on the sphere by alpha/beta/gamma

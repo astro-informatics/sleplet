@@ -19,9 +19,6 @@ def test_dirac_delta_rotate_translate():
     alpha, beta = sc.calc_nearest_grid_point(
         alpha_pi_fraction, beta_pi_fraction)
 
-    # place dirac delta on north pole
-    flm_north = sc.place_flm_on_north_pole(flm)
-
     # rotation
     flm_rot = sc.rotation(flm, alpha, beta, gamma=0)
     flm_rot_boost = sc.resolution_boost(flm_rot)
