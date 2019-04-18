@@ -41,8 +41,8 @@ def read_args(spherical_harmonic=False):
     parser.add_argument(
         'flm', type=valid_plotting, choices=list(total.keys()), help='flm to plot on the sphere')
     parser.add_argument(
-        '--type', '-t', type=str, nargs='?', default='real', const='real',
-        choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to real')
+        '--type', '-t', type=str, nargs='?', default='abs', const='abs',
+        choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to abs')
     parser.add_argument(
         '--routine', '-r', type=str, nargs='?', default='north', const='north',
         choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')

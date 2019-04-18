@@ -187,6 +187,10 @@ class SiftingConvolution:
             array -- convolved output
         '''
 
+        # translation/convolution are not real for general
+        # function so turn off reality except for Dirac delta
+        self.reality = False
+
         return flm * np.conj(glm)
 
     # --------------------------------------------------
