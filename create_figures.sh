@@ -13,9 +13,6 @@ for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for t in 
 # rotation/translation
 for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for r in rotate translate; do for t in real imag abs; do echo $f, $r, $t; ./plotting.py $f -t $t -r $r; done; done; done
 
-# spherical harmonics
-for l in {0..3}; do for m in $(seq -$l $l); do echo $l, $m; ./plotting.py spherical_harmonic -l $l -m $m -t real; done; done
-
 # elongated gaussian
 for the in $(seq -2 2); do for phi in $(seq -3 1); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e $the $phi; ./plotting.py elongated_gaussian -t $t -e $the $phi -r translate; ./plotting.py earth -c elongated_gaussian -t $t -e $the $phi; done; done; done
 
