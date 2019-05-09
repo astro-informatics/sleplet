@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import cm
 import plotly.offline as py
 from plotly.graph_objs import Figure, Surface, Layout
-from plotly.graph_objs.layout import Scene, Margin
+from plotly.graph_objs.layout import Font, Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 from fractions import Fraction
@@ -225,7 +225,8 @@ class SiftingConvolution:
                 r=0,
                 b=0,
                 t=0
-            )
+            ),
+            font=Font(size=16)
         )
 
         fig = Figure(data=data, layout=layout)
