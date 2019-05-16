@@ -201,7 +201,7 @@ class SiftingConvolution:
                 colorscale=self.matplotlib_to_plotly('magma'),
                 cmin=vmin,
                 cmax=vmax,
-                colorbar=dict(x=0.85)
+                colorbar=dict(x=0.92)
             )]
 
         axis = dict(
@@ -226,7 +226,7 @@ class SiftingConvolution:
                 b=0,
                 t=0
             ),
-            font=Font(size=16)
+            font=Font(size=32)
         )
 
         fig = Figure(data=data, layout=layout)
