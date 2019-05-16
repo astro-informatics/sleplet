@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import cm
 import plotly.offline as py
 from plotly.graph_objs import Figure, Surface, Layout
-from plotly.graph_objs.layout import Font, Margin, Scene
+from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 from fractions import Fraction
@@ -201,7 +201,12 @@ class SiftingConvolution:
                 colorscale=self.matplotlib_to_plotly('magma'),
                 cmin=vmin,
                 cmax=vmax,
-                colorbar=dict(x=0.92)
+                colorbar=dict(
+                    x=0.92,
+                    len=0.98,
+                    nticks=5,
+                    tickfont=dict(size=32)
+                )
             )]
 
         axis = dict(
@@ -225,8 +230,7 @@ class SiftingConvolution:
                 r=0,
                 b=0,
                 t=0
-            ),
-            font=Font(size=32)
+            )
         )
 
         fig = Figure(data=data, layout=layout)
