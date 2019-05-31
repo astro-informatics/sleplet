@@ -230,7 +230,9 @@ class SiftingConvolution:
                 r=0,
                 b=0,
                 t=0
-            )
+            ),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)'
         )
 
         fig = Figure(data=data, layout=layout)
