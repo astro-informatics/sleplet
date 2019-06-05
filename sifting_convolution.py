@@ -210,6 +210,8 @@ class SiftingConvolution:
     def translate_dd_parallel(self, flm):
         '''
         parallel method to translate dirac delta
+        ideas come from
+        https://jonasteuwen.github.io/numpy/python/multiprocessing/2017/01/07/multiprocessing-numpy-array.html
 
         Arguments:
             flm {array} -- translated function up to L_scipy_max
