@@ -8,6 +8,8 @@ from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 from fractions import Fraction
+import multiprocessing as mp
+import multiprocessing.sharedctypes as sct
 import scipy.special as sp
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
@@ -33,6 +35,8 @@ class SiftingConvolution:
         self.flm = flm
         self.glm = glm
         self.L = config['L']
+        self.ncpu = config['ncpu']
+        self.L_scipy_max = 86
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
         self.method = config['sampling']
@@ -96,7 +100,7 @@ class SiftingConvolution:
             flm_conv = self.convolution(flm, glm)
         return flm_conv
 
-    def translate_dirac_delta(self, filename=None):
+    def translate_dirac_delta(self, filename):
         '''
         translates the dirac delta on the sphere to alpha/beta
 
@@ -110,41 +114,20 @@ class SiftingConvolution:
         # initialise array
         flm_trans = np.zeros((self.L * self.L), dtype=complex)
 
-        # used in scipy
-        alpha, beta = self.calc_nearest_grid_point(
-            self.alpha_pi_fraction, self.beta_pi_fraction)
-
         # scipy fails above L = 86
-        L_scipy_max = 86
-        if self.L < L_scipy_max + 1:
+        if self.L < self.L_scipy_max + 1:
             L_max = self.L
         else:
-            L_max = L_scipy_max
+            L_max = self.L_scipy_max
 
-        # use scipy
-        for ell in range(L_max):
-            m = 0
-            ind = ssht.elm2ind(ell, m)
-            flm_trans[ind] = sp.sph_harm(
-                m, ell, -alpha, beta)
-            for m in range(1, ell + 1):
-                ind_pm = ssht.elm2ind(ell, m)
-                ind_nm = ssht.elm2ind(ell, -m)
-                flm_trans[ind_pm] = sp.sph_harm(
-                    m, ell, -alpha, beta)
-                flm_trans[ind_nm] = (-1) ** m * np.conj(flm_trans[ind_pm])
+        # scipy method
+        flm_trans = self.translate_dd_scipy(flm_trans, L_max)
 
-        # use ssht
-        for ell in range(L_scipy_max, self.L):
-            ind = ssht.elm2ind(ell, m=0)
-            conj_pixel_val = self.calc_pixel_value(ind)
-            flm_trans[ind] = conj_pixel_val
-            for m in range(1, ell + 1):
-                ind_pm = ssht.elm2ind(ell, m)
-                ind_nm = ssht.elm2ind(ell, -m)
-                conj_pixel_val = self.calc_pixel_value(ind_pm)
-                flm_trans[ind_pm] = conj_pixel_val
-                flm_trans[ind_nm] = (-1) ** m * np.conj(flm_trans[ind_pm])
+        # choose method based on number of cores
+        if self.ncpu == 1:
+            flm_trans = self.translate_dd_serial(flm_trans)
+        else:
+            flm_trans = self.translate_dd_parallel(flm_trans)
 
         # save to speed up for future
         if filename is not None:
@@ -170,9 +153,137 @@ class SiftingConvolution:
 
         return flm * np.conj(glm)
 
-    # --------------------------------------------------
+    # ---------------------------------
+    # ---------- translation ----------
+    # ---------------------------------
+
+    def translate_dd_scipy(self, flm, L):
+        '''
+        scipy method to translate dirac delta up to L=86
+
+        Arguments:
+            flm {array} -- harmonic representation of function
+            L {int} -- value of L<=86
+
+        Returns:
+            array -- translated dirac delta
+        '''
+        alpha, beta = self.calc_nearest_grid_point(
+            self.alpha_pi_fraction, self.beta_pi_fraction)
+
+        for ell in range(L):
+            m = 0
+            ind = ssht.elm2ind(ell, m)
+            flm[ind] = sp.sph_harm(
+                m, ell, -alpha, beta)
+            for m in range(1, ell + 1):
+                ind_pm = ssht.elm2ind(ell, m)
+                ind_nm = ssht.elm2ind(ell, -m)
+                flm[ind_pm] = sp.sph_harm(
+                    m, ell, -alpha, beta)
+                flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
+        return flm
+
+    def translate_dd_serial(self, flm):
+        '''
+        serial method to translate dirac delta - faster locally
+
+        Arguments:
+            flm {array} -- translated function up to L_scipy_max
+
+        Returns:
+            array -- translated dirac delta
+        '''
+        for ell in range(self.L_scipy_max, self.L):
+            ind = ssht.elm2ind(ell, m=0)
+            conj_pixel_val = self.calc_pixel_value(ind)
+            flm[ind] = conj_pixel_val
+            for m in range(1, ell + 1):
+                print(ell, m)
+                ind_pm = ssht.elm2ind(ell, m)
+                ind_nm = ssht.elm2ind(ell, -m)
+                conj_pixel_val = self.calc_pixel_value(ind_pm)
+                flm[ind_pm] = conj_pixel_val
+                flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
+        return flm
+
+    def translate_dd_parallel(self, flm):
+        '''
+        parallel method to translate dirac delta
+
+        Arguments:
+            flm {array} -- translated function up to L_scipy_max
+
+        Returns:
+            array -- translated dirac delta
+        '''
+        # avoid strided arrays
+        real = flm.real.copy()
+        imag = flm.imag.copy()
+
+        # create arrays to store final and intermediate steps
+        result_r = np.ctypeslib.as_ctypes(real)
+        result_i = np.ctypeslib.as_ctypes(imag)
+        shared_array_r = sct.RawArray(result_r._type_, result_r)
+        shared_array_i = sct.RawArray(result_i._type_, result_i)
+
+        # ensure function declared before multiprocessing pool
+        global func
+
+        def func(chunk):
+            '''
+            perform translation for real function using
+            the conjugate symmetry for real signals
+            Arguments:
+                ell {int} -- multipole
+            '''
+
+            # store real and imag parts separately
+            tmp_r = np.ctypeslib.as_array(shared_array_r)
+            tmp_i = np.ctypeslib.as_array(shared_array_i)
+
+            # deal with chunk
+            for ell in chunk:
+                # m = 0 components
+                ind = ssht.elm2ind(ell, m=0)
+                conj_pixel_val = self.calc_pixel_value(ind)
+                tmp_r[ind] = conj_pixel_val.real
+                tmp_i[ind] = conj_pixel_val.imag
+
+                # odd/even numbers
+                for m in range(1, ell + 1):
+                    print(ell, m)
+                    ind_pm = ssht.elm2ind(ell, m)
+                    ind_nm = ssht.elm2ind(ell, -m)
+                    conj_pixel_val = self.calc_pixel_value(ind_pm)
+                    # conjugate symmetry for real signals
+                    tmp_r[ind_pm] = conj_pixel_val.real
+                    tmp_i[ind_pm] = conj_pixel_val.imag
+                    tmp_r[ind_nm] = (-1) ** m * tmp_r[ind_pm]
+                    tmp_i[ind_nm] = (-1) ** (m + 1) * tmp_i[ind_pm]
+
+        # split up L range to maximise effiency
+        arr = np.arange(self.L_scipy_max, self.L)
+        size = len(arr)
+        arr[size // 2:size] = arr[size // 2:size][::-1]
+        chunks = [np.sort(arr[i::self.ncpu]) for i in range(self.ncpu)]
+
+        # initialise pool and apply function
+        with mp.Pool(processes=self.ncpu) as p:
+            p.map(func, chunks)
+
+        # retrieve real and imag components
+        result_r = np.ctypeslib.as_array(shared_array_r)
+        result_i = np.ctypeslib.as_array(shared_array_i)
+
+        # combine results
+        flm_trans = result_r + 1j * result_i
+
+        return flm_trans
+
+    # ----------------------------------------
     # ---------- plotting functions ----------
-    # --------------------------------------------------
+    # ----------------------------------------
 
     def plotly_plot(self, f, filename, save_figure):
         '''

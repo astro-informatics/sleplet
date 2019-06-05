@@ -1,4 +1,5 @@
 L: 128
 sampling: 'MW'
+ncpu: 1
 auto_open: True
 save_fig: False
