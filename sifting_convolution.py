@@ -311,7 +311,7 @@ class SiftingConvolution:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self.matplotlib_to_plotly('magma'),
+                colorscale=self.matplotlib_to_plotly('plasma'),
                 cmin=vmin,
                 cmax=vmax,
                 colorbar=dict(
