@@ -42,8 +42,8 @@ def test_dirac_delta_rotate_translate():
           np.max(np.abs(flm_rot - flm_trans)))
 
     # filename
-    filename = 'dirac_delta_L-' + str(sc.L) + '_diff_rot_trans_samp-' + str(
-        sc.method) + '_res-' + str(sc.resolution)
+    filename = (f'dirac_delta_L-{sc.L}_diff_rot_trans_samp-'
+                f'{sc.method}_res-{sc.resolution}')
 
     # create plot
     sc.plotly_plot(f_diff, filename, config['save_fig'])
@@ -69,9 +69,8 @@ def test_earth_identity_convolution():
                           Method=sc.method, Reality=sc.reality)
 
     # filename
-    filename = 'identity_L-' + str(sc.L) + '_convolved_earth_L-' + str(
-        sc.L) + '_samp-' + str(sc.method) + '_res-' + str(
-            sc.resolution) + '_real'
+    filename = (f'identity_L-{sc.L}_convolved_earth_L-'
+                f'{sc.L}_samp-{sc.method}_res-{sc.resolution}_real')
 
     # create plot
     sc.plotly_plot(f_conv.real, filename, config['save_fig'])

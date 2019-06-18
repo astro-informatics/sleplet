@@ -82,8 +82,10 @@ class SiftingConvolution:
         '''
 
         # numpy binary filename
-        filename = os.path.join(self.location, 'npy', 'trans_dd_L-' + str(self.L) + '_' + self.filename_angle(
-            self.alpha_pi_fraction, self.beta_pi_fraction) + 'samp-' + str(self.method) + '.npy')
+        filename = os.path.join(
+            self.location, 'npy', (f'trans_dd_L-{self.L}_'
+                                   f'{self.filename_angle(self.alpha_pi_fraction,self.beta_pi_fraction)}'
+                                   f'samp-{self.method}.npy'))
 
         # check if file of translated dirac delta already
         # exists otherwise calculate translated dirac delta
@@ -356,15 +358,15 @@ class SiftingConvolution:
         # if save_fig is true then print as png and pdf in their directories
         if save_figure:
             png_filename = os.path.join(
-                self.location, 'figures', 'png', filename + '.png')
+                self.location, 'figures', 'png', f'{filename}.png')
             pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(
-                self.location, 'figures', 'pdf', filename + '.pdf')
+                self.location, 'figures', 'pdf', f'{filename}.pdf')
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
         html_filename = os.path.join(
-            self.location, 'figures', 'html', filename + '.html')
+            self.location, 'figures', 'html', f'{filename}.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
     def plot(self, alpha_pi_fraction=0.75, beta_pi_fraction=0.25, gamma_pi_fraction=0):
@@ -379,8 +381,7 @@ class SiftingConvolution:
 
         # setup
         gamma = gamma_pi_fraction * np.pi
-        filename = self.flm_name + '_'
-        filename += 'L-' + str(self.L) + '_'
+        filename = f'{self.flm_name}_L-{self.L}_'
 
         # calculate nearest index of alpha/beta for translation
         alpha, beta = self.calc_nearest_grid_point(
@@ -391,17 +392,15 @@ class SiftingConvolution:
             flm = self.flm
         elif self.routine == 'rotate':
             # adjust filename
-            filename += self.routine + '_'
-            filename += self.filename_angle(
-                alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
+            filename += (f'{self.routine}_'
+                         f'{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}')
             # rotate by alpha, beta
             flm = self.rotation(self.flm, alpha, beta, gamma)
         elif self.routine == 'translate':
             # adjust filename
-            filename += self.routine + '_'
             # don't add gamma if translation
-            filename += self.filename_angle(
-                alpha_pi_fraction, beta_pi_fraction)
+            filename += (f'{self.routine}_'
+                         f'{self.filename_angle(alpha_pi_fraction, beta_pi_fraction)}')
             # translate by alpha, beta
             flm = self.translation(self.flm)
 
@@ -409,16 +408,14 @@ class SiftingConvolution:
             # perform convolution
             flm = self.convolution(flm, self.glm)
             # adjust filename
-            filename += 'convolved_' + self.glm_name + '_'
-            filename += 'L-' + str(self.L) + '_'
+            filename += f'convolved_{self.glm_name}_L-{self.L}_'
 
         # boost resolution
         if self.resolution != self.L:
             flm = self.resolution_boost(flm)
 
         # add sampling/resolution to filename
-        filename += 'samp-' + str(self.method) + '_'
-        filename += 'res-' + str(self.resolution) + '_'
+        filename += f'samp-{self.method}_res-{self.resolution}_'
 
         # inverse & plot
         f = ssht.inverse(flm, self.resolution,
@@ -515,9 +512,9 @@ class SiftingConvolution:
             if numerator == 1:
                 filename = 'pi'
             else:
-                filename = str(numerator) + 'pi'
+                filename = f'{numerator}pi'
         else:
-            filename = str(numerator) + 'pi' + str(denominator)
+            filename = f'{numerator}pi{denominator}'
         return filename
 
     @staticmethod
@@ -590,7 +587,7 @@ class SiftingConvolution:
 
         for k in range(pl_entries):
             C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
-            pl_colorscale.append([k * h, 'rgb' + str((C[0], C[1], C[2]))])
+            pl_colorscale.append([k * h, f'rgb{(C[0], C[1], C[2])}'])
 
         return pl_colorscale
 
@@ -632,27 +629,18 @@ class SiftingConvolution:
             filename = 'alpha-0_beta-0_'
         # if alpha = 0
         elif not alpha_num:
-            filename = 'alpha-0_beta-'
-            filename += self.pi_in_filename(beta_num, beta_den)
-            filename += '_'
+            filename = f'alpha-0_beta-{self.pi_in_filename(beta_num, beta_den)}_'
         # if beta = 0
         elif not beta_num:
-            filename = 'alpha-'
-            filename += self.pi_in_filename(alpha_num, alpha_den)
-            filename += '_beta-0_'
+            filename = f'alpha-{self.pi_in_filename(alpha_num, alpha_den)}_beta-0_'
         # if alpha != 0 && beta !=0
         else:
-            filename = 'alpha-'
-            filename += self.pi_in_filename(alpha_num, alpha_den)
-            filename += '_beta-'
-            filename += self.pi_in_filename(beta_num, beta_den)
-            filename += '_'
+            filename = (f'alpha-{self.pi_in_filename(alpha_num, alpha_den)}_'
+                        f'beta-{self.pi_in_filename(beta_num, beta_den)}_')
 
         # if rotation with gamma != 0
         if gamma_num:
-            filename += 'gamma-'
-            filename += self.pi_in_filename(gamma_num, gamma_den)
-            filename += '_'
+            filename += f'gamma-{self.pi_in_filename(gamma_num, gamma_den)}_'
         return filename
 
     def setup_plot(self, f, close=True, parametric=False,

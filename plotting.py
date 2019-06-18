@@ -23,9 +23,9 @@ def get_angle_num_dem(angle_fraction):
 def filename_std_dev(angle, arg_name):
     filename = '_'
     num, dem = get_angle_num_dem(angle)
-    filename += str(num) + arg_name
+    filename += f'{num}arg_name'
     if angle < 1:
-        filename += str(dem)
+        filename += f'{dem}'
     return filename
 
 
@@ -115,7 +115,7 @@ def gaussian(args=[3]):
         raise
 
     # filename
-    func_name = 'gaussian' + filename_std_dev(sig, 'sig')
+    func_name = f'gaussian{filename_std_dev(sig, "sig")}'
 
     # setup
     yaml = read_yaml()
@@ -143,8 +143,8 @@ def squashed_gaussian(args=[-2, -1]):
         raise
 
     # filename
-    func_name = 'squashed_gaussian' + filename_std_dev(
-        t_sig, 'tsig') + filename_std_dev(freq, 'freq')
+    func_name = (f'squashed_gaussian{filename_std_dev(t_sig, "tsig")}'
+                 f'{filename_std_dev(freq, "freq")}')
 
     # setup
     yaml = read_yaml()
@@ -177,8 +177,8 @@ def elongated_gaussian(args=[0, -3]):
         raise
 
     # filename
-    func_name = 'elongated_gaussian' + filename_std_dev(
-        t_sig, 'tsig') + filename_std_dev(p_sig, 'psig')
+    func_name = (f'elongated_gaussian{filename_std_dev(t_sig, "tsig")}'
+                 f'{filename_std_dev(p_sig, "psig")}')
 
     # setup
     yaml = read_yaml()
@@ -204,8 +204,7 @@ def elongated_gaussian(args=[0, -3]):
 
 def spherical_harmonic(ell, m):
     # filename
-    func_name = 'spherical_harmonic_l' + str(
-        ell) + '_m' + str(m)
+    func_name = f'spherical_harmonic_l{ell}_m{m}'
 
     # setup
     yaml = read_yaml()
@@ -270,7 +269,7 @@ def wmap_helper(file_ending):
 
     # create flm
     matfile = os.path.join(os.environ[
-        'SSHT'], 'src', 'matlab', 'data', 'wmap' + file_ending)
+        'SSHT'], 'src', 'matlab', 'data', f'wmap{file_ending}')
     mat_contents = sio.loadmat(matfile)
     cl = np.ascontiguousarray(mat_contents['cl'][:, 0])
 
