@@ -1,7 +1,7 @@
 import sys
 import os
 import numpy as np
-from matplotlib import cm
+import cmocean
 import plotly.offline as py
 from plotly.graph_objs import Figure, Surface, Layout
 from plotly.graph_objs.layout import Margin, Scene
@@ -310,15 +310,18 @@ class SiftingConvolution:
                 x=x,
                 y=y,
                 z=z,
-                surfacecolor=f_plot,
-                colorscale=self.matplotlib_to_plotly('plasma'),
-                cmin=vmin,
-                cmax=vmax,
+                surfacecolor=np.log10(f_plot + abs(vmin) + 1e-15),
+                colorscale=self.cmocean_to_plotly('matter'),
+                cmin=0,
+                cmax=np.log10(vmax + abs(vmin)),
                 colorbar=dict(
                     x=0.92,
                     len=0.98,
                     nticks=5,
-                    tickfont=dict(size=32)
+                    tickfont=dict(
+                        color='#666666',
+                        size=32
+                    )
                 )
             )]
 
@@ -566,12 +569,12 @@ class SiftingConvolution:
         return resolution
 
     @staticmethod
-    def matplotlib_to_plotly(colour, pl_entries=255):
+    def cmocean_to_plotly(colour, pl_entries=255):
         '''
-        converts matplotlib colourscale to a plotly colourscale
+        converts cmocean colourscale to a plotly colourscale
 
         Arguments:
-            colour {string} -- matplotlib colour
+            colour {string} -- cmocean colour
 
         Keyword Arguments:
             pl_entries {bits} -- colour type (default: {255})
@@ -580,7 +583,7 @@ class SiftingConvolution:
             plotly colour -- used in plotly plots
         '''
 
-        cmap = cm.get_cmap(colour)
+        cmap = getattr(cmocean.cm, colour)
 
         h = 1 / (pl_entries - 1)
         pl_colorscale = []
