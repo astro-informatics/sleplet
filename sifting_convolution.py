@@ -311,9 +311,9 @@ class SiftingConvolution:
                 y=y,
                 z=z,
                 surfacecolor=np.log10(f_plot + abs(vmin) + 1e-15),
-                colorscale=self.cmocean_to_plotly('matter'),
+                colorscale=self.cmocean_to_plotly('algae'),
                 cmin=0,
-                cmax=np.log10(vmax + abs(vmin)),
+                cmax=np.log10(vmax + abs(vmin) + 1e-15),
                 colorbar=dict(
                     x=0.92,
                     len=0.98,
