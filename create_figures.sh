@@ -1,7 +1,6 @@
 #!/bin/bash
 # maps
 for t in real imag abs; do echo 'earth', $t; ./plotting.py earth -t $t; done
-echo 'wmap'
 for t in real imag abs; do echo 'wmap', $t; ./plotting.py wmap -t $t; done
 
 # convolutions
