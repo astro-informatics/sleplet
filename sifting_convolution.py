@@ -313,7 +313,7 @@ class SiftingConvolution:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self.cmocean_to_plotly('topo'),
+                colorscale=self.cmocean_to_plotly('solar'),
                 cmin=vmin,
                 cmax=vmax,
                 colorbar=dict(
