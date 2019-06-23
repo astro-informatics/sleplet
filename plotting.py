@@ -23,7 +23,7 @@ def get_angle_num_dem(angle_fraction):
 def filename_std_dev(angle, arg_name):
     filename = '_'
     num, dem = get_angle_num_dem(angle)
-    filename += f'{num}arg_name'
+    filename += f'{num}{arg_name}'
     if angle < 1:
         filename += f'{dem}'
     return filename
@@ -56,6 +56,8 @@ def read_args(spherical_harmonic=False):
         '--gamma', '-g', type=float, default=0, help='gamma pi fraction - defaults to 0 - rotation only')
     parser.add_argument(
         '--convolve', '-c', type=valid_kernels, choices=list(functions.keys()), help='glm to perform sifting convolution with i.e. flm x glm*')
+    parser.add_argument(
+        '--annotation', '-n', action='store_false', help='flag which if passed removes any annotation')
 
     # extra args for spherical harmonics
     if spherical_harmonic:
@@ -362,6 +364,7 @@ if __name__ == '__main__':
     # if use input from argparse
     config['routine'] = args.routine
     config['type'] = args.type
+    config['annotation'] = args.annotation
 
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.plot(args.alpha, args.beta, args.gamma)

@@ -14,13 +14,10 @@ def test_dirac_delta_rotate_translate():
     config['routine'], config['type'] = None, None
     sc = SiftingConvolution(flm, name, config)
     alpha_pi_fraction, beta_pi_fraction = 0.75, 0.25
-
-    # translate to grid point
-    alpha, beta = sc.calc_nearest_grid_point(
-        alpha_pi_fraction, beta_pi_fraction)
+    sc.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
 
     # rotation
-    flm_rot = sc.rotation(flm, alpha, beta, gamma=0)
+    flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)
     flm_rot_boost = sc.resolution_boost(flm_rot)
     f_rot = ssht.inverse(flm_rot_boost, sc.resolution,
                          Method=sc.method, Reality=sc.reality)
@@ -55,6 +52,7 @@ def test_earth_identity_convolution():
     glm, glm_name, _ = identity()
     config['routine'], config['type'] = None, None
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
+    sc.calc_nearest_grid_point()
 
     # convolution
     flm_conv = sc.convolution(flm, glm)

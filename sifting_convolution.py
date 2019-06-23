@@ -29,7 +29,6 @@ class SiftingConvolution:
             glm {array} -- kernel to convolve with (default: {None})
             glm_name {array} -- function name of glm (default: {None})
         '''
-
         self.auto_open = config['auto_open']
         self.flm_name = flm_name
         self.flm = flm
@@ -45,6 +44,7 @@ class SiftingConvolution:
         self.routine = config['routine']
         self.save_fig = config['save_fig']
         self.type = config['type']
+        self.annotation = config['annotation']
         if self.glm is not None:
             self.glm_name = glm_name
 
@@ -65,7 +65,6 @@ class SiftingConvolution:
         Returns:
             array -- rotated flm
         '''
-
         flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.L)
         return flm_rot
@@ -80,7 +79,6 @@ class SiftingConvolution:
         Returns:
             array -- translated flm
         '''
-
         # numpy binary filename
         filename = os.path.join(
             self.location, 'npy', (f'trans_dd_L-{self.L}_'
@@ -112,7 +110,6 @@ class SiftingConvolution:
         Returns:
             array -- translated flm
         '''
-
         # initialise array
         flm_trans = np.zeros((self.L * self.L), dtype=complex)
 
@@ -148,7 +145,6 @@ class SiftingConvolution:
         Returns:
             array -- convolved output
         '''
-
         # translation/convolution are not real for general
         # function so turn off reality except for Dirac delta
         self.reality = False
@@ -170,9 +166,6 @@ class SiftingConvolution:
         Returns:
             array -- translated dirac delta
         '''
-        alpha, beta = self.calc_nearest_grid_point(
-            self.alpha_pi_fraction, self.beta_pi_fraction)
-
         for ell in range(L):
             m = 0
             ind = ssht.elm2ind(ell, m)
@@ -241,7 +234,6 @@ class SiftingConvolution:
             Arguments:
                 ell {int} -- multipole
             '''
-
             # store real and imag parts separately
             tmp_r = np.ctypeslib.as_array(shared_array_r)
             tmp_i = np.ctypeslib.as_array(shared_array_i)
@@ -298,13 +290,13 @@ class SiftingConvolution:
             filename {str} -- filename for html/png/pdf plot
             save_figure {bool} -- flag to save figure
         '''
-
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
-        zoom = 1.15
+        # appropriate zoom in on north pole
+        zoom = 1.63
         camera = dict(
-            eye=dict(x=-1 / zoom, y=-0.1 / zoom, z=1 / zoom)
+            eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=2 / zoom)
         )
 
         data = [
@@ -325,7 +317,8 @@ class SiftingConvolution:
                         size=32
                     )
                 )
-            )]
+            )
+        ]
 
         axis = dict(
             title='',
@@ -341,7 +334,8 @@ class SiftingConvolution:
                 camera=camera,
                 xaxis=XAxis(axis),
                 yaxis=YAxis(axis),
-                zaxis=ZAxis(axis)
+                zaxis=ZAxis(axis),
+                annotations=self.annotations() if self.annotation else []
             ),
             margin=Margin(
                 l=0,
@@ -378,14 +372,12 @@ class SiftingConvolution:
             beta_pi_fraction {float} -- fraction of pi (default: {0.25})
             gamma_pi_fraction {float} -- fraction of pi (default: {0.0})
         '''
-
         # setup
         gamma = gamma_pi_fraction * np.pi
         filename = f'{self.flm_name}_L-{self.L}_'
 
         # calculate nearest index of alpha/beta for translation
-        alpha, beta = self.calc_nearest_grid_point(
-            alpha_pi_fraction, beta_pi_fraction)
+        self.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
 
         # test for plotting routine
         if self.routine == 'north':
@@ -395,7 +387,7 @@ class SiftingConvolution:
             filename += (f'{self.routine}_'
                          f'{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}')
             # rotate by alpha, beta
-            flm = self.rotation(self.flm, alpha, beta, gamma)
+            flm = self.rotation(self.flm, self.alpha, self.beta, gamma)
         elif self.routine == 'translate':
             # adjust filename
             # don't add gamma if translation
@@ -449,7 +441,6 @@ class SiftingConvolution:
         Returns:
             complex float -- the value of ylm(omega')
         '''
-
         # create Ylm corresponding to index
         ylm_harmonic = np.zeros(self.L * self.L, dtype=complex)
         ylm_harmonic[ind] = 1
@@ -462,7 +453,7 @@ class SiftingConvolution:
 
         return ylm_omega
 
-    def calc_nearest_grid_point(self, alpha_pi_fraction, beta_pi_fraction):
+    def calc_nearest_grid_point(self, alpha_pi_fraction=0, beta_pi_fraction=0):
         '''
         calculate nearest index of alpha/beta for translation
         this is due to calculating \omega' through the pixel
@@ -476,22 +467,47 @@ class SiftingConvolution:
         Returns:
             (float, float) -- value nearest given fraction
         '''
-
         thetas, phis = ssht.sample_positions(self.L, Method=self.method)
         self.pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
         self.pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
-        alpha = phis[self.pix_j]
-        beta = thetas[self.pix_i]
-
-        # to be used outside of class i.e. tests
+        self.alpha = phis[self.pix_j]
+        self.beta = thetas[self.pix_i]
         self.alpha_pi_fraction = alpha_pi_fraction
         self.beta_pi_fraction = beta_pi_fraction
-
-        return alpha, beta
 
     # -----------------------------------------------
     # ---------- plotting helper functions ----------
     # -----------------------------------------------
+
+    def annotations(self):
+        # if north alter values to point at correct point
+        if self.routine == 'north':
+            x, y, z = 0, 0, 1
+        else:
+            x, y, z = ssht.s2_to_cart(self.beta, self.alpha)
+
+        # initialise array and standard arrow
+        annotation = []
+        config = dict(arrowcolor='white', yshift=5)
+        arrow = {**dict(x=x, y=y, z=z), **config}
+
+        # various switch cases for annotation
+        if self.flm_name.startswith('elongated_gaussian'):
+            if self.routine == 'translate':
+                annotation.append({**dict(x=-x, y=y, z=z), **config})
+                annotation.append({**dict(x=x, y=-y, z=z), **config})
+        elif self.flm_name == 'dirac_delta':
+            if self.type != 'imag':
+                annotation.append(arrow)
+        elif 'gaussian' in self.flm_name:
+            if self.routine != 'translate':
+                if self.type != 'imag':
+                    annotation.append(arrow)
+
+        # if convolution then remove annotation
+        if self.glm is not None:
+            annotation = []
+        return annotation
 
     @staticmethod
     def pi_in_filename(numerator, denominator):
@@ -505,7 +521,6 @@ class SiftingConvolution:
         Returns:
             str -- middle of filename
         '''
-
         # if whole number
         if denominator == 1:
             # if 1 * pi
@@ -528,7 +543,6 @@ class SiftingConvolution:
         Returns:
             (int, int) -- (fraction numerator, fraction denominator)
         '''
-
         angle = Fraction(angle_fraction).limit_denominator()
         return angle.numerator, angle.denominator
 
@@ -543,7 +557,6 @@ class SiftingConvolution:
         Returns:
             int -- resolution
         '''
-
         if 'pow2_res2L' in config:
             exponent = config['pow2_res2L']
         else:
@@ -579,7 +592,6 @@ class SiftingConvolution:
         Returns:
             plotly colour -- used in plotly plots
         '''
-
         cmap = getattr(cmocean.cm, colour)
 
         h = 1 / (pl_entries - 1)
@@ -601,7 +613,6 @@ class SiftingConvolution:
         Returns:
             array -- boosted resolution flm
         '''
-
         boost = self.resolution * self.resolution - self.L * self.L
         flm_boost = np.pad(flm, (0, boost), 'constant')
         return flm_boost
@@ -618,7 +629,6 @@ class SiftingConvolution:
         Returns:
             str -- filename
         '''
-
         # get numerator/denominator for filename
         alpha_num, alpha_den = self.get_angle_num_dem(alpha_pi_fraction)
         beta_num, beta_den = self.get_angle_num_dem(beta_pi_fraction)
@@ -663,7 +673,6 @@ class SiftingConvolution:
         Returns:
             tuple -- values for the plotting
         '''
-
         if self.method == 'MW_pole':
             if len(f) == 2:
                 f, f_sp = f
