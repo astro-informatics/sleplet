@@ -1,35 +1,29 @@
 #!/usr/bin/env python
 from sifting_convolution import SiftingConvolution
+from config import Config
 import sys
 import os
 import numpy as np
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 import scipy.io as sio
 from fractions import Fraction
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
+from typing import List, Tuple
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
-
-@dataclass
-class Config:
-    L: int = 128
-    sampling: str = 'MW'
-    ncpu: int = 1
-    auto_open: bool = True
-    save_fig: bool = False
 
 global __location__
 __location__ = os.path.realpath(os.path.join(
     os.getcwd(), os.path.dirname(__file__)))
 
 
-def get_angle_num_dem(angle_fraction):
+def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
     angle = Fraction(angle_fraction).limit_denominator()
     return angle.numerator, angle.denominator
 
 
-def filename_std_dev(angle, arg_name):
+def filename_std_dev(angle: float, arg_name: str) -> str:
     filename = '_'
     num, dem = get_angle_num_dem(angle)
     filename += f'{num}{arg_name}'
@@ -38,7 +32,7 @@ def filename_std_dev(angle, arg_name):
     return filename
 
 
-def read_args(spherical_harmonic=False):
+def read_args(spherical_harmonic: bool=False) -> Namespace:
     parser = ArgumentParser(description='Create SSHT plot')
     parser.add_argument(
         'flm', type=valid_plotting, choices=list(total.keys()), help='flm to plot on the sphere')
@@ -71,7 +65,7 @@ def read_args(spherical_harmonic=False):
     return args
 
 
-def identity():
+def identity() -> Tuple[np.array, str, dict]:
     # filename
     func_name = 'identity'
 
@@ -89,7 +83,7 @@ def identity():
     return flm, func_name, config
 
 
-def dirac_delta():
+def dirac_delta() -> Tuple[np.array, str, dict]:
     # filename
     func_name = 'dirac_delta'
 
@@ -110,7 +104,7 @@ def dirac_delta():
     return flm, func_name, config
 
 
-def gaussian(args=[3]):
+def gaussian(args: List[int]=[3]) -> Tuple[np.array, str, dict]:
     # args
     try:
         sig = 10 ** args[0]
@@ -138,7 +132,7 @@ def gaussian(args=[3]):
     return flm, func_name, config
 
 
-def squashed_gaussian(args=[-2, -1]):
+def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.array, str, dict]:
     # args
     try:
         t_sig, freq = [10 ** x for x in args]
@@ -160,7 +154,7 @@ def squashed_gaussian(args=[-2, -1]):
     method, reality = config['sampling'], config['reality']
 
     # function on the grid
-    def grid_fun(theta, phi, theta_0=0, theta_sig=t_sig, freq=freq):
+    def grid_fun(theta: np.ndarry, phi: np.ndarry, theta_0: float=0, theta_sig: float=t_sig, freq: float=freq) -> np.ndarry:
         f = np.exp(
             -((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
@@ -172,7 +166,7 @@ def squashed_gaussian(args=[-2, -1]):
     return flm, func_name, config
 
 
-def elongated_gaussian(args=[0, -3]):
+def elongated_gaussian(args: List[int]=[0, -3]) -> Tuple[np.array, str, dict]:
     # args
     try:
         t_sig, p_sig = [10 ** x for x in args]
@@ -194,7 +188,7 @@ def elongated_gaussian(args=[0, -3]):
     method, reality = config['sampling'], config['reality']
 
     # function on the grid
-    def grid_fun(theta, phi, theta_0=0, phi_0=np.pi, theta_sig=t_sig, phi_sig=p_sig):
+    def grid_fun(theta: np.ndarry, phi: np.ndarry, theta_0: float=0, phi_0: float=np.pi, theta_sig: float=t_sig, phi_sig: float=p_sig) -> np.ndarry:
         f = np.exp(-((((theta - theta_0) / theta_sig) **
                       2 + ((phi - phi_0) / phi_sig) ** 2) / 2))
         return f
@@ -206,7 +200,7 @@ def elongated_gaussian(args=[0, -3]):
     return flm, func_name, config
 
 
-def spherical_harmonic(ell, m):
+def spherical_harmonic(ell: int, m: int) -> Tuple[np.array, str, dict]:
     # filename
     func_name = f'spherical_harmonic_l{ell}_m{m}'
 
@@ -226,7 +220,7 @@ def spherical_harmonic(ell, m):
     return flm, func_name, config
 
 
-def earth():
+def earth() -> Tuple[np.array, str, dict]:
     # filename
     func_name = 'earth'
 
@@ -259,7 +253,7 @@ def earth():
     return flm, func_name, config
 
 
-def wmap_helper(file_ending):
+def wmap_helper(file_ending: str) -> Tuple[np.array, str, dict]:
     # filename
     func_name = 'wmap'
 
@@ -295,14 +289,14 @@ def wmap_helper(file_ending):
     return flm, func_name, config
 
 
-def wmap():
+def wmap() -> Tuple[np.array, str, dict]:
     # file_ending = '_lcdm_pl_model_yr1_v1'
     # file_ending = '_tt_spectrum_7yr_v4p1'
     file_ending = '_lcdm_pl_model_wmap7baoh0'
     return wmap_helper(file_ending)
 
 
-def valid_plotting(func_name):
+def valid_plotting(func_name: str) -> str:
     # check if valid function
     if func_name in total:
         return func_name
@@ -310,7 +304,7 @@ def valid_plotting(func_name):
         raise ValueError('Not a valid function name to plot')
 
 
-def valid_kernels(func_name):
+def valid_kernels(func_name: str) -> str:
     # check if valid function
     if func_name in functions:
         return func_name

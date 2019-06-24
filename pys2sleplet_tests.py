@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
 
-def test_dirac_delta_rotate_translate():
+def test_dirac_delta_rotate_translate() -> None:
     # setup
     flm, name, config = dirac_delta()
     config['routine'], config['type'], config['annotation'] = None, None, True
@@ -45,7 +45,7 @@ def test_dirac_delta_rotate_translate():
     sc.plotly_plot(f_diff, filename, config['save_fig'])
 
 
-def test_earth_identity_convolution():
+def test_earth_identity_convolution() -> None:
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = identity()

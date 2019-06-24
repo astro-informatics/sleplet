@@ -11,24 +11,13 @@ from fractions import Fraction
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
 import scipy.special as sp
+from typing import List, Tuple
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, flm, flm_name, config, glm=None, glm_name=None):
-        '''
-        initialise class
-
-        Arguments:
-            flm {array} -- harmonic representation of function
-            flm_name {str} -- function name of flm
-            config {dictionary} -- config options for class
-
-        Keyword Arguments:
-            glm {array} -- kernel to convolve with (default: {None})
-            glm_name {array} -- function name of glm (default: {None})
-        '''
+    def __init__(self, flm: np.array, flm_name: str, config: dict, glm: np.array=None, glm_name: str=None) -> None:
         self.auto_open = config['auto_open']
         self.flm_name = flm_name
         self.flm = flm
@@ -52,32 +41,17 @@ class SiftingConvolution:
     # ---------- flm functions ----------
     # -----------------------------------
 
-    def rotation(self, flm, alpha, beta, gamma):
+    def rotation(self, flm: np.array, alpha: float, beta: float, gamma: float) -> np.ndarray:
         '''
         rotates given flm on the sphere by alpha/beta/gamma
-
-        Arguments:
-            flm {array} -- harmonic representation of function
-            alpha {float} -- phi angle
-            beta {float} -- theta angle
-            gamma {float} -- gamma angle
-
-        Returns:
-            array -- rotated flm
         '''
         flm_rot = ssht.rotate_flms(
             flm, alpha, beta, gamma, self.L)
         return flm_rot
 
-    def translation(self, flm):
+    def translation(self, flm: np.array) -> np.ndarray:
         '''
         translates given flm on the sphere by alpha/beta
-
-        Arguments:
-            flm {array} -- harmonic representation of function
-
-        Returns:
-            array -- translated flm
         '''
         # numpy binary filename
         filename = os.path.join(
@@ -100,15 +74,9 @@ class SiftingConvolution:
             flm_conv = self.convolution(flm, glm)
         return flm_conv
 
-    def translate_dirac_delta(self, filename):
+    def translate_dirac_delta(self, filename: str) -> np.ndarray:
         '''
         translates the dirac delta on the sphere to alpha/beta
-
-        Keyword Arguments:
-            filename {str} -- filename to save array (default: {None})
-
-        Returns:
-            array -- translated flm
         '''
         # initialise array
         flm_trans = np.zeros((self.L * self.L), dtype=complex)
@@ -134,16 +102,9 @@ class SiftingConvolution:
 
         return flm_trans
 
-    def convolution(self, flm, glm):
+    def convolution(self, flm: np.array, glm: np.array) -> np.ndarray:
         '''
         computes the sifting convolution of two arrays
-
-        Arguments:
-            flm {array} -- input flm of the class
-            glm {array} -- kernal map to convolve with
-
-        Returns:
-            array -- convolved output
         '''
         # translation/convolution are not real for general
         # function so turn off reality except for Dirac delta
@@ -155,16 +116,9 @@ class SiftingConvolution:
     # ---------- translation ----------
     # ---------------------------------
 
-    def translate_dd_scipy(self, flm, L):
+    def translate_dd_scipy(self, flm: np.array, L: int) -> np.ndarray:
         '''
         scipy method to translate dirac delta up to L=86
-
-        Arguments:
-            flm {array} -- harmonic representation of function
-            L {int} -- value of L<=86
-
-        Returns:
-            array -- translated dirac delta
         '''
         for ell in range(L):
             m = 0
@@ -179,15 +133,9 @@ class SiftingConvolution:
                 flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
-    def translate_dd_serial(self, flm):
+    def translate_dd_serial(self, flm: np.array) -> np.ndarray:
         '''
         serial method to translate dirac delta - faster locally
-
-        Arguments:
-            flm {array} -- translated function up to L_scipy_max
-
-        Returns:
-            array -- translated dirac delta
         '''
         for ell in range(self.L_scipy_max, self.L):
             ind = ssht.elm2ind(ell, m=0)
@@ -202,17 +150,11 @@ class SiftingConvolution:
                 flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
-    def translate_dd_parallel(self, flm):
+    def translate_dd_parallel(self, flm: np.array) -> np.ndarray:
         '''
         parallel method to translate dirac delta
         ideas come from
         https://jonasteuwen.github.io/numpy/python/multiprocessing/2017/01/07/multiprocessing-numpy-array.html
-
-        Arguments:
-            flm {array} -- translated function up to L_scipy_max
-
-        Returns:
-            array -- translated dirac delta
         '''
         # avoid strided arrays
         real = flm.real.copy()
@@ -227,12 +169,10 @@ class SiftingConvolution:
         # ensure function declared before multiprocessing pool
         global func
 
-        def func(chunk):
+        def func(chunk: List[int]) -> None:
             '''
             perform translation for real function using
             the conjugate symmetry for real signals
-            Arguments:
-                ell {int} -- multipole
             '''
             # store real and imag parts separately
             tmp_r = np.ctypeslib.as_array(shared_array_r)
@@ -281,14 +221,9 @@ class SiftingConvolution:
     # ---------- plotting functions ----------
     # ----------------------------------------
 
-    def plotly_plot(self, f, filename, save_figure):
+    def plotly_plot(self, f: np.ndarray, filename: str, save_figure: bool) -> None:
         '''
         creates basic plotly plot rather than matplotlib
-
-        Arguments:
-            f {function} -- inverse flm
-            filename {str} -- filename for html/png/pdf plot
-            save_figure {bool} -- flag to save figure
         '''
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
@@ -363,14 +298,9 @@ class SiftingConvolution:
             self.location, 'figures', 'html', f'{filename}.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
-    def plot(self, alpha_pi_fraction=0.75, beta_pi_fraction=0.25, gamma_pi_fraction=0):
+    def plot(self, alpha_pi_fraction: float=0.75, beta_pi_fraction: float=0.25, gamma_pi_fraction: float=0) -> None:
         '''
         master plotting method
-
-        Keyword Arguments:
-            alpha_pi_fraction {float} -- fraction of pi (default: {0.75})
-            beta_pi_fraction {float} -- fraction of pi (default: {0.25})
-            gamma_pi_fraction {float} -- fraction of pi (default: {0.0})
         '''
         # setup
         gamma = gamma_pi_fraction * np.pi
@@ -431,15 +361,9 @@ class SiftingConvolution:
     # ---------- translation helper functions ----------
     # --------------------------------------------------
 
-    def calc_pixel_value(self, ind):
+    def calc_pixel_value(self, ind: int) -> complex:
         '''
         calculate the ylm(omega') which defines the translation
-
-        Arguments:
-            ind {int} -- index in array
-
-        Returns:
-            complex float -- the value of ylm(omega')
         '''
         # create Ylm corresponding to index
         ylm_harmonic = np.zeros(self.L * self.L, dtype=complex)
@@ -453,19 +377,12 @@ class SiftingConvolution:
 
         return ylm_omega
 
-    def calc_nearest_grid_point(self, alpha_pi_fraction=0, beta_pi_fraction=0):
+    def calc_nearest_grid_point(self, alpha_pi_fraction: float=0, beta_pi_fraction: float=0) -> None:
         '''
         calculate nearest index of alpha/beta for translation
         this is due to calculating \omega' through the pixel
         values - the translation needs to be at the same position
         as the rotation such that the difference error is small
-
-        Arguments:
-            alpha_pi_fraction {float} -- fraction of pi (phi)
-            beta_pi_fraction {float} -- fraction of pi (theta)
-
-        Returns:
-            (float, float) -- value nearest given fraction
         '''
         thetas, phis = ssht.sample_positions(self.L, Method=self.method)
         self.pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
@@ -479,7 +396,7 @@ class SiftingConvolution:
     # ---------- plotting helper functions ----------
     # -----------------------------------------------
 
-    def annotations(self):
+    def annotations(self) -> List[dict]:
         # if north alter values to point at correct point
         if self.routine == 'north':
             x, y, z = 0, 0, 1
@@ -510,16 +427,9 @@ class SiftingConvolution:
         return annotation
 
     @staticmethod
-    def pi_in_filename(numerator, denominator):
+    def pi_in_filename(numerator: int, denominator: int) -> str:
         '''
         create filename for angle as multiple of pi
-
-        Arguments:
-            numerator {int} -- angle numerator
-            denominator {int} -- angle denominator
-
-        Returns:
-            str -- middle of filename
         '''
         # if whole number
         if denominator == 1:
@@ -533,29 +443,17 @@ class SiftingConvolution:
         return filename
 
     @staticmethod
-    def get_angle_num_dem(angle_fraction):
+    def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
         '''
         ger numerator and denominator for a given decimal
-
-        Arguments:
-            angle_fraction {float} -- fraction of pi
-
-        Returns:
-            (int, int) -- (fraction numerator, fraction denominator)
         '''
         angle = Fraction(angle_fraction).limit_denominator()
         return angle.numerator, angle.denominator
 
     @staticmethod
-    def calc_resolution(config):
+    def calc_resolution(config: dict) -> int:
         '''
         calculate appropriate resolution for given L
-
-        Arguments:
-            config {dict} -- config dictionary
-
-        Returns:
-            int -- resolution
         '''
         if 'pow2_res2L' in config:
             exponent = config['pow2_res2L']
@@ -579,18 +477,9 @@ class SiftingConvolution:
         return resolution
 
     @staticmethod
-    def cmocean_to_plotly(colour, pl_entries=255):
+    def cmocean_to_plotly(colour, pl_entries: int=255) -> List[Tuple[float, str]]:
         '''
         converts cmocean colourscale to a plotly colourscale
-
-        Arguments:
-            colour {string} -- cmocean colour
-
-        Keyword Arguments:
-            pl_entries {bits} -- colour type (default: {255})
-
-        Returns:
-            plotly colour -- used in plotly plots
         '''
         cmap = getattr(cmocean.cm, colour)
 
@@ -599,35 +488,21 @@ class SiftingConvolution:
 
         for k in range(pl_entries):
             C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
-            pl_colorscale.append([k * h, f'rgb{(C[0], C[1], C[2])}'])
+            pl_colorscale.append((k * h, f'rgb{(C[0], C[1], C[2])}'))
 
         return pl_colorscale
 
-    def resolution_boost(self, flm):
+    def resolution_boost(self, flm: np.array) -> np.ndarray:
         '''
         calculates a boost in resoltion for given flm
-
-        Arguments:
-            flm {array} -- flm to be boosted in res
-
-        Returns:
-            array -- boosted resolution flm
         '''
         boost = self.resolution * self.resolution - self.L * self.L
         flm_boost = np.pad(flm, (0, boost), 'constant')
         return flm_boost
 
-    def filename_angle(self, alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction=0):
+    def filename_angle(self, alpha_pi_fraction: float, beta_pi_fraction: float, gamma_pi_fraction: float=0) -> str:
         '''
         middle part of filename
-
-        Arguments:
-            alpha_pi_fraction {float} -- fraction of pi
-            beta_pi_fraction {float} -- fraction of pi
-            gamma_pi_fraction {float} -- fraction of pi
-
-        Returns:
-            str -- filename
         '''
         # get numerator/denominator for filename
         alpha_num, alpha_den = self.get_angle_num_dem(alpha_pi_fraction)
@@ -653,8 +528,7 @@ class SiftingConvolution:
             filename += f'gamma-{self.pi_in_filename(gamma_num, gamma_den)}_'
         return filename
 
-    def setup_plot(self, f, close=True, parametric=False,
-                   parametric_scaling=[0.0, 0.5], color_range=None):
+    def setup_plot(self, f: np.ndarray, close: bool=True, parametric: bool=False, parametric_scaling: List[float]=[0.0, 0.5], color_range: List[float]=None) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         '''
         function which creates the data for the matplotlib/plotly plot
 
