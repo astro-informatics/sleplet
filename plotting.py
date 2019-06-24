@@ -154,7 +154,7 @@ def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.ndarray, str, dict]:
     method, reality = config['sampling'], config['reality']
 
     # function on the grid
-    def grid_fun(theta: np.ndarry, phi: np.ndarry, theta_0: float=0, theta_sig: float=t_sig, freq: float=freq) -> np.ndarry:
+    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float=0, theta_sig: float=t_sig, freq: float=freq) -> np.ndarray:
         f = np.exp(
             -((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
@@ -188,7 +188,7 @@ def elongated_gaussian(args: List[int]=[0, -3]) -> Tuple[np.ndarray, str, dict]:
     method, reality = config['sampling'], config['reality']
 
     # function on the grid
-    def grid_fun(theta: np.ndarry, phi: np.ndarry, theta_0: float=0, phi_0: float=np.pi, theta_sig: float=t_sig, phi_sig: float=p_sig) -> np.ndarry:
+    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float=0, phi_0: float=np.pi, theta_sig: float=t_sig, phi_sig: float=p_sig) -> np.ndarray:
         f = np.exp(-((((theta - theta_0) / theta_sig) **
                       2 + ((phi - phi_0) / phi_sig) ** 2) / 2))
         return f
