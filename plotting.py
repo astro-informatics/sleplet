@@ -65,7 +65,7 @@ def read_args(spherical_harmonic: bool=False) -> Namespace:
     return args
 
 
-def identity() -> Tuple[np.array, str, dict]:
+def identity() -> Tuple[np.ndarray, str, dict]:
     # filename
     func_name = 'identity'
 
@@ -83,7 +83,7 @@ def identity() -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def dirac_delta() -> Tuple[np.array, str, dict]:
+def dirac_delta() -> Tuple[np.ndarray, str, dict]:
     # filename
     func_name = 'dirac_delta'
 
@@ -104,7 +104,7 @@ def dirac_delta() -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def gaussian(args: List[int]=[3]) -> Tuple[np.array, str, dict]:
+def gaussian(args: List[int]=[3]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         sig = 10 ** args[0]
@@ -132,7 +132,7 @@ def gaussian(args: List[int]=[3]) -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.array, str, dict]:
+def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         t_sig, freq = [10 ** x for x in args]
@@ -166,7 +166,7 @@ def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def elongated_gaussian(args: List[int]=[0, -3]) -> Tuple[np.array, str, dict]:
+def elongated_gaussian(args: List[int]=[0, -3]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         t_sig, p_sig = [10 ** x for x in args]
@@ -200,7 +200,7 @@ def elongated_gaussian(args: List[int]=[0, -3]) -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def spherical_harmonic(ell: int, m: int) -> Tuple[np.array, str, dict]:
+def spherical_harmonic(ell: int, m: int) -> Tuple[np.ndarray, str, dict]:
     # filename
     func_name = f'spherical_harmonic_l{ell}_m{m}'
 
@@ -220,7 +220,7 @@ def spherical_harmonic(ell: int, m: int) -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def earth() -> Tuple[np.array, str, dict]:
+def earth() -> Tuple[np.ndarray, str, dict]:
     # filename
     func_name = 'earth'
 
@@ -253,7 +253,7 @@ def earth() -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def wmap_helper(file_ending: str) -> Tuple[np.array, str, dict]:
+def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
     # filename
     func_name = 'wmap'
 
@@ -289,7 +289,7 @@ def wmap_helper(file_ending: str) -> Tuple[np.array, str, dict]:
     return flm, func_name, config
 
 
-def wmap() -> Tuple[np.array, str, dict]:
+def wmap() -> Tuple[np.ndarray, str, dict]:
     # file_ending = '_lcdm_pl_model_yr1_v1'
     # file_ending = '_tt_spectrum_7yr_v4p1'
     file_ending = '_lcdm_pl_model_wmap7baoh0'

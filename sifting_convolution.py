@@ -17,7 +17,7 @@ import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, flm: np.array, flm_name: str, config: dict, glm: np.array=None, glm_name: str=None) -> None:
+    def __init__(self, flm: np.ndarray, flm_name: str, config: dict, glm: np.ndarray=None, glm_name: str=None) -> None:
         self.auto_open = config['auto_open']
         self.flm_name = flm_name
         self.flm = flm
@@ -41,7 +41,7 @@ class SiftingConvolution:
     # ---------- flm functions ----------
     # -----------------------------------
 
-    def rotation(self, flm: np.array, alpha: float, beta: float, gamma: float) -> np.ndarray:
+    def rotation(self, flm: np.ndarray, alpha: float, beta: float, gamma: float) -> np.ndarray:
         '''
         rotates given flm on the sphere by alpha/beta/gamma
         '''
@@ -49,7 +49,7 @@ class SiftingConvolution:
             flm, alpha, beta, gamma, self.L)
         return flm_rot
 
-    def translation(self, flm: np.array) -> np.ndarray:
+    def translation(self, flm: np.ndarray) -> np.ndarray:
         '''
         translates given flm on the sphere by alpha/beta
         '''
@@ -102,7 +102,7 @@ class SiftingConvolution:
 
         return flm_trans
 
-    def convolution(self, flm: np.array, glm: np.array) -> np.ndarray:
+    def convolution(self, flm: np.ndarray, glm: np.ndarray) -> np.ndarray:
         '''
         computes the sifting convolution of two arrays
         '''
@@ -116,7 +116,7 @@ class SiftingConvolution:
     # ---------- translation ----------
     # ---------------------------------
 
-    def translate_dd_scipy(self, flm: np.array, L: int) -> np.ndarray:
+    def translate_dd_scipy(self, flm: np.ndarray, L: int) -> np.ndarray:
         '''
         scipy method to translate dirac delta up to L=86
         '''
@@ -133,7 +133,7 @@ class SiftingConvolution:
                 flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
-    def translate_dd_serial(self, flm: np.array) -> np.ndarray:
+    def translate_dd_serial(self, flm: np.ndarray) -> np.ndarray:
         '''
         serial method to translate dirac delta - faster locally
         '''
@@ -150,7 +150,7 @@ class SiftingConvolution:
                 flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
         return flm
 
-    def translate_dd_parallel(self, flm: np.array) -> np.ndarray:
+    def translate_dd_parallel(self, flm: np.ndarray) -> np.ndarray:
         '''
         parallel method to translate dirac delta
         ideas come from
@@ -487,12 +487,12 @@ class SiftingConvolution:
         pl_colorscale = []
 
         for k in range(pl_entries):
-            C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
+            C = list(map(np.uint8, np.ndarray(cmap(k * h)[:3]) * 255))
             pl_colorscale.append((k * h, f'rgb{(C[0], C[1], C[2])}'))
 
         return pl_colorscale
 
-    def resolution_boost(self, flm: np.array) -> np.ndarray:
+    def resolution_boost(self, flm: np.ndarray) -> np.ndarray:
         '''
         calculates a boost in resoltion for given flm
         '''
