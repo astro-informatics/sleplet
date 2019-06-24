@@ -13,7 +13,12 @@ for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for t in 
 for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for r in rotate translate; do for t in real imag abs; do echo $f, $r, $t; ./plotting.py $f -t $t -r $r; done; done; done
 
 # elongated gaussian
-for the in $(seq -2 2); do for phi in $(seq -3 1); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e $the $phi -n; ./plotting.py elongated_gaussian -t $t -e $the $phi -r translate -n; ./plotting.py earth -c elongated_gaussian -t $t -e $the $phi -n; done; done; done
+# arrows annotations
+for the in $(seq -1 2); do for phi in $(seq -3 -2); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e $the $phi; ./plotting.py elongated_gaussian -t $t -e $the $phi -r translate; ./plotting.py earth -c elongated_gaussian -t $t -e $the $phi; done; done; done
+# no arrow annotations
+for the in $(seq -2 2); do for phi in $(seq -1 1); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e $the $phi -n; ./plotting.py elongated_gaussian -t $t -e $the $phi -r translate -n; ./plotting.py earth -c elongated_gaussian -t $t -e $the $phi -n; done; done; done
+# top left corner
+for phi in $(seq -3 2); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e -2 $phi -n; ./plotting.py elongated_gaussian -t $t -e -2 $phi -r translate -n; ./plotting.py earth -c elongated_gaussian -t $t -e -2 $phi -n; done; done
 
 # presentation rotation demo
 echo Y_{43}

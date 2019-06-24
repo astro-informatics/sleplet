@@ -17,7 +17,7 @@ import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, flm: np.ndarray, flm_name: str, config: dict, glm: np.ndarray=None, glm_name: str=None) -> None:
+    def __init__(self, flm: np.ndarray, flm_name: str, config: dict, glm: np.ndarray = None, glm_name: str = None) -> None:
         self.auto_open = config['auto_open']
         self.flm_name = flm_name
         self.flm = flm
@@ -298,7 +298,7 @@ class SiftingConvolution:
             self.location, 'figures', 'html', f'{filename}.html')
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
-    def plot(self, alpha_pi_fraction: float=0.75, beta_pi_fraction: float=0.25, gamma_pi_fraction: float=0) -> None:
+    def plot(self, alpha_pi_fraction: float = 0.75, beta_pi_fraction: float = 0.25, gamma_pi_fraction: float = 0) -> None:
         '''
         master plotting method
         '''
@@ -377,7 +377,7 @@ class SiftingConvolution:
 
         return ylm_omega
 
-    def calc_nearest_grid_point(self, alpha_pi_fraction: float=0, beta_pi_fraction: float=0) -> None:
+    def calc_nearest_grid_point(self, alpha_pi_fraction: float = 0, beta_pi_fraction: float = 0) -> None:
         '''
         calculate nearest index of alpha/beta for translation
         this is due to calculating \omega' through the pixel
@@ -477,7 +477,7 @@ class SiftingConvolution:
         return resolution
 
     @staticmethod
-    def cmocean_to_plotly(colour, pl_entries: int=255) -> List[Tuple[float, str]]:
+    def cmocean_to_plotly(colour, pl_entries: int = 255) -> List[Tuple[float, str]]:
         '''
         converts cmocean colourscale to a plotly colourscale
         '''
@@ -500,7 +500,7 @@ class SiftingConvolution:
         flm_boost = np.pad(flm, (0, boost), 'constant')
         return flm_boost
 
-    def filename_angle(self, alpha_pi_fraction: float, beta_pi_fraction: float, gamma_pi_fraction: float=0) -> str:
+    def filename_angle(self, alpha_pi_fraction: float, beta_pi_fraction: float, gamma_pi_fraction: float = 0) -> str:
         '''
         middle part of filename
         '''
@@ -528,7 +528,7 @@ class SiftingConvolution:
             filename += f'gamma-{self.pi_in_filename(gamma_num, gamma_den)}_'
         return filename
 
-    def setup_plot(self, f: np.ndarray, close: bool=True, parametric: bool=False, parametric_scaling: List[float]=[0.0, 0.5], color_range: List[float]=None) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
+    def setup_plot(self, f: np.ndarray, close: bool = True, parametric: bool = False, parametric_scaling: List[float] = [0.0, 0.5], color_range: List[float] = None) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         '''
         function which creates the data for the matplotlib/plotly plot
 

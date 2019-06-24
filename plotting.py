@@ -32,7 +32,7 @@ def filename_std_dev(angle: float, arg_name: str) -> str:
     return filename
 
 
-def read_args(spherical_harmonic: bool=False) -> Namespace:
+def read_args(spherical_harmonic: bool = False) -> Namespace:
     parser = ArgumentParser(description='Create SSHT plot')
     parser.add_argument(
         'flm', type=valid_plotting, choices=list(total.keys()), help='flm to plot on the sphere')
@@ -104,7 +104,7 @@ def dirac_delta() -> Tuple[np.ndarray, str, dict]:
     return flm, func_name, config
 
 
-def gaussian(args: List[int]=[3]) -> Tuple[np.ndarray, str, dict]:
+def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         sig = 10 ** args[0]
@@ -132,7 +132,7 @@ def gaussian(args: List[int]=[3]) -> Tuple[np.ndarray, str, dict]:
     return flm, func_name, config
 
 
-def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.ndarray, str, dict]:
+def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         t_sig, freq = [10 ** x for x in args]
@@ -154,7 +154,7 @@ def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.ndarray, str, dict]:
     method, reality = config['sampling'], config['reality']
 
     # function on the grid
-    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float=0, theta_sig: float=t_sig, freq: float=freq) -> np.ndarray:
+    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float = 0, theta_sig: float = t_sig, freq: float = freq) -> np.ndarray:
         f = np.exp(
             -((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
@@ -166,7 +166,7 @@ def squashed_gaussian(args: List[int]=[-2, -1]) -> Tuple[np.ndarray, str, dict]:
     return flm, func_name, config
 
 
-def elongated_gaussian(args: List[int]=[0, -3]) -> Tuple[np.ndarray, str, dict]:
+def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         t_sig, p_sig = [10 ** x for x in args]
@@ -188,7 +188,7 @@ def elongated_gaussian(args: List[int]=[0, -3]) -> Tuple[np.ndarray, str, dict]:
     method, reality = config['sampling'], config['reality']
 
     # function on the grid
-    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float=0, phi_0: float=np.pi, theta_sig: float=t_sig, phi_sig: float=p_sig) -> np.ndarray:
+    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float = 0, phi_0: float = np.pi, theta_sig: float = t_sig, phi_sig: float = p_sig) -> np.ndarray:
         f = np.exp(-((((theta - theta_0) / theta_sig) **
                       2 + ((phi - phi_0) / phi_sig) ** 2) / 2))
         return f
