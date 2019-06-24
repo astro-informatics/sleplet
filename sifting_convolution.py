@@ -487,7 +487,7 @@ class SiftingConvolution:
         pl_colorscale = []
 
         for k in range(pl_entries):
-            C = list(map(np.uint8, np.ndarray(cmap(k * h)[:3]) * 255))
+            C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
             pl_colorscale.append((k * h, f'rgb{(C[0], C[1], C[2])}'))
 
         return pl_colorscale
