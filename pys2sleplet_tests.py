@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from sifting_convolution import SiftingConvolution
-from plotting import dirac_delta, earth, identity, read_yaml
+from plotting import dirac_delta, earth, identity
 import numpy as np
 import sys
 import os
@@ -13,8 +13,7 @@ def test_dirac_delta_rotate_translate():
     flm, name, config = dirac_delta()
     config['routine'], config['type'], config['annotation'] = None, None, True
     sc = SiftingConvolution(flm, name, config)
-    alpha_pi_fraction, beta_pi_fraction = 0.75, 0.25
-    sc.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
+    sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.25)
 
     # rotation
     flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)

@@ -3,12 +3,21 @@ from sifting_convolution import SiftingConvolution
 import sys
 import os
 import numpy as np
-import yaml
 from argparse import ArgumentParser
 import scipy.io as sio
 from fractions import Fraction
+from dataclasses import asdict, dataclass
 sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
 import pyssht as ssht
+
+
+@dataclass
+class Config:
+    L: int = 128
+    sampling: str = 'MW'
+    ncpu: int = 1
+    auto_open: bool = True
+    save_fig: bool = False
 
 global __location__
 __location__ = os.path.realpath(os.path.join(
@@ -27,13 +36,6 @@ def filename_std_dev(angle, arg_name):
     if angle < 1:
         filename += f'{dem}'
     return filename
-
-
-def read_yaml():
-    yaml_file = os.path.join(__location__, 'input.yml')
-    content = open(yaml_file)
-    config_dict = yaml.load(content, Loader=yaml.FullLoader)
-    return config_dict
 
 
 def read_args(spherical_harmonic=False):
@@ -74,11 +76,11 @@ def identity():
     func_name = 'identity'
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=False
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
 
     # create identity
@@ -92,11 +94,11 @@ def dirac_delta():
     func_name = 'dirac_delta'
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=True
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
 
     # create flm
@@ -120,11 +122,11 @@ def gaussian(args=[3]):
     func_name = f'gaussian{filename_std_dev(sig, "sig")}'
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=True
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
 
     # create flm
@@ -149,11 +151,11 @@ def squashed_gaussian(args=[-2, -1]):
                  f'{filename_std_dev(freq, "freq")}')
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=True
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
     method, reality = config['sampling'], config['reality']
 
@@ -183,11 +185,11 @@ def elongated_gaussian(args=[0, -3]):
                  f'{filename_std_dev(p_sig, "psig")}')
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=True
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
     method, reality = config['sampling'], config['reality']
 
@@ -209,11 +211,11 @@ def spherical_harmonic(ell, m):
     func_name = f'spherical_harmonic_l{ell}_m{m}'
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=False
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
 
     # create flm
@@ -229,11 +231,11 @@ def earth():
     func_name = 'earth'
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=True
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
 
     # extract flm
@@ -262,11 +264,11 @@ def wmap_helper(file_ending):
     func_name = 'wmap'
 
     # setup
-    yaml = read_yaml()
+    config = asdict(Config())
     extra = dict(
         reality=True
     )
-    config = {**yaml, **extra}
+    config = {**config, **extra}
     L = config['L']
 
     # create flm
