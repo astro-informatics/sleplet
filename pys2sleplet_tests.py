@@ -11,7 +11,7 @@ import pyssht as ssht
 def test_dirac_delta_rotate_translate():
     # setup
     flm, name, config = dirac_delta()
-    config['routine'], config['type'] = None, None
+    config['routine'], config['type'], config['annotation'] = None, None, True
     sc = SiftingConvolution(flm, name, config)
     alpha_pi_fraction, beta_pi_fraction = 0.75, 0.25
     sc.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
@@ -50,7 +50,7 @@ def test_earth_identity_convolution():
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = identity()
-    config['routine'], config['type'] = None, None
+    config['routine'], config['type'], config['annotation'] = None, None, False
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.calc_nearest_grid_point()
 
