@@ -229,7 +229,7 @@ class SiftingConvolution:
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
         # appropriate zoom in on north pole
-        zoom = 1.63
+        zoom = 1.58
         camera = dict(
             eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=2 / zoom)
         )
@@ -411,8 +411,8 @@ class SiftingConvolution:
         # various switch cases for annotation
         if self.flm_name.startswith('elongated_gaussian'):
             if self.routine == 'translate':
-                annotation.append({**dict(x=-x, y=y, z=z), **config})
-                annotation.append({**dict(x=x, y=-y, z=z), **config})
+                annotation.append({**config, **dict(x=-x, y=y, z=z)})
+                annotation.append({**config, **dict(x=x, y=-y, z=z)})
         elif self.flm_name == 'dirac_delta':
             if self.type != 'imag':
                 annotation.append(arrow)
