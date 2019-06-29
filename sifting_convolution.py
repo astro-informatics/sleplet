@@ -20,7 +20,6 @@ class SiftingConvolution:
         self.flm = flm
         self.glm = glm
         self.L = config['L']
-        self.L_scipy_max = 86
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
         self.method = config['sampling']
@@ -226,22 +225,6 @@ class SiftingConvolution:
     # ---------- translation helper functions ----------
     # --------------------------------------------------
 
-    def calc_pixel_value(self, ind: int) -> complex:
-        '''
-        calculate the ylm(omega') which defines the translation
-        '''
-        # create Ylm corresponding to index
-        ylm_harmonic = np.zeros(self.L * self.L, dtype=complex)
-        ylm_harmonic[ind] = 1
-
-        # convert Ylm from pixel to harmonic space
-        ylm_pixel = ssht.inverse(ylm_harmonic, self.L, Method=self.method)
-
-        # get value at pixel (i, j)
-        ylm_omega = np.conj(ylm_pixel[self.pix_i, self.pix_j])
-
-        return ylm_omega
-
     def calc_nearest_grid_point(self, alpha_pi_fraction: float = 0, beta_pi_fraction: float = 0) -> None:
         '''
         calculate nearest index of alpha/beta for translation
@@ -250,10 +233,10 @@ class SiftingConvolution:
         as the rotation such that the difference error is small
         '''
         thetas, phis = ssht.sample_positions(self.L, Method=self.method)
-        self.pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
-        self.pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
-        self.alpha = phis[self.pix_j]
-        self.beta = thetas[self.pix_i]
+        pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
+        pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
+        self.alpha = phis[pix_j]
+        self.beta = thetas[pix_i]
         self.alpha_pi_fraction = alpha_pi_fraction
         self.beta_pi_fraction = beta_pi_fraction
 
