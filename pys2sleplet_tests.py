@@ -33,7 +33,7 @@ def test_dirac_delta_rotate_translate() -> None:
 
     # perform test
     np.testing.assert_allclose(flm_rot, flm_trans, atol=1e-14)
-    np.testing.assert_allclose(f_rot, f_trans, rtol=1e-6)
+    np.testing.assert_allclose(f_rot, f_trans, rtol=1e-5)
     print('Translation/rotation difference max error:',
           np.max(np.abs(flm_rot - flm_trans)))
 
