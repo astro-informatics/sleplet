@@ -9,13 +9,13 @@ import scipy.io as sio
 from fractions import Fraction
 from dataclasses import asdict
 from typing import List, Tuple
-sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
+
+sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
 
 
 global __location__
-__location__ = os.path.realpath(os.path.join(
-    os.getcwd(), os.path.dirname(__file__)))
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
 def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
@@ -24,42 +24,88 @@ def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
 
 
 def filename_std_dev(angle: float, arg_name: str) -> str:
-    filename = '_'
+    filename = "_"
     num, dem = get_angle_num_dem(angle)
-    filename += f'{num}{arg_name}'
+    filename += f"{num}{arg_name}"
     if angle < 1:
-        filename += f'{dem}'
+        filename += f"{dem}"
     return filename
 
 
 def read_args(spherical_harmonic: bool = False) -> Namespace:
-    parser = ArgumentParser(description='Create SSHT plot')
+    parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
-        'flm', type=valid_plotting, choices=list(total.keys()), help='flm to plot on the sphere')
+        "flm",
+        type=valid_plotting,
+        choices=list(total.keys()),
+        help="flm to plot on the sphere",
+    )
     parser.add_argument(
-        '--type', '-t', type=str, nargs='?', default='abs', const='abs',
-        choices=['abs', 'real', 'imag', 'sum'], help='plotting type: defaults to abs')
+        "--type",
+        "-t",
+        type=str,
+        nargs="?",
+        default="abs",
+        const="abs",
+        choices=["abs", "real", "imag", "sum"],
+        help="plotting type: defaults to abs",
+    )
     parser.add_argument(
-        '--routine', '-r', type=str, nargs='?', default='north', const='north',
-        choices=['north', 'rotate', 'translate'], help='plotting routine: defaults to north')
+        "--routine",
+        "-r",
+        type=str,
+        nargs="?",
+        default="north",
+        const="north",
+        choices=["north", "rotate", "translate"],
+        help="plotting routine: defaults to north",
+    )
     parser.add_argument(
-        '--extra_args', '-e', type=int, nargs='+', help='list of extra args for functions')
+        "--extra_args",
+        "-e",
+        type=int,
+        nargs="+",
+        help="list of extra args for functions",
+    )
     parser.add_argument(
-        '--alpha', '-a', type=float, default=0.75, help='alpha/phi pi fraction - defaults to 0')
+        "--alpha",
+        "-a",
+        type=float,
+        default=0.75,
+        help="alpha/phi pi fraction - defaults to 0",
+    )
     parser.add_argument(
-        '--beta', '-b', type=float, default=0.25, help='beta/theta pi fraction - defaults to 0')
+        "--beta",
+        "-b",
+        type=float,
+        default=0.25,
+        help="beta/theta pi fraction - defaults to 0",
+    )
     parser.add_argument(
-        '--gamma', '-g', type=float, default=0, help='gamma pi fraction - defaults to 0 - rotation only')
+        "--gamma",
+        "-g",
+        type=float,
+        default=0,
+        help="gamma pi fraction - defaults to 0 - rotation only",
+    )
     parser.add_argument(
-        '--convolve', '-c', type=valid_kernels, choices=list(functions.keys()), help='glm to perform sifting convolution with i.e. flm x glm*')
+        "--convolve",
+        "-c",
+        type=valid_kernels,
+        choices=list(functions.keys()),
+        help="glm to perform sifting convolution with i.e. flm x glm*",
+    )
     parser.add_argument(
-        '--annotation', '-n', action='store_false', help='flag which if passed removes any annotation')
+        "--annotation",
+        "-n",
+        action="store_false",
+        help="flag which if passed removes any annotation",
+    )
 
     # extra args for spherical harmonics
     if spherical_harmonic:
-        parser.add_argument('-l', metavar='ell', type=int, help='multipole')
-        parser.add_argument('-m', metavar='m', type=int,
-                            help='multipole moment')
+        parser.add_argument("-l", metavar="ell", type=int, help="multipole")
+        parser.add_argument("-m", metavar="m", type=int, help="multipole moment")
 
     args = parser.parse_args()
     return args
@@ -67,15 +113,13 @@ def read_args(spherical_harmonic: bool = False) -> Namespace:
 
 def identity() -> Tuple[np.ndarray, str, dict]:
     # filename
-    func_name = 'identity'
+    func_name = "identity"
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=False
-    )
+    extra = dict(reality=False)
     config = {**config, **extra}
-    L = config['L']
+    L = config["L"]
 
     # create identity
     flm = np.ones((L * L)) + 1j * np.zeros((L * L))
@@ -85,15 +129,13 @@ def identity() -> Tuple[np.ndarray, str, dict]:
 
 def dirac_delta() -> Tuple[np.ndarray, str, dict]:
     # filename
-    func_name = 'dirac_delta'
+    func_name = "dirac_delta"
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=True
-    )
+    extra = dict(reality=True)
     config = {**config, **extra}
-    L = config['L']
+    L = config["L"]
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -109,7 +151,7 @@ def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
     try:
         sig = 10 ** args[0]
     except ValueError:
-        print('function requires one extra arg')
+        print("function requires one extra arg")
         raise
 
     # filename
@@ -117,11 +159,9 @@ def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=True
-    )
+    extra = dict(reality=True)
     config = {**config, **extra}
-    L = config['L']
+    L = config["L"]
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -137,26 +177,31 @@ def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict
     try:
         t_sig, freq = [10 ** x for x in args]
     except ValueError:
-        print('function requires two extra args')
+        print("function requires two extra args")
         raise
 
     # filename
-    func_name = (f'squashed_gaussian{filename_std_dev(t_sig, "tsig")}'
-                 f'{filename_std_dev(freq, "freq")}')
+    func_name = (
+        f'squashed_gaussian{filename_std_dev(t_sig, "tsig")}'
+        f'{filename_std_dev(freq, "freq")}'
+    )
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=True
-    )
+    extra = dict(reality=True)
     config = {**config, **extra}
-    L = config['L']
-    method, reality = config['sampling'], config['reality']
+    L = config["L"]
+    method, reality = config["sampling"], config["reality"]
 
     # function on the grid
-    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float = 0, theta_sig: float = t_sig, freq: float = freq) -> np.ndarray:
-        f = np.exp(
-            -((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
+    def grid_fun(
+        theta: np.ndarray,
+        phi: np.ndarray,
+        theta_0: float = 0,
+        theta_sig: float = t_sig,
+        freq: float = freq,
+    ) -> np.ndarray:
+        f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
@@ -171,26 +216,37 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
     try:
         t_sig, p_sig = [10 ** x for x in args]
     except ValueError:
-        print('function requires two extra args')
+        print("function requires two extra args")
         raise
 
     # filename
-    func_name = (f'elongated_gaussian{filename_std_dev(t_sig, "tsig")}'
-                 f'{filename_std_dev(p_sig, "psig")}')
+    func_name = (
+        f'elongated_gaussian{filename_std_dev(t_sig, "tsig")}'
+        f'{filename_std_dev(p_sig, "psig")}'
+    )
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=True
-    )
+    extra = dict(reality=True)
     config = {**config, **extra}
-    L = config['L']
-    method, reality = config['sampling'], config['reality']
+    L = config["L"]
+    method, reality = config["sampling"], config["reality"]
 
     # function on the grid
-    def grid_fun(theta: np.ndarray, phi: np.ndarray, theta_0: float = 0, phi_0: float = np.pi, theta_sig: float = t_sig, phi_sig: float = p_sig) -> np.ndarray:
-        f = np.exp(-((((theta - theta_0) / theta_sig) **
-                      2 + ((phi - phi_0) / phi_sig) ** 2) / 2))
+    def grid_fun(
+        theta: np.ndarray,
+        phi: np.ndarray,
+        theta_0: float = 0,
+        phi_0: float = np.pi,
+        theta_sig: float = t_sig,
+        phi_sig: float = p_sig,
+    ) -> np.ndarray:
+        f = np.exp(
+            -(
+                (((theta - theta_0) / theta_sig) ** 2 + ((phi - phi_0) / phi_sig) ** 2)
+                / 2
+            )
+        )
         return f
 
     thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
@@ -202,15 +258,13 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
 
 def spherical_harmonic(ell: int, m: int) -> Tuple[np.ndarray, str, dict]:
     # filename
-    func_name = f'spherical_harmonic_l{ell}_m{m}'
+    func_name = f"spherical_harmonic_l{ell}_m{m}"
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=False
-    )
+    extra = dict(reality=False)
     config = {**config, **extra}
-    L = config['L']
+    L = config["L"]
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -222,21 +276,18 @@ def spherical_harmonic(ell: int, m: int) -> Tuple[np.ndarray, str, dict]:
 
 def earth() -> Tuple[np.ndarray, str, dict]:
     # filename
-    func_name = 'earth'
+    func_name = "earth"
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=True
-    )
+    extra = dict(reality=True)
     config = {**config, **extra}
-    L = config['L']
+    L = config["L"]
 
     # extract flm
-    matfile = os.path.join(
-        __location__, 'data', 'EGM2008_Topography_flms_L2190')
+    matfile = os.path.join(__location__, "data", "EGM2008_Topography_flms_L2190")
     mat_contents = sio.loadmat(matfile)
-    flm = np.ascontiguousarray(mat_contents['flm'][:, 0])
+    flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
 
     # fill in negative m components so as to
     # avoid confusion with zero values
@@ -248,28 +299,27 @@ def earth() -> Tuple[np.ndarray, str, dict]:
 
     # don't take the full L
     # invert dataset as Earth backwards
-    flm = np.conj(flm[:L * L])
+    flm = np.conj(flm[: L * L])
 
     return flm, func_name, config
 
 
 def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
     # filename
-    func_name = 'wmap'
+    func_name = "wmap"
 
     # setup
     config = asdict(Config())
-    extra = dict(
-        reality=True
-    )
+    extra = dict(reality=True)
     config = {**config, **extra}
-    L = config['L']
+    L = config["L"]
 
     # create flm
-    matfile = os.path.join(os.environ[
-        'SSHT'], 'src', 'matlab', 'data', f'wmap{file_ending}')
+    matfile = os.path.join(
+        os.environ["SSHT"], "src", "matlab", "data", f"wmap{file_ending}"
+    )
     mat_contents = sio.loadmat(matfile)
-    cl = np.ascontiguousarray(mat_contents['cl'][:, 0])
+    cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
 
     # same random seed
     np.random.seed(0)
@@ -283,8 +333,10 @@ def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
             if m == 0:
                 flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
             else:
-                flm[ind] = np.sqrt(cl[ell - 1] / 2) * np.random.randn() + \
-                    1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
+                flm[ind] = (
+                    np.sqrt(cl[ell - 1] / 2) * np.random.randn()
+                    + 1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
+                )
 
     return flm, func_name, config
 
@@ -292,7 +344,7 @@ def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
 def wmap() -> Tuple[np.ndarray, str, dict]:
     # file_ending = '_lcdm_pl_model_yr1_v1'
     # file_ending = '_tt_spectrum_7yr_v4p1'
-    file_ending = '_lcdm_pl_model_wmap7baoh0'
+    file_ending = "_lcdm_pl_model_wmap7baoh0"
     return wmap_helper(file_ending)
 
 
@@ -301,7 +353,7 @@ def valid_plotting(func_name: str) -> str:
     if func_name in total:
         return func_name
     else:
-        raise ValueError('Not a valid function name to plot')
+        raise ValueError("Not a valid function name to plot")
 
 
 def valid_kernels(func_name: str) -> str:
@@ -309,31 +361,28 @@ def valid_kernels(func_name: str) -> str:
     if func_name in functions:
         return func_name
     else:
-        raise ValueError('Not a valid kernel name to convolve')
+        raise ValueError("Not a valid kernel name to convolve")
 
 
 functions = {
-    'dirac_delta': dirac_delta,
-    'gaussian': gaussian,
-    'identity': identity,
-    'squashed_gaussian': squashed_gaussian,
-    'elongated_gaussian': elongated_gaussian,
-    'spherical_harmonic': spherical_harmonic
+    "dirac_delta": dirac_delta,
+    "gaussian": gaussian,
+    "identity": identity,
+    "squashed_gaussian": squashed_gaussian,
+    "elongated_gaussian": elongated_gaussian,
+    "spherical_harmonic": spherical_harmonic,
 }
-maps = {
-    'earth': earth,
-    'wmap': wmap
-}
+maps = {"earth": earth, "wmap": wmap}
 # form dictionary of all functions
 total = {**functions, **maps}
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # initialise to None
     glm, glm_name = None, None
 
     # if flm is spherical harmonics then
     # obviously not a convolution
-    if sys.argv[1] == 'spherical_harmonic':
+    if sys.argv[1] == "spherical_harmonic":
         args = read_args(True)
         flm_input = total[args.flm]
         flm, flm_name, config = flm_input(args.l, args.m)
@@ -358,9 +407,9 @@ if __name__ == '__main__':
                 glm, glm_name, config = glm_input(args.extra_args)
 
     # if use input from argparse
-    config['routine'] = args.routine
-    config['type'] = args.type
-    config['annotation'] = args.annotation
+    config["routine"] = args.routine
+    config["type"] = args.type
+    config["annotation"] = args.annotation
 
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.plot(args.alpha, args.beta, args.gamma)

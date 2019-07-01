@@ -9,26 +9,35 @@ from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 from fractions import Fraction
 from typing import List, Tuple
-sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
+
+sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
 
 
 class SiftingConvolution:
-    def __init__(self, flm: np.ndarray, flm_name: str, config: dict, glm: np.ndarray = None, glm_name: str = None) -> None:
-        self.auto_open = config['auto_open']
+    def __init__(
+        self,
+        flm: np.ndarray,
+        flm_name: str,
+        config: dict,
+        glm: np.ndarray = None,
+        glm_name: str = None,
+    ) -> None:
+        self.auto_open = config["auto_open"]
         self.flm_name = flm_name
         self.flm = flm
         self.glm = glm
-        self.L = config['L']
+        self.L = config["L"]
         self.location = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        self.method = config['sampling']
-        self.reality = config['reality']
+            os.path.join(os.getcwd(), os.path.dirname(__file__))
+        )
+        self.method = config["sampling"]
+        self.reality = config["reality"]
         self.resolution = self.calc_resolution(config)
-        self.routine = config['routine']
-        self.save_fig = config['save_fig']
-        self.type = config['type']
-        self.annotation = config['annotation']
+        self.routine = config["routine"]
+        self.save_fig = config["save_fig"]
+        self.type = config["type"]
+        self.annotation = config["annotation"]
         if self.glm is not None:
             self.glm_name = glm_name
 
@@ -36,23 +45,29 @@ class SiftingConvolution:
     # ---------- flm functions ----------
     # -----------------------------------
 
-    def rotation(self, flm: np.ndarray, alpha: float, beta: float, gamma: float) -> np.ndarray:
-        '''
+    def rotation(
+        self, flm: np.ndarray, alpha: float, beta: float, gamma: float
+    ) -> np.ndarray:
+        """
         rotates given flm on the sphere by alpha/beta/gamma
-        '''
-        flm_rot = ssht.rotate_flms(
-            flm, alpha, beta, gamma, self.L)
+        """
+        flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
         return flm_rot
 
     def translation(self, flm: np.ndarray) -> np.ndarray:
-        '''
+        """
         translates given flm on the sphere by alpha/beta
-        '''
+        """
         # numpy binary filename
-        filename = os.path.join(self.location, 'npy',
-                                (f'trans_dd_L-{self.L}_'
-                                 f'{self.filename_angle(self.alpha_pi_fraction,self.beta_pi_fraction)}'
-                                 f'samp-{self.method}.npy'))
+        filename = os.path.join(
+            self.location,
+            "npy",
+            (
+                f"trans_dd_L-{self.L}_"
+                f"{self.filename_angle(self.alpha_pi_fraction,self.beta_pi_fraction)}"
+                f"samp-{self.method}.npy"
+            ),
+        )
 
         # check if file of translated dirac delta already
         # exists otherwise calculate translated dirac delta
@@ -65,16 +80,16 @@ class SiftingConvolution:
             np.save(filename, glm)
 
         # convolve with flm
-        if self.flm_name == 'dirac_delta':
+        if self.flm_name == "dirac_delta":
             flm_conv = glm
         else:
             flm_conv = self.convolution(flm, glm)
         return flm_conv
 
     def convolution(self, flm: np.ndarray, glm: np.ndarray) -> np.ndarray:
-        '''
+        """
         computes the sifting convolution of two arrays
-        '''
+        """
         # translation/convolution are not real for general
         # function so turn off reality except for Dirac delta
         self.reality = False
@@ -86,17 +101,15 @@ class SiftingConvolution:
     # ----------------------------------------
 
     def plotly_plot(self, f: np.ndarray, filename: str, save_figure: bool) -> None:
-        '''
+        """
         creates basic plotly plot rather than matplotlib
-        '''
+        """
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
 
         # appropriate zoom in on north pole
         zoom = 1.58
-        camera = dict(
-            eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=2 / zoom)
-        )
+        camera = dict(eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=2 / zoom))
 
         data = [
             Surface(
@@ -104,46 +117,31 @@ class SiftingConvolution:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self.cmocean_to_plotly('solar'),
+                colorscale=self.cmocean_to_plotly("solar"),
                 cmin=vmin,
                 cmax=vmax,
                 colorbar=dict(
-                    x=0.92,
-                    len=0.98,
-                    nticks=5,
-                    tickfont=dict(
-                        color='#666666',
-                        size=32
-                    )
-                )
+                    x=0.92, len=0.98, nticks=5, tickfont=dict(color="#666666", size=32)
+                ),
             )
         ]
 
         axis = dict(
-            title='',
-            showgrid=False,
-            zeroline=False,
-            ticks='',
-            showticklabels=False
+            title="", showgrid=False, zeroline=False, ticks="", showticklabels=False
         )
 
         layout = Layout(
             scene=Scene(
-                dragmode='orbit',
+                dragmode="orbit",
                 camera=camera,
                 xaxis=XAxis(axis),
                 yaxis=YAxis(axis),
                 zaxis=ZAxis(axis),
-                annotations=self.annotations() if self.annotation else []
+                annotations=self.annotations() if self.annotation else [],
             ),
-            margin=Margin(
-                l=0,
-                r=0,
-                b=0,
-                t=0
-            ),
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)'
+            margin=Margin(l=0, r=0, b=0, t=0),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
         )
 
         fig = Figure(data=data, layout=layout)
@@ -151,42 +149,54 @@ class SiftingConvolution:
         # if save_fig is true then print as png and pdf in their directories
         if save_figure:
             png_filename = os.path.join(
-                self.location, 'figures', 'png', f'{filename}.png')
+                self.location, "figures", "png", f"{filename}.png"
+            )
             pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(
-                self.location, 'figures', 'pdf', f'{filename}.pdf')
+                self.location, "figures", "pdf", f"{filename}.pdf"
+            )
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
         html_filename = os.path.join(
-            self.location, 'figures', 'html', f'{filename}.html')
+            self.location, "figures", "html", f"{filename}.html"
+        )
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
-    def plot(self, alpha_pi_fraction: float = 0.75, beta_pi_fraction: float = 0.25, gamma_pi_fraction: float = 0) -> None:
-        '''
+    def plot(
+        self,
+        alpha_pi_fraction: float = 0.75,
+        beta_pi_fraction: float = 0.25,
+        gamma_pi_fraction: float = 0,
+    ) -> None:
+        """
         master plotting method
-        '''
+        """
         # setup
         gamma = gamma_pi_fraction * np.pi
-        filename = f'{self.flm_name}_L-{self.L}_'
+        filename = f"{self.flm_name}_L-{self.L}_"
 
         # calculate nearest index of alpha/beta for translation
         self.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
 
         # test for plotting routine
-        if self.routine == 'north':
+        if self.routine == "north":
             flm = self.flm
-        elif self.routine == 'rotate':
+        elif self.routine == "rotate":
             # adjust filename
-            filename += (f'{self.routine}_'
-                         f'{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}')
+            filename += (
+                f"{self.routine}_"
+                f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}"
+            )
             # rotate by alpha, beta
             flm = self.rotation(self.flm, self.alpha, self.beta, gamma)
-        elif self.routine == 'translate':
+        elif self.routine == "translate":
             # adjust filename
             # don't add gamma if translation
-            filename += (f'{self.routine}_'
-                         f'{self.filename_angle(alpha_pi_fraction, beta_pi_fraction)}')
+            filename += (
+                f"{self.routine}_"
+                f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction)}"
+            )
             # translate by alpha, beta
             flm = self.translation(self.flm)
 
@@ -194,27 +204,26 @@ class SiftingConvolution:
             # perform convolution
             flm = self.convolution(flm, self.glm)
             # adjust filename
-            filename += f'convolved_{self.glm_name}_L-{self.L}_'
+            filename += f"convolved_{self.glm_name}_L-{self.L}_"
 
         # boost resolution
         if self.resolution != self.L:
             flm = self.resolution_boost(flm)
 
         # add sampling/resolution to filename
-        filename += f'samp-{self.method}_res-{self.resolution}_'
+        filename += f"samp-{self.method}_res-{self.resolution}_"
 
         # inverse & plot
-        f = ssht.inverse(flm, self.resolution,
-                         Method=self.method, Reality=self.reality)
+        f = ssht.inverse(flm, self.resolution, Method=self.method, Reality=self.reality)
 
         # check for plotting type
-        if self.type == 'real':
+        if self.type == "real":
             plot = f.real
-        elif self.type == 'imag':
+        elif self.type == "imag":
             plot = f.imag
-        elif self.type == 'abs':
+        elif self.type == "abs":
             plot = abs(f)
-        elif self.type == 'sum':
+        elif self.type == "sum":
             plot = f.real + f.imag
 
         # do plot
@@ -225,13 +234,15 @@ class SiftingConvolution:
     # ---------- translation helper functions ----------
     # --------------------------------------------------
 
-    def calc_nearest_grid_point(self, alpha_pi_fraction: float = 0, beta_pi_fraction: float = 0) -> None:
-        '''
+    def calc_nearest_grid_point(
+        self, alpha_pi_fraction: float = 0, beta_pi_fraction: float = 0
+    ) -> None:
+        """
         calculate nearest index of alpha/beta for translation
-        this is due to calculating \omega' through the pixel
+        this is due to calculating omega' through the pixel
         values - the translation needs to be at the same position
         as the rotation such that the difference error is small
-        '''
+        """
         thetas, phis = ssht.sample_positions(self.L, Method=self.method)
         pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
         pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
@@ -246,27 +257,27 @@ class SiftingConvolution:
 
     def annotations(self) -> List[dict]:
         # if north alter values to point at correct point
-        if self.routine == 'north':
+        if self.routine == "north":
             x, y, z = 0, 0, 1
         else:
             x, y, z = ssht.s2_to_cart(self.beta, self.alpha)
 
         # initialise array and standard arrow
         annotation = []
-        config = dict(arrowcolor='white', yshift=5)
+        config = dict(arrowcolor="white", yshift=5)
         arrow = {**dict(x=x, y=y, z=z), **config}
 
         # various switch cases for annotation
-        if self.flm_name.startswith('elongated_gaussian'):
-            if self.routine == 'translate':
+        if self.flm_name.startswith("elongated_gaussian"):
+            if self.routine == "translate":
                 annotation.append({**config, **dict(x=-x, y=y, z=z)})
                 annotation.append({**config, **dict(x=x, y=-y, z=z)})
-        elif self.flm_name == 'dirac_delta':
-            if self.type != 'imag':
+        elif self.flm_name == "dirac_delta":
+            if self.type != "imag":
                 annotation.append(arrow)
-        elif 'gaussian' in self.flm_name:
-            if self.routine != 'translate':
-                if self.type != 'imag':
+        elif "gaussian" in self.flm_name:
+            if self.routine != "translate":
+                if self.type != "imag":
                     annotation.append(arrow)
 
         # if convolution then remove annotation
@@ -276,59 +287,59 @@ class SiftingConvolution:
 
     @staticmethod
     def pi_in_filename(numerator: int, denominator: int) -> str:
-        '''
+        """
         create filename for angle as multiple of pi
-        '''
+        """
         # if whole number
         if denominator == 1:
             # if 1 * pi
             if numerator == 1:
-                filename = 'pi'
+                filename = "pi"
             else:
-                filename = f'{numerator}pi'
+                filename = f"{numerator}pi"
         else:
-            filename = f'{numerator}pi{denominator}'
+            filename = f"{numerator}pi{denominator}"
         return filename
 
     @staticmethod
     def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
-        '''
+        """
         ger numerator and denominator for a given decimal
-        '''
+        """
         angle = Fraction(angle_fraction).limit_denominator()
         return angle.numerator, angle.denominator
 
     @staticmethod
     def calc_resolution(config: dict) -> int:
-        '''
+        """
         calculate appropriate resolution for given L
-        '''
-        if 'pow2_res2L' in config:
-            exponent = config['pow2_res2L']
+        """
+        if "pow2_res2L" in config:
+            exponent = config["pow2_res2L"]
         else:
-            if config['L'] == 1:
+            if config["L"] == 1:
                 exponent = 6
-            elif config['L'] < 4:
+            elif config["L"] < 4:
                 exponent = 5
-            elif config['L'] < 8:
+            elif config["L"] < 8:
                 exponent = 4
-            elif config['L'] < 128:
+            elif config["L"] < 128:
                 exponent = 3
-            elif config['L'] < 512:
+            elif config["L"] < 512:
                 exponent = 2
-            elif config['L'] < 1024:
+            elif config["L"] < 1024:
                 exponent = 1
             else:
                 exponent = 0
-        resolution = config['L'] * 2 ** exponent
+        resolution = config["L"] * 2 ** exponent
 
         return resolution
 
     @staticmethod
     def cmocean_to_plotly(colour, pl_entries: int = 255) -> List[Tuple[float, str]]:
-        '''
+        """
         converts cmocean colourscale to a plotly colourscale
-        '''
+        """
         cmap = getattr(cmocean.cm, colour)
 
         h = 1 / (pl_entries - 1)
@@ -336,22 +347,27 @@ class SiftingConvolution:
 
         for k in range(pl_entries):
             C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
-            pl_colorscale.append((k * h, f'rgb{(C[0], C[1], C[2])}'))
+            pl_colorscale.append((k * h, f"rgb{(C[0], C[1], C[2])}"))
 
         return pl_colorscale
 
     def resolution_boost(self, flm: np.ndarray) -> np.ndarray:
-        '''
+        """
         calculates a boost in resoltion for given flm
-        '''
+        """
         boost = self.resolution * self.resolution - self.L * self.L
-        flm_boost = np.pad(flm, (0, boost), 'constant')
+        flm_boost = np.pad(flm, (0, boost), "constant")
         return flm_boost
 
-    def filename_angle(self, alpha_pi_fraction: float, beta_pi_fraction: float, gamma_pi_fraction: float = 0) -> str:
-        '''
+    def filename_angle(
+        self,
+        alpha_pi_fraction: float,
+        beta_pi_fraction: float,
+        gamma_pi_fraction: float = 0,
+    ) -> str:
+        """
         middle part of filename
-        '''
+        """
         # get numerator/denominator for filename
         alpha_num, alpha_den = self.get_angle_num_dem(alpha_pi_fraction)
         beta_num, beta_den = self.get_angle_num_dem(beta_pi_fraction)
@@ -359,53 +375,48 @@ class SiftingConvolution:
 
         # if alpha = beta = 0
         if not alpha_num and not beta_num:
-            filename = 'alpha-0_beta-0_'
+            filename = "alpha-0_beta-0_"
         # if alpha = 0
         elif not alpha_num:
-            filename = f'alpha-0_beta-{self.pi_in_filename(beta_num, beta_den)}_'
+            filename = f"alpha-0_beta-{self.pi_in_filename(beta_num, beta_den)}_"
         # if beta = 0
         elif not beta_num:
-            filename = f'alpha-{self.pi_in_filename(alpha_num, alpha_den)}_beta-0_'
+            filename = f"alpha-{self.pi_in_filename(alpha_num, alpha_den)}_beta-0_"
         # if alpha != 0 && beta !=0
         else:
-            filename = (f'alpha-{self.pi_in_filename(alpha_num, alpha_den)}_'
-                        f'beta-{self.pi_in_filename(beta_num, beta_den)}_')
+            filename = (
+                f"alpha-{self.pi_in_filename(alpha_num, alpha_den)}"
+                f"_beta-{self.pi_in_filename(beta_num, beta_den)}_"
+            )
 
         # if rotation with gamma != 0
         if gamma_num:
-            filename += f'gamma-{self.pi_in_filename(gamma_num, gamma_den)}_'
+            filename += f"gamma-{self.pi_in_filename(gamma_num, gamma_den)}_"
         return filename
 
-    def setup_plot(self, f: np.ndarray, close: bool = True, parametric: bool = False, parametric_scaling: List[float] = [0.0, 0.5], color_range: List[float] = None) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
-        '''
+    def setup_plot(
+        self,
+        f: np.ndarray,
+        close: bool = True,
+        parametric: bool = False,
+        parametric_scaling: List[float] = [0.0, 0.5],
+        color_range: List[float] = None,
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
+        """
         function which creates the data for the matplotlib/plotly plot
-
-        Arguments:
-            f {function} -- inverse of flm
-
-        Keyword Arguments:
-            close {bool} -- if true the full sphere is plotted without a gap (default: {True})
-            parametric {bool} -- the radius of the object at a certain point is defined by the function (default: {False})
-            parametric_scaling {list} -- used if Parametric=True, defines the radius of the shape at a particular angle (default: {[0.0, 0.5]})
-            color_range {list} -- if set saturates the color bar in that range, else the function min and max is used (default: {None})
-
-        Raises:
-            Exception -- if band limit L is not the same size as function f
-
-        Returns:
-            tuple -- values for the plotting
-        '''
-        if self.method == 'MW_pole':
+        """
+        if self.method == "MW_pole":
             if len(f) == 2:
                 f, f_sp = f
             else:
                 f, f_sp, phi_sp = f
 
         (thetas, phis) = ssht.sample_positions(
-            self.resolution, Method=self.method, Grid=True)
+            self.resolution, Method=self.method, Grid=True
+        )
 
-        if (thetas.size != f.size):
-            raise Exception('Band-limit L deos not match that of f')
+        if thetas.size != f.size:
+            raise Exception("Band-limit L deos not match that of f")
 
         f_plot = f.copy()
 
@@ -420,21 +431,22 @@ class SiftingConvolution:
             vmax = color_range[1]
             f_plot[f_plot < color_range[0]] = color_range[0]
             f_plot[f_plot > color_range[1]] = color_range[1]
-            f_plot[f_plot == -1.56E30] = np.nan
+            f_plot[f_plot == -1.56e30] = np.nan
 
         # % Compute position scaling for parametric plot.
         if parametric:
-            f_normalised = (f_plot - vmin / (vmax - vmin)) * \
-                parametric_scaling[1] + parametric_scaling[0]
+            f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[
+                1
+            ] + parametric_scaling[0]
 
         # % Close plot.
         if close:
-            (n_theta, n_phi) = ssht.sample_shape(
-                self.resolution, Method=self.method)
+            (n_theta, n_phi) = ssht.sample_shape(self.resolution, Method=self.method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
-                    f_normalised, n_phi, f_normalised[:, 0], axis=1)
+                    f_normalised, n_phi, f_normalised[:, 0], axis=1
+                )
             thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
             phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
 

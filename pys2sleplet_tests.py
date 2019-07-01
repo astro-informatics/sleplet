@@ -4,28 +4,31 @@ from plotting import dirac_delta, earth, identity
 import numpy as np
 import sys
 import os
-sys.path.append(os.path.join(os.environ['SSHT'], 'src', 'python'))
+
+sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
 
 
 def test_dirac_delta_rotate_translate() -> None:
     # setup
     flm, name, config = dirac_delta()
-    config['routine'], config['type'], config['annotation'] = None, None, True
+    config["routine"], config["type"], config["annotation"] = None, None, True
     sc = SiftingConvolution(flm, name, config)
     sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.25)
 
     # rotation
     flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)
     flm_rot_boost = sc.resolution_boost(flm_rot)
-    f_rot = ssht.inverse(flm_rot_boost, sc.resolution,
-                         Method=sc.method, Reality=sc.reality)
+    f_rot = ssht.inverse(
+        flm_rot_boost, sc.resolution, Method=sc.method, Reality=sc.reality
+    )
 
     # translation
     flm_trans = sc.translation(flm)
     flm_trans_boost = sc.resolution_boost(flm_trans)
-    f_trans = ssht.inverse(flm_trans_boost, sc.resolution,
-                           Method=sc.method, Reality=sc.reality)
+    f_trans = ssht.inverse(
+        flm_trans_boost, sc.resolution, Method=sc.method, Reality=sc.reality
+    )
 
     # calculate difference
     flm_diff = flm_rot - flm_trans
@@ -34,22 +37,22 @@ def test_dirac_delta_rotate_translate() -> None:
     # perform test
     np.testing.assert_allclose(flm_rot, flm_trans, atol=1e-14)
     np.testing.assert_allclose(f_rot, f_trans, rtol=1e-5)
-    print('Translation/rotation difference max error:',
-          np.max(np.abs(flm_rot - flm_trans)))
+    print("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
 
     # filename
-    filename = (f'dirac_delta_L-{sc.L}_diff_rot_trans_samp-'
-                f'{sc.method}_res-{sc.resolution}')
+    filename = (
+        f"dirac_delta_L-{sc.L}_diff_rot_trans_samp-{sc.method}_res-{sc.resolution}"
+    )
 
     # create plot
-    sc.plotly_plot(f_diff, filename, config['save_fig'])
+    sc.plotly_plot(f_diff, filename, config["save_fig"])
 
 
 def test_earth_identity_convolution() -> None:
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = identity()
-    config['routine'], config['type'], config['annotation'] = None, None, False
+    config["routine"], config["type"], config["annotation"] = None, None, False
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.calc_nearest_grid_point()
 
@@ -58,21 +61,21 @@ def test_earth_identity_convolution() -> None:
 
     # perform test
     np.testing.assert_equal(flm_conv, flm)
-    print('Identity convolution passed test')
+    print("Identity convolution passed test")
 
     # prepare
     flm_conv_boost = sc.resolution_boost(flm_conv)
-    f_conv = ssht.inverse(flm_conv_boost, sc.resolution,
-                          Method=sc.method, Reality=sc.reality)
+    f_conv = ssht.inverse(
+        flm_conv_boost, sc.resolution, Method=sc.method, Reality=sc.reality
+    )
 
     # filename
-    filename = (f'identity_L-{sc.L}_convolved_earth_L-'
-                f'{sc.L}_samp-{sc.method}_res-{sc.resolution}_real')
+    filename = f"identity_L-{sc.L}_convolved_earth_L-{sc.L}_samp-{sc.method}_res-{sc.resolution}_real"
 
     # create plot
-    sc.plotly_plot(f_conv.real, filename, config['save_fig'])
+    sc.plotly_plot(f_conv.real, filename, config["save_fig"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_dirac_delta_rotate_translate()
     test_earth_identity_convolution()
