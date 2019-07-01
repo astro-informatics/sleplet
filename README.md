@@ -1,3 +1,7 @@
 # src_s2sleplet
 
-*Formatting*: execute `pre-commit install` to install git hooks in your .git/ directory
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+
+## Formatting
+
+Execute `pre-commit install` to install git hooks in your .git/ directory
