@@ -41,9 +41,12 @@ class SlepianFunctions:
 
     def D_matrix(self):
         D = np.zeros((self.side.size, self.side.size), dtype=complex)
-        for i, theta in enumerate(self.side):
-            for j, phi in enumerate(self.side):
-                D[i][j] = self.D_integral(theta, phi)
+        for i in range(self.side.size):
+            for j in range(i, self.side.size):
+                integral = self.D_integral(self.side[i], self.side[j])
+                D[i][j] = integral
+                if i != j:
+                    D[j][i] = np.conj(integral)
         return D
 
 
