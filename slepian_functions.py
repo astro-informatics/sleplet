@@ -10,34 +10,41 @@ import pyssht as ssht
 class SlepianFunctions:
     def __init__(self, L, theta_min=0, theta_max=np.pi, phi_min=0, phi_max=2 * np.pi):
         self.L = L
-        theta_grid, phi_grid = ssht.sample_positions(self.L, Grid=True)
-        self.ylm = ssht.create_ylm(theta_grid, phi_grid, L)
-        self.thetas, self.phis = ssht.sample_positions(L)
-        self.theta_range = np.where(
-            np.logical_and(self.thetas >= theta_min, self.thetas <= theta_max)
-        )[0]
-        self.phi_range = np.where(
-            np.logical_and(self.phis >= phi_min, self.phis <= phi_max)
-        )[0]
+        self.theta_min = theta_min
+        self.theta_max = theta_max
+        self.phi_min = phi_min
+        self.phi_max = phi_max
         self.side = np.array(
             [ssht.elm2ind(ell, m) for ell in range(self.L) for m in range(ell + 1)]
         )
 
-    def f(self, i, j, theta_idx, phi_idx):
-        return (
-            self.ylm[i][theta_idx][phi_idx]
-            * np.conj(self.ylm[j][theta_idx][phi_idx])
-            * np.sin(self.thetas[theta_idx])
-        )
+    def f(self, theta, phi, i, j):
+        ylm = ssht.create_ylm(theta, phi, self.L)
+        ylm = ylm.reshape(ylm.size)
+        f = ylm[i] * np.conj(ylm[j]) * np.sin(theta)
+        return f
+
+    def real_func(self, theta, phi, i, j):
+        return self.f(theta, phi, i, j).real
+
+    def imag_func(self, theta, phi, i, j):
+        return self.f(theta, phi, i, j).imag
+
+    def integral(self, f, i, j):
+        F = integrate.dblquad(
+            f,
+            self.phi_min,
+            self.phi_max,
+            lambda t: self.theta_min,
+            lambda t: self.theta_max,
+            args=(i, j),
+        )[0]
+        return F
 
     def D_integral(self, i, j):
-        I = np.zeros(self.theta_range.size, dtype=complex)
-        for t in self.theta_range:
-            I[t] = integrate.simps(
-                self.f(i, j, t, self.phi_range), self.phis[self.phi_range]
-            )
-        F = integrate.simps(I, self.thetas[self.theta_range])
-        return F
+        F_real = self.integral(self.real_func, i, j)
+        F_imag = self.integral(self.imag_func, i, j)
+        return F_real + 1j * F_imag
 
     def D_matrix(self):
         D = np.zeros((self.side.size, self.side.size), dtype=complex)
@@ -51,7 +58,7 @@ class SlepianFunctions:
 
 
 if __name__ == "__main__":
-    L = 16
-    sf = SlepianFunctions(L)
+    L, theta0 = 2, np.pi / 9
+    sf = SlepianFunctions(L, theta_max=theta0)
     D = sf.D_matrix()
     print(D)
