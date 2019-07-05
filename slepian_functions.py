@@ -10,16 +10,12 @@ import pyssht as ssht
 class SlepianFunctions:
     def __init__(self, L, theta_min=0, theta_max=np.pi, phi_min=0, phi_max=2 * np.pi):
         self.L = L
-        self.theta_min = theta_min
-        self.theta_max = theta_max
-        self.phi_min = phi_min
-        self.phi_max = phi_max
         self.side = np.array(
             [ssht.elm2ind(ell, m) for ell in range(self.L) for m in range(ell + 1)]
         )
         self.scheme = quadpy.quadrilateral.cools_haegemans_1985_2()
         self.quad = quadpy.quadrilateral.rectangle_points(
-            [self.theta_min, self.theta_max], [self.phi_min, self.phi_max]
+            [theta_min, theta_max], [phi_min, phi_max]
         )
 
     def f(self, omega):
