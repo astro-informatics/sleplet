@@ -14,35 +14,51 @@ import pyssht as ssht
 
 
 class Plotting:
-    def __init__(
-        self,
-        f,
-        resolution,
-        filename,
-        method="MW",
-        annotations=[],
-        auto_open=True,
-        save_fig=False,
-    ):
+    def __init__(self, method="MW", annotations=[], auto_open=True, save_fig=False):
         self.annotations = annotations
         self.auto_open = auto_open
-        self.f = f
-        self.filename = filename
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
         self.method = method
-        self.resolution = resolution
         self.save_fig = save_fig
 
-    def plotly_plot(self) -> None:
+    @staticmethod
+    def calc_resolution(L: int) -> int:
+        """
+        calculate appropriate resolution for given L
+        """
+        if L == 1:
+            exponent = 6
+        elif L < 4:
+            exponent = 5
+        elif L < 8:
+            exponent = 4
+        elif L < 128:
+            exponent = 3
+        elif L < 512:
+            exponent = 2
+        elif L < 1024:
+            exponent = 1
+        else:
+            exponent = 0
+        return L * 2 ** exponent
+
+    @staticmethod
+    def resolution_boost(flm: np.ndarray, L: int, resolution: int) -> np.ndarray:
+        """
+        calculates a boost in resoltion for given flm
+        """
+        boost = resolution * resolution - L * L
+        flm_boost = np.pad(flm, (0, boost), "constant")
+        return flm_boost
+
+    def plotly_plot(self, f: np.ndarray, filename: str) -> None:
         """
         creates basic plotly plot rather than matplotlib
         """
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            self.f, self.resolution, self.method
-        )
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, self.method)
 
         # appropriate zoom in on north pole
         zoom = 1.58
@@ -86,24 +102,23 @@ class Plotting:
         # if save_fig is true then print as png and pdf in their directories
         if self.save_fig:
             png_filename = os.path.join(
-                self.location, "figures", "png", f"{self.filename}.png"
+                self.location, "figures", "png", f"{filename}.png"
             )
             pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(
-                self.location, "figures", "pdf", f"{self.filename}.pdf"
+                self.location, "figures", "pdf", f"{filename}.pdf"
             )
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
         html_filename = os.path.join(
-            self.location, "figures", "html", f"{self.filename}.html"
+            self.location, "figures", "html", f"{filename}.html"
         )
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
     @staticmethod
     def _setup_plot(
         f: np.ndarray,
-        resolution: int,
         method: str,
         close: bool = True,
         parametric: bool = False,
@@ -113,6 +128,8 @@ class Plotting:
         """
         function which creates the data for the matplotlib/plotly plot
         """
+        resolution = f.shape[0]
+
         if method == "MW_pole":
             if len(f) == 2:
                 f, f_sp = f

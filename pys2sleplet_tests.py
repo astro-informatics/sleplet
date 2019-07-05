@@ -13,20 +13,23 @@ import pyssht as ssht
 def test_dirac_delta_rotate_translate() -> None:
     # setup
     flm, name, config = dirac_delta()
-    config["routine"], config["type"], config["annotation"] = None, None, True
+    config["routine"], config["type"], config["annotation"] = None, None, False
     sc = SiftingConvolution(flm, name, config)
     sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.25)
+    plotting = Plotting(
+        method=sc.method, auto_open=config["auto_open"], save_fig=config["save_fig"]
+    )
 
     # rotation
     flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)
-    flm_rot_boost = sc.resolution_boost(flm_rot)
+    flm_rot_boost = plotting.resolution_boost(flm_rot, sc.L, sc.resolution)
     f_rot = ssht.inverse(
         flm_rot_boost, sc.resolution, Method=sc.method, Reality=sc.reality
     )
 
     # translation
     flm_trans = sc.translation(flm)
-    flm_trans_boost = sc.resolution_boost(flm_trans)
+    flm_trans_boost = plotting.resolution_boost(flm_trans, sc.L, sc.resolution)
     f_trans = ssht.inverse(
         flm_trans_boost, sc.resolution, Method=sc.method, Reality=sc.reality
     )
@@ -46,25 +49,19 @@ def test_dirac_delta_rotate_translate() -> None:
     )
 
     # create plot
-    plotting = Plotting(
-        f_diff,
-        sc.resolution,
-        filename,
-        method=sc.method,
-        annotations=sc.annotations(),
-        auto_open=config["auto_open"],
-        save_fig=config["save_fig"],
-    )
-    plotting.plotly_plot()
+    plotting.plotly_plot(f_diff, filename)
 
 
 def test_earth_identity_convolution() -> None:
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = identity()
-    config["routine"], config["type"], config["annotation"] = None, None, True
+    config["routine"], config["type"], config["annotation"] = None, None, False
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.calc_nearest_grid_point()
+    plotting = Plotting(
+        method=sc.method, auto_open=config["auto_open"], save_fig=config["save_fig"]
+    )
 
     # convolution
     flm_conv = sc.convolution(flm, glm)
@@ -74,7 +71,7 @@ def test_earth_identity_convolution() -> None:
     print("Identity convolution passed test")
 
     # prepare
-    flm_conv_boost = sc.resolution_boost(flm_conv)
+    flm_conv_boost = plotting.resolution_boost(flm_conv, sc.L, sc.resolution)
     f_conv = ssht.inverse(
         flm_conv_boost, sc.resolution, Method=sc.method, Reality=sc.reality
     )
@@ -83,16 +80,7 @@ def test_earth_identity_convolution() -> None:
     filename = f"identity_L-{sc.L}_convolved_earth_L-{sc.L}_samp-{sc.method}_res-{sc.resolution}_real"
 
     # create plot
-    plotting = Plotting(
-        f_conv.real,
-        sc.resolution,
-        filename,
-        method=sc.method,
-        annotations=sc.annotations(),
-        auto_open=config["auto_open"],
-        save_fig=config["save_fig"],
-    )
-    plotting.plotly_plot()
+    plotting.plotly_plot(f_conv.real, filename)
 
 
 if __name__ == "__main__":

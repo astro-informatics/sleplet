@@ -23,18 +23,24 @@ class SiftingConvolution:
         self.flm_name = flm_name
         self.flm = flm
         self.glm = glm
-        if self.glm is not None:
-            self.glm_name = glm_name
         self.L = config["L"]
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
         self.method = config["sampling"]
         self.reality = config["reality"]
-        self.resolution = self.calc_resolution(self.L)
         self.routine = config["routine"]
         self.save_fig = config["save_fig"]
         self.type = config["type"]
+        self.plotting = Plotting(
+            method=self.method,
+            annotations=self.annotations(),
+            auto_open=self.auto_open,
+            save_fig=self.save_fig,
+        )
+        self.resolution = self.plotting.calc_resolution(self.L)
+        if self.glm is not None:
+            self.glm_name = glm_name
 
     # -----------------------------------
     # ---------- flm functions ----------
@@ -140,7 +146,7 @@ class SiftingConvolution:
 
         # boost resolution
         if self.resolution != self.L:
-            flm = self.resolution_boost(flm)
+            flm = self.plotting.resolution_boost(flm, self.L, self.resolution)
 
         # add sampling/resolution to filename
         filename += f"samp-{self.method}_res-{self.resolution}_"
@@ -160,17 +166,7 @@ class SiftingConvolution:
 
         # do plot
         filename += self.type
-        # self.plotly_plot(plot, filename, self.save_fig)
-        plotting = Plotting(
-            f,
-            self.resolution,
-            filename,
-            method=self.method,
-            annotations=self.annotations(),
-            auto_open=self.auto_open,
-            save_fig=self.save_fig,
-        )
-        plotting.plotly_plot()
+        self.plotting.plotly_plot(f, filename)
 
     # --------------------------------------------------
     # ---------- translation helper function ----------
@@ -253,35 +249,6 @@ class SiftingConvolution:
         """
         angle = Fraction(angle_fraction).limit_denominator()
         return angle.numerator, angle.denominator
-
-    @staticmethod
-    def calc_resolution(L: int) -> int:
-        """
-        calculate appropriate resolution for given L
-        """
-        if L == 1:
-            exponent = 6
-        elif L < 4:
-            exponent = 5
-        elif L < 8:
-            exponent = 4
-        elif L < 128:
-            exponent = 3
-        elif L < 512:
-            exponent = 2
-        elif L < 1024:
-            exponent = 1
-        else:
-            exponent = 0
-        return L * 2 ** exponent
-
-    def resolution_boost(self, flm: np.ndarray) -> np.ndarray:
-        """
-        calculates a boost in resoltion for given flm
-        """
-        boost = self.resolution * self.resolution - self.L * self.L
-        flm_boost = np.pad(flm, (0, boost), "constant")
-        return flm_boost
 
     def filename_angle(
         self,
