@@ -1,7 +1,8 @@
-import sys
-import os
+from plotting import Plotting
 import numpy as np
+import os
 import quadpy
+import sys
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -10,9 +11,7 @@ import pyssht as ssht
 class SlepianFunctions:
     def __init__(self, L, theta_min=0, theta_max=np.pi, phi_min=0, phi_max=2 * np.pi):
         self.L = L
-        self.side = np.array(
-            [ssht.elm2ind(ell, m) for ell in range(self.L) for m in range(ell + 1)]
-        )
+        self.N = self.L * self.L
         self.scheme = quadpy.quadrilateral.cools_haegemans_1985_2()
         self.quad = quadpy.quadrilateral.rectangle_points(
             [theta_min, theta_max], [phi_min, phi_max]
@@ -31,19 +30,29 @@ class SlepianFunctions:
         return F
 
     def D_matrix(self):
-        D = np.zeros((self.side.size, self.side.size), dtype=complex)
-        for i in range(self.side.size):
-            integral = self.D_integral(self.side[i], self.side[i])
+        D = np.zeros((self.N, self.N), dtype=complex)
+        for i in range(self.N):
+            integral = self.D_integral(i, i)
             D[i][i] = integral
-            for j in range(i + 1, self.side.size):
-                integral = self.D_integral(self.side[i], self.side[j])
+            for j in range(i + 1, self.N):
+                integral = self.D_integral(i, j)
                 D[i][j] = integral
                 D[j][i] = np.conj(integral)
         return D
 
+    def eigen_problem(self):
+        D = self.D_matrix()
+        e_funs, e_vals = np.linalg.eigh(D)
+        return e_funs, e_vals
+
 
 if __name__ == "__main__":
-    L, theta0 = 4, np.pi / 9
+    plotting = Plotting()
+    L, theta0 = 2, np.pi / 9
     sf = SlepianFunctions(L, theta_max=theta0)
-    D = sf.D_matrix()
-    print(D)
+    _, eigenfunctions = sf.eigen_problem()
+    resolution = plotting.calc_resolution(L)
+    for v in eigenfunctions:
+        flm = plotting.resolution_boost(v, L, resolution)
+        f = ssht.inverse(flm, resolution)
+        plotting.plotly_plot(f.real, "test")
