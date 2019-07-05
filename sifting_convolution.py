@@ -1,13 +1,8 @@
-import sys
-import os
-import numpy as np
-import cmocean
-import plotly.offline as py
-from plotly.graph_objs import Figure, Surface, Layout
-from plotly.graph_objs.layout import Margin, Scene
-from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
-import plotly.io as pio
+from plotting import Plotting
 from fractions import Fraction
+import numpy as np
+import os
+import sys
 from typing import List, Tuple
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
@@ -23,23 +18,23 @@ class SiftingConvolution:
         glm: np.ndarray = None,
         glm_name: str = None,
     ) -> None:
+        self.annotation = config["annotation"]
         self.auto_open = config["auto_open"]
         self.flm_name = flm_name
         self.flm = flm
         self.glm = glm
+        if self.glm is not None:
+            self.glm_name = glm_name
         self.L = config["L"]
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
         self.method = config["sampling"]
         self.reality = config["reality"]
-        self.resolution = self.calc_resolution(config)
+        self.resolution = self.calc_resolution(self.L)
         self.routine = config["routine"]
         self.save_fig = config["save_fig"]
         self.type = config["type"]
-        self.annotation = config["annotation"]
-        if self.glm is not None:
-            self.glm_name = glm_name
 
     # -----------------------------------
     # ---------- flm functions ----------
@@ -97,71 +92,8 @@ class SiftingConvolution:
         return flm * np.conj(glm)
 
     # ----------------------------------------
-    # ---------- plotting functions ----------
+    # ---------- plotting function ----------
     # ----------------------------------------
-
-    def plotly_plot(self, f: np.ndarray, filename: str, save_figure: bool) -> None:
-        """
-        creates basic plotly plot rather than matplotlib
-        """
-        # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self.setup_plot(f)
-
-        # appropriate zoom in on north pole
-        zoom = 1.58
-        camera = dict(eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=2 / zoom))
-
-        data = [
-            Surface(
-                x=x,
-                y=y,
-                z=z,
-                surfacecolor=f_plot,
-                colorscale=self.cmocean_to_plotly("solar"),
-                cmin=vmin,
-                cmax=vmax,
-                colorbar=dict(
-                    x=0.92, len=0.98, nticks=5, tickfont=dict(color="#666666", size=32)
-                ),
-            )
-        ]
-
-        axis = dict(
-            title="", showgrid=False, zeroline=False, ticks="", showticklabels=False
-        )
-
-        layout = Layout(
-            scene=Scene(
-                dragmode="orbit",
-                camera=camera,
-                xaxis=XAxis(axis),
-                yaxis=YAxis(axis),
-                zaxis=ZAxis(axis),
-                annotations=self.annotations() if self.annotation else [],
-            ),
-            margin=Margin(l=0, r=0, b=0, t=0),
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-        )
-
-        fig = Figure(data=data, layout=layout)
-
-        # if save_fig is true then print as png and pdf in their directories
-        if save_figure:
-            png_filename = os.path.join(
-                self.location, "figures", "png", f"{filename}.png"
-            )
-            pio.write_image(fig, png_filename)
-            pdf_filename = os.path.join(
-                self.location, "figures", "pdf", f"{filename}.pdf"
-            )
-            pio.write_image(fig, pdf_filename)
-
-        # create html and open if auto_open is true
-        html_filename = os.path.join(
-            self.location, "figures", "html", f"{filename}.html"
-        )
-        py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
     def plot(
         self,
@@ -218,20 +150,30 @@ class SiftingConvolution:
 
         # check for plotting type
         if self.type == "real":
-            plot = f.real
+            f = f.real
         elif self.type == "imag":
-            plot = f.imag
+            f = f.imag
         elif self.type == "abs":
-            plot = abs(f)
+            f = abs(f)
         elif self.type == "sum":
-            plot = f.real + f.imag
+            f = f.real + f.imag
 
         # do plot
         filename += self.type
-        self.plotly_plot(plot, filename, self.save_fig)
+        # self.plotly_plot(plot, filename, self.save_fig)
+        plotting = Plotting(
+            f,
+            self.resolution,
+            filename,
+            method=self.method,
+            annotations=self.annotations(),
+            auto_open=self.auto_open,
+            save_fig=self.save_fig,
+        )
+        plotting.plotly_plot()
 
     # --------------------------------------------------
-    # ---------- translation helper functions ----------
+    # ---------- translation helper function ----------
     # --------------------------------------------------
 
     def calc_nearest_grid_point(
@@ -256,32 +198,35 @@ class SiftingConvolution:
     # -----------------------------------------------
 
     def annotations(self) -> List[dict]:
-        # if north alter values to point at correct point
-        if self.routine == "north":
-            x, y, z = 0, 0, 1
-        else:
-            x, y, z = ssht.s2_to_cart(self.beta, self.alpha)
+        if self.annotation:
+            # if north alter values to point at correct point
+            if self.routine == "north":
+                x, y, z = 0, 0, 1
+            else:
+                x, y, z = ssht.s2_to_cart(self.beta, self.alpha)
 
-        # initialise array and standard arrow
-        annotation = []
-        config = dict(arrowcolor="white", yshift=5)
-        arrow = {**dict(x=x, y=y, z=z), **config}
+            # initialise array and standard arrow
+            annotation = []
+            config = dict(arrowcolor="white", yshift=5)
+            arrow = {**dict(x=x, y=y, z=z), **config}
 
-        # various switch cases for annotation
-        if self.flm_name.startswith("elongated_gaussian"):
-            if self.routine == "translate":
-                annotation.append({**config, **dict(x=-x, y=y, z=z)})
-                annotation.append({**config, **dict(x=x, y=-y, z=z)})
-        elif self.flm_name == "dirac_delta":
-            if self.type != "imag":
-                annotation.append(arrow)
-        elif "gaussian" in self.flm_name:
-            if self.routine != "translate":
+            # various switch cases for annotation
+            if self.flm_name.startswith("elongated_gaussian"):
+                if self.routine == "translate":
+                    annotation.append({**config, **dict(x=-x, y=y, z=z)})
+                    annotation.append({**config, **dict(x=x, y=-y, z=z)})
+            elif self.flm_name == "dirac_delta":
                 if self.type != "imag":
                     annotation.append(arrow)
+            elif "gaussian" in self.flm_name:
+                if self.routine != "translate":
+                    if self.type != "imag":
+                        annotation.append(arrow)
 
-        # if convolution then remove annotation
-        if self.glm is not None:
+            # if convolution then remove annotation
+            if self.glm is not None:
+                annotation = []
+        else:
             annotation = []
         return annotation
 
@@ -310,46 +255,25 @@ class SiftingConvolution:
         return angle.numerator, angle.denominator
 
     @staticmethod
-    def calc_resolution(config: dict) -> int:
+    def calc_resolution(L: int) -> int:
         """
         calculate appropriate resolution for given L
         """
-        if "pow2_res2L" in config:
-            exponent = config["pow2_res2L"]
+        if L == 1:
+            exponent = 6
+        elif L < 4:
+            exponent = 5
+        elif L < 8:
+            exponent = 4
+        elif L < 128:
+            exponent = 3
+        elif L < 512:
+            exponent = 2
+        elif L < 1024:
+            exponent = 1
         else:
-            if config["L"] == 1:
-                exponent = 6
-            elif config["L"] < 4:
-                exponent = 5
-            elif config["L"] < 8:
-                exponent = 4
-            elif config["L"] < 128:
-                exponent = 3
-            elif config["L"] < 512:
-                exponent = 2
-            elif config["L"] < 1024:
-                exponent = 1
-            else:
-                exponent = 0
-        resolution = config["L"] * 2 ** exponent
-
-        return resolution
-
-    @staticmethod
-    def cmocean_to_plotly(colour, pl_entries: int = 255) -> List[Tuple[float, str]]:
-        """
-        converts cmocean colourscale to a plotly colourscale
-        """
-        cmap = getattr(cmocean.cm, colour)
-
-        h = 1 / (pl_entries - 1)
-        pl_colorscale = []
-
-        for k in range(pl_entries):
-            C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
-            pl_colorscale.append((k * h, f"rgb{(C[0], C[1], C[2])}"))
-
-        return pl_colorscale
+            exponent = 0
+        return L * 2 ** exponent
 
     def resolution_boost(self, flm: np.ndarray) -> np.ndarray:
         """
@@ -393,67 +317,3 @@ class SiftingConvolution:
         if gamma_num:
             filename += f"gamma-{self.pi_in_filename(gamma_num, gamma_den)}_"
         return filename
-
-    def setup_plot(
-        self,
-        f: np.ndarray,
-        close: bool = True,
-        parametric: bool = False,
-        parametric_scaling: List[float] = [0.0, 0.5],
-        color_range: List[float] = None,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
-        """
-        function which creates the data for the matplotlib/plotly plot
-        """
-        if self.method == "MW_pole":
-            if len(f) == 2:
-                f, f_sp = f
-            else:
-                f, f_sp, phi_sp = f
-
-        (thetas, phis) = ssht.sample_positions(
-            self.resolution, Method=self.method, Grid=True
-        )
-
-        if thetas.size != f.size:
-            raise Exception("Band-limit L deos not match that of f")
-
-        f_plot = f.copy()
-
-        f_max = f_plot.max()
-        f_min = f_plot.min()
-
-        if color_range is None:
-            vmin = f_min
-            vmax = f_max
-        else:
-            vmin = color_range[0]
-            vmax = color_range[1]
-            f_plot[f_plot < color_range[0]] = color_range[0]
-            f_plot[f_plot > color_range[1]] = color_range[1]
-            f_plot[f_plot == -1.56e30] = np.nan
-
-        # % Compute position scaling for parametric plot.
-        if parametric:
-            f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[
-                1
-            ] + parametric_scaling[0]
-
-        # % Close plot.
-        if close:
-            (n_theta, n_phi) = ssht.sample_shape(self.resolution, Method=self.method)
-            f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
-            if parametric:
-                f_normalised = np.insert(
-                    f_normalised, n_phi, f_normalised[:, 0], axis=1
-                )
-            thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
-            phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
-
-        # % Compute location of vertices.
-        if parametric:
-            (x, y, z) = ssht.spherical_to_cart(f_normalised, thetas, phis)
-        else:
-            (x, y, z) = ssht.s2_to_cart(thetas, phis)
-
-        return x, y, z, f_plot, vmin, vmax

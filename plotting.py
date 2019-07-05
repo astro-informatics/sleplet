@@ -1,415 +1,181 @@
-#!/usr/bin/env python
-from sifting_convolution import SiftingConvolution
-from config import Config
-import sys
-import os
+import cmocean
 import numpy as np
-from argparse import ArgumentParser, Namespace
-import scipy.io as sio
-from fractions import Fraction
-from dataclasses import asdict
+import os
+from plotly.graph_objs import Figure, Layout, Surface
+from plotly.graph_objs.layout import Margin, Scene
+from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
+import plotly.io as pio
+import plotly.offline as py
+import sys
 from typing import List, Tuple
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
 
 
-global __location__
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
-
-def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
-    angle = Fraction(angle_fraction).limit_denominator()
-    return angle.numerator, angle.denominator
-
-
-def filename_std_dev(angle: float, arg_name: str) -> str:
-    filename = "_"
-    num, dem = get_angle_num_dem(angle)
-    filename += f"{num}{arg_name}"
-    if angle < 1:
-        filename += f"{dem}"
-    return filename
-
-
-def read_args(spherical_harmonic: bool = False) -> Namespace:
-    parser = ArgumentParser(description="Create SSHT plot")
-    parser.add_argument(
-        "flm",
-        type=valid_plotting,
-        choices=list(total.keys()),
-        help="flm to plot on the sphere",
-    )
-    parser.add_argument(
-        "--type",
-        "-t",
-        type=str,
-        nargs="?",
-        default="abs",
-        const="abs",
-        choices=["abs", "real", "imag", "sum"],
-        help="plotting type: defaults to abs",
-    )
-    parser.add_argument(
-        "--routine",
-        "-r",
-        type=str,
-        nargs="?",
-        default="north",
-        const="north",
-        choices=["north", "rotate", "translate"],
-        help="plotting routine: defaults to north",
-    )
-    parser.add_argument(
-        "--extra_args",
-        "-e",
-        type=int,
-        nargs="+",
-        help="list of extra args for functions",
-    )
-    parser.add_argument(
-        "--alpha",
-        "-a",
-        type=float,
-        default=0.75,
-        help="alpha/phi pi fraction - defaults to 0",
-    )
-    parser.add_argument(
-        "--beta",
-        "-b",
-        type=float,
-        default=0.25,
-        help="beta/theta pi fraction - defaults to 0",
-    )
-    parser.add_argument(
-        "--gamma",
-        "-g",
-        type=float,
-        default=0,
-        help="gamma pi fraction - defaults to 0 - rotation only",
-    )
-    parser.add_argument(
-        "--convolve",
-        "-c",
-        type=valid_kernels,
-        choices=list(functions.keys()),
-        help="glm to perform sifting convolution with i.e. flm x glm*",
-    )
-    parser.add_argument(
-        "--annotation",
-        "-n",
-        action="store_false",
-        help="flag which if passed removes any annotation",
-    )
-
-    # extra args for spherical harmonics
-    if spherical_harmonic:
-        parser.add_argument("-l", metavar="ell", type=int, help="multipole")
-        parser.add_argument("-m", metavar="m", type=int, help="multipole moment")
-
-    args = parser.parse_args()
-    return args
-
-
-def identity() -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "identity"
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=False)
-    config = {**config, **extra}
-    L = config["L"]
-
-    # create identity
-    flm = np.ones((L * L)) + 1j * np.zeros((L * L))
-
-    return flm, func_name, config
-
-
-def dirac_delta() -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "dirac_delta"
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=True)
-    config = {**config, **extra}
-    L = config["L"]
-
-    # create flm
-    flm = np.zeros((L * L), dtype=complex)
-    for ell in range(L):
-        ind = ssht.elm2ind(ell, m=0)
-        flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
-
-    return flm, func_name, config
-
-
-def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
-    # args
-    try:
-        sig = 10 ** args[0]
-    except ValueError:
-        print("function requires one extra arg")
-        raise
-
-    # filename
-    func_name = f'gaussian{filename_std_dev(sig, "sig")}'
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=True)
-    config = {**config, **extra}
-    L = config["L"]
-
-    # create flm
-    flm = np.zeros((L * L), dtype=complex)
-    for ell in range(L):
-        ind = ssht.elm2ind(ell, m=0)
-        flm[ind] = np.exp(-ell * (ell + 1) / (2 * sig * sig))
-
-    return flm, func_name, config
-
-
-def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict]:
-    # args
-    try:
-        t_sig, freq = [10 ** x for x in args]
-    except ValueError:
-        print("function requires two extra args")
-        raise
-
-    # filename
-    func_name = (
-        f'squashed_gaussian{filename_std_dev(t_sig, "tsig")}'
-        f'{filename_std_dev(freq, "freq")}'
-    )
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=True)
-    config = {**config, **extra}
-    L = config["L"]
-    method, reality = config["sampling"], config["reality"]
-
-    # function on the grid
-    def grid_fun(
-        theta: np.ndarray,
-        phi: np.ndarray,
-        theta_0: float = 0,
-        theta_sig: float = t_sig,
-        freq: float = freq,
-    ) -> np.ndarray:
-        f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
-        return f
-
-    thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
-    f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Method=method, Reality=reality)
-
-    return flm, func_name, config
-
-
-def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict]:
-    # args
-    try:
-        t_sig, p_sig = [10 ** x for x in args]
-    except ValueError:
-        print("function requires two extra args")
-        raise
-
-    # filename
-    func_name = (
-        f'elongated_gaussian{filename_std_dev(t_sig, "tsig")}'
-        f'{filename_std_dev(p_sig, "psig")}'
-    )
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=True)
-    config = {**config, **extra}
-    L = config["L"]
-    method, reality = config["sampling"], config["reality"]
-
-    # function on the grid
-    def grid_fun(
-        theta: np.ndarray,
-        phi: np.ndarray,
-        theta_0: float = 0,
-        phi_0: float = np.pi,
-        theta_sig: float = t_sig,
-        phi_sig: float = p_sig,
-    ) -> np.ndarray:
-        f = np.exp(
-            -(
-                (((theta - theta_0) / theta_sig) ** 2 + ((phi - phi_0) / phi_sig) ** 2)
-                / 2
-            )
+class Plotting:
+    def __init__(
+        self,
+        f,
+        resolution,
+        filename,
+        method="MW",
+        annotations=[],
+        auto_open=True,
+        save_fig=False,
+    ):
+        self.annotations = annotations
+        self.auto_open = auto_open
+        self.f = f
+        self.filename = filename
+        self.location = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        return f
+        self.method = method
+        self.resolution = resolution
+        self.save_fig = save_fig
 
-    thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
-    f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Method=method, Reality=reality)
+    def plotly_plot(self) -> None:
+        """
+        creates basic plotly plot rather than matplotlib
+        """
+        # get values from the setup
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(
+            self.f, self.resolution, self.method
+        )
 
-    return flm, func_name, config
+        # appropriate zoom in on north pole
+        zoom = 1.58
+        camera = dict(eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=2 / zoom))
 
+        data = [
+            Surface(
+                x=x,
+                y=y,
+                z=z,
+                surfacecolor=f_plot,
+                colorscale=self._cmocean_to_plotly("solar"),
+                cmin=vmin,
+                cmax=vmax,
+                colorbar=dict(
+                    x=0.92, len=0.98, nticks=5, tickfont=dict(color="#666666", size=32)
+                ),
+            )
+        ]
 
-def spherical_harmonic(ell: int, m: int) -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = f"spherical_harmonic_l{ell}_m{m}"
+        axis = dict(
+            title="", showgrid=False, zeroline=False, ticks="", showticklabels=False
+        )
 
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=False)
-    config = {**config, **extra}
-    L = config["L"]
+        layout = Layout(
+            scene=Scene(
+                dragmode="orbit",
+                camera=camera,
+                xaxis=XAxis(axis),
+                yaxis=YAxis(axis),
+                zaxis=ZAxis(axis),
+                annotations=self.annotations,
+            ),
+            margin=Margin(l=0, r=0, b=0, t=0),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+        )
 
-    # create flm
-    flm = np.zeros((L * L), dtype=complex)
-    ind = ssht.elm2ind(ell, m)
-    flm[ind] = 1
+        fig = Figure(data=data, layout=layout)
 
-    return flm, func_name, config
+        # if save_fig is true then print as png and pdf in their directories
+        if self.save_fig:
+            png_filename = os.path.join(
+                self.location, "figures", "png", f"{self.filename}.png"
+            )
+            pio.write_image(fig, png_filename)
+            pdf_filename = os.path.join(
+                self.location, "figures", "pdf", f"{self.filename}.pdf"
+            )
+            pio.write_image(fig, pdf_filename)
 
+        # create html and open if auto_open is true
+        html_filename = os.path.join(
+            self.location, "figures", "html", f"{self.filename}.html"
+        )
+        py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 
-def earth() -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "earth"
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=True)
-    config = {**config, **extra}
-    L = config["L"]
-
-    # extract flm
-    matfile = os.path.join(__location__, "data", "EGM2008_Topography_flms_L2190")
-    mat_contents = sio.loadmat(matfile)
-    flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
-
-    # fill in negative m components so as to
-    # avoid confusion with zero values
-    for ell in range(L):
-        for m in range(1, ell + 1):
-            ind_pm = ssht.elm2ind(ell, m)
-            ind_nm = ssht.elm2ind(ell, -m)
-            flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
-
-    # don't take the full L
-    # invert dataset as Earth backwards
-    flm = np.conj(flm[: L * L])
-
-    return flm, func_name, config
-
-
-def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "wmap"
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=True)
-    config = {**config, **extra}
-    L = config["L"]
-
-    # create flm
-    matfile = os.path.join(
-        os.environ["SSHT"], "src", "matlab", "data", f"wmap{file_ending}"
-    )
-    mat_contents = sio.loadmat(matfile)
-    cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
-
-    # same random seed
-    np.random.seed(0)
-
-    # Simulate CMB in harmonic space.
-    flm = np.zeros((L * L), dtype=complex)
-    for ell in range(2, L):
-        cl[ell - 1] = cl[ell - 1] * 2 * np.pi / (ell * (ell + 1))
-        for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
-            if m == 0:
-                flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
+    @staticmethod
+    def _setup_plot(
+        f: np.ndarray,
+        resolution: int,
+        method: str,
+        close: bool = True,
+        parametric: bool = False,
+        parametric_scaling: List[float] = [0.0, 0.5],
+        color_range: List[float] = None,
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
+        """
+        function which creates the data for the matplotlib/plotly plot
+        """
+        if method == "MW_pole":
+            if len(f) == 2:
+                f, f_sp = f
             else:
-                flm[ind] = (
-                    np.sqrt(cl[ell - 1] / 2) * np.random.randn()
-                    + 1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
-                )
+                f, f_sp, phi_sp = f
 
-    return flm, func_name, config
+        (thetas, phis) = ssht.sample_positions(resolution, Method=method, Grid=True)
 
+        if thetas.size != f.size:
+            raise Exception("Band-limit L deos not match that of f")
 
-def wmap() -> Tuple[np.ndarray, str, dict]:
-    # file_ending = '_lcdm_pl_model_yr1_v1'
-    # file_ending = '_tt_spectrum_7yr_v4p1'
-    file_ending = "_lcdm_pl_model_wmap7baoh0"
-    return wmap_helper(file_ending)
+        f_plot = f.copy()
 
+        f_max = f_plot.max()
+        f_min = f_plot.min()
 
-def valid_plotting(func_name: str) -> str:
-    # check if valid function
-    if func_name in total:
-        return func_name
-    else:
-        raise ValueError("Not a valid function name to plot")
-
-
-def valid_kernels(func_name: str) -> str:
-    # check if valid function
-    if func_name in functions:
-        return func_name
-    else:
-        raise ValueError("Not a valid kernel name to convolve")
-
-
-functions = {
-    "dirac_delta": dirac_delta,
-    "gaussian": gaussian,
-    "identity": identity,
-    "squashed_gaussian": squashed_gaussian,
-    "elongated_gaussian": elongated_gaussian,
-    "spherical_harmonic": spherical_harmonic,
-}
-maps = {"earth": earth, "wmap": wmap}
-# form dictionary of all functions
-total = {**functions, **maps}
-
-if __name__ == "__main__":
-    # initialise to None
-    glm, glm_name = None, None
-
-    # if flm is spherical harmonics then
-    # obviously not a convolution
-    if sys.argv[1] == "spherical_harmonic":
-        args = read_args(True)
-        flm_input = total[args.flm]
-        flm, flm_name, config = flm_input(args.l, args.m)
-    else:
-        args = read_args()
-        flm_input = total[args.flm]
-        glm_input = functions.get(args.convolve)
-        # if not a convolution
-        if glm_input is None:
-            num_args = flm_input.__code__.co_argcount
-            if args.extra_args is None or num_args == 0:
-                flm, flm_name, config = flm_input()
-            else:
-                flm, flm_name, config = flm_input(args.extra_args)
-        # if convolution then flm is a map so no extra args
+        if color_range is None:
+            vmin = f_min
+            vmax = f_max
         else:
-            flm, flm_name, _ = flm_input()
-            num_args = glm_input.__code__.co_argcount
-            if args.extra_args is None or num_args == 0:
-                glm, glm_name, config = glm_input()
-            else:
-                glm, glm_name, config = glm_input(args.extra_args)
+            vmin = color_range[0]
+            vmax = color_range[1]
+            f_plot[f_plot < color_range[0]] = color_range[0]
+            f_plot[f_plot > color_range[1]] = color_range[1]
+            f_plot[f_plot == -1.56e30] = np.nan
 
-    # if use input from argparse
-    config["routine"] = args.routine
-    config["type"] = args.type
-    config["annotation"] = args.annotation
+        # % Compute position scaling for parametric plot.
+        if parametric:
+            f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[
+                1
+            ] + parametric_scaling[0]
 
-    sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
-    sc.plot(args.alpha, args.beta, args.gamma)
+        # % Close plot.
+        if close:
+            (n_theta, n_phi) = ssht.sample_shape(resolution, Method=method)
+            f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
+            if parametric:
+                f_normalised = np.insert(
+                    f_normalised, n_phi, f_normalised[:, 0], axis=1
+                )
+            thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
+            phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
+
+        # % Compute location of vertices.
+        if parametric:
+            (x, y, z) = ssht.spherical_to_cart(f_normalised, thetas, phis)
+        else:
+            (x, y, z) = ssht.s2_to_cart(thetas, phis)
+
+        return x, y, z, f_plot, vmin, vmax
+
+    @staticmethod
+    def _cmocean_to_plotly(colour, pl_entries: int = 255) -> List[Tuple[float, str]]:
+        """
+        converts cmocean colourscale to a plotly colourscale
+        """
+        cmap = getattr(cmocean.cm, colour)
+
+        h = 1 / (pl_entries - 1)
+        pl_colorscale = []
+
+        for k in range(pl_entries):
+            C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
+            pl_colorscale.append((k * h, f"rgb{(C[0], C[1], C[2])}"))
+
+        return pl_colorscale

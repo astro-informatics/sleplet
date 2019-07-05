@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+from letter import dirac_delta, earth, identity
+from plotting import Plotting
 from sifting_convolution import SiftingConvolution
-from plotting import dirac_delta, earth, identity
 import numpy as np
-import sys
 import os
+import sys
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -45,14 +46,23 @@ def test_dirac_delta_rotate_translate() -> None:
     )
 
     # create plot
-    sc.plotly_plot(f_diff, filename, config["save_fig"])
+    plotting = Plotting(
+        f_diff,
+        sc.resolution,
+        filename,
+        method=sc.method,
+        annotations=sc.annotations(),
+        auto_open=config["auto_open"],
+        save_fig=config["save_fig"],
+    )
+    plotting.plotly_plot()
 
 
 def test_earth_identity_convolution() -> None:
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = identity()
-    config["routine"], config["type"], config["annotation"] = None, None, False
+    config["routine"], config["type"], config["annotation"] = None, None, True
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.calc_nearest_grid_point()
 
@@ -73,7 +83,16 @@ def test_earth_identity_convolution() -> None:
     filename = f"identity_L-{sc.L}_convolved_earth_L-{sc.L}_samp-{sc.method}_res-{sc.resolution}_real"
 
     # create plot
-    sc.plotly_plot(f_conv.real, filename, config["save_fig"])
+    plotting = Plotting(
+        f_conv.real,
+        sc.resolution,
+        filename,
+        method=sc.method,
+        annotations=sc.annotations(),
+        auto_open=config["auto_open"],
+        save_fig=config["save_fig"],
+    )
+    plotting.plotly_plot()
 
 
 if __name__ == "__main__":
