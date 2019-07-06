@@ -15,9 +15,7 @@ def test_dirac_delta_rotate_translate() -> None:
     flm, name, config = dirac_delta()
     sc = SiftingConvolution(flm, name, config)
     sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.25)
-    plotting = Plotting(
-        method=sc.method, auto_open=config["auto_open"], save_fig=config["save_fig"]
-    )
+    plotting = Plotting(method=sc.method, auto_open=sc.auto_open, save_fig=sc.save_fig)
 
     # rotation
     flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)
@@ -57,9 +55,7 @@ def test_earth_identity_convolution() -> None:
     glm, glm_name, _ = identity()
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.calc_nearest_grid_point()
-    plotting = Plotting(
-        method=sc.method, auto_open=config["auto_open"], save_fig=config["save_fig"]
-    )
+    plotting = Plotting(method=sc.method, auto_open=sc.auto_open, save_fig=sc.save_fig)
 
     # convolution
     flm_conv = sc.convolution(flm, glm)
