@@ -21,6 +21,8 @@ class SiftingConvolution:
         self.flm_name = flm_name
         self.flm = flm
         self.glm = glm
+        if self.glm is not None:
+            self.glm_name = glm_name
         self.L = config["L"]
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
@@ -29,14 +31,14 @@ class SiftingConvolution:
         self.missing_key(config, "annotation", True)
         self.missing_key(config, "routine", None)
         self.missing_key(config, "type", None)
+        self.plotting = Plotting(
+            method=config["sampling"],
+            auto_open=config["auto_open"],
+            save_fig=config["save_fig"],
+        )
         self.reality = config["reality"]
         self.save_fig = config["save_fig"]
-        self.plotting = Plotting(
-            method=self.method, auto_open=self.auto_open, save_fig=self.save_fig
-        )
-        self.resolution = self.plotting.calc_resolution(self.L)
-        if self.glm is not None:
-            self.glm_name = glm_name
+        self.resolution = self.plotting.calc_resolution(config["L"])
 
     # -----------------------------------
     # ---------- flm functions ----------
