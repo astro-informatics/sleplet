@@ -1,9 +1,8 @@
-from plotting import Plotting
-from fractions import Fraction
+from helper import Plotting
 import numpy as np
 import os
 import sys
-from typing import List, Tuple
+from typing import List
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -18,7 +17,6 @@ class SiftingConvolution:
         glm: np.ndarray = None,
         glm_name: str = None,
     ) -> None:
-        self.annotation = config["annotation"]
         self.auto_open = config["auto_open"]
         self.flm_name = flm_name
         self.flm = flm
@@ -28,15 +26,13 @@ class SiftingConvolution:
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
         self.method = config["sampling"]
+        self.missing_key(config, "annotation", True)
+        self.missing_key(config, "routine", None)
+        self.missing_key(config, "type", None)
         self.reality = config["reality"]
-        self.routine = config["routine"]
         self.save_fig = config["save_fig"]
-        self.type = config["type"]
         self.plotting = Plotting(
-            method=self.method,
-            annotations=self.annotations(),
-            auto_open=self.auto_open,
-            save_fig=self.save_fig,
+            method=self.method, auto_open=self.auto_open, save_fig=self.save_fig
         )
         self.resolution = self.plotting.calc_resolution(self.L)
         if self.glm is not None:
@@ -166,7 +162,7 @@ class SiftingConvolution:
 
         # do plot
         filename += self.type
-        self.plotting.plotly_plot(f, filename)
+        self.plotting.plotly_plot(f, filename, annotations=self.annotations())
 
     # --------------------------------------------------
     # ---------- translation helper function ----------
@@ -192,6 +188,12 @@ class SiftingConvolution:
     # -----------------------------------------------
     # ---------- plotting helper functions ----------
     # -----------------------------------------------
+
+    def missing_key(self, config, key, value):
+        try:
+            setattr(self, key, config[key])
+        except KeyError:
+            setattr(self, key, value)
 
     def annotations(self) -> List[dict]:
         if self.annotation:
@@ -226,30 +228,6 @@ class SiftingConvolution:
             annotation = []
         return annotation
 
-    @staticmethod
-    def pi_in_filename(numerator: int, denominator: int) -> str:
-        """
-        create filename for angle as multiple of pi
-        """
-        # if whole number
-        if denominator == 1:
-            # if 1 * pi
-            if numerator == 1:
-                filename = "pi"
-            else:
-                filename = f"{numerator}pi"
-        else:
-            filename = f"{numerator}pi{denominator}"
-        return filename
-
-    @staticmethod
-    def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
-        """
-        ger numerator and denominator for a given decimal
-        """
-        angle = Fraction(angle_fraction).limit_denominator()
-        return angle.numerator, angle.denominator
-
     def filename_angle(
         self,
         alpha_pi_fraction: float,
@@ -260,27 +238,31 @@ class SiftingConvolution:
         middle part of filename
         """
         # get numerator/denominator for filename
-        alpha_num, alpha_den = self.get_angle_num_dem(alpha_pi_fraction)
-        beta_num, beta_den = self.get_angle_num_dem(beta_pi_fraction)
-        gamma_num, gamma_den = self.get_angle_num_dem(gamma_pi_fraction)
+        alpha_num, alpha_den = self.plotting.get_angle_num_dem(alpha_pi_fraction)
+        beta_num, beta_den = self.plotting.get_angle_num_dem(beta_pi_fraction)
+        gamma_num, gamma_den = self.plotting.get_angle_num_dem(gamma_pi_fraction)
 
         # if alpha = beta = 0
         if not alpha_num and not beta_num:
             filename = "alpha-0_beta-0_"
         # if alpha = 0
         elif not alpha_num:
-            filename = f"alpha-0_beta-{self.pi_in_filename(beta_num, beta_den)}_"
+            filename = (
+                f"alpha-0_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}_"
+            )
         # if beta = 0
         elif not beta_num:
-            filename = f"alpha-{self.pi_in_filename(alpha_num, alpha_den)}_beta-0_"
+            filename = (
+                f"alpha-{self.plotting.pi_in_filename(alpha_num, alpha_den)}_beta-0_"
+            )
         # if alpha != 0 && beta !=0
         else:
             filename = (
-                f"alpha-{self.pi_in_filename(alpha_num, alpha_den)}"
-                f"_beta-{self.pi_in_filename(beta_num, beta_den)}_"
+                f"alpha-{self.plotting.pi_in_filename(alpha_num, alpha_den)}"
+                f"_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}_"
             )
 
         # if rotation with gamma != 0
         if gamma_num:
-            filename += f"gamma-{self.pi_in_filename(gamma_num, gamma_den)}_"
+            filename += f"gamma-{self.plotting.pi_in_filename(gamma_num, gamma_den)}_"
         return filename
