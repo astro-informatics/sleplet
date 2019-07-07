@@ -119,7 +119,7 @@ class SiftingConvolution:
             # adjust filename
             filename += (
                 f"{self.routine}_"
-                f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}"
+                f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
             )
             # rotate by alpha, beta
             flm = self.rotation(self.flm, self.alpha, self.beta, gamma)
@@ -128,7 +128,7 @@ class SiftingConvolution:
             # don't add gamma if translation
             filename += (
                 f"{self.routine}_"
-                f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction)}"
+                f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
             )
             # translate by alpha, beta
             flm = self.translation(self.flm)
@@ -243,25 +243,25 @@ class SiftingConvolution:
 
         # if alpha = beta = 0
         if not alpha_num and not beta_num:
-            filename = "alpha-0_beta-0_"
+            filename = "alpha-0_beta-0"
         # if alpha = 0
         elif not alpha_num:
             filename = (
-                f"alpha-0_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}_"
+                f"alpha-0_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}"
             )
         # if beta = 0
         elif not beta_num:
             filename = (
-                f"alpha-{self.plotting.pi_in_filename(alpha_num, alpha_den)}_beta-0_"
+                f"alpha-{self.plotting.pi_in_filename(alpha_num, alpha_den)}_beta-0"
             )
         # if alpha != 0 && beta !=0
         else:
             filename = (
                 f"alpha-{self.plotting.pi_in_filename(alpha_num, alpha_den)}"
-                f"_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}_"
+                f"_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}"
             )
 
         # if rotation with gamma != 0
         if gamma_num:
-            filename += f"gamma-{self.plotting.pi_in_filename(gamma_num, gamma_den)}_"
+            filename += f"gamma-{self.plotting.pi_in_filename(gamma_num, gamma_den)}"
         return filename
