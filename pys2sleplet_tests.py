@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from helper import Plotting
-from plot_sifting import dirac_delta, earth, identity
+from plotting import Plotting
+from sifting import dirac_delta, earth, identity
 from sifting_convolution import SiftingConvolution
 import numpy as np
 import os
