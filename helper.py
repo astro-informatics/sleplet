@@ -15,12 +15,11 @@ import pyssht as ssht
 
 
 class Plotting:
-    def __init__(self, method="MW", auto_open=True, save_fig=False):
+    def __init__(self, auto_open=True, save_fig=False):
         self.auto_open = auto_open
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.method = method
         self.save_fig = save_fig
 
     @staticmethod
@@ -82,7 +81,7 @@ class Plotting:
         creates basic plotly plot rather than matplotlib
         """
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, self.method)
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(f)
 
         # appropriate zoom in on north pole
         zoom = 1.58
@@ -143,7 +142,7 @@ class Plotting:
     @staticmethod
     def _setup_plot(
         f: np.ndarray,
-        method: str,
+        method: str = "MW",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: List[float] = [0.0, 0.5],
@@ -160,7 +159,7 @@ class Plotting:
             else:
                 f, f_sp, phi_sp = f
 
-        (thetas, phis) = ssht.sample_positions(resolution, Method=method, Grid=True)
+        (thetas, phis) = ssht.sample_positions(resolution, Grid=True)
 
         if thetas.size != f.size:
             raise Exception("Band-limit L deos not match that of f")
@@ -188,7 +187,7 @@ class Plotting:
 
         # % Close plot.
         if close:
-            (n_theta, n_phi) = ssht.sample_shape(resolution, Method=method)
+            (n_theta, n_phi) = ssht.sample_shape(resolution)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(

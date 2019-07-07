@@ -191,7 +191,7 @@ def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict
     extra = dict(reality=True)
     config = {**config, **extra}
     L = config["L"]
-    method, reality = config["sampling"], config["reality"]
+    reality = config["reality"]
 
     # function on the grid
     def grid_fun(
@@ -204,9 +204,9 @@ def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict
         f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
 
-    thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True)
     f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Method=method, Reality=reality)
+    flm = ssht.forward(f, L, Reality=reality)
 
     return flm, func_name, config
 
@@ -230,7 +230,7 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
     extra = dict(reality=True)
     config = {**config, **extra}
     L = config["L"]
-    method, reality = config["sampling"], config["reality"]
+    reality = config["reality"]
 
     # function on the grid
     def grid_fun(
@@ -249,9 +249,9 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
         )
         return f
 
-    thetas, phis = ssht.sample_positions(L, Method=method, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True)
     f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Method=method, Reality=reality)
+    flm = ssht.forward(f, L, Reality=reality)
 
     return flm, func_name, config
 
@@ -406,7 +406,7 @@ if __name__ == "__main__":
             else:
                 glm, glm_name, config = glm_input(args.extra_args)
 
-    # if use input from argparse
+    # if using input from argparse
     config["routine"] = args.routine
     config["type"] = args.type
     config["annotation"] = args.annotation

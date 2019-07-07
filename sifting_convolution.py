@@ -27,14 +27,11 @@ class SiftingConvolution:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.method = config["sampling"]
         self.missing_key(config, "annotation", True)
         self.missing_key(config, "routine", None)
         self.missing_key(config, "type", None)
         self.plotting = Plotting(
-            method=config["sampling"],
-            auto_open=config["auto_open"],
-            save_fig=config["save_fig"],
+            auto_open=config["auto_open"], save_fig=config["save_fig"]
         )
         self.reality = config["reality"]
         self.save_fig = config["save_fig"]
@@ -61,10 +58,10 @@ class SiftingConvolution:
         filename = os.path.join(
             self.location,
             "npy",
+            "trans_dirac",
             (
                 f"trans_dd_L-{self.L}_"
-                f"{self.filename_angle(self.alpha_pi_fraction,self.beta_pi_fraction)}"
-                f"samp-{self.method}.npy"
+                f"{self.filename_angle(self.alpha_pi_fraction,self.beta_pi_fraction)}.npy"
             ),
         )
 
@@ -146,11 +143,11 @@ class SiftingConvolution:
         if self.resolution != self.L:
             flm = self.plotting.resolution_boost(flm, self.L, self.resolution)
 
-        # add sampling/resolution to filename
-        filename += f"samp-{self.method}_res-{self.resolution}_"
+        # add resolution to filename
+        filename += f"res-{self.resolution}_"
 
         # inverse & plot
-        f = ssht.inverse(flm, self.resolution, Method=self.method, Reality=self.reality)
+        f = ssht.inverse(flm, self.resolution, Reality=self.reality)
 
         # check for plotting type
         if self.type == "real":
@@ -179,7 +176,7 @@ class SiftingConvolution:
         values - the translation needs to be at the same position
         as the rotation such that the difference error is small
         """
-        thetas, phis = ssht.sample_positions(self.L, Method=self.method)
+        thetas, phis = ssht.sample_positions(self.L)
         pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
         pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
         self.alpha = phis[pix_j]
