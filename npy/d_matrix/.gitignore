@@ -3,6 +3,5 @@
 # Except this file
 !.gitignore
 
-# and these directories
-!trans_dirac
-!d_matrix
+# and these files
+!*.npy
