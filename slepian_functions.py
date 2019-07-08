@@ -51,12 +51,24 @@ class SlepianFunctions:
     def D_matrix(self) -> np.ndarray:
         D = np.zeros((self.N, self.N), dtype=complex)
         for i in range(self.N):
-            integral = self.D_integral(i, i)
-            D[i][i] = integral
+            # fill in diagonal components
+            D[i][i] = self.D_integral(i, i)
+            _, m_i = ssht.ind2elm(i)
             for j in range(i + 1, self.N):
-                integral = self.D_integral(i, j)
-                D[i][j] = integral
-                D[j][i] = np.conj(integral)
+                ell_j, m_j = ssht.ind2elm(j)
+                # if possible to use previous calculations
+                if m_i == 0 and m_j != 0 and ell_j < self.L:
+                    # if positive m then use conjugate relation
+                    if m_j > 0:
+                        D[i][j] = self.D_integral(i, j)
+                        D[j][i] = np.conj(D[i][j])
+                        k = ssht.elm2ind(ell_j, -m_j)
+                        D[i][k] = (-1) ** m_j * np.conj(D[i][j])
+                        D[k][i] = np.conj(D[i][k])
+                else:
+                    integral = self.D_integral(i, j)
+                    D[i][j] = integral
+                    D[j][i] = np.conj(integral)
         return D
 
     def eigen_problem(self) -> Tuple[np.ndarray, np.ndarray]:
