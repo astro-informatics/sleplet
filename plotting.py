@@ -159,7 +159,7 @@ class Plotting:
             else:
                 f, f_sp, phi_sp = f
 
-        (thetas, phis) = ssht.sample_positions(resolution, Grid=True)
+        thetas, phis = ssht.sample_positions(resolution, Grid=True)
 
         if thetas.size != f.size:
             raise Exception("Band-limit L deos not match that of f")
@@ -187,7 +187,7 @@ class Plotting:
 
         # % Close plot.
         if close:
-            (n_theta, n_phi) = ssht.sample_shape(resolution)
+            n_theta, n_phi = ssht.sample_shape(resolution)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
@@ -198,9 +198,9 @@ class Plotting:
 
         # % Compute location of vertices.
         if parametric:
-            (x, y, z) = ssht.spherical_to_cart(f_normalised, thetas, phis)
+            x, y, z = ssht.spherical_to_cart(f_normalised, thetas, phis)
         else:
-            (x, y, z) = ssht.s2_to_cart(thetas, phis)
+            x, y, z = ssht.s2_to_cart(thetas, phis)
 
         return x, y, z, f_plot, vmin, vmax
 
