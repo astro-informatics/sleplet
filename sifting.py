@@ -407,9 +407,9 @@ if __name__ == "__main__":
                 glm, glm_name, config = glm_input(args.extra_args)
 
     # if using input from argparse
+    config["annotation"] = args.annotation
     config["routine"] = args.routine
     config["type"] = args.type
-    config["annotation"] = args.annotation
 
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.plot(args.alpha, args.beta, args.gamma)

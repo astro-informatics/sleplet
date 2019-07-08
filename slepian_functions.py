@@ -3,7 +3,7 @@ import numpy as np
 import os
 import quadpy
 import sys
-from typing import Tuple
+from typing import List, Tuple
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -18,22 +18,27 @@ class SlepianFunctions:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
+        self.missing_key(config, "annotation", True)
         self.N = self.L * self.L
         self.phi_max = phi_max
+        self.phi_max_r = np.deg2rad(phi_max)
         self.phi_min = phi_min
+        self.phi_min_r = np.deg2rad(phi_min)
         self.plotting = Plotting(
             auto_open=config["auto_open"], save_fig=config["save_fig"]
-        )
-        self.quad = quadpy.quadrilateral.rectangle_points(
-            [np.deg2rad(theta_min), np.deg2rad(theta_max)],
-            [np.deg2rad(phi_min), np.deg2rad(phi_max)],
         )
         self.resolution = self.plotting.calc_resolution(config["L"])
         self.save_fig = config["save_fig"]
         self.scheme = quadpy.quadrilateral.cools_haegemans_1985_2()
         self.theta_max = theta_max
+        self.theta_max_r = np.deg2rad(theta_max)
         self.theta_min = theta_min
+        self.theta_min_r = np.deg2rad(theta_min)
         self.type = config["type"]
+        self.quad = [
+            [[self.theta_min_r, self.phi_min_r], [self.theta_min_r, self.phi_max_r]],
+            [[self.theta_max_r, self.phi_min_r], [self.theta_max_r, self.phi_max_r]],
+        ]
         self.eigen_values, self.eigen_vectors = self.eigen_problem()
 
     def f(self, omega: Tuple[complex, complex]) -> np.ndarray:
@@ -123,7 +128,7 @@ class SlepianFunctions:
 
         # do plot
         filename += self.type
-        self.plotting.plotly_plot(f, filename)
+        self.plotting.plotly_plot(f, filename, self.annotations())
 
     def filename_angle(self) -> str:
         """
@@ -148,3 +153,19 @@ class SlepianFunctions:
         if self.theta_max != 180:
             filename += f"_tmax-{self.theta_max}"
         return filename
+
+    def missing_key(self, config, key, value):
+        try:
+            setattr(self, key, config[key])
+        except KeyError:
+            setattr(self, key, value)
+
+    def annotations(self) -> List[dict]:
+        if self.annotation:
+            annotation = []
+            for phi in [0, np.pi / 2, np.pi, 3 * np.pi / 4]:
+                x, y, z = ssht.s2_to_cart(np.array(self.theta_max_r), np.array(phi))
+                annotation.append(dict(x=x, y=y, z=z))
+        else:
+            annotation = []
+        return annotation

@@ -56,6 +56,13 @@ def read_args() -> Namespace:
         choices=["abs", "real", "imag", "sum"],
         help="plotting type: defaults to abs",
     )
+    parser.add_argument(
+        "--annotation",
+        "-n",
+        action="store_false",
+        help="flag which if passed removes any annotation",
+    )
+
     args = parser.parse_args()
     return args
 
@@ -65,6 +72,7 @@ if __name__ == "__main__":
     args = read_args()
 
     # if using input from argparse
+    config["annotation"] = args.annotation
     config["type"] = args.type
 
     sf = SlepianFunctions(
