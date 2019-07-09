@@ -27,15 +27,15 @@ class SiftingConvolution:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.missing_key(config, "annotation", True)
-        self.missing_key(config, "routine", None)
-        self.missing_key(config, "type", None)
         self.plotting = Plotting(
             auto_open=config["auto_open"], save_fig=config["save_fig"]
         )
         self.reality = config["reality"]
         self.save_fig = config["save_fig"]
         self.resolution = self.plotting.calc_resolution(config["L"])
+        self.plotting.missing_key(config, "annotation", True)
+        self.plotting.missing_key(config, "routine", None)
+        self.plotting.missing_key(config, "type", None)
 
     # -----------------------------------
     # ---------- flm functions ----------
@@ -113,21 +113,21 @@ class SiftingConvolution:
         self.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
 
         # test for plotting routine
-        if self.routine == "north":
+        if self.plotting.routine == "north":
             flm = self.flm
-        elif self.routine == "rotate":
+        elif self.plotting.routine == "rotate":
             # adjust filename
             filename += (
-                f"{self.routine}_"
+                f"{self.plotting.routine}_"
                 f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
             )
             # rotate by alpha, beta
             flm = self.rotation(self.flm, self.alpha, self.beta, gamma)
-        elif self.routine == "translate":
+        elif self.plotting.routine == "translate":
             # adjust filename
             # don't add gamma if translation
             filename += (
-                f"{self.routine}_"
+                f"{self.plotting.routine}_"
                 f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
             )
             # translate by alpha, beta
@@ -150,17 +150,17 @@ class SiftingConvolution:
         f = ssht.inverse(flm, self.resolution, Reality=self.reality)
 
         # check for plotting type
-        if self.type == "real":
+        if self.plotting.type == "real":
             f = f.real
-        elif self.type == "imag":
+        elif self.plotting.type == "imag":
             f = f.imag
-        elif self.type == "abs":
+        elif self.plotting.type == "abs":
             f = abs(f)
-        elif self.type == "sum":
+        elif self.plotting.type == "sum":
             f = f.real + f.imag
 
         # do plot
-        filename += self.type
+        filename += self.plotting.type
         self.plotting.plotly_plot(f, filename, annotations=self.annotations())
 
     # --------------------------------------------------
@@ -188,16 +188,10 @@ class SiftingConvolution:
     # ---------- plotting helper functions ----------
     # -----------------------------------------------
 
-    def missing_key(self, config, key, value):
-        try:
-            setattr(self, key, config[key])
-        except KeyError:
-            setattr(self, key, value)
-
     def annotations(self) -> List[dict]:
-        if self.annotation:
+        if self.plotting.annotation:
             # if north alter values to point at correct point
-            if self.routine == "north":
+            if self.plotting.routine == "north":
                 x, y, z = 0, 0, 1
             else:
                 x, y, z = ssht.s2_to_cart(self.beta, self.alpha)
@@ -209,15 +203,15 @@ class SiftingConvolution:
 
             # various switch cases for annotation
             if self.flm_name.startswith("elongated_gaussian"):
-                if self.routine == "translate":
+                if self.plotting.routine == "translate":
                     annotation.append({**config, **dict(x=-x, y=y, z=z)})
                     annotation.append({**config, **dict(x=x, y=-y, z=z)})
             elif self.flm_name == "dirac_delta":
-                if self.type != "imag":
+                if self.plotting.type != "imag":
                     annotation.append(arrow)
             elif "gaussian" in self.flm_name:
-                if self.routine != "translate":
-                    if self.type != "imag":
+                if self.plotting.routine != "translate":
+                    if self.plotting.type != "imag":
                         annotation.append(arrow)
 
             # if convolution then remove annotation

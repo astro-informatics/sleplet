@@ -1,7 +1,8 @@
 from plotting import Plotting
+from memoization import cached
 import numpy as np
 import os
-import quadpy
+from scipy import integrate
 import sys
 from typing import List, Tuple
 
@@ -18,7 +19,6 @@ class SlepianFunctions:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.missing_key(config, "annotation", True)
         self.N = self.L * self.L
         self.phi_max = phi_max
         self.phi_max_r = np.deg2rad(phi_max)
@@ -29,29 +29,42 @@ class SlepianFunctions:
         )
         self.resolution = self.plotting.calc_resolution(config["L"])
         self.save_fig = config["save_fig"]
-        self.scheme = quadpy.quadrilateral.cools_haegemans_1985_2()
         self.theta_max = theta_max
         self.theta_max_r = np.deg2rad(theta_max)
         self.theta_min = theta_min
         self.theta_min_r = np.deg2rad(theta_min)
-        self.type = config["type"]
-        self.quad = [
-            [[self.theta_min_r, self.phi_min_r], [self.theta_min_r, self.phi_max_r]],
-            [[self.theta_max_r, self.phi_min_r], [self.theta_max_r, self.phi_max_r]],
-        ]
+        self.plotting.missing_key(config, "annotation", True)
+        self.plotting.missing_key(config, "type", None)
         self.eigen_values, self.eigen_vectors = self.eigen_problem()
 
-    def f(self, omega: Tuple[complex, complex]) -> np.ndarray:
-        theta, phi = omega
+    @cached
+    def f(self, theta: float, phi: float, i: int, j: int) -> np.ndarray:
         ylm = ssht.create_ylm(theta, phi, self.L)
-        ylmi, ylmj = ylm[self.i].reshape(-1), ylm[self.j].reshape(-1)
+        ylmi, ylmj = ylm[i].reshape(-1), ylm[j].reshape(-1)
         f = ylmi * np.conj(ylmj) * np.sin(theta)
         return f
 
-    def D_integral(self, i: int, j: int) -> complex:
-        self.i, self.j = i, j
-        F = self.scheme.integrate(self.f, self.quad)
+    def real_func(self, theta, phi, i, j):
+        return self.f(theta, phi, i, j).real
+
+    def imag_func(self, theta, phi, i, j):
+        return self.f(theta, phi, i, j).imag
+
+    def integral(self, f, i, j):
+        F = integrate.dblquad(
+            f,
+            self.phi_min_r,
+            self.phi_max_r,
+            lambda t: self.theta_min_r,
+            lambda t: self.theta_max_r,
+            args=(i, j),
+        )[0]
         return F
+
+    def D_integral(self, i: int, j: int) -> complex:
+        F_real = self.integral(self.real_func, i, j)
+        F_imag = self.integral(self.imag_func, i, j)
+        return F_real + 1j * F_imag
 
     def D_matrix(self) -> np.ndarray:
         D = np.zeros((self.N, self.N), dtype=complex)
@@ -117,18 +130,18 @@ class SlepianFunctions:
         f = ssht.inverse(flm, self.resolution)
 
         # check for plotting type
-        if self.type == "real":
+        if self.plotting.type == "real":
             f = f.real
-        elif self.type == "imag":
+        elif self.plotting.type == "imag":
             f = f.imag
-        elif self.type == "abs":
+        elif self.plotting.type == "abs":
             f = abs(f)
-        elif self.type == "sum":
+        elif self.plotting.type == "sum":
             f = f.real + f.imag
 
         # do plot
-        filename += self.type
-        self.plotting.plotly_plot(f, filename, self.annotations())
+        filename += self.plotting.type
+        self.plotting.plotly_plot(f, filename, self.annotations(), colourscheme="oxy")
 
     def filename_angle(self) -> str:
         """
@@ -154,18 +167,15 @@ class SlepianFunctions:
             filename += f"_tmax-{self.theta_max}"
         return filename
 
-    def missing_key(self, config, key, value):
-        try:
-            setattr(self, key, config[key])
-        except KeyError:
-            setattr(self, key, value)
-
     def annotations(self) -> List[dict]:
-        if self.annotation:
+        if self.plotting.annotation:
             annotation = []
-            for phi in [0, np.pi / 2, np.pi, 3 * np.pi / 4]:
+            config = dict(arrowcolor="black", arrowhead=6, ax=5, ay=5)
+            ndots = 12
+            for i in range(ndots):
+                phi = 2 * np.pi / ndots * (i + 1)
                 x, y, z = ssht.s2_to_cart(np.array(self.theta_max_r), np.array(phi))
-                annotation.append(dict(x=x, y=y, z=z))
+                annotation.append({**dict(x=x, y=y, z=z), **config})
         else:
             annotation = []
         return annotation

@@ -76,7 +76,13 @@ class Plotting:
         flm_boost = np.pad(flm, (0, boost), "constant")
         return flm_boost
 
-    def plotly_plot(self, f: np.ndarray, filename: str, annotations: List = []) -> None:
+    def plotly_plot(
+        self,
+        f: np.ndarray,
+        filename: str,
+        annotations: List = [],
+        colourscheme: str = "solar",
+    ) -> None:
         """
         creates basic plotly plot rather than matplotlib
         """
@@ -93,7 +99,7 @@ class Plotting:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self._cmocean_to_plotly("solar"),
+                colorscale=self._cmocean_to_plotly(colourscheme),
                 cmin=vmin,
                 cmax=vmax,
                 colorbar=dict(
@@ -219,3 +225,9 @@ class Plotting:
             pl_colorscale.append((k * h, f"rgb{(C[0], C[1], C[2])}"))
 
         return pl_colorscale
+
+    def missing_key(self, config, key, value):
+        try:
+            setattr(self, key, config[key])
+        except KeyError:
+            setattr(self, key, value)
