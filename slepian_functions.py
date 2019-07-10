@@ -154,19 +154,19 @@ class SlepianFunctions:
         filename = ""
 
         # if phi min is not default
-        if ~self.phi_min_is_default:
+        if not self.phi_min_is_default:
             filename += f"_pmin-{self.phi_min}"
 
         # if phi max is not default
-        if ~self.phi_max_is_default:
+        if not self.phi_max_is_default:
             filename += f"_pmax-{self.phi_max}"
 
         # if theta min is not default
-        if ~self.theta_min_is_default:
+        if not self.theta_min_is_default:
             filename += f"_tmin-{self.theta_min}"
 
         # if theta max is not default
-        if ~self.theta_max_is_default:
+        if not self.theta_max_is_default:
             filename += f"_tmax-{self.theta_max}"
         return filename
 
@@ -182,9 +182,10 @@ class SlepianFunctions:
             ):
                 config = dict(arrowcolor="black", arrowhead=6, ax=5, ay=5)
                 ndots = 12
+                theta = np.array(self.theta_max_r)
                 for i in range(ndots):
-                    phi = 2 * np.pi / ndots * (i + 1)
-                    x, y, z = ssht.s2_to_cart(np.array(self.theta_max_r), np.array(phi))
+                    phi = np.array(2 * np.pi / ndots * (i + 1))
+                    x, y, z = ssht.s2_to_cart(theta, phi)
                     annotation.append({**dict(x=x, y=y, z=z), **config})
         else:
             annotation = []
