@@ -117,6 +117,7 @@ class SlepianFunctions:
         master plotting method
         """
         # setup
+        print(f"Eigenvalue {rank}: {self.eigen_values[rank - 1]:.3f}")
         flm = self.eigen_vectors[rank - 1]
         filename = (
             f"slepian-{rank}_L-{self.L}{self.filename_angle()}_res-{self.resolution}_"
