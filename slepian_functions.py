@@ -21,8 +21,10 @@ class SlepianFunctions:
         )
         self.N = self.L * self.L
         self.phi_max = phi_max
+        self.phi_max_is_default = phi_max == 360
         self.phi_max_r = np.deg2rad(phi_max)
         self.phi_min = phi_min
+        self.phi_min_is_default = phi_min == 0
         self.phi_min_r = np.deg2rad(phi_min)
         self.plotting = Plotting(
             auto_open=config["auto_open"], save_fig=config["save_fig"]
@@ -30,8 +32,10 @@ class SlepianFunctions:
         self.resolution = self.plotting.calc_resolution(config["L"])
         self.save_fig = config["save_fig"]
         self.theta_max = theta_max
+        self.theta_max_is_default = theta_max == 180
         self.theta_max_r = np.deg2rad(theta_max)
         self.theta_min = theta_min
+        self.theta_min_is_default = theta_min == 0
         self.theta_min_r = np.deg2rad(theta_min)
         self.plotting.missing_key(config, "annotation", True)
         self.plotting.missing_key(config, "type", None)
@@ -117,11 +121,9 @@ class SlepianFunctions:
         master plotting method
         """
         # setup
-        print(f"Eigenvalue {rank}: {self.eigen_values[rank - 1]:.3f}")
-        flm = self.eigen_vectors[rank - 1]
-        filename = (
-            f"slepian-{rank}_L-{self.L}{self.filename_angle()}_res-{self.resolution}_"
-        )
+        print(f"Eigenvalue {rank + 1}: {self.eigen_values[rank]:.3f}")
+        flm = self.eigen_vectors[rank]
+        filename = f"slepian-{rank + 1}_L-{self.L}{self.filename_angle()}_res-{self.resolution}_"
 
         # boost resolution
         if self.resolution != self.L:
@@ -151,32 +153,39 @@ class SlepianFunctions:
         # initialise filename
         filename = ""
 
-        # if phi min is default
-        if self.phi_min != 0:
+        # if phi min is not default
+        if ~self.phi_min_is_default:
             filename += f"_pmin-{self.phi_min}"
 
-        # if phi max is default
-        if self.phi_max != 360:
-            filename += f"_pmax-{self.phi_max_}"
+        # if phi max is not default
+        if ~self.phi_max_is_default:
+            filename += f"_pmax-{self.phi_max}"
 
-        # if theta min is default
-        if self.theta_min != 0:
+        # if theta min is not default
+        if ~self.theta_min_is_default:
             filename += f"_tmin-{self.theta_min}"
 
-        # if theta max is default
-        if self.theta_max != 180:
+        # if theta max is not default
+        if ~self.theta_max_is_default:
             filename += f"_tmax-{self.theta_max}"
         return filename
 
     def annotations(self) -> List[dict]:
         if self.plotting.annotation:
             annotation = []
-            config = dict(arrowcolor="black", arrowhead=6, ax=5, ay=5)
-            ndots = 12
-            for i in range(ndots):
-                phi = 2 * np.pi / ndots * (i + 1)
-                x, y, z = ssht.s2_to_cart(np.array(self.theta_max_r), np.array(phi))
-                annotation.append({**dict(x=x, y=y, z=z), **config})
+            # check if dealing with polar cap
+            if (
+                self.phi_min_is_default
+                and self.phi_max_is_default
+                and self.theta_min_is_default
+                and self.theta_max <= 45
+            ):
+                config = dict(arrowcolor="black", arrowhead=6, ax=5, ay=5)
+                ndots = 12
+                for i in range(ndots):
+                    phi = 2 * np.pi / ndots * (i + 1)
+                    x, y, z = ssht.s2_to_cart(np.array(self.theta_max_r), np.array(phi))
+                    annotation.append({**dict(x=x, y=y, z=z), **config})
         else:
             annotation = []
         return annotation
