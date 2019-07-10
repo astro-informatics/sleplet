@@ -144,7 +144,9 @@ class SlepianFunctions:
 
         # do plot
         filename += self.plotting.type
-        self.plotting.plotly_plot(f, filename, self.annotations(), colourscheme="oxy")
+        self.plotting.plotly_plot(
+            f, filename, self.annotations(), colourscheme="balance"
+        )
 
     def filename_angle(self) -> str:
         """

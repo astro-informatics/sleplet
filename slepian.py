@@ -52,10 +52,10 @@ def read_args() -> Namespace:
         "-t",
         type=str,
         nargs="?",
-        default="abs",
-        const="abs",
+        default="real",
+        const="real",
         choices=["abs", "real", "imag", "sum"],
-        help="plotting type: defaults to abs",
+        help="plotting type: defaults to real",
     )
     parser.add_argument(
         "--annotation",

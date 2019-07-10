@@ -99,7 +99,7 @@ class Plotting:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self._cmocean_to_plotly(colourscheme),
+                colorscale=self._cmocean_to_plotly(colourscheme, vmin, vmax),
                 cmin=vmin,
                 cmax=vmax,
                 colorbar=dict(
@@ -211,11 +211,15 @@ class Plotting:
         return x, y, z, f_plot, vmin, vmax
 
     @staticmethod
-    def _cmocean_to_plotly(colour, pl_entries: int = 255) -> List[Tuple[float, str]]:
+    def _cmocean_to_plotly(
+        colour, vmin, vmax, pl_entries: int = 255
+    ) -> List[Tuple[float, str]]:
         """
         converts cmocean colourscale to a plotly colourscale
         """
         cmap = getattr(cmocean.cm, colour)
+        if colour == "balanced":
+            cmap = cmocean.tools.crop(cmap.reversed(), vmin, vmax, 0)
 
         h = 1 / (pl_entries - 1)
         pl_colorscale = []
