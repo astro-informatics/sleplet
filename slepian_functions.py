@@ -141,7 +141,7 @@ class SlepianFunctions:
                             tmp_i[j][i] = -tmp_i[i][j]
                             k = ssht.elm2ind(ell_j, -m_j)
                             tmp_r[i][k] = (-1) ** m_j * tmp_r[i][j]
-                            tmp_i[i][k] = (-1) ** m_j * -tmp_i[i][j]
+                            tmp_i[i][k] = (-1) ** (m_j + 1) * tmp_i[i][j]
                             tmp_r[k][i] = tmp_r[i][k]
                             tmp_i[k][i] = -tmp_i[i][k]
                     else:
