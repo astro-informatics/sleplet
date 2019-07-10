@@ -13,10 +13,11 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 def read_args() -> Namespace:
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
-        "rank",
-        type=int,
-        nargs="+",
-        help="Slepian concetration rank - descending from 1",
+        "--rank",
+        "-r",
+        type=valid_range,
+        default=1,
+        help="retrieve the Slepian coefficients descending from 1 down to rank",
     )
     parser.add_argument(
         "--phi_min",
@@ -67,6 +68,16 @@ def read_args() -> Namespace:
     return args
 
 
+def valid_range(rank: int) -> int:
+    config = asdict(Config())
+    L, rank = config["L"], int(rank)
+    # check if valid range
+    if rank <= L * L and rank > 0:
+        return rank
+    else:
+        raise ValueError(f"Must be positive and less than {L * L} coefficients")
+
+
 if __name__ == "__main__":
     config = asdict(Config())
     args = read_args()
@@ -78,5 +89,5 @@ if __name__ == "__main__":
     sf = SlepianFunctions(
         args.phi_min, args.phi_max, args.theta_min, args.theta_max, config
     )
-    for i in args.rank:
+    for i in range(args.rank):
         sf.plot(i)
