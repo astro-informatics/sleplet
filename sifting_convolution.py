@@ -93,7 +93,7 @@ class SiftingConvolution:
         return flm * np.conj(glm)
 
     # ----------------------------------------
-    # ---------- plotting function ----------
+    # ---------- plotting function -----------
     # ----------------------------------------
 
     def plot(
@@ -189,6 +189,9 @@ class SiftingConvolution:
     # -----------------------------------------------
 
     def annotations(self) -> List[dict]:
+        """
+        annotations for the plotly plot
+        """
         if self.plotting.annotation:
             # if north alter values to point at correct point
             if self.plotting.routine == "north":
