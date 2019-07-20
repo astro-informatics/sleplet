@@ -189,7 +189,7 @@ class SlepianFunctions:
 
         eigen_values, eigen_vectors = np.linalg.eigh(D)
         idx = eigen_values.argsort()[::-1]
-        eigen_values = eigen_values[idx] / np.max(eigen_values)
+        eigen_values = eigen_values[idx]
         eigen_vectors = eigen_vectors[:, idx]
         return eigen_values, eigen_vectors
 
