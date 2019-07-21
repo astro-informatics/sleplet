@@ -109,7 +109,12 @@ class Plotting:
         ]
 
         axis = dict(
-            title="", showgrid=False, zeroline=False, ticks="", showticklabels=False
+            title="",
+            showgrid=False,
+            zeroline=False,
+            ticks="",
+            showticklabels=False,
+            showbackground=False,
         )
 
         layout = Layout(
