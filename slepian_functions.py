@@ -4,9 +4,8 @@ import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
 import numpy as np
 import os
-from scipy import integrate
 import sys
-from typing import Callable, List, Tuple
+from typing import List, Tuple
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -17,6 +16,7 @@ class SlepianFunctions:
         self, phi_min: int, phi_max: int, theta_min: int, theta_max: int, config: dict
     ):
         self.auto_open = config["auto_open"]
+        self.delta = np.pi / config["L"]
         self.L = config["L"]
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
@@ -29,6 +29,7 @@ class SlepianFunctions:
         self.phi_min = phi_min
         self.phi_min_is_default = phi_min == 0
         self.phi_min_r = np.deg2rad(phi_min)
+        self.phis = np.linspace(self.phi_min_r, self.phi_max_r)
         self.plotting = Plotting(
             auto_open=config["auto_open"], save_fig=config["save_fig"]
         )
@@ -40,6 +41,7 @@ class SlepianFunctions:
         self.theta_min = theta_min
         self.theta_min_is_default = theta_min == 0
         self.theta_min_r = np.deg2rad(theta_min)
+        self.thetas = np.linspace(self.theta_min_r, self.theta_max_r)
         self.plotting.missing_key(config, "annotation", True)
         self.plotting.missing_key(config, "type", None)
         self.eigen_values, self.eigen_vectors = self.eigen_problem()
@@ -54,48 +56,56 @@ class SlepianFunctions:
         function to integrate with Jacobian,
         the caching reduces the effect of multiple calls
         """
-        ylm = ssht.create_ylm(theta, phi, self.L)
+        ylm = ssht.create_ylm(theta, phi, self.L, recursion="Risbo")
         ylmi, ylmj = ylm[i].reshape(-1), ylm[j].reshape(-1)
         f = ylmi * np.conj(ylmj) * np.sin(theta)
         return f
 
-    def real_func(self, theta: float, phi: float, i: int, j: int) -> np.ndarray:
-        """
-        real part of function required for scipy
-        """
-        return self.f(theta, phi, i, j).real
-
-    def imag_func(self, theta: float, phi: float, i: int, j: int) -> np.ndarray:
-        """
-        imaginary part of function required for scipy
-        """
-        return self.f(theta, phi, i, j).imag
-
-    def integral(
-        self, f: Callable[[float, float, int, int], np.ndarray], i: int, j: int
-    ):
+    def D_integral(self, i: int, j: int) -> complex:
         """
         function which uses scipy to integrate the real/imaginary part
         """
-        F = integrate.dblquad(
-            f,
-            self.phi_min_r,
-            self.phi_max_r,
-            lambda t: self.theta_min_r,
-            lambda t: self.theta_max_r,
-            args=(i, j),
-        )[0]
+        F = 0
+        for p in self.phis:
+            for t in self.thetas:
+                F += self.f(t, p, i, j) * np.sin(t) * self.delta * self.delta
         return F
 
-    def D_integral(self, i: int, j: int) -> complex:
-        """
-        calculate the real and imaginary parts and combine
-        """
-        F_real = self.integral(self.real_func, i, j)
-        F_imag = self.integral(self.imag_func, i, j)
-        return F_real + 1j * F_imag
+    def D_matrix(self) -> np.ndarray:
+        if self.ncpu == 1:
+            D = self.D_matrix_serial()
+        else:
+            D = self.D_matrix_parallel()
+        return D
 
-    def D_matrix(self) -> complex:
+    def D_matrix_serial(self) -> np.ndarray:
+        """
+        parallel method to calculate D matrix
+        """
+        # initialise
+        D = np.zeros((self.N, self.N), dtype=complex)
+
+        for i in range(self.N):
+            # fill in diagonal components
+            D[i][i] = self.D_integral(i, i)
+            _, m_i = ssht.ind2elm(i)
+            for j in range(i + 1, self.N):
+                ell_j, m_j = ssht.ind2elm(j)
+                # if possible to use previous calculations
+                if m_i == 0 and m_j != 0 and ell_j < self.L:
+                    # if positive m then use conjugate relation
+                    if m_j > 0:
+                        D[i][j] = self.D_integral(i, j)
+                        D[j][i] = np.conj(D[i][j])
+                        k = ssht.elm2ind(ell_j, -m_j)
+                        D[i][k] = (-1) ** m_j * np.conj(D[i][j])
+                        D[k][i] = np.conj(D[i][k])
+                else:
+                    D[i][j] = self.D_integral(i, j)
+                    D[j][i] = np.conj(D[i][j])
+        return D
+
+    def D_matrix_parallel(self) -> complex:
         """
         parallel method to calculate D matrix
         """

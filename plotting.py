@@ -165,7 +165,7 @@ class Plotting:
             else:
                 f, f_sp, phi_sp = f
 
-        thetas, phis = ssht.sample_positions(resolution, Grid=True)
+        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
             raise Exception("Band-limit L deos not match that of f")
@@ -193,7 +193,7 @@ class Plotting:
 
         # % Close plot.
         if close:
-            n_theta, n_phi = ssht.sample_shape(resolution)
+            n_theta, n_phi = ssht.sample_shape(resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
