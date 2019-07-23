@@ -163,7 +163,9 @@ class SiftingConvolution:
 
         # do plot
         filename += self.plotting.type
-        self.plotting.plotly_plot(f, filename, annotations=self.annotations())
+        self.plotting.plotly_plot(
+            f, self.resolution, filename, annotations=self.annotations()
+        )
 
     # --------------------------------------------------
     # ---------- translation helper function ----------

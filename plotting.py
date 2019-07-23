@@ -79,6 +79,7 @@ class Plotting:
     def plotly_plot(
         self,
         f: np.ndarray,
+        resolution: int,
         filename: str,
         annotations: List = [],
         colourscheme: str = "solar",
@@ -87,7 +88,7 @@ class Plotting:
         creates basic plotly plot rather than matplotlib
         """
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, method="MWSS")
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, resolution, method="MWSS")
 
         # appropriate zoom in on north pole
         zoom = 1.58
@@ -153,6 +154,7 @@ class Plotting:
     @staticmethod
     def _setup_plot(
         f: np.ndarray,
+        resolution: int,
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
@@ -162,8 +164,6 @@ class Plotting:
         """
         function which creates the data for the matplotlib/plotly plot
         """
-        resolution = f.shape[0] - 1
-
         if method == "MW_pole":
             if len(f) == 2:
                 f, f_sp = f
