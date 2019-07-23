@@ -87,7 +87,7 @@ class Plotting:
         creates basic plotly plot rather than matplotlib
         """
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self._setup_plot(f)
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, method="MWSS")
 
         # appropriate zoom in on north pole
         zoom = 1.58
@@ -162,7 +162,7 @@ class Plotting:
         """
         function which creates the data for the matplotlib/plotly plot
         """
-        resolution = f.shape[0]
+        resolution = f.shape[0] - 1
 
         if method == "MW_pole":
             if len(f) == 2:

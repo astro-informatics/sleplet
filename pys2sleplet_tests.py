@@ -20,12 +20,16 @@ def test_dirac_delta_rotate_translate() -> None:
     # rotation
     flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)
     flm_rot_boost = plotting.resolution_boost(flm_rot, sc.L, sc.resolution)
-    f_rot = ssht.inverse(flm_rot_boost, sc.resolution, Reality=sc.reality)
+    f_rot = ssht.inverse(
+        flm_rot_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
+    )
 
     # translation
     flm_trans = sc.translation(flm)
     flm_trans_boost = plotting.resolution_boost(flm_trans, sc.L, sc.resolution)
-    f_trans = ssht.inverse(flm_trans_boost, sc.resolution, Reality=sc.reality)
+    f_trans = ssht.inverse(
+        flm_trans_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
+    )
 
     # calculate difference
     flm_diff = flm_rot - flm_trans
@@ -60,7 +64,9 @@ def test_earth_identity_convolution() -> None:
 
     # prepare
     flm_conv_boost = plotting.resolution_boost(flm_conv, sc.L, sc.resolution)
-    f_conv = ssht.inverse(flm_conv_boost, sc.resolution, Reality=sc.reality)
+    f_conv = ssht.inverse(
+        flm_conv_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
+    )
 
     # filename
     filename = f"identity_L-{sc.L}_convolved_earth_L-{sc.L}_res-{sc.resolution}_real"

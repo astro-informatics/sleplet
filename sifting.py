@@ -204,9 +204,9 @@ def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict
         f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
         return f
 
-    thetas, phis = ssht.sample_positions(L, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True, Method="MWSS")
     f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Reality=reality)
+    flm = ssht.forward(f, L, Reality=reality, Method="MWSS")
 
     return flm, func_name, config
 
@@ -249,9 +249,9 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
         )
         return f
 
-    thetas, phis = ssht.sample_positions(L, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True, Method="MWSS")
     f = grid_fun(thetas, phis)
-    flm = ssht.forward(f, L, Reality=reality)
+    flm = ssht.forward(f, L, Reality=reality, Method="MWSS")
 
     return flm, func_name, config
 

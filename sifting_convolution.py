@@ -149,7 +149,7 @@ class SiftingConvolution:
         filename += f"res-{self.resolution}_"
 
         # inverse & plot
-        f = ssht.inverse(flm, self.resolution, Reality=self.reality)
+        f = ssht.inverse(flm, self.resolution, Reality=self.reality, Method="MWSS")
 
         # check for plotting type
         if self.plotting.type == "real":
@@ -178,7 +178,7 @@ class SiftingConvolution:
         values - the translation needs to be at the same position
         as the rotation such that the difference error is small
         """
-        thetas, phis = ssht.sample_positions(self.L)
+        thetas, phis = ssht.sample_positions(self.L, Method="MWSS")
         pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
         pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
         self.alpha = phis[pix_j]
