@@ -157,7 +157,7 @@ class SiftingConvolution:
         elif self.plotting.type == "imag":
             f = f.imag
         elif self.plotting.type == "abs":
-            f = abs(f)
+            f = np.abs(f)
         elif self.plotting.type == "sum":
             f = f.real + f.imag
 

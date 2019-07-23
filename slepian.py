@@ -17,7 +17,7 @@ def read_args() -> Namespace:
         "-r",
         type=valid_range,
         default=1,
-        help="retrieve the Slepian coefficients descending from 1 down to rank",
+        help="retrieve the Slepian coefficients descending in concentration from 1 down to rank",
     )
     parser.add_argument(
         "--phi_min",
@@ -89,5 +89,14 @@ if __name__ == "__main__":
     sf = SlepianFunctions(
         args.phi_min, args.phi_max, args.theta_min, args.theta_max, config
     )
+    # plot the most concentrated up to specified rank
     for i in range(args.rank):
         sf.plot(i)
+
+    # plot the corresponding least concentrated down to rank avoiding repeats
+    if args.rank <= sf.L * sf.L // 2:
+        for j in range(sf.L * sf.L - 1, sf.L * sf.L - 1 - args.rank, -1):
+            sf.plot(j)
+    else:
+        for j in range(sf.L * sf.L - 1, args.rank - 1, -1):
+            sf.plot(j)
