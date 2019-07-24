@@ -1,5 +1,4 @@
 from plotting import Plotting
-from memoization import cached
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
 import numpy as np
@@ -16,7 +15,8 @@ class SlepianFunctions:
         self, phi_min: int, phi_max: int, theta_min: int, theta_max: int, config: dict
     ):
         self.auto_open = config["auto_open"]
-        self.delta = np.pi / config["L"]
+        self.delta_phi = np.pi / config["L"]
+        self.delta_theta = np.pi / config["L"]
         self.L = config["L"]
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
@@ -29,7 +29,6 @@ class SlepianFunctions:
         self.phi_min = phi_min
         self.phi_min_is_default = phi_min == 0
         self.phi_min_r = np.deg2rad(phi_min)
-        self.phis = np.linspace(self.phi_min_r, self.phi_max_r)
         self.plotting = Plotting(
             auto_open=config["auto_open"], save_fig=config["save_fig"]
         )
@@ -41,7 +40,15 @@ class SlepianFunctions:
         self.theta_min = theta_min
         self.theta_min_is_default = theta_min == 0
         self.theta_min_r = np.deg2rad(theta_min)
-        self.thetas = np.linspace(self.theta_min_r, self.theta_max_r)
+        theta, phi = ssht.sample_positions(config["L"], Method="MWSS")
+        phi_mask = np.where((phi >= self.phi_min_r) & (phi <= self.phi_max_r))[0]
+        theta_mask = np.where(
+            (theta >= self.theta_min_r) & (theta <= self.theta_max_r)
+        )[0]
+        thetas, phis = ssht.sample_positions(config["L"], Grid=True, Method="MWSS")
+        self.thetas = thetas[theta_mask]
+        ylm = ssht.create_ylm(thetas, phis, config["L"], recursion="Risbo")
+        self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
         self.plotting.missing_key(config, "annotation", True)
         self.plotting.missing_key(config, "type", None)
         self.eigen_values, self.eigen_vectors = self.eigen_problem()
@@ -50,28 +57,25 @@ class SlepianFunctions:
     # ---------- D matrix functions ----------
     # ----------------------------------------
 
-    @cached
-    def f(self, theta: float, phi: float, i: int, j: int) -> np.ndarray:
+    def f(self, i: int, j: int) -> np.ndarray:
         """
-        function to integrate with Jacobian,
-        the caching reduces the effect of multiple calls
+        function to integrate using quadrature
         """
-        ylm = ssht.create_ylm(theta, phi, self.L, recursion="Risbo")
-        ylmi, ylmj = ylm[i].reshape(-1), ylm[j].reshape(-1)
-        f = ylmi * np.conj(ylmj) * np.sin(theta)
+        f = self.ylm[i] * np.conj(self.ylm[j]) * np.sin(self.thetas)
         return f
 
     def D_integral(self, i: int, j: int) -> complex:
         """
-        function which uses scipy to integrate the real/imaginary part
+        function which performs a summation to calculate the integral
         """
-        F = 0
-        for p in self.phis:
-            for t in self.thetas:
-                F += self.f(t, p, i, j) * np.sin(t) * self.delta * self.delta
+        F = np.sum(self.f(i, j) * self.delta_theta * self.delta_phi)
         return F
 
     def D_matrix(self) -> np.ndarray:
+        """
+        calculates the D matrix for the eigenproblem
+        serial method easier to debug and more efficient for one core
+        """
         if self.ncpu == 1:
             D = self.D_matrix_serial()
         else:
@@ -80,7 +84,7 @@ class SlepianFunctions:
 
     def D_matrix_serial(self) -> np.ndarray:
         """
-        parallel method to calculate D matrix
+        serial method to calculate D matrix
         """
         # initialise
         D = np.zeros((self.N, self.N), dtype=complex)
@@ -212,7 +216,8 @@ class SlepianFunctions:
         master plotting method
         """
         # setup
-        print(f"Eigenvalue {rank + 1}: {self.eigen_values[rank]:.3f}")
+        e_val = np.abs(self.eigen_values[rank] / self.eigen_values.max())
+        print(f"Eigenvalue {rank + 1}: {e_val:e}")
         flm = self.eigen_vectors[rank]
         filename = f"slepian-{rank + 1}_L-{self.L}{self.filename_angle()}_res-{self.resolution}_"
 
@@ -221,7 +226,7 @@ class SlepianFunctions:
             flm = self.plotting.resolution_boost(flm, self.L, self.resolution)
 
         # inverse & plot
-        f = ssht.inverse(flm, self.resolution)
+        f = ssht.inverse(flm, self.resolution, Method="MWSS")
 
         # check for plotting type
         if self.plotting.type == "real":
@@ -229,14 +234,14 @@ class SlepianFunctions:
         elif self.plotting.type == "imag":
             f = f.imag
         elif self.plotting.type == "abs":
-            f = abs(f)
+            f = np.abs(f)
         elif self.plotting.type == "sum":
             f = f.real + f.imag
 
         # do plot
         filename += self.plotting.type
         self.plotting.plotly_plot(
-            f, filename, self.annotations(), colourscheme="balance"
+            f, self.resolution, filename, self.annotations(), colourscheme="balance"
         )
 
     # -----------------------------------------------
