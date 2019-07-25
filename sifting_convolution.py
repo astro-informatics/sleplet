@@ -70,9 +70,7 @@ class SiftingConvolution:
         if os.path.exists(filename):
             glm = np.load(filename)
         else:
-            glm = np.conj(
-                ssht.create_ylm(self.beta, self.alpha, self.L, recursion="Risbo")
-            )
+            glm = np.conj(ssht.create_ylm(self.beta, self.alpha, self.L))
             glm = glm.reshape(glm.size)
             # save to speed up for future
             np.save(filename, glm)
