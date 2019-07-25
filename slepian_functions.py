@@ -229,7 +229,10 @@ class SlepianFunctions:
         master plotting method
         """
         # setup
-        e_val = np.abs(self.eigen_values[rank] / self.eigen_values.max())
+        if self.eigen_values.max() != 0:
+            e_val = np.abs(self.eigen_values[rank] / (self.eigen_values.max()))
+        else:
+            e_val = 1
         print(f"Eigenvalue {rank + 1}: {e_val:e}")
         filename = f"slepian-{rank + 1}_L-{self.L}{self.filename_angle()}_res-{self.resolution}_"
         flm = self.eigen_vectors[rank]
