@@ -14,15 +14,16 @@ class SlepianFunctions:
     def __init__(
         self, phi_min: int, phi_max: int, theta_min: int, theta_max: int, config: dict
     ):
-        theta, phi = ssht.sample_positions(config["L"], Method="MWSS")
-        thetas, phis = ssht.sample_positions(config["L"], Grid=True, Method="MWSS")
-        ylm = ssht.create_ylm(thetas, phis, config["L"])
+        samples = config["L"]
+        theta, phi = ssht.sample_positions(samples, Method="MWSS")
+        thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
         phi_mask = np.where(
             (phi >= np.deg2rad(phi_min)) & (phi <= np.deg2rad(phi_max))
         )[0]
         theta_mask = np.where(
             (theta >= np.deg2rad(theta_min)) & (theta <= np.deg2rad(theta_max))
         )[0]
+        ylm = ssht.create_ylm(thetas, phis, config["L"])
         self.delta_phi = np.mean(np.ediff1d(phi))
         self.delta_theta = np.mean(np.ediff1d(theta))
         self.L = config["L"]
@@ -43,7 +44,7 @@ class SlepianFunctions:
         self.theta_max_is_default = theta_max == 180
         self.theta_min = theta_min
         self.theta_min_is_default = theta_min == 0
-        self.thetas = thetas[theta_mask]
+        self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
         self.plotting.missing_key(config, "annotation", True)
         self.plotting.missing_key(config, "type", None)
@@ -57,14 +58,21 @@ class SlepianFunctions:
         """
         function to integrate using quadrature
         """
-        f = self.ylm[i] * np.conj(self.ylm[j]) * np.sin(self.thetas)
+        f = self.ylm[i] * np.conj(self.ylm[j])
         return f
+
+    def w(self) -> np.ndarray:
+        """
+        weight for the summation
+        """
+        w = np.sin(self.thetas) * self.delta_theta * self.delta_phi
+        return w
 
     def D_integral(self, i: int, j: int) -> complex:
         """
         function which performs a summation to calculate the integral
         """
-        F = np.sum(self.f(i, j) * self.delta_theta * self.delta_phi)
+        F = np.sum(self.f(i, j) * self.w())
         return F
 
     def D_matrix(self) -> np.ndarray:
@@ -259,7 +267,7 @@ class SlepianFunctions:
             ):
                 config = dict(arrowcolor="black", arrowhead=6, ax=5, ay=5)
                 ndots = 12
-                theta = np.array(self.theta_max_r)
+                theta = np.array(np.deg2rad(self.theta_max))
                 for i in range(ndots):
                     phi = np.array(2 * np.pi / ndots * (i + 1))
                     x, y, z = ssht.s2_to_cart(theta, phi)
