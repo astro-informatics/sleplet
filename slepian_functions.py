@@ -14,40 +14,36 @@ class SlepianFunctions:
     def __init__(
         self, phi_min: int, phi_max: int, theta_min: int, theta_max: int, config: dict
     ):
-        self.auto_open = config["auto_open"]
-        self.delta_phi = np.pi / config["L"]
-        self.delta_theta = np.pi / config["L"]
+        theta, phi = ssht.sample_positions(config["L"], Method="MWSS")
+        thetas, phis = ssht.sample_positions(config["L"], Grid=True, Method="MWSS")
+        ylm = ssht.create_ylm(thetas, phis, config["L"])
+        phi_mask = np.where(
+            (phi >= np.deg2rad(phi_min)) & (phi <= np.deg2rad(phi_max))
+        )[0]
+        theta_mask = np.where(
+            (theta >= np.deg2rad(theta_min)) & (theta <= np.deg2rad(theta_max))
+        )[0]
+        self.delta_phi = np.mean(np.ediff1d(phi))
+        self.delta_theta = np.mean(np.ediff1d(theta))
         self.L = config["L"]
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.N = self.L * self.L
+        self.N = config["L"] * config["L"]
         self.ncpu = config["ncpu"]
         self.phi_max = phi_max
         self.phi_max_is_default = phi_max == 360
-        self.phi_max_r = np.deg2rad(phi_max)
         self.phi_min = phi_min
         self.phi_min_is_default = phi_min == 0
-        self.phi_min_r = np.deg2rad(phi_min)
         self.plotting = Plotting(
             auto_open=config["auto_open"], save_fig=config["save_fig"]
         )
         self.resolution = self.plotting.calc_resolution(config["L"])
-        self.save_fig = config["save_fig"]
         self.theta_max = theta_max
         self.theta_max_is_default = theta_max == 180
-        self.theta_max_r = np.deg2rad(theta_max)
         self.theta_min = theta_min
         self.theta_min_is_default = theta_min == 0
-        self.theta_min_r = np.deg2rad(theta_min)
-        theta, phi = ssht.sample_positions(config["L"], Method="MWSS")
-        phi_mask = np.where((phi >= self.phi_min_r) & (phi <= self.phi_max_r))[0]
-        theta_mask = np.where(
-            (theta >= self.theta_min_r) & (theta <= self.theta_max_r)
-        )[0]
-        thetas, phis = ssht.sample_positions(config["L"], Grid=True, Method="MWSS")
         self.thetas = thetas[theta_mask]
-        ylm = ssht.create_ylm(thetas, phis, config["L"], recursion="Risbo")
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
         self.plotting.missing_key(config, "annotation", True)
         self.plotting.missing_key(config, "type", None)
