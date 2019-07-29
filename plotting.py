@@ -1,5 +1,6 @@
 import cmocean
 from fractions import Fraction
+import matplotlib
 import numpy as np
 import os
 from plotly.graph_objs import Figure, Layout, Surface
@@ -82,7 +83,7 @@ class Plotting:
         resolution: int,
         filename: str,
         annotations: List = [],
-        colourscheme: str = "solar",
+        cmap: matplotlib.colors = cmocean.cm.solar,
     ) -> None:
         """
         creates basic plotly plot rather than matplotlib
@@ -100,7 +101,7 @@ class Plotting:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self._cmocean_to_plotly(colourscheme, vmin, vmax),
+                colorscale=self._convert_colourscale(cmap),
                 cmin=vmin,
                 cmax=vmax,
                 colorbar=dict(
@@ -216,16 +217,12 @@ class Plotting:
         return x, y, z, f_plot, vmin, vmax
 
     @staticmethod
-    def _cmocean_to_plotly(
-        colour, vmin, vmax, pl_entries: int = 255
+    def _convert_colourscale(
+        cmap: matplotlib.colors, pl_entries: int = 255
     ) -> List[Tuple[float, str]]:
         """
         converts cmocean colourscale to a plotly colourscale
         """
-        cmap = getattr(cmocean.cm, colour)
-        if colour == "balanced":
-            cmap = cmocean.tools.crop(cmap.reversed(), vmin, vmax, 0)
-
         h = 1 / (pl_entries - 1)
         pl_colorscale = []
 

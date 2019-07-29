@@ -1,8 +1,10 @@
 from plotting import Plotting
+import matplotlib
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
 import numpy as np
 import os
+import scipy.io as sio
 import sys
 from typing import List, Tuple
 
@@ -14,7 +16,7 @@ class SlepianFunctions:
     def __init__(
         self, phi_min: int, phi_max: int, theta_min: int, theta_max: int, config: dict
     ):
-        samples = config["L"]
+        samples = 1 * config["L"]
         theta, phi = ssht.sample_positions(samples, Method="MWSS")
         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
         phi_mask = np.where(
@@ -205,6 +207,14 @@ class SlepianFunctions:
             # save to speed up for future
             np.save(filename, D)
 
+        A = (np.deg2rad(self.phi_max) - np.deg2rad(self.phi_min)) * (
+            np.cos(np.deg2rad(self.theta_min)) - np.cos(np.deg2rad(self.theta_max))
+        )
+        N = self.L * self.L * A / (4 * np.pi)
+        print(N, np.trace(D))
+        # np.testing.assert_allclose(N, np.trace(D), rtol=1e-2)
+
+        # order eigenvalues in descending order
         eigen_values, eigen_vectors = np.linalg.eigh(D)
         idx = eigen_values.argsort()[::-1]
         eigen_values = eigen_values[idx]
@@ -222,8 +232,8 @@ class SlepianFunctions:
         # setup
         e_val = np.abs(self.eigen_values[rank] / self.eigen_values.max())
         print(f"Eigenvalue {rank + 1}: {e_val:e}")
-        flm = self.eigen_vectors[rank]
         filename = f"slepian-{rank + 1}_L-{self.L}{self.filename_angle()}_res-{self.resolution}_"
+        flm = self.eigen_vectors[rank]
 
         # boost resolution
         if self.resolution != self.L:
@@ -245,7 +255,7 @@ class SlepianFunctions:
         # do plot
         filename += self.plotting.type
         self.plotting.plotly_plot(
-            f, self.resolution, filename, self.annotations(), colourscheme="balance"
+            f, self.resolution, filename, self.annotations(), cmap=self.colourmap()
         )
 
     # -----------------------------------------------
@@ -299,3 +309,9 @@ class SlepianFunctions:
         if not self.theta_max_is_default:
             filename += f"_tmax-{self.theta_max}"
         return filename
+
+    def colourmap(self):
+        matfile = os.path.join(self.location, "data", "kelim")
+        mat_contents = sio.loadmat(matfile)
+        cmap = matplotlib.colors.ListedColormap(mat_contents["kelim"])
+        return cmap
