@@ -216,9 +216,8 @@ class SlepianFunctions:
 
         # order eigenvalues in descending order
         eigen_values, eigen_vectors = np.linalg.eigh(D)
-        idx = eigen_values.argsort()[::-1]
-        eigen_values = eigen_values[idx]
-        eigen_vectors = eigen_vectors[:, idx]
+        eigen_values = eigen_values[::-1]
+        eigen_vectors = eigen_vectors[::-1]
         return eigen_values, eigen_vectors
 
     # ----------------------------------------
