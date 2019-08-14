@@ -281,7 +281,7 @@ def morlet(args: List[float] = [1, 10, 0]) -> Tuple[np.ndarray, str, dict]:
     for ell in range(L):
         q = ell * R
         norm = np.sqrt((2 * ell + 1) / (8 * np.pi * np.pi))
-        upsilon_l = np.exp(-((q - L) ** 2) / 2) * (1 - np.exp(-q * L))
+        upsilon_l = np.exp(-((q - LL) ** 2) / 2) * (1 - np.exp(-q * LL))
         for m in range(-ell, ell + 1):
             ind = ssht.elm2ind(ell, m)
             flm[ind] = norm * upsilon_l * np.exp(-((m - M) ** 2) / 2)
