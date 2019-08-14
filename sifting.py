@@ -23,11 +23,11 @@ def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
     return angle.numerator, angle.denominator
 
 
-def filename_std_dev(angle: float, arg_name: str) -> str:
+def filename_angle(angle: float, arg_name: str) -> str:
     filename = "_"
     num, dem = get_angle_num_dem(angle)
     filename += f"{num}{arg_name}"
-    if angle < 1:
+    if angle < 1 and angle != 0:
         filename += f"{dem}"
     return filename
 
@@ -151,11 +151,11 @@ def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
     try:
         sig = 10 ** args[0]
     except ValueError:
-        print("function requires one extra arg")
+        print("function requires exactly one extra arg")
         raise
 
     # filename
-    func_name = f'gaussian{filename_std_dev(sig, "sig")}'
+    func_name = f'gaussian{filename_angle(sig, "sig")}'
 
     # setup
     config = asdict(Config())
@@ -177,13 +177,13 @@ def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict
     try:
         t_sig, freq = [10 ** x for x in args]
     except ValueError:
-        print("function requires two extra args")
+        print("function requires exactly two extra args")
         raise
 
     # filename
     func_name = (
-        f'squashed_gaussian{filename_std_dev(t_sig, "tsig")}'
-        f'{filename_std_dev(freq, "freq")}'
+        f'squashed_gaussian{filename_angle(t_sig, "tsig")}'
+        f'{filename_angle(freq, "freq")}'
     )
 
     # setup
@@ -216,13 +216,13 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
     try:
         t_sig, p_sig = [10 ** x for x in args]
     except ValueError:
-        print("function requires two extra args")
+        print("function requires exactly two extra args")
         raise
 
     # filename
     func_name = (
-        f'elongated_gaussian{filename_std_dev(t_sig, "tsig")}'
-        f'{filename_std_dev(p_sig, "psig")}'
+        f'elongated_gaussian{filename_angle(t_sig, "tsig")}'
+        f'{filename_angle(p_sig, "psig")}'
     )
 
     # setup
@@ -252,6 +252,39 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
     thetas, phis = ssht.sample_positions(L, Grid=True, Method="MWSS")
     f = grid_fun(thetas, phis)
     flm = ssht.forward(f, L, Reality=reality, Method="MWSS")
+
+    return flm, func_name, config
+
+
+def morlet(args: List[float] = [1, 10, 0]) -> Tuple[np.ndarray, str, dict]:
+    # args
+    try:
+        R, LL, M = args
+    except ValueError:
+        print("function requires exactly three extra args")
+        raise
+
+    # filename
+    func_name = (
+        f'morlet{filename_angle(R, "R")}'
+        f'{filename_angle(LL, "LL")}{filename_angle(M, "M")}'
+    )
+
+    # setup
+    config = asdict(Config())
+    extra = dict(reality=False)
+    config = {**config, **extra}
+    L = config["L"]
+
+    # create flm
+    flm = np.zeros((L * L), dtype=complex)
+    for ell in range(L):
+        q = ell * R
+        norm = np.sqrt((2 * ell + 1) / (8 * np.pi * np.pi))
+        upsilon_l = np.exp(-((q - L) ** 2) / 2) * (1 - np.exp(-q * L))
+        for m in range(-ell, ell + 1):
+            ind = ssht.elm2ind(ell, m)
+            flm[ind] = norm * upsilon_l * np.exp(-((m - M) ** 2) / 2)
 
     return flm, func_name, config
 
@@ -370,6 +403,7 @@ functions = {
     "identity": identity,
     "squashed_gaussian": squashed_gaussian,
     "elongated_gaussian": elongated_gaussian,
+    "morlet": morlet,
     "spherical_harmonic": spherical_harmonic,
 }
 maps = {"earth": earth, "wmap": wmap}
