@@ -141,13 +141,17 @@ def dirac_delta() -> Tuple[np.ndarray, str, dict]:
     return flm, func_name, config
 
 
-def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
+def gaussian(args: List[int] = [3.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         sig = 10 ** args[0]
     except ValueError:
         print("function requires exactly one extra arg")
         raise
+
+    # validation
+    if not sig.is_integer():
+        raise ValueError("sigma should be an integer")
 
     # filename
     func_name = f"gaussian{filename_args(sig, 'sig')}"
@@ -167,13 +171,19 @@ def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
     return flm, func_name, config
 
 
-def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict]:
+def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         t_sig, freq = [10 ** x for x in args]
     except ValueError:
         print("function requires exactly two extra args")
         raise
+
+    # validation
+    if not t_sig.is_integer():
+        raise ValueError("theta sigma should be an integer")
+    if not freq.is_integer():
+        raise ValueError("sine frequency should be an integer")
 
     # filename
     func_name = (
@@ -206,13 +216,19 @@ def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict
     return flm, func_name, config
 
 
-def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict]:
+def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         t_sig, p_sig = [10 ** x for x in args]
     except ValueError:
         print("function requires exactly two extra args")
         raise
+
+    # validation
+    if not t_sig.is_integer():
+        raise ValueError("theta sigma should be an integer")
+    if not p_sig.is_integer():
+        raise ValueError("phi sigma should be an integer")
 
     # filename
     func_name = (
@@ -255,13 +271,15 @@ def morlet(args: List[float] = [1.0, 10.0, 0.0]) -> Tuple[np.ndarray, str, dict]
     # args
     try:
         R, LL, M = args
-        if LL <= 0 or not LL.is_integer():
-            raise ValueError("L should be a natural number excluding zero")
-        if not M.is_integer():
-            raise ValueError("M should be an integer")
     except ValueError:
         print("function requires exactly three extra args")
         raise
+
+    # validation
+    if LL <= 0 or not LL.is_integer():
+        raise ValueError("L should be a natural number excluding zero")
+    if not M.is_integer():
+        raise ValueError("M should be an integer")
 
     # filename
     func_name = (
@@ -292,13 +310,15 @@ def spherical_harmonic(args: List[int] = [0.0, 0.0]) -> Tuple[np.ndarray, str, d
     # args
     try:
         ell, m = args
-        if ell < 0 or not ell.is_integer():
-            raise ValueError("l should be a positive integer")
-        if not m.is_integer() or abs(m) > ell:
-            raise ValueError("m should be an integer |m| <= l")
     except ValueError:
         print("function requires exactly two extra args")
         raise
+
+    # validation
+    if ell < 0 or not ell.is_integer():
+        raise ValueError("l should be a positive integer")
+    if not m.is_integer() or abs(m) > ell:
+        raise ValueError("m should be an integer |m| <= l")
 
     # filename
     func_name = f"spherical_harmonic{filename_args(ell, 'l')}{filename_args(m, 'm')}"
