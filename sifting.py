@@ -23,7 +23,7 @@ def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
     return angle.numerator, angle.denominator
 
 
-def filename_angle(angle: float, arg_name: str) -> str:
+def filename_args(angle: float, arg_name: str) -> str:
     filename = "_"
     num, dem = get_angle_num_dem(angle)
     filename += f"{num}{arg_name}"
@@ -32,7 +32,7 @@ def filename_angle(angle: float, arg_name: str) -> str:
     return filename
 
 
-def read_args(spherical_harmonic: bool = False) -> Namespace:
+def read_args() -> Namespace:
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
         "flm",
@@ -63,7 +63,7 @@ def read_args(spherical_harmonic: bool = False) -> Namespace:
     parser.add_argument(
         "--extra_args",
         "-e",
-        type=int,
+        type=float,
         nargs="+",
         help="list of extra args for functions",
     )
@@ -101,11 +101,6 @@ def read_args(spherical_harmonic: bool = False) -> Namespace:
         action="store_false",
         help="flag which if passed removes any annotation",
     )
-
-    # extra args for spherical harmonics
-    if spherical_harmonic:
-        parser.add_argument("-l", metavar="ell", type=int, help="multipole")
-        parser.add_argument("-m", metavar="m", type=int, help="multipole moment")
 
     args = parser.parse_args()
     return args
@@ -155,7 +150,7 @@ def gaussian(args: List[int] = [3]) -> Tuple[np.ndarray, str, dict]:
         raise
 
     # filename
-    func_name = f'gaussian{filename_angle(sig, "sig")}'
+    func_name = f"gaussian{filename_args(sig, 'sig')}"
 
     # setup
     config = asdict(Config())
@@ -182,8 +177,8 @@ def squashed_gaussian(args: List[int] = [-2, -1]) -> Tuple[np.ndarray, str, dict
 
     # filename
     func_name = (
-        f'squashed_gaussian{filename_angle(t_sig, "tsig")}'
-        f'{filename_angle(freq, "freq")}'
+        f"squashed_gaussian{filename_args(t_sig, 'tsig')}"
+        f"{filename_args(freq, 'freq')}"
     )
 
     # setup
@@ -221,8 +216,8 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
 
     # filename
     func_name = (
-        f'elongated_gaussian{filename_angle(t_sig, "tsig")}'
-        f'{filename_angle(p_sig, "psig")}'
+        f"elongated_gaussian{filename_args(t_sig, 'tsig')}"
+        f"{filename_args(p_sig, 'psig')}"
     )
 
     # setup
@@ -256,18 +251,22 @@ def elongated_gaussian(args: List[int] = [0, -3]) -> Tuple[np.ndarray, str, dict
     return flm, func_name, config
 
 
-def morlet(args: List[float] = [1, 10, 0]) -> Tuple[np.ndarray, str, dict]:
+def morlet(args: List[float] = [1.0, 10.0, 0.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
         R, LL, M = args
+        if LL <= 0 or not LL.is_integer():
+            raise ValueError("L should be a natural number excluding zero")
+        if not M.is_integer():
+            raise ValueError("M should be an integer")
     except ValueError:
         print("function requires exactly three extra args")
         raise
 
     # filename
     func_name = (
-        f'morlet{filename_angle(R, "R")}'
-        f'{filename_angle(LL, "LL")}{filename_angle(M, "M")}'
+        f"morlet{filename_args(R, 'R')}"
+        f"{filename_args(LL, 'LL')}{filename_args(M, 'M')}"
     )
 
     # setup
@@ -289,9 +288,20 @@ def morlet(args: List[float] = [1, 10, 0]) -> Tuple[np.ndarray, str, dict]:
     return flm, func_name, config
 
 
-def spherical_harmonic(ell: int, m: int) -> Tuple[np.ndarray, str, dict]:
+def spherical_harmonic(args: List[int] = [0.0, 0.0]) -> Tuple[np.ndarray, str, dict]:
+    # args
+    try:
+        ell, m = args
+        if ell < 0 or not ell.is_integer():
+            raise ValueError("l should be a positive integer")
+        if not m.is_integer() or abs(m) > ell:
+            raise ValueError("m should be an integer |m| <= l")
+    except ValueError:
+        print("function requires exactly two extra args")
+        raise
+
     # filename
-    func_name = f"spherical_harmonic_l{ell}_m{m}"
+    func_name = f"spherical_harmonic{filename_args(ell, 'l')}{filename_args(m, 'm')}"
 
     # setup
     config = asdict(Config())
@@ -414,12 +424,14 @@ if __name__ == "__main__":
     # initialise to None
     glm, glm_name = None, None
 
-    # if flm is spherical harmonics then
-    # obviously not a convolution
+    # if flm is spherical harmonics then obviously not a convolution
     if sys.argv[1] == "spherical_harmonic":
-        args = read_args(True)
+        args = read_args()
         flm_input = total[args.flm]
-        flm, flm_name, config = flm_input(args.l, args.m)
+        if args.extra_args is None:
+            flm, flm_name, config = flm_input()
+        else:
+            flm, flm_name, config = flm_input(args.extra_args)
     else:
         args = read_args()
         flm_input = total[args.flm]

@@ -22,10 +22,10 @@ for phi in $(seq -3 2); do for t in real imag abs; do echo $the $phi $t; ./sifti
 
 # presentation rotation demo
 echo Y_{43}
-./sifting.py spherical_harmonic -l 4 -m 3 -t real
+./sifting.py spherical_harmonic -e 4 3 -t real
 echo Y_{43} rot 0 0 0.25
-./sifting.py spherical_harmonic -l 4 -m 3 -t real -r rotate -a 0 -b 0 -g 0.25
+./sifting.py spherical_harmonic -e 4 3 -t real -r rotate -a 0 -b 0 -g 0.25
 echo Y_{43} rot 0 0.25 0.25
-./sifting.py spherical_harmonic -l 4 -m 3 -t real -r rotate -a 0 -b 0.25 -g 0.25
+./sifting.py spherical_harmonic -e 4 3 -t real -r rotate -a 0 -b 0.25 -g 0.25
 echo Y_{43} rot 0.25 0.25 0.25
-./sifting.py spherical_harmonic -l 4 -m 3 -t real -r rotate -a 0.25 -b 0.25 -g 0.25
+./sifting.py spherical_harmonic -e 4 3 -t real -r rotate -a 0.25 -b 0.25 -g 0.25
