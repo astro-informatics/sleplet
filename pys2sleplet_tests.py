@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from plotting import Plotting
-from sifting import dirac_delta, earth, identity, morlet
+from sifting import dirac_delta, earth, harmonic_gaussian, identity
 from sifting_convolution import SiftingConvolution
 import numpy as np
 import os
@@ -41,7 +41,7 @@ def test_dirac_delta_rotate_translate() -> None:
     print("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
 
     # filename
-    filename = f"dirac_delta_L-{sc.L}_diff_rot_trans_res-{sc.resolution}"
+    filename = f"{sc.flm_name}_L-{sc.L}_diff_rot_trans_res-{sc.resolution}"
 
     # create plot
     plotting.plotly_plot(f_diff, sc.resolution, filename, sc.annotations())
@@ -61,10 +61,10 @@ def test_earth_identity_convolution() -> None:
     print("Identity convolution passed test")
 
 
-def test_earth_morlet_convolution() -> None:
+def test_earth_harmonic_gaussian_convolution() -> None:
     # setup
     flm, flm_name, config = earth()
-    glm, glm_name, _ = morlet()
+    glm, glm_name, _ = harmonic_gaussian()
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
     sc.calc_nearest_grid_point()
     plotting = Plotting(auto_open=sc.auto_open, save_fig=sc.save_fig)
@@ -89,10 +89,13 @@ def test_earth_morlet_convolution() -> None:
     # perform test
     np.testing.assert_allclose(flm, flm_conv, atol=5e1)
     np.testing.assert_allclose(f_map, f_conv, atol=8e2)
-    print("Earth/morlet convolution difference max error:", np.max(np.abs(flm_diff)))
+    print(
+        "Earth/harmonic gaussian convolution difference max error:",
+        np.max(np.abs(flm_diff)),
+    )
 
     # filename
-    filename = f"earth_L-{sc.L}_diff_morlet_res-{sc.resolution}_real"
+    filename = f"{sc.flm_name}_L-{sc.L}_diff_{sc.glm_name}_res-{sc.resolution}_real"
 
     # create plot
     plotting.plotly_plot(f_diff.real, sc.resolution, filename, sc.annotations())
@@ -101,4 +104,4 @@ def test_earth_morlet_convolution() -> None:
 if __name__ == "__main__":
     test_dirac_delta_rotate_translate()
     test_earth_identity_convolution()
-    test_earth_morlet_convolution()
+    test_earth_harmonic_gaussian_convolution()

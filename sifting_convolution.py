@@ -201,23 +201,27 @@ class SiftingConvolution:
             else:
                 x, y, z = ssht.s2_to_cart(self.beta, self.alpha)
 
-            # initialise array and standard arrow
+            # initialise array and standard configuation
             annotation = []
             config = dict(arrowcolor="white", yshift=5)
-            arrow = {**dict(x=x, y=y, z=z), **config}
 
             # various switch cases for annotation
-            if self.flm_name.startswith("elongated_gaussian"):
+            if self.flm_name == "dirac_delta":
+                if self.plotting.type != "imag":
+                    annotation.append({**config, **dict(x=x, y=y, z=z)})
+            elif self.flm_name.startswith("elongated_gaussian"):
                 if self.plotting.routine == "translate":
                     annotation.append({**config, **dict(x=-x, y=y, z=z)})
                     annotation.append({**config, **dict(x=x, y=-y, z=z)})
-            elif self.flm_name == "dirac_delta":
-                if self.plotting.type != "imag":
-                    annotation.append(arrow)
+            elif self.flm_name.startswith(
+                "harmonic_gaussian"
+            ) or self.flm_name.startswith("identity"):
+                if self.plotting.routine == "translate":
+                    annotation.append({**config, **dict(x=x, y=-y, z=z)})
             elif "gaussian" in self.flm_name:
                 if self.plotting.routine != "translate":
                     if self.plotting.type != "imag":
-                        annotation.append(arrow)
+                        annotation.append({**config, **dict(x=x, y=y, z=z)})
 
             # if convolution then remove annotation
             if self.glm is not None:
