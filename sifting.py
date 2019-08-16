@@ -45,10 +45,10 @@ def read_args() -> Namespace:
         "-t",
         type=str,
         nargs="?",
-        default="abs",
-        const="abs",
+        default="real",
+        const="real",
         choices=["abs", "real", "imag", "sum"],
-        help="plotting type: defaults to abs",
+        help="plotting type: defaults to real",
     )
     parser.add_argument(
         "--routine",
@@ -206,7 +206,7 @@ def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, 
         theta_sig: float = t_sig,
         freq: float = freq,
     ) -> np.ndarray:
-        f = np.exp(-((((theta - theta_0) / theta_sig) ** 2) / 2)) * np.sin(freq * phi)
+        f = np.exp(-(((theta - theta_0) / theta_sig) ** 2) / 2) * np.sin(freq * phi)
         return f
 
     thetas, phis = ssht.sample_positions(L, Grid=True, Method="MWSS")
@@ -253,10 +253,7 @@ def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, 
         phi_sig: float = p_sig,
     ) -> np.ndarray:
         f = np.exp(
-            -(
-                (((theta - theta_0) / theta_sig) ** 2 + ((phi - phi_0) / phi_sig) ** 2)
-                / 2
-            )
+            -(((theta - theta_0) / theta_sig) ** 2 + ((phi - phi_0) / phi_sig) ** 2) / 2
         )
         return f
 
@@ -267,25 +264,22 @@ def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, 
     return flm, func_name, config
 
 
-def morlet(args: List[float] = [1.0, 10.0, 0.0]) -> Tuple[np.ndarray, str, dict]:
+def morlet(args: List[float] = [3.0, 3.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
-        R, LL, M = args
+        l_sig, m_sig = [10 ** x for x in args]
     except ValueError:
-        print("function requires exactly three extra args")
+        print("function requires exactly two extra args")
         raise
 
     # validation
-    if LL <= 0 or not LL.is_integer():
-        raise ValueError("L should be a natural number excluding zero")
-    if not M.is_integer():
-        raise ValueError("M should be an integer")
+    if not l_sig.is_integer():
+        raise ValueError("l sigma should be an integer")
+    if not m_sig.is_integer():
+        raise ValueError("m sigma should be an integer")
 
     # filename
-    func_name = (
-        f"morlet{filename_args(R, 'R')}"
-        f"{filename_args(LL, 'LL')}{filename_args(M, 'M')}"
-    )
+    func_name = f"morlet{filename_args(l_sig, 'lsig')}{filename_args(m_sig, 'msig')}"
 
     # setup
     config = asdict(Config())
@@ -296,12 +290,10 @@ def morlet(args: List[float] = [1.0, 10.0, 0.0]) -> Tuple[np.ndarray, str, dict]
     # create flm
     flm = np.zeros((L * L), dtype=complex)
     for ell in range(L):
-        q = ell * R
-        norm = np.sqrt((2 * ell + 1) / (8 * np.pi * np.pi))
-        upsilon_l = np.exp(-((q - LL) ** 2) / 2) * (1 - np.exp(-q * LL))
+        upsilon_l = np.exp(-((ell / l_sig) ** 2) / 2)
         for m in range(-ell, ell + 1):
             ind = ssht.elm2ind(ell, m)
-            flm[ind] = norm * upsilon_l * np.exp(-((m - M) ** 2) / 2)
+            flm[ind] = upsilon_l * np.exp(-((m / m_sig) ** 2) / 2)
 
     return flm, func_name, config
 
