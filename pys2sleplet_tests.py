@@ -87,8 +87,8 @@ def test_earth_morlet_convolution() -> None:
     f_diff = f_map - f_conv
 
     # perform test
-    np.testing.assert_allclose(flm, flm_conv, atol=0.5)
-    np.testing.assert_allclose(f_map, f_conv, atol=500)
+    np.testing.assert_allclose(flm, flm_conv, atol=5e1)
+    np.testing.assert_allclose(f_map, f_conv, atol=8e2)
     print("Earth/morlet convolution difference max error:", np.max(np.abs(flm_diff)))
 
     # filename
