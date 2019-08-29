@@ -78,12 +78,7 @@ class Plotting:
         return flm_boost
 
     def plotly_plot(
-        self,
-        f: np.ndarray,
-        resolution: int,
-        filename: str,
-        annotations: List = [],
-        cmap: matplotlib.colors = cmocean.cm.solar,
+        self, f: np.ndarray, resolution: int, filename: str, annotations: List = []
     ) -> None:
         """
         creates basic plotly plot rather than matplotlib
@@ -92,8 +87,8 @@ class Plotting:
         x, y, z, f_plot, vmin, vmax = self._setup_plot(f, resolution, method="MWSS")
 
         # appropriate zoom in on north pole
-        zoom = 1.58
-        camera = dict(eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=2 / zoom))
+        zoom = 7.88
+        camera = dict(eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=10 / zoom))
 
         data = [
             Surface(
@@ -101,7 +96,7 @@ class Plotting:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=self._convert_colourscale(cmap),
+                colorscale=self._convert_colourscale(cmocean.cm.solar),
                 cmin=vmin,
                 cmax=vmax,
                 colorbar=dict(

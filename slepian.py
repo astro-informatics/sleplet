@@ -13,11 +13,11 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 def read_args() -> Namespace:
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
-        "--rank",
-        "-r",
-        type=valid_range,
+        "--num_plots",
+        "-p",
+        type=valid_plots,
         default=1,
-        help="retrieve the Slepian coefficients descending in concentration from 1 down to rank",
+        help="the number of plots to show in descending concentration",
     )
     parser.add_argument(
         "--phi_min",
@@ -48,6 +48,13 @@ def read_args() -> Namespace:
         help="theta maximum in degrees for region - defaults to 40",
     )
     parser.add_argument(
+        "--order",
+        "-m",
+        type=valid_order,
+        default=0,
+        help="the order interested in if dealing with polar cap",
+    )
+    parser.add_argument(
         "--type",
         "-t",
         type=str,
@@ -68,14 +75,24 @@ def read_args() -> Namespace:
     return args
 
 
-def valid_range(rank: int) -> int:
+def valid_plots(num_plots: int) -> int:
     config = asdict(Config())
-    L, rank = config["L"], int(rank)
+    L, num_plots = config["L"], int(num_plots)
     # check if valid range
-    if rank <= L * L and rank > 0:
-        return rank
+    if num_plots <= L * L and num_plots > 0:
+        return num_plots
     else:
-        raise ValueError(f"Must be positive and less than {L * L} coefficients")
+        raise ValueError(f"The number of plots must be positive and less than {L * L}")
+
+
+def valid_order(order: int) -> int:
+    config = asdict(Config())
+    L, order = config["L"], int(order)
+    # check if valid range
+    if abs(order) < L:
+        return order
+    else:
+        raise ValueError(f"The magnitude of the order must and less than {L} ")
 
 
 if __name__ == "__main__":
@@ -84,19 +101,18 @@ if __name__ == "__main__":
 
     # if using input from argparse
     config["annotation"] = args.annotation
+    config["order"] = args.order
     config["type"] = args.type
 
     sf = SlepianFunctions(
         args.phi_min, args.phi_max, args.theta_min, args.theta_max, config
     )
-    # plot the most concentrated up to specified rank
-    for i in range(args.rank):
-        sf.plot(i)
 
-    # plot the corresponding least concentrated down to rank avoiding repeats
-    if args.rank <= sf.L * sf.L // 2:
-        for j in range(sf.L * sf.L - 1, sf.L * sf.L - 1 - args.rank, -1):
-            sf.plot(j)
-    else:
-        for j in range(sf.L * sf.L - 1, args.rank - 1, -1):
-            sf.plot(j)
+    # don't request more plots than exist
+    N = args.num_plots
+    if N > sf.eigenvectors.shape[0]:
+        N = sf.eigenvectors.shape[0]
+
+    # plot the most concentrated up to specified number of plots
+    for i in range(N):
+        sf.plot(i)
