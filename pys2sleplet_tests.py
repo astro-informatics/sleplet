@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+from plotting import Plotting
+from sifting import dirac_delta, earth, harmonic_gaussian, identity
 from sifting_convolution import SiftingConvolution
-from plotting import dirac_delta, earth, identity
 import numpy as np
-import sys
 import os
+import sys
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -12,22 +13,22 @@ import pyssht as ssht
 def test_dirac_delta_rotate_translate() -> None:
     # setup
     flm, name, config = dirac_delta()
-    config["routine"], config["type"], config["annotation"] = None, None, True
     sc = SiftingConvolution(flm, name, config)
     sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.25)
+    plotting = Plotting(auto_open=sc.auto_open, save_fig=sc.save_fig)
 
     # rotation
     flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)
-    flm_rot_boost = sc.resolution_boost(flm_rot)
+    flm_rot_boost = plotting.resolution_boost(flm_rot, sc.L, sc.resolution)
     f_rot = ssht.inverse(
-        flm_rot_boost, sc.resolution, Method=sc.method, Reality=sc.reality
+        flm_rot_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
     )
 
     # translation
     flm_trans = sc.translation(flm)
-    flm_trans_boost = sc.resolution_boost(flm_trans)
+    flm_trans_boost = plotting.resolution_boost(flm_trans, sc.L, sc.resolution)
     f_trans = ssht.inverse(
-        flm_trans_boost, sc.resolution, Method=sc.method, Reality=sc.reality
+        flm_trans_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
     )
 
     # calculate difference
@@ -40,21 +41,17 @@ def test_dirac_delta_rotate_translate() -> None:
     print("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
 
     # filename
-    filename = (
-        f"dirac_delta_L-{sc.L}_diff_rot_trans_samp-{sc.method}_res-{sc.resolution}"
-    )
+    filename = f"{sc.flm_name}_L{sc.L}_diff_rot_trans_res{sc.resolution}"
 
     # create plot
-    sc.plotly_plot(f_diff, filename, config["save_fig"])
+    plotting.plotly_plot(f_diff, sc.resolution, filename, sc.annotations())
 
 
 def test_earth_identity_convolution() -> None:
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = identity()
-    config["routine"], config["type"], config["annotation"] = None, None, False
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
-    sc.calc_nearest_grid_point()
 
     # convolution
     flm_conv = sc.convolution(flm, glm)
@@ -63,19 +60,48 @@ def test_earth_identity_convolution() -> None:
     np.testing.assert_equal(flm_conv, flm)
     print("Identity convolution passed test")
 
-    # prepare
-    flm_conv_boost = sc.resolution_boost(flm_conv)
+
+def test_earth_harmonic_gaussian_convolution() -> None:
+    # setup
+    flm, flm_name, config = earth()
+    glm, glm_name, _ = harmonic_gaussian()
+    sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
+    sc.calc_nearest_grid_point()
+    plotting = Plotting(auto_open=sc.auto_open, save_fig=sc.save_fig)
+
+    # map
+    flm_map_boost = plotting.resolution_boost(flm, sc.L, sc.resolution)
+    f_map = ssht.inverse(
+        flm_map_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
+    )
+
+    # convolution
+    flm_conv = sc.convolution(flm, glm)
+    flm_conv_boost = plotting.resolution_boost(flm_conv, sc.L, sc.resolution)
     f_conv = ssht.inverse(
-        flm_conv_boost, sc.resolution, Method=sc.method, Reality=sc.reality
+        flm_conv_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
+    )
+
+    # calculate difference
+    flm_diff = flm - flm_conv
+    f_diff = f_map - f_conv
+
+    # perform test
+    np.testing.assert_allclose(flm, flm_conv, atol=5e1)
+    np.testing.assert_allclose(f_map, f_conv, atol=8e2)
+    print(
+        "Earth/harmonic gaussian convolution difference max error:",
+        np.max(np.abs(flm_diff)),
     )
 
     # filename
-    filename = f"identity_L-{sc.L}_convolved_earth_L-{sc.L}_samp-{sc.method}_res-{sc.resolution}_real"
+    filename = f"{sc.flm_name}_L{sc.L}_diff_{sc.glm_name}_res{sc.resolution}_real"
 
     # create plot
-    sc.plotly_plot(f_conv.real, filename, config["save_fig"])
+    plotting.plotly_plot(f_diff.real, sc.resolution, filename, sc.annotations())
 
 
 if __name__ == "__main__":
     test_dirac_delta_rotate_translate()
     test_earth_identity_convolution()
+    test_earth_harmonic_gaussian_convolution()
