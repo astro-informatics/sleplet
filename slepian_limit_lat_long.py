@@ -153,6 +153,6 @@ class SlepianLimitLatLong:
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
-        eigenvectors = np.conj(eigenvectors[:, idx])
+        eigenvectors = np.conj(eigenvectors[:, idx]).T
 
         return eigenvalues, eigenvectors

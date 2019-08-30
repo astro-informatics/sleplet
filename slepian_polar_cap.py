@@ -171,19 +171,19 @@ class SlepianPolarCap:
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eig(Dm)
 
-        # put back in full D space for harmonic transform
-        emm = emm[: self.L * self.L]
-        ind = np.tile(emm == m, (self.L - abs(m), 1))
-        glm = np.zeros((self.L - abs(m), self.L * self.L), dtype=complex)
-        glm[ind] = gl.T.flatten()
-
         # eigenvalues should be real
         eigenvalues = eigenvalues.real
 
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
-        glm = np.conj(glm[idx])
+        gl = np.conj(gl[:, idx])
+
+        # put back in full D space for harmonic transform
+        emm = emm[: self.L * self.L]
+        ind = np.tile(emm == m, (self.L - abs(m), 1))
+        glm = np.zeros((self.L - abs(m), self.L * self.L), dtype=complex)
+        glm[ind] = gl.T.flatten()
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
         if m < 0:
