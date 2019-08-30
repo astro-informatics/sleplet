@@ -59,10 +59,7 @@ class SlepianFunctions:
         if self.is_polar_cap:
             spc = SlepianPolarCap(self.L, self.theta_max)
             eigenvalues, eigenvectors = spc.eigenproblem(m)
-            if m < 0:
-                self.filename = f"_m-n{abs(m)}"
-            else:
-                self.filename = f"_m-{m}"
+            self.filename = f"_m{m}"
         else:
             slll = SlepianLimitLatLong(
                 self.L, self.phi_min, self.phi_max, self.theta_min, self.theta_max
@@ -80,7 +77,7 @@ class SlepianFunctions:
         """
         # setup
         print(f"Eigenvalue {rank + 1}: {self.eigenvalues[rank]:e}")
-        filename = f"slepian{self.filename_angle()}{self.filename}_L-{self.L}_rank-{rank + 1}_res-{self.resolution}_"
+        filename = f"slepian{self.filename_angle()}{self.filename}_L{self.L}_rank{rank + 1}_res{self.resolution}_"
         flm = self.eigenvectors[rank]
 
         # boost resolution
@@ -154,19 +151,19 @@ class SlepianFunctions:
 
         # if phi min is not default
         if not self.phi_min_is_default:
-            filename += f"_pmin-{self.phi_min}"
+            filename += f"_pmin{self.phi_min}"
 
         # if phi max is not default
         if not self.phi_max_is_default:
-            filename += f"_pmax-{self.phi_max}"
+            filename += f"_pmax{self.phi_max}"
 
         # if theta min is not default
         if not self.theta_min_is_default:
-            filename += f"_tmin-{self.theta_min}"
+            filename += f"_tmin{self.theta_min}"
 
         # if theta max is not default
         if not self.theta_max_is_default:
-            filename += f"_tmax-{self.theta_max}"
+            filename += f"_tmax{self.theta_max}"
         return filename
 
     # --------------------------

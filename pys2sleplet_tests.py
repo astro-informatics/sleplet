@@ -41,7 +41,7 @@ def test_dirac_delta_rotate_translate() -> None:
     print("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
 
     # filename
-    filename = f"{sc.flm_name}_L-{sc.L}_diff_rot_trans_res-{sc.resolution}"
+    filename = f"{sc.flm_name}_L{sc.L}_diff_rot_trans_res{sc.resolution}"
 
     # create plot
     plotting.plotly_plot(f_diff, sc.resolution, filename, sc.annotations())
@@ -95,7 +95,7 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     )
 
     # filename
-    filename = f"{sc.flm_name}_L-{sc.L}_diff_{sc.glm_name}_res-{sc.resolution}_real"
+    filename = f"{sc.flm_name}_L{sc.L}_diff_{sc.glm_name}_res{sc.resolution}_real"
 
     # create plot
     plotting.plotly_plot(f_diff.real, sc.resolution, filename, sc.annotations())

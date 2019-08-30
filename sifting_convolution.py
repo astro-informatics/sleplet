@@ -60,7 +60,7 @@ class SiftingConvolution:
             "npy",
             "trans_dirac",
             (
-                f"trans_dd_L-{self.L}_"
+                f"trans_dd_L{self.L}_"
                 f"{self.filename_angle(self.alpha_pi_fraction,self.beta_pi_fraction)}.npy"
             ),
         )
@@ -107,7 +107,7 @@ class SiftingConvolution:
         """
         # setup
         gamma = gamma_pi_fraction * np.pi
-        filename = f"{self.flm_name}_L-{self.L}_"
+        filename = f"{self.flm_name}_L{self.L}_"
 
         # calculate nearest index of alpha/beta for translation
         self.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
@@ -137,14 +137,14 @@ class SiftingConvolution:
             # perform convolution
             flm = self.convolution(flm, self.glm)
             # adjust filename
-            filename += f"convolved_{self.glm_name}_L-{self.L}_"
+            filename += f"convolved_{self.glm_name}_L{self.L}_"
 
         # boost resolution
         if self.resolution != self.L:
             flm = self.plotting.resolution_boost(flm, self.L, self.resolution)
 
         # add resolution to filename
-        filename += f"res-{self.resolution}_"
+        filename += f"res{self.resolution}_"
 
         # inverse & plot
         f = ssht.inverse(flm, self.resolution, Reality=self.reality, Method="MWSS")
@@ -246,25 +246,23 @@ class SiftingConvolution:
 
         # if alpha = beta = 0
         if not alpha_num and not beta_num:
-            filename = "alpha-0_beta-0"
+            filename = "alpha0_beta0"
         # if alpha = 0
         elif not alpha_num:
-            filename = (
-                f"alpha-0_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}"
-            )
+            filename = f"alpha0_beta{self.plotting.pi_in_filename(beta_num, beta_den)}"
         # if beta = 0
         elif not beta_num:
             filename = (
-                f"alpha-{self.plotting.pi_in_filename(alpha_num, alpha_den)}_beta-0"
+                f"alpha{self.plotting.pi_in_filename(alpha_num, alpha_den)}_beta0"
             )
         # if alpha != 0 && beta !=0
         else:
             filename = (
-                f"alpha-{self.plotting.pi_in_filename(alpha_num, alpha_den)}"
-                f"_beta-{self.plotting.pi_in_filename(beta_num, beta_den)}"
+                f"alpha{self.plotting.pi_in_filename(alpha_num, alpha_den)}"
+                f"_beta{self.plotting.pi_in_filename(beta_num, beta_den)}"
             )
 
         # if rotation with gamma != 0
         if gamma_num:
-            filename += f"gamma-{self.plotting.pi_in_filename(gamma_num, gamma_den)}"
+            filename += f"gamma{self.plotting.pi_in_filename(gamma_num, gamma_den)}"
         return filename
