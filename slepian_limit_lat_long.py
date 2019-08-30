@@ -57,16 +57,16 @@ class SlepianLimitLatLong:
             )
 
         # row = 0
+        S = self.phi_max - self.phi_min
         for col in range(-2 * (self.L - 1), 1):
-            S = self.phi_max - self.phi_min
             _helper(0, col, S)
 
         # row != 0
         for row in range(-2 * (self.L - 1), 0):
+            S = (1j / row) * (
+                np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)
+            )
             for col in range(-2 * (self.L - 1), 2 * (self.L - 1) + 1):
-                S = (1j / row) * (
-                    np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)
-                )
                 _helper(row, col, S)
 
         return G
