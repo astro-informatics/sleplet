@@ -37,6 +37,7 @@ class SlepianFunctions:
             and self.theta_min_is_default
             and not self.theta_max_is_default
         )
+        self.is_polar_gap = self.is_polar_cap and config["double"]
         self.is_whole_sphere = (
             self.phi_min_is_default
             and self.phi_max_is_default
@@ -57,7 +58,7 @@ class SlepianFunctions:
         """
         self.filename = ""
         if self.is_polar_cap:
-            spc = SlepianPolarCap(self.L, self.theta_max)
+            spc = SlepianPolarCap(self.L, self.theta_max, self.is_polar_gap)
             eigenvalues, eigenvectors = spc.eigenproblem(m)
             self.filename = f"_m{m}"
         else:
@@ -111,15 +112,33 @@ class SlepianFunctions:
         """
         if self.plotting.annotation:
             annotation = []
-            config = dict(arrowcolor="black", arrowhead=6, ax=5, ay=5)
+            config = dict(arrowhead=6, ax=5, ay=5)
+            # check if dealing with small polar gap
+            if self.is_polar_gap and self.theta_max <= 45:
+                ndots = 12
+                theta_top = np.array(np.deg2rad(self.theta_max))
+                theta_bottom = np.array(np.pi - np.deg2rad(self.theta_max))
+                for i in range(ndots):
+                    phi = np.array(2 * np.pi / ndots * (i + 1))
+                    x, y, z = ssht.s2_to_cart(theta_top, phi)
+                    annotation.append(
+                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **config}
+                    )
+                    x, y, z = ssht.s2_to_cart(theta_bottom, phi)
+                    annotation.append(
+                        {**dict(x=x, y=y, z=z, arrowcolor="white"), **config}
+                    )
             # check if dealing with small polar cap
-            if self.is_polar_cap and self.theta_max <= 45:
+            elif self.is_polar_cap and self.theta_max <= 45:
                 ndots = 12
                 theta = np.array(np.deg2rad(self.theta_max))
                 for i in range(ndots):
                     phi = np.array(2 * np.pi / ndots * (i + 1))
                     x, y, z = ssht.s2_to_cart(theta, phi)
-                    annotation.append({**dict(x=x, y=y, z=z), **config})
+                    annotation.append(
+                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **config}
+                    )
+            # check if other region
             elif not self.is_whole_sphere:
                 p1, p2, t1, t2 = (
                     np.array(np.deg2rad(self.phi_min)),
@@ -137,7 +156,9 @@ class SlepianFunctions:
                     for p in [p1, p2, p3, p4]:
                         if not ((t == t3 or t == t4) and (p == p3 or p == p4)):
                             x, y, z = ssht.s2_to_cart(t, p)
-                            annotation.append({**dict(x=x, y=y, z=z), **config})
+                            annotation.append(
+                                {**dict(x=x, y=y, z=z, arrowcolor="black"), **config}
+                            )
         else:
             annotation = []
         return annotation

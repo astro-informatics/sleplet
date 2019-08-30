@@ -55,6 +55,12 @@ def read_args() -> Namespace:
         help="the order interested in if dealing with polar cap",
     )
     parser.add_argument(
+        "--double",
+        "-d",
+        action="store_true",
+        help="flag which if passed creates a double polar cap i.e. polar gap",
+    )
+    parser.add_argument(
         "--type",
         "-t",
         type=str,
@@ -101,6 +107,7 @@ if __name__ == "__main__":
 
     # if using input from argparse
     config["annotation"] = args.annotation
+    config["double"] = args.double
     config["order"] = args.order
     config["type"] = args.type
 

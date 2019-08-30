@@ -8,9 +8,10 @@ import pyssht as ssht
 
 
 class SlepianPolarCap:
-    def __init__(self, L, theta_max):
+    def __init__(self, L, theta_max, polar_gap=False):
         self.L = L
         self.theta_max = np.deg2rad(theta_max)
+        self.polar_gap = polar_gap
 
     @staticmethod
     def Wigner3j(l1, l2, l3, m1, m2, m3):
@@ -134,12 +135,19 @@ class SlepianPolarCap:
                         * self.Wigner3j(l, n, p, m, 0, -m)
                         * (A - Pl[ell == n + 1])
                     )
-                Dm[i, j] = np.sqrt((2 * l + 1) * (2 * p + 1)) * c
+                Dm[i, j] = (
+                    self.polar_gap_modification(l, p)
+                    * np.sqrt((2 * l + 1) * (2 * p + 1))
+                    * c
+                )
                 Dm[j, i] = Dm[i, j]
 
         Dm *= (-1) ** m / 2
 
         return Dm
+
+    def polar_gap_modification(self, ell1, ell2):
+        return 1 + self.polar_gap * (-1) ** (ell1 + ell2)
 
     def eigenproblem(self, m):
         """
