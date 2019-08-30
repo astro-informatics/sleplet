@@ -183,7 +183,7 @@ class SlepianPolarCap:
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
-        glm = glm[idx]
+        glm = np.conj(glm[idx])
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
         if m < 0:
