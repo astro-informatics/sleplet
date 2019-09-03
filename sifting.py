@@ -101,14 +101,6 @@ def read_args() -> Namespace:
         help="plotting routine: defaults to north",
     )
     parser.add_argument(
-        "--space",
-        "-s",
-        type=float,
-        nargs="+",
-        default=[0, 360, 0, 40],
-        help="list of extra args for functions",
-    )
-    parser.add_argument(
         "--type",
         "-t",
         type=str,
@@ -128,14 +120,14 @@ def read_args() -> Namespace:
 
 
 def dirac_delta() -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "dirac_delta"
-
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
     config = {**config, **extra}
     L = config["L"]
+
+    # filename
+    func_name = "dirac_delta"
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -149,29 +141,28 @@ def dirac_delta() -> Tuple[np.ndarray, str, dict]:
 def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
-        t_sig, p_sig = args
-    except ValueError:
-        print("function requires exactly two extra args")
-        raise
-
-    # validation
-    if not t_sig.is_integer():
-        raise ValueError("theta sigma should be an integer")
-    if not p_sig.is_integer():
-        raise ValueError("phi sigma should be an integer")
-    t_sig, p_sig = [10 ** x for x in args]
-
-    # filename
-    func_name = (
-        f"elongated_gaussian{filename_args(t_sig, 'tsig')}"
-        f"{filename_args(p_sig, 'psig')}"
-    )
+        t_sig, p_sig = args.pop(0), args.pop(0)
+    except IndexError:
+        raise ValueError("function requires exactly two extra args")
 
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
     config = {**config, **extra}
     L, reality = config["L"], config["reality"]
+
+    # validation
+    if not t_sig.is_integer():
+        raise ValueError("theta sigma should be an integer")
+    if not p_sig.is_integer():
+        raise ValueError("phi sigma should be an integer")
+    t_sig, p_sig = 10 ** t_sig, 10 ** p_sig
+
+    # filename
+    func_name = (
+        f"elongated_gaussian{filename_args(t_sig, 'tsig')}"
+        f"{filename_args(p_sig, 'psig')}"
+    )
 
     # function on the grid
     def grid_fun(
@@ -195,6 +186,12 @@ def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, 
 
 
 def gaussian(args: List[int] = [3.0]) -> Tuple[np.ndarray, str, dict]:
+    # setup
+    config = asdict(Config())
+    extra = dict(reality=True)
+    config = {**config, **extra}
+    L = config["L"]
+
     # validation
     if not args[0].is_integer():
         raise ValueError("sigma should be an integer")
@@ -202,12 +199,6 @@ def gaussian(args: List[int] = [3.0]) -> Tuple[np.ndarray, str, dict]:
 
     # filename
     func_name = f"gaussian{filename_args(sig, 'sig')}"
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=True)
-    config = {**config, **extra}
-    L = config["L"]
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -221,28 +212,27 @@ def gaussian(args: List[int] = [3.0]) -> Tuple[np.ndarray, str, dict]:
 def harmonic_gaussian(args: List[float] = [3.0, 3.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
-        l_sig, m_sig = args
-    except ValueError:
-        print("function requires exactly two extra args")
-        raise
-
-    # validation
-    if not l_sig.is_integer():
-        raise ValueError("l sigma should be an integer")
-    if not m_sig.is_integer():
-        raise ValueError("m sigma should be an integer")
-    l_sig, m_sig = [10 ** x for x in args]
-
-    # filename
-    func_name = (
-        f"harmonic_gaussian{filename_args(l_sig, 'lsig')}{filename_args(m_sig, 'msig')}"
-    )
+        l_sig, m_sig = args.pop(0), args.pop(0)
+    except IndexError:
+        raise ValueError("function requires exactly two extra args")
 
     # setup
     config = asdict(Config())
     extra = dict(reality=False)
     config = {**config, **extra}
     L = config["L"]
+
+    # validation
+    if not l_sig.is_integer():
+        raise ValueError("l sigma should be an integer")
+    if not m_sig.is_integer():
+        raise ValueError("m sigma should be an integer")
+    l_sig, m_sig = 10 ** l_sig, 10 ** m_sig
+
+    # filename
+    func_name = (
+        f"harmonic_gaussian{filename_args(l_sig, 'lsig')}{filename_args(m_sig, 'msig')}"
+    )
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -256,14 +246,14 @@ def harmonic_gaussian(args: List[float] = [3.0, 3.0]) -> Tuple[np.ndarray, str, 
 
 
 def identity() -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "identity"
-
     # setup
     config = asdict(Config())
     extra = dict(reality=False)
     config = {**config, **extra}
     L = config["L"]
+
+    # filename
+    func_name = "identity"
 
     # create flm
     flm = np.ones((L * L)) + 1j * np.zeros((L * L))
@@ -271,24 +261,58 @@ def identity() -> Tuple[np.ndarray, str, dict]:
     return flm, func_name, config
 
 
-def slepian(args: List[int] = [0.0, 0.0, 0.0]) -> Tuple[np.ndarray, str, dict]:
-    # validation
-    if not args[0].is_integer():
-        raise ValueError("slepian concentration rank should be an integer")
-    rank = args[0]
+def slepian(
+    args: List[int] = [0.0, 360.0, 0.0, 40.0, 0.0, 0.0, 0.0]
+) -> Tuple[np.ndarray, str, dict]:
+    # args
+    try:
+        phi_min, phi_max, theta_min, theta_max = (
+            args.pop(0),
+            args.pop(0),
+            args.pop(0),
+            args.pop(0),
+        )
+    except IndexError:
+        raise ValueError("function requires at least four extra args")
+    try:
+        rank = args.pop(0)
+    except IndexError:
+        rank = 0.0
+    try:
+        order = args.pop(0)
+    except IndexError:
+        order = 0.0
+    try:
+        double = args.pop(0)
+    except IndexError:
+        double = 0.0
 
     # setup
     config = asdict(Config())
     extra = dict(reality=False)
     config = {**config, **extra}
-    L, order, double = config["L"], config["order"], config["double"]
-    phi_min, phi_max = config["phi_min"], config["phi_max"]
-    theta_min, theta_max = config["theta_min"], config["theta_max"]
+    L = config["L"]
+
+    # validation
+    if not (
+        phi_min.is_integer()
+        and phi_max.is_integer()
+        and theta_min.is_integer()
+        and theta_max.is_integer()
+    ):
+        raise ValueError("angles for Slepian region should be integers")
+    if not rank.is_integer() and rank < 0 and rank > L * L:
+        raise ValueError(
+            f"Slepian concentration rank should a positive integer less than {L * L}"
+        )
+    if not order.is_integer() and abs(order) >= L:
+        raise ValueError(f"Slepian polar cap order should be an integer less than {L}")
 
     # initialise class
     sf = SlepianFunctions(L, phi_min, phi_max, theta_min, theta_max, order, double)
 
     # filename
+    rank = int(rank)
     func_name = f"slepian{sf.filename_angle()}{sf.filename}_rank{rank}"
 
     # create flm
@@ -296,18 +320,23 @@ def slepian(args: List[int] = [0.0, 0.0, 0.0]) -> Tuple[np.ndarray, str, dict]:
     print(f"Eigenvalue {rank}: {sf.eigenvalues[rank]:e}")
 
     # annotation
-    annotation = sf.annotations()
+    config["annotations"] = sf.annotations()
 
-    return flm, func_name, config, annotation
+    return flm, func_name, config
 
 
 def spherical_harmonic(args: List[int] = [0.0, 0.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
-        ell, m = args
-    except ValueError:
-        print("function requires exactly two extra args")
-        raise
+        ell, m = args.pop(0), args.pop(0)
+    except IndexError:
+        raise ValueError("function requires exactly two extra args")
+
+    # setup
+    config = asdict(Config())
+    extra = dict(reality=False)
+    config = {**config, **extra}
+    L = config["L"]
 
     # validation
     if ell < 0 or not ell.is_integer():
@@ -317,12 +346,6 @@ def spherical_harmonic(args: List[int] = [0.0, 0.0]) -> Tuple[np.ndarray, str, d
 
     # filename
     func_name = f"spherical_harmonic{filename_args(ell, 'l')}{filename_args(m, 'm')}"
-
-    # setup
-    config = asdict(Config())
-    extra = dict(reality=False)
-    config = {**config, **extra}
-    L = config["L"]
 
     # create flm
     flm = np.zeros((L * L), dtype=complex)
@@ -335,29 +358,28 @@ def spherical_harmonic(args: List[int] = [0.0, 0.0]) -> Tuple[np.ndarray, str, d
 def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, dict]:
     # args
     try:
-        t_sig, freq = args
-    except ValueError:
-        print("function requires exactly two extra args")
-        raise
-
-    # validation
-    if not t_sig.is_integer():
-        raise ValueError("theta sigma should be an integer")
-    if not freq.is_integer():
-        raise ValueError("sine frequency should be an integer")
-    t_sig, freq = [10 ** x for x in args]
-
-    # filename
-    func_name = (
-        f"squashed_gaussian{filename_args(t_sig, 'tsig')}"
-        f"{filename_args(freq, 'freq')}"
-    )
+        t_sig, freq = args.pop(0), args.pop(0)
+    except IndexError:
+        raise ValueError("function requires exactly two extra args")
 
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
     config = {**config, **extra}
     L, reality = config["L"], config["reality"]
+
+    # validation
+    if not t_sig.is_integer():
+        raise ValueError("theta sigma should be an integer")
+    if not freq.is_integer():
+        raise ValueError("sine frequency should be an integer")
+    t_sig, freq = 10 ** t_sig, 10 ** freq
+
+    # filename
+    func_name = (
+        f"squashed_gaussian{filename_args(t_sig, 'tsig')}"
+        f"{filename_args(freq, 'freq')}"
+    )
 
     # function on the grid
     def grid_fun(
@@ -383,14 +405,14 @@ def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, 
 
 
 def earth() -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "earth"
-
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
     config = {**config, **extra}
     L = config["L"]
+
+    # filename
+    func_name = "earth"
 
     # extract flm
     matfile = os.path.join(__location__, "data", "EGM2008_Topography_flms_L2190")
@@ -413,14 +435,14 @@ def earth() -> Tuple[np.ndarray, str, dict]:
 
 
 def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
-    # filename
-    func_name = "wmap"
-
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
     config = {**config, **extra}
     L = config["L"]
+
+    # filename
+    func_name = "wmap"
 
     # create flm
     matfile = os.path.join(
@@ -502,18 +524,17 @@ if __name__ == "__main__":
     if glm_input is None:
         num_args = flm_input.__code__.co_argcount
         if args.extra_args is None or num_args == 0:
-            flm, flm_name, config, annotations = flm_input()
+            flm, flm_name, config = flm_input()
         else:
-            flm, flm_name, config, annotations = flm_input(args.extra_args)
+            flm, flm_name, config = flm_input(args.extra_args)
     # if convolution then flm is a map so no extra args
     else:
         flm, flm_name, _ = flm_input()
         num_args = glm_input.__code__.co_argcount
         if args.extra_args is None or num_args == 0:
-            glm, glm_name, config, _ = glm_input()
+            glm, glm_name, config = glm_input()
         else:
-            glm, glm_name, config, _ = glm_input(args.extra_args)
-        annotations = []
+            glm, glm_name, config = glm_input(args.extra_args)
 
     # if using input from argparse
     config["annotation"] = args.annotation
@@ -521,4 +542,4 @@ if __name__ == "__main__":
     config["type"] = args.type
 
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
-    sc.plot(args.alpha, args.beta, args.gamma, annotations)
+    sc.plot(args.alpha, args.beta, args.gamma)

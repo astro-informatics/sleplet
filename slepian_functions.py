@@ -24,13 +24,13 @@ class SlepianFunctions:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.phi_max = phi_max
+        self.phi_max = int(phi_max)
         self.phi_max_is_default = phi_max == 360
-        self.phi_min = phi_min
+        self.phi_min = int(phi_min)
         self.phi_min_is_default = phi_min == 0
-        self.theta_max = theta_max
+        self.theta_max = int(theta_max)
         self.theta_max_is_default = theta_max == 180
-        self.theta_min = theta_min
+        self.theta_min = int(theta_min)
         self.theta_min_is_default = theta_min == 0
         self.angle_region_check()
         self.is_polar_cap = (
@@ -46,7 +46,7 @@ class SlepianFunctions:
             and self.theta_min_is_default
             and self.theta_max_is_default
         )
-        self.eigenvalues, self.eigenvectors = self.eigenproblem(order)
+        self.eigenvalues, self.eigenvectors = self.eigenproblem(int(order))
 
     # ----------------------------------------
     # ---------- D matrix functions ----------
@@ -127,19 +127,19 @@ class SlepianFunctions:
 
         # if phi min is not default
         if not self.phi_min_is_default:
-            filename += f"_pmin{self.phi_min}"
+            filename += f"_pmin{int(self.phi_min)}"
 
         # if phi max is not default
         if not self.phi_max_is_default:
-            filename += f"_pmax{self.phi_max}"
+            filename += f"_pmax{int(self.phi_max)}"
 
         # if theta min is not default
         if not self.theta_min_is_default:
-            filename += f"_tmin{self.theta_min}"
+            filename += f"_tmin{int(self.theta_min)}"
 
         # if theta max is not default
         if not self.theta_max_is_default:
-            filename += f"_tmax{self.theta_max}"
+            filename += f"_tmax{int(self.theta_max)}"
         return filename
 
     # --------------------------

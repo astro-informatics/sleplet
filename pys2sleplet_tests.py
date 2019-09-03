@@ -44,7 +44,7 @@ def test_dirac_delta_rotate_translate() -> None:
     filename = f"{sc.flm_name}_L{sc.L}_diff_rot_trans_res{sc.resolution}"
 
     # create plot
-    plotting.plotly_plot(f_diff, sc.resolution, filename, sc.annotations())
+    plotting.plotly_plot(f_diff, sc.resolution, filename)
 
 
 def test_earth_identity_convolution() -> None:
@@ -98,7 +98,7 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     filename = f"{sc.flm_name}_L{sc.L}_diff_{sc.glm_name}_res{sc.resolution}_real"
 
     # create plot
-    plotting.plotly_plot(f_diff.real, sc.resolution, filename, sc.annotations())
+    plotting.plotly_plot(f_diff.real, sc.resolution, filename)
 
 
 if __name__ == "__main__":
