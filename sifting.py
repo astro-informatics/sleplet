@@ -502,17 +502,18 @@ if __name__ == "__main__":
     if glm_input is None:
         num_args = flm_input.__code__.co_argcount
         if args.extra_args is None or num_args == 0:
-            flm, flm_name, config = flm_input()
+            flm, flm_name, config, annotations = flm_input()
         else:
-            flm, flm_name, config = flm_input(args.extra_args)
+            flm, flm_name, config, annotations = flm_input(args.extra_args)
     # if convolution then flm is a map so no extra args
     else:
         flm, flm_name, _ = flm_input()
         num_args = glm_input.__code__.co_argcount
         if args.extra_args is None or num_args == 0:
-            glm, glm_name, config = glm_input()
+            glm, glm_name, config, _ = glm_input()
         else:
-            glm, glm_name, config = glm_input(args.extra_args)
+            glm, glm_name, config, _ = glm_input(args.extra_args)
+        annotations = []
 
     # if using input from argparse
     config["annotation"] = args.annotation
@@ -520,4 +521,4 @@ if __name__ == "__main__":
     config["type"] = args.type
 
     sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
-    sc.plot(args.alpha, args.beta, args.gamma)
+    sc.plot(args.alpha, args.beta, args.gamma, annotations)

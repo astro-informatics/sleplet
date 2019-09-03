@@ -101,6 +101,7 @@ class SiftingConvolution:
         alpha_pi_fraction: float = 0.75,
         beta_pi_fraction: float = 0.25,
         gamma_pi_fraction: float = 0,
+        annotation: list = [],
     ) -> None:
         """
         master plotting method
@@ -161,9 +162,7 @@ class SiftingConvolution:
 
         # do plot
         filename += self.plotting.type
-        self.plotting.plotly_plot(
-            f, self.resolution, filename, annotations=self.annotations()
-        )
+        self.plotting.plotly_plot(f, self.resolution, filename, annotations=annotation)
 
     # --------------------------------------------------
     # ---------- translation helper function ----------
