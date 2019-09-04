@@ -7,3 +7,4 @@ class Config:
     ncpu: int = 4
     auto_open: bool = True
     save_fig: bool = False
+    save_matrices: bool = True

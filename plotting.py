@@ -311,11 +311,11 @@ def slepian(
     config = asdict(Config())
     extra = dict(reality=False)
     config = {**config, **extra}
-    L, ncpu = config["L"], config["ncpu"]
+    L, ncpu, save_matrices = config["L"], config["ncpu"], config["save_matrices"]
 
     # initialise class
     sf = SlepianFunctions(
-        L, phi_min, phi_max, theta_min, theta_max, ncpu, order, double
+        L, phi_min, phi_max, theta_min, theta_max, order, double, ncpu, save_matrices
     )
 
     # validation

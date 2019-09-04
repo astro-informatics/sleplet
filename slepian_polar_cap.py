@@ -12,13 +12,20 @@ import pyssht as ssht
 
 class SlepianPolarCap:
     def __init__(
-        self, L, theta_max: int, binary: str, ncpu: int = 1, polar_gap: bool = False
+        self,
+        L,
+        theta_max: int,
+        binary: str,
+        polar_gap: bool = False,
+        ncpu: int = 1,
+        save_matrices: bool = True,
     ) -> None:
         self.binary = binary
         self.L = L
         self.ncpu = ncpu
-        self.theta_max = np.deg2rad(theta_max)
         self.polar_gap = polar_gap
+        self.save_matrices = save_matrices
+        self.theta_max = np.deg2rad(theta_max)
 
     @staticmethod
     def Wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
@@ -259,7 +266,8 @@ class SlepianPolarCap:
                 Dm = self.Dm_matrix_parallel(abs(m), P)
 
             # save to speed up for future
-            np.save(self.binary, Dm)
+            if self.save_matrices:
+                np.save(self.binary, Dm)
 
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eig(Dm)

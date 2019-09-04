@@ -17,9 +17,10 @@ class SlepianFunctions:
         phi_max: int,
         theta_min: int,
         theta_max: int,
-        ncpu: int = 1,
         order: int = 0,
         double: bool = False,
+        ncpu: int = 1,
+        save_matrices: bool = True,
     ):
         self.L = L
         self.location = os.path.realpath(
@@ -31,6 +32,7 @@ class SlepianFunctions:
         self.phi_max_is_default = phi_max == 360
         self.phi_min = phi_min
         self.phi_min_is_default = phi_min == 0
+        self.save_matrices = save_matrices
         self.theta_max = theta_max
         self.theta_max_is_default = theta_max == 180
         self.theta_min = theta_min
@@ -74,7 +76,12 @@ class SlepianFunctions:
                 f"D{self.filename_angle()}{self.filename}_L{self.L}",
             )
             spc = SlepianPolarCap(
-                self.L, self.theta_max, binary, self.ncpu, self.is_polar_gap
+                self.L,
+                self.theta_max,
+                binary,
+                self.is_polar_gap,
+                self.ncpu,
+                self.save_matrices,
             )
             eigenvalues, eigenvectors = spc.eigenproblem(self.order)
         else:
@@ -94,6 +101,7 @@ class SlepianFunctions:
                 self.theta_max,
                 binary,
                 self.ncpu,
+                self.save_matrices,
             )
             eigenvalues, eigenvectors = slll.eigenproblem()
         return eigenvalues, eigenvectors

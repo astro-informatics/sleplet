@@ -18,13 +18,15 @@ class SlepianLimitLatLong:
         theta_min: int,
         theta_max: int,
         binary: str,
-        ncpu: int,
+        ncpu: int = 1,
+        save_matrices: bool = True,
     ) -> None:
         self.binary = binary
         self.L = L
         self.ncpu = ncpu
         self.phi_min = np.deg2rad(phi_min)
         self.phi_max = np.deg2rad(phi_max)
+        self.save_matrices = save_matrices
         self.theta_min = np.deg2rad(theta_min)
         self.theta_max = np.deg2rad(theta_max)
 
@@ -269,7 +271,8 @@ class SlepianLimitLatLong:
                 K = self.slepian_matrix_parallel(G)
 
             # save to speed up for future
-            np.save(self.binary, K)
+            if self.save_matrices:
+                np.save(self.binary, K)
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eig(K)
