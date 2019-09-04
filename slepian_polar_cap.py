@@ -4,7 +4,7 @@ import numpy as np
 import os
 from scipy.special import factorial
 import sys
-from typing import List
+from typing import List, Tuple
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -21,7 +21,7 @@ class SlepianPolarCap:
         self.polar_gap = polar_gap
 
     @staticmethod
-    def Wigner3j(l1, l2, l3, m1, m2, m3):
+    def Wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
         """
         Syntax:
         s = Wigner3j (l1, l2, l3, m1, m2, m3)
@@ -105,10 +105,10 @@ class SlepianPolarCap:
 
         return s
 
-    def Dm_matrix_serial(self, m, P):
+    def Dm_matrix_serial(self, m: int, P: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        Dm = Dm_matrix (m, P)
+        Dm = Dm_matrix_serial(m, P)
 
         Input:
         m  =  order
@@ -153,10 +153,10 @@ class SlepianPolarCap:
 
         return Dm
 
-    def Dm_matrix_parallel(self, m, P):
+    def Dm_matrix_parallel(self, m: int, P: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        Dm = Dm_matrix (m, P)
+        Dm = Dm_matrix_parallel(m, P)
 
         Input:
         m  =  order
@@ -227,10 +227,10 @@ class SlepianPolarCap:
 
         return Dm
 
-    def polar_gap_modification(self, ell1, ell2):
+    def polar_gap_modification(self, ell1: int, ell2: int) -> int:
         return 1 + self.polar_gap * (-1) ** (ell1 + ell2)
 
-    def eigenproblem(self, m):
+    def eigenproblem(self, m: int) -> Tuple[np.ndarray, np.ndarray]:
         """
         """
         # create emm vector

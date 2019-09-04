@@ -3,7 +3,7 @@ import multiprocessing.sharedctypes as sct
 import numpy as np
 import os
 import sys
-from typing import List
+from typing import List, Tuple
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
@@ -28,7 +28,7 @@ class SlepianLimitLatLong:
         self.theta_min = np.deg2rad(theta_min)
         self.theta_max = np.deg2rad(theta_max)
 
-    def slepian_integral(self):
+    def slepian_integral(self) -> np.ndarray:
         """
         Syntax:
         G = slepian_integral()
@@ -85,10 +85,10 @@ class SlepianLimitLatLong:
 
         return G
 
-    def slepian_matrix_serial(self, G):
+    def slepian_matrix_serial(self, G: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        K = slepain_matrix(G)
+        K = slepian_matrix_serial(G)
 
         Input:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -145,10 +145,10 @@ class SlepianLimitLatLong:
 
         return K
 
-    def slepian_matrix_parallel(self, G):
+    def slepian_matrix_parallel(self, G: np.ndarray):
         """
         Syntax:
-        K = slepain_matrix(G)
+        K = slepian_matrix_parallel(G)
 
         Input:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -252,7 +252,7 @@ class SlepianLimitLatLong:
 
         return K
 
-    def eigenproblem(self):
+    def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         """
         """
         # check if matrix already exists

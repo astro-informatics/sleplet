@@ -22,11 +22,15 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 
 def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
+    """
+    """
     angle = Fraction(angle_fraction).limit_denominator()
     return angle.numerator, angle.denominator
 
 
 def filename_args(angle: float, arg_name: str) -> str:
+    """
+    """
     filename = "_"
     num, dem = get_angle_num_dem(angle)
     filename += f"{num}{arg_name}"
@@ -36,6 +40,8 @@ def filename_args(angle: float, arg_name: str) -> str:
 
 
 def read_args() -> Namespace:
+    """
+    """
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
         "flm",
@@ -120,6 +126,8 @@ def read_args() -> Namespace:
 
 
 def dirac_delta() -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
@@ -139,6 +147,8 @@ def dirac_delta() -> Tuple[np.ndarray, str, dict]:
 
 
 def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # args
     try:
         t_sig, p_sig = args.pop(0), args.pop(0)
@@ -164,7 +174,6 @@ def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, 
         f"{filename_args(p_sig, 'psig')}"
     )
 
-    # function on the grid
     def grid_fun(
         theta: np.ndarray,
         phi: np.ndarray,
@@ -173,6 +182,9 @@ def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, 
         theta_sig: float = t_sig,
         phi_sig: float = p_sig,
     ) -> np.ndarray:
+        """
+        function on the grid
+        """
         f = np.exp(
             -(((theta - theta_0) / theta_sig) ** 2 + ((phi - phi_0) / phi_sig) ** 2) / 2
         )
@@ -186,6 +198,8 @@ def elongated_gaussian(args: List[int] = [0.0, -3.0]) -> Tuple[np.ndarray, str, 
 
 
 def gaussian(args: List[int] = [3.0]) -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
@@ -210,6 +224,8 @@ def gaussian(args: List[int] = [3.0]) -> Tuple[np.ndarray, str, dict]:
 
 
 def harmonic_gaussian(args: List[float] = [3.0, 3.0]) -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # args
     try:
         l_sig, m_sig = args.pop(0), args.pop(0)
@@ -246,6 +262,8 @@ def harmonic_gaussian(args: List[float] = [3.0, 3.0]) -> Tuple[np.ndarray, str, 
 
 
 def identity() -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # setup
     config = asdict(Config())
     extra = dict(reality=False)
@@ -264,6 +282,8 @@ def identity() -> Tuple[np.ndarray, str, dict]:
 def slepian(
     args: List[int] = [0.0, 360.0, 0.0, 40.0, 0.0, 0.0, 0.0]
 ) -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # args
     try:
         phi_min, phi_max, theta_min, theta_max = (
@@ -325,6 +345,8 @@ def slepian(
 
 
 def spherical_harmonic(args: List[int] = [0.0, 0.0]) -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # args
     try:
         ell, m = args.pop(0), args.pop(0)
@@ -355,6 +377,8 @@ def spherical_harmonic(args: List[int] = [0.0, 0.0]) -> Tuple[np.ndarray, str, d
 
 
 def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # args
     try:
         t_sig, freq = args.pop(0), args.pop(0)
@@ -380,7 +404,6 @@ def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, 
         f"{filename_args(freq, 'freq')}"
     )
 
-    # function on the grid
     def grid_fun(
         theta: np.ndarray,
         phi: np.ndarray,
@@ -388,6 +411,9 @@ def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, 
         theta_sig: float = t_sig,
         freq: float = freq,
     ) -> np.ndarray:
+        """
+        function on the grid
+        """
         f = np.exp(-(((theta - theta_0) / theta_sig) ** 2) / 2) * np.sin(freq * phi)
         return f
 
@@ -404,6 +430,8 @@ def squashed_gaussian(args: List[int] = [-2.0, -1.0]) -> Tuple[np.ndarray, str, 
 
 
 def earth() -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
@@ -434,6 +462,8 @@ def earth() -> Tuple[np.ndarray, str, dict]:
 
 
 def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # setup
     config = asdict(Config())
     extra = dict(reality=True)
@@ -471,6 +501,8 @@ def wmap_helper(file_ending: str) -> Tuple[np.ndarray, str, dict]:
 
 
 def wmap() -> Tuple[np.ndarray, str, dict]:
+    """
+    """
     # file_ending = '_lcdm_pl_model_yr1_v1'
     # file_ending = '_tt_spectrum_7yr_v4p1'
     file_ending = "_lcdm_pl_model_wmap7baoh0"
@@ -483,7 +515,9 @@ def wmap() -> Tuple[np.ndarray, str, dict]:
 
 
 def valid_kernels(func_name: str) -> str:
-    # check if valid function
+    """
+    check if valid kernel
+    """
     if func_name in functions:
         return func_name
     else:
@@ -491,6 +525,9 @@ def valid_kernels(func_name: str) -> str:
 
 
 def valid_plotting(func_name: str) -> str:
+    """
+    check if valid function
+    """
     # check if valid function
     if func_name in functions:
         return func_name

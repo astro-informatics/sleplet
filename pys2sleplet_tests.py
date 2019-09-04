@@ -11,6 +11,8 @@ import pyssht as ssht
 
 
 def test_dirac_delta_rotate_translate() -> None:
+    """
+    """
     # setup
     flm, name, config = dirac_delta()
     sc = SiftingConvolution(flm, name, config)
@@ -48,6 +50,8 @@ def test_dirac_delta_rotate_translate() -> None:
 
 
 def test_earth_identity_convolution() -> None:
+    """
+    """
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = identity()
@@ -62,6 +66,8 @@ def test_earth_identity_convolution() -> None:
 
 
 def test_earth_harmonic_gaussian_convolution() -> None:
+    """
+    """
     # setup
     flm, flm_name, config = earth()
     glm, glm_name, _ = harmonic_gaussian()

@@ -16,7 +16,7 @@ import pyssht as ssht
 
 
 class Sphere:
-    def __init__(self, auto_open=True, save_fig=False):
+    def __init__(self, auto_open: bool = True, save_fig: bool = False) -> None:
         self.auto_open = auto_open
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
@@ -227,7 +227,9 @@ class Sphere:
 
         return pl_colorscale
 
-    def missing_key(self, config, key, value):
+    def missing_key(self, config: dict, key: str, value: str) -> None:
+        """
+        """
         try:
             setattr(self, key, config[key])
         except KeyError:
