@@ -24,6 +24,7 @@ class SlepianFunctions:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
+        self.order = int(order)
         self.phi_max = int(phi_max)
         self.phi_max_is_default = phi_max == 360
         self.phi_min = int(phi_min)
@@ -32,7 +33,6 @@ class SlepianFunctions:
         self.theta_max_is_default = theta_max == 180
         self.theta_min = int(theta_min)
         self.theta_min_is_default = theta_min == 0
-        self.angle_region_check()
         self.is_polar_cap = (
             self.phi_min_is_default
             and self.phi_max_is_default
@@ -46,21 +46,22 @@ class SlepianFunctions:
             and self.theta_min_is_default
             and self.theta_max_is_default
         )
-        self.eigenvalues, self.eigenvectors = self.eigenproblem(int(order))
+        self.input_check()
+        self.eigenvalues, self.eigenvectors = self.eigenproblem()
 
     # ----------------------------------------
     # ---------- D matrix functions ----------
     # ----------------------------------------
 
-    def eigenproblem(self, m) -> Tuple[np.ndarray, np.ndarray]:
+    def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         """
         calculates the eigenvalues and eigenvectors of the D matrix
         """
         self.filename = ""
         if self.is_polar_cap:
             spc = SlepianPolarCap(self.L, self.theta_max, self.is_polar_gap)
-            eigenvalues, eigenvectors = spc.eigenproblem(m)
-            self.filename = f"_m{m}"
+            eigenvalues, eigenvectors = spc.eigenproblem(self.order)
+            self.filename = f"_m{self.order}"
         else:
             slll = SlepianLimitLatLong(
                 self.L, self.phi_min, self.phi_max, self.theta_min, self.theta_max
@@ -146,13 +147,19 @@ class SlepianFunctions:
     # ---------- misc ----------
     # --------------------------
 
-    def angle_region_check(self):
+    def input_check(self):
         if self.theta_min > self.theta_max:
             self.theta_min, self.theta_max = self.theta_max, self.theta_min
         elif self.theta_min == self.theta_max:
-            raise Exception("Invalid region.")
+            raise ValueError("Invalid region.")
 
         if self.phi_min > self.phi_max:
             self.phi_min, self.phi_max = self.phi_max, self.phi_min
         elif self.phi_min == self.phi_max:
-            raise Exception("Invalid region.")
+            raise ValueError("Invalid region.")
+
+        if self.is_polar_cap:
+            if abs(self.order) >= self.L:
+                raise ValueError(
+                    f"Slepian polar cap order magnitude should be less than {self.L}"
+                )

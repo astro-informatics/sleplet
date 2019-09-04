@@ -1,4 +1,4 @@
-from plotting import Plotting
+from sphere import Sphere
 import numpy as np
 import os
 import sys
@@ -31,14 +31,12 @@ class SiftingConvolution:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.plotting = Plotting(
-            auto_open=config["auto_open"], save_fig=config["save_fig"]
-        )
+        self.sphere = Sphere(auto_open=config["auto_open"], save_fig=config["save_fig"])
         self.reality = config["reality"]
         self.save_fig = config["save_fig"]
-        self.resolution = self.plotting.calc_resolution(config["L"])
-        self.plotting.missing_key(config, "routine", None)
-        self.plotting.missing_key(config, "type", None)
+        self.resolution = self.sphere.calc_resolution(config["L"])
+        self.sphere.missing_key(config, "routine", None)
+        self.sphere.missing_key(config, "type", None)
 
     # -----------------------------------
     # ---------- flm functions ----------
@@ -116,21 +114,21 @@ class SiftingConvolution:
         self.calc_nearest_grid_point(alpha_pi_fraction, beta_pi_fraction)
 
         # test for plotting routine
-        if self.plotting.routine == "north":
+        if self.sphere.routine == "north":
             flm = self.flm
-        elif self.plotting.routine == "rotate":
+        elif self.sphere.routine == "rotate":
             # adjust filename
             filename += (
-                f"{self.plotting.routine}_"
+                f"{self.sphere.routine}_"
                 f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
             )
             # rotate by alpha, beta
             flm = self.rotation(self.flm, self.alpha, self.beta, gamma)
-        elif self.plotting.routine == "translate":
+        elif self.sphere.routine == "translate":
             # adjust filename
             # don't add gamma if translation
             filename += (
-                f"{self.plotting.routine}_"
+                f"{self.sphere.routine}_"
                 f"{self.filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
             )
             # translate by alpha, beta
@@ -144,7 +142,7 @@ class SiftingConvolution:
 
         # boost resolution
         if self.resolution != self.L:
-            flm = self.plotting.resolution_boost(flm, self.L, self.resolution)
+            flm = self.sphere.resolution_boost(flm, self.L, self.resolution)
 
         # add resolution to filename
         filename += f"res{self.resolution}_"
@@ -153,18 +151,18 @@ class SiftingConvolution:
         f = ssht.inverse(flm, self.resolution, Reality=self.reality, Method="MWSS")
 
         # check for plotting type
-        if self.plotting.type == "real":
+        if self.sphere.type == "real":
             f = f.real
-        elif self.plotting.type == "imag":
+        elif self.sphere.type == "imag":
             f = f.imag
-        elif self.plotting.type == "abs":
+        elif self.sphere.type == "abs":
             f = np.abs(f)
-        elif self.plotting.type == "sum":
+        elif self.sphere.type == "sum":
             f = f.real + f.imag
 
         # do plot
-        filename += self.plotting.type
-        self.plotting.plotly_plot(
+        filename += self.sphere.type
+        self.sphere.plotly_plot(
             f, self.resolution, filename, annotations=self.annotations
         )
 
@@ -203,29 +201,27 @@ class SiftingConvolution:
         middle part of filename
         """
         # get numerator/denominator for filename
-        alpha_num, alpha_den = self.plotting.get_angle_num_dem(alpha_pi_fraction)
-        beta_num, beta_den = self.plotting.get_angle_num_dem(beta_pi_fraction)
-        gamma_num, gamma_den = self.plotting.get_angle_num_dem(gamma_pi_fraction)
+        alpha_num, alpha_den = self.sphere.get_angle_num_dem(alpha_pi_fraction)
+        beta_num, beta_den = self.sphere.get_angle_num_dem(beta_pi_fraction)
+        gamma_num, gamma_den = self.sphere.get_angle_num_dem(gamma_pi_fraction)
 
         # if alpha = beta = 0
         if not alpha_num and not beta_num:
             filename = "alpha0_beta0"
         # if alpha = 0
         elif not alpha_num:
-            filename = f"alpha0_beta{self.plotting.pi_in_filename(beta_num, beta_den)}"
+            filename = f"alpha0_beta{self.sphere.pi_in_filename(beta_num, beta_den)}"
         # if beta = 0
         elif not beta_num:
-            filename = (
-                f"alpha{self.plotting.pi_in_filename(alpha_num, alpha_den)}_beta0"
-            )
+            filename = f"alpha{self.sphere.pi_in_filename(alpha_num, alpha_den)}_beta0"
         # if alpha != 0 && beta !=0
         else:
             filename = (
-                f"alpha{self.plotting.pi_in_filename(alpha_num, alpha_den)}"
-                f"_beta{self.plotting.pi_in_filename(beta_num, beta_den)}"
+                f"alpha{self.sphere.pi_in_filename(alpha_num, alpha_den)}"
+                f"_beta{self.sphere.pi_in_filename(beta_num, beta_den)}"
             )
 
         # if rotation with gamma != 0
         if gamma_num:
-            filename += f"gamma{self.plotting.pi_in_filename(gamma_num, gamma_den)}"
+            filename += f"gamma{self.sphere.pi_in_filename(gamma_num, gamma_den)}"
         return filename
