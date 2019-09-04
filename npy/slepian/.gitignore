@@ -4,5 +4,5 @@
 !.gitignore
 
 # and these directories
-!trans_dirac
-!slepian
+!lat_long
+!polar
