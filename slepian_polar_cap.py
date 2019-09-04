@@ -1,16 +1,22 @@
+import multiprocessing as mp
+import multiprocessing.sharedctypes as sct
 import numpy as np
 import os
 from scipy.special import factorial
 import sys
+from typing import List
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
 
 
 class SlepianPolarCap:
-    def __init__(self, L, theta_max, binary, polar_gap=False):
+    def __init__(
+        self, L, theta_max: int, binary: str, ncpu: int = 1, polar_gap: bool = False
+    ) -> None:
         self.binary = binary
         self.L = L
+        self.ncpu = ncpu
         self.theta_max = np.deg2rad(theta_max)
         self.polar_gap = polar_gap
 
@@ -99,7 +105,7 @@ class SlepianPolarCap:
 
         return s
 
-    def Dm_matrix(self, m, P):
+    def Dm_matrix_serial(self, m, P):
         """
         Syntax:
         Dm = Dm_matrix (m, P)
@@ -147,6 +153,80 @@ class SlepianPolarCap:
 
         return Dm
 
+    def Dm_matrix_parallel(self, m, P):
+        """
+        Syntax:
+        Dm = Dm_matrix (m, P)
+
+        Input:
+        m  =  order
+        P(:,1)  =  Pl = Legendre Polynomials column vector for l = 0 : L-1
+        P(:,2)  =  ell values vector
+
+        Output:
+        Dm = (L - m) square Slepian matrix for order m
+
+        Description:
+        This piece of code computes the Slepian matrix, Dm, for order m and all
+        degrees, using the formulation given in "Spatiospectral Concentration on
+        a Sphere" by F.J. Simons, F.A. Dahlen and M.A. Wieczorek.
+        """
+        Dm = np.zeros((self.L - m, self.L - m))
+        Pl, ell = P
+        lvec = np.arange(m, self.L)
+
+        # create arrays to store final and intermediate steps
+        result = np.ctypeslib.as_ctypes(Dm)
+        shared_array = sct.RawArray(result._type_, result)
+
+        # ensure function declared before multiprocessing pool
+        global func
+
+        def func(chunk: List[int]) -> None:
+            """
+            calculate D matrix components for each chunk
+            """
+            # temporary store
+            tmp = np.ctypeslib.as_array(shared_array)
+
+            # deal with chunk
+            for i in chunk:
+                l = lvec[i]
+                for j in range(i, self.L - m):
+                    p = lvec[j]
+                    c = 0
+                    for n in range(abs(l - p), l + p + 1):
+                        if n - 1 == -1:
+                            A = 1
+                        else:
+                            A = Pl[ell == n - 1]
+                        c += (
+                            self.Wigner3j(l, n, p, 0, 0, 0)
+                            * self.Wigner3j(l, n, p, m, 0, -m)
+                            * (A - Pl[ell == n + 1])
+                        )
+                    tmp[i, j] = (
+                        self.polar_gap_modification(l, p)
+                        * np.sqrt((2 * l + 1) * (2 * p + 1))
+                        * c
+                    )
+                    tmp[j, i] = tmp[i, j]
+
+        # split up L range to maximise effiency
+        arr = np.arange(self.L - m)
+        size = len(arr)
+        arr[size // 2 : size] = arr[size // 2 : size][::-1]
+        chunks = [np.sort(arr[i :: self.ncpu]) for i in range(self.ncpu)]
+
+        # initialise pool and apply function
+        with mp.Pool(processes=self.ncpu) as p:
+            p.map(func, chunks)
+
+        # retrieve from parallel function
+        Dm = np.ctypeslib.as_array(shared_array) * (-1) ** m / 2
+
+        return Dm
+
     def polar_gap_modification(self, ell1, ell2):
         return 1 + self.polar_gap * (-1) ** (ell1 + ell2)
 
@@ -173,7 +253,10 @@ class SlepianPolarCap:
             P = np.concatenate((Pl, l))
 
             # Computing order 'm' Slepian matrix
-            Dm = self.Dm_matrix(abs(m), P)
+            if self.ncpu == 1:
+                Dm = self.Dm_matrix_serial(abs(m), P)
+            else:
+                Dm = self.Dm_matrix_parallel(abs(m), P)
 
             # save to speed up for future
             np.save(self.binary, Dm)

@@ -291,10 +291,12 @@ def slepian(
     config = asdict(Config())
     extra = dict(reality=False)
     config = {**config, **extra}
-    L = config["L"]
+    L, ncpu = config["L"], config["ncpu"]
 
     # initialise class
-    sf = SlepianFunctions(L, phi_min, phi_max, theta_min, theta_max, order, double)
+    sf = SlepianFunctions(
+        L, phi_min, phi_max, theta_min, theta_max, ncpu, order, double
+    )
 
     # validation
     if not rank.is_integer() or rank < 0:

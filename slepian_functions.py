@@ -17,6 +17,7 @@ class SlepianFunctions:
         phi_max: int,
         theta_min: int,
         theta_max: int,
+        ncpu: int = 1,
         order: int = 0,
         double: bool = False,
     ):
@@ -24,6 +25,7 @@ class SlepianFunctions:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
+        self.ncpu = ncpu
         self.order = order
         self.phi_max = phi_max
         self.phi_max_is_default = phi_max == 360
@@ -71,7 +73,9 @@ class SlepianFunctions:
                 "polar",
                 f"D{self.filename_angle()}{self.filename}_L{self.L}",
             )
-            spc = SlepianPolarCap(self.L, self.theta_max, binary, self.is_polar_gap)
+            spc = SlepianPolarCap(
+                self.L, self.theta_max, binary, self.ncpu, self.is_polar_gap
+            )
             eigenvalues, eigenvectors = spc.eigenproblem(self.order)
         else:
             # numpy binary filename
