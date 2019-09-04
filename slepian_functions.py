@@ -24,14 +24,14 @@ class SlepianFunctions:
         self.location = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__))
         )
-        self.order = int(order)
-        self.phi_max = int(phi_max)
+        self.order = order
+        self.phi_max = phi_max
         self.phi_max_is_default = phi_max == 360
-        self.phi_min = int(phi_min)
+        self.phi_min = phi_min
         self.phi_min_is_default = phi_min == 0
-        self.theta_max = int(theta_max)
+        self.theta_max = theta_max
         self.theta_max_is_default = theta_max == 180
-        self.theta_min = int(theta_min)
+        self.theta_min = theta_min
         self.theta_min_is_default = theta_min == 0
         self.is_polar_cap = (
             self.phi_min_is_default
@@ -148,6 +148,30 @@ class SlepianFunctions:
     # --------------------------
 
     def input_check(self):
+        if not (
+            self.phi_min.is_integer()
+            and self.phi_max.is_integer()
+            and self.theta_min.is_integer()
+            and self.theta_max.is_integer()
+        ):
+            raise ValueError("angles for Slepian region should be integers")
+        self.phi_min, self.phi_max, self.theta_min, self.theta_max = (
+            int(self.phi_min),
+            int(self.phi_max),
+            int(self.theta_min),
+            int(self.theta_max),
+        )
+
+        if self.is_polar_cap:
+            if not self.order.is_integer():
+                raise ValueError(f"Slepian polar cap order should be an integer")
+            self.order = int(self.order)
+
+            if abs(self.order) >= self.L:
+                raise ValueError(
+                    f"Slepian polar cap order magnitude should be less than {self.L}"
+                )
+
         if self.theta_min > self.theta_max:
             self.theta_min, self.theta_max = self.theta_max, self.theta_min
         elif self.theta_min == self.theta_max:
@@ -157,9 +181,3 @@ class SlepianFunctions:
             self.phi_min, self.phi_max = self.phi_max, self.phi_min
         elif self.phi_min == self.phi_max:
             raise ValueError("Invalid region.")
-
-        if self.is_polar_cap:
-            if abs(self.order) >= self.L:
-                raise ValueError(
-                    f"Slepian polar cap order magnitude should be less than {self.L}"
-                )

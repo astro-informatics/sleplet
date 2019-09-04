@@ -277,15 +277,15 @@ def slepian(
     try:
         rank = args.pop(0)
     except IndexError:
-        rank = 0.0
+        rank = 0.0  # the most concentrated Slepian rank
     try:
         order = args.pop(0)
     except IndexError:
-        order = 0.0
+        order = 0.0  # D matrix corresponding to m=0 for polar cap
     try:
         double = args.pop(0)
     except IndexError:
-        double = 0.0
+        double = 0.0  # set boolean switch for polar gap off
 
     # setup
     config = asdict(Config())
@@ -293,23 +293,12 @@ def slepian(
     config = {**config, **extra}
     L = config["L"]
 
-    # validation
-    if not (
-        phi_min.is_integer()
-        and phi_max.is_integer()
-        and theta_min.is_integer()
-        and theta_max.is_integer()
-    ):
-        raise ValueError("angles for Slepian region should be integers")
-    if not rank.is_integer() or rank < 0:
-        raise ValueError(f"Slepian concentration rank should be a positive integer")
-    if not order.is_integer():
-        raise ValueError(f"Slepian polar cap order should be an integer")
-
     # initialise class
     sf = SlepianFunctions(L, phi_min, phi_max, theta_min, theta_max, order, double)
 
     # validation
+    if not rank.is_integer() or rank < 0:
+        raise ValueError(f"Slepian concentration rank should be a positive integer")
     if sf.is_polar_cap:
         if rank >= L - abs(sf.order):
             raise ValueError(
