@@ -93,6 +93,7 @@ class SlepianFunctions:
                 self.theta_min,
                 self.theta_max,
                 binary,
+                self.ncpu,
             )
             eigenvalues, eigenvectors = slll.eigenproblem()
         return eigenvalues, eigenvectors

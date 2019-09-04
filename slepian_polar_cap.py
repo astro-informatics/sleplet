@@ -1,4 +1,4 @@
-import multiprocessing as mp
+from multiprocessing import Pool
 import multiprocessing.sharedctypes as sct
 import numpy as np
 import os
@@ -219,7 +219,7 @@ class SlepianPolarCap:
         chunks = [np.sort(arr[i :: self.ncpu]) for i in range(self.ncpu)]
 
         # initialise pool and apply function
-        with mp.Pool(processes=self.ncpu) as p:
+        with Pool(processes=self.ncpu) as p:
             p.map(func, chunks)
 
         # retrieve from parallel function

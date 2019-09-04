@@ -1,15 +1,28 @@
+from multiprocessing import Pool
+import multiprocessing.sharedctypes as sct
 import numpy as np
 import os
 import sys
+from typing import List
 
 sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
 
 
 class SlepianLimitLatLong:
-    def __init__(self, L, phi_min, phi_max, theta_min, theta_max, binary):
+    def __init__(
+        self,
+        L: int,
+        phi_min: int,
+        phi_max: int,
+        theta_min: int,
+        theta_max: int,
+        binary: str,
+        ncpu: int,
+    ) -> None:
         self.binary = binary
         self.L = L
+        self.ncpu = ncpu
         self.phi_min = np.deg2rad(phi_min)
         self.phi_max = np.deg2rad(phi_max)
         self.theta_min = np.deg2rad(theta_min)
@@ -72,7 +85,7 @@ class SlepianLimitLatLong:
 
         return G
 
-    def slepian_matrix(self, G):
+    def slepian_matrix_serial(self, G):
         """
         Syntax:
         K = slepain_matrix(G)
@@ -90,8 +103,8 @@ class SlepianLimitLatLong:
         Analytical formulation for limited colatitude-longitude spatial region"
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
-        K = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
+        K = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
 
         for l in range(self.L):
             dl = dl_array[l]
@@ -123,15 +136,118 @@ class SlepianLimitLatLong:
                                 ind_c = 2 * (self.L - 1) + col
                                 S1 += C4 * G[ind_r, ind_c]
 
-                            K[l * (l + 1) + m, p * (p + 1) + q] = (
-                                K[l * (l + 1) + m, p * (p + 1) + q] + C3 * S1
-                            )
+                            K[l * (l + 1) + m, p * (p + 1) + q] += C3 * S1
 
-                        K[l * (l + 1) + m, p * (p + 1) + q] = (
-                            C1 * C2 * K[l * (l + 1) + m, p * (p + 1) + q]
-                        )
+                        K[l * (l + 1) + m, p * (p + 1) + q] *= C1 * C2
 
         i_upper = np.triu_indices(K.shape[0])
+        K[i_upper] = np.conj(K.T[i_upper])
+
+        return K
+
+    def slepian_matrix_parallel(self, G):
+        """
+        Syntax:
+        K = slepain_matrix(G)
+
+        Input:
+        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
+        Wigner-d functions in computing the Slepian integral) for all orders
+
+        Output:
+        K  =  Slepian matrix
+
+        Description:
+        This piece of code computes the Slepian matrix using the formulation
+        given in "Slepian spatialspectral concentration problem on the sphere:
+        Analytical formulation for limited colatitude-longitude spatial region"
+        by A. P. Bates, Z. Khalid and R. A. Kennedy.
+        """
+        dl_array = ssht.generate_dl(np.pi / 2, self.L)
+
+        # initialise
+        real = np.zeros((self.L * self.L, self.L * self.L))
+        imag = np.zeros((self.L * self.L, self.L * self.L))
+
+        # create arrays to store final and intermediate steps
+        result_r = np.ctypeslib.as_ctypes(real)
+        result_i = np.ctypeslib.as_ctypes(imag)
+        shared_array_r = sct.RawArray(result_r._type_, result_r)
+        shared_array_i = sct.RawArray(result_i._type_, result_i)
+
+        # ensure function declared before multiprocessing pool
+        global func
+
+        def func(chunk: List[int]) -> None:
+            """
+            calculate K matrix components for each chunk
+            """
+            # store real and imag parts separately
+            tmp_r = np.ctypeslib.as_array(shared_array_r)
+            tmp_i = np.ctypeslib.as_array(shared_array_i)
+
+            # deal with chunk
+            for l in chunk:
+                dl = dl_array[l]
+
+                for p in range(l + 1):
+                    dp = dl_array[p]
+                    C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
+
+                    for m in range(-l, l + 1):
+                        for q in range(-p, p + 1):
+
+                            row = m - q
+                            C2 = (-1j) ** row
+                            ind_r = 2 * (self.L - 1) + row
+
+                            for mp in range(-l, l + 1):
+                                C3 = (
+                                    dl[self.L - 1 + mp, self.L - 1 + m]
+                                    * dl[self.L - 1 + mp, self.L - 1]
+                                )
+                                S1 = 0
+
+                                for qp in range(-p, p + 1):
+                                    col = mp - qp
+                                    C4 = (
+                                        dp[self.L - 1 + qp, self.L - 1 + q]
+                                        * dp[self.L - 1 + qp, self.L - 1]
+                                    )
+                                    ind_c = 2 * (self.L - 1) + col
+                                    S1 += C4 * G[ind_r, ind_c]
+
+                                idx = (l * (l + 1) + m, p * (p + 1) + q)
+                                tmp_r[idx] += np.real(C3 * S1)
+                                tmp_i[idx] += np.imag(C3 * S1)
+
+                            idx = (l * (l + 1) + m, p * (p + 1) + q)
+                            real, imag = tmp_r[idx], tmp_i[idx]
+                            tmp_r[idx] = real * np.real(C1 * C2) - imag * np.imag(
+                                C1 * C2
+                            )
+                            tmp_i[idx] = real * np.imag(C1 * C2) + imag * np.real(
+                                C1 * C2
+                            )
+
+        # split up L range to maximise effiency
+        arr = np.arange(self.L)
+        size = len(arr)
+        arr[size // 2 : size] = arr[size // 2 : size][::-1]
+        chunks = [np.sort(arr[i :: self.ncpu]) for i in range(self.ncpu)]
+
+        # initialise pool and apply function
+        with Pool(processes=self.ncpu) as p:
+            p.map(func, chunks)
+
+        # retrieve real and imag components
+        result_r = np.ctypeslib.as_array(shared_array_r)
+        result_i = np.ctypeslib.as_array(shared_array_i)
+        K = result_r + 1j * result_i
+
+        # fill in remaining triangle section
+        i_upper = np.triu_indices(K.shape[0])
+        K[i_upper] = np.conj(K.T[i_upper])
         K[i_upper] = np.conj(K.T[i_upper])
 
         return K
@@ -147,7 +263,10 @@ class SlepianLimitLatLong:
             G = self.slepian_integral()
 
             # Compute Slepian matrix
-            K = self.slepian_matrix(G)
+            if self.ncpu == 1:
+                K = self.slepian_matrix_serial(G)
+            else:
+                K = self.slepian_matrix_parallel(G)
 
             # save to speed up for future
             np.save(self.binary, K)
