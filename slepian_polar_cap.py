@@ -8,7 +8,8 @@ import pyssht as ssht
 
 
 class SlepianPolarCap:
-    def __init__(self, L, theta_max, polar_gap=False):
+    def __init__(self, L, theta_max, binary, polar_gap=False):
+        self.binary = binary
         self.L = L
         self.theta_max = np.deg2rad(theta_max)
         self.polar_gap = polar_gap
@@ -152,21 +153,30 @@ class SlepianPolarCap:
     def eigenproblem(self, m):
         """
         """
-        # create Legendre polynomials table
-        Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
+        # create emm vector
         emm = np.zeros(2 * self.L * 2 * self.L)
         k = 0
         for l in range(2 * self.L):
             M = 2 * l + 1
             emm[k : k + M] = np.arange(-l, l + 1)
             k = k + M
-        ind = emm == 0
-        l = np.arange(2 * self.L).reshape(1, -1)
-        Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-        P = np.concatenate((Pl, l))
 
-        # Computing order 'm' Slepian matrix
-        Dm = self.Dm_matrix(abs(m), P)
+        # check if matrix already exists
+        if os.path.exists(self.binary):
+            Dm = np.load(self.binary)
+        else:
+            # create Legendre polynomials table
+            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
+            ind = emm == 0
+            l = np.arange(2 * self.L).reshape(1, -1)
+            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
+            P = np.concatenate((Pl, l))
+
+            # Computing order 'm' Slepian matrix
+            Dm = self.Dm_matrix(abs(m), P)
+
+            # save to speed up for future
+            np.save(self.binary, Dm)
 
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eig(Dm)

@@ -59,12 +59,36 @@ class SlepianFunctions:
         """
         self.filename = ""
         if self.is_polar_cap:
-            spc = SlepianPolarCap(self.L, self.theta_max, self.is_polar_gap)
+            # polar cap/gap name addition
+            if self.is_polar_gap:
+                self.filename += "_gap"
+            self.filename += f"_m{self.order}"
+            # numpy binary filename
+            binary = os.path.join(
+                self.location,
+                "npy",
+                "slepian",
+                "polar",
+                f"D{self.filename_angle()}{self.filename}_L{self.L}",
+            )
+            spc = SlepianPolarCap(self.L, self.theta_max, binary, self.is_polar_gap)
             eigenvalues, eigenvectors = spc.eigenproblem(self.order)
-            self.filename = f"_m{self.order}"
         else:
+            # numpy binary filename
+            binary = os.path.join(
+                self.location,
+                "npy",
+                "slepian",
+                "lat_long",
+                f"K{self.filename_angle()}{self.filename}_L{self.L}",
+            )
             slll = SlepianLimitLatLong(
-                self.L, self.phi_min, self.phi_max, self.theta_min, self.theta_max
+                self.L,
+                self.phi_min,
+                self.phi_max,
+                self.theta_min,
+                self.theta_max,
+                binary,
             )
             eigenvalues, eigenvectors = slll.eigenproblem()
         return eigenvalues, eigenvectors
@@ -147,7 +171,11 @@ class SlepianFunctions:
     # ---------- misc ----------
     # --------------------------
 
-    def input_check(self):
+    def input_check(self) -> None:
+        """
+        check that inputs of class are valid
+        """
+        # check that angles are integers
         if not (
             self.phi_min.is_integer()
             and self.phi_max.is_integer()
@@ -162,21 +190,26 @@ class SlepianFunctions:
             int(self.theta_max),
         )
 
+        # order only important if Slepian polar cap
         if self.is_polar_cap:
+            # test if order is an integer
             if not self.order.is_integer():
                 raise ValueError(f"Slepian polar cap order should be an integer")
             self.order = int(self.order)
 
+            # check order is in correct range
             if abs(self.order) >= self.L:
                 raise ValueError(
                     f"Slepian polar cap order magnitude should be less than {self.L}"
                 )
 
+        # check that min/max theta values are correct
         if self.theta_min > self.theta_max:
             self.theta_min, self.theta_max = self.theta_max, self.theta_min
         elif self.theta_min == self.theta_max:
             raise ValueError("Invalid region.")
 
+        # check that min/max phi values are correct
         if self.phi_min > self.phi_max:
             self.phi_min, self.phi_max = self.phi_max, self.phi_min
         elif self.phi_min == self.phi_max:

@@ -7,7 +7,8 @@ import pyssht as ssht
 
 
 class SlepianLimitLatLong:
-    def __init__(self, L, phi_min, phi_max, theta_min, theta_max):
+    def __init__(self, L, phi_min, phi_max, theta_min, theta_max, binary):
+        self.binary = binary
         self.L = L
         self.phi_min = np.deg2rad(phi_min)
         self.phi_max = np.deg2rad(phi_max)
@@ -138,11 +139,18 @@ class SlepianLimitLatLong:
     def eigenproblem(self):
         """
         """
-        # Compute sub-integral matrix
-        G = self.slepian_integral()
+        # check if matrix already exists
+        if os.path.exists(self.binary):
+            K = np.load(self.binary)
+        else:
+            # Compute sub-integral matrix
+            G = self.slepian_integral()
 
-        # Compute Slepian matrix
-        K = self.slepian_matrix(G)
+            # Compute Slepian matrix
+            K = self.slepian_matrix(G)
+
+            # save to speed up for future
+            np.save(self.binary, K)
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eig(K)
