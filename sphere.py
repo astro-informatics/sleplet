@@ -30,11 +30,7 @@ class Sphere:
         """
         # if whole number
         if denominator == 1:
-            # if 1 * pi
-            if numerator == 1:
-                filename = "pi"
-            else:
-                filename = f"{numerator}pi"
+            filename = f"{numerator}pi"
         else:
             filename = f"{numerator}pi{denominator}"
         return filename
