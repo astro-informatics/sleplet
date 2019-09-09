@@ -4,21 +4,13 @@ for t in real imag abs; do echo 'earth', $t; ./plotting.py earth -t $t; done
 for t in real imag abs; do echo 'wmap', $t; ./plotting.py wmap -t $t; done
 
 # convolutions
-for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for m in wmap earth; do for t in real imag abs; do echo $f, $m, $t; ./plotting.py $m -c $f -t $t; done; done; done
+for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaussian; do for m in wmap earth; do for t in real imag abs; do echo $f, $m, $t; ./plotting.py $m -c $f -t $t; done; done; done
 
 # north
-for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for t in real imag abs; do echo $f, $t; ./plotting.py $f -t $t -r north; done; done
+for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaussian; do for t in real imag abs; do echo $f, $t; ./plotting.py $f -t $t -r north; done; done
 
 # rotation/translation
-for f in dirac_delta gaussian squashed_gaussian elongated_gaussian; do for r in rotate translate; do for t in real imag abs; do echo $f, $r, $t; ./plotting.py $f -t $t -r $r; done; done; done
-
-# elongated gaussian
-# arrows annotations
-for the in $(seq -1 2); do for phi in $(seq -3 -2); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e $the $phi; ./plotting.py elongated_gaussian -t $t -e $the $phi -r translate; ./plotting.py earth -c elongated_gaussian -t $t -e $the $phi; done; done; done
-# no arrow annotations
-for the in $(seq -2 2); do for phi in $(seq -1 1); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e $the $phi -n; ./plotting.py elongated_gaussian -t $t -e $the $phi -r translate -n; ./plotting.py earth -c elongated_gaussian -t $t -e $the $phi -n; done; done; done
-# top left corner
-for phi in $(seq -3 2); do for t in real imag abs; do echo $the $phi $t; ./plotting.py elongated_gaussian -t $t -e -2 $phi -n; ./plotting.py elongated_gaussian -t $t -e -2 $phi -r translate -n; ./plotting.py earth -c elongated_gaussian -t $t -e -2 $phi -n; done; done
+for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaussian; do for r in rotate translate; do for t in real imag abs; do echo $f, $r, $t; ./plotting.py $f -t $t -r $r; done; done; done
 
 # presentation rotation demo
 echo Y_{43}
