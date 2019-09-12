@@ -100,7 +100,7 @@ class SiftingConvolution:
     def plot(
         self,
         alpha_pi_fraction: float = 0.75,
-        beta_pi_fraction: float = 0.25,
+        beta_pi_fraction: float = 0.125,
         gamma_pi_fraction: float = 0,
     ) -> None:
         """
@@ -223,5 +223,5 @@ class SiftingConvolution:
 
         # if rotation with gamma != 0
         if gamma_num:
-            filename += f"gamma{self.sphere.pi_in_filename(gamma_num, gamma_den)}"
+            filename += f"_gamma{self.sphere.pi_in_filename(gamma_num, gamma_den)}"
         return filename

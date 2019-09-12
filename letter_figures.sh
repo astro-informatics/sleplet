@@ -1,7 +1,11 @@
 #!/bin/bash
 # figure 1
 echo "figure 1"
-for t in real imag abs; do echo $t; ./plotting.py harmonic_gaussian -t $t -r translate; ./plotting.py harmonic_gaussian -t $t -e 3 1 -r translate; done
+for t in real imag abs; do
+    echo $t;
+    ./plotting.py harmonic_gaussian -r translate -t $t;
+    ./plotting.py harmonic_gaussian -e 3 1 -r translate -t $t;
+done
 
 # figure 2
 echo "figure 2"
@@ -9,4 +13,8 @@ echo "figure 2"
 
 # figure 3
 echo "figure 3"
-for t in real imag abs; do echo $t; ./plotting.py earth -c harmonic_gaussian -t $t; ./plotting.py earth -c harmonic_gaussian -t $t -e 3 1; done
+for t in real imag abs; do
+    echo $t;
+    ./plotting.py earth -c harmonic_gaussian -t $t;
+    ./plotting.py earth -c harmonic_gaussian -e 3 1 -t $t;
+done

@@ -66,7 +66,7 @@ def read_args() -> Namespace:
         "--beta",
         "-b",
         type=float,
-        default=0.25,
+        default=0.125,
         help="beta/theta pi fraction - defaults to 0",
     )
     parser.add_argument(

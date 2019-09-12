@@ -16,7 +16,7 @@ def test_dirac_delta_rotate_translate() -> None:
     # setup
     flm, name, config = dirac_delta()
     sc = SiftingConvolution(flm, name, config)
-    sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.25)
+    sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.125)
     sphere = Sphere(auto_open=sc.auto_open, save_fig=sc.save_fig)
 
     # rotation
