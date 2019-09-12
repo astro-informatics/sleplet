@@ -12,7 +12,7 @@ before_script:
     - docker exec ${CONTAINER_NAME} mkdir ${S2SLEPLET}
     - docker cp . ${CONTAINER_NAME}:${S2SLEPLET}
     # above 512 get a memoery error from travis
-    - docker exec ${CONTAINER_NAME} sed -i 's/128/512/' ${S2SLEPLET}/config.py
+    - docker exec ${CONTAINER_NAME} sed -i 's/16/512/' ${S2SLEPLET}/config.py
 
 script:
     - docker exec run_test python ${S2SLEPLET}/pys2sleplet_tests.py
