@@ -1,12 +1,9 @@
 #!/usr/bin/env python
-from sphere import Sphere
 from plotting import dirac_delta, earth, harmonic_gaussian, identity
 from sifting_convolution import SiftingConvolution
-import numpy as np
-import os
-import sys
+from sphere import Sphere
 
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
+import numpy as np
 import pyssht as ssht
 
 

@@ -8,11 +8,8 @@ from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 import plotly.offline as py
-import sys
-from typing import List, Tuple
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
+from typing import List, Tuple
 
 
 class Sphere:

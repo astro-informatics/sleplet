@@ -1,9 +1,7 @@
 from sphere import Sphere
+
 import numpy as np
 import os
-import sys
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
 
 

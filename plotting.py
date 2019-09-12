@@ -3,18 +3,14 @@ from config import Config
 from sifting_convolution import SiftingConvolution
 from slepian_functions import SlepianFunctions
 
-# modules
 from argparse import ArgumentParser, Namespace
 from dataclasses import asdict
 from fractions import Fraction
 import numpy as np
 import os
-import scipy.io as sio
-import sys
-from typing import List, Tuple
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
+import scipy.io as sio
+from typing import List, Tuple
 
 
 global __location__

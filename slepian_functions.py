@@ -1,12 +1,10 @@
 from slepian_limit_lat_long import SlepianLimitLatLong
 from slepian_polar_cap import SlepianPolarCap
+
 import numpy as np
 import os
-import sys
-from typing import List, Tuple
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
+from typing import List, Tuple
 
 
 class SlepianFunctions:

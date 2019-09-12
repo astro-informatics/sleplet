@@ -2,11 +2,8 @@ from multiprocessing import Pool
 import multiprocessing.sharedctypes as sct
 import numpy as np
 import os
-import sys
-from typing import List, Tuple
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
 import pyssht as ssht
+from typing import List, Tuple
 
 
 class SlepianLimitLatLong:
