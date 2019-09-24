@@ -272,7 +272,7 @@ class SlepianLimitLatLong:
                 np.save(self.binary, K)
 
         # solve eigenproblem
-        eigenvalues, eigenvectors = np.linalg.eig(K)
+        eigenvalues, eigenvectors = np.linalg.eigh(K)
 
         # eigenvalues should be real
         eigenvalues = eigenvalues.real
@@ -281,5 +281,8 @@ class SlepianLimitLatLong:
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
         eigenvectors = np.conj(eigenvectors[:, idx]).T
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors

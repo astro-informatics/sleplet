@@ -267,7 +267,7 @@ class SlepianPolarCap:
                 np.save(self.binary, Dm)
 
         # solve eigenproblem for order 'm'
-        eigenvalues, gl = np.linalg.eig(Dm)
+        eigenvalues, gl = np.linalg.eigh(Dm)
 
         # eigenvalues should be real
         eigenvalues = eigenvalues.real
@@ -282,6 +282,9 @@ class SlepianPolarCap:
         ind = np.tile(emm == m, (self.L - abs(m), 1))
         glm = np.zeros((self.L - abs(m), self.L * self.L), dtype=complex)
         glm[ind] = gl.T.flatten()
+
+        # ensure first element of each eigenvector is positive
+        glm *= np.where(glm[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
         if m < 0:
