@@ -280,19 +280,14 @@ class SlepianPolarCap:
         # put back in full D space for harmonic transform
         emm = emm[: self.L * self.L]
         ind = np.tile(emm == m, (self.L - abs(m), 1))
-        glm = np.zeros((self.L - abs(m), self.L * self.L), dtype=complex)
-        glm[ind] = gl.T.flatten()
+        eigenvectors = np.zeros((self.L - abs(m), self.L * self.L), dtype=complex)
+        eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
-        glm *= np.where(glm[:, 0] < 0, -1, 1)[:, np.newaxis]
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
         if m < 0:
-            eigenvectors = []
-            for flm in glm:
-                eigenvectors.append(ssht.rotate_flms(flm, -np.pi / 2, 0, 0, self.L))
-            eigenvectors = np.array(eigenvectors)
-        else:
-            eigenvectors = glm
+            eigenvectors *= -1j
 
         return eigenvalues, eigenvectors
