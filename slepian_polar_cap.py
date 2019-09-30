@@ -288,6 +288,6 @@ class SlepianPolarCap:
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
         if m < 0:
-            eigenvectors *= -1j
+            eigenvectors *= (-1) ** m * 1j
 
         return eigenvalues, eigenvectors

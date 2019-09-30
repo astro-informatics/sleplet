@@ -444,7 +444,7 @@ def earth() -> Tuple[np.ndarray, str, dict]:
 
     # fill in negative m components so as to
     # avoid confusion with zero values
-    for ell in range(L):
+    for ell in range(1, L):
         for m in range(1, ell + 1):
             ind_pm = ssht.elm2ind(ell, m)
             ind_nm = ssht.elm2ind(ell, -m)

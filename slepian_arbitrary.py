@@ -77,6 +77,10 @@ class SlepianArbitrary:
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
+        # find repeating eigenvalues and ensure orthorgonality
+        pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
+        eigenvectors[pairs] *= 1j
+
         return eigenvalues, eigenvectors
 
     @staticmethod

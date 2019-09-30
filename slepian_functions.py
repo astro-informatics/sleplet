@@ -1,3 +1,4 @@
+from slepian_arbitrary import SlepianArbitrary
 from slepian_limit_lat_long import SlepianLimitLatLong
 from slepian_polar_cap import SlepianPolarCap
 
@@ -102,6 +103,11 @@ class SlepianFunctions:
                 self.save_matrices,
             )
             eigenvalues, eigenvectors = slll.eigenproblem()
+
+        sa = SlepianArbitrary(
+            self.L, self.phi_min, self.phi_max, self.theta_min, self.theta_max
+        )
+        eigenvalues, eigenvectors = sa.eigenproblem()
         return eigenvalues, eigenvectors
 
     # -----------------------------------------------
