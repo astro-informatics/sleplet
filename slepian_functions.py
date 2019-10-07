@@ -105,7 +105,12 @@ class SlepianFunctions:
             eigenvalues, eigenvectors = slll.eigenproblem()
 
         sa = SlepianArbitrary(
-            self.L, self.phi_min, self.phi_max, self.theta_min, self.theta_max
+            self.L,
+            self.phi_min,
+            self.phi_max,
+            self.theta_min,
+            self.theta_max,
+            self.ncpu,
         )
         eigenvalues, eigenvectors = sa.eigenproblem()
         return eigenvalues, eigenvectors

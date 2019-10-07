@@ -1,11 +1,19 @@
+import multiprocessing as mp
+import multiprocessing.sharedctypes as sct
 import numpy as np
 import pyssht as ssht
-from typing import Tuple
+from typing import List, Tuple
 
 
 class SlepianArbitrary:
     def __init__(
-        self, L: int, phi_min: int, phi_max: int, theta_min: int, theta_max: int
+        self,
+        L: int,
+        phi_min: int,
+        phi_max: int,
+        theta_min: int,
+        theta_max: int,
+        ncpu: int = 1,
     ) -> None:
         samples = self.calc_samples(L)
         theta, phi = ssht.sample_positions(samples, Method="MWSS")
@@ -21,6 +29,7 @@ class SlepianArbitrary:
         self.delta_theta = np.mean(np.ediff1d(theta))
         self.L = L
         self.N = L * L
+        self.ncpu = ncpu
         self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
 
@@ -36,7 +45,7 @@ class SlepianArbitrary:
         F = np.sum(self.f(i, j) * self.w())
         return F
 
-    def matrix(self) -> np.ndarray:
+    def matrix_serial(self) -> np.ndarray:
         # initialise
         D = np.zeros((self.N, self.N), dtype=complex)
 
@@ -60,8 +69,81 @@ class SlepianArbitrary:
                     D[j][i] = np.conj(D[i][j])
         return D
 
+    def matrix_parallel(self):
+        # initialise
+        real = np.zeros((self.N, self.N))
+        imag = np.zeros((self.N, self.N))
+
+        # create arrays to store final and intermediate steps
+        result_r = np.ctypeslib.as_ctypes(real)
+        result_i = np.ctypeslib.as_ctypes(imag)
+        shared_array_r = sct.RawArray(result_r._type_, result_r)
+        shared_array_i = sct.RawArray(result_i._type_, result_i)
+
+        # ensure function declared before multiprocessing pool
+        global func
+
+        def func(chunk: List[int]) -> None:
+            """
+            calculate D matrix components for each chunk
+            """
+            # store real and imag parts separately
+            tmp_r = np.ctypeslib.as_array(shared_array_r)
+            tmp_i = np.ctypeslib.as_array(shared_array_i)
+
+            # deal with chunk
+            for i in chunk:
+                # fill in diagonal components
+                integral = self.integral(i, i)
+                tmp_r[i][i] = integral.real
+                tmp_i[i][i] = integral.imag
+                _, m_i = ssht.ind2elm(i)
+
+                for j in range(i + 1, self.N):
+                    ell_j, m_j = ssht.ind2elm(j)
+                    # if possible to use previous calculations
+                    if m_i == 0 and m_j != 0 and ell_j < self.L:
+                        # if positive m then use conjugate relation
+                        if m_j > 0:
+                            integral = self.integral(i, j)
+                            tmp_r[i][j] = integral.real
+                            tmp_i[i][j] = integral.imag
+                            tmp_r[j][i] = tmp_r[i][j]
+                            tmp_i[j][i] = -tmp_i[i][j]
+                            k = ssht.elm2ind(ell_j, -m_j)
+                            tmp_r[i][k] = (-1) ** m_j * tmp_r[i][j]
+                            tmp_i[i][k] = (-1) ** (m_j + 1) * tmp_i[i][j]
+                            tmp_r[k][i] = tmp_r[i][k]
+                            tmp_i[k][i] = -tmp_i[i][k]
+                    else:
+                        integral = self.integral(i, j)
+                        tmp_r[i][j] = integral.real
+                        tmp_i[i][j] = integral.imag
+                        tmp_r[j][i] = tmp_r[i][j]
+                        tmp_i[j][i] = -tmp_i[i][j]
+
+        # split up L range to maximise effiency
+        arr = np.arange(self.N)
+        size = len(arr)
+        arr[size // 2 : size] = arr[size // 2 : size][::-1]
+        chunks = [np.sort(arr[i :: self.ncpu]) for i in range(self.ncpu)]
+
+        # initialise pool and apply function
+        with mp.Pool(processes=self.ncpu) as p:
+            p.map(func, chunks)
+
+        # retrieve real and imag components
+        result_r = np.ctypeslib.as_array(shared_array_r)
+        result_i = np.ctypeslib.as_array(shared_array_i)
+
+        return result_r + 1j * result_i
+
     def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        D = self.matrix()
+        # Compute Slepian matrix
+        if self.ncpu == 1:
+            D = self.matrix_serial()
+        else:
+            D = self.matrix_parallel()
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eigh(D)
@@ -87,23 +169,29 @@ class SlepianArbitrary:
     def calc_samples(L: int) -> int:
         """
         calculate appropriate sample number for given L
-        chosen such that have a two samples less than 1deg
+        chosen such that have a two samples less than 0.1deg
         """
         if L == 1:
-            samples = 180
+            samples = 1801
         elif L < 4:
-            samples = 90
+            samples = 901
         elif L < 8:
-            samples = 45
+            samples = 451
         elif L < 16:
-            samples = 23
+            samples = 226
         elif L < 32:
-            samples = 12
+            samples = 113
         elif L < 64:
-            samples = 6
+            samples = 57
         elif L < 128:
-            samples = 3
+            samples = 29
         elif L < 256:
+            samples = 15
+        elif L < 512:
+            samples = 8
+        elif L < 1024:
+            samples = 4
+        elif L < 2048:
             samples = 2
         else:
             samples = 1
