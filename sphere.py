@@ -1,3 +1,8 @@
+import os
+import sys
+
+sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
+
 import cmocean
 from fractions import Fraction
 import matplotlib

@@ -1,7 +1,13 @@
+import os
+import sys
+
+sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
+
 from multiprocessing import Pool
 import multiprocessing.sharedctypes as sct
 import numpy as np
-import os
+
+# import os
 import pyssht as ssht
 from scipy.special import factorial
 from typing import List, Tuple

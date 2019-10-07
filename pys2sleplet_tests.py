@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+import os
+import sys
+
+sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
+
 from plotting import dirac_delta, earth, harmonic_gaussian, identity
 from sifting_convolution import SiftingConvolution
 from sphere import Sphere
