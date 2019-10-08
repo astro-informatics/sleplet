@@ -1,8 +1,3 @@
-import os
-import sys
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
-
 from sphere import Sphere
 
 import numpy as np

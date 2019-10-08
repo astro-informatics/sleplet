@@ -1,8 +1,3 @@
-import os
-import sys
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
-
 from multiprocessing import Pool
 import multiprocessing.sharedctypes as sct
 import numpy as np

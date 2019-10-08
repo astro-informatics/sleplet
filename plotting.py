@@ -1,9 +1,4 @@
 #!/usr/bin/env python
-import os
-import sys
-
-sys.path.append(os.path.join(os.environ["SSHT"], "src", "python"))
-
 from config import Config
 from sifting_convolution import SiftingConvolution
 from slepian_functions import SlepianFunctions
