@@ -1,9 +1,3 @@
-# Ignore everything in this directory
-*
-# Except this file
-!.gitignore
-
-# and these directories
-!html
-!pdf
-!png
+*.html
+*.pdf
+*.png
