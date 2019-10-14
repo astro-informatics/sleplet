@@ -1,0 +1,8 @@
+argparse
+cmocean
+dataclasses
+matplotlib
+numpy
+plotly
+scipy
+typing
