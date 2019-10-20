@@ -1,4 +1,4 @@
-from sphere import Sphere
+from pys2sleplet.sphere import Sphere
 
 import numpy as np
 import os
@@ -56,6 +56,7 @@ class SiftingConvolution:
         # numpy binary filename
         filename = os.path.join(
             self.location,
+            os.pardir,
             "npy",
             "trans_dirac",
             (

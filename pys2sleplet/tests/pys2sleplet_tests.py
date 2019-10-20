@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from plotting import dirac_delta, earth, harmonic_gaussian, identity
-from sifting_convolution import SiftingConvolution
-from sphere import Sphere
+from pys2sleplet.sifting_convolution import SiftingConvolution
+from pys2sleplet.sphere import Sphere
 
 import numpy as np
 import pyssht as ssht

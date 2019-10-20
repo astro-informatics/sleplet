@@ -126,17 +126,17 @@ class Sphere:
         # if save_fig is true then print as png and pdf in their directories
         if self.save_fig:
             png_filename = os.path.join(
-                self.location, "figures", "png", f"{filename}.png"
+                self.location, os.pardir, "figures", "png", f"{filename}.png"
             )
             pio.write_image(fig, png_filename)
             pdf_filename = os.path.join(
-                self.location, "figures", "pdf", f"{filename}.pdf"
+                self.location, os.pardir, "figures", "pdf", f"{filename}.pdf"
             )
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
         html_filename = os.path.join(
-            self.location, "figures", "html", f"{filename}.html"
+            self.location, os.pardir, "figures", "html", f"{filename}.html"
         )
         py.plot(fig, filename=html_filename, auto_open=self.auto_open)
 

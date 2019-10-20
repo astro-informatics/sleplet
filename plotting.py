@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from config import Config
-from sifting_convolution import SiftingConvolution
-from slepian_functions import SlepianFunctions
+from pys2sleplet.sifting_convolution import SiftingConvolution
+from pys2sleplet.slepian_functions import SlepianFunctions
 
 from argparse import ArgumentParser, Namespace
 from dataclasses import asdict

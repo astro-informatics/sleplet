@@ -1,4 +1,4 @@
-from helper import calc_samples
+from pys2sleplet.utils.helper import calc_samples
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
 import numpy as np
