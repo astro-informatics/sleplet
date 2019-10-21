@@ -1,8 +1,9 @@
-from pys2sleplet.sphere import Sphere
+import os
 
 import numpy as np
-import os
 import pyssht as ssht
+
+from pys2sleplet.sphere import Sphere
 
 
 class SiftingConvolution:

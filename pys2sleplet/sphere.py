@@ -1,15 +1,16 @@
-import cmocean
+import os
 from fractions import Fraction
+from typing import List, Tuple
+
+import cmocean
 import matplotlib
 import numpy as np
-import os
-from plotly.graph_objs import Figure, Layout, Surface
-from plotly.graph_objs.layout import Margin, Scene
-from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 import plotly.io as pio
 import plotly.offline as py
 import pyssht as ssht
-from typing import List, Tuple
+from plotly.graph_objs import Figure, Layout, Surface
+from plotly.graph_objs.layout import Margin, Scene
+from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
 
 class Sphere:

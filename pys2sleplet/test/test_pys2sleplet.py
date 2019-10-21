@@ -1,18 +1,21 @@
 #!/usr/bin/env python
-from plotting import dirac_delta, earth, harmonic_gaussian, identity
-from pys2sleplet.sifting_convolution import SiftingConvolution
-from pys2sleplet.sphere import Sphere
-
 import numpy as np
 import pyssht as ssht
+
+from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
+from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
+from pys2sleplet.flm.kernels.identity import Identity
+from pys2sleplet.flm.maps.earth import Earth
+from pys2sleplet.sifting_convolution import SiftingConvolution
+from pys2sleplet.sphere import Sphere
 
 
 def test_dirac_delta_rotate_translate() -> None:
     """
     """
     # setup
-    flm, name, config = dirac_delta()
-    sc = SiftingConvolution(flm, name, config)
+    dd = DiracDelta()
+    sc = SiftingConvolution(dd.flm, dd.name, config)
     sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.125)
     sphere = Sphere(auto_open=sc.auto_open, save_fig=sc.save_fig)
 
@@ -50,9 +53,9 @@ def test_earth_identity_convolution() -> None:
     """
     """
     # setup
-    flm, flm_name, config = earth()
-    glm, glm_name, _ = identity()
-    sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
+    earth = Earth()
+    id = Identity()
+    sc = SiftingConvolution(earth.flm, earth.name, config, id.flm, id.name)
 
     # convolution
     flm_conv = sc.convolution(flm, glm)
@@ -66,9 +69,9 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     """
     """
     # setup
-    flm, flm_name, config = earth()
-    glm, glm_name, _ = harmonic_gaussian()
-    sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
+    earth = Earth()
+    hg = HarmonicGaussian()
+    sc = SiftingConvolution(earth.flm, earth.name, config, hg.flm, hg.name)
     sc.calc_nearest_grid_point()
     sphere = Sphere(auto_open=sc.auto_open, save_fig=sc.save_fig)
 

@@ -1,10 +1,11 @@
-from multiprocessing import Pool
 import multiprocessing.sharedctypes as sct
-import numpy as np
 import os
+from multiprocessing import Pool
+from typing import List, Tuple
+
+import numpy as np
 import pyssht as ssht
 from scipy.special import factorial
-from typing import List, Tuple
 
 
 class SlepianPolarCap:

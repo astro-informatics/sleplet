@@ -3,3 +3,6 @@
 Coeff_Height_and_Depth_to2190_DTM2006.0
 *.npy
 *.egg-info
+.mypy_cache
+build
+dist

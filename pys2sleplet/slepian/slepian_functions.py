@@ -1,11 +1,12 @@
+import os
+from typing import List, Tuple
+
+import numpy as np
+import pyssht as ssht
+
 from pys2sleplet.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian_limit_lat_long import SlepianLimitLatLong
 from pys2sleplet.slepian_polar_cap import SlepianPolarCap
-
-import numpy as np
-import os
-import pyssht as ssht
-from typing import List, Tuple
 
 
 class SlepianFunctions:

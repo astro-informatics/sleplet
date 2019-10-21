@@ -1,9 +1,11 @@
-from pys2sleplet.utils.helper import calc_samples
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
+from typing import List, Tuple
+
 import numpy as np
 import pyssht as ssht
-from typing import List, Tuple
+
+from pys2sleplet.utils.helper import calc_samples
 
 
 class SlepianArbitrary:

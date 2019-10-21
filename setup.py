@@ -6,5 +6,5 @@ setup(
     author="Patrick Roddy",
     author_email="patrickjamesroddy@gmail.com",
     packages=find_packages(),
-    scripts=["bin/plotting.py"],
+    scripts=["scripts/plotting.py"],
 )
