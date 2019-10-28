@@ -1,9 +1,11 @@
-from typing import List
+from argparse import Namespace
+from typing import List, Tuple
 
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.helper import ensure_f_bandlimited, filename_args
+from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
+from pys2sleplet.utils.string_methods import filename_args
 
 
 class ElongatedGaussian(Functions):
@@ -15,7 +17,7 @@ class ElongatedGaussian(Functions):
         )
 
     @staticmethod
-    def read_args(args):
+    def read_args(args: Namespace) -> Tuple[float, float]:
         # args
         try:
             t_sig, p_sig = args.pop(0), args.pop(0)
@@ -23,7 +25,7 @@ class ElongatedGaussian(Functions):
             raise ValueError("function requires exactly two extra args")
         return t_sig, p_sig
 
-    def validate_args(self, args):
+    def validate_args(self, args: Namespace) -> Tuple[float, float]:
         t_sig, p_sig = self.read_args(args)
 
         # validation

@@ -3,7 +3,8 @@ from typing import List
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.helper import ensure_f_bandlimited, filename_args
+from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
+from pys2sleplet.utils.string_methods import filename_args
 
 
 class SquashedGaussian(Functions):

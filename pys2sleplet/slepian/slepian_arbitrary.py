@@ -5,7 +5,7 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.helper import calc_samples
+from pys2sleplet.utils.plot_methods import calc_samples
 
 
 class SlepianArbitrary:

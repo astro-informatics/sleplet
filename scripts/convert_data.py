@@ -6,7 +6,7 @@ import pandas as pd
 import scipy.io as sio
 
 
-def create_matfile(filename):
+def create_matfile(filename: str) -> None:
     # read original data file from
     # Spherical Harmonic Coefficients for Earth's Elevation
     # http://earth-info.nga.mil/GandG/wgs84/gravitymod/egm2008/first_release.html
