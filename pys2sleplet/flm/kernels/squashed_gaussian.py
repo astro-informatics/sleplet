@@ -46,5 +46,4 @@ class SquashedGaussian(Functions):
         return f
 
     def create_flm(self):
-        flm = ensure_f_bandlimited(self.grid_fun, self.L, self.reality)
-        return flm
+        self.flm = ensure_f_bandlimited(self.grid_fun, self.L, self.reality)

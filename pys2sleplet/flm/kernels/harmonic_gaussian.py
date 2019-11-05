@@ -35,10 +35,9 @@ class HarmonicGaussian(Functions):
         return l_sig, m_sig
 
     def create_flm(self):
-        flm = np.zeros((self.L * self.L), dtype=complex)
+        self.flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sig) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                flm[ind] = upsilon_l * np.exp(-((m / self.m_sig) ** 2) / 2)
-        return flm
+                self.flm[ind] = upsilon_l * np.exp(-((m / self.m_sig) ** 2) / 2)

@@ -81,10 +81,17 @@ def ensure_f_bandlimited(
     return flm
 
 
-def resolution_boost(flm: np.ndarray, L: int, resolution: int) -> np.ndarray:
+def calc_nearest_grid_point(
+    L: int, alpha_pi_fraction: float, beta_pi_fraction: float
+) -> Tuple[float, float]:
     """
-    calculates a boost in resoltion for given flm
+    calculate nearest index of alpha/beta for translation
+    this is due to calculating omega' through the pixel
+    values - the translation needs to be at the same position
+    as the rotation such that the difference error is small
     """
-    boost = resolution * resolution - L * L
-    flm_boost = np.pad(flm, (0, boost), "constant")
-    return flm_boost
+    thetas, phis = ssht.sample_positions(L, Method="MWSS")
+    pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
+    pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
+    alpha, beta = phis[pix_j], thetas[pix_i]
+    return alpha, beta

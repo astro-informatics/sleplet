@@ -21,8 +21,7 @@ class Gaussian(Functions):
         return sig
 
     def create_flm(self):
-        flm = np.zeros((self.L * self.L), dtype=complex)
+        self.flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
-            flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sig * self.sig))
-        return flm
+            self.flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sig * self.sig))

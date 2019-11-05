@@ -1,9 +1,35 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from configparser import ConfigParser
 
-from pys2sleplet.flm.functions import functions
+import numpy as np
+import toml
+
+from pys2sleplet.flm.functions import Functions, functions
+from pys2sleplet.plotting.create_plot import CreatePlot
 from pys2sleplet.sifting_convolution import SiftingConvolution
+from pys2sleplet.utils.plot_methods import calc_resolution
+from pys2sleplet.utils.string_methods import filename_angle
+
+
+def valid_kernels(func_name: str) -> str:
+    """
+    check if valid kernel
+    """
+    if func_name in functions():
+        return func_name
+    else:
+        raise ValueError("Not a valid kernel name to convolve")
+
+
+def valid_plotting(func_name: str) -> str:
+    """
+    check if valid function
+    """
+    # check if valid function
+    if func_name in functions():
+        return func_name
+    else:
+        raise ValueError("Not a valid function name to plot")
 
 
 def read_args() -> Namespace:
@@ -87,57 +113,83 @@ def read_args() -> Namespace:
     return args
 
 
-def valid_kernels(func_name: str) -> str:
-    """
-    check if valid kernel
-    """
-    if func_name in functions():
-        return func_name
-    else:
-        raise ValueError("Not a valid kernel name to convolve")
+def load_config():
+    default = toml.load("config.toml")
+    args = read_args()
+    config = {**default, **args}
+    return config
 
 
-def valid_plotting(func_name: str) -> str:
+def plot(
+    flm_name: str,
+    L: int,
+    routine: str,
+    plot_type: str,
+    glm: Functions = None,
+    alpha_pi_fraction: float = 0.75,
+    beta_pi_fraction: float = 0.125,
+    gamma_pi_fraction: float = 0,
+) -> None:
     """
-    check if valid function
+    master plotting method
     """
-    # check if valid function
-    if func_name in functions():
-        return func_name
-    else:
-        raise ValueError("Not a valid function name to plot")
+    # setup
+    filename = f"{flm_name}_L{L}_"
+    flm = Functions(flm_name, L)
+    resolution = calc_resolution(L)
+
+    # test for plotting routine
+    if routine == "rotate":
+        # adjust filename
+        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
+        # rotate by alpha, beta, gamma
+        flm = flm.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
+    elif routine == "translate":
+        # adjust filename - don't add gamma if translation
+        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
+        # translate by alpha, beta
+        flm = flm.translate(alpha_pi_fraction, beta_pi_fraction)
+
+    if glm is not None:
+        # perform convolution
+        flm = flm.convolve(glm.flm)
+        # adjust filename
+        filename += f"convolved_{glm.name}_L{L}_"
+
+    # boost resolution
+    flm = flm.boost_res(resolution)
+
+    # add resolution to filename
+    filename += f"res{resolution}_"
+
+    # inverse & plot
+    f = flm.invert(resolution)
+
+    # check for plotting type
+    if plot_type == "real":
+        f = f.real
+    elif plot_type == "imag":
+        f = f.imag
+    elif plot_type == "abs":
+        f = np.abs(f)
+    elif plot_type == "sum":
+        f = f.real + f.imag
+
+    # do plot
+    filename += plot_type
+    cp = CreatePlot(f, resolution, filename, annotations=annotations)
+    cp.plotly_plot()
 
 
 def main():
-    # initialise to None
-    glm, glm_name = None, None
+    # load config
+    c = load_config()
 
-    args = read_args()
-    flm_input = functions()[args.flm]
-    glm_input = functions().get(args.convolve)
-    # if not a convolution
-    if glm_input is None:
-        num_args = flm_input.__code__.co_argcount
-        if args.extra_args is None or num_args == 0:
-            flm, flm_name, config = flm_input()
-        else:
-            flm, flm_name, config = flm_input(args.extra_args)
-    # if convolution then flm is a map so no extra args
-    else:
-        flm, flm_name, _ = flm_input()
-        num_args = glm_input.__code__.co_argcount
-        if args.extra_args is None or num_args == 0:
-            glm, glm_name, config = glm_input()
-        else:
-            glm, glm_name, config = glm_input(args.extra_args)
+    # setup flm
+    flm = Functions(c.flm, c.L)
+    glm = Functions(c.convolve, c.L)
 
-    # if using input from argparse
-    config["annotation"] = args.annotation
-    config["routine"] = args.routine
-    config["type"] = args.type
-
-    sc = SiftingConvolution(flm, flm_name, config, glm, glm_name)
-    sc.plot(args.alpha, args.beta, args.gamma)
+    plot(c.flm, c.L, c.routine, c.plot_type, c.convolve, c.alpha, c.beta, c.gamma)
 
 
 if __name__ == "__main__":

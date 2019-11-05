@@ -34,7 +34,6 @@ class SphericalHarmonic(Functions):
         return ell, m
 
     def create_flm(self):
-        flm = np.zeros((self.L * self.L), dtype=complex)
+        self.flm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
-        flm[ind] = 1
-        return flm
+        self.flm[ind] = 1

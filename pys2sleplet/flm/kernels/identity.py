@@ -8,5 +8,4 @@ class Identity(Functions):
         super().__init__("identity")
 
     def create_flm(self):
-        flm = np.ones((self.L * self.L)) + 1j * np.zeros((self.L * self.L))
-        return flm
+        self.flm = np.ones((self.L * self.L)) + 1j * np.zeros((self.L * self.L))

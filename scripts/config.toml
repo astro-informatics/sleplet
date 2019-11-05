@@ -1,0 +1,5 @@
+L = 16
+ncpu = 4
+auto_open = true
+save_fig = false
+save_matrices = true

@@ -3,6 +3,7 @@ cmocean
 dataclasses
 matplotlib
 numpy
+pathlib
 plotly
 scipy
 typing

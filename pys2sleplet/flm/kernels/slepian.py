@@ -73,6 +73,5 @@ class Slepian(Functions):
         return rank, sf
 
     def create_flm(self):
-        flm = self.sf.eigenvectors[self.rank]
+        self.flm = self.sf.eigenvectors[self.rank]
         print(f"Eigenvalue {self.rank}: {self.sf.eigenvalues[self.rank]:e}")
-        return flm
