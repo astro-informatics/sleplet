@@ -6,7 +6,7 @@ import pyssht as ssht
 
 from ..utils.plot_methods import calc_nearest_grid_point
 from ..utils.string_methods import filename_angle
-from .flm.maps.maps import maps
+from .maps.maps import maps
 from .kernels.kernels import kernels
 
 
