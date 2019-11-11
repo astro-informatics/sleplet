@@ -6,7 +6,7 @@ import toml
 
 from pys2sleplet.flm.functions import Functions, functions
 from pys2sleplet.plotting.create_plot import CreatePlot
-from pys2sleplet.sifting_convolution import SiftingConvolution
+from pys2sleplet.utils.envs import ENVS as e
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -78,7 +78,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "--extra_args",
         "-e",
-        type=float,
+        type=int,
         nargs="+",
         help="list of extra args for functions",
     )
@@ -189,7 +189,7 @@ def main():
     flm = Functions(c.flm, c.L)
     glm = Functions(c.convolve, c.L)
 
-    plot(c.flm, c.L, c.routine, c.plot_type, c.convolve, c.alpha, c.beta, c.gamma)
+    plot(c.flm, e.L, c.routine, c.plot_type, c.convolve, c.alpha, c.beta, c.gamma)
 
 
 if __name__ == "__main__":

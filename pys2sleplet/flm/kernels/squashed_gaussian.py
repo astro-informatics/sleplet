@@ -2,13 +2,13 @@ from typing import List
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
-from pys2sleplet.utils.string_methods import filename_args
+from ...utils.plot_methods import ensure_f_bandlimited
+from ...utils.string_methods import filename_args
+from ..functions import Functions
 
 
 class SquashedGaussian(Functions):
-    def __init__(self, args: List[float] = [-2.0, -1.0]):
+    def __init__(self, args: List[float] = [-2, -1]):
         self.t_sig, self.freq = self.validate_args(args)
         super().__init__(
             f"squashed_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.freq, 'freq')}"

@@ -5,19 +5,13 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.plot_methods import calc_samples
+from ..utils.envs import ENVS as e
+from ..utils.plot_methods import calc_samples
+from .slepian_functions import SlepianFunctions
 
 
-class SlepianArbitrary:
-    def __init__(
-        self,
-        L: int,
-        phi_min: int,
-        phi_max: int,
-        theta_min: int,
-        theta_max: int,
-        ncpu: int = 1,
-    ) -> None:
+class SlepianArbitrary(SlepianFunctions):
+    def __init__(self, L: int, ncpu: int = 1) -> None:
         samples = calc_samples(L)
         theta, phi = ssht.sample_positions(samples, Method="MWSS")
         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
@@ -72,7 +66,7 @@ class SlepianArbitrary:
                     D[j][i] = np.conj(D[i][j])
         return D
 
-    def matrix_parallel(self):
+    def matrix_parallel(self, ncpu: int):
         # initialise
         real = np.zeros((self.N, self.N))
         imag = np.zeros((self.N, self.N))
@@ -82,9 +76,6 @@ class SlepianArbitrary:
         result_i = np.ctypeslib.as_ctypes(imag)
         shared_array_r = sct.RawArray(result_r._type_, result_r)
         shared_array_i = sct.RawArray(result_i._type_, result_i)
-
-        # ensure function declared before multiprocessing pool
-        global func
 
         def func(chunk: List[int]) -> None:
             """
@@ -129,10 +120,10 @@ class SlepianArbitrary:
         arr = np.arange(self.N)
         size = len(arr)
         arr[size // 2 : size] = arr[size // 2 : size][::-1]
-        chunks = [np.sort(arr[i :: self.ncpu]) for i in range(self.ncpu)]
+        chunks = [np.sort(arr[i::ncpu]) for i in range(ncpu)]
 
         # initialise pool and apply function
-        with mp.Pool(processes=self.ncpu) as p:
+        with mp.Pool(processes=ncpu) as p:
             p.map(func, chunks)
 
         # retrieve real and imag components
@@ -143,10 +134,10 @@ class SlepianArbitrary:
 
     def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         # Compute Slepian matrix
-        if self.ncpu == 1:
+        if e["N_CPU"] == 1:
             D = self.matrix_serial()
         else:
-            D = self.matrix_parallel()
+            D = self.matrix_parallel(e["N_CPU"])
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eigh(D)
@@ -167,3 +158,6 @@ class SlepianArbitrary:
         eigenvectors[pairs] *= 1j
 
         return eigenvalues, eigenvectors
+
+    def annotations(self) -> List[dict]:
+        raise NotImplementedError

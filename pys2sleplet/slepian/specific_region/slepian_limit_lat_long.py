@@ -1,32 +1,33 @@
 import multiprocessing.sharedctypes as sct
-import os
 from multiprocessing import Pool
+from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
 
+from ..slepian_specific import SlepianSpecific
 
-class SlepianLimitLatLong:
-    def __init__(
-        self,
-        L: int,
-        phi_min: int,
-        phi_max: int,
-        theta_min: int,
-        theta_max: int,
-        binary: str,
-        ncpu: int = 1,
-        save_matrices: bool = True,
-    ) -> None:
-        self.binary = binary
-        self.L = L
-        self.ncpu = ncpu
-        self.phi_min = np.deg2rad(phi_min)
-        self.phi_max = np.deg2rad(phi_max)
-        self.save_matrices = save_matrices
-        self.theta_min = np.deg2rad(theta_min)
-        self.theta_max = np.deg2rad(theta_max)
+
+class SlepianLimitLatLong(SlepianSpecific):
+    def __init__(self, phi_min: int, phi_max: int, theta_min: int, theta_max: int):
+        super().__init__(phi_min, phi_max, theta_min, theta_max)
+
+    # def __init__(
+    #     self,
+    #     L: int,
+    #     binary: str,
+    #     ncpu: int = 1,
+    #     save_matrices: bool = True,
+    # ) -> None:
+    #     self.binary = binary
+    #     self.L = L
+    #     self.ncpu = ncpu
+    #     self.phi_min = np.deg2rad(phi_min)
+    #     self.phi_max = np.deg2rad(phi_max)
+    #     self.save_matrices = save_matrices
+    #     self.theta_min = np.deg2rad(theta_min)
+    #     self.theta_max = np.deg2rad(theta_max)
 
     def slepian_integral(self) -> np.ndarray:
         """
@@ -175,9 +176,6 @@ class SlepianLimitLatLong:
         shared_array_r = sct.RawArray(result_r._type_, result_r)
         shared_array_i = sct.RawArray(result_i._type_, result_i)
 
-        # ensure function declared before multiprocessing pool
-        global func
-
         def func(chunk: List[int]) -> None:
             """
             calculate K matrix components for each chunk
@@ -256,7 +254,7 @@ class SlepianLimitLatLong:
         """
         """
         # check if matrix already exists
-        if os.path.exists(self.binary):
+        if Path(self.binary).exists():
             K = np.load(self.binary)
         else:
             # Compute sub-integral matrix
@@ -287,3 +285,30 @@ class SlepianLimitLatLong:
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
+
+    def annotations(self) -> List[dict]:
+        """
+        annotations for the plotly plot
+        """
+        annotation = []
+        config = dict(arrowhead=6, ax=5, ay=5)
+        p1, p2, t1, t2 = (
+            np.array(np.deg2rad(self.phi_min)),
+            np.array(np.deg2rad(self.phi_max)),
+            np.array(np.deg2rad(self.theta_min)),
+            np.array(np.deg2rad(self.theta_max)),
+        )
+        p3, p4, t3, t4 = (
+            (p1 + 2 * p2) / 3,
+            (2 * p1 + p2) / 3,
+            (t1 + 2 * t2) / 3,
+            (2 * t1 + t2) / 3,
+        )
+        for t in [t1, t2, t3, t4]:
+            for p in [p1, p2, p3, p4]:
+                if not ((t == t3 or t == t4) and (p == p3 or p == p4)):
+                    x, y, z = ssht.s2_to_cart(t, p)
+                    annotation.append(
+                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **config}
+                    )
+        return annotation

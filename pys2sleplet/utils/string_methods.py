@@ -71,3 +71,28 @@ def filename_angle(
     if gamma_num:
         filename += f"_gamma{pi_in_filename(gamma_num, gamma_den)}"
     return filename
+
+
+def filename_region(phi_min: int, phi_max: int, theta_min: int, theta_max: int):
+    """
+    middle part of filename for Slepian region
+    """
+    # initialise filename
+    filename = ""
+
+    # if phi min is not default
+    if phi_min != 0:
+        filename += f"_pmin{phi_min}"
+
+    # if phi max is not default
+    if phi_max != 360:
+        filename += f"_pmax{phi_max}"
+
+    # if theta min is not default
+    if theta_min != 0:
+        filename += f"_tmin{theta_min}"
+
+    # if theta max is not default
+    if theta_max != 180:
+        filename += f"_tmax{theta_max}"
+    return filename

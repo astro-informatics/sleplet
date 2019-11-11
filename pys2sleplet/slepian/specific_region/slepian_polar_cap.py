@@ -1,29 +1,64 @@
 import multiprocessing.sharedctypes as sct
-import os
 from multiprocessing import Pool
+from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
-from scipy.special import factorial
+from scipy.special import factorial as fact
+
+from ...utils.envs import ENVS as e
+from ..slepian_specific import SlepianSpecific
 
 
-class SlepianPolarCap:
+class SlepianPolarCap(SlepianSpecific):
     def __init__(
         self,
-        L,
+        phi_min: int,
+        phi_max: int,
+        theta_min: int,
         theta_max: int,
-        binary: str,
-        polar_gap: bool = False,
-        ncpu: int = 1,
-        save_matrices: bool = True,
-    ) -> None:
-        self.binary = binary
-        self.L = L
-        self.ncpu = ncpu
+        matrix_filename: str,
+        order: int = 0,
+        polar_gap=False,
+    ):
+        super().__init__(phi_min, phi_max, theta_min, theta_max)
+        self.matrix_filename = matrix_filename
+        self.order = order
         self.polar_gap = polar_gap
-        self.save_matrices = save_matrices
-        self.theta_max = np.deg2rad(theta_max)
+
+    # def __init__(
+    #     self,
+    #     L,
+    #     binary: str,
+    #     order: int = 0,
+    #     polar_gap: bool = False,
+    #     ncpu: int = 1,
+    #     save_matrices: bool = True,
+    # ) -> None:
+    #     self.binary = binary
+    #     self.L = L
+    #     self.ncpu = ncpu
+    #     self.polar_gap = polar_gap
+    #     self.save_matrices = save_matrices
+    #     self.theta_max = np.deg2rad(theta_max)
+
+    @property
+    def order(self) -> int:
+        return self.__order
+
+    @order.setter
+    def order(self, var: int) -> None:
+        # test if order is an integer
+        if not isinstance(var, int):
+            raise ValueError("Slepian polar cap order should be an integer")
+
+        # check order is in correct range
+        if abs(var) >= self.L:
+            raise ValueError(
+                f"Slepian polar cap order magnitude should be less than {self.L}"
+            )
+        self.__order = var
 
     @staticmethod
     def Wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
@@ -80,31 +115,31 @@ class SlepianPolarCap:
             # non-zero arguments.
             for t in range(tmin, tmax + 1):
                 s += (-1) ** t / (
-                    factorial(t, exact=False)
-                    * factorial(t - t1, exact=False)
-                    * factorial(t - t2, exact=False)
-                    * factorial(t3 - t, exact=False)
-                    * factorial(t4 - t, exact=False)
-                    * factorial(t5 - t, exact=False)
+                    fact(t, exact=False)
+                    * fact(t - t1, exact=False)
+                    * fact(t - t2, exact=False)
+                    * fact(t3 - t, exact=False)
+                    * fact(t4 - t, exact=False)
+                    * fact(t5 - t, exact=False)
                 )
 
             triangle_coefficient = (
-                factorial(l1 + l2 - l3, exact=False)
-                * factorial(l1 - l2 + l3, exact=False)
-                * factorial(-l1 + l2 + l3, exact=False)
-                / factorial(l1 + l2 + l3 + 1, exact=False)
+                fact(l1 + l2 - l3, exact=False)
+                * fact(l1 - l2 + l3, exact=False)
+                * fact(-l1 + l2 + l3, exact=False)
+                / fact(l1 + l2 + l3 + 1, exact=False)
             )
 
             s *= (
                 np.float_power(-1, l1 - l2 - m3)
                 * np.sqrt(triangle_coefficient)
                 * np.sqrt(
-                    factorial(l1 + m1, exact=False)
-                    * factorial(l1 - m1, exact=False)
-                    * factorial(l2 + m2, exact=False)
-                    * factorial(l2 - m2, exact=False)
-                    * factorial(l3 + m3, exact=False)
-                    * factorial(l3 - m3, exact=False)
+                    fact(l1 + m1, exact=False)
+                    * fact(l1 - m1, exact=False)
+                    * fact(l2 + m2, exact=False)
+                    * fact(l2 - m2, exact=False)
+                    * fact(l3 + m3, exact=False)
+                    * fact(l3 - m3, exact=False)
                 )
             )
 
@@ -158,7 +193,7 @@ class SlepianPolarCap:
 
         return Dm
 
-    def Dm_matrix_parallel(self, m: int, P: np.ndarray) -> np.ndarray:
+    def Dm_matrix_parallel(self, m: int, P: np.ndarray, ncpu: int) -> np.ndarray:
         """
         Syntax:
         Dm = Dm_matrix_parallel(m, P)
@@ -183,9 +218,6 @@ class SlepianPolarCap:
         # create arrays to store final and intermediate steps
         result = np.ctypeslib.as_ctypes(Dm)
         shared_array = sct.RawArray(result._type_, result)
-
-        # ensure function declared before multiprocessing pool
-        global func
 
         def func(chunk: List[int]) -> None:
             """
@@ -221,10 +253,10 @@ class SlepianPolarCap:
         arr = np.arange(self.L - m)
         size = len(arr)
         arr[size // 2 : size] = arr[size // 2 : size][::-1]
-        chunks = [np.sort(arr[i :: self.ncpu]) for i in range(self.ncpu)]
+        chunks = [np.sort(arr[i::ncpu]) for i in range(ncpu)]
 
         # initialise pool and apply function
-        with Pool(processes=self.ncpu) as p:
+        with Pool(processes=ncpu) as p:
             p.map(func, chunks)
 
         # retrieve from parallel function
@@ -247,7 +279,7 @@ class SlepianPolarCap:
             k = k + M
 
         # check if matrix already exists
-        if os.path.exists(self.binary):
+        if Path(self.binary).exists():
             Dm = np.load(self.binary)
         else:
             # create Legendre polynomials table
@@ -261,10 +293,10 @@ class SlepianPolarCap:
             if self.ncpu == 1:
                 Dm = self.Dm_matrix_serial(abs(m), P)
             else:
-                Dm = self.Dm_matrix_parallel(abs(m), P)
+                Dm = self.Dm_matrix_parallel(abs(m), P, e["N_CPU"])
 
             # save to speed up for future
-            if self.save_matrices:
+            if e["SAVE_MATRICES"]:
                 np.save(self.binary, Dm)
 
         # solve eigenproblem for order 'm'
@@ -292,3 +324,28 @@ class SlepianPolarCap:
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors
+
+    def annotations(self) -> List[dict]:
+        """
+        annotations for the plotly plot
+        """
+        annotation = []
+        config = dict(arrowhead=6, ax=5, ay=5)
+        # check if dealing with small polar cap
+        if self.theta_max <= 45:
+            ndots = 12
+            theta = np.array(np.deg2rad(self.theta_max))
+            for i in range(ndots):
+                phi = np.array(2 * np.pi / ndots * (i + 1))
+                x, y, z = ssht.s2_to_cart(theta, phi)
+                annotation.append({**dict(x=x, y=y, z=z, arrowcolor="black"), **config})
+            # check if dealing with polar gap
+            if self.polar_gap:
+                theta_bottom = np.array(np.pi - np.deg2rad(self.theta_max))
+                for i in range(ndots):
+                    phi = np.array(2 * np.pi / ndots * (i + 1))
+                    x, y, z = ssht.s2_to_cart(theta_bottom, phi)
+                    annotation.append(
+                        {**dict(x=x, y=y, z=z, arrowcolor="white"), **config}
+                    )
+        return annotation

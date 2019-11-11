@@ -3,13 +3,13 @@ from typing import List, Tuple
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
-from pys2sleplet.utils.string_methods import filename_args
+from ...utils.plot_methods import ensure_f_bandlimited
+from ...utils.string_methods import filename_args
+from ..functions import Functions
 
 
 class ElongatedGaussian(Functions):
-    def __init__(self, args: List[float] = [0.0, -3.0]):
+    def __init__(self, args: List[float] = [0, -3]):
         self.t_sig, self.p_sig = self.validate_args(args)
         super().__init__(
             f"elongated_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.p_sig, 'psig')}",

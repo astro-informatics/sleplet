@@ -1,0 +1,5 @@
+L = 16
+N_CPU = 4
+AUTO_OPEN = true
+SAVE_FIG = false
+SAVE_MATRICES = true

@@ -1,10 +1,10 @@
-import os
+from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 from scipy import io as sio
 
-from pys2sleplet.flm.functions import Functions
+from ..functions import Functions
 
 
 class Earth(Functions):
@@ -14,8 +14,12 @@ class Earth(Functions):
 
     @staticmethod
     def load_flm():
-        matfile = os.path.join(
-            __location__, "data", "EGM2008_Topography_flms_L2190.mat"
+        matfile = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "maps"
+            / "earth"
+            / "EGM2008_Topography_flms_L2190.mat"
         )
         mat_contents = sio.loadmat(matfile)
         flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
@@ -31,8 +35,8 @@ class Earth(Functions):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                self.flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
+                self.flm[ind_nm] = (-1) ** m * np.conj(self.flm[ind_pm])
 
         # don't take the full L
         # invert dataset as Earth backwards
-        self.flm = np.conj(flm[: self.L * self.L])
+        self.flm = np.conj(self.flm[: self.L * self.L])

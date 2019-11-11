@@ -10,25 +10,18 @@ from plotly.graph_objs import Figure, Layout, Surface
 from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
-from pys2sleplet.utils.plot_methods import convert_colourscale
+from ..utils.envs import ENVS as e
+from ..utils.plot_methods import convert_colourscale
 
 
 class CreatePlot:
     def __init__(
-        self,
-        f: np.ndarray,
-        resolution: int,
-        filename: str,
-        annotations: List = [],
-        auto_open: bool = True,
-        save_fig: bool = False,
+        self, f: np.ndarray, resolution: int, filename: str, annotations: List = []
     ):
         self.f = f
         self.resolution = resolution
         self.filename = filename
         self.annotations = annotations
-        self.auto_open = auto_open
-        self.save_fig = save_fig
         self.fig_path = Path(__file__).resolve().parents[1] / "figures"
 
     def plotly_plot(self) -> None:
@@ -85,7 +78,7 @@ class CreatePlot:
         fig = Figure(data=data, layout=layout)
 
         # if save_fig is true then print as png and pdf in their directories
-        if self.save_fig:
+        if e["SAVE_FIG"]:
             # create filenames
             png_filename = self.fig_path / "png" / f"{self.filename}.png"
             pdf_filename = self.fig_path / "png" / f"{self.filename}.png"
@@ -97,7 +90,7 @@ class CreatePlot:
         # create html and open if auto_open is true
         html_filename = self.fig_path / "html" / f"{self.filename}.html"
 
-        py.plot(fig, filename=html_filename, auto_open=self.auto_open)
+        py.plot(fig, filename=html_filename, auto_open=e["AUTO_OPEN"])
 
     @staticmethod
     def _setup_plot(

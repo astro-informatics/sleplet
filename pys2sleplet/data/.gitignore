@@ -4,5 +4,6 @@
 !.gitignore
 
 # and these directories
-!trans_dirac
+!earth
 !slepian
+!trans_dirac

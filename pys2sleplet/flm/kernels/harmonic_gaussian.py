@@ -3,12 +3,12 @@ from typing import List
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.string_methods import filename_args
+from ...utils.string_methods import filename_args
+from ..functions import Functions
 
 
 class HarmonicGaussian(Functions):
-    def __init__(self, args: List[float] = [3.0, 3.0]):
+    def __init__(self, args: List[int] = [3, 3]):
         self.l_sig, self.m_sig = self.validate_args(args)
         super().__init__(
             f"harmonic_gaussian{filename_args(self.l_sig, 'lsig')}{filename_args(self.m_sig, 'msig')}"

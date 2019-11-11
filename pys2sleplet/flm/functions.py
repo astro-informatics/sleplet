@@ -4,10 +4,10 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.kernels.kernels import kernels
-from pys2sleplet.flm.maps.maps import maps
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
-from pys2sleplet.utils.string_methods import filename_angle
+from ..utils.plot_methods import calc_nearest_grid_point
+from ..utils.string_methods import filename_angle
+from .flm.maps.maps import maps
+from .kernels.kernels import kernels
 
 
 class Functions(ABC):
@@ -15,15 +15,15 @@ class Functions(ABC):
         self.name = name
         self.reality = reality
         self.L = L
-        self._flm = None
+        self.flm = None
 
     @property
-    def flm(self):
-        return self._flm
+    def flm(self) -> np.ndarray:
+        return self.__flm
 
     @flm.setter
     def flm(self) -> None:
-        self._flm = None
+        self.__flm = None
 
     def rotate(
         self,

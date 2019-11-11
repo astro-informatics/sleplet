@@ -1,11 +1,11 @@
 from typing import List
 
-from pys2sleplet.flm.functions import Functions
-from pys2sleplet.slepian import SlepianFunctions
+from ...slepian import SlepianFunctions
+from ..functions import Functions
 
 
 class Slepian(Functions):
-    def __init__(self, args: List[float] = [0.0, 360.0, 0.0, 40.0, 0.0, 0.0, 0.0]):
+    def __init__(self, args: List[int] = [0, 360, 0, 40, 0, 0, 0]):
         self.rank, self.sf = self.validate_args(args)
         super().__init__(
             f"slepian{self.sf.filename_angle()}{self.sf.filename}_rank{self.rank}",
@@ -45,15 +45,7 @@ class Slepian(Functions):
 
         # initialise class
         sf = SlepianFunctions(
-            self.L,
-            phi_min,
-            phi_max,
-            theta_min,
-            theta_max,
-            order,
-            double,
-            ncpu,
-            save_matrices,
+            self.L, phi_min, phi_max, theta_min, theta_max, order, double
         )
 
         # validation

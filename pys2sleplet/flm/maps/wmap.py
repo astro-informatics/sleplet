@@ -1,10 +1,10 @@
-import os
+from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 from scipy import io as sio
 
-from pys2sleplet.flm.functions import Functions
+from ..functions import Functions
 
 
 class WMAP(Functions):
@@ -19,8 +19,12 @@ class WMAP(Functions):
         # file_ending = '_tt_spectrum_7yr_v4p1'
         file_ending = "_lcdm_pl_model_wmap7baoh0"
 
-        matfile = os.path.join(
-            os.environ["SSHT"], "src", "matlab", "data", f"wmap{file_ending}"
+        matfile = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "maps"
+            / "wmap"
+            / f"wmap{file_ending}"
         )
         mat_contents = sio.loadmat(matfile)
         cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
