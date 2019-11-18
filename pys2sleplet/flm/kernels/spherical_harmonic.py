@@ -1,4 +1,5 @@
-from typing import List
+from argparse import Namespace
+from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -8,28 +9,28 @@ from ..functions import Functions
 
 
 class SphericalHarmonic(Functions):
-    def __init__(self, args: List[float] = [0, 0]):
+    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[0, 0])):
         self.ell, self.m = self.validate_args(args)
-        super().__init__(
-            f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
-        )
+        name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
+        super().__init__(name, L)
 
     @staticmethod
-    def read_args(args):
+    def read_args(args: List[int]) -> Tuple[int, int]:
         # args
         try:
-            ell, m = args.pop(0), args.pop(0)
+            ell, m = int(args.pop(0)), int(args.pop(0))
         except IndexError:
             raise ValueError("function requires exactly two extra args")
         return ell, m
 
-    def validate_args(self, args):
-        ell, m = self.read_args(args)
+    def validate_args(self, args: Namespace) -> Tuple[int, int]:
+        extra_args = args.extra_args
+        ell, m = self.read_args(extra_args)
 
         # validation
-        if ell < 0 or not ell.is_integer():
+        if ell < 0 or not float(ell).is_integer():
             raise ValueError("l should be a positive integer")
-        if not m.is_integer() or abs(m) > ell:
+        if not float(m).is_integer() or abs(m) > ell:
             raise ValueError("m should be an integer |m| <= l")
         return ell, m
 

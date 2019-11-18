@@ -9,29 +9,28 @@ from ..functions import Functions
 
 
 class ElongatedGaussian(Functions):
-    def __init__(self, args: List[float] = [0, -3]):
+    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[0, -3])):
         self.t_sig, self.p_sig = self.validate_args(args)
-        super().__init__(
-            f"elongated_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.p_sig, 'psig')}",
-            reality=True,
-        )
+        name = f"elongated_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.p_sig, 'psig')}"
+        super().__init__(name, L, reality=True)
 
     @staticmethod
-    def read_args(args: Namespace) -> Tuple[float, float]:
+    def read_args(args: List[int]) -> Tuple[int, int]:
         # args
         try:
-            t_sig, p_sig = args.pop(0), args.pop(0)
+            t_sig, p_sig = int(args.pop(0)), int(args.pop(0))
         except IndexError:
             raise ValueError("function requires exactly two extra args")
         return t_sig, p_sig
 
-    def validate_args(self, args: Namespace) -> Tuple[float, float]:
-        t_sig, p_sig = self.read_args(args)
+    def validate_args(self, args: Namespace) -> Tuple[int, int]:
+        extra_args = args.extra_args
+        t_sig, p_sig = self.read_args(extra_args)
 
         # validation
-        if not t_sig.is_integer():
+        if not float(t_sig).is_integer():
             raise ValueError("theta sigma should be an integer")
-        if not p_sig.is_integer():
+        if not float(p_sig).is_integer():
             raise ValueError("phi sigma should be an integer")
         t_sig, p_sig = 10 ** t_sig, 10 ** p_sig
         return t_sig, p_sig

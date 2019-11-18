@@ -1,4 +1,5 @@
-from typing import List
+from argparse import Namespace
+from typing import List, Tuple
 
 import numpy as np
 
@@ -8,14 +9,13 @@ from ..functions import Functions
 
 
 class SquashedGaussian(Functions):
-    def __init__(self, args: List[float] = [-2, -1]):
+    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[-2, -1])):
         self.t_sig, self.freq = self.validate_args(args)
-        super().__init__(
-            f"squashed_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.freq, 'freq')}"
-        )
+        name = f"squashed_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.freq, 'freq')}"
+        super().__init__(name, L, reality=True)
 
     @staticmethod
-    def read_args(args):
+    def read_args(args: List[int]) -> Tuple[int, int]:
         # args
         try:
             t_sig, freq = args.pop(0), args.pop(0)
@@ -23,13 +23,14 @@ class SquashedGaussian(Functions):
             raise ValueError("function requires exactly two extra args")
         return t_sig, freq
 
-    def validate_args(self, args):
-        t_sig, freq = self.validate_args(args)
+    def validate_args(self, args: Namespace) -> Tuple[int, int]:
+        extra_args = args.extra_args
+        t_sig, freq = self.validate_args(extra_args)
 
         # validation
-        if not t_sig.is_integer():
+        if not float(t_sig).is_integer():
             raise ValueError("theta sigma should be an integer")
-        if not freq.is_integer():
+        if not float(freq).is_integer():
             raise ValueError("sine frequency should be an integer")
         t_sig, freq = 10 ** t_sig, 10 ** freq
         return t_sig, freq

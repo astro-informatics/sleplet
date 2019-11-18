@@ -8,9 +8,9 @@ from ..functions import Functions
 
 
 class Earth(Functions):
-    def __init__(self, sig=3.0):
-        super().__init__("earth", reality=True)
-        self.sig = sig
+    def __init__(self, L: int):
+        name = "earth"
+        super().__init__(name, L, reality=True)
 
     @staticmethod
     def load_flm():

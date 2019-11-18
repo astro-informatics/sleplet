@@ -1,46 +1,51 @@
-from typing import List
+from argparse import Namespace
+from typing import List, Tuple
 
-from ...slepian import SlepianFunctions
+from ...slepian.slepian_functions import SlepianFunctions
 from ..functions import Functions
 
 
 class Slepian(Functions):
-    def __init__(self, args: List[int] = [0, 360, 0, 40, 0, 0, 0]):
+    def __init__(
+        self, L: int, args: Namespace = Namespace(extra_args=[0, 360, 0, 40, 0, 0, 0])
+    ):
         self.rank, self.sf = self.validate_args(args)
-        super().__init__(
-            f"slepian{self.sf.filename_angle()}{self.sf.filename}_rank{self.rank}",
-            reality=False,
-        )
+        name = f"slepian{self.sf.filename_angle()}{self.sf.filename}_rank{self.rank}"
+        super().__init__(name, L)
 
     @staticmethod
-    def read_args(args):
+    def read_args(args: List[int]) -> Tuple[int, int, int, int, int, int, int]:
         # args
         try:
             phi_min, phi_max, theta_min, theta_max = (
-                args.pop(0),
-                args.pop(0),
-                args.pop(0),
-                args.pop(0),
+                int(args.pop(0)),
+                int(args.pop(0)),
+                int(args.pop(0)),
+                int(args.pop(0)),
             )
         except IndexError:
             raise ValueError("function requires at least four extra args")
         try:
-            rank = args.pop(0)
+            rank = int(args.pop(0))
         except IndexError:
-            rank = 0.0  # the most concentrated Slepian rank
+            # the most concentrated Slepian rank
+            rank = 0
         try:
-            order = args.pop(0)
+            order = int(args.pop(0))
         except IndexError:
-            order = 0.0  # D matrix corresponding to m=0 for polar cap
+            # D matrix corresponding to m=0 for polar cap
+            order = 0
         try:
-            double = args.pop(0)
+            double = int(args.pop(0))
         except IndexError:
-            double = 0.0  # set boolean switch for polar gap off
+            # set boolean switch for polar gap off
+            double = 0
         return phi_min, phi_max, theta_min, theta_max, rank, order, double
 
-    def validate_args(self, args):
+    def validate_args(self, args) -> Tuple[int, SlepianFunctions]:
+        extra_args = args.extra_args
         phi_min, phi_max, theta_min, theta_max, rank, order, double = self.read_args(
-            args
+            extra_args
         )
 
         # initialise class
@@ -49,7 +54,7 @@ class Slepian(Functions):
         )
 
         # validation
-        if not rank.is_integer() or rank < 0:
+        if not float(rank).is_integer() or rank < 0:
             raise ValueError(f"Slepian concentration rank should be a positive integer")
         if sf.is_polar_cap:
             if rank >= self.L - abs(sf.order):

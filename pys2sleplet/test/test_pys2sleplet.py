@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
 import pyssht as ssht
-
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity

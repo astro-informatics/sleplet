@@ -1,4 +1,4 @@
-from typing import List
+from argparse import Namespace
 
 import numpy as np
 import pyssht as ssht
@@ -8,16 +8,18 @@ from ..functions import Functions
 
 
 class Gaussian(Functions):
-    def __init__(self, args: List[float] = [3]):
+    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[3])):
         self.sig = self.validate_args(args)
-        super().__init__(f"gaussian{filename_args(self.sig, 'sig')}", reality=True)
+        name = f"gaussian{filename_args(self.sig, 'sig')}"
+        super().__init__(name, L, reality=True)
 
     @staticmethod
-    def validate_args(args):
+    def validate_args(args: Namespace) -> int:
+        extra_args = args.extra_args[0]
         # validation
-        if not args[0].is_integer():
+        if not float(extra_args).is_integer():
             raise ValueError("sigma should be an integer")
-        sig = 10 ** args[0]
+        sig = 10 ** extra_args
         return sig
 
     def create_flm(self):

@@ -8,9 +8,9 @@ from ..functions import Functions
 
 
 class WMAP(Functions):
-    def __init__(self, sig=3.0):
-        super().__init__("wmap", reality=True)
-        self.sig = sig
+    def __init__(self, L: int):
+        name = "wmap"
+        super().__init__(name, L, reality=True)
 
     @staticmethod
     def load_cl():

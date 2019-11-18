@@ -6,28 +6,21 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
+from ...utils.envs import ENVS as e
 from ..slepian_specific import SlepianSpecific
 
 
 class SlepianLimitLatLong(SlepianSpecific):
-    def __init__(self, phi_min: int, phi_max: int, theta_min: int, theta_max: int):
-        super().__init__(phi_min, phi_max, theta_min, theta_max)
-
-    # def __init__(
-    #     self,
-    #     L: int,
-    #     binary: str,
-    #     ncpu: int = 1,
-    #     save_matrices: bool = True,
-    # ) -> None:
-    #     self.binary = binary
-    #     self.L = L
-    #     self.ncpu = ncpu
-    #     self.phi_min = np.deg2rad(phi_min)
-    #     self.phi_max = np.deg2rad(phi_max)
-    #     self.save_matrices = save_matrices
-    #     self.theta_min = np.deg2rad(theta_min)
-    #     self.theta_max = np.deg2rad(theta_max)
+    def __init__(
+        self, L: int, phi_min: int, phi_max: int, theta_min: int, theta_max: int
+    ) -> None:
+        self.matrix_filename = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "lat_lon"
+            / SlepianSpecific.matrix_filename.name
+        )
+        super().__init__(L, phi_min, phi_max, theta_min, theta_max)
 
     def slepian_integral(self) -> np.ndarray:
         """
@@ -146,10 +139,10 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return K
 
-    def slepian_matrix_parallel(self, G: np.ndarray):
+    def slepian_matrix_parallel(self, G: np.ndarray, ncpu: int):
         """
         Syntax:
-        K = slepian_matrix_parallel(G)
+        K = slepian_matrix_parallel(G, ncpu)
 
         Input:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -232,10 +225,10 @@ class SlepianLimitLatLong(SlepianSpecific):
         arr = np.arange(self.L)
         size = len(arr)
         arr[size // 2 : size] = arr[size // 2 : size][::-1]
-        chunks = [np.sort(arr[i :: self.ncpu]) for i in range(self.ncpu)]
+        chunks = [np.sort(arr[i::ncpu]) for i in range(ncpu)]
 
         # initialise pool and apply function
-        with Pool(processes=self.ncpu) as p:
+        with Pool(processes=ncpu) as p:
             p.map(func, chunks)
 
         # retrieve real and imag components
@@ -254,21 +247,21 @@ class SlepianLimitLatLong(SlepianSpecific):
         """
         """
         # check if matrix already exists
-        if Path(self.binary).exists():
-            K = np.load(self.binary)
+        if Path(self.matrix_filename).exists():
+            K = np.load(self.matrix_filename)
         else:
             # Compute sub-integral matrix
             G = self.slepian_integral()
 
             # Compute Slepian matrix
-            if self.ncpu == 1:
+            if e["N_CPU"] == 1:
                 K = self.slepian_matrix_serial(G)
             else:
-                K = self.slepian_matrix_parallel(G)
+                K = self.slepian_matrix_parallel(G, e["N_CPU"])
 
             # save to speed up for future
-            if self.save_matrices:
-                np.save(self.binary, K)
+            if e["SAVE_MATRICES"]:
+                np.save(self.matrix_filename, K)
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eigh(K)

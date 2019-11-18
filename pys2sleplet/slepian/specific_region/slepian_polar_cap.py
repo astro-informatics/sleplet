@@ -14,34 +14,22 @@ from ..slepian_specific import SlepianSpecific
 class SlepianPolarCap(SlepianSpecific):
     def __init__(
         self,
-        phi_min: int,
-        phi_max: int,
-        theta_min: int,
+        L: int,
         theta_max: int,
         matrix_filename: str,
         order: int = 0,
         polar_gap=False,
     ):
-        super().__init__(phi_min, phi_max, theta_min, theta_max)
-        self.matrix_filename = matrix_filename
+        phi_min, phi_max, theta_min = 0, 360, 0
+        super().__init__(L, phi_min, phi_max, theta_min, theta_max)
+        self.matrix_filename = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "polar"
+            / SlepianSpecific.matrix_filename.name
+        )
         self.order = order
         self.polar_gap = polar_gap
-
-    # def __init__(
-    #     self,
-    #     L,
-    #     binary: str,
-    #     order: int = 0,
-    #     polar_gap: bool = False,
-    #     ncpu: int = 1,
-    #     save_matrices: bool = True,
-    # ) -> None:
-    #     self.binary = binary
-    #     self.L = L
-    #     self.ncpu = ncpu
-    #     self.polar_gap = polar_gap
-    #     self.save_matrices = save_matrices
-    #     self.theta_max = np.deg2rad(theta_max)
 
     @property
     def order(self) -> int:
@@ -196,7 +184,7 @@ class SlepianPolarCap(SlepianSpecific):
     def Dm_matrix_parallel(self, m: int, P: np.ndarray, ncpu: int) -> np.ndarray:
         """
         Syntax:
-        Dm = Dm_matrix_parallel(m, P)
+        Dm = Dm_matrix_parallel(m, P, ncpu)
 
         Input:
         m  =  order
@@ -267,7 +255,7 @@ class SlepianPolarCap(SlepianSpecific):
     def polar_gap_modification(self, ell1: int, ell2: int) -> int:
         return 1 + self.polar_gap * (-1) ** (ell1 + ell2)
 
-    def eigenproblem(self, m: int) -> Tuple[np.ndarray, np.ndarray]:
+    def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         """
         """
         # create emm vector
@@ -279,8 +267,8 @@ class SlepianPolarCap(SlepianSpecific):
             k = k + M
 
         # check if matrix already exists
-        if Path(self.binary).exists():
-            Dm = np.load(self.binary)
+        if Path(self.matrix_filename).exists():
+            Dm = np.load(self.matrix_filename)
         else:
             # create Legendre polynomials table
             Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
@@ -290,14 +278,14 @@ class SlepianPolarCap(SlepianSpecific):
             P = np.concatenate((Pl, l))
 
             # Computing order 'm' Slepian matrix
-            if self.ncpu == 1:
-                Dm = self.Dm_matrix_serial(abs(m), P)
+            if e["N_CPU"] == 1:
+                Dm = self.Dm_matrix_serial(abs(self.order), P)
             else:
-                Dm = self.Dm_matrix_parallel(abs(m), P, e["N_CPU"])
+                Dm = self.Dm_matrix_parallel(abs(self.order), P, e["N_CPU"])
 
             # save to speed up for future
             if e["SAVE_MATRICES"]:
-                np.save(self.binary, Dm)
+                np.save(self.matrix_filename, Dm)
 
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eigh(Dm)
@@ -312,15 +300,17 @@ class SlepianPolarCap(SlepianSpecific):
 
         # put back in full D space for harmonic transform
         emm = emm[: self.L * self.L]
-        ind = np.tile(emm == m, (self.L - abs(m), 1))
-        eigenvectors = np.zeros((self.L - abs(m), self.L * self.L), dtype=complex)
+        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
+        eigenvectors = np.zeros(
+            (self.L - abs(self.order), self.L * self.L), dtype=complex
+        )
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
-        if m < 0:
+        if self.order < 0:
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors

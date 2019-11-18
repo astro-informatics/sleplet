@@ -1,4 +1,5 @@
-from typing import List
+from argparse import Namespace
+from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -8,28 +9,28 @@ from ..functions import Functions
 
 
 class HarmonicGaussian(Functions):
-    def __init__(self, args: List[int] = [3, 3]):
+    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[3, 3])):
         self.l_sig, self.m_sig = self.validate_args(args)
-        super().__init__(
-            f"harmonic_gaussian{filename_args(self.l_sig, 'lsig')}{filename_args(self.m_sig, 'msig')}"
-        )
+        name = f"harmonic_gaussian{filename_args(self.l_sig, 'lsig')}{filename_args(self.m_sig, 'msig')}"
+        super().__init__(name, L)
 
     @staticmethod
-    def read_args(args):
+    def read_args(args: List[int]) -> Tuple[int, int]:
         # args
         try:
-            l_sig, m_sig = args.pop(0), args.pop(0)
+            l_sig, m_sig = int(args.pop(0)), int(args.pop(0))
         except IndexError:
             raise ValueError("function requires exactly two extra args")
         return l_sig, m_sig
 
-    def validate_args(self, args):
-        l_sig, m_sig = self.read_args(args)
+    def validate_args(self, args: Namespace) -> Tuple[int, int]:
+        extra_args = args.extra_args
+        l_sig, m_sig = self.read_args(extra_args)
 
         # validation
-        if not l_sig.is_integer():
+        if not float(l_sig).is_integer():
             raise ValueError("l sigma should be an integer")
-        if not m_sig.is_integer():
+        if not float(m_sig).is_integer():
             raise ValueError("m sigma should be an integer")
         l_sig, m_sig = 10 ** l_sig, 10 ** m_sig
         return l_sig, m_sig

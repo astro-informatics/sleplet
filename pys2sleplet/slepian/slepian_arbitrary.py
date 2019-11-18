@@ -11,22 +11,16 @@ from .slepian_functions import SlepianFunctions
 
 
 class SlepianArbitrary(SlepianFunctions):
-    def __init__(self, L: int, ncpu: int = 1) -> None:
+    def __init__(self, L: int, mask=Tuple[np.ndarray, np.ndarray]) -> None:
+        super().__init__(L)
+        theta_mask, phi_mask = mask
         samples = calc_samples(L)
-        theta, phi = ssht.sample_positions(samples, Method="MWSS")
         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
-        phi_mask = np.where(
-            (phi >= np.deg2rad(phi_min)) & (phi <= np.deg2rad(phi_max))
-        )[0]
-        theta_mask = np.where(
-            (theta >= np.deg2rad(theta_min)) & (theta <= np.deg2rad(theta_max))
-        )[0]
         ylm = ssht.create_ylm(thetas, phis, L)
-        self.delta_phi = np.mean(np.ediff1d(phi))
-        self.delta_theta = np.mean(np.ediff1d(theta))
+        self.delta_phi = np.ediff1d(phis[0]).mean()
+        self.delta_theta = np.ediff1d(thetas[:, 0]).mean()
         self.L = L
         self.N = L * L
-        self.ncpu = ncpu
         self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
 

@@ -5,8 +5,9 @@ from ..functions import Functions
 
 
 class DiracDelta(Functions):
-    def __init__(self):
-        super().__init__("dirac_delta", L, reality=True)
+    def __init__(self, L: int):
+        name = "dirac_delta"
+        super().__init__(name, L, reality=True)
 
     @Functions.flm.setter
     def flm(self):

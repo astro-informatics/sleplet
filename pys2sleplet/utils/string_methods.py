@@ -1,14 +1,6 @@
 from fractions import Fraction
 from typing import Tuple
 
-# def missing_key(config: dict, key: str, value: str) -> None:
-#     """
-#     """
-#     try:
-#         setattr(self, key, config[key])
-#     except KeyError:
-#         setattr(self, key, value)
-
 
 def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
     """
