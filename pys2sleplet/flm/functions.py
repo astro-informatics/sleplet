@@ -8,13 +8,17 @@ from ..utils.plot_methods import calc_nearest_grid_point
 from ..utils.string_methods import filename_angle
 from .kernels.kernels import kernels
 from .maps.maps import maps
+from typing import List
 
 
 class Functions(ABC):
-    def __init__(self, name: str, L: int, reality: bool = False):
+    def __init__(
+        self, name: str, L: int, reality: bool = False, annotations: List = []
+    ):
         self.name = name
-        self.reality = reality
         self.L = L
+        self.reality = reality
+        self.annotations = annotations
         self.flm = None
 
     @property
