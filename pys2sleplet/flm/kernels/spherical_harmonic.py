@@ -4,15 +4,16 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from ...utils.string_methods import filename_args
-from ..functions import Functions
+from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.string_methods import filename_args
 
 
 class SphericalHarmonic(Functions):
     def __init__(self, L: int, args: Namespace = Namespace(extra_args=[0, 0])):
         self.ell, self.m = self.validate_args(args)
         name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
-        super().__init__(name, L)
+        reality = False
+        super().__init__(name, L, reality)
 
     @staticmethod
     def read_args(args: List[int]) -> Tuple[int, int]:
@@ -34,7 +35,8 @@ class SphericalHarmonic(Functions):
             raise ValueError("m should be an integer |m| <= l")
         return ell, m
 
-    def create_flm(self):
-        self.flm = np.zeros((self.L * self.L), dtype=complex)
+    def create_flm(self) -> np.ndarray:
+        flm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
-        self.flm[ind] = 1
+        flm[ind] = 1
+        return flm

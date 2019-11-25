@@ -1,17 +1,20 @@
 from argparse import Namespace
 from typing import List, Tuple
 
-from ...slepian.slepian_functions import SlepianFunctions
-from ..functions import Functions
+import numpy as np
+
+from pys2sleplet.flm.functions import Functions
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 
 
 class Slepian(Functions):
     def __init__(
-        self, L: int, args: Namespace = Namespace(extra_args=[0, 360, 0, 40, 0, 0, 0])
+        self, L: int, args: Namespace = Namespace(extra_args=[0, 360, 0, 180, 0, 0, 0])
     ):
         self.rank, self.sf = self.validate_args(args)
-        name = f"slepian{self.sf.filename_angle()}{self.sf.filename}_rank{self.rank}"
-        super().__init__(name, L)
+        name = "slepian"
+        reality = False
+        super().__init__(name, L, reality)
 
     @staticmethod
     def read_args(args: List[int]) -> Tuple[int, int, int, int, int, int, int]:
@@ -49,9 +52,6 @@ class Slepian(Functions):
         )
 
         # initialise class
-        sf = SlepianFunctions(
-            self.L, phi_min, phi_max, theta_min, theta_max, order, double
-        )
 
         # validation
         if not float(rank).is_integer() or rank < 0:
@@ -69,6 +69,7 @@ class Slepian(Functions):
         rank = int(rank)
         return rank, sf
 
-    def create_flm(self):
-        self.flm = self.sf.eigenvectors[self.rank]
+    def create_flm(self) -> np.ndarray:
+        flm = self.sf.eigenvectors[self.rank]
         print(f"Eigenvalue {self.rank}: {self.sf.eigenvalues[self.rank]:e}")
+        return flm

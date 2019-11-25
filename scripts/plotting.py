@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
+from typing import List, Union
 
 import numpy as np
-import toml
 
 from pys2sleplet.flm.functions import Functions, functions
-from pys2sleplet.plotting.create_plot import CreatePlot
+from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.envs import ENVS as e
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
@@ -30,6 +30,19 @@ def valid_plotting(func_name: str) -> str:
         return func_name
     else:
         raise ValueError("Not a valid function name to plot")
+
+
+def slepian_region(domain: List[str]) -> Union[List[str], str]:
+    if isinstance(domain[0], int):
+        print("Slepian angular region detected")
+        return domain
+    elif isinstance(domain[0], str) and len(domain) == 1:
+        print("Slepian mask from file detected")
+        return domain[0]
+    else:
+        raise ValueError(
+            "Domain should be either a list of angles for the exact region or a file of the mask"
+        )
 
 
 def read_args() -> Namespace:
@@ -70,10 +83,7 @@ def read_args() -> Namespace:
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
-        "--double",
-        "-d",
-        action="store_true",
-        help="flag which if passed creates a double polar cap i.e. polar gap",
+        "--domain", "-d", type=slepian_region, help="Slepian region of interest"
     )
     parser.add_argument(
         "--extra_args",
@@ -114,9 +124,8 @@ def read_args() -> Namespace:
 
 
 def load_config():
-    default = toml.load("config.toml")
     args = read_args()
-    config = {**default, **args}
+    config = {**e, **args}
     return config
 
 
@@ -126,6 +135,7 @@ def plot(
     routine: str,
     plot_type: str,
     glm: Functions = None,
+    annotations: List = [],
     alpha_pi_fraction: float = 0.75,
     beta_pi_fraction: float = 0.125,
     gamma_pi_fraction: float = 0,
@@ -152,7 +162,7 @@ def plot(
 
     if glm is not None:
         # perform convolution
-        flm = flm.convolve(glm.flm)
+        flm = flm.convolve(glm)
         # adjust filename
         filename += f"convolved_{glm.name}_L{L}_"
 
@@ -177,8 +187,7 @@ def plot(
 
     # do plot
     filename += plot_type
-    cp = CreatePlot(f, resolution, filename, annotations=annotations)
-    cp.plotly_plot()
+    Plot(f, resolution, filename, annotations).execute()
 
 
 def main():

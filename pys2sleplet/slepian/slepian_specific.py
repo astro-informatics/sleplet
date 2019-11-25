@@ -2,10 +2,10 @@ from abc import abstractmethod
 from pathlib import Path
 from typing import List, Tuple
 
-import numpy as np  #
+import numpy as np
 
-from ..utils.string_methods import filename_region
-from .slepian_functions import SlepianFunctions
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.string_methods import filename_region
 
 
 class SlepianSpecific(SlepianFunctions):

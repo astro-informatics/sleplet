@@ -4,7 +4,7 @@ import numpy as np
 import pyssht as ssht
 from scipy import io as sio
 
-from ..functions import Functions
+from pys2sleplet.flm.functions import Functions
 
 
 class WMAP(Functions):
@@ -30,7 +30,7 @@ class WMAP(Functions):
         cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
         return cl
 
-    def create_flm(self):
+    def create_flm(self) -> np.ndarray:
         # load in data
         cl = self.load_cl()
 
@@ -38,15 +38,16 @@ class WMAP(Functions):
         np.random.seed(0)
 
         # Simulate CMB in harmonic space.
-        self.flm = np.zeros((self.L * self.L), dtype=complex)
+        flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(2, self.L):
             cl[ell - 1] = cl[ell - 1] * 2 * np.pi / (ell * (ell + 1))
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 if m == 0:
-                    self.flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
+                    flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
                 else:
-                    self.flm[ind] = (
+                    flm[ind] = (
                         np.sqrt(cl[ell - 1] / 2) * np.random.randn()
                         + 1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
                     )
+        return flm

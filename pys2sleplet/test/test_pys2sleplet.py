@@ -1,36 +1,28 @@
 #!/usr/bin/env python
 import numpy as np
-import pyssht as ssht
+
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
 from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.sifting_convolution import SiftingConvolution
-from pys2sleplet.sphere import Sphere
+from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.utils.envs import ENVS as e
 
 
 def test_dirac_delta_rotate_translate() -> None:
     """
     """
     # setup
-    dd = DiracDelta()
-    sc = SiftingConvolution(dd.flm, dd.name, config)
-    sc.calc_nearest_grid_point(alpha_pi_fraction=0.75, beta_pi_fraction=0.125)
-    sphere = Sphere(auto_open=sc.auto_open, save_fig=sc.save_fig)
+    flm = DiracDelta(e.L)
+    alpha_pi_frac, beta_pi_frac = 0.75, 0.125
 
     # rotation
-    flm_rot = sc.rotation(flm, sc.alpha, sc.beta, gamma=0)
-    flm_rot_boost = sphere.resolution_boost(flm_rot, sc.L, sc.resolution)
-    f_rot = ssht.inverse(
-        flm_rot_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
-    )
+    flm_rot = flm.rotate(alpha_pi_frac, beta_pi_frac)
+    f_rot = flm_rot.invert()
 
     # translation
-    flm_trans = sc.translation(flm)
-    flm_trans_boost = sphere.resolution_boost(flm_trans, sc.L, sc.resolution)
-    f_trans = ssht.inverse(
-        flm_trans_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
-    )
+    flm_trans = flm.translate(alpha_pi_frac, beta_pi_frac)
+    f_trans = flm_trans.invert()
 
     # calculate difference
     flm_diff = flm_rot - flm_trans
@@ -42,25 +34,23 @@ def test_dirac_delta_rotate_translate() -> None:
     print("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
 
     # filename
-    filename = f"{sc.flm_name}_L{sc.L}_diff_rot_trans_res{sc.resolution}"
+    filename = f"{flm.name}_L{e.L}_diff_rot_trans_res{flm_diff.res}"
 
     # create plot
-    sphere.plotly_plot(f_diff, sc.resolution, filename)
+    Plot(f_diff, f_diff.res, filename).execute()
 
 
 def test_earth_identity_convolution() -> None:
     """
     """
     # setup
-    earth = Earth()
-    id = Identity()
-    sc = SiftingConvolution(earth.flm, earth.name, config, id.flm, id.name)
+    flm, glm = Identity(e.L), Earth(e.L)
 
     # convolution
-    flm_conv = sc.convolution(flm, glm)
+    flm_conv = flm.convolve(glm)
 
     # perform test
-    np.testing.assert_equal(flm_conv, flm)
+    np.testing.assert_equal(flm, flm_conv)
     print("Identity convolution passed test")
 
 
@@ -68,31 +58,21 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     """
     """
     # setup
-    earth = Earth()
-    hg = HarmonicGaussian()
-    sc = SiftingConvolution(earth.flm, earth.name, config, hg.flm, hg.name)
-    sc.calc_nearest_grid_point()
-    sphere = Sphere(auto_open=sc.auto_open, save_fig=sc.save_fig)
+    flm, glm = HarmonicGaussian(e.L), Earth(e.L)
 
     # map
-    flm_map_boost = sphere.resolution_boost(flm, sc.L, sc.resolution)
-    f_map = ssht.inverse(
-        flm_map_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
-    )
+    f_map = glm.invert()
 
     # convolution
-    flm_conv = sc.convolution(flm, glm)
-    flm_conv_boost = sphere.resolution_boost(flm_conv, sc.L, sc.resolution)
-    f_conv = ssht.inverse(
-        flm_conv_boost, sc.resolution, Reality=sc.reality, Method="MWSS"
-    )
+    flm_conv = flm.convolve(glm)
+    f_conv = flm_conv.invert()
 
     # calculate difference
     flm_diff = flm - flm_conv
     f_diff = f_map - f_conv
 
     # perform test
-    np.testing.assert_allclose(flm, flm_conv, atol=5e1)
+    np.testing.assert_allclose(glm, flm_conv, atol=5e1)
     np.testing.assert_allclose(f_map, f_conv, atol=8e2)
     print(
         "Earth/harmonic gaussian convolution difference max error:",
@@ -100,10 +80,10 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     )
 
     # filename
-    filename = f"{sc.flm_name}_L{sc.L}_diff_{sc.glm_name}_res{sc.resolution}_real"
+    filename = f"{glm.name}_L{e.L}_diff_{flm.name}_res{flm_conv.res}_real"
 
     # create plot
-    sphere.plotly_plot(f_diff.real, sc.resolution, filename)
+    Plot(f_diff.real, f_diff.res, filename).execute()
 
 
 if __name__ == "__main__":

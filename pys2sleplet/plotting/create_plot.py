@@ -10,11 +10,11 @@ from plotly.graph_objs import Figure, Layout, Surface
 from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
-from ..utils.envs import ENVS as e
-from ..utils.plot_methods import convert_colourscale
+from pys2sleplet.utils.envs import ENVS as e
+from pys2sleplet.utils.plot_methods import convert_colourscale
 
 
-class CreatePlot:
+class Plot:
     def __init__(
         self, f: np.ndarray, resolution: int, filename: str, annotations: List = []
     ):
@@ -24,7 +24,7 @@ class CreatePlot:
         self.annotations = annotations
         self.fig_path = Path(__file__).resolve().parents[1] / "figures"
 
-    def plotly_plot(self) -> None:
+    def execute(self) -> None:
         """
         creates basic plotly plot rather than matplotlib
         """

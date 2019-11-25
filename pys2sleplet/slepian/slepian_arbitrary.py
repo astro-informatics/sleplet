@@ -5,9 +5,9 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from ..utils.envs import ENVS as e
-from ..utils.plot_methods import calc_samples
-from .slepian_functions import SlepianFunctions
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.envs import ENVS as e
+from pys2sleplet.utils.plot_methods import calc_samples
 
 
 class SlepianArbitrary(SlepianFunctions):

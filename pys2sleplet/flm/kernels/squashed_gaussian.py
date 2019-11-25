@@ -3,16 +3,17 @@ from typing import List, Tuple
 
 import numpy as np
 
-from ...utils.plot_methods import ensure_f_bandlimited
-from ...utils.string_methods import filename_args
-from ..functions import Functions
+from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
+from pys2sleplet.utils.string_methods import filename_args
 
 
 class SquashedGaussian(Functions):
     def __init__(self, L: int, args: Namespace = Namespace(extra_args=[-2, -1])):
         self.t_sig, self.freq = self.validate_args(args)
         name = f"squashed_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.freq, 'freq')}"
-        super().__init__(name, L, reality=True)
+        reality = True
+        super().__init__(name, L, reality)
 
     @staticmethod
     def read_args(args: List[int]) -> Tuple[int, int]:
@@ -46,5 +47,6 @@ class SquashedGaussian(Functions):
         )
         return f
 
-    def create_flm(self):
-        self.flm = ensure_f_bandlimited(self.grid_fun, self.L, self.reality)
+    def create_flm(self) -> np.ndarray:
+        flm = ensure_f_bandlimited(self.grid_fun, self.L, self.reality)
+        return flm

@@ -7,19 +7,12 @@ import numpy as np
 import pyssht as ssht
 from scipy.special import factorial as fact
 
-from ...utils.envs import ENVS as e
-from ..slepian_specific import SlepianSpecific
+from pys2sleplet.slepian_specific import SlepianSpecific
+from pys2sleplet.utils.envs import ENVS as e
 
 
 class SlepianPolarCap(SlepianSpecific):
-    def __init__(
-        self,
-        L: int,
-        theta_max: int,
-        matrix_filename: str,
-        order: int = 0,
-        polar_gap=False,
-    ):
+    def __init__(self, L: int, theta_max: int, order: int = 0, polar_gap=False):
         phi_min, phi_max, theta_min = 0, 360, 0
         super().__init__(L, phi_min, phi_max, theta_min, theta_max)
         self.matrix_filename = (

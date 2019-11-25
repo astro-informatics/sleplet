@@ -1,33 +1,34 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 
-from ..utils.plot_methods import calc_nearest_grid_point
-from ..utils.string_methods import filename_angle
-from .kernels.kernels import kernels
-from .maps.maps import maps
-from typing import List
+from pys2sleplet.flm.kernels.kernels import kernels
+from pys2sleplet.flm.maps.maps import maps
+from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
+from pys2sleplet.utils.string_methods import filename_angle
 
 
 class Functions(ABC):
-    def __init__(
-        self, name: str, L: int, reality: bool = False, annotations: List = []
-    ):
+    def __init__(self, name: str, L: int, reality: bool):
         self.name = name
         self.L = L
         self.reality = reality
-        self.annotations = annotations
+        self.res = calc_resolution(L)
         self.flm = None
+
+    @abstractmethod
+    def create_flm(self) -> np.ndarray:
+        raise NotImplementedError
 
     @property
     def flm(self) -> np.ndarray:
         return self.__flm
 
     @flm.setter
-    def flm(self) -> None:
-        self.__flm = None
+    def flm(self, var) -> None:
+        self.__flm = self.create_flm()
 
     def rotate(
         self,
@@ -95,18 +96,22 @@ class Functions(ABC):
 
         return self.flm * np.conj(glm)
 
-    def boost_res(self, resolution: int) -> np.ndarray:
+    def _boost_res(self) -> np.ndarray:
         """
         calculates a boost in resolution for given flm
         """
-        boost = resolution * resolution - self.L * self.L
+        boost = self.res * self.res - self.L * self.L
         flm_boost = np.pad(self.flm, (0, boost), "constant")
         return flm_boost
 
-    def invert(self, resolution: int) -> np.ndarray:
+    def invert(self) -> np.ndarray:
         """
         """
-        f = ssht.inverse(self.flm, resolution, Reality=self.reality, Method="MWSS")
+        # boost resolution for plot
+        flm = self._boost_res()
+
+        # perform inverse
+        f = ssht.inverse(flm, self.res, Reality=self.reality, Method="MWSS")
         return f
 
 

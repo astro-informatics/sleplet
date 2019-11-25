@@ -6,8 +6,8 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from ...utils.envs import ENVS as e
-from ..slepian_specific import SlepianSpecific
+from pys2sleplet.slepian_specific import SlepianSpecific
+from pys2sleplet.utils.envs import ENVS as e
 
 
 class SlepianLimitLatLong(SlepianSpecific):
