@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import List, Union
+from typing import List, Dict
 
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions, functions
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.envs import ENVS as e
+from pys2sleplet.utils.vars import ENVS
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -32,21 +32,9 @@ def valid_plotting(func_name: str) -> str:
         raise ValueError("Not a valid function name to plot")
 
 
-def slepian_region(domain: List[str]) -> Union[List[str], str]:
-    if isinstance(domain[0], int):
-        print("Slepian angular region detected")
-        return domain
-    elif isinstance(domain[0], str) and len(domain) == 1:
-        print("Slepian mask from file detected")
-        return domain[0]
-    else:
-        raise ValueError(
-            "Domain should be either a list of angles for the exact region or a file of the mask"
-        )
-
-
 def read_args() -> Namespace:
     """
+    method to read args from the command line
     """
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
@@ -81,9 +69,6 @@ def read_args() -> Namespace:
         type=valid_kernels,
         choices=list(functions().keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
-    )
-    parser.add_argument(
-        "--domain", "-d", type=slepian_region, help="Slepian region of interest"
     )
     parser.add_argument(
         "--extra_args",
@@ -123,14 +108,17 @@ def read_args() -> Namespace:
     return args
 
 
-def load_config():
+def load_config() -> Dict:
+    """
+    load general config as well as args from the command line
+    """
     args = read_args()
-    config = {**e, **args}
+    config = {**ENVS, **args}
     return config
 
 
 def plot(
-    flm_name: str,
+    flm: Functions,
     L: int,
     routine: str,
     plot_type: str,
@@ -144,8 +132,7 @@ def plot(
     master plotting method
     """
     # setup
-    filename = f"{flm_name}_L{L}_"
-    flm = Functions(flm_name, L)
+    filename = f"{flm.name}_L{L}_"
     resolution = calc_resolution(L)
 
     # test for plotting routine
@@ -162,7 +149,7 @@ def plot(
 
     if glm is not None:
         # perform convolution
-        flm = flm.convolve(glm)
+        flm = flm.convolve(glm.flm)
         # adjust filename
         filename += f"convolved_{glm.name}_L{L}_"
 
@@ -190,15 +177,29 @@ def plot(
     Plot(f, resolution, filename, annotations).execute()
 
 
-def main():
+def main() -> None:
     # load config
-    c = load_config()
+    env = load_config()
 
     # setup flm
-    flm = Functions(c.flm, c.L)
-    glm = Functions(c.convolve, c.L)
+    flm = functions[env["flm"]](env["L"])
 
-    plot(c.flm, e.L, c.routine, c.plot_type, c.convolve, c.alpha, c.beta, c.gamma)
+    # setup flm to convolve with
+    try:
+        glm = functions[env["convolve"]](env["L"])
+    except KeyError:
+        glm = None
+
+    plot(
+        flm,
+        env["L"],
+        env["routine"],
+        env["plot_type"],
+        glm,
+        alpha_pi_fraction=env["alpha"],
+        beta_pi_fraction=env["beta"],
+        gamma_pi_fraction=env["gamma"],
+    )
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
-from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.flm.maps.wmap import WMAP
+from .earth import Earth
+from .wmap import WMAP
 
 
 def maps():

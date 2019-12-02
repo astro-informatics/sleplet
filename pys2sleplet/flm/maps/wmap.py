@@ -10,7 +10,8 @@ from pys2sleplet.flm.functions import Functions
 class WMAP(Functions):
     def __init__(self, L: int):
         name = "wmap"
-        super().__init__(name, L, reality=True)
+        self.reality = True
+        super().__init__(name, L)
 
     @staticmethod
     def load_cl():

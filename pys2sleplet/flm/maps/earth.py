@@ -4,13 +4,14 @@ import numpy as np
 import pyssht as ssht
 from scipy import io as sio
 
-from pys2sleplet.flm.functions import Functions
+from ..functions import Functions
 
 
 class Earth(Functions):
     def __init__(self, L: int):
         name = "earth"
-        super().__init__(name, L, reality=True)
+        self.reality = True
+        super().__init__(name, L)
 
     @staticmethod
     def load_flm():

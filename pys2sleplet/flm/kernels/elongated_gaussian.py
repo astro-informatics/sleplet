@@ -12,8 +12,8 @@ class ElongatedGaussian(Functions):
     def __init__(self, L: int, args: Namespace = Namespace(extra_args=[0, -3])):
         self.t_sig, self.p_sig = self.validate_args(args)
         name = f"elongated_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.p_sig, 'psig')}"
-        reality = True
-        super().__init__(name, L, reality)
+        self.reality = True
+        super().__init__(name, L)
 
     @staticmethod
     def read_args(args: List[int]) -> Tuple[int, int]:

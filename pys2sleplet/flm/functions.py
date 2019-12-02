@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from pathlib import Path
 
 import numpy as np
@@ -10,16 +10,16 @@ from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolut
 from pys2sleplet.utils.string_methods import filename_angle
 
 
-class Functions(ABC):
-    def __init__(self, name: str, L: int, reality: bool):
+class Functions:
+    def __init__(self, name: str, L: int):
         self.name = name
         self.L = L
-        self.reality = reality
         self.res = calc_resolution(L)
-        self.flm = None
+        self.__flm = None
+        self.__reality = False
 
     @abstractmethod
-    def create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         raise NotImplementedError
 
     @property
@@ -28,7 +28,15 @@ class Functions(ABC):
 
     @flm.setter
     def flm(self, var) -> None:
-        self.__flm = self.create_flm()
+        self._create_flm()
+
+    @property
+    def reality(self) -> bool:
+        return self.__reality
+
+    @reality.setter
+    def reality(self, var) -> None:
+        self.__reality = var
 
     def rotate(
         self,

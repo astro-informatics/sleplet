@@ -12,8 +12,8 @@ class SquashedGaussian(Functions):
     def __init__(self, L: int, args: Namespace = Namespace(extra_args=[-2, -1])):
         self.t_sig, self.freq = self.validate_args(args)
         name = f"squashed_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.freq, 'freq')}"
-        reality = True
-        super().__init__(name, L, reality)
+        self.reality = True
+        super().__init__(name, L)
 
     @staticmethod
     def read_args(args: List[int]) -> Tuple[int, int]:

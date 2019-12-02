@@ -12,8 +12,8 @@ class SphericalHarmonic(Functions):
     def __init__(self, L: int, args: Namespace = Namespace(extra_args=[0, 0])):
         self.ell, self.m = self.validate_args(args)
         name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
-        reality = False
-        super().__init__(name, L, reality)
+        self.reality = False
+        super().__init__(name, L)
 
     @staticmethod
     def read_args(args: List[int]) -> Tuple[int, int]:

@@ -6,21 +6,19 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.envs import ENVS as e
+from pys2sleplet.slepian.slepian_specific import SlepianSpecific
+from pys2sleplet.utils.vars import ENVS
 
 
 class SlepianLimitLatLong(SlepianSpecific):
-    def __init__(
-        self, L: int, phi_min: int, phi_max: int, theta_min: int, theta_max: int
-    ) -> None:
+    def __init__(self, L: int) -> None:
         self.matrix_filename = (
             Path(__file__).resolve().parents[1]
             / "data"
             / "lat_lon"
             / SlepianSpecific.matrix_filename.name
         )
-        super().__init__(L, phi_min, phi_max, theta_min, theta_max)
+        super().__init__(L)
 
     def slepian_integral(self) -> np.ndarray:
         """
@@ -254,13 +252,13 @@ class SlepianLimitLatLong(SlepianSpecific):
             G = self.slepian_integral()
 
             # Compute Slepian matrix
-            if e["N_CPU"] == 1:
+            if ENVS["N_CPU"] == 1:
                 K = self.slepian_matrix_serial(G)
             else:
-                K = self.slepian_matrix_parallel(G, e["N_CPU"])
+                K = self.slepian_matrix_parallel(G, ENVS["N_CPU"])
 
             # save to speed up for future
-            if e["SAVE_MATRICES"]:
+            if ENVS["SAVE_MATRICES"]:
                 np.save(self.matrix_filename, K)
 
         # solve eigenproblem

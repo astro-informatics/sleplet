@@ -10,8 +10,8 @@ from plotly.graph_objs import Figure, Layout, Surface
 from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
-from pys2sleplet.utils.envs import ENVS as e
 from pys2sleplet.utils.plot_methods import convert_colourscale
+from pys2sleplet.utils.vars import ENVS
 
 
 class Plot:
@@ -78,7 +78,7 @@ class Plot:
         fig = Figure(data=data, layout=layout)
 
         # if save_fig is true then print as png and pdf in their directories
-        if e["SAVE_FIG"]:
+        if ENVS["SAVE_FIG"]:
             # create filenames
             png_filename = self.fig_path / "png" / f"{self.filename}.png"
             pdf_filename = self.fig_path / "png" / f"{self.filename}.png"
@@ -90,7 +90,7 @@ class Plot:
         # create html and open if auto_open is true
         html_filename = self.fig_path / "html" / f"{self.filename}.html"
 
-        py.plot(fig, filename=html_filename, auto_open=e["AUTO_OPEN"])
+        py.plot(fig, filename=html_filename, auto_open=ENVS["AUTO_OPEN"])
 
     @staticmethod
     def _setup_plot(

@@ -5,9 +5,10 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.envs import ENVS as e
 from pys2sleplet.utils.plot_methods import calc_samples
+from pys2sleplet.utils.vars import ENVS
+
+from .slepian_functions import SlepianFunctions
 
 
 class SlepianArbitrary(SlepianFunctions):
@@ -128,10 +129,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         # Compute Slepian matrix
-        if e["N_CPU"] == 1:
+        if ENVS["N_CPU"] == 1:
             D = self.matrix_serial()
         else:
-            D = self.matrix_parallel(e["N_CPU"])
+            D = self.matrix_parallel(ENVS["N_CPU"])
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eigh(D)

@@ -11,8 +11,8 @@ class Gaussian(Functions):
     def __init__(self, L: int, args: Namespace = Namespace(extra_args=[3])):
         self.sig = self.validate_args(args)
         name = f"gaussian{filename_args(self.sig, 'sig')}"
-        reality = True
-        super().__init__(name, L, reality)
+        self.reality = True
+        super().__init__(name, L)
 
     @staticmethod
     def validate_args(args: Namespace) -> int:

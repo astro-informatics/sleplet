@@ -7,4 +7,5 @@ setup(
     author_email="patrickjamesroddy@gmail.com",
     packages=find_packages(),
     scripts=["scripts/plotting.py"],
+    package_data={"": ["*.toml"]},
 )

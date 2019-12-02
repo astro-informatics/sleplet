@@ -12,8 +12,8 @@ class HarmonicGaussian(Functions):
     def __init__(self, L: int, args: Namespace = Namespace(extra_args=[3, 3])):
         self.l_sig, self.m_sig = self.validate_args(args)
         name = f"harmonic_gaussian{filename_args(self.l_sig, 'lsig')}{filename_args(self.m_sig, 'msig')}"
-        reality = False
-        super().__init__(name, L, reality)
+        self.reality = False
+        super().__init__(name, L)
 
     @staticmethod
     def read_args(args: List[int]) -> Tuple[int, int]:

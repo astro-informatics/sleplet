@@ -7,14 +7,13 @@ import numpy as np
 import pyssht as ssht
 from scipy.special import factorial as fact
 
-from pys2sleplet.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.envs import ENVS as e
+from pys2sleplet.slepian.slepian_specific import SlepianSpecific
+from pys2sleplet.utils.vars import ENVS, SLEPIAN
 
 
 class SlepianPolarCap(SlepianSpecific):
-    def __init__(self, L: int, theta_max: int, order: int = 0, polar_gap=False):
-        phi_min, phi_max, theta_min = 0, 360, 0
-        super().__init__(L, phi_min, phi_max, theta_min, theta_max)
+    def __init__(self, L: int, order: int = 0):
+        super().__init__(L)
         self.matrix_filename = (
             Path(__file__).resolve().parents[1]
             / "data"
@@ -22,7 +21,6 @@ class SlepianPolarCap(SlepianSpecific):
             / SlepianSpecific.matrix_filename.name
         )
         self.order = order
-        self.polar_gap = polar_gap
 
     @property
     def order(self) -> int:
@@ -245,8 +243,10 @@ class SlepianPolarCap(SlepianSpecific):
 
         return Dm
 
-    def polar_gap_modification(self, ell1: int, ell2: int) -> int:
-        return 1 + self.polar_gap * (-1) ** (ell1 + ell2)
+    @staticmethod
+    def polar_gap_modification(ell1: int, ell2: int) -> int:
+        factor = 1 + SLEPIAN["POLAR_GAP"] * (-1) ** (ell1 + ell2)
+        return factor
 
     def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         """
@@ -271,13 +271,13 @@ class SlepianPolarCap(SlepianSpecific):
             P = np.concatenate((Pl, l))
 
             # Computing order 'm' Slepian matrix
-            if e["N_CPU"] == 1:
+            if ENVS["N_CPU"] == 1:
                 Dm = self.Dm_matrix_serial(abs(self.order), P)
             else:
-                Dm = self.Dm_matrix_parallel(abs(self.order), P, e["N_CPU"])
+                Dm = self.Dm_matrix_parallel(abs(self.order), P, ENVS["N_CPU"])
 
             # save to speed up for future
-            if e["SAVE_MATRICES"]:
+            if ENVS["SAVE_MATRICES"]:
                 np.save(self.matrix_filename, Dm)
 
         # solve eigenproblem for order 'm'

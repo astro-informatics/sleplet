@@ -4,26 +4,28 @@ from typing import List, Tuple
 
 import numpy as np
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.string_methods import filename_region
+from pys2sleplet.utils.vars import SLEPIAN
+
+from .slepian_functions import SlepianFunctions
 
 
 class SlepianSpecific(SlepianFunctions):
-    def __init__(
-        self, L: int, phi_min: int, phi_max: int, theta_min: int, theta_max: int
-    ) -> None:
+    def __init__(self, L: int) -> None:
         super().__init__(L)
         self.matrix_filename = Path(
-            SlepianFunctions.matrix_filename.name
-            + filename_region(phi_min, phi_max, theta_min, theta_max)
+            SlepianFunctions.matrix_filename.name + filename_region()
         )
         self.is_polar_cap = (
-            phi_min == 0 and phi_max == 360 and theta_min == 0 and theta_max != 180
+            SLEPIAN["PHI_MIN"] == 0
+            and SLEPIAN["PHI_MAX"] == 360
+            and SLEPIAN["THETA_MIN"] == 0
+            and SLEPIAN["THETA_MAX"] != 180
         )
-        self.phi_min = np.deg2rad(phi_min)
-        self.phi_max = np.deg2rad(phi_max)
-        self.theta_min = np.deg2rad(theta_min)
-        self.theta_max = np.deg2rad(theta_max)
+        self.phi_min = np.deg2rad(SLEPIAN["PHI_MIN"])
+        self.phi_max = np.deg2rad(SLEPIAN["PHI_MAX"])
+        self.theta_min = np.deg2rad(SLEPIAN["THETA_MIN"])
+        self.theta_max = np.deg2rad(SLEPIAN["THETA_MAX"])
 
     @abstractmethod
     def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:

@@ -1,6 +1,8 @@
 from fractions import Fraction
 from typing import Tuple
 
+from .vars import SLEPIAN_ENVS as s
+
 
 def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
     """
@@ -65,7 +67,7 @@ def filename_angle(
     return filename
 
 
-def filename_region(phi_min: int, phi_max: int, theta_min: int, theta_max: int):
+def filename_region():
     """
     middle part of filename for Slepian region
     """
@@ -73,18 +75,18 @@ def filename_region(phi_min: int, phi_max: int, theta_min: int, theta_max: int):
     filename = ""
 
     # if phi min is not default
-    if phi_min != 0:
-        filename += f"_pmin{phi_min}"
+    if s.PHI_MIN != 0:
+        filename += f"_pmin{s.PHI_MIN}"
 
     # if phi max is not default
-    if phi_max != 360:
-        filename += f"_pmax{phi_max}"
+    if s.PHI_MAX != 360:
+        filename += f"_pmax{s.PHI_MAX}"
 
     # if theta min is not default
-    if theta_min != 0:
-        filename += f"_tmin{theta_min}"
+    if s.THETA_MIN != 0:
+        filename += f"_tmin{s.THETA_MIN}"
 
     # if theta max is not default
-    if theta_max != 180:
-        filename += f"_tmax{theta_max}"
+    if s.THETA_MAX != 180:
+        filename += f"_tmax{s.THETA_MAX}"
     return filename
