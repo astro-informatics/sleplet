@@ -3,7 +3,7 @@ from argparse import Namespace
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from ..functions import Functions
 from pys2sleplet.utils.string_methods import filename_args
 
 

@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
+from ..functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 
 

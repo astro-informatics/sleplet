@@ -1,7 +1,7 @@
 from fractions import Fraction
 from typing import Tuple
 
-from .vars import SLEPIAN_ENVS as s
+from .vars import SLEPIAN
 
 
 def get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
@@ -75,18 +75,18 @@ def filename_region():
     filename = ""
 
     # if phi min is not default
-    if s.PHI_MIN != 0:
-        filename += f"_pmin{s.PHI_MIN}"
+    if SLEPIAN["PHI_MIN"] != 0:
+        filename += f"_pmin{SLEPIAN['PHI_MIN']}"
 
     # if phi max is not default
-    if s.PHI_MAX != 360:
-        filename += f"_pmax{s.PHI_MAX}"
+    if SLEPIAN["PHI_MAX"] != 360:
+        filename += f"_pmax{SLEPIAN['PHI_MAX']}"
 
     # if theta min is not default
-    if s.THETA_MIN != 0:
-        filename += f"_tmin{s.THETA_MIN}"
+    if SLEPIAN["THETA_MIN"] != 0:
+        filename += f"_tmin{SLEPIAN['THETA_MIN']}"
 
     # if theta max is not default
-    if s.THETA_MAX != 180:
-        filename += f"_tmax{s.THETA_MAX}"
+    if SLEPIAN["THETA_MAX"] != 180:
+        filename += f"_tmax{SLEPIAN['THETA_MAX']}"
     return filename

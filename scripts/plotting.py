@@ -4,7 +4,7 @@ from typing import List, Dict
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions, functions
+from pys2sleplet.flm.functions import Functions, function_dict
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.vars import ENVS
 from pys2sleplet.utils.plot_methods import calc_resolution
@@ -15,7 +15,7 @@ def valid_kernels(func_name: str) -> str:
     """
     check if valid kernel
     """
-    if func_name in functions():
+    if func_name in function_dict:
         return func_name
     else:
         raise ValueError("Not a valid kernel name to convolve")
@@ -26,7 +26,7 @@ def valid_plotting(func_name: str) -> str:
     check if valid function
     """
     # check if valid function
-    if func_name in functions():
+    if func_name in function_dict:
         return func_name
     else:
         raise ValueError("Not a valid function name to plot")
@@ -40,7 +40,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "flm",
         type=valid_plotting,
-        choices=list(functions().keys()),
+        choices=list(function_dict.keys()),
         help="flm to plot on the sphere",
     )
     parser.add_argument(
@@ -67,7 +67,7 @@ def read_args() -> Namespace:
         "--convolve",
         "-c",
         type=valid_kernels,
-        choices=list(functions().keys()),
+        choices=list(function_dict.keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -153,14 +153,11 @@ def plot(
         # adjust filename
         filename += f"convolved_{glm.name}_L{L}_"
 
-    # boost resolution
-    flm = flm.boost_res(resolution)
+    # inverse & plot
+    f = flm.invert()
 
     # add resolution to filename
     filename += f"res{resolution}_"
-
-    # inverse & plot
-    f = flm.invert(resolution)
 
     # check for plotting type
     if plot_type == "real":
@@ -182,11 +179,11 @@ def main() -> None:
     env = load_config()
 
     # setup flm
-    flm = functions[env["flm"]](env["L"])
+    flm = function_dict[env["flm"]](env["L"])
 
     # setup flm to convolve with
     try:
-        glm = functions[env["convolve"]](env["L"])
+        glm = function_dict[env["convolve"]](env["L"])
     except KeyError:
         glm = None
 

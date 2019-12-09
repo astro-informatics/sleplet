@@ -4,8 +4,8 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.kernels.kernels import kernels
-from pys2sleplet.flm.maps.maps import maps
+from .kernels.kernels import kernel_dict
+from .maps.maps import map_dict
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -123,7 +123,5 @@ class Functions:
         return f
 
 
-def functions():
-    # form dictionary of all functions
-    functions = {**kernels(), **maps()}
-    return functions
+# form dictionary of all functions
+function_dict = {**kernel_dict, **map_dict}
