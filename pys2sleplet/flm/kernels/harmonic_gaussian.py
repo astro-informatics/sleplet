@@ -36,7 +36,7 @@ class HarmonicGaussian(Functions):
         l_sig, m_sig = 10 ** l_sig, 10 ** m_sig
         return l_sig, m_sig
 
-    def create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sig) ** 2) / 2)

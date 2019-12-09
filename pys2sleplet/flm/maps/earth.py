@@ -26,7 +26,7 @@ class Earth(Functions):
         flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
         return flm
 
-    def create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         # load in data
         flm = self.load_flm()
 

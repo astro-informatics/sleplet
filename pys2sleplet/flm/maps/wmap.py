@@ -31,7 +31,7 @@ class WMAP(Functions):
         cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
         return cl
 
-    def create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         # load in data
         cl = self.load_cl()
 

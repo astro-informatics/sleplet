@@ -35,7 +35,7 @@ class SphericalHarmonic(Functions):
             raise ValueError("m should be an integer |m| <= l")
         return ell, m
 
-    def create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
         flm[ind] = 1

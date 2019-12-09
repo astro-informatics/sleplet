@@ -47,6 +47,6 @@ class SquashedGaussian(Functions):
         )
         return f
 
-    def create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         flm = ensure_f_bandlimited(self.grid_fun, self.L, self.reality)
         return flm

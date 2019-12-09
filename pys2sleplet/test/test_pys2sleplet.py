@@ -80,7 +80,7 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     )
 
     # filename
-    filename = f"{glm.name}_L{ENVS.L}_diff_{flm.name}_res{flm_conv.res}_real"
+    filename = f"{glm.name}_L{ENVS['L']}_diff_{flm.name}_res{flm_conv.res}_real"
 
     # create plot
     Plot(f_diff.real, f_diff.res, filename).execute()

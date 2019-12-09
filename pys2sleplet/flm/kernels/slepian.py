@@ -51,7 +51,7 @@ class Slepian(Functions):
         rank = int(rank)
         return rank
 
-    def create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         flm = self.sf.eigenvectors[self.rank]
         print(f"Eigenvalue {self.rank}: {self.sf.eigenvalues[self.rank]:e}")
         return flm
