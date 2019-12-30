@@ -3,8 +3,9 @@ from typing import List, Tuple
 
 import numpy as np
 
-from ..functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+
+from ..functions import Functions
 
 
 class Slepian(Functions):

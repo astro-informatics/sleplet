@@ -13,19 +13,24 @@ def test_dirac_delta_rotate_translate() -> None:
     """
     """
     # setup
-    flm = DiracDelta(ENVS["L"])
+    rot = DiracDelta(ENVS["L"])
+    trans = DiracDelta(ENVS["L"])
     alpha_pi_frac, beta_pi_frac = 0.75, 0.125
 
-    # rotation
-    flm_rot = flm.rotate(alpha_pi_frac, beta_pi_frac)
-    f_rot = flm_rot.invert()
-
-    # translation
-    flm_trans = flm.translate(alpha_pi_frac, beta_pi_frac)
-    f_trans = flm_trans.invert()
+    # perform operations
+    rot.rotate(alpha_pi_frac, beta_pi_frac)
+    trans.translate(alpha_pi_frac, beta_pi_frac)
 
     # calculate difference
+    flm_rot, flm_trans = rot.flm, trans.flm
     flm_diff = flm_rot - flm_trans
+
+    # get functions
+    rot.invert()
+    trans.invert()
+
+    # calculate difference
+    f_rot, f_trans = rot.flm, trans.flm
     f_diff = f_rot - f_trans
 
     # perform test
@@ -34,7 +39,7 @@ def test_dirac_delta_rotate_translate() -> None:
     print("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
 
     # filename
-    filename = f"{flm.name}_L{ENVS['L']}_diff_rot_trans_res{flm_diff.res}"
+    filename = f"{rot.name}_L{ENVS['L']}_diff_rot_trans_res{rot.res}"
 
     # create plot
     Plot(f_diff, f_diff.res, filename).execute()

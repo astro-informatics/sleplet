@@ -5,3 +5,5 @@
 .mypy_cache
 build
 dist
+.vscode
+.pytest_cache

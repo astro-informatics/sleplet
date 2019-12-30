@@ -15,8 +15,8 @@ class Earth(Functions):
 
     @staticmethod
     def load_flm():
-        matfile = (
-            Path(__file__).resolve().parents[1]
+        matfile = str(
+            Path(__file__).resolve().parents[2]
             / "data"
             / "maps"
             / "earth"
@@ -36,9 +36,9 @@ class Earth(Functions):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                flm[ind_nm] = (-1) ** m * np.conj(self.flm[ind_pm])
+                flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
 
         # don't take the full L
         # invert dataset as Earth backwards
-        flm = np.conj(self.flm[: self.L * self.L])
+        flm = np.conj(flm[: self.L * self.L])
         return flm

@@ -20,8 +20,8 @@ class WMAP(Functions):
         # file_ending = '_tt_spectrum_7yr_v4p1'
         file_ending = "_lcdm_pl_model_wmap7baoh0"
 
-        matfile = (
-            Path(__file__).resolve().parents[1]
+        matfile = str(
+            Path(__file__).resolve().parents[2]
             / "data"
             / "maps"
             / "wmap"

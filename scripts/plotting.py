@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import List, Dict
+from typing import Dict, List
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions, function_dict
+from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.vars import ENVS
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
+from pys2sleplet.utils.vars import ENVS
+from pys2sleplet.utils.functions import function_dict
 
 
 def valid_kernels(func_name: str) -> str:
@@ -112,7 +113,7 @@ def load_config() -> Dict:
     """
     load general config as well as args from the command line
     """
-    args = read_args()
+    args = vars(read_args())  # convert to dict
     config = {**ENVS, **args}
     return config
 
@@ -191,7 +192,7 @@ def main() -> None:
         flm,
         env["L"],
         env["routine"],
-        env["plot_type"],
+        env["type"],
         glm,
         alpha_pi_fraction=env["alpha"],
         beta_pi_fraction=env["beta"],

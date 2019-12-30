@@ -3,9 +3,10 @@ from typing import List, Tuple
 
 import numpy as np
 
-from ..functions import Functions
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
+
+from ..functions import Functions
 
 
 class SquashedGaussian(Functions):
@@ -26,7 +27,7 @@ class SquashedGaussian(Functions):
 
     def validate_args(self, args: Namespace) -> Tuple[int, int]:
         extra_args = args.extra_args
-        t_sig, freq = self.validate_args(extra_args)
+        t_sig, freq = self.read_args(extra_args)
 
         # validation
         if not float(t_sig).is_integer():

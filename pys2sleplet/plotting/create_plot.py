@@ -22,7 +22,7 @@ class Plot:
         self.resolution = resolution
         self.filename = filename
         self.annotations = annotations
-        self.fig_path = Path(__file__).resolve().parents[1] / "figures"
+        self.fig_path = Path(__file__).resolve().parents[2] / "figures"
 
     def execute(self) -> None:
         """
@@ -88,7 +88,7 @@ class Plot:
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
-        html_filename = self.fig_path / "html" / f"{self.filename}.html"
+        html_filename = str(self.fig_path / "html" / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename, auto_open=ENVS["AUTO_OPEN"])
 

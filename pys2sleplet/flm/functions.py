@@ -4,8 +4,6 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 
-from .kernels.kernels import kernel_dict
-from .maps.maps import map_dict
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -15,7 +13,7 @@ class Functions:
         self.name = name
         self.L = L
         self.res = calc_resolution(L)
-        self.__flm = None
+        self.__flm = self._create_flm()
         self.__reality = False
 
     @abstractmethod
@@ -70,9 +68,8 @@ class Functions:
 
         # numpy binary filename
         filename = (
-            Path(__file__).resolve().parent
+            Path(__file__).resolve().parents[1]
             / "data"
-            / "npy"
             / "trans_dirac"
             / f"trans_dd_L{self.L}_{filename_angle(alpha_pi_fraction,beta_pi_fraction)}.npy"
         )
@@ -121,7 +118,3 @@ class Functions:
         # perform inverse
         f = ssht.inverse(flm, self.res, Reality=self.reality, Method="MWSS")
         return f
-
-
-# form dictionary of all functions
-function_dict = {**kernel_dict, **map_dict}

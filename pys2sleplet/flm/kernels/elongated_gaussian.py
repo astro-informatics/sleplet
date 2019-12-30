@@ -3,9 +3,10 @@ from typing import List, Tuple
 
 import numpy as np
 
-from ..functions import Functions
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
+
+from ..functions import Functions
 
 
 class ElongatedGaussian(Functions):

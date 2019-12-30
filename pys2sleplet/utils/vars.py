@@ -7,7 +7,7 @@ def load_config(filename):
     return toml.load(filename)
 
 
-parent_dir = Path(__file__).resolve().parent
+parent_dir = Path(__file__).resolve().parents[1]
 
 ENVS = load_config(parent_dir / "config.toml")
 SLEPIAN = load_config(parent_dir / "slepian" / "slepian.toml")

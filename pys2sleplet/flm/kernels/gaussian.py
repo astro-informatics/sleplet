@@ -3,8 +3,9 @@ from argparse import Namespace
 import numpy as np
 import pyssht as ssht
 
-from ..functions import Functions
 from pys2sleplet.utils.string_methods import filename_args
+
+from ..functions import Functions
 
 
 class Gaussian(Functions):
