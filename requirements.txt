@@ -1,9 +1,9 @@
 argparse
 cmocean
-dataclasses
 matplotlib
 numpy
 pathlib
 plotly
+pytest
 scipy
 typing
