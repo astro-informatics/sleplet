@@ -4,12 +4,11 @@ from typing import Dict, List
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.utils.functions import function_dict
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import ENVS
-from pys2sleplet.utils.functions import function_dict
 
 
 def valid_kernels(func_name: str) -> str:
@@ -68,6 +67,7 @@ def read_args() -> Namespace:
         "--convolve",
         "-c",
         type=valid_kernels,
+        default=None,
         choices=list(function_dict.keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
@@ -119,11 +119,11 @@ def load_config() -> Dict:
 
 
 def plot(
-    flm: Functions,
+    f_name: str,
     L: int,
     routine: str,
     plot_type: str,
-    glm: Functions = None,
+    g_name: str = "",
     annotations: List = [],
     alpha_pi_fraction: float = 0.75,
     beta_pi_fraction: float = 0.125,
@@ -132,68 +132,59 @@ def plot(
     """
     master plotting method
     """
-    # setup
-    filename = f"{flm.name}_L{L}_"
+    filename = f"{f_name}_L{L}_"
     resolution = calc_resolution(L)
+    f = function_dict[f_name](L)
 
-    # test for plotting routine
     if routine == "rotate":
-        # adjust filename
         filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
-        # rotate by alpha, beta, gamma
-        flm = flm.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
-    elif routine == "translate":
-        # adjust filename - don't add gamma if translation
-        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
-        # translate by alpha, beta
-        flm = flm.translate(alpha_pi_fraction, beta_pi_fraction)
 
-    if glm is not None:
+        # rotate by alpha, beta, gamma
+        f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
+    elif routine == "translate":
+        # don't add gamma if translation
+        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
+
+        # translate by alpha, beta
+        f.translate(alpha_pi_fraction, beta_pi_fraction)
+
+    if g_name:
+        g = function_dict[g_name](L)
         # perform convolution
-        flm = flm.convolve(glm.flm)
+        f.convolve(g)
         # adjust filename
-        filename += f"convolved_{glm.name}_L{L}_"
+        filename += f"convolved_{g_name}_L{L}_"
 
     # inverse & plot
-    f = flm.invert()
+    field = f.field
 
     # add resolution to filename
     filename += f"res{resolution}_"
 
     # check for plotting type
     if plot_type == "real":
-        f = f.real
+        field = field.real
     elif plot_type == "imag":
-        f = f.imag
+        field = field.imag
     elif plot_type == "abs":
-        f = np.abs(f)
+        field = np.abs(field)
     elif plot_type == "sum":
-        f = f.real + f.imag
+        field = field.real + field.imag
 
     # do plot
     filename += plot_type
-    Plot(f, resolution, filename, annotations).execute()
+    Plot(field, resolution, filename, annotations).execute()
 
 
 def main() -> None:
-    # load config
     env = load_config()
 
-    # setup flm
-    flm = function_dict[env["flm"]](env["L"])
-
-    # setup flm to convolve with
-    try:
-        glm = function_dict[env["convolve"]](env["L"])
-    except KeyError:
-        glm = None
-
     plot(
-        flm,
+        env["flm"],
         env["L"],
         env["routine"],
         env["type"],
-        glm,
+        env["convolve"],
         alpha_pi_fraction=env["alpha"],
         beta_pi_fraction=env["beta"],
         gamma_pi_fraction=env["gamma"],
