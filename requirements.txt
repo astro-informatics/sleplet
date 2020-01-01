@@ -1,11 +1,11 @@
-astropy
-healpy
+# astropy
+# healpy
 # argparse
 # cmocean
 # matplotlib
 # numpy
 # pathlib
 # plotly
-# pytest
+pytest
 # scipy
 # typing
