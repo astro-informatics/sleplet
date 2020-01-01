@@ -13,6 +13,7 @@ before_script:
     - docker cp . ${CONTAINER_NAME}:${S2SLEPLET}
     # above 512 get a memory error from travis
     - docker exec ${CONTAINER_NAME} sed -i 's/16/512/' ${S2SLEPLET}/pys2sleplet/config.toml
+    - docker exec ${CONTAINER_NAME} pip install -r ${S2SLEPLET}/requirements.txt
 
 script:
     - docker exec run_test pytest -v
