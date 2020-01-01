@@ -1,0 +1,15 @@
+# Ignore everything
+*
+
+# Allow files and directories
+!requirements.txt
+!figures
+!pys2sleplet
+
+# Ignore unnecessary files inside allowed directories
+**/__pycache__
+**/*.html
+**/*.npy
+**/*.pdf
+**/*.png
+**/*.sh

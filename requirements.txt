@@ -1,11 +1,5 @@
-# astropy
-# healpy
-# argparse
-# cmocean
-# matplotlib
-# numpy
-# pathlib
-# plotly
+cmocean
+matplotlib
+plotly
 pytest
-# scipy
-# typing
+toml

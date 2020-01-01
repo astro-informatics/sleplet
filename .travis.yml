@@ -1,19 +1,8 @@
 services:
     - docker
 
-before_install:
+before_script:
     - echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
 
-install:
-    - docker pull ${DOCKER_USERNAME}/${DOCKER_IMAGE}
-    - docker run --name ${CONTAINER_NAME} -t -d ${DOCKER_USERNAME}/${DOCKER_IMAGE}
-
-before_script:
-    - docker exec ${CONTAINER_NAME} mkdir ${S2SLEPLET}
-    - docker cp . ${CONTAINER_NAME}:${S2SLEPLET}
-    # above 512 get a memory error from travis
-    - docker exec ${CONTAINER_NAME} sed -i 's/16/512/' ${S2SLEPLET}/pys2sleplet/config.toml
-    - docker exec ${CONTAINER_NAME} pip install -r ${S2SLEPLET}/requirements.txt
-
 script:
-    - docker exec run_test pytest -v
+    - docker build -f docker/Dockerfile .
