@@ -1,9 +1,9 @@
-argparse
-cmocean
-matplotlib
-numpy
-pathlib
-plotly
-pytest
-scipy
-typing
+# argparse
+# cmocean
+# matplotlib
+# numpy
+# pathlib
+# plotly
+# pytest
+# scipy
+# typing
