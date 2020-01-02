@@ -1,8 +1,36 @@
 services:
     - docker
 
+before_install:
+    - >
+        echo ${DOCKER_PASSWORD} |
+        docker login
+        -u ${DOCKER_USERNAME}
+        --password-stdin
+
+install:
+    - >
+        docker build
+        -f docker/Dockerfile
+        --build-arg DOCKER_USERNAME=${DOCKER_USERNAME}
+        --build-arg DOCKER_IMAGE=${DOCKER_IMAGE}
+        --no-cache
+        -t image
+        .
+    - >
+        docker run
+        --name test
+        -t -d
+        image
+        bash
+
 before_script:
-    - echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
+    # above 512 get a memory error from travis
+    - >
+        docker exec test
+        sed -i 's/16/512/' pys2sleplet/config.toml
 
 script:
-    - docker build -f docker/Dockerfile --build-arg DOCKER_USERNAME=${DOCKER_USERNAME} --build-arg DOCKER_IMAGE=${DOCKER_IMAGE} --no-cache .
+    - >
+        docker exec test
+        pytest -v
