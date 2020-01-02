@@ -323,12 +323,12 @@ class SlepianPolarCap(SlepianSpecific):
                 x, y, z = ssht.s2_to_cart(theta, phi)
                 annotation.append({**dict(x=x, y=y, z=z, arrowcolor="black"), **config})
             # check if dealing with polar gap
-            if self.polar_gap:
-                theta_bottom = np.array(np.pi - np.deg2rad(self.theta_max))
-                for i in range(ndots):
-                    phi = np.array(2 * np.pi / ndots * (i + 1))
-                    x, y, z = ssht.s2_to_cart(theta_bottom, phi)
-                    annotation.append(
-                        {**dict(x=x, y=y, z=z, arrowcolor="white"), **config}
-                    )
+            # if self.polar_gap:
+            #     theta_bottom = np.array(np.pi - np.deg2rad(self.theta_max))
+            #     for i in range(ndots):
+            #         phi = np.array(2 * np.pi / ndots * (i + 1))
+            #         x, y, z = ssht.s2_to_cart(theta_bottom, phi)
+            #         annotation.append(
+            #             {**dict(x=x, y=y, z=z, arrowcolor="white"), **config}
+            #         )
         return annotation
