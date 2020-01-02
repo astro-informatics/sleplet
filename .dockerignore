@@ -1,15 +1,15 @@
-# # Ignore everything
-# *
+# ignore
+**/.*
+**/build
+**/dist
+**/*.egg-info
+**/*.html
+**/*.md
+**/*.npy
+**/*.pdf
+**/*.png
+**/__pycache__
+**/*.sh
 
-# # Allow files and directories
-# !requirements.txt
-# !figures
-# !pys2sleplet
-
-# # Ignore unnecessary files inside allowed directories
-# **/__pycache__
-# **/*.html
-# **/*.npy
-# **/*.pdf
-# **/*.png
-# **/*.sh
+# except
+!**/trans_dd_L512_alpha3pi4_beta1pi8.npy
