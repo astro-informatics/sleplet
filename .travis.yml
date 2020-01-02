@@ -14,5 +14,4 @@ script:
         -f docker/Dockerfile
         --build-arg DOCKER_USERNAME=${DOCKER_USERNAME}
         --build-arg DOCKER_IMAGE=${DOCKER_IMAGE}
-        --no-cache
         .
