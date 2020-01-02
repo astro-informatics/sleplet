@@ -5,4 +5,8 @@ before_script:
     - echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
 
 script:
-    - docker build -f docker/Dockerfile .
+    - docker build \
+    -f docker/Dockerfile \
+    --build-arg DOCKER_USERNAME=${DOCKER_USERNAME} \
+    --build-arg DOCKER_IMAGE=${DOCKER_IMAGE} \
+    --no-cache .

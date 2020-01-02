@@ -1,6 +1,9 @@
-FROM paddyroddy/cosmoinformatics
+ARG DOCKER_USERNAME
+ARG DOCKER_IMAGE
 
-WORKDIR /home/s2sleplet
+FROM ${DOCKER_USERNAME}/${DOCKER_IMAGE}
+
+WORKDIR /home/project/src/s2sleplet
 
 COPY requirements.txt .
 
