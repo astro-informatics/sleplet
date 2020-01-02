@@ -1,4 +1,3 @@
-from argparse import Namespace
 from typing import List, Tuple
 
 import numpy as np
@@ -10,7 +9,7 @@ from ..functions import Functions
 
 
 class SphericalHarmonic(Functions):
-    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[0, 0])):
+    def __init__(self, L: int, args: List[int] = [0, 0]):
         self.ell, self.m = self.validate_args(args)
         name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
         self.reality = False
@@ -25,9 +24,8 @@ class SphericalHarmonic(Functions):
             raise ValueError("function requires exactly two extra args")
         return ell, m
 
-    def validate_args(self, args: Namespace) -> Tuple[int, int]:
-        extra_args = args.extra_args
-        ell, m = self.read_args(extra_args)
+    def validate_args(self, args: List[int]) -> Tuple[int, int]:
+        ell, m = self.read_args(args)
 
         # validation
         if ell < 0 or not float(ell).is_integer():

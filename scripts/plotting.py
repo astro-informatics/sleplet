@@ -123,18 +123,19 @@ def plot(
     L: int,
     routine: str,
     plot_type: str,
-    g_name: str = "",
+    alpha_pi_fraction: float,
+    beta_pi_fraction: float,
+    gamma_pi_fraction: float,
+    g_name: str,
+    extra_args: List[int],
     annotations: List = [],
-    alpha_pi_fraction: float = 0.75,
-    beta_pi_fraction: float = 0.125,
-    gamma_pi_fraction: float = 0,
 ) -> None:
     """
     master plotting method
     """
     filename = f"{f_name}_L{L}_"
     resolution = calc_resolution(L)
-    f = function_dict[f_name](L)
+    f = function_dict[f_name](L, extra_args)
 
     if routine == "rotate":
         filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
@@ -184,10 +185,11 @@ def main() -> None:
         env["L"],
         env["routine"],
         env["type"],
+        env["alpha"],
+        env["beta"],
+        env["gamma"],
         env["convolve"],
-        alpha_pi_fraction=env["alpha"],
-        beta_pi_fraction=env["beta"],
-        gamma_pi_fraction=env["gamma"],
+        env["extra_args"],
     )
 
 
