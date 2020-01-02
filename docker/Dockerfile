@@ -1,5 +1,4 @@
 FROM paddyroddy/cosmoinformatics
-LABEL maintainer="paddyroddy.github.io"
 
 WORKDIR /home/s2sleplet
 
