@@ -9,7 +9,7 @@ from ..functions import Functions
 class DiracDelta(Functions):
     def __init__(self, L: int, args: List[int] = None):
         self.reality = True
-        super().__init__(L)
+        super().__init__(L, args)
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)

@@ -121,21 +121,21 @@ def load_config() -> Dict:
 def plot(
     f_name: str,
     L: int,
-    routine: str,
+    extra_args: List[int],
     plot_type: str,
+    routine: str,
     alpha_pi_fraction: float,
     beta_pi_fraction: float,
     gamma_pi_fraction: float,
     g_name: str,
-    extra_args: List[int],
     annotations: List = [],
 ) -> None:
     """
     master plotting method
     """
-    filename = f"{f_name}_L{L}_"
     resolution = calc_resolution(L)
     f = function_dict[f_name](L, extra_args)
+    filename = f"{f.name}_L{L}_"
 
     if routine == "rotate":
         filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
@@ -150,11 +150,11 @@ def plot(
         f.translate(alpha_pi_fraction, beta_pi_fraction)
 
     if g_name:
-        g = function_dict[g_name](L)
+        g = function_dict[g_name](L, extra_args)
         # perform convolution
         f.convolve(g)
         # adjust filename
-        filename += f"convolved_{g_name}_L{L}_"
+        filename += f"convolved_{g.name}_L{L}_"
 
     # inverse & plot
     field = f.field
@@ -183,13 +183,13 @@ def main() -> None:
     plot(
         env["flm"],
         env["L"],
-        env["routine"],
+        env["extra_args"],
         env["type"],
+        env["routine"],
         env["alpha"],
         env["beta"],
         env["gamma"],
         env["convolve"],
-        env["extra_args"],
     )
 
 

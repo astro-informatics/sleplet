@@ -16,7 +16,7 @@ class Gaussian(Functions):
             self.__sigma = 10 ** args[0]
         else:
             self.__sigma = 1e3
-        super().__init__(L)
+        super().__init__(L, args)
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from pathlib import Path
+from typing import List, Union
 
 import numpy as np
 import pyssht as ssht
@@ -11,7 +12,7 @@ from pys2sleplet.utils.string_methods import filename_angle
 
 
 class Functions:
-    def __init__(self, L: int):
+    def __init__(self, L: int, extra_args: Union[List[int], None]):
         self.__L = L
         self.__resolution = calc_resolution(L)
         self.__reality = False

@@ -7,7 +7,7 @@ from ..functions import Functions
 
 class Identity(Functions):
     def __init__(self, L: int, args: List[int] = None):
-        super().__init__(L)
+        super().__init__(L, args)
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.ones((L * L)) + 1j * np.zeros((L * L))

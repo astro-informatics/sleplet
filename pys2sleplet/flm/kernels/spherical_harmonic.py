@@ -15,7 +15,7 @@ class SphericalHarmonic(Functions):
             self.__ell, self.__m = args
         else:
             self.__ell, self.__m = 0, 0
-        super().__init__(L)
+        super().__init__(L, args)
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)

@@ -15,7 +15,7 @@ class HarmonicGaussian(Functions):
             self.__l_sigma, self.__m_sigma = [10 ** x for x in args]
         else:
             self.__l_sigma, self.__m_sigma = 1e3, 1e3
-        super().__init__(L)
+        super().__init__(L, args)
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)

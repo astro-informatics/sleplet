@@ -16,10 +16,10 @@ class SquashedGaussian(Functions):
             self.__t_sigma, self.__freq = [10 ** x for x in args]
         else:
             self.__t_sigma, self.__freq = 1e-2, 1e-1
-        super().__init__(L)
+        super().__init__(L, args)
 
     def _create_flm(self, L: int) -> np.ndarray:
-        flm = ensure_f_bandlimited(self.grid_fun, L, self.reality)
+        flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)
         return flm
 
     def _create_name(self) -> str:
@@ -42,7 +42,7 @@ class SquashedGaussian(Functions):
     def freq(self, var: int) -> None:
         self.__freq = 10 ** var
 
-    def grid_fun(
+    def _grid_fun(
         self, theta: np.ndarray, phi: np.ndarray, theta_0: float = 0
     ) -> np.ndarray:
         """

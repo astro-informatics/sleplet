@@ -1,3 +1,8 @@
+from __future__ import annotations
+
+from typing import Mapping, Type
+
+from pys2sleplet.flm.functions import Functions
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.flm.kernels.elongated_gaussian import ElongatedGaussian
 from pys2sleplet.flm.kernels.gaussian import Gaussian
@@ -10,7 +15,7 @@ from pys2sleplet.flm.maps.wmap import WMAP
 
 # from pys2sleplet.flm.kernels.slepian import Slepian
 
-function_dict = {
+function_dict: Mapping[str, Type[Functions]] = {
     "dirac_delta": DiracDelta,
     "earth": Earth,
     "elongated_gaussian": ElongatedGaussian,
