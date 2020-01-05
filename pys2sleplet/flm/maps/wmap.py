@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List
 
 import numpy as np
 import pyssht as ssht
@@ -8,10 +9,35 @@ from ..functions import Functions
 
 
 class WMAP(Functions):
-    def __init__(self, L: int):
-        name = "wmap"
+    def __init__(self, L: int, args: List[int] = None):
         self.reality = True
-        super().__init__(name, L)
+        super().__init__(L)
+
+    def _create_flm(self, L: int) -> np.ndarray:
+        # load in data
+        cl = self.load_cl()
+
+        # same random seed
+        np.random.seed(0)
+
+        # Simulate CMB in harmonic space.
+        flm = np.zeros((L * L), dtype=complex)
+        for ell in range(2, L):
+            cl[ell - 1] = cl[ell - 1] * 2 * np.pi / (ell * (ell + 1))
+            for m in range(-ell, ell + 1):
+                ind = ssht.elm2ind(ell, m)
+                if m == 0:
+                    flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
+                else:
+                    flm[ind] = (
+                        np.sqrt(cl[ell - 1] / 2) * np.random.randn()
+                        + 1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
+                    )
+        return flm
+
+    def _create_name(self) -> str:
+        name = "wmap"
+        return name
 
     @staticmethod
     def load_cl():
@@ -30,25 +56,3 @@ class WMAP(Functions):
         mat_contents = sio.loadmat(matfile)
         cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
         return cl
-
-    def _create_flm(self) -> np.ndarray:
-        # load in data
-        cl = self.load_cl()
-
-        # same random seed
-        np.random.seed(0)
-
-        # Simulate CMB in harmonic space.
-        flm = np.zeros((self.L * self.L), dtype=complex)
-        for ell in range(2, self.L):
-            cl[ell - 1] = cl[ell - 1] * 2 * np.pi / (ell * (ell + 1))
-            for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                if m == 0:
-                    flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
-                else:
-                    flm[ind] = (
-                        np.sqrt(cl[ell - 1] / 2) * np.random.randn()
-                        + 1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
-                    )
-        return flm

@@ -1,41 +1,48 @@
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import filename_args, verify_args
 
 from ..functions import Functions
 
 
 class SphericalHarmonic(Functions):
-    def __init__(self, L: int, args: List[int] = [0, 0]):
-        self.ell, self.m = self.validate_args(args)
-        name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
-        self.reality = False
-        super().__init__(name, L)
+    def __init__(self, L: int, args: List[int] = None):
+        if args is not None:
+            verify_args(args, 2)
+            self.__ell, self.__m = args
+        else:
+            self.__ell, self.__m = 0, 0
+        super().__init__(L)
 
-    @staticmethod
-    def read_args(args: List[int]) -> Tuple[int, int]:
-        # args
-        try:
-            ell, m = int(args.pop(0)), int(args.pop(0))
-        except IndexError:
-            raise ValueError("function requires exactly two extra args")
-        return ell, m
-
-    def validate_args(self, args: List[int]) -> Tuple[int, int]:
-        ell, m = self.read_args(args)
-
-        # validation
-        if ell < 0 or not float(ell).is_integer():
-            raise ValueError("l should be a positive integer")
-        if not float(m).is_integer() or abs(m) > ell:
-            raise ValueError("m should be an integer |m| <= l")
-        return ell, m
-
-    def _create_flm(self) -> np.ndarray:
-        flm = np.zeros((self.L * self.L), dtype=complex)
+    def _create_flm(self, L: int) -> np.ndarray:
+        flm = np.zeros((L * L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
         flm[ind] = 1
         return flm
+
+    def _create_name(self) -> str:
+        name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
+        return name
+
+    @property
+    def ell(self) -> float:
+        return self.__ell
+
+    @ell.setter
+    def ell(self, var: int) -> None:
+        if var < 0:
+            raise ValueError("ell should be positive")
+        self.__ell = var
+
+    @property
+    def m(self) -> float:
+        return self.__m
+
+    @m.setter
+    def m(self, var: int) -> None:
+        if abs(var) > self.ell:
+            raise ValueError("the magnitude of m should be less than ell")
+        self.__ell = var

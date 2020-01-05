@@ -1,32 +1,38 @@
-from argparse import Namespace
+from typing import List
 
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import filename_args, verify_args
 
 from ..functions import Functions
 
 
 class Gaussian(Functions):
-    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[3])):
-        self.sig = self.validate_args(args)
-        name = f"gaussian{filename_args(self.sig, 'sig')}"
+    def __init__(self, L: int, args: List[int] = None):
         self.reality = True
-        super().__init__(name, L)
+        if args is not None:
+            verify_args(args, 1)
+            self.__sigma = 10 ** args[0]
+        else:
+            self.__sigma = 1e3
+        super().__init__(L)
 
-    @staticmethod
-    def validate_args(args: Namespace) -> int:
-        extra_args = args.extra_args[0]
-        # validation
-        if not float(extra_args).is_integer():
-            raise ValueError("sigma should be an integer")
-        sig = 10 ** extra_args
-        return sig
-
-    def _create_flm(self) -> np.ndarray:
-        flm = np.zeros((self.L * self.L), dtype=complex)
-        for ell in range(self.L):
+    def _create_flm(self, L: int) -> np.ndarray:
+        flm = np.zeros((L * L), dtype=complex)
+        for ell in range(L):
             ind = ssht.elm2ind(ell, m=0)
-            flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sig * self.sig))
+            flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma * self.sigma))
         return flm
+
+    def _create_name(self) -> str:
+        name = f"gaussian{filename_args(self.sigma, 'sig')}"
+        return name
+
+    @property
+    def sigma(self) -> float:
+        return self.__sigma
+
+    @sigma.setter
+    def sigma(self, var: int) -> None:
+        self.__sigma = 10 ** var

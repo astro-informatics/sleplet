@@ -1,5 +1,5 @@
 from fractions import Fraction
-from typing import Tuple
+from typing import List, Tuple
 
 from .vars import SLEPIAN
 
@@ -90,3 +90,8 @@ def filename_region():
     if SLEPIAN["THETA_MAX"] != 180:
         filename += f"_tmax{SLEPIAN['THETA_MAX']}"
     return filename
+
+
+def verify_args(args: List[int], num: int) -> None:
+    if len(args) != num:
+        raise ValueError(f"The number of extra arguments should be {num}")

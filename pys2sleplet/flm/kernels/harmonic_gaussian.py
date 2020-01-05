@@ -1,47 +1,47 @@
-from argparse import Namespace
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import filename_args, verify_args
 
 from ..functions import Functions
 
 
 class HarmonicGaussian(Functions):
-    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[3, 3])):
-        self.l_sig, self.m_sig = self.validate_args(args)
-        name = f"harmonic_gaussian{filename_args(self.l_sig, 'lsig')}{filename_args(self.m_sig, 'msig')}"
-        self.reality = False
-        super().__init__(name, L)
+    def __init__(self, L: int, args: List[int] = None):
+        if args is not None:
+            verify_args(args, 2)
+            self.__l_sigma, self.__m_sigma = [10 ** x for x in args]
+        else:
+            self.__l_sigma, self.__m_sigma = 1e3, 1e3
+        super().__init__(L)
 
-    @staticmethod
-    def read_args(args: List[int]) -> Tuple[int, int]:
-        # args
-        try:
-            l_sig, m_sig = int(args.pop(0)), int(args.pop(0))
-        except IndexError:
-            raise ValueError("function requires exactly two extra args")
-        return l_sig, m_sig
-
-    def validate_args(self, args: Namespace) -> Tuple[int, int]:
-        extra_args = args.extra_args
-        l_sig, m_sig = self.read_args(extra_args)
-
-        # validation
-        if not float(l_sig).is_integer():
-            raise ValueError("l sigma should be an integer")
-        if not float(m_sig).is_integer():
-            raise ValueError("m sigma should be an integer")
-        l_sig, m_sig = 10 ** l_sig, 10 ** m_sig
-        return l_sig, m_sig
-
-    def _create_flm(self) -> np.ndarray:
-        flm = np.zeros((self.L * self.L), dtype=complex)
-        for ell in range(self.L):
-            upsilon_l = np.exp(-((ell / self.l_sig) ** 2) / 2)
+    def _create_flm(self, L: int) -> np.ndarray:
+        flm = np.zeros((L * L), dtype=complex)
+        for ell in range(L):
+            upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                flm[ind] = upsilon_l * np.exp(-((m / self.m_sig) ** 2) / 2)
+                flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
         return flm
+
+    def _create_name(self) -> str:
+        name = f"harmonic_gaussian{filename_args(self.l_sigma, 'lsig')}{filename_args(self.m_sigma, 'msig')}"
+        return name
+
+    @property
+    def l_sigma(self) -> float:
+        return self.__l_sigma
+
+    @l_sigma.setter
+    def l_sigma(self, var: int) -> None:
+        self.__l_sigma = 10 ** var
+
+    @property
+    def m_sigma(self) -> float:
+        return self.__m_sigma
+
+    @m_sigma.setter
+    def m_sigma(self, var: int) -> None:
+        self.__m_sigma = 10 ** var

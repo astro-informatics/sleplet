@@ -11,16 +11,26 @@ from pys2sleplet.utils.string_methods import filename_angle
 
 
 class Functions:
-    def __init__(self, name: str, L: int):
-        self.name = name
+    def __init__(self, L: int):
         self.__L = L
-        self.__reality = False
         self.__resolution = calc_resolution(L)
-        self.__multipole = self._create_flm()
-        self.__field = self._invert()
+        self.__reality = False
+        self.__multipole = self._create_flm(self.L)
+        self.__name = self._create_name()
+        self.__field = self._invert(self.multipole)
 
     @abstractmethod
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self, L: int) -> np.ndarray:
+        """
+        creates the flm on the north pole
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_name(self) -> str:
+        """
+        creates the name of the function
+        """
         raise NotImplementedError
 
     @property
@@ -28,47 +38,54 @@ class Functions:
         return self.__L
 
     @L.setter
-    def L(self, var) -> None:
+    def L(self, var: int) -> None:
         """
         update L and hence resolution
         """
         self.__L = var
-        self.resolution = calc_resolution(var)
-
-    @property
-    def reality(self) -> bool:
-        return self.__reality
-
-    @reality.setter
-    def reality(self, var) -> None:
-        self.__reality = var
 
     @property
     def resolution(self) -> int:
         return self.__resolution
 
     @resolution.setter
-    def resolution(self, var) -> None:
+    def resolution(self, var: int) -> None:
         self.__resolution = var
+
+    @property
+    def reality(self) -> bool:
+        return self.__reality
+
+    @reality.setter
+    def reality(self, var: bool) -> None:
+        self.__reality = var
 
     @property
     def multipole(self) -> np.ndarray:
         return self.__multipole
 
     @multipole.setter
-    def multipole(self, var) -> None:
+    def multipole(self, var: np.ndarray) -> None:
         """
         update multipole value and hence field value
         """
         self.__multipole = var
-        self.field = self._invert()
+        self.field = self._invert(self.multipole)
+
+    @property
+    def name(self) -> np.ndarray:
+        return self.__name
+
+    @name.setter
+    def name(self, var: str) -> None:
+        self.__name = var
 
     @property
     def field(self) -> np.ndarray:
         return self.__field
 
     @field.setter
-    def field(self, var) -> None:
+    def field(self, var: np.ndarray) -> None:
         self.__field = var
 
     def rotate(
@@ -132,7 +149,7 @@ class Functions:
 
         self.multipole *= np.conj(glm.multipole)
 
-    def __boost_res(self, flm) -> np.ndarray:
+    def _boost_res(self, flm) -> np.ndarray:
         """
         calculates a boost in resolution for given flm
         """
@@ -140,13 +157,15 @@ class Functions:
         flm_boost = np.pad(self.multipole, (0, boost), "constant")
         return flm_boost
 
-    def _invert(self) -> np.ndarray:
+    def _invert(self, flm: np.ndarray) -> np.ndarray:
         """
         performs the inverse harmonic transform
         """
         # boost resolution for plot
-        flm = self.__boost_res(self.multipole)
+        flm_boost = self._boost_res(flm)
 
         # perform inverse
-        f = ssht.inverse(flm, self.resolution, Reality=self.reality, Method="MWSS")
+        f = ssht.inverse(
+            flm_boost, self.resolution, Reality=self.reality, Method="MWSS"
+        )
         return f

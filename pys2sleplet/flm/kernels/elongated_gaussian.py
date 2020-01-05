@@ -1,41 +1,46 @@
-from argparse import Namespace
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
 
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import filename_args, verify_args
 
 from ..functions import Functions
 
 
 class ElongatedGaussian(Functions):
-    def __init__(self, L: int, args: Namespace = Namespace(extra_args=[0, -3])):
-        self.t_sig, self.p_sig = self.validate_args(args)
-        name = f"elongated_gaussian{filename_args(self.t_sig, 'tsig')}{filename_args(self.p_sig, 'psig')}"
+    def __init__(self, L: int, args: List[int] = None):
         self.reality = True
-        super().__init__(name, L)
+        if args is not None:
+            verify_args(args, 2)
+            self.__t_sigma, self.__p_sigma = [10 ** x for x in args]
+        else:
+            self.__t_sigma, self.__p_sigma = 1e0, 1e-3
+        super().__init__(L)
 
-    @staticmethod
-    def read_args(args: List[int]) -> Tuple[int, int]:
-        # args
-        try:
-            t_sig, p_sig = int(args.pop(0)), int(args.pop(0))
-        except IndexError:
-            raise ValueError("function requires exactly two extra args")
-        return t_sig, p_sig
+    def _create_flm(self, L: int) -> np.ndarray:
+        flm = ensure_f_bandlimited(self.grid_fun, L, self.reality)
+        return flm
 
-    def validate_args(self, args: Namespace) -> Tuple[int, int]:
-        extra_args = args.extra_args
-        t_sig, p_sig = self.read_args(extra_args)
+    def _create_name(self) -> str:
+        name = f"elongated_gaussian{filename_args(self.t_sigma, 'tsig')}{filename_args(self.p_sigma, 'psig')}"
+        return name
 
-        # validation
-        if not float(t_sig).is_integer():
-            raise ValueError("theta sigma should be an integer")
-        if not float(p_sig).is_integer():
-            raise ValueError("phi sigma should be an integer")
-        t_sig, p_sig = 10 ** t_sig, 10 ** p_sig
-        return t_sig, p_sig
+    @property
+    def t_sigma(self) -> float:
+        return self.__t_sigma
+
+    @t_sigma.setter
+    def t_sigma(self, var: int) -> None:
+        self.__t_sigma = 10 ** var
+
+    @property
+    def p_sigma(self) -> float:
+        return self.__p_sigma
+
+    @p_sigma.setter
+    def p_sigma(self, var: int) -> None:
+        self.__p_sigma = 10 ** var
 
     def grid_fun(
         self,
@@ -48,11 +53,10 @@ class ElongatedGaussian(Functions):
         function on the grid
         """
         f = np.exp(
-            -(((theta - theta_0) / self.t_sig) ** 2 + ((phi - phi_0) / self.p_sig) ** 2)
+            -(
+                ((theta - theta_0) / self.t_sigma) ** 2
+                + ((phi - phi_0) / self.p_sigma) ** 2
+            )
             / 2
         )
         return f
-
-    def _create_flm(self) -> np.ndarray:
-        flm = ensure_f_bandlimited(self.grid_fun, self.L, self.reality)
-        return flm
