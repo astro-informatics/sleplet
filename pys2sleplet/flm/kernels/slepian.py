@@ -1,56 +1,48 @@
-# from argparse import Namespace
-# from typing import List, Tuple
+from typing import List, Optional
 
-# import numpy as np
+import numpy as np
 
-# from ..functions import Functions
+from ..functions import Functions
 
 
-# class Slepian(Functions):
-#     def __init__(
-#         self, L: int, args: Namespace = Namespace(extra_args=[0, 360, 0, 180, 0, 0, 0])
-#     ):
-#         self.rank, self.sf = self.validate_args(args)
-#         name = "slepian"
-#         self.reality = False
-#         super().__init__(name, L)
+class Slepian(Functions):
+    # [0, 360, 0, 180, 0, 0, 0]
+    def __init__(self, L: int, args: List[int] = None):
+        self.__rank = 0
+        super().__init__(L, args)
 
-#     @staticmethod
-#     def read_args(args: List[int]) -> Tuple[int, int]:
-#         # args
-#         try:
-#             rank = int(args.pop(0))
-#         except IndexError:
-#             # the most concentrated Slepian rank
-#             rank = 0
-#         try:
-#             order = int(args.pop(0))
-#         except IndexError:
-#             # D matrix corresponding to m=0 for polar cap
-#             order = 0
-#         return rank, order
+    def _setup_args(self, args: Optional[List[int]]) -> None:
+        raise NotImplementedError
 
-#     def validate_args(self, args) -> int:
-#         extra_args = args.extra_args
-#         rank, order = self.read_args(extra_args)
+    def _create_name(self) -> str:
+        name = "slepian"
+        return name
 
-#         # validation
-#         if not float(rank).is_integer() or rank < 0:
-#             raise ValueError(f"Slepian concentration rank should be a positive integer")
-#         if sf.is_polar_cap:
-#             if rank >= self.L - abs(order):
-#                 raise ValueError(
-#                     f"Slepian concentration rank should be less than {self.L - abs(order)}"
-#                 )
-#         else:
-#             if rank >= self.L * self.L:
-#                 raise ValueError(
-#                     f"Slepian concentration rank should be less than {self.L * self.L}"
-#                 )
-#         rank = int(rank)
-#         return rank
+    def _create_flm(self, L: int) -> np.ndarray:
+        flm = self.eigenvectors[self.rank]
+        print(f"Eigenvalue {self.rank}: {self.eigenvalues[self.rank]:e}")
+        return flm
 
-#     def _create_flm(self) -> np.ndarray:
-#         flm = self.sf.eigenvectors[self.rank]
-#         print(f"Eigenvalue {self.rank}: {self.sf.eigenvalues[self.rank]:e}")
-#         return flm
+    @property
+    def rank(self) -> int:
+        return self.__rank
+
+    @rank.setter
+    def rank(self, var: int) -> None:
+        self.__rank = var
+
+    @property
+    def eigenvectors(self) -> np.ndarray:
+        return self.__eigenvectors
+
+    @eigenvectors.setter
+    def eigenvectors(self, var: np.ndarray) -> None:
+        self.__eigenvectors = var
+
+    @property
+    def eigenvalues(self) -> np.ndarray:
+        return self.__eigenvalues
+
+    @eigenvalues.setter
+    def eigenvalues(self, var: np.ndarray) -> None:
+        self.__eigenvalues = var
