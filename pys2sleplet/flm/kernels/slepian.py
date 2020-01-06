@@ -1,4 +1,5 @@
-from typing import List, Optional
+from abc import abstractmethod
+from typing import List, Optional, Tuple
 
 import numpy as np
 
@@ -9,6 +10,8 @@ class Slepian(Functions):
     # [0, 360, 0, 180, 0, 0, 0]
     def __init__(self, L: int, args: List[int] = None):
         self.__rank = 0
+        self.__matrix_name = f"D_L-{L}_"
+        self.__eigenvalues, self.__eigenvectors = self.eigenproblem()
         super().__init__(L, args)
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
@@ -46,3 +49,19 @@ class Slepian(Functions):
     @eigenvalues.setter
     def eigenvalues(self, var: np.ndarray) -> None:
         self.__eigenvalues = var
+
+    @property
+    def matrix_name(self) -> str:
+        return self.__matrix_name
+
+    @matrix_name.setter
+    def matrix_name(self, var: str) -> None:
+        self.__matrix_name = var
+
+    @abstractmethod
+    def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def annotations(self) -> List[dict]:
+        raise NotImplementedError

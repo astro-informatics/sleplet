@@ -1,21 +1,17 @@
 from abc import abstractmethod
-from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 
+from pys2sleplet.flm.kernels.slepian import Slepian
 from pys2sleplet.utils.string_methods import filename_region
 from pys2sleplet.utils.vars import SLEPIAN
 
-from .slepian_functions import SlepianFunctions
 
-
-class SlepianSpecific(SlepianFunctions):
+class SlepianSpecific(Slepian):
     def __init__(self, L: int) -> None:
         super().__init__(L)
-        self.matrix_filename = Path(
-            SlepianFunctions.matrix_filename.name + filename_region()
-        )
+        self.matrix_name = Slepian.matrix_name + filename_region()
         self.is_polar_cap = (
             SLEPIAN["PHI_MIN"] == 0
             and SLEPIAN["PHI_MAX"] == 360

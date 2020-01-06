@@ -5,13 +5,12 @@ from typing import List, Tuple
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.flm.kernels.slepian import Slepian
 from pys2sleplet.utils.plot_methods import calc_samples
 from pys2sleplet.utils.vars import ENVS
 
-from .slepian_functions import SlepianFunctions
 
-
-class SlepianArbitrary(SlepianFunctions):
+class SlepianArbitrary(Slepian):
     def __init__(self, L: int, mask=Tuple[np.ndarray, np.ndarray]) -> None:
         super().__init__(L)
         theta_mask, phi_mask = mask
