@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from pathlib import Path
-from typing import List, Union
+from typing import List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -12,13 +12,22 @@ from pys2sleplet.utils.string_methods import filename_angle
 
 
 class Functions:
-    def __init__(self, L: int, extra_args: Union[List[int], None]):
+    def __init__(self, L: int, extra_args: Optional[List[int]]):
+        self._setup_args(extra_args)
         self.__L = L
         self.__resolution = calc_resolution(L)
         self.__reality = False
         self.__multipole = self._create_flm(self.L)
         self.__name = self._create_name()
         self.__field = self._invert(self.multipole)
+
+    @abstractmethod
+    def _setup_args(self, args: Optional[List[int]]) -> None:
+        """
+        initialises function specific args
+        either default value or user input
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def _create_flm(self, L: int) -> np.ndarray:

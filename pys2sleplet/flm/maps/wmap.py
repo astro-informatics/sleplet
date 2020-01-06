@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -12,6 +12,9 @@ class WMAP(Functions):
     def __init__(self, L: int, args: List[int] = None):
         self.reality = True
         super().__init__(L, args)
+
+    def _setup_args(self, args: Optional[List[int]]) -> None:
+        raise NotImplementedError
 
     def _create_flm(self, L: int) -> np.ndarray:
         # load in data

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -10,12 +10,14 @@ from ..functions import Functions
 
 class HarmonicGaussian(Functions):
     def __init__(self, L: int, args: List[int] = None):
+        super().__init__(L, args)
+
+    def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
             verify_args(args, 2)
             self.__l_sigma, self.__m_sigma = [10 ** x for x in args]
         else:
             self.__l_sigma, self.__m_sigma = 1e3, 1e3
-        super().__init__(L, args)
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
