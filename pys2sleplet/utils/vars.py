@@ -1,13 +1,13 @@
 from pathlib import Path
 
-import toml
+from .misc import load_config
 
+__parent_dir = Path(__file__).resolve().parents[1]
 
-def load_config(filename):
-    return toml.load(filename)
+ENVS = load_config(__parent_dir / "config.toml")
+SLEPIAN = load_config(__parent_dir / "slepian" / "slepian.toml")
 
-
-parent_dir = Path(__file__).resolve().parents[1]
-
-ENVS = load_config(parent_dir / "config.toml")
-SLEPIAN = load_config(parent_dir / "slepian" / "slepian.toml")
+PHI_MIN_DEFAULT = 0
+PHI_MAX_DEFAULT = 180
+THETA_MIN_DEFAULT = 0
+THETA_MAX_DEFAULT = 360

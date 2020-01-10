@@ -15,9 +15,10 @@ class SphericalHarmonic(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
             verify_args(args, 2)
-            self.__ell, self.__m = args
+            ell, m = args
         else:
-            self.__ell, self.__m = 0, 0
+            ell, m = 0, 0
+        self.ell, self.m = ell, m
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
@@ -47,4 +48,4 @@ class SphericalHarmonic(Functions):
     def m(self, var: int) -> None:
         if abs(var) > self.ell:
             raise ValueError("the magnitude of m should be less than ell")
-        self.__ell = var
+        self.__m = var

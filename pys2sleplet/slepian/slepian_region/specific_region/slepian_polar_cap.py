@@ -1,26 +1,119 @@
 import multiprocessing.sharedctypes as sct
 from multiprocessing import Pool
 from pathlib import Path
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
 from scipy.special import factorial as fact
 
-from pys2sleplet.slepian.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.vars import ENVS, SLEPIAN
+from pys2sleplet.utils.string_methods import filename_region
+from pys2sleplet.utils.vars import (
+    ENVS,
+    PHI_MAX_DEFAULT,
+    PHI_MIN_DEFAULT,
+    SLEPIAN,
+    THETA_MIN_DEFAULT,
+)
+
+from ..slepian_specific import SlepianSpecific
 
 
 class SlepianPolarCap(SlepianSpecific):
-    def __init__(self, L: int, order: int = 0):
-        super().__init__(L)
-        self.matrix_filename = (
-            Path(__file__).resolve().parents[1]
+    def __init__(self, L: int, theta_max: int, order: int = 0):
+        self.order = order
+        super().__init__(
+            L, PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, theta_max
+        )
+
+    def _create_annotations(self) -> List[Dict]:
+        annotation = []
+        config = dict(arrowhead=6, ax=5, ay=5)
+        # check if dealing with small polar cap
+        if self.theta_max <= 45:
+            ndots = 12
+            theta = np.array(np.deg2rad(self.theta_max))
+            for i in range(ndots):
+                phi = np.array(2 * np.pi / ndots * (i + 1))
+                x, y, z = ssht.s2_to_cart(theta, phi)
+                annotation.append({**dict(x=x, y=y, z=z, arrowcolor="black"), **config})
+            # check if dealing with polar gap
+            # if self.polar_gap:
+            #     theta_bottom = np.array(np.pi - np.deg2rad(self.theta_max))
+            #     for i in range(ndots):
+            #         phi = np.array(2 * np.pi / ndots * (i + 1))
+            #         x, y, z = ssht.s2_to_cart(theta_bottom, phi)
+            #         annotation.append(
+            #             {**dict(x=x, y=y, z=z, arrowcolor="white"), **config}
+            #         )
+        return annotation
+
+    def _create_matrix_location(self) -> Path:
+        location = (
+            Path(__file__).resolve().parents[3]
             / "data"
             / "polar"
-            / SlepianSpecific.matrix_filename.name
+            / f"D_L-{self.L}_{filename_region()}"
         )
-        self.order = order
+        return location
+
+    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        # create emm vector
+        emm = np.zeros(2 * self.L * 2 * self.L)
+        k = 0
+        for l in range(2 * self.L):
+            M = 2 * l + 1
+            emm[k : k + M] = np.arange(-l, l + 1)
+            k = k + M
+
+        # check if matrix already exists
+        if Path(self.matrix_location).exists():
+            Dm = np.load(self.matrix_location)
+        else:
+            # create Legendre polynomials table
+            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
+            ind = emm == 0
+            l = np.arange(2 * self.L).reshape(1, -1)
+            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
+            P = np.concatenate((Pl, l))
+
+            # Computing order 'm' Slepian matrix
+            if ENVS["N_CPU"] == 1:
+                Dm = self.Dm_matrix_serial(abs(self.order), P)
+            else:
+                Dm = self.Dm_matrix_parallel(abs(self.order), P, ENVS["N_CPU"])
+
+            # save to speed up for future
+            if ENVS["SAVE_MATRICES"]:
+                np.save(self.matrix_location, Dm)
+
+        # solve eigenproblem for order 'm'
+        eigenvalues, gl = np.linalg.eigh(Dm)
+
+        # eigenvalues should be real
+        eigenvalues = eigenvalues.real
+
+        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        gl = np.conj(gl[:, idx])
+
+        # put back in full D space for harmonic transform
+        emm = emm[: self.L * self.L]
+        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
+        eigenvectors = np.zeros(
+            (self.L - abs(self.order), self.L * self.L), dtype=complex
+        )
+        eigenvectors[ind] = gl.T.flatten()
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+
+        # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
+        if self.order < 0:
+            eigenvectors *= 1j
+
+        return eigenvalues, eigenvectors
 
     @property
     def order(self) -> int:
@@ -28,10 +121,6 @@ class SlepianPolarCap(SlepianSpecific):
 
     @order.setter
     def order(self, var: int) -> None:
-        # test if order is an integer
-        if not isinstance(var, int):
-            raise ValueError("Slepian polar cap order should be an integer")
-
         # check order is in correct range
         if abs(var) >= self.L:
             raise ValueError(
@@ -247,88 +336,3 @@ class SlepianPolarCap(SlepianSpecific):
     def polar_gap_modification(ell1: int, ell2: int) -> int:
         factor = 1 + SLEPIAN["POLAR_GAP"] * (-1) ** (ell1 + ell2)
         return factor
-
-    def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        """
-        # create emm vector
-        emm = np.zeros(2 * self.L * 2 * self.L)
-        k = 0
-        for l in range(2 * self.L):
-            M = 2 * l + 1
-            emm[k : k + M] = np.arange(-l, l + 1)
-            k = k + M
-
-        # check if matrix already exists
-        if Path(self.matrix_filename).exists():
-            Dm = np.load(self.matrix_filename)
-        else:
-            # create Legendre polynomials table
-            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
-            ind = emm == 0
-            l = np.arange(2 * self.L).reshape(1, -1)
-            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-            P = np.concatenate((Pl, l))
-
-            # Computing order 'm' Slepian matrix
-            if ENVS["N_CPU"] == 1:
-                Dm = self.Dm_matrix_serial(abs(self.order), P)
-            else:
-                Dm = self.Dm_matrix_parallel(abs(self.order), P, ENVS["N_CPU"])
-
-            # save to speed up for future
-            if ENVS["SAVE_MATRICES"]:
-                np.save(self.matrix_filename, Dm)
-
-        # solve eigenproblem for order 'm'
-        eigenvalues, gl = np.linalg.eigh(Dm)
-
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        gl = np.conj(gl[:, idx])
-
-        # put back in full D space for harmonic transform
-        emm = emm[: self.L * self.L]
-        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
-        eigenvectors = np.zeros(
-            (self.L - abs(self.order), self.L * self.L), dtype=complex
-        )
-        eigenvectors[ind] = gl.T.flatten()
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
-        if self.order < 0:
-            eigenvectors *= 1j
-
-        return eigenvalues, eigenvectors
-
-    def annotations(self) -> List[dict]:
-        """
-        annotations for the plotly plot
-        """
-        annotation = []
-        config = dict(arrowhead=6, ax=5, ay=5)
-        # check if dealing with small polar cap
-        if self.theta_max <= 45:
-            ndots = 12
-            theta = np.array(np.deg2rad(self.theta_max))
-            for i in range(ndots):
-                phi = np.array(2 * np.pi / ndots * (i + 1))
-                x, y, z = ssht.s2_to_cart(theta, phi)
-                annotation.append({**dict(x=x, y=y, z=z, arrowcolor="black"), **config})
-            # check if dealing with polar gap
-            # if self.polar_gap:
-            #     theta_bottom = np.array(np.pi - np.deg2rad(self.theta_max))
-            #     for i in range(ndots):
-            #         phi = np.array(2 * np.pi / ndots * (i + 1))
-            #         x, y, z = ssht.s2_to_cart(theta_bottom, phi)
-            #         annotation.append(
-            #             {**dict(x=x, y=y, z=z, arrowcolor="white"), **config}
-            #         )
-        return annotation

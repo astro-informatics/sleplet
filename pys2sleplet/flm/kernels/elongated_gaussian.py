@@ -16,9 +16,10 @@ class ElongatedGaussian(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
             verify_args(args, 2)
-            self.__t_sigma, self.__p_sigma = [10 ** x for x in args]
+            t_sigma, p_sigma = [10 ** x for x in args]
         else:
-            self.__t_sigma, self.__p_sigma = 1e0, 1e-3
+            t_sigma, p_sigma = 1e0, 1e-3
+        self.t_sigma, self.p_sigma = t_sigma, p_sigma
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)

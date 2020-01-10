@@ -1,24 +1,88 @@
 import multiprocessing.sharedctypes as sct
 from multiprocessing import Pool
 from pathlib import Path
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_specific import SlepianSpecific
+from pys2sleplet.utils.string_methods import filename_region
 from pys2sleplet.utils.vars import ENVS
 
 
 class SlepianLimitLatLong(SlepianSpecific):
-    def __init__(self, L: int) -> None:
-        self.matrix_filename = (
-            Path(__file__).resolve().parents[1]
+    def __init__(
+        self, L: int, theta_min: int, theta_max: int, phi_min: int, phi_max: int
+    ) -> None:
+        super().__init__(L, phi_min, phi_max, theta_min, theta_max)
+
+    def _create_annotations(self) -> List[Dict]:
+        annotation = []
+        config = dict(arrowhead=6, ax=5, ay=5)
+        p1, p2, t1, t2 = (
+            np.array(np.deg2rad(self.phi_min)),
+            np.array(np.deg2rad(self.phi_max)),
+            np.array(np.deg2rad(self.theta_min)),
+            np.array(np.deg2rad(self.theta_max)),
+        )
+        p3, p4, t3, t4 = (
+            (p1 + 2 * p2) / 3,
+            (2 * p1 + p2) / 3,
+            (t1 + 2 * t2) / 3,
+            (2 * t1 + t2) / 3,
+        )
+        for t in [t1, t2, t3, t4]:
+            for p in [p1, p2, p3, p4]:
+                if not ((t == t3 or t == t4) and (p == p3 or p == p4)):
+                    x, y, z = ssht.s2_to_cart(t, p)
+                    annotation.append(
+                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **config}
+                    )
+        return annotation
+
+    def _create_matrix_location(self) -> Path:
+        location = (
+            Path(__file__).resolve().parents[3]
             / "data"
             / "lat_lon"
-            / SlepianSpecific.matrix_filename.name
+            / f"D_L-{self.L}_{filename_region()}"
         )
-        super().__init__(L)
+        return location
+
+    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        # check if matrix already exists
+        if Path(self.matrix_filename).exists():
+            K = np.load(self.matrix_filename)
+        else:
+            # Compute sub-integral matrix
+            G = self.slepian_integral()
+
+            # Compute Slepian matrix
+            if ENVS["N_CPU"] == 1:
+                K = self.slepian_matrix_serial(G)
+            else:
+                K = self.slepian_matrix_parallel(G, ENVS["N_CPU"])
+
+            # save to speed up for future
+            if ENVS["SAVE_MATRICES"]:
+                np.save(self.matrix_filename, K)
+
+        # solve eigenproblem
+        eigenvalues, eigenvectors = np.linalg.eigh(K)
+
+        # eigenvalues should be real
+        eigenvalues = eigenvalues.real
+
+        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = np.conj(eigenvectors[:, idx]).T
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+
+        return eigenvalues, eigenvectors
 
     def slepian_integral(self) -> np.ndarray:
         """
@@ -240,66 +304,3 @@ class SlepianLimitLatLong(SlepianSpecific):
         K[i_upper] = np.conj(K.T[i_upper])
 
         return K
-
-    def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        """
-        # check if matrix already exists
-        if Path(self.matrix_filename).exists():
-            K = np.load(self.matrix_filename)
-        else:
-            # Compute sub-integral matrix
-            G = self.slepian_integral()
-
-            # Compute Slepian matrix
-            if ENVS["N_CPU"] == 1:
-                K = self.slepian_matrix_serial(G)
-            else:
-                K = self.slepian_matrix_parallel(G, ENVS["N_CPU"])
-
-            # save to speed up for future
-            if ENVS["SAVE_MATRICES"]:
-                np.save(self.matrix_filename, K)
-
-        # solve eigenproblem
-        eigenvalues, eigenvectors = np.linalg.eigh(K)
-
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = np.conj(eigenvectors[:, idx]).T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        return eigenvalues, eigenvectors
-
-    def annotations(self) -> List[dict]:
-        """
-        annotations for the plotly plot
-        """
-        annotation = []
-        config = dict(arrowhead=6, ax=5, ay=5)
-        p1, p2, t1, t2 = (
-            np.array(np.deg2rad(self.phi_min)),
-            np.array(np.deg2rad(self.phi_max)),
-            np.array(np.deg2rad(self.theta_min)),
-            np.array(np.deg2rad(self.theta_max)),
-        )
-        p3, p4, t3, t4 = (
-            (p1 + 2 * p2) / 3,
-            (2 * p1 + p2) / 3,
-            (t1 + 2 * t2) / 3,
-            (2 * t1 + t2) / 3,
-        )
-        for t in [t1, t2, t3, t4]:
-            for p in [p1, p2, p3, p4]:
-                if not ((t == t3 or t == t4) and (p == p3 or p == p4)):
-                    x, y, z = ssht.s2_to_cart(t, p)
-                    annotation.append(
-                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **config}
-                    )
-        return annotation

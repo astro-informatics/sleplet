@@ -16,9 +16,10 @@ class SquashedGaussian(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
             verify_args(args, 2)
-            self.__t_sigma, self.__freq = [10 ** x for x in args]
+            t_sigma, freq = [10 ** x for x in args]
         else:
-            self.__t_sigma, self.__freq = 1e-2, 1e-1
+            t_sigma, freq = 1e-2, 1e-1
+        self.t_sigma, self.freq = t_sigma, freq
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)

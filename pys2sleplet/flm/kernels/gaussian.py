@@ -16,9 +16,10 @@ class Gaussian(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
             verify_args(args, 1)
-            self.__sigma = 10 ** args[0]
+            sigma = 10 ** args[0]
         else:
-            self.__sigma = 1e3
+            sigma = 1e3
+        self.sigma = sigma
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)

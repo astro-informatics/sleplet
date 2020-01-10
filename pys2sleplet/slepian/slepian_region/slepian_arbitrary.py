@@ -1,6 +1,7 @@
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
-from typing import List, Tuple
+from pathlib import Path
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -12,7 +13,6 @@ from pys2sleplet.utils.vars import ENVS
 
 class SlepianArbitrary(Slepian):
     def __init__(self, L: int, mask=Tuple[np.ndarray, np.ndarray]) -> None:
-        super().__init__(L)
         theta_mask, phi_mask = mask
         samples = calc_samples(L)
         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
@@ -23,6 +23,40 @@ class SlepianArbitrary(Slepian):
         self.N = L * L
         self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
+        super().__init__(L)
+
+    def _create_annotations(self) -> List[Dict]:
+        raise NotImplementedError
+
+    def _create_matrix_location(self) -> Path:
+        raise NotImplementedError
+
+    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        # Compute Slepian matrix
+        if ENVS["N_CPU"] == 1:
+            D = self.matrix_serial()
+        else:
+            D = self.matrix_parallel(ENVS["N_CPU"])
+
+        # solve eigenproblem
+        eigenvalues, eigenvectors = np.linalg.eigh(D)
+
+        # eigenvalues should be real
+        eigenvalues = eigenvalues.real
+
+        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = np.conj(eigenvectors[:, idx]).T
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+
+        # find repeating eigenvalues and ensure orthorgonality
+        pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
+        eigenvectors[pairs] *= 1j
+
+        return eigenvalues, eigenvectors
 
     def f(self, i: int, j: int) -> np.ndarray:
         f = self.ylm[i] * np.conj(self.ylm[j])
@@ -125,33 +159,3 @@ class SlepianArbitrary(Slepian):
         result_i = np.ctypeslib.as_array(shared_array_i)
 
         return result_r + 1j * result_i
-
-    def eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        # Compute Slepian matrix
-        if ENVS["N_CPU"] == 1:
-            D = self.matrix_serial()
-        else:
-            D = self.matrix_parallel(ENVS["N_CPU"])
-
-        # solve eigenproblem
-        eigenvalues, eigenvectors = np.linalg.eigh(D)
-
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = np.conj(eigenvectors[:, idx]).T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        # find repeating eigenvalues and ensure orthorgonality
-        pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
-        eigenvectors[pairs] *= 1j
-
-        return eigenvalues, eigenvectors
-
-    def annotations(self) -> List[dict]:
-        raise NotImplementedError

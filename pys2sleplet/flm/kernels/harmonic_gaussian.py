@@ -15,9 +15,10 @@ class HarmonicGaussian(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
             verify_args(args, 2)
-            self.__l_sigma, self.__m_sigma = [10 ** x for x in args]
+            l_sigma, m_sigma = [10 ** x for x in args]
         else:
-            self.__l_sigma, self.__m_sigma = 1e3, 1e3
+            l_sigma, m_sigma = 1e3, 1e3
+        self.l_sigma, self.m_sigma = l_sigma, m_sigma
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
