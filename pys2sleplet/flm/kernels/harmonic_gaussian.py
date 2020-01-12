@@ -17,7 +17,7 @@ class HarmonicGaussian(Functions):
             verify_args(args, 2)
             l_sigma, m_sigma = [10 ** x for x in args]
         else:
-            l_sigma, m_sigma = 1e3, 1e3
+            l_sigma, m_sigma = 1_000, 1_000
         self.l_sigma, self.m_sigma = l_sigma, m_sigma
 
     def _create_flm(self, L: int) -> np.ndarray:
@@ -38,13 +38,13 @@ class HarmonicGaussian(Functions):
         return self.__l_sigma
 
     @l_sigma.setter
-    def l_sigma(self, var: int) -> None:
-        self.__l_sigma = 10 ** var
+    def l_sigma(self, var: float) -> None:
+        self.__l_sigma = var
 
     @property
     def m_sigma(self) -> float:
         return self.__m_sigma
 
     @m_sigma.setter
-    def m_sigma(self, var: int) -> None:
-        self.__m_sigma = 10 ** var
+    def m_sigma(self, var: float) -> None:
+        self.__m_sigma = var

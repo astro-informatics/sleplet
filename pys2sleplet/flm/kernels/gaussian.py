@@ -18,7 +18,7 @@ class Gaussian(Functions):
             verify_args(args, 1)
             sigma = 10 ** args[0]
         else:
-            sigma = 1e3
+            sigma = 1_000
         self.sigma = sigma
 
     def _create_flm(self, L: int) -> np.ndarray:
@@ -37,5 +37,5 @@ class Gaussian(Functions):
         return self.__sigma
 
     @sigma.setter
-    def sigma(self, var: int) -> None:
-        self.__sigma = 10 ** var
+    def sigma(self, var: float) -> None:
+        self.__sigma = var

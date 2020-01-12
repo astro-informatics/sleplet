@@ -31,7 +31,7 @@ class SphericalHarmonic(Functions):
         return name
 
     @property
-    def ell(self) -> float:
+    def ell(self) -> int:
         return self.__ell
 
     @ell.setter
@@ -41,7 +41,7 @@ class SphericalHarmonic(Functions):
         self.__ell = var
 
     @property
-    def m(self) -> float:
+    def m(self) -> int:
         return self.__m
 
     @m.setter

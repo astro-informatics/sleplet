@@ -18,7 +18,7 @@ class ElongatedGaussian(Functions):
             verify_args(args, 2)
             t_sigma, p_sigma = [10 ** x for x in args]
         else:
-            t_sigma, p_sigma = 1e0, 1e-3
+            t_sigma, p_sigma = 1, 0.001
         self.t_sigma, self.p_sigma = t_sigma, p_sigma
 
     def _create_flm(self, L: int) -> np.ndarray:
@@ -34,16 +34,16 @@ class ElongatedGaussian(Functions):
         return self.__t_sigma
 
     @t_sigma.setter
-    def t_sigma(self, var: int) -> None:
-        self.__t_sigma = 10 ** var
+    def t_sigma(self, var: float) -> None:
+        self.__t_sigma = var
 
     @property
     def p_sigma(self) -> float:
         return self.__p_sigma
 
     @p_sigma.setter
-    def p_sigma(self, var: int) -> None:
-        self.__p_sigma = 10 ** var
+    def p_sigma(self, var: float) -> None:
+        self.__p_sigma = var
 
     def _grid_fun(
         self,

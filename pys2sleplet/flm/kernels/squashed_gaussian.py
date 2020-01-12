@@ -18,7 +18,7 @@ class SquashedGaussian(Functions):
             verify_args(args, 2)
             t_sigma, freq = [10 ** x for x in args]
         else:
-            t_sigma, freq = 1e-2, 1e-1
+            t_sigma, freq = 0.01, 0.1
         self.t_sigma, self.freq = t_sigma, freq
 
     def _create_flm(self, L: int) -> np.ndarray:
@@ -34,16 +34,16 @@ class SquashedGaussian(Functions):
         return self.__t_sigma
 
     @t_sigma.setter
-    def t_sigma(self, var: int) -> None:
-        self.__t_sigma = 10 ** var
+    def t_sigma(self, var: float) -> None:
+        self.__t_sigma = var
 
     @property
     def freq(self) -> float:
         return self.__freq
 
     @freq.setter
-    def freq(self, var: int) -> None:
-        self.__freq = 10 ** var
+    def freq(self, var: float) -> None:
+        self.__freq = var
 
     def _grid_fun(
         self, theta: np.ndarray, phi: np.ndarray, theta_0: float = 0
