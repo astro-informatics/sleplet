@@ -6,12 +6,13 @@ from typing import Dict, List, Tuple
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.kernels.slepian import Slepian
 from pys2sleplet.utils.plot_methods import calc_samples
 from pys2sleplet.utils.vars import ENVS
 
+from ..slepian_functions import SlepianFunctions
 
-class SlepianArbitrary(Slepian):
+
+class SlepianArbitrary(SlepianFunctions):
     def __init__(self, L: int, mask=Tuple[np.ndarray, np.ndarray]) -> None:
         theta_mask, phi_mask = mask
         samples = calc_samples(L)
@@ -28,7 +29,15 @@ class SlepianArbitrary(Slepian):
         raise NotImplementedError
 
     def _create_matrix_location(self) -> Path:
-        raise NotImplementedError
+        location = (
+            Path(__file__).resolve().parents[2]
+            / "data"
+            / "slepian"
+            / "arbitrary"
+            / "matrices"
+            / self.__matrix_name
+        )
+        return location
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         # Compute Slepian matrix

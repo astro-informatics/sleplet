@@ -11,7 +11,6 @@ class SlepianFunctions:
         self.L = L
         self.annotations = self._create_annotations()
         self.matrix_location = self._create_matrix_location()
-        self.rank = 0
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
 
     @abstractmethod
@@ -42,14 +41,6 @@ class SlepianFunctions:
     @L.setter
     def L(self, var: int) -> None:
         self.__L = var
-
-    @property
-    def rank(self) -> int:
-        return self.__rank
-
-    @rank.setter
-    def rank(self, var: int) -> None:
-        self.__rank = var
 
     @property
     def matrix_location(self) -> Path:
