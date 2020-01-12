@@ -7,13 +7,12 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.string_methods import filename_region
 from pys2sleplet.utils.vars import ENVS
 
 
 class SlepianLimitLatLong(SlepianSpecific):
     def __init__(
-        self, L: int, theta_min: int, theta_max: int, phi_min: int, phi_max: int
+        self, L: int, theta_min: float, theta_max: float, phi_min: float, phi_max: float
     ) -> None:
         super().__init__(L, phi_min, phi_max, theta_min, theta_max)
 
@@ -21,10 +20,10 @@ class SlepianLimitLatLong(SlepianSpecific):
         annotation = []
         config = dict(arrowhead=6, ax=5, ay=5)
         p1, p2, t1, t2 = (
-            np.array(np.deg2rad(self.phi_min)),
-            np.array(np.deg2rad(self.phi_max)),
-            np.array(np.deg2rad(self.theta_min)),
-            np.array(np.deg2rad(self.theta_max)),
+            np.array(self.phi_min),
+            np.array(self.phi_max),
+            np.array(self.theta_min),
+            np.array(self.theta_max),
         )
         p3, p4, t3, t4 = (
             (p1 + 2 * p2) / 3,
@@ -46,14 +45,14 @@ class SlepianLimitLatLong(SlepianSpecific):
             Path(__file__).resolve().parents[3]
             / "data"
             / "lat_lon"
-            / f"D_L-{self.L}_{filename_region()}"
+            / self.__matrix_name
         )
         return location
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         # check if matrix already exists
-        if Path(self.matrix_filename).exists():
-            K = np.load(self.matrix_filename)
+        if Path(self.matrix_location).exists():
+            K = np.load(self.matrix_location)
         else:
             # Compute sub-integral matrix
             G = self.slepian_integral()
@@ -66,7 +65,7 @@ class SlepianLimitLatLong(SlepianSpecific):
 
             # save to speed up for future
             if ENVS["SAVE_MATRICES"]:
-                np.save(self.matrix_filename, K)
+                np.save(self.matrix_location, K)
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eigh(K)

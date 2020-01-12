@@ -4,19 +4,27 @@ from typing import List, Tuple
 
 import numpy as np
 
+from pys2sleplet.utils.string_methods import filename_region
+from pys2sleplet.utils.vars import (
+    PHI_MAX_DEFAULT,
+    PHI_MIN_DEFAULT,
+    THETA_MAX_DEFAULT,
+    THETA_MIN_DEFAULT,
+)
+
 from ..slepian_functions import SlepianFunctions
 
 
 class SlepianSpecific(SlepianFunctions):
     def __init__(
-        self, L: int, phi_min: int, phi_max: int, theta_min: int, theta_max: int
+        self, L: int, phi_min: float, phi_max: float, theta_min: float, theta_max: float
     ) -> None:
-        # self.matrix_name = Slepian.matrix_name + filename_region()
         self.phi_min = phi_min
         self.phi_max = phi_max
         self.theta_min = theta_min
         self.theta_max = theta_max
         super().__init__(L)
+        self.__matrix_name += filename_region()
 
     @abstractmethod
     def _create_annotations(self) -> List[dict]:
@@ -31,49 +39,49 @@ class SlepianSpecific(SlepianFunctions):
         raise NotImplementedError
 
     @property
-    def phi_min(self) -> int:
+    def phi_min(self) -> float:
         return self.__phi_min
 
     @phi_min.setter
-    def phi_min(self, var: int) -> None:
-        if var > self.phi_max:
-            raise ValueError("phi_min greater than phi_max")
-        elif var == self.phi_max:
-            raise ValueError("phi_min same as phi_max")
+    def phi_min(self, var: float) -> None:
+        if np.rad2deg(var) < PHI_MIN_DEFAULT:
+            raise ValueError("phi_max cannot be negative")
+        elif np.rad2deg(var) > PHI_MAX_DEFAULT:
+            raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
         self.__phi_min = var
 
     @property
-    def phi_max(self) -> int:
+    def phi_max(self) -> float:
         return self.__phi_max
 
     @phi_max.setter
-    def phi_max(self, var: int) -> None:
-        if var < self.phi_min:
-            raise ValueError("phi_max less than phi_min")
-        elif var == self.phi_min:
-            raise ValueError("phi_max same as phi_min")
+    def phi_max(self, var: float) -> None:
+        if np.rad2deg(var) < PHI_MIN_DEFAULT:
+            raise ValueError("phi_max cannot be negative")
+        elif np.rad2deg(var) > PHI_MAX_DEFAULT:
+            raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
         self.__phi_max = var
 
     @property
-    def theta_min(self) -> int:
+    def theta_min(self) -> float:
         return self.__theta_min
 
     @theta_min.setter
-    def theta_min(self, var: int) -> None:
-        if var > self.theta_max:
-            raise ValueError("theta_min greater than theta_max")
-        elif var == self.theta_max:
-            raise ValueError("theta_min same as theta_max")
+    def theta_min(self, var: float) -> None:
+        if np.rad2deg(var) < THETA_MIN_DEFAULT:
+            raise ValueError("theta_min cannot be negative")
+        elif np.rad2deg(var) > THETA_MAX_DEFAULT:
+            raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
         self.__theta_min = var
 
     @property
-    def theta_max(self) -> int:
+    def theta_max(self) -> float:
         return self.__theta_max
 
     @theta_max.setter
-    def theta_max(self, var: int) -> None:
-        if var < self.theta_min:
-            raise ValueError("theta_max less than theta_min")
-        elif var == self.theta_min:
-            raise ValueError("theta_max same as theta_min")
+    def theta_max(self, var: float) -> None:
+        if np.rad2deg(var) < THETA_MIN_DEFAULT:
+            raise ValueError("theta_max cannot be negative")
+        elif np.rad2deg(var) > THETA_MAX_DEFAULT:
+            raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self.__theta_max = var

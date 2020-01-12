@@ -7,6 +7,7 @@ import numpy as np
 
 class SlepianFunctions:
     def __init__(self, L: int) -> None:
+        self.__matrix_name = f"D_L-{L}_"
         self.L = L
         self.annotations = self._create_annotations()
         self.matrix_location = self._create_matrix_location()

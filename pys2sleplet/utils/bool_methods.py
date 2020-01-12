@@ -1,5 +1,37 @@
-def is_polar_cap(phi_min: int, phi_max: int, theta_min: int, theta_max: int) -> bool:
-    switch = False
-    if phi_min == 0 and phi_max == 360 and theta_min == 0 and theta_max != 180:
-        switch = True
-    return switch
+import numpy as np
+
+from .vars import (
+    PHI_MAX_DEFAULT,
+    PHI_MIN_DEFAULT,
+    SLEPIAN,
+    THETA_MAX_DEFAULT,
+    THETA_MIN_DEFAULT,
+)
+
+
+def is_polar_cap(
+    phi_min: float, phi_max: float, theta_min: float, theta_max: float
+) -> bool:
+    if (
+        phi_min == np.deg2rad(PHI_MIN_DEFAULT)
+        and phi_max == np.deg2rad(PHI_MAX_DEFAULT)
+        and theta_min == np.deg2rad(THETA_MIN_DEFAULT)
+        and theta_max != np.deg2rad(THETA_MAX_DEFAULT)
+    ):
+        return True
+    else:
+        return False
+
+
+def is_small_polar_cap(theta_max: float) -> bool:
+    if theta_max <= np.pi / 4:
+        return True
+    else:
+        return False
+
+
+def is_polar_gap() -> bool:
+    if SLEPIAN["POLAR_GAP"]:
+        return True
+    else:
+        return False

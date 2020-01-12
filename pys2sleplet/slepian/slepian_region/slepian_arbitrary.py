@@ -19,7 +19,6 @@ class SlepianArbitrary(Slepian):
         ylm = ssht.create_ylm(thetas, phis, L)
         self.delta_phi = np.ediff1d(phis[0]).mean()
         self.delta_theta = np.ediff1d(thetas[:, 0]).mean()
-        self.L = L
         self.N = L * L
         self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]

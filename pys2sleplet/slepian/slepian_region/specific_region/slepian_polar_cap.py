@@ -1,18 +1,17 @@
 import multiprocessing.sharedctypes as sct
 from multiprocessing import Pool
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pyssht as ssht
 from scipy.special import factorial as fact
 
-from pys2sleplet.utils.string_methods import filename_region
+from pys2sleplet.utils.bool_methods import is_polar_gap, is_small_polar_cap
 from pys2sleplet.utils.vars import (
     ENVS,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
-    SLEPIAN,
     THETA_MIN_DEFAULT,
 )
 
@@ -20,40 +19,37 @@ from ..slepian_specific import SlepianSpecific
 
 
 class SlepianPolarCap(SlepianSpecific):
-    def __init__(self, L: int, theta_max: int, order: int = 0):
+    def __init__(self, L: int, theta_max: float, order: int = 0):
         self.order = order
+        self.ndots = 12
         super().__init__(
-            L, PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, theta_max
+            L,
+            np.deg2rad(PHI_MIN_DEFAULT),
+            np.deg2rad(PHI_MAX_DEFAULT),
+            np.deg2rad(THETA_MIN_DEFAULT),
+            theta_max,
         )
 
     def _create_annotations(self) -> List[Dict]:
-        annotation = []
+        annotation = []  # type: List[Dict]
         config = dict(arrowhead=6, ax=5, ay=5)
-        # check if dealing with small polar cap
-        if self.theta_max <= 45:
-            ndots = 12
-            theta = np.array(np.deg2rad(self.theta_max))
-            for i in range(ndots):
-                phi = np.array(2 * np.pi / ndots * (i + 1))
-                x, y, z = ssht.s2_to_cart(theta, phi)
-                annotation.append({**dict(x=x, y=y, z=z, arrowcolor="black"), **config})
-            # check if dealing with polar gap
-            # if self.polar_gap:
-            #     theta_bottom = np.array(np.pi - np.deg2rad(self.theta_max))
-            #     for i in range(ndots):
-            #         phi = np.array(2 * np.pi / ndots * (i + 1))
-            #         x, y, z = ssht.s2_to_cart(theta_bottom, phi)
-            #         annotation.append(
-            #             {**dict(x=x, y=y, z=z, arrowcolor="white"), **config}
-            #         )
+
+        if is_small_polar_cap(self.theta_max):
+            theta_top = np.array(self.theta_max)
+            for i in range(self.ndots):
+                self._add_to_annotation(annotation, config, theta_top, i)
+
+                if is_polar_gap:
+                    theta_bottom = np.array(np.pi - self.theta_max)
+                    for j in range(self.ndots):
+                        self._add_to_annotation(
+                            annotation, config, theta_bottom, j, colour="white"
+                        )
         return annotation
 
     def _create_matrix_location(self) -> Path:
         location = (
-            Path(__file__).resolve().parents[3]
-            / "data"
-            / "polar"
-            / f"D_L-{self.L}_{filename_region()}"
+            Path(__file__).resolve().parents[3] / "data" / "polar" / self.__matrix_name
         )
         return location
 
@@ -334,5 +330,20 @@ class SlepianPolarCap(SlepianSpecific):
 
     @staticmethod
     def polar_gap_modification(ell1: int, ell2: int) -> int:
-        factor = 1 + SLEPIAN["POLAR_GAP"] * (-1) ** (ell1 + ell2)
+        factor = 1 + is_polar_gap * (-1) ** (ell1 + ell2)
         return factor
+
+    def _add_to_annotation(
+        self,
+        annotation: Union[List[Dict], List],
+        config: Dict[str, int],
+        theta: np.ndarray,
+        i: int,
+        colour: str = "black",
+    ) -> None:
+        """
+        add to annotation list for given theta
+        """
+        phi = np.array(2 * np.pi / self.ndots * (i + 1))
+        x, y, z = ssht.s2_to_cart(theta, phi)
+        annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **config})
