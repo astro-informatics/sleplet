@@ -64,8 +64,11 @@ class Slepian(Functions):
                 / "masks"
                 / SLEPIAN["MASK"]
             )
-            mask = np.load(location)
-            slepian = SlepianArbitrary(self.L, mask)
+            try:
+                mask = np.load(location)
+                slepian = SlepianArbitrary(self.L, mask)
+            except FileNotFoundError:
+                print("specify valid mask file")
         return slepian
 
     @property

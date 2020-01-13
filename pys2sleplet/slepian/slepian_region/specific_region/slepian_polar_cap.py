@@ -54,38 +54,23 @@ class SlepianPolarCap(SlepianSpecific):
         return location
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        # create emm vector
-        emm = np.zeros(2 * self.L * 2 * self.L)
-        k = 0
-        for l in range(2 * self.L):
-            M = 2 * l + 1
-            emm[k : k + M] = np.arange(-l, l + 1)
-            k = k + M
+        emm = self._create_emm_vec()
 
-        # check if matrix already exists
-        if Path(self.matrix_location).exists():
-            Dm = np.load(self.matrix_location)
-        else:
-            # create Legendre polynomials table
-            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
-            ind = emm == 0
-            l = np.arange(2 * self.L).reshape(1, -1)
-            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-            P = np.concatenate((Pl, l))
-
-            # Computing order 'm' Slepian matrix
-            if ENVS["N_CPU"] == 1:
-                Dm = self.Dm_matrix_serial(abs(self.order), P)
-            else:
-                Dm = self.Dm_matrix_parallel(abs(self.order), P, ENVS["N_CPU"])
-
-            # save to speed up for future
-            if ENVS["SAVE_MATRICES"]:
-                np.save(self.matrix_location, Dm)
+        Dm = self._load_Dm_matrix(emm)
 
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eigh(Dm)
 
+        eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm)
+
+        return eigenvalues, eigenvectors
+
+    def _clean_evals_and_evecs(
+        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        need eigenvalues and eigenvectors to be in a certain format
+        """
         # eigenvalues should be real
         eigenvalues = eigenvalues.real
 
@@ -110,6 +95,48 @@ class SlepianPolarCap(SlepianSpecific):
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors
+
+    def _load_Dm_matrix(self, emm: np.ndarray) -> np.ndarray:
+        """
+        if the Dm matrix already exists load it
+        otherwise create it and save the result
+        """
+        # check if matrix already exists
+        if Path(self.matrix_location).exists():
+            Dm = np.load(self.matrix_location)
+        else:
+            # create Legendre polynomials table
+            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
+            ind = emm == 0
+            l = np.arange(2 * self.L).reshape(1, -1)
+            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
+            P = np.concatenate((Pl, l))
+
+            # Computing order 'm' Slepian matrix
+            if ENVS["N_CPU"] == 1:
+                Dm = self.Dm_matrix_serial(abs(self.order), P)
+            else:
+                Dm = self.Dm_matrix_parallel(abs(self.order), P, ENVS["N_CPU"])
+
+            # save to speed up for future
+            if ENVS["SAVE_MATRICES"]:
+                np.save(self.matrix_location, Dm)
+
+        return Dm
+
+    def _create_emm_vec(self) -> np.ndarray:
+        """
+        create emm vector for eigenproblem
+        """
+        emm = np.zeros(2 * self.L * 2 * self.L)
+        k = 0
+
+        for l in range(2 * self.L):
+            M = 2 * l + 1
+            emm[k : k + M] = np.arange(-l, l + 1)
+            k = k + M
+
+        return emm
 
     @property
     def order(self) -> int:

@@ -50,6 +50,41 @@ class SlepianLimitLatLong(SlepianSpecific):
         return location
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        K = self._load_K_matrix()
+
+        eigenvalues, eigenvectors = np.linalg.eigh(K)
+
+        eigenvalues, eigenvectors = self._clean_evals_and_evecs(
+            eigenvalues, eigenvectors
+        )
+
+        return eigenvalues, eigenvectors
+
+    @staticmethod
+    def _clean_evals_and_evecs(
+        eigenvalues: np.ndarray, eigenvectors: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        need eigenvalues and eigenvectors to be in a certain format
+        """
+        # eigenvalues should be real
+        eigenvalues = eigenvalues.real
+
+        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = np.conj(eigenvectors[:, idx]).T
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+
+        return eigenvalues, eigenvectors
+
+    def _load_K_matrix(self) -> np.ndarray:
+        """
+        if the K matrix already exists load it
+        otherwise create it and save the result
+        """
         # check if matrix already exists
         if Path(self.matrix_location).exists():
             K = np.load(self.matrix_location)
@@ -67,21 +102,7 @@ class SlepianLimitLatLong(SlepianSpecific):
             if ENVS["SAVE_MATRICES"]:
                 np.save(self.matrix_location, K)
 
-        # solve eigenproblem
-        eigenvalues, eigenvectors = np.linalg.eigh(K)
-
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = np.conj(eigenvectors[:, idx]).T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        return eigenvalues, eigenvectors
+        return K
 
     def slepian_integral(self) -> np.ndarray:
         """
