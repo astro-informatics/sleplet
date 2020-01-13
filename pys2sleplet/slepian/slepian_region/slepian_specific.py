@@ -4,7 +4,6 @@ from typing import List, Tuple
 
 import numpy as np
 
-from pys2sleplet.utils.string_methods import filename_region
 from pys2sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -24,10 +23,13 @@ class SlepianSpecific(SlepianFunctions):
         self.theta_min = theta_min
         self.theta_max = theta_max
         super().__init__(L)
-        self.__matrix_name += filename_region()
 
     @abstractmethod
     def _create_annotations(self) -> List[dict]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_fn_name(self) -> str:
         raise NotImplementedError
 
     @abstractmethod

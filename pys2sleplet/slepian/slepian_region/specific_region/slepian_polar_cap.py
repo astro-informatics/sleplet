@@ -12,6 +12,7 @@ from pys2sleplet.utils.vars import (
     ENVS,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
+    SLEPIAN,
     THETA_MIN_DEFAULT,
 )
 
@@ -21,7 +22,10 @@ from ..slepian_specific import SlepianSpecific
 class SlepianPolarCap(SlepianSpecific):
     def __init__(self, L: int, theta_max: float, order: int = 0):
         self.order = order
-        self.ndots = 12
+        self._ndots = 12
+        self._name_ending = f"slepian_polar-{SLEPIAN['THETA_MAX']}_m-{self.order}"
+        if is_polar_gap:
+            self._name_ending += "_gap"
         super().__init__(
             L,
             np.deg2rad(PHI_MIN_DEFAULT),
@@ -36,20 +40,27 @@ class SlepianPolarCap(SlepianSpecific):
 
         if is_small_polar_cap(self.theta_max):
             theta_top = np.array(self.theta_max)
-            for i in range(self.ndots):
+            for i in range(self._ndots):
                 self._add_to_annotation(annotation, config, theta_top, i)
 
                 if is_polar_gap:
                     theta_bottom = np.array(np.pi - self.theta_max)
-                    for j in range(self.ndots):
+                    for j in range(self._ndots):
                         self._add_to_annotation(
                             annotation, config, theta_bottom, j, colour="white"
                         )
         return annotation
 
+    def _create_fn_name(self) -> str:
+        name = f"slepian{self._name_ending}"
+        return name
+
     def _create_matrix_location(self) -> Path:
         location = (
-            Path(__file__).resolve().parents[3] / "data" / "polar" / self.__matrix_name
+            Path(__file__).resolve().parents[3]
+            / "data"
+            / "polar"
+            / f"D_L-{self.L}{self._name_ending}"
         )
         return location
 
@@ -371,6 +382,6 @@ class SlepianPolarCap(SlepianSpecific):
         """
         add to annotation list for given theta
         """
-        phi = np.array(2 * np.pi / self.ndots * (i + 1))
+        phi = np.array(2 * np.pi / self._ndots * (i + 1))
         x, y, z = ssht.s2_to_cart(theta, phi)
         annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **config})

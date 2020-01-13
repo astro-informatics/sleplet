@@ -7,13 +7,17 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.vars import ENVS
+from pys2sleplet.utils.vars import ENVS, SLEPIAN
 
 
 class SlepianLimitLatLong(SlepianSpecific):
     def __init__(
         self, L: int, theta_min: float, theta_max: float, phi_min: float, phi_max: float
     ) -> None:
+        self._name_ending = (
+            f"_theta-{SLEPIAN['THETA_MIN']}-{SLEPIAN['THETA_MAX']}"
+            f"_phi-{SLEPIAN['PHI_MIN']}-{SLEPIAN['PHI_MAX']}"
+        )
         super().__init__(L, phi_min, phi_max, theta_min, theta_max)
 
     def _create_annotations(self) -> List[Dict]:
@@ -40,12 +44,16 @@ class SlepianLimitLatLong(SlepianSpecific):
                     )
         return annotation
 
+    def _create_fn_name(self) -> str:
+        name = f"slepian{self._name_ending}"
+        return name
+
     def _create_matrix_location(self) -> Path:
         location = (
             Path(__file__).resolve().parents[3]
             / "data"
             / "lat_lon"
-            / self.__matrix_name
+            / f"D_L-{self.L}{self._name_ending}"
         )
         return location
 

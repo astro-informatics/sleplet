@@ -6,6 +6,6 @@ setup(
     author="Patrick Roddy",
     author_email="patrickjamesroddy@gmail.com",
     packages=find_packages(),
-    scripts=["scripts/plotting.py"],
+    scripts=["scripts/plotting.py", "scrips/convert_data.py"],
     package_data={"": ["*.toml"]},
 )

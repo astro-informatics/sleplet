@@ -19,8 +19,11 @@ from ..functions import Functions
 
 
 class Slepian(Functions):
-    # [0, 360, 0, 180, 0, 0, 0]
     def __init__(self, L: int, args: List[int] = None):
+        self.phi_min = np.deg2rad(SLEPIAN["PHI_MIN"])
+        self.phi_max = np.deg2rad(SLEPIAN["PHI_MAX"])
+        self.theta_min = np.deg2rad(SLEPIAN["THETA_MIN"])
+        self.theta_max = np.deg2rad(SLEPIAN["THETA_MAX"])
         self.s = self._create_slepian()
         super().__init__(L, args)
 
@@ -46,14 +49,10 @@ class Slepian(Functions):
         initialise Slepian object depending on input
         """
         if is_polar_cap:
-            slepian = SlepianPolarCap(self.L, np.deg2rad(SLEPIAN["THETA_MAX"]))
+            slepian = SlepianPolarCap(self.L, self.theta_max)
         elif is_limited_lat_lon:
             slepian = SlepianLimitLatLong(
-                self.L,
-                np.deg2rad(SLEPIAN["THETA_MIN"]),
-                np.deg2rad(SLEPIAN["THETA_MAX"]),
-                np.deg2rad(SLEPIAN["PHI_MIN"]),
-                np.deg2rad(SLEPIAN["PHI_MAX"]),
+                self.L, self.theta_min, self.theta_max, self.phi_min, self.phi_max
             )
         else:
             location = (
@@ -78,3 +77,11 @@ class Slepian(Functions):
     @rank.setter
     def rank(self, var: int) -> None:
         self.__rank = var
+
+    @property
+    def order(self) -> int:
+        return self.__order
+
+    @order.setter
+    def order(self, var: int) -> None:
+        self.__order = var

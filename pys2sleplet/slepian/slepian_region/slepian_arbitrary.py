@@ -26,7 +26,10 @@ class SlepianArbitrary(SlepianFunctions):
         super().__init__(L)
 
     def _create_annotations(self) -> List[Dict]:
-        raise NotImplementedError
+        pass
+
+    def _create_fn_name(self) -> str:
+        pass
 
     def _create_matrix_location(self) -> Path:
         location = (
