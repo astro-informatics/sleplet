@@ -4,9 +4,9 @@ dist
 *.egg-info
 *.html
 .mypy_cache
-*.npy
 *.pdf
 *.png
 *.pyc
 .pytest_cache
 .vscode
+Coeff_Height_and_Depth_to2190_DTM2006.0
