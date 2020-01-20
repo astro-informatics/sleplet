@@ -1,6 +1,0 @@
-POLAR_GAP = false
-THETA_MIN = 0
-THETA_MAX = 180
-PHI_MIN = 0
-PHI_MAX = 360
-MASK = ""

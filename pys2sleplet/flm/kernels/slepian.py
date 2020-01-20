@@ -13,17 +13,17 @@ from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import
 )
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.string_methods import verify_args
-from pys2sleplet.utils.vars import SLEPIAN
+from pys2sleplet.utils.vars import ENVS
 
 from ..functions import Functions
 
 
 class Slepian(Functions):
     def __init__(self, L: int, args: List[int] = None):
-        self.phi_min = np.deg2rad(SLEPIAN["PHI_MIN"])
-        self.phi_max = np.deg2rad(SLEPIAN["PHI_MAX"])
-        self.theta_min = np.deg2rad(SLEPIAN["THETA_MIN"])
-        self.theta_max = np.deg2rad(SLEPIAN["THETA_MAX"])
+        self.phi_min = np.deg2rad(ENVS["PHI_MIN"])
+        self.phi_max = np.deg2rad(ENVS["PHI_MAX"])
+        self.theta_min = np.deg2rad(ENVS["THETA_MIN"])
+        self.theta_max = np.deg2rad(ENVS["THETA_MAX"])
         self.s = self._create_slepian()
         super().__init__(L, args)
 
@@ -61,7 +61,7 @@ class Slepian(Functions):
                 / "slepian"
                 / "arbitrary"
                 / "masks"
-                / SLEPIAN["MASK"]
+                / ENVS["MASK"]
             )
             try:
                 mask = np.load(location)

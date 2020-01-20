@@ -12,7 +12,6 @@ from pys2sleplet.utils.vars import (
     ENVS,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
-    SLEPIAN,
     THETA_MIN_DEFAULT,
 )
 
@@ -23,7 +22,7 @@ class SlepianPolarCap(SlepianSpecific):
     def __init__(self, L: int, theta_max: float, order: int = 0):
         self.order = order
         self._ndots = 12
-        self._name_ending = f"slepian_polar-{SLEPIAN['THETA_MAX']}_m-{self.order}"
+        self._name_ending = f"slepian_polar-{ENVS['THETA_MAX']}_m-{self.order}"
         if is_polar_gap:
             self._name_ending += "_gap"
         super().__init__(

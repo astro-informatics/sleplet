@@ -2,10 +2,7 @@ from pathlib import Path
 
 from .misc import load_config
 
-__parent_dir = Path(__file__).resolve().parents[1]
-
-ENVS = load_config(__parent_dir / "config.toml")
-SLEPIAN = load_config(__parent_dir / "slepian" / "slepian.toml")
+ENVS = load_config(Path(__file__).resolve().parents[1] / "config.toml")
 
 PHI_MIN_DEFAULT = 0
 PHI_MAX_DEFAULT = 180

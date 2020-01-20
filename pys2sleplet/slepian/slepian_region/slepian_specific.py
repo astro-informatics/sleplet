@@ -47,9 +47,9 @@ class SlepianSpecific(SlepianFunctions):
     @phi_min.setter
     def phi_min(self, var: float) -> None:
         if np.rad2deg(var) < PHI_MIN_DEFAULT:
-            raise ValueError("phi_max cannot be negative")
+            raise ValueError("phi_min cannot be negative")
         elif np.rad2deg(var) > PHI_MAX_DEFAULT:
-            raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
+            raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
         self.__phi_min = var
 
     @property

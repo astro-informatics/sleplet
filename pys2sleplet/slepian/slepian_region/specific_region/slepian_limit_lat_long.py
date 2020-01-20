@@ -7,7 +7,7 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.vars import ENVS, SLEPIAN
+from pys2sleplet.utils.vars import ENVS
 
 
 class SlepianLimitLatLong(SlepianSpecific):
@@ -15,8 +15,8 @@ class SlepianLimitLatLong(SlepianSpecific):
         self, L: int, theta_min: float, theta_max: float, phi_min: float, phi_max: float
     ) -> None:
         self._name_ending = (
-            f"_theta-{SLEPIAN['THETA_MIN']}-{SLEPIAN['THETA_MAX']}"
-            f"_phi-{SLEPIAN['PHI_MIN']}-{SLEPIAN['PHI_MAX']}"
+            f"_theta-{ENVS['THETA_MIN']}-{ENVS['THETA_MAX']}"
+            f"_phi-{ENVS['PHI_MIN']}-{ENVS['PHI_MAX']}"
         )
         super().__init__(L, phi_min, phi_max, theta_min, theta_max)
 

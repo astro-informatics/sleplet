@@ -1,9 +1,9 @@
 import numpy as np
 
 from .vars import (
+    ENVS,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
-    SLEPIAN,
     THETA_MAX_DEFAULT,
     THETA_MIN_DEFAULT,
 )
@@ -59,7 +59,7 @@ def is_polar_gap() -> bool:
     """
     assuming it is a polar gap
     """
-    if SLEPIAN["POLAR_GAP"]:
+    if ENVS["POLAR_GAP"]:
         return True
     else:
         return False
