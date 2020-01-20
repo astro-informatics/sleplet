@@ -5,9 +5,9 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
+from dynaconf import settings
 
-from pys2sleplet.slepian.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.vars import ENVS
+from ..slepian_specific import SlepianSpecific
 
 
 class SlepianLimitLatLong(SlepianSpecific):
@@ -15,8 +15,8 @@ class SlepianLimitLatLong(SlepianSpecific):
         self, L: int, theta_min: float, theta_max: float, phi_min: float, phi_max: float
     ) -> None:
         self._name_ending = (
-            f"_theta-{ENVS['THETA_MIN']}-{ENVS['THETA_MAX']}"
-            f"_phi-{ENVS['PHI_MIN']}-{ENVS['PHI_MAX']}"
+            f"_theta-{settings.THETA_MIN}-{settings.THETA_MAX}"
+            f"_phi-{settings.PHI_MIN}-{settings.PHI_MAX}"
         )
         super().__init__(L, phi_min, phi_max, theta_min, theta_max)
 
@@ -101,13 +101,13 @@ class SlepianLimitLatLong(SlepianSpecific):
             G = self.slepian_integral()
 
             # Compute Slepian matrix
-            if ENVS["N_CPU"] == 1:
+            if settings.NCPU == 1:
                 K = self.slepian_matrix_serial(G)
             else:
-                K = self.slepian_matrix_parallel(G, ENVS["N_CPU"])
+                K = self.slepian_matrix_parallel(G, settings.NCPU)
 
             # save to speed up for future
-            if ENVS["SAVE_MATRICES"]:
+            if settings.SAVE_MATRICES:
                 np.save(self.matrix_location, K)
 
         return K

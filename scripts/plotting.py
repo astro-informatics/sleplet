@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Dict, List
+from typing import List
 
 import numpy as np
+from dynaconf import settings
 
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.functions import function_dict
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
-from pys2sleplet.utils.vars import ENVS
 
 
 def valid_kernels(func_name: str) -> str:
@@ -109,15 +109,6 @@ def read_args() -> Namespace:
     return args
 
 
-def load_config() -> Dict:
-    """
-    load general config as well as args from the command line
-    """
-    args = vars(read_args())  # convert to dict
-    config = {**ENVS, **args}
-    return config
-
-
 def plot(
     f_name: str,
     L: int,
@@ -178,18 +169,18 @@ def plot(
 
 
 def main() -> None:
-    env = load_config()
+    args = read_args()
 
     plot(
-        env["flm"],
-        env["L"],
-        env["extra_args"],
-        env["type"],
-        env["routine"],
-        env["alpha"],
-        env["beta"],
-        env["gamma"],
-        env["convolve"],
+        args.flm,
+        settings.L,
+        args.extra_args,
+        args.type,
+        args.routine,
+        args.alpha,
+        args.beta,
+        args.gamma,
+        args.convolve,
     )
 
 

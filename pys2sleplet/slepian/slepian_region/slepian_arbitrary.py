@@ -5,9 +5,9 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
+from dynaconf import settings
 
 from pys2sleplet.utils.plot_methods import calc_samples
-from pys2sleplet.utils.vars import ENVS
 
 from ..slepian_functions import SlepianFunctions
 
@@ -44,10 +44,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         # Compute Slepian matrix
-        if ENVS["N_CPU"] == 1:
+        if settings.NCPU == 1:
             D = self.matrix_serial()
         else:
-            D = self.matrix_parallel(ENVS["N_CPU"])
+            D = self.matrix_parallel(settings.NCPU)
 
         # solve eigenproblem
         eigenvalues, eigenvectors = np.linalg.eigh(D)

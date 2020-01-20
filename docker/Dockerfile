@@ -12,7 +12,9 @@ RUN pip install --upgrade pip && \
 
 COPY . .
 
+WORKDIR /home/project/src/s2sleplet/pys2sleplet
+
 # above 512 get a memory error from travis
-RUN sed -i 's/16/512/' pys2sleplet/config.toml
+RUN sed -i 's/16/512/' config/settings.toml
 
 RUN pytest -v

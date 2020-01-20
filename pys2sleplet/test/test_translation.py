@@ -1,18 +1,18 @@
 from unittest import TestCase
 
 import numpy as np
+from dynaconf import settings
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.vars import ENVS
 
 
 class TestTranslation(TestCase):
     def setUp(self):
         self.alpha_pi_frac = 0.75
         self.beta_pi_frac = 0.125
-        self.L = ENVS["L"]
-        self.plot = ENVS["TEST_PLOTS"]
+        self.L = settings.L
+        self.plot = settings.TEST_PLOTS
 
     def test_dirac_delta_rotate_translate(self) -> None:
         """

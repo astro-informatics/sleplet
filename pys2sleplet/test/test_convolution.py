@@ -1,18 +1,18 @@
 from unittest import TestCase
 
 import numpy as np
+from dynaconf import settings
 
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.vars import ENVS
 
 
 class TestConvolution(TestCase):
     def setUp(self):
-        self.L = ENVS["L"]
-        self.plot = ENVS["TEST_PLOTS"]
+        self.L = settings.L
+        self.plot = settings.TEST_PLOTS
 
     def test_earth_identity_convolution(self) -> None:
         """

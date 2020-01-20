@@ -1,12 +1,7 @@
 import numpy as np
+from dynaconf import settings
 
-from .vars import (
-    ENVS,
-    PHI_MAX_DEFAULT,
-    PHI_MIN_DEFAULT,
-    THETA_MAX_DEFAULT,
-    THETA_MIN_DEFAULT,
-)
+from .vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
 
 def is_polar_cap(
@@ -59,7 +54,7 @@ def is_polar_gap() -> bool:
     """
     assuming it is a polar gap
     """
-    if ENVS["POLAR_GAP"]:
+    if settings.POLAR_GAP:
         return True
     else:
         return False
