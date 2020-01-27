@@ -25,7 +25,6 @@ def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    # check if valid function
     if func_name in function_dict:
         return func_name
     else:
