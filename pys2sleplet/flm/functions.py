@@ -16,7 +16,6 @@ class Functions:
         self._setup_args(extra_args)
         self.L = L
         self.resolution = calc_resolution(L)
-        self.reality = False
         self.multipole = self._create_flm(self.L)
         self.name = self._create_name()
         self.field = self._invert(self.multipole)

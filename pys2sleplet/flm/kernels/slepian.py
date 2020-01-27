@@ -21,6 +21,7 @@ from ..functions import Functions
 
 class Slepian(Functions):
     def __init__(self, L: int, args: List[int] = None):
+        self.reality = False
         self.phi_min = np.deg2rad(config.PHI_MIN)
         self.phi_max = np.deg2rad(config.PHI_MAX)
         self.theta_min = np.deg2rad(config.THETA_MIN)
