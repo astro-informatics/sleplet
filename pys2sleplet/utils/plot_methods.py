@@ -9,21 +9,14 @@ def calc_resolution(L: int) -> int:
     """
     calculate appropriate resolution for given L
     """
-    if L == 1:
-        exponent = 6
-    elif L < 4:
-        exponent = 5
-    elif L < 8:
-        exponent = 4
-    elif L < 128:
-        exponent = 3
-    elif L < 512:
-        exponent = 2
-    elif L < 1024:
-        exponent = 1
-    else:
-        exponent = 0
-    return L * 2 ** exponent
+    res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
+
+    for log_bandlimit, exponent in res_dict.items():
+        if L < 2 ** log_bandlimit:
+            return L * 2 ** exponent
+
+    # above L = 1024 just use the bandlimit
+    return L
 
 
 def calc_samples(L: int) -> int:
@@ -31,31 +24,26 @@ def calc_samples(L: int) -> int:
     calculate appropriate sample number for given L
     chosen such that have a two samples less than 0.1deg
     """
-    if L == 1:
-        samples = 1801
-    elif L < 4:
-        samples = 901
-    elif L < 8:
-        samples = 451
-    elif L < 16:
-        samples = 226
-    elif L < 32:
-        samples = 113
-    elif L < 64:
-        samples = 57
-    elif L < 128:
-        samples = 29
-    elif L < 256:
-        samples = 15
-    elif L < 512:
-        samples = 8
-    elif L < 1024:
-        samples = 4
-    elif L < 2048:
-        samples = 2
-    else:
-        samples = 1
-    return samples
+    sample_dict = {
+        1: 1801,
+        2: 901,
+        3: 451,
+        4: 226,
+        5: 113,
+        6: 57,
+        7: 29,
+        8: 15,
+        9: 8,
+        10: 4,
+        11: 2,
+    }
+
+    for log_bandlimit, samples in sample_dict.items():
+        if L < 2 ** log_bandlimit:
+            return samples
+
+    # above L = 2048 just use 1 sample
+    return 1
 
 
 def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float, str]]:
