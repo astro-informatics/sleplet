@@ -21,8 +21,8 @@ before_script:
     - >
         docker run
         --name container
-        -d image
         -t
+        -d image
 
 script:
     - >

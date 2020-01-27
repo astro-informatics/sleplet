@@ -3,9 +3,7 @@ ARG DOCKER_IMAGE
 
 FROM ${DOCKER_USERNAME}/${DOCKER_IMAGE}
 
-ENV S2SLEPLET /home/project/src/s2sleplet
-
-WORKDIR ${S2SLEPLET}
+WORKDIR /home/project/src/s2sleplet
 
 COPY requirements.txt .
 
