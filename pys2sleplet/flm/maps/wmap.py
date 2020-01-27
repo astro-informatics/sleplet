@@ -43,12 +43,13 @@ class WMAP(Functions):
         return name
 
     @staticmethod
-    def load_cl():
-        # pick model
-        # file_ending = '_lcdm_pl_model_yr1_v1'
-        # file_ending = '_tt_spectrum_7yr_v4p1'
-        file_ending = "_lcdm_pl_model_wmap7baoh0"
-
+    def load_cl(file_ending="_lcdm_pl_model_wmap7baoh0.mat"):
+        """
+        pick coefficients from file options are:
+        * _lcdm_pl_model_yr1_v1.mat
+        * _tt_spectrum_7yr_v4p1.mat
+        * _lcdm_pl_model_wmap7baoh0.mat
+        """
         matfile = str(
             Path(__file__).resolve().parents[2]
             / "data"

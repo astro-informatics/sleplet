@@ -39,6 +39,9 @@ class Earth(Functions):
 
     @staticmethod
     def load_flm():
+        """
+        load coefficients from file
+        """
         matfile = str(
             Path(__file__).resolve().parents[2]
             / "data"
