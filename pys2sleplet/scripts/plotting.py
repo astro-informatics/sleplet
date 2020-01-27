@@ -3,10 +3,10 @@ from argparse import ArgumentParser, Namespace
 from typing import List
 
 import numpy as np
-from dynaconf import settings
 
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.functions import function_dict
+from pys2sleplet.utils.inputs import config
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -172,7 +172,7 @@ def main() -> None:
 
     plot(
         args.flm,
-        settings.L,
+        config.L,
         args.extra_args,
         args.type,
         args.routine,

@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import List, Optional
 
 import numpy as np
-from dynaconf import settings
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
@@ -13,6 +12,7 @@ from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import
     SlepianPolarCap,
 )
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
+from pys2sleplet.utils.inputs import config
 from pys2sleplet.utils.logging import logger
 from pys2sleplet.utils.string_methods import verify_args
 
@@ -21,10 +21,10 @@ from ..functions import Functions
 
 class Slepian(Functions):
     def __init__(self, L: int, args: List[int] = None):
-        self.phi_min = np.deg2rad(settings.PHI_MIN)
-        self.phi_max = np.deg2rad(settings.PHI_MAX)
-        self.theta_min = np.deg2rad(settings.THETA_MIN)
-        self.theta_max = np.deg2rad(settings.THETA_MAX)
+        self.phi_min = np.deg2rad(config.PHI_MIN)
+        self.phi_max = np.deg2rad(config.PHI_MAX)
+        self.theta_min = np.deg2rad(config.THETA_MIN)
+        self.theta_max = np.deg2rad(config.THETA_MAX)
         self.s = self._create_slepian()
         super().__init__(L, args)
 
@@ -62,7 +62,7 @@ class Slepian(Functions):
                 / "slepian"
                 / "arbitrary"
                 / "masks"
-                / settings.SLEPIAN_MASK
+                / config.SLEPIAN_MASK
             )
             try:
                 mask = np.load(location)

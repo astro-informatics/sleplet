@@ -5,10 +5,10 @@ from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pyssht as ssht
-from dynaconf import settings
 from scipy.special import factorial as fact
 
 from pys2sleplet.utils.bool_methods import is_polar_gap, is_small_polar_cap
+from pys2sleplet.utils.inputs import config
 from pys2sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
 
 from ..slepian_specific import SlepianSpecific
@@ -18,7 +18,7 @@ class SlepianPolarCap(SlepianSpecific):
     def __init__(self, L: int, theta_max: float, order: int = 0):
         self.order = order
         self._ndots = 12
-        self._name_ending = f"slepian_polar-{settings.THETA_MAX}_m-{self.order}"
+        self._name_ending = f"slepian_polar-{config.THETA_MAX}_m-{self.order}"
         if is_polar_gap:
             self._name_ending += "_gap"
         super().__init__(
@@ -119,13 +119,13 @@ class SlepianPolarCap(SlepianSpecific):
             P = np.concatenate((Pl, l))
 
             # Computing order 'm' Slepian matrix
-            if settings.NCPU == 1:
+            if config.NCPU == 1:
                 Dm = self.Dm_matrix_serial(abs(self.order), P)
             else:
-                Dm = self.Dm_matrix_parallel(abs(self.order), P, settings.NCPU)
+                Dm = self.Dm_matrix_parallel(abs(self.order), P, config.NCPU)
 
             # save to speed up for future
-            if settings.SAVE_MATRICES:
+            if config.SAVE_MATRICES:
                 np.save(self.matrix_location, Dm)
 
         return Dm

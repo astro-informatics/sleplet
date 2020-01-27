@@ -1,6 +1,6 @@
 import numpy as np
-from dynaconf import settings
 
+from .inputs import config
 from .vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
 
@@ -54,7 +54,7 @@ def is_polar_gap() -> bool:
     """
     assuming it is a polar gap
     """
-    if settings.POLAR_GAP:
+    if config.POLAR_GAP:
         return True
     else:
         return False
