@@ -1,5 +1,5 @@
 import numpy as np
-from dynaconf import settings
+import pytest
 
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
@@ -7,14 +7,27 @@ from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.create_plot import Plot
 
 
-def test_earth_identity_convolution() -> None:
+@pytest.fixture
+def L() -> int:
+    """
+    above 512 get a memory error from travis
+    """
+    return 512
+
+
+@pytest.fixture
+def show_plots() -> bool:
+    return False
+
+
+def test_earth_identity_convolution(L) -> None:
     """
     test to ensure that the convolving with the
     identity function doesn't change the map
     """
     # setup
-    f = Earth(settings.L)
-    g = Identity(settings.L)
+    f = Earth(L)
+    g = Identity(L)
     flm = f.multipole
 
     # convolution
@@ -26,14 +39,14 @@ def test_earth_identity_convolution() -> None:
     print("Identity convolution passed test")
 
 
-def test_earth_harmonic_gaussian_convolution() -> None:
+def test_earth_harmonic_gaussian_convolution(L, show_plots) -> None:
     """
     test to ensure that convolving the Earth with the harmonic
     Gausian does not change significantly change the map
     """
     # setup
-    f = Earth(settings.L)
-    g = HarmonicGaussian(settings.L)
+    f = Earth(L)
+    g = HarmonicGaussian(L)
     flm = f.multipole
     f_map = f.field
 
@@ -54,6 +67,6 @@ def test_earth_harmonic_gaussian_convolution() -> None:
         np.max(np.abs(flm_diff)),
     )
 
-    if settings.TEST_PLOTS:
-        filename = f"{g.name}_L{settings.L}_diff_{f.name}_res{f.resolution}_real"
+    if show_plots:
+        filename = f"{g.name}_L{L}_diff_{f.name}_res{f.resolution}_real"
         Plot(f_diff.real, f.resolution, filename).execute()

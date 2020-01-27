@@ -1,17 +1,29 @@
 services:
     - docker
 
-before_script:
+before_install:
     - >
         echo ${DOCKER_PASSWORD} |
         docker login
         -u ${DOCKER_USERNAME}
         --password-stdin
 
-script:
+install:
     - >
         docker build
         -f docker/Dockerfile
         --build-arg DOCKER_USERNAME=${DOCKER_USERNAME}
         --build-arg DOCKER_IMAGE=${DOCKER_IMAGE}
+        -t image
         .
+
+before_script:
+    - >
+        docker run
+        --name container
+        -d image
+        -t
+
+script:
+    - >
+        docker exec container pytest -v
