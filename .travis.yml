@@ -14,16 +14,16 @@ install:
         -f docker/Dockerfile
         --build-arg DOCKER_USERNAME=${DOCKER_USERNAME}
         --build-arg DOCKER_IMAGE=${DOCKER_IMAGE}
-        -t IMAGE
+        -t image
         .
 
 before_script:
     - >
         docker run
-        --name CONTAINER
+        --name container
         -t
-        -d IMAGE
+        -d image
 
 script:
     - >
-        docker exec CONTAINER pytest -v
+        docker exec container pytest -v
