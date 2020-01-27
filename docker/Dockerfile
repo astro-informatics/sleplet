@@ -14,7 +14,7 @@ RUN pip install --upgrade pip && \
 
 COPY . .
 
-WORKDIR ${S2SLEPLET}pys2sleplet
+WORKDIR ${S2SLEPLET}/pys2sleplet
 
 # above 512 get a memory error from travis
 RUN sed -i 's/16/512/' config/settings.toml
