@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from abc import abstractmethod
 from pathlib import Path
 from typing import List, Optional
@@ -148,7 +146,7 @@ class Functions:
         else:
             self.convolve(glm)
 
-    def convolve(self, glm: Functions) -> None:
+    def convolve(self, glm: np.ndarray) -> None:
         """
         computes the sifting convolution of two arrays
         """
