@@ -62,7 +62,7 @@ class Slepian(Functions):
                 / "slepian"
                 / "arbitrary"
                 / "masks"
-                / settings.MASK_FILE
+                / settings.SLEPIAN_MASK
             )
             try:
                 mask = np.load(location)

@@ -1,12 +1,12 @@
 [default]
+auto_open = true
 L = 16
 ncpu = 4
-auto_open = true
+phi_max = 360
+phi_min = 0
+polar_gap = false
 save_fig = false
 save_matrices = false
-theta_min = 0
+slepian_mask = ""
 theta_max = 180
-phi_min = 0
-phi_max = 360
-polar_gap = false
-mask_file = ""
+theta_min = 0
