@@ -1,4 +1,5 @@
 cmocean
+dynaconf
 matplotlib
 plotly
 pytest

@@ -63,6 +63,10 @@ def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float
 def ensure_f_bandlimited(
     grid_fun: Callable[[np.ndarray, np.ndarray], np.ndarray], L: int, reality: bool
 ):
+    """
+    if the function created is created in pixel space rather than harmonic
+    space then need to transform it into harmonic space first before using it
+    """
     thetas, phis = ssht.sample_positions(L, Grid=True, Method="MWSS")
     f = grid_fun(thetas, phis)
     flm = ssht.forward(f, L, Reality=reality, Method="MWSS")
