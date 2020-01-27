@@ -7,5 +7,5 @@ setup(
     author_email="patrickjamesroddy@gmail.com",
     packages=find_packages(exclude=["*test"]),
     include_package_data=True,
-    entry_points={"console_scripts": ["plotting=pys2sleplet.scripts.command:main"]},
+    entry_points={"console_scripts": ["plotting=pys2sleplet.scripts.plotting:main"]},
 )
