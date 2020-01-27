@@ -76,7 +76,7 @@ class Plot:
 
         fig = Figure(data=data, layout=layout)
 
-        # if save_fig is true then print as png and pdf in their directories
+        # if save_fig is true then create png and pdf in their directories
         if settings.SAVE_FIG:
             # create filenames
             png_filename = self.fig_path / "png" / f"{self.filename}.png"

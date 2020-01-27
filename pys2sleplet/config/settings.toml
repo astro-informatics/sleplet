@@ -3,10 +3,7 @@ L = 16
 ncpu = 4
 auto_open = true
 save_fig = false
-test_plots = false
 save_matrices = false
-
-[slepian]
 theta_min = 0
 theta_max = 180
 phi_min = 0

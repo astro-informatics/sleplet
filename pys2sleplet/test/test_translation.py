@@ -3,6 +3,7 @@ import pytest
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.utils.logging import logger
 
 
 @pytest.fixture
@@ -54,7 +55,7 @@ def test_dirac_delta_rotate_translate(
     # perform test
     np.testing.assert_allclose(flm_rot, flm_trans, atol=1e-14)
     np.testing.assert_allclose(f_rot, f_trans, rtol=1e-5)
-    print("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
+    logger.info("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
 
     if show_plots:
         filename = f"{dd.name}_L{L}_diff_rot_trans_res{dd.resolution}"

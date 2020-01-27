@@ -5,6 +5,7 @@ from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.utils.logging import logger
 
 
 @pytest.fixture
@@ -36,7 +37,7 @@ def test_earth_identity_convolution(L) -> None:
 
     # perform test
     np.testing.assert_equal(flm, flm_conv)
-    print("Identity convolution passed test")
+    logger.info("Identity convolution passed test")
 
 
 def test_earth_harmonic_gaussian_convolution(L, show_plots) -> None:
@@ -62,7 +63,7 @@ def test_earth_harmonic_gaussian_convolution(L, show_plots) -> None:
     # perform test
     np.testing.assert_allclose(flm, flm_conv, atol=5e1)
     np.testing.assert_allclose(f_map, f_conv, atol=8e2)
-    print(
+    logger.info(
         "Earth/harmonic gaussian convolution difference max error:",
         np.max(np.abs(flm_diff)),
     )

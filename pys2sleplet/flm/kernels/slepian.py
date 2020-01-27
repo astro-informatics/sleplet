@@ -13,6 +13,7 @@ from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import
     SlepianPolarCap,
 )
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
+from pys2sleplet.utils.logging import logger
 from pys2sleplet.utils.string_methods import verify_args
 
 from ..functions import Functions
@@ -41,7 +42,7 @@ class Slepian(Functions):
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = self.s.eigenvectors[self.rank]
-        print(f"Eigenvalue {self.rank}: {self.s.eigenvalues[self.rank]:e}")
+        logger.info(f"Eigenvalue {self.rank}: {self.s.eigenvalues[self.rank]:e}")
         return flm
 
     def _create_slepian(self) -> SlepianFunctions:
@@ -67,7 +68,7 @@ class Slepian(Functions):
                 mask = np.load(location)
                 slepian = SlepianArbitrary(self.L, mask)
             except FileNotFoundError:
-                print("specify valid mask file")
+                logger.info("specify valid mask file")
         return slepian
 
     @property
