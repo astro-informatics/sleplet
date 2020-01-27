@@ -36,6 +36,8 @@ class SphericalHarmonic(Functions):
 
     @ell.setter
     def ell(self, var: int) -> None:
+        if not isinstance(var, int):
+            raise TypeError("ell should be an integer")
         if var < 0:
             raise ValueError("ell should be positive")
         self.__ell = var
@@ -46,6 +48,8 @@ class SphericalHarmonic(Functions):
 
     @m.setter
     def m(self, var: int) -> None:
+        if not isinstance(var, int):
+            raise TypeError("m should be an integer")
         if abs(var) > self.ell:
             raise ValueError("the magnitude of m should be less than ell")
         self.__m = var

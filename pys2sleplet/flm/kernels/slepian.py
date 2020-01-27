@@ -76,6 +76,8 @@ class Slepian(Functions):
 
     @rank.setter
     def rank(self, var: int) -> None:
+        if not isinstance(var, int):
+            raise TypeError("rank should be an integer")
         self.__rank = var
 
     @property
@@ -84,4 +86,6 @@ class Slepian(Functions):
 
     @order.setter
     def order(self, var: int) -> None:
+        if not isinstance(var, int):
+            raise TypeError("order should be an integer")
         self.__order = var

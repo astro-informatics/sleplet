@@ -22,9 +22,9 @@ class Plot:
         self.resolution = resolution
         self.filename = filename
         self.annotations = annotations
-        self.fig_path = Path(__file__).resolve().parents[2] / "figures"
+        self.fig_path = Path(__file__).resolve().parents[1] / "figures"
 
-    def execute(self) -> None:
+    def execute(self, zoom: float = 7.88) -> None:
         """
         creates basic plotly plot rather than matplotlib
         """
@@ -34,7 +34,6 @@ class Plot:
         )
 
         # appropriate zoom in on north pole
-        zoom = 7.88
         camera = dict(eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=10 / zoom))
 
         data = [
