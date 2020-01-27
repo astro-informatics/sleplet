@@ -142,7 +142,7 @@ def plot(
     if g_name:
         g = function_dict[g_name](L, extra_args)
         # perform convolution
-        f.convolve(g)
+        f.convolve(g.multipole)
         # adjust filename
         filename += f"convolved_{g.name}_L{L}_"
 

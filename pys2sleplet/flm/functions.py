@@ -157,7 +157,7 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        self.multipole *= np.conj(glm.multipole)
+        self.multipole *= np.conj(glm)
 
     def _boost_res(self, flm) -> np.ndarray:
         """

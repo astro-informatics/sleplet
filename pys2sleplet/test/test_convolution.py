@@ -32,7 +32,7 @@ def test_earth_identity_convolution(L) -> None:
     flm = f.multipole
 
     # convolution
-    f.convolve(g)
+    f.convolve(g.multipole)
     flm_conv = f.multipole
 
     # perform test
@@ -52,7 +52,7 @@ def test_earth_harmonic_gaussian_convolution(L, show_plots) -> None:
     f_map = f.field
 
     # convolution
-    f.convolve(g)
+    f.convolve(g.multipole)
     flm_conv = f.multipole
     f_conv = f.field
 
