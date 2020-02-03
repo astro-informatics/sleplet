@@ -3,7 +3,7 @@ from typing import List, Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.string_methods import filename_args, verify_args
+from pys2sleplet.utils.string_methods import filename_args
 
 from ..functions import Functions
 
@@ -15,7 +15,9 @@ class Gaussian(Functions):
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
-            verify_args(args, 1)
+            num_args = 1
+            if len(args) != num_args:
+                raise ValueError(f"The number of extra arguments should be {num_args}")
             sigma = 10 ** args[0]
         else:
             sigma = 1_000

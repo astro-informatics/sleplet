@@ -1,5 +1,5 @@
 from fractions import Fraction
-from typing import List, Tuple
+from typing import Tuple
 
 
 def _get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
@@ -64,11 +64,3 @@ def filename_angle(
     if gamma_num:
         filename += f"_gamma{_pi_in_filename(gamma_num, gamma_den)}"
     return filename
-
-
-def verify_args(args: List[int], num: int) -> None:
-    """
-    helper method for each flm to check the number of extra args
-    """
-    if len(args) != num:
-        raise ValueError(f"The number of extra arguments should be {num}")

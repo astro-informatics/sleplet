@@ -3,7 +3,7 @@ from typing import List, Optional
 import numpy as np
 
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
-from pys2sleplet.utils.string_methods import filename_args, verify_args
+from pys2sleplet.utils.string_methods import filename_args
 
 from ..functions import Functions
 
@@ -15,7 +15,9 @@ class SquashedGaussian(Functions):
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
-            verify_args(args, 2)
+            num_args = 2
+            if len(args) != num_args:
+                raise ValueError(f"The number of extra arguments should be {num_args}")
             t_sigma, freq = [10 ** x for x in args]
         else:
             t_sigma, freq = 0.01, 0.1
