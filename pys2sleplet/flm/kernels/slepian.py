@@ -30,16 +30,15 @@ class Slepian(Functions):
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
-            if len(args) != 1 or len(args) != 2:
-                raise ValueError("The number of extra arguments should be 1 or 2")
+            num_args = 1
+            if len(args) != num_args:
+                raise ValueError(
+                    f"The number of extra arguments should be 1 or {num_args}"
+                )
             rank = args[0]
-            try:
-                order = args[1]
-            except IndexError:
-                order = 0
         else:
-            rank, order = 0, 0
-        self.rank, self.order = rank, order
+            rank = 0
+        self.rank = rank
 
     def _create_name(self) -> str:
         name = "slepian"
@@ -58,7 +57,7 @@ class Slepian(Functions):
         """
         if is_polar_cap(self.phi_min, self.phi_max, self.theta_min, self.theta_max):
             logger.info("polar cap region detected")
-            return SlepianPolarCap(self.L, self.theta_max, self.order)
+            return SlepianPolarCap(self.L, self.theta_max, config.ORDER)
 
         elif is_limited_lat_lon(
             self.phi_min, self.phi_max, self.theta_min, self.theta_max
@@ -97,13 +96,3 @@ class Slepian(Functions):
         if not isinstance(var, int):
             raise TypeError("rank should be an integer")
         self.__rank = var
-
-    @property
-    def order(self) -> int:
-        return self.__order
-
-    @order.setter
-    def order(self, var: int) -> None:
-        if not isinstance(var, int):
-            raise TypeError("order should be an integer")
-        self.__order = var

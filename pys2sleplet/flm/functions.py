@@ -11,11 +11,11 @@ from pys2sleplet.utils.string_methods import filename_angle
 
 class Functions:
     def __init__(self, L: int, extra_args: Optional[List[int]]):
-        self._setup_args(extra_args)
         self.L = L
-        self.resolution = calc_resolution(L)
-        self.multipole = self._create_flm(self.L)
+        self.resolution = calc_resolution(self.L)
+        self._setup_args(extra_args)
         self.name = self._create_name()
+        self.multipole = self._create_flm(self.L)
         self.field = self._invert(self.multipole)
 
     @abstractmethod

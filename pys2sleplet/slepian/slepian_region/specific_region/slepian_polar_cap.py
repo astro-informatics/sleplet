@@ -16,6 +16,7 @@ from ..slepian_specific import SlepianSpecific
 
 class SlepianPolarCap(SlepianSpecific):
     def __init__(self, L: int, theta_max: float, order: int = 0):
+        self.L = L
         self.order = order
         self._ndots = 12
         self._name_ending = f"slepian_polar-{config.THETA_MAX}_m-{self.order}"
@@ -150,6 +151,8 @@ class SlepianPolarCap(SlepianSpecific):
 
     @order.setter
     def order(self, var: int) -> None:
+        if not isinstance(var, int):
+            raise TypeError("order should be an integer")
         # check order is in correct range
         if abs(var) >= self.L:
             raise ValueError(
@@ -363,7 +366,7 @@ class SlepianPolarCap(SlepianSpecific):
 
     @staticmethod
     def polar_gap_modification(ell1: int, ell2: int) -> int:
-        factor = 1 + is_polar_gap * (-1) ** (ell1 + ell2)
+        factor = 1 + is_polar_gap() * (-1) ** (ell1 + ell2)
         return factor
 
     def _add_to_annotation(
