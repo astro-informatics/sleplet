@@ -13,5 +13,5 @@ order = 0
 slepian_mask = ""
 
 [travis]
-# above 512 get a memoery error from travis
+# above 512 get a memory error from travis
 L = 512
