@@ -22,7 +22,7 @@ class SlepianPolarCap(SlepianSpecific):
         self._name_ending = "_polar"
         if is_polar_gap():
             self._name_ending += "_gap"
-        self._name_ending += f"-{config.THETA_MAX}_m-{self.order}"
+        self._name_ending += f"{config.THETA_MAX}_m{self.order}"
         super().__init__(
             L,
             np.deg2rad(PHI_MIN_DEFAULT),

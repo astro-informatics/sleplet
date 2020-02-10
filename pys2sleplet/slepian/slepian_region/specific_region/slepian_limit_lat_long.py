@@ -16,8 +16,8 @@ class SlepianLimitLatLong(SlepianSpecific):
         self, L: int, theta_min: float, theta_max: float, phi_min: float, phi_max: float
     ) -> None:
         self._name_ending = (
-            f"_theta-{config.THETA_MIN}-{config.THETA_MAX}"
-            f"_phi-{config.PHI_MIN}-{config.PHI_MAX}"
+            f"_theta{config.THETA_MIN}-{config.THETA_MAX}"
+            f"_phi{config.PHI_MIN}-{config.PHI_MAX}"
         )
         super().__init__(L, phi_min, phi_max, theta_min, theta_max)
 
