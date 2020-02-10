@@ -41,7 +41,7 @@ class Slepian(Functions):
         self.rank = rank
 
     def _create_name(self) -> str:
-        name = f"{self.s.name}"
+        name = f"{self.s.name}_rank{self.rank}"
         return name
 
     def _create_flm(self, L: int) -> np.ndarray:
@@ -99,4 +99,8 @@ class Slepian(Functions):
     def rank(self, var: int) -> None:
         if not isinstance(var, int):
             raise TypeError("rank should be an integer")
+        if var < 0:
+            raise ValueError("rank cannot be negative")
+        if var >= self.L:
+            raise ValueError(f"rank should be no more than {self.L}")
         self.__rank = var
