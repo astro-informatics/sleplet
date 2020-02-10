@@ -20,7 +20,7 @@ class SlepianPolarCap(SlepianSpecific):
         self.order = order
         self._ndots = 12
         self._name_ending = f"slepian_polar-{config.THETA_MAX}_m-{self.order}"
-        if is_polar_gap:
+        if is_polar_gap():
             self._name_ending += "_gap"
         super().__init__(
             L,
@@ -39,7 +39,7 @@ class SlepianPolarCap(SlepianSpecific):
             for i in range(self._ndots):
                 self._add_to_annotation(annotation, config, theta_top, i)
 
-                if is_polar_gap:
+                if is_polar_gap():
                     theta_bottom = np.array(np.pi - self.theta_max)
                     for j in range(self._ndots):
                         self._add_to_annotation(

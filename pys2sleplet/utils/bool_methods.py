@@ -41,8 +41,7 @@ def is_limited_lat_lon(
 
 def is_small_polar_cap(theta_max: float) -> bool:
     """
-    assuming it is a polar cap
-    small defined for visualisation purposes
+    assuming it is a polar cap small defined for visualisation purposes
     """
     if theta_max <= np.pi / 4:
         return True
