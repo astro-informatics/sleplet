@@ -85,7 +85,7 @@ class Slepian(Functions):
                 mask = np.load(location)
                 return SlepianArbitrary(self.L, mask)
             except FileNotFoundError:
-                logger.error("can not find the file")
+                logger.error(f"can not find the file: {config.SLEPIAN_MASK}")
                 raise
 
         else:
