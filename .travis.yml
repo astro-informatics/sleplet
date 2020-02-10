@@ -26,4 +26,7 @@ before_script:
 
 script:
     - >
-        docker exec container -e ENV_FOR_DYNACONF=${ENV_FOR_DYNACONF} pytest -v
+        docker exec
+        -e ENV_FOR_DYNACONF=${ENV_FOR_DYNACONF}
+        container
+        pytest -v
