@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -30,6 +30,9 @@ class SquashedGaussian(Functions):
     def _create_name(self) -> str:
         name = f"squashed_gaussian{filename_args(self.t_sigma, 'tsig')}{filename_args(self.freq, 'freq')}"
         return name
+
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     @property
     def t_sigma(self) -> float:

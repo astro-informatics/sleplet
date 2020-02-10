@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 import numpy as np
 
@@ -41,13 +41,17 @@ class Slepian(Functions):
         self.rank = rank
 
     def _create_name(self) -> str:
-        name = "slepian"
+        name = f"{self.s.name}"
         return name
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = self.s.eigenvectors[self.rank]
         logger.info(f"Eigenvalue {self.rank}: {self.s.eigenvalues[self.rank]:e}")
         return flm
+
+    def _create_annotations(self) -> List[Dict]:
+        annotations = self.s.annotations
+        return annotations
 
     def _create_slepian(
         self

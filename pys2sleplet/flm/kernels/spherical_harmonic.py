@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -32,6 +32,9 @@ class SphericalHarmonic(Functions):
     def _create_name(self) -> str:
         name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
         return name
+
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     @property
     def ell(self) -> int:

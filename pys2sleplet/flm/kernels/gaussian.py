@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -33,6 +33,9 @@ class Gaussian(Functions):
     def _create_name(self) -> str:
         name = f"gaussian{filename_args(self.sigma, 'sig')}"
         return name
+
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     @property
     def sigma(self) -> float:

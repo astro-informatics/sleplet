@@ -8,7 +8,6 @@ import numpy as np
 class SlepianFunctions:
     def __init__(self, L: int) -> None:
         self.L = L
-        self.__matrix_name = f"D_L-{self.L}_"
         self.name = self._create_fn_name()
         self.annotations = self._create_annotations()
         self.matrix_location = self._create_matrix_location()

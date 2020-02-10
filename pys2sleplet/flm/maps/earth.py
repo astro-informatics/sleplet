@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -36,6 +36,9 @@ class Earth(Functions):
     def _create_name(self) -> str:
         name = "earth"
         return name
+
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     @staticmethod
     def load_flm():

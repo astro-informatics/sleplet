@@ -14,6 +14,7 @@ from ..slepian_functions import SlepianFunctions
 
 class SlepianArbitrary(SlepianFunctions):
     def __init__(self, L: int, mask=Tuple[np.ndarray, np.ndarray]) -> None:
+        self._name_ending = config.SLEPIAN_MASK
         theta_mask, phi_mask = mask
         samples = calc_samples(L)
         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
@@ -38,7 +39,7 @@ class SlepianArbitrary(SlepianFunctions):
             / "slepian"
             / "arbitrary"
             / "matrices"
-            / self.__matrix_name
+            / f"D_L-{self.L}{self._name_ending}"
         )
         return location
 

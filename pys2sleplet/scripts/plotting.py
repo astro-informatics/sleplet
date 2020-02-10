@@ -118,7 +118,6 @@ def plot(
     beta_pi_fraction: float,
     gamma_pi_fraction: float,
     g_name: str,
-    annotations: List = [],
 ) -> None:
     """
     master plotting method
@@ -146,25 +145,22 @@ def plot(
         # adjust filename
         filename += f"convolved_{g.name}_L{L}_"
 
-    # inverse & plot
-    field = f.field
-
     # add resolution to filename
     filename += f"res{resolution}_"
 
     # check for plotting type
     if plot_type == "real":
-        field = field.real
+        field = f.field.real
     elif plot_type == "imag":
-        field = field.imag
+        field = f.field.imag
     elif plot_type == "abs":
-        field = np.abs(field)
+        field = np.abs(f.field)
     elif plot_type == "sum":
-        field = field.real + field.imag
+        field = f.field.real + f.field.imag
 
     # do plot
     filename += plot_type
-    Plot(field, resolution, filename, annotations).execute()
+    Plot(field, resolution, filename, f.annotations).execute()
 
 
 def main() -> None:

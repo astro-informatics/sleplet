@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -20,3 +20,6 @@ class Identity(Functions):
     def _create_name(self) -> str:
         name = "identity"
         return name
+
+    def _create_annotations(self) -> List[Dict]:
+        pass

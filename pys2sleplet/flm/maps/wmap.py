@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -41,6 +41,9 @@ class WMAP(Functions):
     def _create_name(self) -> str:
         name = "wmap"
         return name
+
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     @staticmethod
     def load_cl(file_ending="_lcdm_pl_model_wmap7baoh0.mat"):
