@@ -53,6 +53,7 @@ class SlepianLimitLatLong(SlepianSpecific):
         location = (
             Path(__file__).resolve().parents[3]
             / "data"
+            / "slepian"
             / "lat_lon"
             / f"D_L-{self.L}{self._name_ending}"
         )
