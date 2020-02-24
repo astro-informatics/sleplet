@@ -1,11 +1,10 @@
 import numpy as np
-
-from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
-from pys2sleplet.flm.kernels.identity import Identity
-from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.inputs import config
-from pys2sleplet.utils.logging import logger
+from flm.kernels.harmonic_gaussian import HarmonicGaussian
+from flm.kernels.identity import Identity
+from flm.maps.earth import Earth
+from plotting.create_plot import Plot
+from utils.inputs import config
+from utils.logging import logger
 
 
 def test_earth_identity_convolution() -> None:

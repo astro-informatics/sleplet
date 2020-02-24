@@ -1,17 +1,40 @@
-# from helper import calc_samples
 import numpy as np
 import pyssht as ssht
+from flm.functions import Functions
+from slepian.slepian_functions import SlepianFunctions
 
 
 class SlepianDecomposition:
-    def __init__(self, flm, L, slepian_evals, slepian_evecs, rank):
+    def __init__(self, function: Functions, slepian: SlepianFunctions) -> None:
         self.flm = flm
         self.f = ssht.inverse(flm, L, Method="MWSS")
         self.L = L
         self.lambda_p = self.slepian_evals[rank]
         self.s_p = self.slepian_evecs[rank]
 
-    def method_one(self):
+    def decompose(self, rank: int, method: str = "harmonic_sum") -> np.ndarray:
+        """
+        decompose the signal into its Slepian coefficients via the given method
+        """
+        if method == "integrate_region":
+            f_p = self._integrate_region()
+        elif method == "forward_transform":
+            f_p = self._forward_transform()
+        elif method == "harmonic_sum":
+            f_p = self._harmonic_sum()
+        else:
+            raise ValueError(
+                f"{method} is not a recognised Slepian decomposition method"
+            )
+        return f_p
+
+    def _integrate_region(self):
+        """
+        f_{p} =
+        \frac{1}{\lambda_{p}}
+        \int\limits_{R} \dd{\Omega(\omega)}
+        f(\omega) \overline{S_{p}(\omega)}
+        """
         # function in integral
         function = self.signal * np.conj(self.s_p)
 
@@ -22,7 +45,12 @@ class SlepianDecomposition:
         f_p = np.sum(function * weight) / self.lambda_p
         return f_p
 
-    def method_two(self):
+    def _forward_transform(self):
+        """
+        f_{p} =
+        \int\limits_{S^{2}} \dd{\Omega(\omega)}
+        f(\omega) \overline{S_{p}(\omega)}
+        """
         # function in integral
         function = self.f * np.conj(self.s_p)
 
@@ -34,7 +62,15 @@ class SlepianDecomposition:
         f_p = np.sum(function * weight)
         return f_p
 
-    def method_three(self):
+    def _harmonic_sum(self):
+        """
+        f_{p} =
+        \sum\limits_{\ell=0}^{L^{2}}
+        \sum\limits_{m=-\ell}^{\ell}
+        f_{\ell m}
+        \int\limits_{S^{2}} \dd{\Omega(\omega)}
+        Y_{\ell m}(\omega) \overline{S_{p}(\omega)}
+        """
         # Slepian functions in harmonic space
         s_p_lm = ssht.forward(self.s_p, self.L, Method="MWSS")
 

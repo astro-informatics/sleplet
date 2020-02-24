@@ -4,9 +4,9 @@ from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
-
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
-from pys2sleplet.utils.string_methods import filename_angle
+from slepian.slepian_decomposition import SlepianDecomposition
+from utils.plot_methods import calc_nearest_grid_point, calc_resolution
+from utils.string_methods import filename_angle
 
 
 class Functions:

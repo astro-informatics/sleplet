@@ -2,10 +2,8 @@ from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
-
-from pys2sleplet.utils.string_methods import filename_args
-
-from ..functions import Functions
+from slepian.functions import Functions
+from utils.string_methods import filename_args
 
 
 class HarmonicGaussian(Functions):

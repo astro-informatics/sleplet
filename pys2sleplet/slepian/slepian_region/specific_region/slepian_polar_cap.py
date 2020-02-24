@@ -6,12 +6,10 @@ from typing import Dict, List, Tuple, Union
 import numpy as np
 import pyssht as ssht
 from scipy.special import factorial as fact
-
-from pys2sleplet.utils.bool_methods import is_polar_gap, is_small_polar_cap
-from pys2sleplet.utils.inputs import config
-from pys2sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
-
-from ..slepian_specific import SlepianSpecific
+from slepian.slepian_region.slepian_specific import SlepianSpecific
+from utils.bool_methods import is_polar_gap, is_small_polar_cap
+from utils.inputs import config
+from utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
 
 
 class SlepianPolarCap(SlepianSpecific):

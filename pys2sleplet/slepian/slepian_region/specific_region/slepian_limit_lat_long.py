@@ -5,10 +5,8 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
-
-from pys2sleplet.utils.inputs import config
-
-from ..slepian_specific import SlepianSpecific
+from slepian.slepian_region.slepian_specific import SlepianSpecific
+from utils.inputs import config
 
 
 class SlepianLimitLatLong(SlepianSpecific):

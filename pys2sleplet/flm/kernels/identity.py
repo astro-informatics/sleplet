@@ -1,8 +1,7 @@
 from typing import Dict, List, Optional
 
 import numpy as np
-
-from ..functions import Functions
+from slepian.functions import Functions
 
 
 class Identity(Functions):

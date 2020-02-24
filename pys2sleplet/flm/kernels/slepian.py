@@ -1,20 +1,10 @@
-from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
 import numpy as np
-
-from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from pys2sleplet.slepian.slepian_region.specific_region.slepian_limit_lat_long import (
-    SlepianLimitLatLong,
-)
-from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import (
-    SlepianPolarCap,
-)
-from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
-from pys2sleplet.utils.inputs import config
-from pys2sleplet.utils.logging import logger
-
-from ..functions import Functions
+from slepian.functions import Functions
+from utils.inputs import config
+from utils.logging import logger
+from utils.slepian_methods import create_slepian
 
 
 class Slepian(Functions):
@@ -25,7 +15,7 @@ class Slepian(Functions):
         self.phi_max = np.deg2rad(config.PHI_MAX)
         self.theta_min = np.deg2rad(config.THETA_MIN)
         self.theta_max = np.deg2rad(config.THETA_MAX)
-        self.s = self._create_slepian()
+        self.s = create_slepian()
         super().__init__(L, args)
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
@@ -52,44 +42,6 @@ class Slepian(Functions):
     def _create_annotations(self) -> List[Dict]:
         annotations = self.s.annotations
         return annotations
-
-    def _create_slepian(
-        self
-    ) -> Union[SlepianPolarCap, SlepianLimitLatLong, SlepianArbitrary]:
-        """
-        initialise Slepian object depending on input
-        """
-        if is_polar_cap(self.phi_min, self.phi_max, self.theta_min, self.theta_max):
-            logger.info("polar cap region detected")
-            return SlepianPolarCap(self.L, self.theta_max, config.ORDER)
-
-        elif is_limited_lat_lon(
-            self.phi_min, self.phi_max, self.theta_min, self.theta_max
-        ):
-            logger.info("limited latitude longitude region detected")
-            return SlepianLimitLatLong(
-                self.L, self.theta_min, self.theta_max, self.phi_min, self.phi_max
-            )
-
-        elif config.SLEPIAN_MASK:
-            logger.info("no angles specified, looking for a file with mask")
-            location = (
-                Path(__file__).resolve().parents[2]
-                / "data"
-                / "slepian"
-                / "arbitrary"
-                / "masks"
-                / config.SLEPIAN_MASK
-            )
-            try:
-                mask = np.load(location)
-                return SlepianArbitrary(self.L, mask)
-            except FileNotFoundError:
-                logger.error(f"can not find the file: {config.SLEPIAN_MASK}")
-                raise
-
-        else:
-            raise RuntimeError("no angle or file specified for Slepian region")
 
     @property
     def rank(self) -> int:

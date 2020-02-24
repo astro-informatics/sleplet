@@ -4,8 +4,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import pyssht as ssht
 from scipy import io as sio
-
-from ..functions import Functions
+from slepian.functions import Functions
 
 
 class WMAP(Functions):

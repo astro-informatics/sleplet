@@ -1,18 +1,16 @@
-from __future__ import annotations
-
 from typing import Mapping, Type
 
-from pys2sleplet.flm.functions import Functions
-from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
-from pys2sleplet.flm.kernels.elongated_gaussian import ElongatedGaussian
-from pys2sleplet.flm.kernels.gaussian import Gaussian
-from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
-from pys2sleplet.flm.kernels.identity import Identity
-from pys2sleplet.flm.kernels.slepian import Slepian
-from pys2sleplet.flm.kernels.spherical_harmonic import SphericalHarmonic
-from pys2sleplet.flm.kernels.squashed_gaussian import SquashedGaussian
-from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.flm.maps.wmap import WMAP
+from flm.functions import Functions
+from flm.kernels.dirac_delta import DiracDelta
+from flm.kernels.elongated_gaussian import ElongatedGaussian
+from flm.kernels.gaussian import Gaussian
+from flm.kernels.harmonic_gaussian import HarmonicGaussian
+from flm.kernels.identity import Identity
+from flm.kernels.slepian import Slepian
+from flm.kernels.spherical_harmonic import SphericalHarmonic
+from flm.kernels.squashed_gaussian import SquashedGaussian
+from flm.maps.earth import Earth
+from flm.maps.wmap import WMAP
 
 function_dict: Mapping[str, Type[Functions]] = {
     "dirac_delta": DiracDelta,

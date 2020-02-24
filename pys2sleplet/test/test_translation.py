@@ -1,10 +1,9 @@
 import numpy as np
 import pytest
-
-from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
-from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.inputs import config
-from pys2sleplet.utils.logging import logger
+from flm.kernels.dirac_delta import DiracDelta
+from plotting.create_plot import Plot
+from utils.inputs import config
+from utils.logging import logger
 
 
 @pytest.fixture

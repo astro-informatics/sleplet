@@ -1,11 +1,9 @@
 from typing import Dict, List, Optional
 
 import numpy as np
-
-from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
-from pys2sleplet.utils.string_methods import filename_args
-
-from ..functions import Functions
+from slepian.functions import Functions
+from utils.plot_methods import ensure_f_bandlimited
+from utils.string_methods import filename_args
 
 
 class SquashedGaussian(Functions):

@@ -2,8 +2,7 @@ from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
-
-from ..functions import Functions
+from slepian.functions import Functions
 
 
 class DiracDelta(Functions):

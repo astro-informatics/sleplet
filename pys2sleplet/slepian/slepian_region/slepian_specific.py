@@ -3,15 +3,13 @@ from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
-
-from pys2sleplet.utils.vars import (
+from slepian.slepian_functions import SlepianFunctions
+from utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,
     THETA_MIN_DEFAULT,
 )
-
-from ..slepian_functions import SlepianFunctions
 
 
 class SlepianSpecific(SlepianFunctions):

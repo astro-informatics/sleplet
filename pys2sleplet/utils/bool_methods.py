@@ -1,7 +1,11 @@
 import numpy as np
-
-from .inputs import config
-from .vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
+from utils.inputs import config
+from utils.vars import (
+    PHI_MAX_DEFAULT,
+    PHI_MIN_DEFAULT,
+    THETA_MAX_DEFAULT,
+    THETA_MIN_DEFAULT,
+)
 
 
 def is_polar_cap(

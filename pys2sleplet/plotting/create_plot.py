@@ -9,9 +9,8 @@ import pyssht as ssht
 from plotly.graph_objs import Figure, Layout, Surface
 from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
-
-from pys2sleplet.utils.inputs import config
-from pys2sleplet.utils.plot_methods import convert_colourscale
+from utils.inputs import config
+from utils.plot_methods import convert_colourscale
 
 
 class Plot:

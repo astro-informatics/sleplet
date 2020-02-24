@@ -3,12 +3,11 @@ from argparse import ArgumentParser, Namespace
 from typing import List
 
 import numpy as np
-
-from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.functions import function_dict
-from pys2sleplet.utils.inputs import config
-from pys2sleplet.utils.plot_methods import calc_resolution
-from pys2sleplet.utils.string_methods import filename_angle
+from plotting.create_plot import Plot
+from utils.functions import function_dict
+from utils.inputs import config
+from utils.plot_methods import calc_resolution
+from utils.string_methods import filename_angle
 
 
 def valid_kernels(func_name: str) -> str:
