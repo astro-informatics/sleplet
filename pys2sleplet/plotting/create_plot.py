@@ -17,7 +17,7 @@ from pys2sleplet.utils.plot_methods import convert_colourscale
 class Plot:
     def __init__(
         self, f: np.ndarray, resolution: int, filename: str, annotations: List = []
-    ):
+    ) -> None:
         self.f = f
         self.resolution = resolution
         self.filename = filename

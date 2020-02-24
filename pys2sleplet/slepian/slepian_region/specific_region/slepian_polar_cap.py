@@ -15,7 +15,7 @@ from ..slepian_specific import SlepianSpecific
 
 
 class SlepianPolarCap(SlepianSpecific):
-    def __init__(self, L: int, theta_max: float, order: int = 0):
+    def __init__(self, L: int, theta_max: float, order: int = 0) -> None:
         self.L = L
         self.order = order
         self._ndots = 12

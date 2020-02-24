@@ -9,7 +9,7 @@ from ..functions import Functions
 
 
 class SphericalHarmonic(Functions):
-    def __init__(self, L: int, args: List[int] = None):
+    def __init__(self, L: int, args: List[int] = None) -> None:
         self.reality = False
         super().__init__(L, args)
 

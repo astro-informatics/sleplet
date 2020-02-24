@@ -18,7 +18,7 @@ from ..functions import Functions
 
 
 class Slepian(Functions):
-    def __init__(self, L: int, args: List[int] = None):
+    def __init__(self, L: int, args: List[int] = None) -> None:
         self.L = L
         self.reality = False
         self.phi_min = np.deg2rad(config.PHI_MIN)

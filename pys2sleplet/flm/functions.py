@@ -10,7 +10,7 @@ from pys2sleplet.utils.string_methods import filename_angle
 
 
 class Functions:
-    def __init__(self, L: int, extra_args: Optional[List[int]]):
+    def __init__(self, L: int, extra_args: Optional[List[int]]) -> None:
         self.L = L
         self.resolution = calc_resolution(self.L)
         self._setup_args(extra_args)

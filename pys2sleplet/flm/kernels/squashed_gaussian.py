@@ -9,7 +9,7 @@ from ..functions import Functions
 
 
 class SquashedGaussian(Functions):
-    def __init__(self, L: int, args: List[int] = None):
+    def __init__(self, L: int, args: List[int] = None) -> None:
         self.reality = True
         super().__init__(L, args)
 
