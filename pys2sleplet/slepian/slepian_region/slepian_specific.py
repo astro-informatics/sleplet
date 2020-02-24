@@ -24,22 +24,6 @@ class SlepianSpecific(SlepianFunctions):
         self.theta_max = theta_max
         super().__init__(L)
 
-    @abstractmethod
-    def _create_annotations(self) -> List[dict]:
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_fn_name(self) -> str:
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_matrix_location(self) -> Path:
-        raise NotImplementedError
-
-    @abstractmethod
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        raise NotImplementedError
-
     @property
     def phi_min(self) -> float:
         return self.__phi_min
@@ -87,3 +71,19 @@ class SlepianSpecific(SlepianFunctions):
         elif np.rad2deg(var) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self.__theta_max = var
+
+    @abstractmethod
+    def _create_annotations(self) -> List[dict]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_fn_name(self) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_matrix_location(self) -> Path:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        raise NotImplementedError

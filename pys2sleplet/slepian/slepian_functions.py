@@ -13,34 +13,6 @@ class SlepianFunctions:
         self.matrix_location = self._create_matrix_location()
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
 
-    @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
-        """
-        creates the annotations for the plot
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_fn_name(self) -> str:
-        """
-        creates the name for plotting
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_matrix_location(self) -> Path:
-        """
-        creates the name of the matrix binary
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        solves the eigenproblem for the given function
-        """
-        raise NotImplementedError
-
     @property
     def L(self) -> int:
         return self.__L
@@ -80,3 +52,31 @@ class SlepianFunctions:
     @eigenvalues.setter
     def eigenvalues(self, var: np.ndarray) -> None:
         self.__eigenvalues = var
+
+    @abstractmethod
+    def _create_annotations(self) -> List[Dict]:
+        """
+        creates the annotations for the plot
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_fn_name(self) -> str:
+        """
+        creates the name for plotting
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_matrix_location(self) -> Path:
+        """
+        creates the name of the matrix binary
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        solves the eigenproblem for the given function
+        """
+        raise NotImplementedError

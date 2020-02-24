@@ -19,90 +19,6 @@ class Functions:
         self.field = self._invert(self.multipole)
         self.annotations = self._create_annotations()
 
-    @abstractmethod
-    def _setup_args(self, args: Optional[List[int]]) -> None:
-        """
-        initialises function specific args
-        either default value or user input
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_flm(self, L: int) -> np.ndarray:
-        """
-        creates the flm on the north pole
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_name(self) -> str:
-        """
-        creates the name of the function
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
-        """
-        creates the annotations for the plot
-        """
-        raise NotImplementedError
-
-    @property
-    def L(self) -> int:
-        return self.__L
-
-    @L.setter
-    def L(self, var: int) -> None:
-        """
-        update L and hence resolution
-        """
-        self.__L = var
-
-    @property
-    def resolution(self) -> int:
-        return self.__resolution
-
-    @resolution.setter
-    def resolution(self, var: int) -> None:
-        self.__resolution = var
-
-    @property
-    def reality(self) -> bool:
-        return self.__reality
-
-    @reality.setter
-    def reality(self, var: bool) -> None:
-        self.__reality = var
-
-    @property
-    def multipole(self) -> np.ndarray:
-        return self.__multipole
-
-    @multipole.setter
-    def multipole(self, var: np.ndarray) -> None:
-        """
-        update multipole value and hence field value
-        """
-        self.__multipole = var
-        self.field = self._invert(self.multipole)
-
-    @property
-    def name(self) -> np.ndarray:
-        return self.__name
-
-    @name.setter
-    def name(self, var: str) -> None:
-        self.__name = var
-
-    @property
-    def field(self) -> np.ndarray:
-        return self.__field
-
-    @field.setter
-    def field(self, var: np.ndarray) -> None:
-        self.__field = var
-
     def rotate(
         self,
         alpha_pi_fraction: float,
@@ -184,3 +100,87 @@ class Functions:
             flm_boost, self.resolution, Reality=self.reality, Method="MWSS"
         )
         return f
+
+    @property
+    def L(self) -> int:
+        return self.__L
+
+    @L.setter
+    def L(self, var: int) -> None:
+        """
+        update L and hence resolution
+        """
+        self.__L = var
+
+    @property
+    def resolution(self) -> int:
+        return self.__resolution
+
+    @resolution.setter
+    def resolution(self, var: int) -> None:
+        self.__resolution = var
+
+    @property
+    def reality(self) -> bool:
+        return self.__reality
+
+    @reality.setter
+    def reality(self, var: bool) -> None:
+        self.__reality = var
+
+    @property
+    def multipole(self) -> np.ndarray:
+        return self.__multipole
+
+    @multipole.setter
+    def multipole(self, var: np.ndarray) -> None:
+        """
+        update multipole value and hence field value
+        """
+        self.__multipole = var
+        self.field = self._invert(self.multipole)
+
+    @property
+    def name(self) -> np.ndarray:
+        return self.__name
+
+    @name.setter
+    def name(self, var: str) -> None:
+        self.__name = var
+
+    @property
+    def field(self) -> np.ndarray:
+        return self.__field
+
+    @field.setter
+    def field(self, var: np.ndarray) -> None:
+        self.__field = var
+
+    @abstractmethod
+    def _setup_args(self, args: Optional[List[int]]) -> None:
+        """
+        initialises function specific args
+        either default value or user input
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_flm(self, L: int) -> np.ndarray:
+        """
+        creates the flm on the north pole
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_name(self) -> str:
+        """
+        creates the name of the function
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_annotations(self) -> List[Dict]:
+        """
+        creates the annotations for the plot
+        """
+        raise NotImplementedError
