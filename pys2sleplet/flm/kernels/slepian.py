@@ -5,7 +5,7 @@ import numpy as np
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import create_slepian
+from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 
 class Slepian(Functions):
@@ -16,7 +16,7 @@ class Slepian(Functions):
         self.phi_max = np.deg2rad(config.PHI_MAX)
         self.theta_min = np.deg2rad(config.THETA_MIN)
         self.theta_max = np.deg2rad(config.THETA_MAX)
-        self.s = create_slepian()
+        self.s = choose_slepian_method()
         super().__init__(L, args)
 
     def _setup_args(self, args: Optional[List[int]]) -> None:

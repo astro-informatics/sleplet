@@ -16,7 +16,7 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 
 
-def create_slepian(
+def choose_slepian_method(
     L: int, phi_min: float, phi_max: float, theta_min: float, theta_max: float
 ) -> Type[SlepianFunctions]:
     """
