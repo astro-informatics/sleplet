@@ -3,18 +3,19 @@ from argparse import ArgumentParser, Namespace
 from typing import List
 
 import numpy as np
-from plotting.create_plot import Plot
-from utils.functions import function_dict
-from utils.inputs import config
-from utils.plot_methods import calc_resolution
-from utils.string_methods import filename_angle
+
+from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.utils.config import config
+from pys2sleplet.utils.dicts import functions
+from pys2sleplet.utils.plot_methods import calc_resolution
+from pys2sleplet.utils.string_methods import filename_angle
 
 
 def valid_kernels(func_name: str) -> str:
     """
     check if valid kernel
     """
-    if func_name in function_dict:
+    if func_name in functions:
         return func_name
     else:
         raise ValueError("Not a valid kernel name to convolve")
@@ -24,7 +25,7 @@ def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    if func_name in function_dict:
+    if func_name in functions:
         return func_name
     else:
         raise ValueError("Not a valid function name to plot")
@@ -38,7 +39,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "flm",
         type=valid_plotting,
-        choices=list(function_dict.keys()),
+        choices=list(functions.keys()),
         help="flm to plot on the sphere",
     )
     parser.add_argument(
@@ -66,7 +67,7 @@ def read_args() -> Namespace:
         "-c",
         type=valid_kernels,
         default=None,
-        choices=list(function_dict.keys()),
+        choices=list(functions.keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -122,7 +123,7 @@ def plot(
     master plotting method
     """
     resolution = calc_resolution(L)
-    f = function_dict[f_name](L, extra_args)
+    f = functions[f_name](L, extra_args)
     filename = f"{f.name}_L{L}_"
 
     if routine == "rotate":
@@ -138,7 +139,7 @@ def plot(
         f.translate(alpha_pi_fraction, beta_pi_fraction)
 
     if g_name:
-        g = function_dict[g_name](L, extra_args)
+        g = functions[g_name](L, extra_args)
         # perform convolution
         f.convolve(g.multipole)
         # adjust filename

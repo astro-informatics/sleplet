@@ -1,10 +1,11 @@
 from typing import Dict, List, Optional
 
 import numpy as np
-from slepian.functions import Functions
-from utils.inputs import config
-from utils.logging import logger
-from utils.slepian_methods import create_slepian
+
+from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.config import config
+from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.slepian_methods import create_slepian
 
 
 class Slepian(Functions):

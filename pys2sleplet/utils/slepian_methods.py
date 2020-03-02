@@ -2,15 +2,18 @@ from pathlib import Path
 from typing import Type
 
 import numpy as np
-from slepian.slepian_functions import SlepianFunctions
-from slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from slepian.slepian_region.specific_region.slepian_limit_lat_long import (
+
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
+from pys2sleplet.slepian.slepian_region.specific_region.slepian_limit_lat_long import (
     SlepianLimitLatLong,
 )
-from slepian.slepian_region.specific_region.slepian_polar_cap import SlepianPolarCap
-from utils.bool_methods import is_limited_lat_lon, is_polar_cap
-from utils.inputs import config
-from utils.logging import logger
+from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import (
+    SlepianPolarCap,
+)
+from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
+from pys2sleplet.utils.config import config
+from pys2sleplet.utils.logger import logger
 
 
 def create_slepian(

@@ -1,6 +1,7 @@
 import numpy as np
-from utils.inputs import config
-from utils.vars import (
+
+from pys2sleplet.utils.config import config
+from pys2sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,

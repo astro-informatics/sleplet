@@ -5,9 +5,10 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
-from slepian.slepian_functions import SlepianFunctions
-from utils.inputs import config
-from utils.plot_methods import calc_samples
+
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.config import config
+from pys2sleplet.utils.plot_methods import calc_samples
 
 
 class SlepianArbitrary(SlepianFunctions):
