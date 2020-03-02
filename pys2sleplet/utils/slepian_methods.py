@@ -16,12 +16,15 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 
 
-def choose_slepian_method(
-    L: int, phi_min: float, phi_max: float, theta_min: float, theta_max: float
-) -> Type[SlepianFunctions]:
+def choose_slepian_method(L: int) -> Type[SlepianFunctions]:
     """
     initialise Slepian object depending on input
     """
+    phi_min = np.deg2rad(config.PHI_MIN)
+    phi_max = np.deg2rad(config.PHI_MAX)
+    theta_min = np.deg2rad(config.THETA_MIN)
+    theta_max = np.deg2rad(config.THETA_MAX)
+
     if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
         logger.info("polar cap region detected")
         return SlepianPolarCap(L, theta_max, config.ORDER)
