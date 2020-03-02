@@ -3,6 +3,7 @@ from typing import Type
 
 import numpy as np
 
+from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.specific_region.slepian_limit_lat_long import (
@@ -14,6 +15,7 @@ from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 
 
 def choose_slepian_method(L: int) -> Type[SlepianFunctions]:
@@ -52,3 +54,24 @@ def choose_slepian_method(L: int) -> Type[SlepianFunctions]:
 
     else:
         raise RuntimeError("no angle or file specified for Slepian region")
+
+
+def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
+    """
+    """
+    if isinstance(slepian, SlepianPolarCap):
+        mask = 0
+
+    elif isinstance(slepian, SlepianLimitLatLong):
+        mask = 0
+
+    elif isinstance(slepian, SlepianArbitrary):
+        mask = 0
+
+    else:
+        raise RuntimeError(f"{slepian} is not a valid slepian function type")
+
+    field = function.field
+    field *= mask  # noqa: F821
+    flm = ensure_f_bandlimited(field)
+    function.multipole = flm
