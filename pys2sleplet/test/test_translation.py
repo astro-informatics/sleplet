@@ -26,17 +26,17 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     dd = DiracDelta(config.L)
     dd.rotate(alpha_pi_frac, beta_pi_frac)
     flm_rot = dd.multipole
-    f_rot = dd.field
+    f_rot, f_rot_plot = dd.field, dd.plot
 
     # translation
     dd = DiracDelta(config.L)
     dd.translate(alpha_pi_frac, beta_pi_frac)
     flm_trans = dd.multipole
-    f_trans = dd.field
+    f_trans, f_trans_plot = dd.field, dd.plot
 
     # calculate difference
     flm_diff = flm_rot - flm_trans
-    f_diff = f_rot - f_trans
+    f_diff = f_rot_plot - f_trans_plot
 
     # perform test
     np.testing.assert_allclose(flm_rot, flm_trans, atol=1e-14)

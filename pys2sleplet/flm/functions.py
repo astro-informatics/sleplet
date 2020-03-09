@@ -17,6 +17,7 @@ class Functions:
         self.name = self._create_name()
         self.multipole = self._create_flm(self.L)
         self.field = self._invert(self.multipole)
+        self.plot = self._invert(self.multipole, boosted=True)
         self.annotations = self._create_annotations()
 
     def rotate(
@@ -88,17 +89,19 @@ class Functions:
         flm_boost = np.pad(self.multipole, (0, boost), "constant")
         return flm_boost
 
-    def _invert(self, flm: np.ndarray) -> np.ndarray:
+    def _invert(self, flm: np.ndarray, boosted: bool = False) -> np.ndarray:
         """
         performs the inverse harmonic transform
         """
         # boost resolution for plot
-        flm_boost = self._boost_res(flm)
+        if boosted:
+            flm = self._boost_res(flm)
+            bandlimit = self.resolution
+        else:
+            bandlimit = self.L
 
         # perform inverse
-        f = ssht.inverse(
-            flm_boost, self.resolution, Reality=self.reality, Method="MWSS"
-        )
+        f = ssht.inverse(flm, bandlimit, Reality=self.reality, Method="MWSS")
         return f
 
     @property
@@ -107,9 +110,6 @@ class Functions:
 
     @L.setter
     def L(self, var: int) -> None:
-        """
-        update L and hence resolution
-        """
         self.__L = var
 
     @property
@@ -139,6 +139,7 @@ class Functions:
         """
         self.__multipole = var
         self.field = self._invert(self.multipole)
+        self.plot = self._invert(self.multipole, boosted=True)
 
     @property
     def name(self) -> np.ndarray:
@@ -155,6 +156,14 @@ class Functions:
     @field.setter
     def field(self, var: np.ndarray) -> None:
         self.__field = var
+
+    @property
+    def plot(self) -> np.ndarray:
+        return self.__plot
+
+    @plot.setter
+    def plot(self, var: np.ndarray) -> None:
+        self.__plot = var
 
     @abstractmethod
     def _setup_args(self, args: Optional[List[int]]) -> None:
