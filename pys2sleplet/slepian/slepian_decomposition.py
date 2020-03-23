@@ -71,9 +71,8 @@ class SlepianDecomposition:
         """
         s_p_lm = ssht.forward(self.s[rank], self.L, Method="MWSS")
 
-        f_p = 0
-        for ell in range(self.L * self.L):
-            for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                f_p += self.flm[ind] * s_p_lm[ind].conj()
+        summation = self.flm * s_p_lm.conj()
+
+        # same as double sum with index
+        f_p = summation.sum()
         return f_p
