@@ -14,7 +14,8 @@ def function() -> np.ndarray:
 
 @pytest.fixture
 def ranks() -> List[int]:
-    return [0, (config.L * config.L // 2), config.L * config.L - 1]
+    L_squared = config.L * config.L
+    return [0, L_squared // 2, L_squared - 1]
 
 
 def test_slepian_decomposition_integrate_region_and_forward_transform() -> None:
