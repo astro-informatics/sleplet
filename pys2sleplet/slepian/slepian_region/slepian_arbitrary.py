@@ -59,7 +59,7 @@ class SlepianArbitrary(SlepianFunctions):
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
-        eigenvectors = np.conj(eigenvectors[:, idx]).T
+        eigenvectors = eigenvectors[:, idx].conj().T
 
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
@@ -71,7 +71,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def f(self, i: int, j: int) -> np.ndarray:
-        f = self.ylm[i] * np.conj(self.ylm[j])
+        f = self.ylm[i] * self.ylm[j].conj()
         return f
 
     def w(self) -> np.ndarray:
@@ -97,13 +97,13 @@ class SlepianArbitrary(SlepianFunctions):
                     # if positive m then use conjugate relation
                     if m_j > 0:
                         D[i][j] = self.integral(i, j)
-                        D[j][i] = np.conj(D[i][j])
+                        D[j][i] = D[i][j].conj()
                         k = ssht.elm2ind(ell_j, -m_j)
-                        D[i][k] = (-1) ** m_j * np.conj(D[i][j])
-                        D[k][i] = np.conj(D[i][k])
+                        D[i][k] = (-1) ** m_j * D[i][j].conj()
+                        D[k][i] = D[i][k].conj()
                 else:
                     D[i][j] = self.integral(i, j)
-                    D[j][i] = np.conj(D[i][j])
+                    D[j][i] = D[i][j].conj()
         return D
 
     def matrix_parallel(self, ncpu: int):

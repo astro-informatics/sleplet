@@ -85,7 +85,7 @@ class SlepianPolarCap(SlepianSpecific):
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
-        gl = np.conj(gl[:, idx])
+        gl = gl[:, idx].conj()
 
         # put back in full D space for harmonic transform
         emm = emm[: self.L * self.L]

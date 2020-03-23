@@ -60,7 +60,7 @@ class Functions:
         if filename.exists():
             glm = np.load(filename)
         else:
-            glm = np.conj(ssht.create_ylm(beta, alpha, self.L))
+            glm = ssht.create_ylm(beta, alpha, self.L).conj()
             glm = glm.reshape(glm.size)
             # save to speed up for future
             np.save(filename, glm)
@@ -79,7 +79,7 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        self.multipole *= np.conj(glm)
+        self.multipole *= glm.conj()
 
     def _boost_res(self, flm) -> np.ndarray:
         """

@@ -82,7 +82,7 @@ class SlepianLimitLatLong(SlepianSpecific):
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
-        eigenvectors = np.conj(eigenvectors[:, idx]).T
+        eigenvectors = eigenvectors[:, idx].conj().T
 
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
@@ -151,9 +151,9 @@ class SlepianLimitLatLong(SlepianSpecific):
                 )
 
             G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col] = Q * S
-            G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = np.conj(
-                G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col]
-            )
+            G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = G[
+                2 * (self.L - 1) + row, 2 * (self.L - 1) + col
+            ].conj()
 
         # row = 0
         S = self.phi_max - self.phi_min
@@ -226,7 +226,7 @@ class SlepianLimitLatLong(SlepianSpecific):
                         K[l * (l + 1) + m, p * (p + 1) + q] *= C1 * C2
 
         i_upper = np.triu_indices(K.shape[0])
-        K[i_upper] = np.conj(K.T[i_upper])
+        K[i_upper] = K.T[i_upper].conj()
 
         return K
 
@@ -329,7 +329,7 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         # fill in remaining triangle section
         i_upper = np.triu_indices(K.shape[0])
-        K[i_upper] = np.conj(K.T[i_upper])
-        K[i_upper] = np.conj(K.T[i_upper])
+        K[i_upper] = K.T[i_upper].conj()
+        K[i_upper] = K.T[i_upper].conj()
 
         return K

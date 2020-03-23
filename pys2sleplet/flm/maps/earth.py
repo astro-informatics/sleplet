@@ -26,11 +26,11 @@ class Earth(Functions):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                flm[ind_nm] = (-1) ** m * np.conj(flm[ind_pm])
+                flm[ind_nm] = (-1) ** m * flm[ind_pm].conj()
 
         # don't take the full L
         # invert dataset as Earth backwards
-        flm = np.conj(flm[: L * L])
+        flm = flm[: L * L].conj()
         return flm
 
     def _create_name(self) -> str:
