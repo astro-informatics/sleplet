@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Type
 
 import numpy as np
+import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -59,19 +60,27 @@ def choose_slepian_method(L: int) -> Type[SlepianFunctions]:
 def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
     """
     """
+    thetas, phis = ssht.sample_positions(config.L, Grid=True, Method="MWSS")
+    whole_sphere_field = function.field
+
     if isinstance(slepian, SlepianPolarCap):
-        mask = 0
+        condition = thetas <= slepian.theta_max
+        region_field = np.where(condition, whole_sphere_field, 0)
 
     elif isinstance(slepian, SlepianLimitLatLong):
-        mask = 0
+        condition = (
+            (thetas >= slepian.theta_min)
+            & (thetas <= slepian.theta_max)
+            & (phis >= slepian.phi_min)
+            & (phis <= slepian.phi_max)
+        )
+        region_field = np.where(condition, whole_sphere_field, 0)
 
     elif isinstance(slepian, SlepianArbitrary):
-        mask = 0
+        region_field = whole_sphere_field * slepian.mask
 
     else:
         raise RuntimeError(f"{slepian} is not a valid slepian function type")
 
-    field = function.field
-    field *= mask  # noqa: F821
-    flm = ensure_f_bandlimited(field)
+    flm = ensure_f_bandlimited(region_field)
     function.multipole = flm
