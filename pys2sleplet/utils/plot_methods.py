@@ -83,7 +83,7 @@ def calc_nearest_grid_point(
     as the rotation such that the difference error is small
     """
     thetas, phis = ssht.sample_positions(L, Method="MWSS")
-    pix_j = (np.abs(phis - alpha_pi_fraction * np.pi)).argmin()
-    pix_i = (np.abs(thetas - beta_pi_fraction * np.pi)).argmin()
+    pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
+    pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
     return alpha, beta

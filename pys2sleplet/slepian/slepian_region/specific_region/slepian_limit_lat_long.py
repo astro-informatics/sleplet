@@ -300,17 +300,13 @@ class SlepianLimitLatLong(SlepianSpecific):
                                     S1 += C4 * G[ind_r, ind_c]
 
                                 idx = (l * (l + 1) + m, p * (p + 1) + q)
-                                tmp_r[idx] += np.real(C3 * S1)
-                                tmp_i[idx] += np.imag(C3 * S1)
+                                tmp_r[idx] += (C3 * S1).real
+                                tmp_i[idx] += (C3 * S1).imag
 
                             idx = (l * (l + 1) + m, p * (p + 1) + q)
                             real, imag = tmp_r[idx], tmp_i[idx]
-                            tmp_r[idx] = real * np.real(C1 * C2) - imag * np.imag(
-                                C1 * C2
-                            )
-                            tmp_i[idx] = real * np.imag(C1 * C2) + imag * np.real(
-                                C1 * C2
-                            )
+                            tmp_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
+                            tmp_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
 
         # split up L range to maximise effiency
         arr = np.arange(self.L)

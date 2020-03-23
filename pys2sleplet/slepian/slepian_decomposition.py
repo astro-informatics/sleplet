@@ -44,7 +44,7 @@ class SlepianDecomposition:
 
         weight = np.sin(self.thetas) * self.delta_theta * self.delta_phi
 
-        f_p = np.sum(integrand * weight) / self.lambdas[rank]
+        f_p = (integrand * weight).sum() / self.lambdas[rank]
         return f_p
 
     def _forward_transform(self, rank: int):
@@ -57,7 +57,7 @@ class SlepianDecomposition:
 
         weight = np.sin(self.thetas) * self.delta_theta * self.delta_phi
 
-        f_p = np.sum(integrand * weight)
+        f_p = (integrand * weight).sum()
         return f_p
 
     def _harmonic_sum(self, rank: int):

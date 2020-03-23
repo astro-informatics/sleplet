@@ -79,7 +79,7 @@ class SlepianArbitrary(SlepianFunctions):
         return w
 
     def integral(self, i: int, j: int) -> complex:
-        F = np.sum(self.f(i, j) * self.w())
+        F = (self.f(i, j) * self.w()).sum()
         return F
 
     def matrix_serial(self) -> np.ndarray:

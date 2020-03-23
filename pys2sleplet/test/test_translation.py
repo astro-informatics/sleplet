@@ -41,7 +41,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     # perform test
     np.testing.assert_allclose(flm_rot, flm_trans, atol=1e-14)
     np.testing.assert_allclose(f_rot, f_trans, rtol=1e-5)
-    logger.info("Translation/rotation difference max error:", np.max(np.abs(flm_diff)))
+    logger.info(f"Translation/rotation difference max error: {np.abs(flm_diff).max()}")
 
     if config.AUTO_OPEN:
         filename = f"{dd.name}_L{config.L}_diff_rot_trans_res{dd.resolution}"
