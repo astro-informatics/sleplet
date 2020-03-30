@@ -84,5 +84,5 @@ def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
     else:
         raise RuntimeError(f"{slepian} is not a valid slepian function type")
 
-    flm = ensure_f_bandlimited(region_field)
+    flm = ensure_f_bandlimited(region_field, config.L, function.reality)
     function.multipole = flm

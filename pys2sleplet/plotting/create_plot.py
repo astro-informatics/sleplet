@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import cmocean
 import numpy as np
@@ -99,7 +99,7 @@ class Plot:
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: List[float] = [0.0, 0.5],
-        color_range: List[float] = None,
+        color_range: Optional[List[float]] = None,
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot

@@ -8,7 +8,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 class HarmonicGaussian(Functions):
-    def __init__(self, L: int, args: List[int] = None) -> None:
+    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
         self.reality = False
         super().__init__(L, args)
 
@@ -17,10 +17,9 @@ class HarmonicGaussian(Functions):
             num_args = 2
             if len(args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            l_sigma, m_sigma = [10 ** x for x in args]
+            self.l_sigma, self.m_sigma = [10 ** x for x in args]
         else:
-            l_sigma, m_sigma = 1_000, 1_000
-        self.l_sigma, self.m_sigma = l_sigma, m_sigma
+            self.l_sigma, self.m_sigma = 1e3, 1e3
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
@@ -32,7 +31,11 @@ class HarmonicGaussian(Functions):
         return flm
 
     def _create_name(self) -> str:
-        name = f"harmonic_gaussian{filename_args(self.l_sigma, 'lsig')}{filename_args(self.m_sigma, 'msig')}"
+        name = (
+            "harmonic_gaussian"
+            f"{filename_args(self.l_sigma, 'lsig')}"
+            f"{filename_args(self.m_sigma, 'msig')}"
+        )
         return name
 
     def _create_annotations(self) -> List[Dict]:

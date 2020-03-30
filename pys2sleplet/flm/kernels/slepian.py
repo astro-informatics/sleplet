@@ -8,7 +8,7 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 
 class Slepian(Functions):
-    def __init__(self, L: int, args: List[int] = None) -> None:
+    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
         self.L = L
         self.reality = False
         self.s = choose_slepian_method(self.L)
@@ -21,10 +21,9 @@ class Slepian(Functions):
                 raise ValueError(
                     f"The number of extra arguments should be 1 or {num_args}"
                 )
-            rank = args[0]
+            self.rank = args[0]
         else:
-            rank = 0
-        self.rank = rank
+            self.rank = 0
 
     def _create_name(self) -> str:
         name = f"{self.s.name}_rank{self.rank}"

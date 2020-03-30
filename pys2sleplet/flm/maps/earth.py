@@ -9,7 +9,7 @@ from pys2sleplet.flm.functions import Functions
 
 
 class Earth(Functions):
-    def __init__(self, L: int, args: List[int] = None) -> None:
+    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
         self.reality = True
         super().__init__(L, args)
 

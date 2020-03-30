@@ -8,7 +8,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 class ElongatedGaussian(Functions):
-    def __init__(self, L: int, args: List[int] = None) -> None:
+    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
         self.reality = True
         super().__init__(L, args)
 
@@ -17,17 +17,20 @@ class ElongatedGaussian(Functions):
             num_args = 2
             if len(args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            t_sigma, p_sigma = [10 ** x for x in args]
+            self.t_sigma, self.p_sigma = [10 ** x for x in args]
         else:
-            t_sigma, p_sigma = 1, 0.001
-        self.t_sigma, self.p_sigma = t_sigma, p_sigma
+            self.t_sigma, self.p_sigma = 1.0, 0.001
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)
         return flm
 
     def _create_name(self) -> str:
-        name = f"elongated_gaussian{filename_args(self.t_sigma, 'tsig')}{filename_args(self.p_sigma, 'psig')}"
+        name = (
+            "elongated_gaussian"
+            f"{filename_args(self.t_sigma, 'tsig')}"
+            f"{filename_args(self.p_sigma, 'psig')}"
+        )
         return name
 
     def _create_annotations(self) -> List[Dict]:

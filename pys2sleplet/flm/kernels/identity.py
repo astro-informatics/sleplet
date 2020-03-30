@@ -6,7 +6,7 @@ from pys2sleplet.flm.functions import Functions
 
 
 class Identity(Functions):
-    def __init__(self, L: int, args: List[int] = None) -> None:
+    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
         self.reality = False
         super().__init__(L, args)
 

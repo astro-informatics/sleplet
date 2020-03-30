@@ -8,7 +8,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 class SphericalHarmonic(Functions):
-    def __init__(self, L: int, args: List[int] = None) -> None:
+    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
         self.reality = False
         super().__init__(L, args)
 

@@ -8,7 +8,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 class Gaussian(Functions):
-    def __init__(self, L: int, args: List[int] = None) -> None:
+    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
         self.reality = True
         super().__init__(L, args)
 
@@ -17,10 +17,9 @@ class Gaussian(Functions):
             num_args = 1
             if len(args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            sigma = 10 ** args[0]
+            self.sigma = 10 ** args[0]
         else:
-            sigma = 1_000
-        self.sigma = sigma
+            self.sigma = 1e3
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
