@@ -113,7 +113,7 @@ class Plot:
         thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
-            raise Exception("Band-limit L deos not match that of f")
+            raise Exception("Bandlimit L deos not match that of f")
 
         f_plot = f.copy()
 

@@ -17,7 +17,7 @@ def create_matfile(filename: str) -> None:
     df["real"] = pd.to_numeric(df["real"].str.replace("D", "E"))
     df["imag"] = pd.to_numeric(df["imag"].str.replace("D", "E"))
 
-    # band-limit
+    # bandlimit
     L = df["ell"].values[-1]
 
     # fill dataframe with zero for missing values
