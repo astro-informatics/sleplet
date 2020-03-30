@@ -39,7 +39,7 @@ class SlepianArbitrary(SlepianFunctions):
             / "slepian"
             / "arbitrary"
             / "matrices"
-            / f"D_L-{self.L}{self._name_ending}"
+            / f"D_L-{self.L}{self._name_ending}.npy"
         )
         return location
 
