@@ -59,6 +59,8 @@ def choose_slepian_method(L: int) -> Type[SlepianFunctions]:
 
 def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
     """
+    when manipulating Slepian functions we need a map which has mask similar
+    to that of the function so we can see the effect of convolutions etc
     """
     thetas, phis = ssht.sample_positions(config.L, Grid=True, Method="MWSS")
     whole_sphere_field = function.field
