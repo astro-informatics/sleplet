@@ -54,7 +54,7 @@ class SlepianLimitLatLong(SlepianSpecific):
             / "data"
             / "slepian"
             / "lat_lon"
-            / f"D_L-{self.L}{self._name_ending}.npy"
+            / f"D_L{self.L}{self._name_ending}.npy"
         )
         return location
 
