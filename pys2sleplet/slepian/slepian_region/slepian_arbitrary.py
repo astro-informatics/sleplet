@@ -1,5 +1,6 @@
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -11,19 +12,27 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import calc_samples
 
 
+@dataclass
 class SlepianArbitrary(SlepianFunctions):
-    def __init__(self, L: int, mask=Tuple[np.ndarray, np.ndarray]) -> None:
-        self._name_ending = f"_{config.SLEPIAN_MASK}"
-        theta_mask, phi_mask = mask
-        samples = calc_samples(L)
+    L: int
+    mask: Tuple[np.ndarray, np.ndarray]
+    delta_phi: float
+    delta_theta: float
+    N: int
+    thetas: np.ndarray
+    ylm: np.ndarray
+    _name_ending: str = f"_{config.SLEPIAN_MASK}"
+
+    def __post_init__(self) -> None:
+        theta_mask, phi_mask = self.mask
+        samples = calc_samples(self.L)
         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
-        ylm = ssht.create_ylm(thetas, phis, L)
+        ylm = ssht.create_ylm(thetas, phis, self.L)
         self.delta_phi = np.ediff1d(phis[0]).mean()
         self.delta_theta = np.ediff1d(thetas[:, 0]).mean()
-        self.N = L * L
+        self.N = self.L * self.L
         self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
-        super().__init__(L)
 
     def _create_annotations(self) -> List[Dict]:
         pass

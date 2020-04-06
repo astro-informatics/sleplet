@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from dataclasses import InitVar, dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -9,11 +10,21 @@ from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolut
 from pys2sleplet.utils.string_methods import filename_angle
 
 
+@dataclass  # type: ignore
 class Functions:
-    def __init__(self, L: int, extra_args: Optional[List[int]]) -> None:
-        self.L = L
+    L: int
+    extra_args: Optional[List[int]]
+    __resolution: InitVar[int]
+    __name: InitVar[str]
+    __multipole: InitVar[np.ndarray]
+    __field: InitVar[np.ndarray]
+    __plot: InitVar[np.ndarray]
+    __annotations: InitVar[List[Dict]]
+    __L: int = field(init=False, repr=False)
+
+    def __post_init__(self):
+        self._setup_args(self.extra_args)
         self.resolution = calc_resolution(self.L)
-        self._setup_args(extra_args)
         self.name = self._create_name()
         self.multipole = self._create_flm(self.L)
         self.field = self._invert(self.multipole)
@@ -104,7 +115,7 @@ class Functions:
         f = ssht.inverse(flm, bandlimit, Reality=self.reality, Method="MWSS")
         return f
 
-    @property
+    @property  # type: ignore
     def L(self) -> int:
         return self.__L
 

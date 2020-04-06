@@ -1,3 +1,4 @@
+from dataclasses import InitVar, dataclass
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -7,10 +8,11 @@ from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
 
 
+@dataclass
 class ElongatedGaussian(Functions):
-    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
-        self.reality = True
-        super().__init__(L, args)
+    L: int
+    args: Optional[List[int]] = None
+    reality: InitVar[bool] = True
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:

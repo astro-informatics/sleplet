@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import numpy as np
 import pyssht as ssht
 
@@ -5,11 +7,19 @@ from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 
+@dataclass
 class SlepianDecomposition:
-    def __init__(self, L: int, function: Functions) -> None:
-        self.L = L
-        self.flm = function.multipole
-        self.f = function.field
+    L: int
+    function: Functions
+    flm: np.ndarray
+    f: np.ndarray
+    lambdas: np.ndarray
+    s: np.ndarray
+    thetas: np.ndarray
+    delta_phi: float
+    delta_theta: float
+
+    def __post_init__(self) -> None:
         slepian = choose_slepian_method(self.L)
         self.lambdas = slepian.slepian_evals
         self.s = slepian.slepian_evecs

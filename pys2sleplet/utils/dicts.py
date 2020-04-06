@@ -1,4 +1,4 @@
-from typing import Dict, Type
+from typing import Dict
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
@@ -12,7 +12,7 @@ from pys2sleplet.flm.kernels.squashed_gaussian import SquashedGaussian
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.flm.maps.wmap import WMAP
 
-functions: Dict[str, Type[Functions]] = {
+functions: Dict[str, Functions] = {
     "dirac_delta": DiracDelta,
     "earth": Earth,
     "elongated_gaussian": ElongatedGaussian,

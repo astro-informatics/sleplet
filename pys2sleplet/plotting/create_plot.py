@@ -1,5 +1,6 @@
+from dataclasses import InitVar, dataclass, field
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import cmocean
 import numpy as np
@@ -14,14 +15,15 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import convert_colourscale
 
 
+@dataclass
 class Plot:
-    def __init__(
-        self, f: np.ndarray, resolution: int, filename: str, annotations: List = []
-    ) -> None:
-        self.f = f
-        self.resolution = resolution
-        self.filename = filename
-        self.annotations = annotations
+    f: np.ndarray
+    resolution: int
+    filename: str
+    annotations: List[Dict] = field(default_factory=list, init=False)
+    fig_path: InitVar[Path]
+
+    def __post_init__(self) -> None:
         self.fig_path = Path(__file__).resolve().parents[1] / "figures"
 
     def execute(self, zoom: float = 7.88) -> None:

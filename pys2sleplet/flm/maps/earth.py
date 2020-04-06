@@ -1,3 +1,4 @@
+from dataclasses import InitVar, dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -8,10 +9,11 @@ from scipy import io as sio
 from pys2sleplet.flm.functions import Functions
 
 
+@dataclass
 class Earth(Functions):
-    def __init__(self, L: int, args: Optional[List[int]] = None) -> None:
-        self.reality = True
-        super().__init__(L, args)
+    L: int
+    args: Optional[List[int]] = None
+    reality: InitVar[bool] = True
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         pass

@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Type
 
 import numpy as np
 import pyssht as ssht
@@ -19,7 +18,7 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 
 
-def choose_slepian_method(L: int) -> Type[SlepianFunctions]:
+def choose_slepian_method(L: int) -> SlepianFunctions:
     """
     initialise Slepian object depending on input
     """

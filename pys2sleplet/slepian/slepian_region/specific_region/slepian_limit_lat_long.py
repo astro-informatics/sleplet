@@ -1,4 +1,5 @@
 import multiprocessing.sharedctypes as sct
+from dataclasses import dataclass
 from multiprocessing import Pool
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -10,15 +11,17 @@ from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.config import config
 
 
+@dataclass
 class SlepianLimitLatLong(SlepianSpecific):
-    def __init__(
-        self, L: int, theta_min: float, theta_max: float, phi_min: float, phi_max: float
-    ) -> None:
-        self._name_ending = (
-            f"_theta{config.THETA_MIN}-{config.THETA_MAX}"
-            f"_phi{config.PHI_MIN}-{config.PHI_MAX}"
-        )
-        super().__init__(L, phi_min, phi_max, theta_min, theta_max)
+    L: int
+    theta_min: float
+    theta_max: float
+    phi_min: float
+    phi_max: float
+    _name_ending: str = (
+        f"_theta{config.THETA_MIN}-{config.THETA_MAX}"
+        f"_phi{config.PHI_MIN}-{config.PHI_MAX}"
+    )
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []

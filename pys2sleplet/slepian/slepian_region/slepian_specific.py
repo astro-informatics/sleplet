@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
 
@@ -13,15 +14,13 @@ from pys2sleplet.utils.vars import (
 )
 
 
+@dataclass  # type: ignore
 class SlepianSpecific(SlepianFunctions):
-    def __init__(
-        self, L: int, phi_min: float, phi_max: float, theta_min: float, theta_max: float
-    ) -> None:
-        self.phi_min = phi_min
-        self.phi_max = phi_max
-        self.theta_min = theta_min
-        self.theta_max = theta_max
-        super().__init__(L)
+    L: int
+    __phi_min: float
+    __phi_max: float
+    __theta_min: float
+    __theta_max: float
 
     @property
     def phi_min(self) -> float:

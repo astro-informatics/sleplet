@@ -1,4 +1,5 @@
 import multiprocessing.sharedctypes as sct
+from dataclasses import dataclass
 from multiprocessing import Pool
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -13,22 +14,21 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
 
 
+@dataclass
 class SlepianPolarCap(SlepianSpecific):
-    def __init__(self, L: int, theta_max: float, order: int = 0) -> None:
-        self.L = L
-        self.order = order
-        self._ndots = 12
-        self._name_ending = "_polar"
+    L: int
+    theta_max: float
+    __order: int = 0
+    _ndots: int = 12
+    _name_ending: str = "_polar"
+    theta_min: int = THETA_MIN_DEFAULT
+    phi_min: int = PHI_MIN_DEFAULT
+    phi_max: int = PHI_MAX_DEFAULT
+
+    def __post_init__(self) -> None:
         if is_polar_gap():
             self._name_ending += "_gap"
         self._name_ending += f"{config.THETA_MAX}_m{self.order}"
-        super().__init__(
-            L,
-            np.deg2rad(PHI_MIN_DEFAULT),
-            np.deg2rad(PHI_MAX_DEFAULT),
-            np.deg2rad(THETA_MIN_DEFAULT),
-            theta_max,
-        )
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []  # type: List[Dict]

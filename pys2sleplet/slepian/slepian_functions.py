@@ -1,13 +1,21 @@
 from abc import abstractmethod
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple
 
 import numpy as np
 
 
+@dataclass  # type: ignore
 class SlepianFunctions:
-    def __init__(self, L: int) -> None:
-        self.L = L
+    __L: int
+    name: str
+    __annotations: List[Dict]
+    __matrix_location: Path
+    __eigenvalues: np.ndarray
+    __eigenvectors: np.ndarray
+
+    def __post_init__(self) -> None:
         self.name = self._create_fn_name()
         self.annotations = self._create_annotations()
         self.matrix_location = self._create_matrix_location()
