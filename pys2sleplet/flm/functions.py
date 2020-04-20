@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dataclasses import InitVar, dataclass, field
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -13,16 +13,16 @@ from pys2sleplet.utils.string_methods import filename_angle
 @dataclass  # type: ignore
 class Functions:
     L: int
-    extra_args: Optional[List[int]]
-    __resolution: InitVar[int]
-    __name: InitVar[str]
-    __multipole: InitVar[np.ndarray]
-    __field: InitVar[np.ndarray]
-    __plot: InitVar[np.ndarray]
-    __annotations: InitVar[List[Dict]]
+    extra_args: Optional[List[int]] = field(default=None)
     __L: int = field(init=False, repr=False)
+    __annotations: List[Dict] = field(init=False, repr=False)
+    __field: np.ndarray = field(init=False, repr=False)
+    __multipole: np.ndarray = field(init=False, repr=False)
+    __name: str = field(init=False, repr=False)
+    __plot: np.ndarray = field(init=False, repr=False)
+    __resolution: int = field(init=False, repr=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self._setup_args(self.extra_args)
         self.resolution = calc_resolution(self.L)
         self.name = self._create_name()

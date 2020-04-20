@@ -1,4 +1,4 @@
-from dataclasses import InitVar, dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -11,8 +11,9 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class ElongatedGaussian(Functions):
     L: int
-    args: Optional[List[int]] = None
-    reality: InitVar[bool] = True
+    reality: bool = field(default=True)
+    __t_sigma: float = field(default=1, init=False, repr=False)
+    __p_sigma: float = field(default=1e-3, init=False, repr=False)
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
@@ -20,8 +21,6 @@ class ElongatedGaussian(Functions):
             if len(args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.t_sigma, self.p_sigma = [10 ** x for x in args]
-        else:
-            self.t_sigma, self.p_sigma = 1.0, 0.001
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)

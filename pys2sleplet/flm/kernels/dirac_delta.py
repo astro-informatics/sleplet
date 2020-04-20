@@ -1,4 +1,4 @@
-from dataclasses import InitVar, dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -10,8 +10,7 @@ from pys2sleplet.flm.functions import Functions
 @dataclass
 class DiracDelta(Functions):
     L: int
-    args: Optional[List[int]] = None
-    reality: InitVar[bool] = True
+    reality: bool = field(default=True)
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         pass

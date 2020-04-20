@@ -1,4 +1,4 @@
-from dataclasses import InitVar, dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -11,8 +11,9 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class HarmonicGaussian(Functions):
     L: int
-    args: Optional[List[int]] = None
-    reality: InitVar[bool] = False
+    reality: bool = field(default=False)
+    __l_sigma: float = field(default=1_000, init=False, repr=False)
+    __m_sigma: float = field(default=1_000, init=False, repr=False)
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
@@ -20,8 +21,6 @@ class HarmonicGaussian(Functions):
             if len(args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.l_sigma, self.m_sigma = [10 ** x for x in args]
-        else:
-            self.l_sigma, self.m_sigma = 1e3, 1e3
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)

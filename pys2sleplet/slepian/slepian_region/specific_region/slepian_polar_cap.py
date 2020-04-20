@@ -1,5 +1,5 @@
 import multiprocessing.sharedctypes as sct
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from multiprocessing import Pool
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -18,9 +18,10 @@ from pys2sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_D
 class SlepianPolarCap(SlepianSpecific):
     L: int
     theta_max: float
-    __order: int = 0
-    _ndots: int = 12
-    _name_ending: str = "_polar"
+    order: int
+    __order: int = field(default=0, init=False, repr=False)
+    ndots: int = field(default=12, init=False, repr=False)
+    name_ending: str = "_polar"
     theta_min: int = THETA_MIN_DEFAULT
     phi_min: int = PHI_MIN_DEFAULT
     phi_max: int = PHI_MAX_DEFAULT

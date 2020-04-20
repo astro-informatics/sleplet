@@ -1,6 +1,6 @@
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -16,12 +16,12 @@ from pys2sleplet.utils.plot_methods import calc_samples
 class SlepianArbitrary(SlepianFunctions):
     L: int
     mask: Tuple[np.ndarray, np.ndarray]
-    delta_phi: float
-    delta_theta: float
-    N: int
-    thetas: np.ndarray
-    ylm: np.ndarray
-    _name_ending: str = f"_{config.SLEPIAN_MASK}"
+    delta_phi: float = field(init=False)
+    delta_theta: float = field(init=False)
+    N: int = field(init=False)
+    thetas: np.ndarray = field(init=False)
+    ylm: np.ndarray = field(init=False)
+    name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         theta_mask, phi_mask = self.mask
@@ -33,6 +33,7 @@ class SlepianArbitrary(SlepianFunctions):
         self.N = self.L * self.L
         self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
+        self.name_ending = f"_{config.SLEPIAN_MASK}"
 
     def _create_annotations(self) -> List[Dict]:
         pass

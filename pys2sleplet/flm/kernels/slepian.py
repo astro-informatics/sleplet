@@ -1,4 +1,4 @@
-from dataclasses import InitVar, dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -11,11 +11,10 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 @dataclass
 class Slepian(Functions):
-    __rank: InitVar[int]
     L: int
-    s: SlepianFunctions
-    args: Optional[List[int]] = None
-    reality: InitVar[bool] = False
+    reality: bool = field(default=False)
+    s: SlepianFunctions = field(init=False)
+    __rank: int = field(default=0, init=False, repr=False)
 
 
 def __post_init__(self) -> None:
@@ -29,8 +28,6 @@ def __post_init__(self) -> None:
                     f"The number of extra arguments should be 1 or {num_args}"
                 )
             self.rank = args[0]
-        else:
-            self.rank = 0
 
     def _create_name(self) -> str:
         name = f"{self.s.name}_rank{self.rank}"

@@ -1,4 +1,4 @@
-from dataclasses import InitVar, dataclass, field
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -20,8 +20,8 @@ class Plot:
     f: np.ndarray
     resolution: int
     filename: str
-    annotations: List[Dict] = field(default_factory=list, init=False)
-    fig_path: InitVar[Path]
+    annotations: List[Dict] = field(default_factory=list)
+    fig_path: Path = field(init=False)
 
     def __post_init__(self) -> None:
         self.fig_path = Path(__file__).resolve().parents[1] / "figures"

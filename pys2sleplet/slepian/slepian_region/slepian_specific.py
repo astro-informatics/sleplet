@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Tuple
 
@@ -17,10 +17,15 @@ from pys2sleplet.utils.vars import (
 @dataclass  # type: ignore
 class SlepianSpecific(SlepianFunctions):
     L: int
-    __phi_min: float
-    __phi_max: float
-    __theta_min: float
-    __theta_max: float
+    phi_min: float
+    phi_max: float
+    theta_min: float
+    theta_min: float
+    __L: int = field(init=False, repr=False)
+    __phi_min: float = field(init=False, repr=False)
+    __phi_max: float = field(init=False, repr=False)
+    __theta_min: float = field(init=False, repr=False)
+    __theta_min: float = field(init=False, repr=False)
 
     @property
     def phi_min(self) -> float:
