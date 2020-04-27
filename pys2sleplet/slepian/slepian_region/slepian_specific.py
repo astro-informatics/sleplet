@@ -20,12 +20,12 @@ class SlepianSpecific(SlepianFunctions):
     phi_min: float
     phi_max: float
     theta_min: float
-    theta_min: float
+    theta_max: float
     __L: int = field(init=False, repr=False)
     __phi_min: float = field(init=False, repr=False)
     __phi_max: float = field(init=False, repr=False)
     __theta_min: float = field(init=False, repr=False)
-    __theta_min: float = field(init=False, repr=False)
+    __theta_max: float = field(init=False, repr=False)
 
     @property
     def phi_min(self) -> float:
