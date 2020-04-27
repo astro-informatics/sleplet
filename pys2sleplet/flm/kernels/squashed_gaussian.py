@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -11,7 +11,21 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class SquashedGaussian(Functions):
     L: int
-    reality: bool = field(default=True)
+    extra_args: List[int]
+
+    def __post_init__(self) -> None:
+        self.reality = True
+
+    def _grid_fun(
+        self, theta: np.ndarray, phi: np.ndarray, theta_0: float = 0
+    ) -> np.ndarray:
+        """
+        function on the grid
+        """
+        f = np.exp(-(((theta - theta_0) / self.t_sigma) ** 2) / 2) * np.sin(
+            self.freq * phi
+        )
+        return f
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
@@ -49,14 +63,3 @@ class SquashedGaussian(Functions):
     @freq.setter
     def freq(self, freq: float) -> None:
         self.__freq = freq
-
-    def _grid_fun(
-        self, theta: np.ndarray, phi: np.ndarray, theta_0: float = 0
-    ) -> np.ndarray:
-        """
-        function on the grid
-        """
-        f = np.exp(-(((theta - theta_0) / self.t_sigma) ** 2) / 2) * np.sin(
-            self.freq * phi
-        )
-        return f

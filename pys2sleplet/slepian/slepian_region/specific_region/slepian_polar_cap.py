@@ -1,5 +1,5 @@
 import multiprocessing.sharedctypes as sct
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from multiprocessing import Pool
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -11,7 +11,7 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.bool_methods import is_polar_gap, is_small_polar_cap
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
+from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
@@ -19,17 +19,15 @@ class SlepianPolarCap(SlepianSpecific):
     L: int
     theta_max: float
     order: int
-    __order: int = field(default=0, init=False, repr=False)
-    ndots: int = field(default=12, init=False, repr=False)
-    name_ending: str = "_polar"
-    theta_min: int = THETA_MIN_DEFAULT
-    phi_min: int = PHI_MIN_DEFAULT
-    phi_max: int = PHI_MAX_DEFAULT
+    ndots: int = DC_VAR_NOT_INIT
+    name_ending: str = DC_VAR_NOT_INIT
 
     def __post_init__(self) -> None:
+        self.ndots = 12
+        self.name_ending = "_polar"
         if is_polar_gap():
-            self._name_ending += "_gap"
-        self._name_ending += f"{config.THETA_MAX}_m{self.order}"
+            self.name_ending += "_gap"
+        self.name_ending += f"{config.THETA_MAX}_m{self.order}"
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []  # type: List[Dict]
@@ -146,21 +144,6 @@ class SlepianPolarCap(SlepianSpecific):
             k = k + M
 
         return emm
-
-    @property
-    def order(self) -> int:
-        return self.__order
-
-    @order.setter
-    def order(self, order: int) -> None:
-        if not isinstance(order, int):
-            raise TypeError("order should be an integer")
-        # check order is in correct range
-        if abs(order) >= self.L:
-            raise ValueError(
-                f"Slepian polar cap order magnitude should be less than {self.L}"
-            )
-        self.__order = order
 
     @staticmethod
     def Wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:

@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -11,7 +11,7 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class SphericalHarmonic(Functions):
     L: int
-    reality: bool = field(default=False)
+    extra_args: List[int]
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:

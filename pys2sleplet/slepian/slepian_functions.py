@@ -5,30 +5,23 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
+from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
+
 
 @dataclass  # type: ignore
 class SlepianFunctions:
-    L: int
-    __L: int = field(init=False, repr=False)
-    __annotations: List[Dict] = field(init=False, repr=False)
-    __eigenvalues: np.ndarray = field(init=False, repr=False)
-    __eigenvectors: np.ndarray = field(init=False, repr=False)
-    __matrix_location: Path = field(init=False, repr=False)
-    __name: str = field(init=False, repr=False)
+    __annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
+    __eigenvalues: np.ndarray = DC_VAR_NOT_INIT
+    __eigenvectors: np.ndarray = DC_VAR_NOT_INIT
+    __L: int = DC_VAR_NOT_INIT
+    __matrix_location: Path = DC_VAR_NOT_INIT
+    __name: str = DC_VAR_NOT_INIT
 
     def __post_init__(self) -> None:
         self.annotations = self._create_annotations()
         self.name = self._create_fn_name()
         self.matrix_location = self._create_matrix_location()
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
-
-    @property
-    def L(self) -> int:
-        return self.__L
-
-    @L.setter
-    def L(self, L: int) -> None:
-        self.__L = L
 
     @property
     def annotations(self) -> List[Dict]:
@@ -53,6 +46,14 @@ class SlepianFunctions:
     @eigenvectors.setter
     def eigenvectors(self, eigenvectors: np.ndarray) -> None:
         self.__eigenvectors = eigenvectors
+
+    @property
+    def L(self) -> int:
+        return self.__L
+
+    @L.setter
+    def L(self, L: int) -> None:
+        self.__L = L
 
     @property
     def matrix_location(self) -> Path:

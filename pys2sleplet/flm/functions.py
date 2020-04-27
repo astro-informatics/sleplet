@@ -8,19 +8,20 @@ import pyssht as ssht
 
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
+from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass  # type: ignore
 class Functions:
-    L: int
-    extra_args: Optional[List[int]] = field(default=None)
-    __L: int = field(init=False, repr=False)
-    __annotations: List[Dict] = field(init=False, repr=False)
-    __field: np.ndarray = field(init=False, repr=False)
-    __multipole: np.ndarray = field(init=False, repr=False)
-    __name: str = field(init=False, repr=False)
-    __plot: np.ndarray = field(init=False, repr=False)
-    __resolution: int = field(init=False, repr=False)
+    __annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
+    __extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
+    __field: np.ndarray = DC_VAR_NOT_INIT
+    __L: int = DC_VAR_NOT_INIT
+    __multipole: np.ndarray = DC_VAR_NOT_INIT
+    __name: str = DC_VAR_NOT_INIT
+    __plot: np.ndarray = DC_VAR_NOT_INIT
+    __reality: bool = field(default=False, init=False, repr=False)
+    __resolution: int = DC_VAR_NOT_INIT
 
     def __post_init__(self) -> None:
         self._setup_args(self.extra_args)
@@ -115,29 +116,37 @@ class Functions:
         f = ssht.inverse(flm, bandlimit, Reality=self.reality, Method="MWSS")
         return f
 
-    @property  # type: ignore
+    @property
+    def annotations(self) -> List[Dict]:
+        return self.annotations
+
+    @annotations.setter
+    def annotations(self, annotations: List[Dict]) -> None:
+        self.__annotations = annotations
+
+    @property
+    def extra_args(self) -> Optional[List[int]]:
+        return self.__extra_args
+
+    @extra_args.setter
+    def extra_args(self, extra_args: Optional[List[int]]) -> None:
+        self.__extra_args = extra_args
+
+    @property
+    def field(self) -> np.ndarray:
+        return self.__field
+
+    @field.setter
+    def field(self, field: np.ndarray) -> None:
+        self.__field = field
+
+    @property
     def L(self) -> int:
         return self.__L
 
     @L.setter
     def L(self, L: int) -> None:
         self.__L = L
-
-    @property
-    def resolution(self) -> int:
-        return self.__resolution
-
-    @resolution.setter
-    def resolution(self, resolution: int) -> None:
-        self.__resolution = resolution
-
-    @property
-    def reality(self) -> bool:
-        return self.__reality
-
-    @reality.setter
-    def reality(self, reality: bool) -> None:
-        self.__reality = reality
 
     @property
     def multipole(self) -> np.ndarray:
@@ -161,20 +170,28 @@ class Functions:
         self.__name = name
 
     @property
-    def field(self) -> np.ndarray:
-        return self.__field
-
-    @field.setter
-    def field(self, field: np.ndarray) -> None:
-        self.__field = field
-
-    @property
     def plot(self) -> np.ndarray:
         return self.__plot
 
     @plot.setter
     def plot(self, plot: np.ndarray) -> None:
         self.__plot = plot
+
+    @property
+    def reality(self) -> bool:
+        return self.__reality
+
+    @reality.setter
+    def reality(self, reality: bool) -> None:
+        self.__reality = reality
+
+    @property
+    def resolution(self) -> int:
+        return self.__resolution
+
+    @resolution.setter
+    def resolution(self, resolution: int) -> None:
+        self.__resolution = resolution
 
     @abstractmethod
     def _setup_args(self, args: Optional[List[int]]) -> None:

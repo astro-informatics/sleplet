@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Tuple
 
@@ -7,6 +7,7 @@ import numpy as np
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.vars import (
+    DC_VAR_NOT_INIT,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,
@@ -16,16 +17,18 @@ from pys2sleplet.utils.vars import (
 
 @dataclass  # type: ignore
 class SlepianSpecific(SlepianFunctions):
-    L: int
-    phi_min: float
-    phi_max: float
-    theta_min: float
-    theta_max: float
-    __L: int = field(init=False, repr=False)
-    __phi_min: float = field(init=False, repr=False)
-    __phi_max: float = field(init=False, repr=False)
-    __theta_min: float = field(init=False, repr=False)
-    __theta_max: float = field(init=False, repr=False)
+    __order: int = DC_VAR_NOT_INIT
+    __phi_max: float = DC_VAR_NOT_INIT
+    __phi_min: float = DC_VAR_NOT_INIT
+    __theta_max: float = DC_VAR_NOT_INIT
+    __theta_min: float = DC_VAR_NOT_INIT
+
+    def __post_init__(self) -> None:
+        self.order = 0
+        self.phi_max = PHI_MIN_DEFAULT
+        self.phi_min = PHI_MAX_DEFAULT
+        self.theta_max = THETA_MAX_DEFAULT
+        self.theta_min = THETA_MIN_DEFAULT
 
     @property
     def phi_min(self) -> float:
@@ -74,6 +77,19 @@ class SlepianSpecific(SlepianFunctions):
         elif np.rad2deg(theta_max) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self.__theta_max = theta_max
+
+    @property
+    def order(self) -> int:
+        return self.__order
+
+    @order.setter
+    def order(self, order: int) -> None:
+        if not isinstance(order, int):
+            raise TypeError("order should be an integer")
+        # check order is in correct range
+        if abs(order) >= self.L:
+            raise ValueError(f"Order magnitude should be less than {self.L}")
+        self.__order = order
 
     @abstractmethod
     def _create_annotations(self) -> List[dict]:

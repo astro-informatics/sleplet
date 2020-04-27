@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -6,14 +6,19 @@ import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
 class HarmonicGaussian(Functions):
     L: int
-    reality: bool = field(default=False)
-    __l_sigma: float = field(default=1_000, init=False, repr=False)
-    __m_sigma: float = field(default=1_000, init=False, repr=False)
+    extra_args: List[int]
+    __l_sigma: float = DC_VAR_NOT_INIT
+    __m_sigma: float = DC_VAR_NOT_INIT
+
+    def __post_init__(self) -> None:
+        self.l_sigma = 1_000
+        self.m_sigma = 1_000
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:

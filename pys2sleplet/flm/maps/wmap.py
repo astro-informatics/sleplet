@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -12,14 +12,35 @@ from pys2sleplet.flm.functions import Functions
 @dataclass
 class WMAP(Functions):
     L: int
-    reality: bool = field(default=True)
+
+    def __post_init__(self) -> None:
+        self.reality = True
+
+    @staticmethod
+    def _load_cl(file_ending: str = "_lcdm_pl_model_wmap7baoh0.mat"):
+        """
+        pick coefficients from file options are:
+        * _lcdm_pl_model_yr1_v1.mat
+        * _tt_spectrum_7yr_v4p1.mat
+        * _lcdm_pl_model_wmap7baoh0.mat
+        """
+        matfile = str(
+            Path(__file__).resolve().parents[2]
+            / "data"
+            / "maps"
+            / "wmap"
+            / f"wmap{file_ending}"
+        )
+        mat_contents = sio.loadmat(matfile)
+        cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
+        return cl
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         pass
 
     def _create_flm(self, L: int) -> np.ndarray:
         # load in data
-        cl = self.load_cl()
+        cl = self._load_cl()
 
         # same random seed
         np.random.seed(0)
@@ -45,22 +66,3 @@ class WMAP(Functions):
 
     def _create_annotations(self) -> List[Dict]:
         pass
-
-    @staticmethod
-    def load_cl(file_ending="_lcdm_pl_model_wmap7baoh0.mat"):
-        """
-        pick coefficients from file options are:
-        * _lcdm_pl_model_yr1_v1.mat
-        * _tt_spectrum_7yr_v4p1.mat
-        * _lcdm_pl_model_wmap7baoh0.mat
-        """
-        matfile = str(
-            Path(__file__).resolve().parents[2]
-            / "data"
-            / "maps"
-            / "wmap"
-            / f"wmap{file_ending}"
-        )
-        mat_contents = sio.loadmat(matfile)
-        cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
-        return cl

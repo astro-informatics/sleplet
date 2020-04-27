@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -7,18 +7,19 @@ from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
+from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
 class Slepian(Functions):
     L: int
-    reality: bool = field(default=False)
-    s: SlepianFunctions = field(init=False)
-    __rank: int = field(default=0, init=False, repr=False)
+    extra_args: List[int]
+    s: SlepianFunctions = DC_VAR_NOT_INIT
+    __rank: int = DC_VAR_NOT_INIT
 
-
-def __post_init__(self) -> None:
-    self.s = choose_slepian_method(self.L)
+    def __post_init__(self) -> None:
+        self.s = choose_slepian_method(self.L)
+        self.rank = 0
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
@@ -42,7 +43,7 @@ def __post_init__(self) -> None:
         annotations = self.s.annotations
         return annotations
 
-    @property  # type: ignore
+    @property
     def rank(self) -> int:
         return self.__rank
 
