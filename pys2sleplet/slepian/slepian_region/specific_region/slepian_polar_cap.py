@@ -152,15 +152,15 @@ class SlepianPolarCap(SlepianSpecific):
         return self.__order
 
     @order.setter
-    def order(self, var: int) -> None:
-        if not isinstance(var, int):
+    def order(self, order: int) -> None:
+        if not isinstance(order, int):
             raise TypeError("order should be an integer")
         # check order is in correct range
-        if abs(var) >= self.L:
+        if abs(order) >= self.L:
             raise ValueError(
                 f"Slepian polar cap order magnitude should be less than {self.L}"
             )
-        self.__order = var
+        self.__order = order
 
     @staticmethod
     def Wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:

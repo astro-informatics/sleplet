@@ -47,13 +47,13 @@ class HarmonicGaussian(Functions):
         return self.__l_sigma
 
     @l_sigma.setter
-    def l_sigma(self, var: float) -> None:
-        self.__l_sigma = var
+    def l_sigma(self, l_sigma: float) -> None:
+        self.__l_sigma = l_sigma
 
     @property
     def m_sigma(self) -> float:
         return self.__m_sigma
 
     @m_sigma.setter
-    def m_sigma(self, var: float) -> None:
-        self.__m_sigma = var
+    def m_sigma(self, m_sigma: float) -> None:
+        self.__m_sigma = m_sigma

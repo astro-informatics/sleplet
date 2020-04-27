@@ -40,5 +40,5 @@ class Gaussian(Functions):
         return self.__sigma
 
     @sigma.setter
-    def sigma(self, var: float) -> None:
-        self.__sigma = var
+    def sigma(self, sigma: float) -> None:
+        self.__sigma = sigma

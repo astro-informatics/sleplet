@@ -27,48 +27,48 @@ class SlepianFunctions:
         return self.__L
 
     @L.setter
-    def L(self, var: int) -> None:
-        self.__L = var
+    def L(self, L: int) -> None:
+        self.__L = L
 
     @property
     def annotations(self) -> List[Dict]:
         return self.__annotations
 
     @annotations.setter
-    def annotations(self, var: np.ndarray) -> None:
-        self.__annotations = var
+    def annotations(self, annotations: np.ndarray) -> None:
+        self.__annotations = annotations
 
     @property
     def eigenvalues(self) -> np.ndarray:
         return self.__eigenvalues
 
     @eigenvalues.setter
-    def eigenvalues(self, var: np.ndarray) -> None:
-        self.__eigenvalues = var
+    def eigenvalues(self, eigenvalues: np.ndarray) -> None:
+        self.__eigenvalues = eigenvalues
 
     @property
     def eigenvectors(self) -> np.ndarray:
         return self.__eigenvectors
 
     @eigenvectors.setter
-    def eigenvectors(self, var: np.ndarray) -> None:
-        self.__eigenvectors = var
+    def eigenvectors(self, eigenvectors: np.ndarray) -> None:
+        self.__eigenvectors = eigenvectors
 
     @property
     def matrix_location(self) -> Path:
         return self.__matrix_location
 
     @matrix_location.setter
-    def matrix_location(self, var: Path) -> None:
-        self.__matrix_location = var
+    def matrix_location(self, matrix_location: Path) -> None:
+        self.__matrix_location = matrix_location
 
     @property
     def name(self) -> str:
         return self.__name
 
     @name.setter
-    def name(self, var: str) -> None:
-        self.__name = var
+    def name(self, name: str) -> None:
+        self.__name = name
 
     @abstractmethod
     def _create_annotations(self) -> List[Dict]:

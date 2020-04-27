@@ -42,16 +42,16 @@ class ElongatedGaussian(Functions):
         return self.__t_sigma
 
     @t_sigma.setter
-    def t_sigma(self, var: float) -> None:
-        self.__t_sigma = var
+    def t_sigma(self, t_sigma: float) -> None:
+        self.__t_sigma = t_sigma
 
     @property
     def p_sigma(self) -> float:
         return self.__p_sigma
 
     @p_sigma.setter
-    def p_sigma(self, var: float) -> None:
-        self.__p_sigma = var
+    def p_sigma(self, p_sigma: float) -> None:
+        self.__p_sigma = p_sigma
 
     def _grid_fun(
         self,

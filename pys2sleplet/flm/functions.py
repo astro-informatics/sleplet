@@ -120,35 +120,35 @@ class Functions:
         return self.__L
 
     @L.setter
-    def L(self, var: int) -> None:
-        self.__L = var
+    def L(self, L: int) -> None:
+        self.__L = L
 
     @property
     def resolution(self) -> int:
         return self.__resolution
 
     @resolution.setter
-    def resolution(self, var: int) -> None:
-        self.__resolution = var
+    def resolution(self, resolution: int) -> None:
+        self.__resolution = resolution
 
     @property
     def reality(self) -> bool:
         return self.__reality
 
     @reality.setter
-    def reality(self, var: bool) -> None:
-        self.__reality = var
+    def reality(self, reality: bool) -> None:
+        self.__reality = reality
 
     @property
     def multipole(self) -> np.ndarray:
         return self.__multipole
 
     @multipole.setter
-    def multipole(self, var: np.ndarray) -> None:
+    def multipole(self, multipole: np.ndarray) -> None:
         """
         update multipole value and hence field value
         """
-        self.__multipole = var
+        self.__multipole = multipole
         self.field = self._invert(self.multipole)
         self.plot = self._invert(self.multipole, boosted=True)
 
@@ -157,24 +157,24 @@ class Functions:
         return self.__name
 
     @name.setter
-    def name(self, var: str) -> None:
-        self.__name = var
+    def name(self, name: str) -> None:
+        self.__name = name
 
     @property
     def field(self) -> np.ndarray:
         return self.__field
 
     @field.setter
-    def field(self, var: np.ndarray) -> None:
-        self.__field = var
+    def field(self, field: np.ndarray) -> None:
+        self.__field = field
 
     @property
     def plot(self) -> np.ndarray:
         return self.__plot
 
     @plot.setter
-    def plot(self, var: np.ndarray) -> None:
-        self.__plot = var
+    def plot(self, plot: np.ndarray) -> None:
+        self.__plot = plot
 
     @abstractmethod
     def _setup_args(self, args: Optional[List[int]]) -> None:

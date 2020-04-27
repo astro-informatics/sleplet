@@ -39,16 +39,16 @@ class SquashedGaussian(Functions):
         return self.__t_sigma
 
     @t_sigma.setter
-    def t_sigma(self, var: float) -> None:
-        self.__t_sigma = var
+    def t_sigma(self, t_sigma: float) -> None:
+        self.__t_sigma = t_sigma
 
     @property
     def freq(self) -> float:
         return self.__freq
 
     @freq.setter
-    def freq(self, var: float) -> None:
-        self.__freq = var
+    def freq(self, freq: float) -> None:
+        self.__freq = freq
 
     def _grid_fun(
         self, theta: np.ndarray, phi: np.ndarray, theta_0: float = 0

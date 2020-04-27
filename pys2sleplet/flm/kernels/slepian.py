@@ -47,11 +47,11 @@ def __post_init__(self) -> None:
         return self.__rank
 
     @rank.setter
-    def rank(self, var: int) -> None:
-        if not isinstance(var, int):
+    def rank(self, rank: int) -> None:
+        if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
-        if var < 0:
+        if rank < 0:
             raise ValueError("rank cannot be negative")
-        if var >= self.L:
+        if rank >= self.L:
             raise ValueError(f"rank should be no more than {self.L}")
-        self.__rank = var
+        self.__rank = rank

@@ -32,48 +32,48 @@ class SlepianSpecific(SlepianFunctions):
         return self.__phi_min
 
     @phi_min.setter
-    def phi_min(self, var: float) -> None:
-        if np.rad2deg(var) < PHI_MIN_DEFAULT:
+    def phi_min(self, phi_min: float) -> None:
+        if np.rad2deg(phi_min) < PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
-        elif np.rad2deg(var) > PHI_MAX_DEFAULT:
+        elif np.rad2deg(phi_min) > PHI_MAX_DEFAULT:
             raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
-        self.__phi_min = var
+        self.__phi_min = phi_min
 
     @property
     def phi_max(self) -> float:
         return self.__phi_max
 
     @phi_max.setter
-    def phi_max(self, var: float) -> None:
-        if np.rad2deg(var) < PHI_MIN_DEFAULT:
+    def phi_max(self, phi_max: float) -> None:
+        if np.rad2deg(phi_max) < PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
-        elif np.rad2deg(var) > PHI_MAX_DEFAULT:
+        elif np.rad2deg(phi_max) > PHI_MAX_DEFAULT:
             raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
-        self.__phi_max = var
+        self.__phi_max = phi_max
 
     @property
     def theta_min(self) -> float:
         return self.__theta_min
 
     @theta_min.setter
-    def theta_min(self, var: float) -> None:
-        if np.rad2deg(var) < THETA_MIN_DEFAULT:
+    def theta_min(self, theta_min: float) -> None:
+        if np.rad2deg(theta_min) < THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
-        elif np.rad2deg(var) > THETA_MAX_DEFAULT:
+        elif np.rad2deg(theta_min) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
-        self.__theta_min = var
+        self.__theta_min = theta_min
 
     @property
     def theta_max(self) -> float:
         return self.__theta_max
 
     @theta_max.setter
-    def theta_max(self, var: float) -> None:
-        if np.rad2deg(var) < THETA_MIN_DEFAULT:
+    def theta_max(self, theta_max: float) -> None:
+        if np.rad2deg(theta_max) < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
-        elif np.rad2deg(var) > THETA_MAX_DEFAULT:
+        elif np.rad2deg(theta_max) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
-        self.__theta_max = var
+        self.__theta_max = theta_max
 
     @abstractmethod
     def _create_annotations(self) -> List[dict]:

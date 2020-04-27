@@ -41,21 +41,21 @@ class SphericalHarmonic(Functions):
         return self.__ell
 
     @ell.setter
-    def ell(self, var: int) -> None:
-        if not isinstance(var, int):
+    def ell(self, ell: int) -> None:
+        if not isinstance(ell, int):
             raise TypeError("ell should be an integer")
-        if var < 0:
+        if ell < 0:
             raise ValueError("ell should be positive")
-        self.__ell = var
+        self.__ell = ell
 
     @property
     def m(self) -> int:
         return self.__m
 
     @m.setter
-    def m(self, var: int) -> None:
-        if not isinstance(var, int):
+    def m(self, m: int) -> None:
+        if not isinstance(m, int):
             raise TypeError("m should be an integer")
-        if abs(var) > self.ell:
+        if abs(m) > self.ell:
             raise ValueError("the magnitude of m should be less than ell")
-        self.__m = var
+        self.__m = m
