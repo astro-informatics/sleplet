@@ -38,7 +38,7 @@ class SphericalHarmonic(Functions):
 
     @property
     def ell(self) -> int:
-        return self.__ell
+        return self._ell
 
     @ell.setter
     def ell(self, ell: int) -> None:
@@ -46,11 +46,11 @@ class SphericalHarmonic(Functions):
             raise TypeError("ell should be an integer")
         if ell < 0:
             raise ValueError("ell should be positive")
-        self.__ell = ell
+        self._ell = ell
 
     @property
     def m(self) -> int:
-        return self.__m
+        return self._m
 
     @m.setter
     def m(self, m: int) -> None:
@@ -58,4 +58,4 @@ class SphericalHarmonic(Functions):
             raise TypeError("m should be an integer")
         if abs(m) > self.ell:
             raise ValueError("the magnitude of m should be less than ell")
-        self.__m = m
+        self._m = m

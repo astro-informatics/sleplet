@@ -12,7 +12,7 @@ from pys2sleplet.utils.string_methods import filename_args
 class Gaussian(Functions):
     L: int
     extra_args: List[int]
-    __sigma: float = field(init=False, repr=False)
+    _sigma: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.reality = True
@@ -41,8 +41,8 @@ class Gaussian(Functions):
 
     @property
     def sigma(self) -> float:
-        return self.__sigma
+        return self._sigma
 
     @sigma.setter
     def sigma(self, sigma: float) -> None:
-        self.__sigma = sigma
+        self._sigma = sigma

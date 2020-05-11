@@ -12,8 +12,8 @@ from pys2sleplet.utils.string_methods import filename_args
 class HarmonicGaussian(Functions):
     L: int
     extra_args: List[int]
-    __l_sigma: float = field(init=False, repr=False)
-    __m_sigma: float = field(init=False, repr=False)
+    _l_sigma: float = field(init=False, repr=False)
+    _m_sigma: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.l_sigma = 1_000
@@ -48,16 +48,16 @@ class HarmonicGaussian(Functions):
 
     @property
     def l_sigma(self) -> float:
-        return self.__l_sigma
+        return self._l_sigma
 
     @l_sigma.setter
     def l_sigma(self, l_sigma: float) -> None:
-        self.__l_sigma = l_sigma
+        self._l_sigma = l_sigma
 
     @property
     def m_sigma(self) -> float:
-        return self.__m_sigma
+        return self._m_sigma
 
     @m_sigma.setter
     def m_sigma(self, m_sigma: float) -> None:
-        self.__m_sigma = m_sigma
+        self._m_sigma = m_sigma

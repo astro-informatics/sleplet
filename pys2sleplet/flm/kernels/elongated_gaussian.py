@@ -12,8 +12,8 @@ from pys2sleplet.utils.string_methods import filename_args
 class ElongatedGaussian(Functions):
     L: int
     extra_args: List[int]
-    __p_sigma: float = field(init=False, repr=False)
-    __t_sigma: float = field(init=False, repr=False)
+    _p_sigma: float = field(init=False, repr=False)
+    _t_sigma: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.p_sigma = 0.001
@@ -63,16 +63,16 @@ class ElongatedGaussian(Functions):
 
     @property
     def t_sigma(self) -> float:
-        return self.__t_sigma
+        return self._t_sigma
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
-        self.__t_sigma = t_sigma
+        self._t_sigma = t_sigma
 
     @property
     def p_sigma(self) -> float:
-        return self.__p_sigma
+        return self._p_sigma
 
     @p_sigma.setter
     def p_sigma(self, p_sigma: float) -> None:
-        self.__p_sigma = p_sigma
+        self._p_sigma = p_sigma

@@ -16,11 +16,11 @@ from pys2sleplet.utils.vars import (
 
 @dataclass  # type: ignore
 class SlepianSpecific(SlepianFunctions):
-    __order: int = field(init=False, repr=False)
-    __phi_max: float = field(init=False, repr=False)
-    __phi_min: float = field(init=False, repr=False)
-    __theta_max: float = field(init=False, repr=False)
-    __theta_min: float = field(init=False, repr=False)
+    _order: int = field(init=False, repr=False)
+    _phi_max: float = field(init=False, repr=False)
+    _phi_min: float = field(init=False, repr=False)
+    _theta_max: float = field(init=False, repr=False)
+    _theta_min: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.order = 0
@@ -31,7 +31,7 @@ class SlepianSpecific(SlepianFunctions):
 
     @property
     def phi_min(self) -> float:
-        return self.__phi_min
+        return self._phi_min
 
     @phi_min.setter
     def phi_min(self, phi_min: float) -> None:
@@ -39,11 +39,11 @@ class SlepianSpecific(SlepianFunctions):
             raise ValueError("phi_min cannot be negative")
         elif np.rad2deg(phi_min) > PHI_MAX_DEFAULT:
             raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
-        self.__phi_min = phi_min
+        self._phi_min = phi_min
 
     @property
     def phi_max(self) -> float:
-        return self.__phi_max
+        return self._phi_max
 
     @phi_max.setter
     def phi_max(self, phi_max: float) -> None:
@@ -51,11 +51,11 @@ class SlepianSpecific(SlepianFunctions):
             raise ValueError("phi_max cannot be negative")
         elif np.rad2deg(phi_max) > PHI_MAX_DEFAULT:
             raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
-        self.__phi_max = phi_max
+        self._phi_max = phi_max
 
     @property
     def theta_min(self) -> float:
-        return self.__theta_min
+        return self._theta_min
 
     @theta_min.setter
     def theta_min(self, theta_min: float) -> None:
@@ -63,11 +63,11 @@ class SlepianSpecific(SlepianFunctions):
             raise ValueError("theta_min cannot be negative")
         elif np.rad2deg(theta_min) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
-        self.__theta_min = theta_min
+        self._theta_min = theta_min
 
     @property
     def theta_max(self) -> float:
-        return self.__theta_max
+        return self._theta_max
 
     @theta_max.setter
     def theta_max(self, theta_max: float) -> None:
@@ -75,11 +75,11 @@ class SlepianSpecific(SlepianFunctions):
             raise ValueError("theta_max cannot be negative")
         elif np.rad2deg(theta_max) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
-        self.__theta_max = theta_max
+        self._theta_max = theta_max
 
     @property
     def order(self) -> int:
-        return self.__order
+        return self._order
 
     @order.setter
     def order(self, order: int) -> None:
@@ -88,7 +88,7 @@ class SlepianSpecific(SlepianFunctions):
         # check order is in correct range
         if abs(order) >= self.L:
             raise ValueError(f"Order magnitude should be less than {self.L}")
-        self.__order = order
+        self._order = order
 
     @abstractmethod
     def _create_annotations(self) -> List[dict]:

@@ -8,12 +8,12 @@ import numpy as np
 
 @dataclass  # type: ignore
 class SlepianFunctions:
-    __annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
-    __eigenvalues: np.ndarray = field(init=False, repr=False)
-    __eigenvectors: np.ndarray = field(init=False, repr=False)
-    __L: int = field(init=False, repr=False)
-    __matrix_location: Path = field(init=False, repr=False)
-    __name: str = field(init=False, repr=False)
+    _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
+    _eigenvalues: np.ndarray = field(init=False, repr=False)
+    _eigenvectors: np.ndarray = field(init=False, repr=False)
+    _L: int = field(init=False, repr=False)
+    _matrix_location: Path = field(init=False, repr=False)
+    _name: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.annotations = self._create_annotations()
@@ -23,51 +23,51 @@ class SlepianFunctions:
 
     @property
     def annotations(self) -> List[Dict]:
-        return self.__annotations
+        return self._annotations
 
     @annotations.setter
     def annotations(self, annotations: np.ndarray) -> None:
-        self.__annotations = annotations
+        self._annotations = annotations
 
     @property
     def eigenvalues(self) -> np.ndarray:
-        return self.__eigenvalues
+        return self._eigenvalues
 
     @eigenvalues.setter
     def eigenvalues(self, eigenvalues: np.ndarray) -> None:
-        self.__eigenvalues = eigenvalues
+        self._eigenvalues = eigenvalues
 
     @property
     def eigenvectors(self) -> np.ndarray:
-        return self.__eigenvectors
+        return self._eigenvectors
 
     @eigenvectors.setter
     def eigenvectors(self, eigenvectors: np.ndarray) -> None:
-        self.__eigenvectors = eigenvectors
+        self._eigenvectors = eigenvectors
 
     @property
     def L(self) -> int:
-        return self.__L
+        return self._L
 
     @L.setter
     def L(self, L: int) -> None:
-        self.__L = L
+        self._L = L
 
     @property
     def matrix_location(self) -> Path:
-        return self.__matrix_location
+        return self._matrix_location
 
     @matrix_location.setter
     def matrix_location(self, matrix_location: Path) -> None:
-        self.__matrix_location = matrix_location
+        self._matrix_location = matrix_location
 
     @property
     def name(self) -> str:
-        return self.__name
+        return self._name
 
     @name.setter
     def name(self, name: str) -> None:
-        self.__name = name
+        self._name = name
 
     @abstractmethod
     def _create_annotations(self) -> List[Dict]:

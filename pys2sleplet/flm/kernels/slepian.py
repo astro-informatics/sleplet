@@ -14,7 +14,7 @@ class Slepian(Functions):
     L: int
     extra_args: List[int]
     s: SlepianFunctions = field(init=False, repr=False)
-    __rank: int = field(init=False, repr=False)
+    _rank: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.s = choose_slepian_method(self.L)
@@ -44,7 +44,7 @@ class Slepian(Functions):
 
     @property
     def rank(self) -> int:
-        return self.__rank
+        return self._rank
 
     @rank.setter
     def rank(self, rank: int) -> None:
@@ -54,4 +54,4 @@ class Slepian(Functions):
             raise ValueError("rank cannot be negative")
         if rank >= self.L:
             raise ValueError(f"rank should be no more than {self.L}")
-        self.__rank = rank
+        self._rank = rank

@@ -12,15 +12,15 @@ from pys2sleplet.utils.string_methods import filename_angle
 
 @dataclass  # type: ignore
 class Functions:
-    __annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
-    __extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
-    __field: np.ndarray = field(init=False, repr=False)
-    __L: int = field(init=False, repr=False)
-    __multipole: np.ndarray = field(init=False, repr=False)
-    __name: str = field(init=False, repr=False)
-    __plot: np.ndarray = field(init=False, repr=False)
-    __reality: bool = field(default=False, init=False, repr=False)
-    __resolution: int = field(init=False, repr=False)
+    _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
+    _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
+    _field: np.ndarray = field(init=False, repr=False)
+    _L: int = field(init=False, repr=False)
+    _multipole: np.ndarray = field(init=False, repr=False)
+    _name: str = field(init=False, repr=False)
+    _plot: np.ndarray = field(init=False, repr=False)
+    _reality: bool = field(default=False, init=False, repr=False)
+    _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args(self.extra_args)
@@ -121,76 +121,76 @@ class Functions:
 
     @annotations.setter
     def annotations(self, annotations: List[Dict]) -> None:
-        self.__annotations = annotations
+        self._annotations = annotations
 
     @property
     def extra_args(self) -> Optional[List[int]]:
-        return self.__extra_args
+        return self._extra_args
 
     @extra_args.setter
     def extra_args(self, extra_args: Optional[List[int]]) -> None:
-        self.__extra_args = extra_args
+        self._extra_args = extra_args
 
     @property
     def field(self) -> np.ndarray:
-        return self.__field
+        return self._field
 
     @field.setter
     def field(self, field: np.ndarray) -> None:
-        self.__field = field
+        self._field = field
 
     @property
     def L(self) -> int:
-        return self.__L
+        return self._L
 
     @L.setter
     def L(self, L: int) -> None:
-        self.__L = L
+        self._L = L
 
     @property
     def multipole(self) -> np.ndarray:
-        return self.__multipole
+        return self._multipole
 
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
         """
         update multipole value and hence field value
         """
-        self.__multipole = multipole
+        self._multipole = multipole
         self.field = self._invert(self.multipole)
         self.plot = self._invert(self.multipole, boosted=True)
 
     @property
     def name(self) -> np.ndarray:
-        return self.__name
+        return self._name
 
     @name.setter
     def name(self, name: str) -> None:
-        self.__name = name
+        self._name = name
 
     @property
     def plot(self) -> np.ndarray:
-        return self.__plot
+        return self._plot
 
     @plot.setter
     def plot(self, plot: np.ndarray) -> None:
-        self.__plot = plot
+        self._plot = plot
 
     @property
     def reality(self) -> bool:
-        return self.__reality
+        return self._reality
 
     @reality.setter
     def reality(self, reality: bool) -> None:
-        self.__reality = reality
+        self._reality = reality
 
     @property
     def resolution(self) -> int:
-        return self.__resolution
+        return self._resolution
 
     @resolution.setter
     def resolution(self, resolution: int) -> None:
-        self.__resolution = resolution
+        self._resolution = resolution
 
     @abstractmethod
     def _setup_args(self, args: Optional[List[int]]) -> None:

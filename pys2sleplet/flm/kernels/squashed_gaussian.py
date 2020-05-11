@@ -50,16 +50,16 @@ class SquashedGaussian(Functions):
 
     @property
     def t_sigma(self) -> float:
-        return self.__t_sigma
+        return self._t_sigma
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
-        self.__t_sigma = t_sigma
+        self._t_sigma = t_sigma
 
     @property
     def freq(self) -> float:
-        return self.__freq
+        return self._freq
 
     @freq.setter
     def freq(self, freq: float) -> None:
-        self.__freq = freq
+        self._freq = freq
