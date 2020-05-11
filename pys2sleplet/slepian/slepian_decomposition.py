@@ -43,7 +43,7 @@ class SlepianDecomposition:
             )
         return f_p
 
-    def _integrate_region(self, rank: int):
+    def _integrate_region(self, rank: int) -> np.ndarray:
         """
         f_{p} =
         \frac{1}{\lambda_{p}}
@@ -57,7 +57,7 @@ class SlepianDecomposition:
         f_p = (integrand * weight).sum() / self.lambdas[rank]
         return f_p
 
-    def _forward_transform(self, rank: int):
+    def _forward_transform(self, rank: int) -> np.ndarray:
         """
         f_{p} =
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
@@ -70,7 +70,7 @@ class SlepianDecomposition:
         f_p = (integrand * weight).sum()
         return f_p
 
-    def _harmonic_sum(self, rank: int):
+    def _harmonic_sum(self, rank: int) -> np.ndarray:
         """
         f_{p} =
         \sum\limits_{\ell=0}^{L^{2}}

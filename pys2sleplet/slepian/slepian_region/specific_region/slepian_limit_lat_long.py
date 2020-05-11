@@ -139,7 +139,7 @@ class SlepianLimitLatLong(SlepianSpecific):
         G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=complex)
 
         # Using conjugate symmetry property to reduce the number of iterations
-        def _helper(row, col, S):
+        def _helper(row: int, col: int, S: float) -> None:
             """
             """
             try:
@@ -236,7 +236,7 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return K
 
-    def slepian_matrix_parallel(self, G: np.ndarray, ncpu: int):
+    def slepian_matrix_parallel(self, G: np.ndarray, ncpu: int) -> np.ndarray:
         """
         Syntax:
         K = slepian_matrix_parallel(G, ncpu)

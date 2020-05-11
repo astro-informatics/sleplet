@@ -62,7 +62,7 @@ def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float
 
 def ensure_f_bandlimited(
     grid_fun: Callable[[np.ndarray, np.ndarray], np.ndarray], L: int, reality: bool
-):
+) -> np.ndarray:
     """
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it

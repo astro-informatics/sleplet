@@ -17,7 +17,7 @@ class Earth(Functions):
         self.reality = True
 
     @staticmethod
-    def _load_flm():
+    def _load_flm() -> np.ndarray:
         """
         load coefficients from file
         """

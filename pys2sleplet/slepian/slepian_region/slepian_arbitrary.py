@@ -116,7 +116,7 @@ class SlepianArbitrary(SlepianFunctions):
                     D[j][i] = D[i][j].conj()
         return D
 
-    def matrix_parallel(self, ncpu: int):
+    def matrix_parallel(self, ncpu: int) -> np.ndarray:
         # initialise
         real = np.zeros((self.N, self.N))
         imag = np.zeros((self.N, self.N))
