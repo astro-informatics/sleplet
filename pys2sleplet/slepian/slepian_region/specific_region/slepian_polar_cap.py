@@ -1,5 +1,5 @@
 import multiprocessing.sharedctypes as sct
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from multiprocessing import Pool
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -11,7 +11,6 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.bool_methods import is_polar_gap, is_small_polar_cap
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
@@ -19,8 +18,8 @@ class SlepianPolarCap(SlepianSpecific):
     L: int
     theta_max: float
     order: int
-    ndots: int = DC_VAR_NOT_INIT
-    name_ending: str = DC_VAR_NOT_INIT
+    ndots: int = field(init=False, repr=False)
+    name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.ndots = 12

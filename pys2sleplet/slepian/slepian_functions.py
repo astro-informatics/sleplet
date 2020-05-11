@@ -5,17 +5,15 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
-from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
-
 
 @dataclass  # type: ignore
 class SlepianFunctions:
     __annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
-    __eigenvalues: np.ndarray = DC_VAR_NOT_INIT
-    __eigenvectors: np.ndarray = DC_VAR_NOT_INIT
-    __L: int = DC_VAR_NOT_INIT
-    __matrix_location: Path = DC_VAR_NOT_INIT
-    __name: str = DC_VAR_NOT_INIT
+    __eigenvalues: np.ndarray = field(init=False, repr=False)
+    __eigenvectors: np.ndarray = field(init=False, repr=False)
+    __L: int = field(init=False, repr=False)
+    __matrix_location: Path = field(init=False, repr=False)
+    __name: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.annotations = self._create_annotations()

@@ -13,7 +13,6 @@ from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import convert_colourscale
-from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
@@ -22,7 +21,7 @@ class Plot:
     resolution: int
     filename: str
     annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
-    fig_path: Path = DC_VAR_NOT_INIT
+    fig_path: Path = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.fig_path = Path(__file__).resolve().parents[1] / "figures"

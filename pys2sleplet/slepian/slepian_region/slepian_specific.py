@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Tuple
 
@@ -7,7 +7,6 @@ import numpy as np
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.vars import (
-    DC_VAR_NOT_INIT,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,
@@ -17,11 +16,11 @@ from pys2sleplet.utils.vars import (
 
 @dataclass  # type: ignore
 class SlepianSpecific(SlepianFunctions):
-    __order: int = DC_VAR_NOT_INIT
-    __phi_max: float = DC_VAR_NOT_INIT
-    __phi_min: float = DC_VAR_NOT_INIT
-    __theta_max: float = DC_VAR_NOT_INIT
-    __theta_min: float = DC_VAR_NOT_INIT
+    __order: int = field(init=False, repr=False)
+    __phi_max: float = field(init=False, repr=False)
+    __phi_min: float = field(init=False, repr=False)
+    __theta_max: float = field(init=False, repr=False)
+    __theta_min: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.order = 0

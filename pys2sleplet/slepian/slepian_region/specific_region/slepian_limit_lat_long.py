@@ -1,5 +1,5 @@
 import multiprocessing.sharedctypes as sct
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from multiprocessing import Pool
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -9,7 +9,6 @@ import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
@@ -19,7 +18,7 @@ class SlepianLimitLatLong(SlepianSpecific):
     theta_max: float
     phi_min: float
     phi_max: float
-    name_ending: str = DC_VAR_NOT_INIT
+    name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.name_ending = (

@@ -1,6 +1,6 @@
 import multiprocessing as mp
 import multiprocessing.sharedctypes as sct
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -10,19 +10,18 @@ import pyssht as ssht
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import calc_samples
-from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
 class SlepianArbitrary(SlepianFunctions):
     L: int
     mask: Tuple[np.ndarray, np.ndarray]
-    delta_phi: float = DC_VAR_NOT_INIT
-    delta_theta: float = DC_VAR_NOT_INIT
-    N: int = DC_VAR_NOT_INIT
-    thetas: np.ndarray = DC_VAR_NOT_INIT
-    ylm: np.ndarray = DC_VAR_NOT_INIT
-    name_ending: str = DC_VAR_NOT_INIT
+    delta_phi: float = field(init=False, repr=False)
+    delta_theta: float = field(init=False, repr=False)
+    N: int = field(init=False, repr=False)
+    thetas: np.ndarray = field(init=False, repr=False)
+    ylm: np.ndarray = field(init=False, repr=False)
+    name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         theta_mask, phi_mask = self.mask

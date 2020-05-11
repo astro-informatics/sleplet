@@ -8,20 +8,19 @@ import pyssht as ssht
 
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
-from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass  # type: ignore
 class Functions:
     __annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     __extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
-    __field: np.ndarray = DC_VAR_NOT_INIT
-    __L: int = DC_VAR_NOT_INIT
-    __multipole: np.ndarray = DC_VAR_NOT_INIT
-    __name: str = DC_VAR_NOT_INIT
-    __plot: np.ndarray = DC_VAR_NOT_INIT
+    __field: np.ndarray = field(init=False, repr=False)
+    __L: int = field(init=False, repr=False)
+    __multipole: np.ndarray = field(init=False, repr=False)
+    __name: str = field(init=False, repr=False)
+    __plot: np.ndarray = field(init=False, repr=False)
     __reality: bool = field(default=False, init=False, repr=False)
-    __resolution: int = DC_VAR_NOT_INIT
+    __resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args(self.extra_args)

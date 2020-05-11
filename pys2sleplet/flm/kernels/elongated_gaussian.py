@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -6,15 +6,14 @@ import numpy as np
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
-from pys2sleplet.utils.vars import DC_VAR_NOT_INIT
 
 
 @dataclass
 class ElongatedGaussian(Functions):
     L: int
     extra_args: List[int]
-    __p_sigma: float = DC_VAR_NOT_INIT
-    __t_sigma: float = DC_VAR_NOT_INIT
+    __p_sigma: float = field(init=False, repr=False)
+    __t_sigma: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.p_sigma = 0.001
