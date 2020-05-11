@@ -22,6 +22,7 @@ class SlepianPolarCap(SlepianSpecific):
     name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.ndots = 12
         self.name_ending = "_polar"
         if is_polar_gap():

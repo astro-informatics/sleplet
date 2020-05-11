@@ -24,6 +24,7 @@ class SlepianArbitrary(SlepianFunctions):
     name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         theta_mask, phi_mask = self.mask
         samples = calc_samples(self.L)
         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")

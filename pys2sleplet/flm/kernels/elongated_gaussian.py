@@ -16,6 +16,7 @@ class ElongatedGaussian(Functions):
     _t_sigma: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.p_sigma = 0.001
         self.reality = True
         self.t_sigma = 1

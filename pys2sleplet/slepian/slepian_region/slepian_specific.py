@@ -23,6 +23,7 @@ class SlepianSpecific(SlepianFunctions):
     _theta_min: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.order = 0
         self.phi_max = PHI_MIN_DEFAULT
         self.phi_min = PHI_MAX_DEFAULT

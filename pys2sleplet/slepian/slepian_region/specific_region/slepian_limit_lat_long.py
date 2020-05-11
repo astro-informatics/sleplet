@@ -21,6 +21,7 @@ class SlepianLimitLatLong(SlepianSpecific):
     name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.name_ending = (
             f"_theta{config.THETA_MIN}-{config.THETA_MAX}"
             f"_phi{config.PHI_MIN}-{config.PHI_MAX}"

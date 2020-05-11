@@ -15,6 +15,7 @@ class Gaussian(Functions):
     _sigma: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.reality = True
         self.sigma = 1_000
 

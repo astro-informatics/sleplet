@@ -17,6 +17,7 @@ class Slepian(Functions):
     _rank: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.s = choose_slepian_method(self.L)
         self.rank = 0
 

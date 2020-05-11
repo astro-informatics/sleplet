@@ -11,6 +11,7 @@ class Identity(Functions):
     L: int
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.reality = True
 
     def _setup_args(self, args: Optional[List[int]]) -> None:

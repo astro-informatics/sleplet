@@ -14,6 +14,7 @@ class WMAP(Functions):
     L: int
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.reality = True
 
     @staticmethod

@@ -16,6 +16,7 @@ class HarmonicGaussian(Functions):
     _m_sigma: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.l_sigma = 1_000
         self.m_sigma = 1_000
 
