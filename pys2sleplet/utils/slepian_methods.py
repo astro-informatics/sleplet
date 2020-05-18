@@ -31,11 +31,11 @@ def choose_slepian_method(L: int) -> SlepianFunctions:
 
     if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
         logger.info("polar cap region detected")
-        return SlepianPolarCap(L, theta_max, config.ORDER)
+        slepian = SlepianPolarCap(L, theta_max, config.ORDER)
 
     elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
         logger.info("limited latitude longitude region detected")
-        return SlepianLimitLatLong(L, theta_min, theta_max, phi_min, phi_max)
+        slepian = SlepianLimitLatLong(L, theta_min, theta_max, phi_min, phi_max)
 
     elif config.SLEPIAN_MASK:
         logger.info("no angles specified, looking for a file with mask")
@@ -49,13 +49,15 @@ def choose_slepian_method(L: int) -> SlepianFunctions:
         )
         try:
             mask = np.load(location)
-            return SlepianArbitrary(L, mask)
+            slepian = SlepianArbitrary(L, mask)
         except FileNotFoundError:
             logger.error(f"can not find the file: {config.SLEPIAN_MASK}")
             raise
 
     else:
         raise RuntimeError("no angle or file specified for Slepian region")
+
+    return slepian
 
 
 def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
