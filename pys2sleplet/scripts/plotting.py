@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 
@@ -113,13 +113,13 @@ def read_args() -> Namespace:
 def plot(
     f_name: str,
     L: int,
-    extra_args: List[int],
+    extra_args: Optional[List[int]],
     plot_type: str,
     routine: str,
     alpha_pi_fraction: float,
     beta_pi_fraction: float,
     gamma_pi_fraction: float,
-    g_name: str,
+    g_name: Optional[str],
 ) -> None:
     """
     master plotting method
