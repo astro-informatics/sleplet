@@ -13,6 +13,7 @@ from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import convert_colourscale
+from pys2sleplet.utils.vars import ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
 
@@ -27,7 +28,7 @@ class Plot:
         default=_file_location.parents[1] / "figures", init=False, repr=False
     )
 
-    def execute(self, zoom: float = 7.88) -> None:
+    def execute(self) -> None:
         """
         creates basic plotly plot rather than matplotlib
         """
@@ -37,7 +38,9 @@ class Plot:
         )
 
         # appropriate zoom in on north pole
-        camera = dict(eye=dict(x=-0.1 / zoom, y=-0.1 / zoom, z=10 / zoom))
+        camera = dict(
+            eye=dict(x=-0.1 / ZOOM_DEFAULT, y=-0.1 / ZOOM_DEFAULT, z=10 / ZOOM_DEFAULT)
+        )
 
         data = [
             Surface(
