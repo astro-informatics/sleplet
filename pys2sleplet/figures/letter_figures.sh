@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "figure 1"
 for t in real imag abs; do
     echo $t;
