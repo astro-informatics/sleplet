@@ -11,14 +11,14 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class SphericalHarmonic(Functions):
     L: int
-    extra_args: List[int]
+    extra_args: Optional[List[int]] = field(default=None, init=False)
     _ell = field(default=0, init=False, repr=False)
     _m = field(default=0, init=False, repr=False)
 
-    def _setup_args(self, args: Optional[List[int]]) -> None:
-        if args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 2
-            if len(args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 

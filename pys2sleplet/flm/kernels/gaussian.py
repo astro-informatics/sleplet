@@ -11,19 +11,19 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class Gaussian(Functions):
     L: int
-    extra_args: List[int]
+    extra_args: Optional[List[int]] = field(default=None, init=False)
     _sigma: float = field(default=1_000, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
         self.reality = True
 
-    def _setup_args(self, args: Optional[List[int]]) -> None:
-        if args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 1
-            if len(args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.sigma = 10 ** args[0]
+            self.sigma = 10 ** self.extra_args[0]
 
     def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)

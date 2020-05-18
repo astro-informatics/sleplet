@@ -25,7 +25,7 @@ class Functions:
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._setup_args(self.extra_args)
+        self._setup_args()
         self.resolution = calc_resolution(self.L)
         self.name = self._create_name()
         self.multipole = self._create_flm()
@@ -195,7 +195,7 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _setup_args(self, args: Optional[List[int]]) -> None:
+    def _setup_args(self) -> None:
         """
         initialises function specific args
         either default value or user input

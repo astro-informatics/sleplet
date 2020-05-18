@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -14,6 +14,7 @@ _file_location = Path(__file__).resolve()
 @dataclass
 class WMAP(Functions):
     L: int
+    extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -34,7 +35,7 @@ class WMAP(Functions):
         cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
         return cl
 
-    def _setup_args(self, args: Optional[List[int]]) -> None:
+    def _setup_args(self) -> None:
         pass
 
     def _create_flm(self) -> np.ndarray:

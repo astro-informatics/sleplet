@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -9,12 +9,13 @@ from pys2sleplet.flm.functions import Functions
 @dataclass
 class Identity(Functions):
     L: int
+    extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
         self.reality = True
 
-    def _setup_args(self, args: Optional[List[int]]) -> None:
+    def _setup_args(self) -> None:
         pass
 
     def _create_flm(self) -> np.ndarray:

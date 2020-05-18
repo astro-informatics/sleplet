@@ -11,7 +11,7 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class ElongatedGaussian(Functions):
     L: int
-    extra_args: List[int]
+    extra_args: Optional[List[int]] = field(default=None, init=False)
     _p_sigma: float = field(default=0.001, init=False, repr=False)
     _t_sigma: float = field(default=1, init=False, repr=False)
 
@@ -38,12 +38,12 @@ class ElongatedGaussian(Functions):
         )
         return f
 
-    def _setup_args(self, args: Optional[List[int]]) -> None:
-        if args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 2
-            if len(args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.t_sigma, self.p_sigma = [10 ** x for x in args]
+            self.t_sigma, self.p_sigma = [10 ** x for x in self.extra_args]
 
     def _create_flm(self) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)

@@ -12,7 +12,7 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 @dataclass
 class Slepian(Functions):
     L: int
-    extra_args: List[int]
+    extra_args: Optional[List[int]] = field(default=None, init=False)
     s: SlepianFunctions = field(init=False, repr=False)
     _rank: int = field(default=0, init=False, repr=False)
 
@@ -20,14 +20,14 @@ class Slepian(Functions):
         super().__post_init__()
         self.s = choose_slepian_method(self.L)
 
-    def _setup_args(self, args: Optional[List[int]]) -> None:
-        if args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 1
-            if len(args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(
                     f"The number of extra arguments should be 1 or {num_args}"
                 )
-            self.rank = args[0]
+            self.rank = self.extra_args[0]
 
     def _create_name(self) -> str:
         name = f"{self.s.name}_rank{self.rank}"
