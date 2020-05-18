@@ -11,7 +11,7 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class HarmonicGaussian(Functions):
     L: int
-    extra_args: Optional[List[int]] = field(default=None, init=False)
+    extra_args: Optional[List[int]] = field(default=None)
     _l_sigma: float = field(default=1_000, init=False, repr=False)
     _m_sigma: float = field(default=1_000, init=False, repr=False)
 
