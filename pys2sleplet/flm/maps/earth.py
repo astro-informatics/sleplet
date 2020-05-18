@@ -8,6 +8,8 @@ from scipy import io as sio
 
 from pys2sleplet.flm.functions import Functions
 
+_file_location = Path(__file__).resolve().parents[2]
+
 
 @dataclass
 class Earth(Functions):
@@ -23,7 +25,7 @@ class Earth(Functions):
         load coefficients from file
         """
         matfile = str(
-            Path(__file__).resolve().parents[2]
+            _file_location
             / "data"
             / "maps"
             / "earth"

@@ -8,6 +8,8 @@ from scipy import io as sio
 
 from pys2sleplet.flm.functions import Functions
 
+_file_location = Path(__file__).resolve().parents[2]
+
 
 @dataclass
 class WMAP(Functions):
@@ -25,13 +27,7 @@ class WMAP(Functions):
         * _tt_spectrum_7yr_v4p1.mat
         * _lcdm_pl_model_wmap7baoh0.mat
         """
-        matfile = str(
-            Path(__file__).resolve().parents[2]
-            / "data"
-            / "maps"
-            / "wmap"
-            / f"wmap{file_ending}"
-        )
+        matfile = str(_file_location / "data" / "maps" / "wmap" / f"wmap{file_ending}")
         mat_contents = sio.loadmat(matfile)
         cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
         return cl

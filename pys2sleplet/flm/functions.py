@@ -9,6 +9,8 @@ import pyssht as ssht
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
+_file_location = Path(__file__).resolve().parents[1]
+
 
 @dataclass  # type: ignore
 class Functions:
@@ -60,7 +62,7 @@ class Functions:
 
         # numpy binary filename
         filename = (
-            Path(__file__).resolve().parents[1]
+            _file_location
             / "data"
             / "trans_dirac"
             / f"trans_dd_L{self.L}_{filename_angle(alpha_pi_fraction,beta_pi_fraction)}.npy"

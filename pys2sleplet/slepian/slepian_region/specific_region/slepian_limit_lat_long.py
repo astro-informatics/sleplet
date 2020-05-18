@@ -10,6 +10,8 @@ import pyssht as ssht
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.config import config
 
+_file_location = Path(__file__).resolve().parents[3]
+
 
 @dataclass
 class SlepianLimitLatLong(SlepianSpecific):
@@ -57,7 +59,7 @@ class SlepianLimitLatLong(SlepianSpecific):
 
     def _create_matrix_location(self) -> Path:
         location = (
-            Path(__file__).resolve().parents[3]
+            _file_location
             / "data"
             / "slepian"
             / "lat_lon"
