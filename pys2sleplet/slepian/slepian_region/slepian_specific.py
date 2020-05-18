@@ -38,7 +38,7 @@ class SlepianSpecific(SlepianFunctions):
     def phi_min(self, phi_min: float) -> None:
         if np.rad2deg(phi_min) < PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
-        elif np.rad2deg(phi_min) > PHI_MAX_DEFAULT:
+        if np.rad2deg(phi_min) > PHI_MAX_DEFAULT:
             raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
         self._phi_min = phi_min
 
@@ -50,7 +50,7 @@ class SlepianSpecific(SlepianFunctions):
     def phi_max(self, phi_max: float) -> None:
         if np.rad2deg(phi_max) < PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
-        elif np.rad2deg(phi_max) > PHI_MAX_DEFAULT:
+        if np.rad2deg(phi_max) > PHI_MAX_DEFAULT:
             raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
         self._phi_max = phi_max
 
@@ -62,7 +62,7 @@ class SlepianSpecific(SlepianFunctions):
     def theta_min(self, theta_min: float) -> None:
         if np.rad2deg(theta_min) < THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
-        elif np.rad2deg(theta_min) > THETA_MAX_DEFAULT:
+        if np.rad2deg(theta_min) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_min = theta_min
 
@@ -74,7 +74,7 @@ class SlepianSpecific(SlepianFunctions):
     def theta_max(self, theta_max: float) -> None:
         if np.rad2deg(theta_max) < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
-        elif np.rad2deg(theta_max) > THETA_MAX_DEFAULT:
+        if np.rad2deg(theta_max) > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_max = theta_max
 
