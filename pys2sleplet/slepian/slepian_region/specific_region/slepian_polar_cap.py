@@ -12,7 +12,7 @@ from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.bool_methods import is_polar_gap, is_small_polar_cap
 from pys2sleplet.utils.config import config
 
-_file_location = Path(__file__).resolve().parents[3]
+_file_location = Path(__file__).resolve()
 
 
 @dataclass
@@ -54,7 +54,7 @@ class SlepianPolarCap(SlepianSpecific):
 
     def _create_matrix_location(self) -> Path:
         location = (
-            _file_location
+            _file_location.parents[3]
             / "data"
             / "slepian"
             / "polar"

@@ -11,7 +11,7 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import calc_samples
 
-_file_location = Path(__file__).resolve().parents[2]
+_file_location = Path(__file__).resolve()
 
 
 @dataclass
@@ -47,7 +47,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_matrix_location(self) -> Path:
         location = (
-            _file_location
+            _file_location.parents[2]
             / "data"
             / "slepian"
             / "arbitrary"

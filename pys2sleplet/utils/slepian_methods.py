@@ -17,7 +17,7 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 
-_file_location = Path(__file__).resolve().parents[2]
+_file_location = Path(__file__).resolve()
 
 
 def choose_slepian_method(L: int) -> SlepianFunctions:
@@ -40,7 +40,7 @@ def choose_slepian_method(L: int) -> SlepianFunctions:
     elif config.SLEPIAN_MASK:
         logger.info("no angles specified, looking for a file with mask")
         location = (
-            _file_location
+            _file_location.parents[2]
             / "data"
             / "slepian"
             / "arbitrary"
