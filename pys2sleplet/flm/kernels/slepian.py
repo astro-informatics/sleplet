@@ -14,12 +14,11 @@ class Slepian(Functions):
     L: int
     extra_args: List[int]
     s: SlepianFunctions = field(init=False, repr=False)
-    _rank: int = field(init=False, repr=False)
+    _rank: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
         self.s = choose_slepian_method(self.L)
-        self.rank = 0
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:

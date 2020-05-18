@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -12,6 +12,8 @@ from pys2sleplet.utils.string_methods import filename_args
 class SquashedGaussian(Functions):
     L: int
     extra_args: List[int]
+    _t_sigma = field(default=0.01, init=False, repr=False)
+    _freq = field(default=0.1, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -33,10 +35,7 @@ class SquashedGaussian(Functions):
             num_args = 2
             if len(args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            t_sigma, freq = [10 ** x for x in args]
-        else:
-            t_sigma, freq = 0.01, 0.1
-        self.t_sigma, self.freq = t_sigma, freq
+            self.t_sigma, self.freq = [10 ** x for x in self.extra_args]
 
     def _create_flm(self) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)

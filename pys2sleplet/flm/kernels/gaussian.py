@@ -12,12 +12,11 @@ from pys2sleplet.utils.string_methods import filename_args
 class Gaussian(Functions):
     L: int
     extra_args: List[int]
-    _sigma: float = field(init=False, repr=False)
+    _sigma: float = field(default=1_000, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
         self.reality = True
-        self.sigma = 1_000
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:

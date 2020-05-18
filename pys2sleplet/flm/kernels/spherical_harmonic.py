@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -12,16 +12,15 @@ from pys2sleplet.utils.string_methods import filename_args
 class SphericalHarmonic(Functions):
     L: int
     extra_args: List[int]
+    _ell = field(default=0, init=False, repr=False)
+    _m = field(default=0, init=False, repr=False)
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:
             num_args = 2
             if len(args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            ell, m = args
-        else:
-            ell, m = 0, 0
-        self.ell, self.m = ell, m
+            self.ell, self.m = self.extra_args
 
     def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)

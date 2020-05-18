@@ -12,13 +12,11 @@ from pys2sleplet.utils.string_methods import filename_args
 class HarmonicGaussian(Functions):
     L: int
     extra_args: List[int]
-    _l_sigma: float = field(init=False, repr=False)
-    _m_sigma: float = field(init=False, repr=False)
+    _l_sigma: float = field(default=1_000, init=False, repr=False)
+    _m_sigma: float = field(default=1_000, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.l_sigma = 1_000
-        self.m_sigma = 1_000
 
     def _setup_args(self, args: Optional[List[int]]) -> None:
         if args is not None:

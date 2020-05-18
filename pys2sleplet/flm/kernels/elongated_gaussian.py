@@ -12,14 +12,12 @@ from pys2sleplet.utils.string_methods import filename_args
 class ElongatedGaussian(Functions):
     L: int
     extra_args: List[int]
-    _p_sigma: float = field(init=False, repr=False)
-    _t_sigma: float = field(init=False, repr=False)
+    _p_sigma: float = field(default=0.001, init=False, repr=False)
+    _t_sigma: float = field(default=1, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.p_sigma = 0.001
         self.reality = True
-        self.t_sigma = 1
 
     def _grid_fun(
         self,
