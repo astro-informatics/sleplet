@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "maps"
 for t in real imag abs; do
     echo 'earth', $t;
