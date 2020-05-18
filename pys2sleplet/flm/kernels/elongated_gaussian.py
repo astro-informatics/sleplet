@@ -47,8 +47,8 @@ class ElongatedGaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.t_sigma, self.p_sigma = [10 ** x for x in args]
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)
+    def _create_flm(self) -> np.ndarray:
+        flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
         return flm
 
     def _create_name(self) -> str:

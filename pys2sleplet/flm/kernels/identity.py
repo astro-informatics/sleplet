@@ -17,8 +17,8 @@ class Identity(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.ones((L * L)) + 1j * np.zeros((L * L))
+    def _create_flm(self) -> np.ndarray:
+        flm = np.ones((self.L * self.L)) + 1j * np.zeros((self.L * self.L))
         return flm
 
     def _create_name(self) -> str:

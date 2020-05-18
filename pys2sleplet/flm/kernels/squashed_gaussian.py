@@ -38,8 +38,8 @@ class SquashedGaussian(Functions):
             t_sigma, freq = 0.01, 0.1
         self.t_sigma, self.freq = t_sigma, freq
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)
+    def _create_flm(self) -> np.ndarray:
+        flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
         return flm
 
     def _create_name(self) -> str:

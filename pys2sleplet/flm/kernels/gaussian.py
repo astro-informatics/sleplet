@@ -26,9 +26,9 @@ class Gaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.sigma = 10 ** args[0]
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.zeros((L * L), dtype=complex)
-        for ell in range(L):
+    def _create_flm(self) -> np.ndarray:
+        flm = np.zeros((self.L * self.L), dtype=complex)
+        for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
             flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma * self.sigma))
         return flm

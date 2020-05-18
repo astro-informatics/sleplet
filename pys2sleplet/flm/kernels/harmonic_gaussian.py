@@ -27,9 +27,9 @@ class HarmonicGaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.l_sigma, self.m_sigma = [10 ** x for x in args]
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.zeros((L * L), dtype=complex)
-        for ell in range(L):
+    def _create_flm(self) -> np.ndarray:
+        flm = np.zeros((self.L * self.L), dtype=complex)
+        for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)

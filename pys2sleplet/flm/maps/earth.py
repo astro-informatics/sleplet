@@ -38,13 +38,13 @@ class Earth(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         # load in data
         flm = self._load_flm()
 
         # fill in negative m components so as to
         # avoid confusion with zero values
-        for ell in range(1, L):
+        for ell in range(1, self.L):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
@@ -52,7 +52,7 @@ class Earth(Functions):
 
         # don't take the full L
         # invert dataset as Earth backwards
-        flm = flm[: L * L].conj()
+        flm = flm[: self.L * self.L].conj()
         return flm
 
     def _create_name(self) -> str:

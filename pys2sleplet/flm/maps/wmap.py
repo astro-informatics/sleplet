@@ -35,7 +35,7 @@ class WMAP(Functions):
     def _setup_args(self, args: Optional[List[int]]) -> None:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         # load in data
         cl = self._load_cl()
 
@@ -43,8 +43,8 @@ class WMAP(Functions):
         np.random.seed(0)
 
         # Simulate CMB in harmonic space.
-        flm = np.zeros((L * L), dtype=complex)
-        for ell in range(2, L):
+        flm = np.zeros((self.L * self.L), dtype=complex)
+        for ell in range(2, self.L):
             cl[ell - 1] = cl[ell - 1] * 2 * np.pi / (ell * (ell + 1))
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)

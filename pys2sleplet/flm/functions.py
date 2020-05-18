@@ -28,7 +28,7 @@ class Functions:
         self._setup_args(self.extra_args)
         self.resolution = calc_resolution(self.L)
         self.name = self._create_name()
-        self.multipole = self._create_flm(self.L)
+        self.multipole = self._create_flm()
         self.field = self._invert(self.multipole)
         self.plot = self._invert(self.multipole, boosted=True)
         self.annotations = self._create_annotations()
@@ -203,7 +203,7 @@ class Functions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_flm(self, L: int) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         """
         creates the flm on the north pole
         """

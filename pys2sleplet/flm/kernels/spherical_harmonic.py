@@ -23,8 +23,8 @@ class SphericalHarmonic(Functions):
             ell, m = 0, 0
         self.ell, self.m = ell, m
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.zeros((L * L), dtype=complex)
+    def _create_flm(self) -> np.ndarray:
+        flm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
         flm[ind] = 1
         return flm
