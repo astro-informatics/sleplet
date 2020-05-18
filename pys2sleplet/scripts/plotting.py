@@ -16,9 +16,10 @@ def valid_kernels(func_name: str) -> str:
     check if valid kernel
     """
     if func_name in functions:
-        return func_name
+        function = func_name
     else:
         raise ValueError("Not a valid kernel name to convolve")
+    return function
 
 
 def valid_plotting(func_name: str) -> str:
@@ -26,9 +27,10 @@ def valid_plotting(func_name: str) -> str:
     check if valid function
     """
     if func_name in functions:
-        return func_name
+        function = func_name
     else:
         raise ValueError("Not a valid function name to plot")
+    return function
 
 
 def read_args() -> Namespace:
