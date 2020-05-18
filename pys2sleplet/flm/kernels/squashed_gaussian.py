@@ -6,6 +6,7 @@ import numpy as np
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.vars import THETA_0
 
 
 @dataclass
@@ -19,13 +20,11 @@ class SquashedGaussian(Functions):
         super().__post_init__()
         self.reality = True
 
-    def _grid_fun(
-        self, theta: np.ndarray, phi: np.ndarray, theta_0: float = 0
-    ) -> np.ndarray:
+    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
         """
         function on the grid
         """
-        f = np.exp(-(((theta - theta_0) / self.t_sigma) ** 2) / 2) * np.sin(
+        f = np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
             self.freq * phi
         )
         return f

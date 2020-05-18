@@ -6,6 +6,7 @@ import numpy as np
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.vars import PHI_0, THETA_0
 
 
 @dataclass
@@ -19,20 +20,14 @@ class ElongatedGaussian(Functions):
         super().__post_init__()
         self.reality = True
 
-    def _grid_fun(
-        self,
-        theta: np.ndarray,
-        phi: np.ndarray,
-        theta_0: float = 0,
-        phi_0: float = np.pi,
-    ) -> np.ndarray:
+    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
         """
         function on the grid
         """
         f = np.exp(
             -(
-                ((theta - theta_0) / self.t_sigma) ** 2
-                + ((phi - phi_0) / self.p_sigma) ** 2
+                ((theta - THETA_0) / self.t_sigma) ** 2
+                + ((phi - PHI_0) / self.p_sigma) ** 2
             )
             / 2
         )
