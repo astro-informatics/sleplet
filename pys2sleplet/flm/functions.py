@@ -119,7 +119,7 @@ class Functions:
 
     @property
     def annotations(self) -> List[Dict]:
-        return self.annotations
+        return self._annotations
 
     @annotations.setter
     def annotations(self, annotations: List[Dict]) -> None:
