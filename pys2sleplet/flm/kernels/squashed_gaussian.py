@@ -13,8 +13,8 @@ from pys2sleplet.utils.vars import THETA_0
 class SquashedGaussian(Functions):
     L: int
     extra_args: Optional[List[int]] = field(default=None, init=False)
-    _t_sigma = field(default=0.01, init=False, repr=False)
-    _freq = field(default=0.1, init=False, repr=False)
+    _t_sigma: float = field(default=0.01, init=False, repr=False)
+    _freq: float = field(default=0.1, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()

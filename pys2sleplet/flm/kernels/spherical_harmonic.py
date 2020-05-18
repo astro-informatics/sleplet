@@ -12,8 +12,8 @@ from pys2sleplet.utils.string_methods import filename_args
 class SphericalHarmonic(Functions):
     L: int
     extra_args: Optional[List[int]] = field(default=None, init=False)
-    _ell = field(default=0, init=False, repr=False)
-    _m = field(default=0, init=False, repr=False)
+    _ell: int = field(default=0, init=False, repr=False)
+    _m: int = field(default=0, init=False, repr=False)
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:
