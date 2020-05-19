@@ -23,7 +23,7 @@ class Plot:
     f: np.ndarray
     resolution: int
     filename: str
-    annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
+    annotations: List[Dict] = field(default_factory=list, repr=False)
     fig_path: Path = field(
         default=_file_location.parents[1] / "figures", init=False, repr=False
     )
