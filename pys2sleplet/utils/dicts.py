@@ -12,9 +12,8 @@ from pys2sleplet.flm.kernels.squashed_gaussian import SquashedGaussian
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.flm.maps.wmap import WMAP
 
-functions: Dict[str, Functions] = {
+kernels: Dict[str, Functions] = {
     "dirac_delta": DiracDelta,
-    "earth": Earth,
     "elongated_gaussian": ElongatedGaussian,
     "gaussian": Gaussian,
     "harmonic_gaussian": HarmonicGaussian,
@@ -22,5 +21,8 @@ functions: Dict[str, Functions] = {
     "slepian": Slepian,
     "spherical_harmonic": SphericalHarmonic,
     "squashed_gaussian": SquashedGaussian,
-    "wmap": WMAP,
 }
+
+maps: Dict[str, Functions] = {"earth": Earth, "wmap": WMAP}
+
+functions: Dict[str, Functions] = {**kernels, **maps}
