@@ -38,7 +38,6 @@ for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaus
 done
 
 echo "harmonic Gaussian larger kernel"
-echo harmonic
 for t in real imag abs; do
     plotting harmonic_gaussian -e 3 1 -t $t;
     plotting earth -c harmonic_gaussian -e 3 1 -t $t;
