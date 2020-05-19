@@ -39,8 +39,8 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     f_diff = f_rot_plot - f_trans_plot
 
     # perform test
-    np.testing.assert_allclose(flm_rot, flm_trans, atol=1e-14)
-    np.testing.assert_allclose(f_rot, f_trans, rtol=1e-5)
+    np.testing.assert_allclose(flm_rot, flm_trans, rtol=1e-14)
+    np.testing.assert_allclose(f_rot, f_trans, rtol=1e-12)
     logger.info(f"Translation/rotation difference max error: {np.abs(flm_diff).max()}")
 
     if config.AUTO_OPEN:

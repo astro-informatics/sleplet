@@ -48,8 +48,8 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     f_diff = f_map_plot - f_conv_plot
 
     # perform test
-    np.testing.assert_allclose(flm, flm_conv, atol=5e1)
-    np.testing.assert_allclose(f_map, f_conv, atol=8e2)
+    np.testing.assert_array_equal(flm, flm_conv)
+    np.testing.assert_allclose(f_map, f_conv, rtol=0.2)
     logger.info(
         f"Earth/harmonic gaussian convolution difference max error: {np.abs(flm_diff).max()}"
     )
