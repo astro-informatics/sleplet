@@ -16,7 +16,6 @@ class Gaussian(Functions):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.reality = True
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:
@@ -24,6 +23,9 @@ class Gaussian(Functions):
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.sigma = 10 ** self.extra_args[0]
+
+    def _set_reality(self) -> bool:
+        return True
 
     def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)

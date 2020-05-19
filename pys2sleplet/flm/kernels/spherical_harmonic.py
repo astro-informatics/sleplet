@@ -22,6 +22,9 @@ class SphericalHarmonic(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 
+    def _set_reality(self) -> bool:
+        return False
+
     def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)

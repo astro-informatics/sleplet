@@ -14,10 +14,12 @@ class DiracDelta(Functions):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.reality = True
 
     def _setup_args(self) -> None:
         pass
+
+    def _set_reality(self) -> bool:
+        return True
 
     def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)

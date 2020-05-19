@@ -29,6 +29,9 @@ class Slepian(Functions):
                 )
             self.rank = self.extra_args[0]
 
+    def _set_reality(self) -> bool:
+        return False
+
     def _create_name(self) -> str:
         name = f"{self.s.name}_rank{self.rank}"
         return name

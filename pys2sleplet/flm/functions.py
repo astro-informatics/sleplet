@@ -27,6 +27,7 @@ class Functions:
     def __post_init__(self) -> None:
         self._setup_args()
         self.resolution = calc_resolution(self.L)
+        self.reality = self._set_reality()
         self.name = self._create_name()
         self.multipole = self._create_flm()
         self.field = self._invert(self.multipole)
@@ -199,6 +200,13 @@ class Functions:
         """
         initialises function specific args
         either default value or user input
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _set_reality(self) -> bool:
+        """
+        sets the reality flag to speed up computations
         """
         raise NotImplementedError
 

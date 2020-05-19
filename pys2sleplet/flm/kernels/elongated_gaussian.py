@@ -18,7 +18,6 @@ class ElongatedGaussian(Functions):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.reality = True
 
     def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
         """
@@ -39,6 +38,9 @@ class ElongatedGaussian(Functions):
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.t_sigma, self.p_sigma = [10 ** x for x in self.extra_args]
+
+    def _set_reality(self) -> bool:
+        return True
 
     def _create_flm(self) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)

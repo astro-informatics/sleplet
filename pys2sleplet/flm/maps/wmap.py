@@ -18,7 +18,6 @@ class WMAP(Functions):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.reality = True
 
     @staticmethod
     def _load_cl(file_ending: str) -> np.ndarray:
@@ -36,6 +35,9 @@ class WMAP(Functions):
 
     def _setup_args(self) -> None:
         pass
+
+    def _set_reality(self) -> bool:
+        return True
 
     def _create_flm(self) -> np.ndarray:
         # load in data

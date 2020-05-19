@@ -25,6 +25,9 @@ class HarmonicGaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.l_sigma, self.m_sigma = [10 ** x for x in self.extra_args]
 
+    def _set_reality(self) -> bool:
+        return False
+
     def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
