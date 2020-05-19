@@ -1,6 +1,7 @@
 import numpy as np
 from hypothesis import given, settings
 from hypothesis.strategies import SearchStrategy, floats
+from numpy.testing import assert_allclose
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.plotting.create_plot import Plot
@@ -29,27 +30,19 @@ def test_dirac_delta_rotate_translate(alpha, beta) -> None:
     test to ensure that rotation and translation
     give the same result for the Dirac delta
     """
-    # rotation
-    dd = DiracDelta(config.L)
-    dd.rotate(alpha, beta)
-    flm_rot = dd.multipole
-    f_rot, f_rot_plot = dd.field, dd.plot
+    dd_1 = DiracDelta(config.L)
+    dd_1.rotate(alpha, beta)
 
-    # translation
-    dd = DiracDelta(config.L)
-    dd.translate(alpha, beta)
-    flm_trans = dd.multipole
-    f_trans, f_trans_plot = dd.field, dd.plot
+    dd_2 = DiracDelta(config.L)
+    dd_2.translate(alpha, beta)
 
-    # calculate difference
-    flm_diff = flm_rot - flm_trans
-    f_diff = f_rot_plot - f_trans_plot
+    flm_diff = dd_1.multipole - dd_2.multipole
+    f_diff = dd_1.plot - dd_2.plot
 
-    # perform test
-    np.testing.assert_allclose(flm_rot, flm_trans, rtol=1e-13)
-    np.testing.assert_allclose(f_rot, f_trans, rtol=1e-11)
+    assert_allclose(dd_1.multipole, dd_2.multipole, rtol=1e-13)
+    assert_allclose(dd_1.field, dd_2.field, rtol=1e-11)
     logger.info(f"Translation/rotation difference max error: {np.abs(flm_diff).max()}")
 
     if config.AUTO_OPEN:
-        filename = f"{dd.name}_L{config.L}_diff_rot_trans_res{dd.resolution}"
-        Plot(f_diff.real, dd.resolution, filename).execute()
+        filename = f"{dd_1.name}_L{config.L}_diff_rot_trans_res{dd_1.resolution}"
+        Plot(f_diff.real, dd_1.resolution, filename).execute()
