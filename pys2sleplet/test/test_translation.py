@@ -9,14 +9,14 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 
 
-def alpha_pi_frac() -> SearchStrategy[float]:
+def valid_alphas() -> SearchStrategy[float]:
     """
     alpha can be in the range [0, 2*pi)
     """
     return floats(min_value=0, max_value=2, exclude_max=True, width=16)
 
 
-def beta_pi_frac() -> SearchStrategy[float]:
+def valid_betas() -> SearchStrategy[float]:
     """
     beta can be in the range [0, pi]
     """
@@ -24,17 +24,17 @@ def beta_pi_frac() -> SearchStrategy[float]:
 
 
 @settings(max_examples=8, derandomize=True, deadline=None)
-@given(alpha=alpha_pi_frac(), beta=beta_pi_frac())
-def test_dirac_delta_rotate_translate(alpha, beta) -> None:
+@given(alpha_pi_frac=valid_alphas(), beta_pi_frac=valid_betas())
+def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     """
     test to ensure that rotation and translation
     give the same result for the Dirac delta
     """
     dd_1 = DiracDelta(config.L)
-    dd_1.rotate(alpha, beta)
+    dd_1.rotate(alpha_pi_frac, beta_pi_frac)
 
     dd_2 = DiracDelta(config.L)
-    dd_2.translate(alpha, beta)
+    dd_2.translate(alpha_pi_frac, beta_pi_frac)
 
     flm_diff = dd_1.multipole - dd_2.multipole
     f_diff = dd_1.plot - dd_2.plot
