@@ -47,15 +47,16 @@ class WMAP(Functions):
         # Simulate CMB in harmonic space.
         flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(2, self.L):
-            cl[ell - 1] = cl[ell - 1] * 2 * np.pi / (ell * (ell + 1))
+            cl_val = cl[ell - 1]
+            cl_val *= 2 * np.pi / (ell * (ell + 1))
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 if m == 0:
-                    flm[ind] = np.sqrt(cl[ell - 1]) * np.random.randn()
+                    flm[ind] = np.sqrt(cl_val) * np.random.randn()
                 else:
                     flm[ind] = (
-                        np.sqrt(cl[ell - 1] / 2) * np.random.randn()
-                        + 1j * np.sqrt(cl[ell - 1] / 2) * np.random.randn()
+                        np.sqrt(cl_val / 2) * np.random.randn()
+                        + 1j * np.sqrt(cl_val / 2) * np.random.randn()
                     )
         return flm
 
