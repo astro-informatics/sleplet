@@ -24,7 +24,7 @@ class Plot:
     resolution: int
     filename: str
     annotations: List[Dict] = field(default_factory=list, repr=False)
-    fig_path: Path = field(
+    _fig_path: Path = field(
         default=_file_location.parents[1] / "figures", init=False, repr=False
     )
 
@@ -85,15 +85,15 @@ class Plot:
         # if save_fig is true then create png and pdf in their directories
         if config.SAVE_FIG:
             # create filenames
-            png_filename = self.fig_path / "png" / f"{self.filename}.png"
-            pdf_filename = self.fig_path / "png" / f"{self.filename}.png"
+            png_filename = self._fig_path / "png" / f"{self.filename}.png"
+            pdf_filename = self._fig_path / "png" / f"{self.filename}.png"
 
             # save files
             pio.write_image(fig, png_filename)
             pio.write_image(fig, pdf_filename)
 
         # create html and open if auto_open is true
-        html_filename = str(self.fig_path / "html" / f"{self.filename}.html")
+        html_filename = str(self._fig_path / "html" / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename, auto_open=config.AUTO_OPEN)
 
