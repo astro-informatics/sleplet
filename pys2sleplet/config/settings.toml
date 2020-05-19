@@ -14,4 +14,4 @@ slepian_mask = ""
 
 [travis]
 # above 512 get a memory error from travis
-L = 512
+L = 256
