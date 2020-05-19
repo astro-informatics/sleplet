@@ -48,6 +48,8 @@ class SphericalHarmonic(Functions):
             raise TypeError("ell should be an integer")
         if ell < 0:
             raise ValueError("ell should be positive")
+        if ell >= self.L:
+            raise ValueError("ell should be less than or equal to L")
         self._ell = ell
 
     @property
