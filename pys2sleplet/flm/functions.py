@@ -6,6 +6,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -76,8 +77,10 @@ class Functions:
         else:
             glm = ssht.create_ylm(beta, alpha, self.L).conj()
             glm = glm.reshape(glm.size)
+
             # save to speed up for future
-            np.save(filename, glm)
+            if config.SAVE_MATRICES:
+                np.save(filename, glm)
 
         # convolve with flm
         if self.name == "dirac_delta":
