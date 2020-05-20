@@ -20,14 +20,17 @@ class SlepianLimitLatLong(SlepianSpecific):
     theta_max: float
     phi_min: float
     phi_max: float
-    name_ending: str = field(init=False, repr=False)
+    _name_ending: str = field(
+        default=(
+            f"_theta{config.THETA_MIN}-{config.THETA_MAX}"
+            f"_phi{config.PHI_MIN}-{config.PHI_MAX}"
+        ),
+        init=False,
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.name_ending = (
-            f"_theta{config.THETA_MIN}-{config.THETA_MAX}"
-            f"_phi{config.PHI_MIN}-{config.PHI_MAX}"
-        )
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []
@@ -54,7 +57,7 @@ class SlepianLimitLatLong(SlepianSpecific):
         return annotation
 
     def _create_fn_name(self) -> str:
-        name = f"slepian{self.name_ending}"
+        name = f"slepian{self._name_ending}"
         return name
 
     def _create_matrix_location(self) -> Path:
@@ -63,7 +66,7 @@ class SlepianLimitLatLong(SlepianSpecific):
             / "data"
             / "slepian"
             / "lat_lon"
-            / f"D_L{self.L}{self.name_ending}.npy"
+            / f"D_L{self.L}{self._name_ending}.npy"
         )
         return location
 
