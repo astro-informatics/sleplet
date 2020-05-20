@@ -34,7 +34,7 @@ class SlepianLimitLatLong(SlepianSpecific):
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []
-        config = dict(arrowhead=6, ax=5, ay=5)
+        arrow = dict(arrowhead=6, ax=5, ay=5)
         p1, p2, t1, t2 = (
             np.array(self.phi_min),
             np.array(self.phi_max),
@@ -52,7 +52,7 @@ class SlepianLimitLatLong(SlepianSpecific):
                 if not ((t == t3 or t == t4) and (p == p3 or p == p4)):
                     x, y, z = ssht.s2_to_cart(t, p)
                     annotation.append(
-                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **config}
+                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **arrow}
                     )
         return annotation
 

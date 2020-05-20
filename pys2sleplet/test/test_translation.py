@@ -45,7 +45,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     logger.info(f"Translation/rotation difference max error: {np.abs(flm_diff).max()}")
 
     if config.AUTO_OPEN:
-        filename = f"{dd_1.name}_L{config.L}_diff_rot_trans_res{dd_1.resolution}"
+        filename = f"{dd_1.name}_L{dd_1.L}_diff_rot_trans_res{dd_1.resolution}"
         Plot(f_diff.real, dd_1.resolution, filename).execute()
 
 

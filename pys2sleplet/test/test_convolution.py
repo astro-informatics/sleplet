@@ -55,5 +55,5 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     )
 
     if config.AUTO_OPEN:
-        filename = f"{g.name}_L{config.L}_diff_{f.name}_res{f.resolution}_real"
+        filename = f"{g.name}_L{f.L}_diff_{f.name}_res{f.resolution}_real"
         Plot(f_diff.real, f.resolution, filename).execute()

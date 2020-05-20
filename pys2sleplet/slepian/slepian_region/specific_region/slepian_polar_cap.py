@@ -9,7 +9,7 @@ import pyssht as ssht
 from scipy.special import factorial as fact
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.bool_methods import is_polar_gap, is_small_polar_cap
+from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
 
 _file_location = Path(__file__).resolve()
@@ -25,25 +25,25 @@ class SlepianPolarCap(SlepianSpecific):
 
     def __post_init__(self) -> None:
         self._name_ending = (
-            f"_polar{'_gap' if is_polar_gap() else ''}"
+            f"_polar{'_gap' if config.POLAR_GAP else ''}"
             f"{config.THETA_MAX}_m{self.order}"
         )
         super().__post_init__()
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []  # type: List[Dict]
-        config = dict(arrowhead=6, ax=5, ay=5)
+        arrow = dict(arrowhead=6, ax=5, ay=5)
 
         if is_small_polar_cap(self.theta_max):
             theta_top = np.array(self.theta_max)
             for i in range(self._ndots):
-                self._add_to_annotation(annotation, config, theta_top, i)
+                self._add_to_annotation(annotation, arrow, theta_top, i)
 
-                if is_polar_gap():
+                if config.POLAR_GAP:
                     theta_bottom = np.array(np.pi - self.theta_max)
                     for j in range(self._ndots):
                         self._add_to_annotation(
-                            annotation, config, theta_bottom, j, colour="white"
+                            annotation, arrow, theta_bottom, j, colour="white"
                         )
         return annotation
 
@@ -352,13 +352,13 @@ class SlepianPolarCap(SlepianSpecific):
 
     @staticmethod
     def polar_gap_modification(ell1: int, ell2: int) -> int:
-        factor = 1 + is_polar_gap() * (-1) ** (ell1 + ell2)
+        factor = 1 + config.POLAR_GAP * (-1) ** (ell1 + ell2)
         return factor
 
     def _add_to_annotation(
         self,
         annotation: Union[List[Dict], List],
-        config: Dict[str, int],
+        arrow: Dict[str, int],
         theta: np.ndarray,
         i: int,
         colour: str = "black",
@@ -368,4 +368,4 @@ class SlepianPolarCap(SlepianSpecific):
         """
         phi = np.array(2 * np.pi / self._ndots * (i + 1))
         x, y, z = ssht.s2_to_cart(theta, phi)
-        annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **config})
+        annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **arrow})

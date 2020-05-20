@@ -1,6 +1,5 @@
 import numpy as np
 
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -45,12 +44,4 @@ def is_small_polar_cap(theta_max: float) -> bool:
     assuming it is a polar cap small defined for visualisation purposes
     """
     condition = bool(theta_max <= np.pi / 4)
-    return condition
-
-
-def is_polar_gap() -> bool:
-    """
-    assuming it is a polar gap
-    """
-    condition = bool(config.POLAR_GAP)
     return condition
