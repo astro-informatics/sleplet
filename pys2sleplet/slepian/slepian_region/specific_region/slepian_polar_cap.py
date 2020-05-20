@@ -32,7 +32,7 @@ class SlepianPolarCap(SlepianSpecific):
         super().__post_init__()
 
     def _create_annotations(self) -> List[Dict]:
-        annotation = []  # type: List[Dict]
+        annotation: List[Dict] = []
 
         if is_small_polar_cap(self.theta_max):
             theta_top = np.array(self.theta_max)
