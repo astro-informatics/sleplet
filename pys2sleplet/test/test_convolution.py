@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.testing import assert_allclose, assert_array_equal
 
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
@@ -13,17 +14,14 @@ def test_earth_identity_convolution() -> None:
     test to ensure that the convolving with the
     identity function doesn't change the map
     """
-    # setup
     f = Earth(config.L)
     g = Identity(config.L)
     flm = f.multipole
 
-    # convolution
     f.convolve(g.multipole)
     flm_conv = f.multipole
 
-    # perform test
-    np.testing.assert_equal(flm, flm_conv)
+    assert_array_equal(flm, flm_conv)
     logger.info("Identity convolution passed test")
 
 
@@ -32,24 +30,20 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     test to ensure that convolving the Earth with the harmonic
     Gausian does not change significantly change the map
     """
-    # setup
     f = Earth(config.L)
     g = HarmonicGaussian(config.L)
     flm = f.multipole
     f_map, f_map_plot = f.field, f.field_padded
 
-    # convolution
     f.convolve(g.multipole)
     flm_conv = f.multipole
     f_conv, f_conv_plot = f.field, f.field_padded
 
-    # calculate difference
     flm_diff = flm - flm_conv
     f_diff = f_map_plot - f_conv_plot
 
-    # perform test
-    np.testing.assert_array_equal(flm, flm_conv)
-    np.testing.assert_allclose(f_map, f_conv, rtol=0.2)
+    assert_array_equal(flm, flm_conv)
+    assert_allclose(f_map, f_conv, rtol=0.2)
     logger.info(
         f"Earth/harmonic gaussian convolution difference max error: {np.abs(flm_diff).max()}"
     )
