@@ -53,8 +53,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
 @given(alpha_pi_frac=valid_alphas(), beta_pi_frac=valid_betas())
 def test_other_kernels_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     """
-    test to ensure that rotation and translation
-    give the same result for the Dirac delta
+    test to ensure that rotation and translation do not give the same result
     """
     for name, kernel in kernels.items():
         if name in {"dirac_delta", "slepian"}:
