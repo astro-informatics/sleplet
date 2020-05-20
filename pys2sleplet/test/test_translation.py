@@ -6,7 +6,7 @@ from numpy.testing import assert_allclose, assert_raises
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.dicts import kernels
+from pys2sleplet.utils.dicts import KERNELS
 from pys2sleplet.utils.logger import logger
 
 
@@ -55,7 +55,7 @@ def test_other_kernels_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     """
     test to ensure that rotation and translation do not give the same result
     """
-    for name, kernel in kernels.items():
+    for name, kernel in KERNELS.items():
         if name in {"dirac_delta", "slepian"}:
             continue
 
