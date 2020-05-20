@@ -14,7 +14,6 @@ from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
@@ -69,17 +68,17 @@ def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
     whole_sphere_field = function.field
 
     if isinstance(slepian, SlepianPolarCap):
-        condition = thetas <= slepian.theta_max
-        region_field = np.where(condition, whole_sphere_field, 0)
+        mask = thetas <= slepian.theta_max
+        region_field = np.where(mask, whole_sphere_field, 0)
 
     elif isinstance(slepian, SlepianLimitLatLong):
-        condition = (
+        mask = (
             (thetas >= slepian.theta_min)
             & (thetas <= slepian.theta_max)
             & (phis >= slepian.phi_min)
             & (phis <= slepian.phi_max)
         )
-        region_field = np.where(condition, whole_sphere_field, 0)
+        region_field = np.where(mask, whole_sphere_field, 0)
 
     # elif isinstance(slepian, SlepianArbitrary):
     #     region_field = whole_sphere_field * slepian.mask
@@ -87,5 +86,4 @@ def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
     else:
         raise RuntimeError(f"{slepian} is not a valid slepian function type")
 
-    flm = ensure_f_bandlimited(region_field, config.L, function.reality)
-    function.multipole = flm
+    return region_field
