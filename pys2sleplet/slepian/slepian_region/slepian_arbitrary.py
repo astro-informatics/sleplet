@@ -27,7 +27,6 @@
 #     name_ending: str = field(init=False, repr=False)
 
 #     def __post_init__(self) -> None:
-#         super().__post_init__()
 #         theta_mask, phi_mask = self.mask
 #         samples = calc_samples(self.L)
 #         thetas, phis = ssht.sample_positions(samples, Grid=True, Method=SAMPLING_SCHEME)
@@ -38,6 +37,7 @@
 #         self.thetas = thetas[theta_mask[:, np.newaxis], phi_mask]
 #         self.ylm = ylm[:, theta_mask[:, np.newaxis], phi_mask]
 #         self.name_ending = f"_{config.SLEPIAN_MASK}"
+#         super().__post_init__()
 
 #     def _create_annotations(self) -> List[Dict]:
 #         pass
