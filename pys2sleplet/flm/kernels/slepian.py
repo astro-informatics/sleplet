@@ -13,12 +13,12 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 class Slepian(Functions):
     L: int
     extra_args: Optional[List[int]] = field(default=None)
-    s: SlepianFunctions = field(init=False, repr=False)
+    _slepian: SlepianFunctions = field(init=False, repr=False)
     _rank: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self._slepian = choose_slepian_method(self.L)
         super().__post_init__()
-        self.s = choose_slepian_method(self.L)
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:
@@ -33,16 +33,16 @@ class Slepian(Functions):
         return False
 
     def _create_name(self) -> str:
-        name = f"{self.s.name}_rank{self.rank}"
+        name = f"{self._slepian.name}_rank{self.rank}"
         return name
 
     def _create_flm(self) -> np.ndarray:
-        flm = self.s.eigenvectors[self.rank]
-        logger.info(f"Eigenvalue {self.rank}: {self.s.eigenvalues[self.rank]:e}")
+        flm = self._slepian.eigenvectors[self.rank]
+        logger.info(f"Eigenvalue {self.rank}: {self._slepian.eigenvalues[self.rank]:e}")
         return flm
 
     def _create_annotations(self) -> List[Dict]:
-        annotations = self.s.annotations
+        annotations = self._slepian.annotations
         return annotations
 
     @property
