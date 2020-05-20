@@ -20,16 +20,15 @@ class SlepianPolarCap(SlepianSpecific):
     L: int
     theta_max: float
     order: int
-    ndots: int = field(init=False, repr=False)
-    name_ending: str = field(init=False, repr=False)
+    _ndots: int = field(default=12, init=False, repr=False)
+    _name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self._name_ending = (
+            f"_polar{'_gap' if is_polar_gap() else ''}"
+            f"{config.THETA_MAX}_m{self.order}"
+        )
         super().__post_init__()
-        self.ndots = 12
-        self.name_ending = "_polar"
-        if is_polar_gap():
-            self.name_ending += "_gap"
-        self.name_ending += f"{config.THETA_MAX}_m{self.order}"
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []  # type: List[Dict]
