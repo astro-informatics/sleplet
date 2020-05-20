@@ -13,7 +13,7 @@ from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import convert_colourscale
-from pys2sleplet.utils.vars import ZOOM_DEFAULT
+from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
 
@@ -34,7 +34,7 @@ class Plot:
         """
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            self.f, self.resolution, method="MWSS"
+            self.f, self.resolution, method=SAMPLING_SCHEME
         )
 
         # appropriate zoom in on north pole

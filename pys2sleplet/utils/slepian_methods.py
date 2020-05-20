@@ -15,6 +15,7 @@ from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -64,7 +65,7 @@ def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
     when manipulating Slepian functions we need a map which has mask similar
     to that of the function so we can see the effect of convolutions etc
     """
-    thetas, phis = ssht.sample_positions(config.L, Grid=True, Method="MWSS")
+    thetas, phis = ssht.sample_positions(config.L, Grid=True, Method=SAMPLING_SCHEME)
     whole_sphere_field = function.field
 
     if isinstance(slepian, SlepianPolarCap):

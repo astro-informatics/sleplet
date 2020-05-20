@@ -9,6 +9,7 @@ import pyssht as ssht
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -118,7 +119,7 @@ class Functions:
             bandlimit = self.L
 
         # perform inverse
-        f = ssht.inverse(flm, bandlimit, Reality=self.reality, Method="MWSS")
+        f = ssht.inverse(flm, bandlimit, Reality=self.reality, Method=SAMPLING_SCHEME)
         return f
 
     @property

@@ -10,6 +10,7 @@
 # from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 # from pys2sleplet.utils.config import config
 # from pys2sleplet.utils.plot_methods import calc_samples
+# from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 # _file_location = Path(__file__).resolve()
 
@@ -29,7 +30,7 @@
 #         super().__post_init__()
 #         theta_mask, phi_mask = self.mask
 #         samples = calc_samples(self.L)
-#         thetas, phis = ssht.sample_positions(samples, Grid=True, Method="MWSS")
+#         thetas, phis = ssht.sample_positions(samples, Grid=True, Method=SAMPLING_SCHEME)
 #         ylm = ssht.create_ylm(thetas, phis, self.L)
 #         self.delta_phi = np.ediff1d(phis[0]).mean()
 #         self.delta_theta = np.ediff1d(thetas[:, 0]).mean()
