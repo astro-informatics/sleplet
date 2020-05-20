@@ -36,12 +36,12 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     f = Earth(config.L)
     g = HarmonicGaussian(config.L)
     flm = f.multipole
-    f_map, f_map_plot = f.field, f.plot
+    f_map, f_map_plot = f.field, f.field_padded
 
     # convolution
     f.convolve(g.multipole)
     flm_conv = f.multipole
-    f_conv, f_conv_plot = f.field, f.plot
+    f_conv, f_conv_plot = f.field, f.field_padded
 
     # calculate difference
     flm_diff = flm - flm_conv

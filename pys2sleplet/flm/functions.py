@@ -32,7 +32,7 @@ class Functions:
         self.name = self._create_name()
         self.multipole = self._create_flm()
         self.field = self._invert(self.multipole)
-        self.plot = self._invert(self.multipole, boosted=True)
+        self.field_padded = self._invert(self.multipole, boosted=True)
         self.annotations = self._create_annotations()
 
     def rotate(
@@ -164,7 +164,7 @@ class Functions:
         """
         self._multipole = multipole
         self.field = self._invert(self.multipole)
-        self.plot = self._invert(self.multipole, boosted=True)
+        self.field_padded = self._invert(self.multipole, boosted=True)
 
     @property
     def name(self) -> np.ndarray:

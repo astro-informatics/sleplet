@@ -38,7 +38,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     dd_2.translate(alpha_pi_frac, beta_pi_frac)
 
     flm_diff = dd_1.multipole - dd_2.multipole
-    f_diff = dd_1.plot - dd_2.plot
+    f_diff = dd_1.field_padded - dd_2.field_padded
 
     assert_allclose(dd_1.multipole, dd_2.multipole, rtol=1e-13)
     assert_allclose(dd_1.field, dd_2.field, rtol=1e-11)

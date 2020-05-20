@@ -152,13 +152,13 @@ def plot(
 
     # check for plotting type
     if plot_type == "real":
-        field = f.plot.real
+        field = f.field_padded.real
     elif plot_type == "imag":
-        field = f.plot.imag
+        field = f.field_padded.imag
     elif plot_type == "abs":
-        field = np.abs(f.plot)
+        field = np.abs(f.field_padded)
     elif plot_type == "sum":
-        field = f.plot.real + f.plot.imag
+        field = f.field_padded.real + f.field_padded.imag
 
     # do plot
     filename += plot_type
