@@ -16,19 +16,14 @@ from pys2sleplet.utils.vars import (
 
 @dataclass  # type: ignore
 class SlepianSpecific(SlepianFunctions):
-    _order: int = field(init=False, repr=False)
-    _phi_max: float = field(init=False, repr=False)
-    _phi_min: float = field(init=False, repr=False)
-    _theta_max: float = field(init=False, repr=False)
-    _theta_min: float = field(init=False, repr=False)
+    _order: int = field(default=0, init=False, repr=False)
+    _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
+    _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
+    _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
+    _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        self.order = 0
-        self.phi_max = PHI_MIN_DEFAULT
-        self.phi_min = PHI_MAX_DEFAULT
-        self.theta_max = THETA_MAX_DEFAULT
-        self.theta_min = THETA_MIN_DEFAULT
 
     @property
     def phi_min(self) -> float:
