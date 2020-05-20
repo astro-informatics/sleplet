@@ -11,6 +11,7 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
+from pys2sleplet.utils.dicts import ARROW_STYLE
 
 _file_location = Path(__file__).resolve()
 
@@ -32,18 +33,17 @@ class SlepianPolarCap(SlepianSpecific):
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []  # type: List[Dict]
-        arrow = dict(arrowhead=6, ax=5, ay=5)
 
         if is_small_polar_cap(self.theta_max):
             theta_top = np.array(self.theta_max)
             for i in range(self._ndots):
-                self._add_to_annotation(annotation, arrow, theta_top, i)
+                self._add_to_annotation(annotation, theta_top, i)
 
                 if config.POLAR_GAP:
                     theta_bottom = np.array(np.pi - self.theta_max)
                     for j in range(self._ndots):
                         self._add_to_annotation(
-                            annotation, arrow, theta_bottom, j, colour="white"
+                            annotation, theta_bottom, j, colour="white"
                         )
         return annotation
 
@@ -358,7 +358,6 @@ class SlepianPolarCap(SlepianSpecific):
     def _add_to_annotation(
         self,
         annotation: Union[List[Dict], List],
-        arrow: Dict[str, int],
         theta: np.ndarray,
         i: int,
         colour: str = "black",
@@ -368,4 +367,4 @@ class SlepianPolarCap(SlepianSpecific):
         """
         phi = np.array(2 * np.pi / self._ndots * (i + 1))
         x, y, z = ssht.s2_to_cart(theta, phi)
-        annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **arrow})
+        annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE})
