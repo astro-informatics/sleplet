@@ -61,8 +61,10 @@ class SlepianLimitLatLong(SlepianSpecific):
             (2 * t1 + t2) / 3,
         )
         for t in [t1, t2, t3, t4]:
+            t_condition = t in {t3, t4}
             for p in [p1, p2, p3, p4]:
-                if not ((t == t3 or t == t4) and (p == p3 or p == p4)):
+                p_condition = p in {p3, p4}
+                if not (t_condition and p_condition):
                     x, y, z = ssht.s2_to_cart(t, p)
                     annotation.append(
                         {**dict(x=x, y=y, z=z, arrowcolor="black"), **ARROW_STYLE}
