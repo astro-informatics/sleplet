@@ -20,7 +20,7 @@ _file_location = Path(__file__).resolve()
 class SlepianPolarCap(SlepianSpecific):
     L: int
     theta_max: float
-    order: int
+    order: int = field(default=0)
     _name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
