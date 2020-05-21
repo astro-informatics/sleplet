@@ -10,7 +10,7 @@ from pys2sleplet.flm.kernels.slepian import Slepian
 from pys2sleplet.flm.kernels.spherical_harmonic import SphericalHarmonic
 from pys2sleplet.flm.kernels.squashed_gaussian import SquashedGaussian
 from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.flm.maps.wmap import WMAP
+from pys2sleplet.flm.maps.wmap import Wmap
 
 ARROW_STYLE: Dict[str, int] = dict(arrowhead=6, ax=5, ay=5)
 
@@ -25,6 +25,6 @@ KERNELS: Dict[str, Functions] = {
     "squashed_gaussian": SquashedGaussian,
 }
 
-MAPS: Dict[str, Functions] = {"earth": Earth, "wmap": WMAP}
+MAPS: Dict[str, Functions] = {"earth": Earth, "wmap": Wmap}
 
 FUNCTIONS: Dict[str, Functions] = {**KERNELS, **MAPS}

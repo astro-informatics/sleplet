@@ -12,7 +12,7 @@ _file_location = Path(__file__).resolve()
 
 
 @dataclass
-class WMAP(Functions):
+class Wmap(Functions):
     L: int
     extra_args: Optional[List[int]] = field(default=None, repr=False)
 
