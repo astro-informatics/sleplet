@@ -37,7 +37,7 @@ def create_matfile(filename: str) -> None:
 
     filename = f"EGM2008_Topography_flms_L{str(L)}.mat"
     flm = np.array(df_sorted["flm"])
-    mat = {"L": L, "flm": flm}
+    mat = dict(L=L, flm=flm)
     sio.savemat(filename, mat, oned_as="column")
 
 

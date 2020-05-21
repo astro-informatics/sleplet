@@ -14,17 +14,17 @@ from pys2sleplet.flm.maps.wmap import Wmap
 
 ARROW_STYLE: Dict[str, int] = dict(arrowhead=6, ax=5, ay=5)
 
-KERNELS: Dict[str, Functions] = {
-    "dirac_delta": DiracDelta,
-    "elongated_gaussian": ElongatedGaussian,
-    "gaussian": Gaussian,
-    "harmonic_gaussian": HarmonicGaussian,
-    "identity": Identity,
-    "slepian": Slepian,
-    "spherical_harmonic": SphericalHarmonic,
-    "squashed_gaussian": SquashedGaussian,
-}
+KERNELS: Dict[str, Functions] = dict(
+    dirac_delta=DiracDelta,
+    elongated_gaussian=ElongatedGaussian,
+    gaussian=Gaussian,
+    harmonic_gaussian=HarmonicGaussian,
+    identity=Identity,
+    slepian=Slepian,
+    spherical_harmonic=SphericalHarmonic,
+    squashed_gaussian=SquashedGaussian,
+)
 
-MAPS: Dict[str, Functions] = {"earth": Earth, "wmap": Wmap}
+MAPS: Dict[str, Functions] = dict(earth=Earth, wmap=Wmap)
 
 FUNCTIONS: Dict[str, Functions] = {**KERNELS, **MAPS}

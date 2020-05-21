@@ -372,4 +372,5 @@ class SlepianPolarCap(SlepianSpecific):
         """
         phi = np.array(2 * np.pi / ANNOTATION_DOTS * (i + 1))
         x, y, z = ssht.s2_to_cart(theta, phi)
-        annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE})
+        to_append = {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
+        annotation.append(to_append)
