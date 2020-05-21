@@ -13,7 +13,6 @@ _file_location = Path(__file__).resolve()
 
 @dataclass
 class Earth(Functions):
-    L: int
     extra_args: Optional[List[int]] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:

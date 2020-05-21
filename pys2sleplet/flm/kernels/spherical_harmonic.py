@@ -10,7 +10,6 @@ from pys2sleplet.utils.string_methods import filename_args
 
 @dataclass
 class SphericalHarmonic(Functions):
-    L: int
     extra_args: Optional[List[int]] = field(default=None)
     _ell: int = field(default=0, init=False, repr=False)
     _m: int = field(default=0, init=False, repr=False)

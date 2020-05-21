@@ -8,7 +8,6 @@ from pys2sleplet.flm.functions import Functions
 
 @dataclass
 class Identity(Functions):
-    L: int
     extra_args: Optional[List[int]] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:

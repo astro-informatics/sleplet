@@ -16,6 +16,7 @@ _file_location = Path(__file__).resolve()
 
 @dataclass  # type: ignore
 class Functions:
+    L: int
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _field: np.ndarray = field(init=False, repr=False)
@@ -131,14 +132,6 @@ class Functions:
         self._annotations = annotations
 
     @property
-    def extra_args(self) -> Optional[List[int]]:
-        return self._extra_args
-
-    @extra_args.setter
-    def extra_args(self, extra_args: Optional[List[int]]) -> None:
-        self._extra_args = extra_args
-
-    @property
     def field(self) -> np.ndarray:
         return self._field
 
@@ -146,7 +139,7 @@ class Functions:
     def field(self, field: np.ndarray) -> None:
         self._field = field
 
-    @property
+    @property  # type: ignore
     def L(self) -> int:
         return self._L
 

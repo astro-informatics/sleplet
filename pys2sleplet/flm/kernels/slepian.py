@@ -11,7 +11,6 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 @dataclass
 class Slepian(Functions):
-    L: int
     extra_args: Optional[List[int]] = field(default=None)
     _slepian: SlepianFunctions = field(init=False, repr=False)
     _rank: int = field(default=0, init=False, repr=False)
