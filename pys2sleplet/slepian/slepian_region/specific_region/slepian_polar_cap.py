@@ -12,7 +12,7 @@ from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.dicts import ARROW_STYLE
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from pys2sleplet.utils.vars import ANNOTATION_DOTS, SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -22,7 +22,6 @@ class SlepianPolarCap(SlepianSpecific):
     L: int
     theta_max: float
     order: int
-    _ndots: int = field(default=12, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -42,12 +41,12 @@ class SlepianPolarCap(SlepianSpecific):
 
         if is_small_polar_cap(self.theta_max):
             theta_top = np.array(self.theta_max)
-            for i in range(self._ndots):
+            for i in range(ANNOTATION_DOTS):
                 self._add_to_annotation(annotation, theta_top, i)
 
                 if config.POLAR_GAP:
                     theta_bottom = np.array(np.pi - self.theta_max)
-                    for j in range(self._ndots):
+                    for j in range(ANNOTATION_DOTS):
                         self._add_to_annotation(
                             annotation, theta_bottom, j, colour="white"
                         )
@@ -371,6 +370,6 @@ class SlepianPolarCap(SlepianSpecific):
         """
         add to annotation list for given theta
         """
-        phi = np.array(2 * np.pi / self._ndots * (i + 1))
+        phi = np.array(2 * np.pi / ANNOTATION_DOTS * (i + 1))
         x, y, z = ssht.s2_to_cart(theta, phi)
         annotation.append({**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE})

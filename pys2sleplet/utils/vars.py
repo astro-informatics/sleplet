@@ -1,5 +1,6 @@
 from numpy import pi
 
+ANNOTATION_DOTS: int = 12
 PHI_0: float = pi
 PHI_MIN_DEFAULT: int = 0
 PHI_MAX_DEFAULT: int = 360
