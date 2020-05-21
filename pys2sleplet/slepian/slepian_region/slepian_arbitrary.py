@@ -29,8 +29,7 @@
 #     def __post_init__(self) -> None:
 #         theta_mask, phi_mask = self.mask
 #         samples = calc_samples(self.L)
-#         thetas, phis = ssht.sample_positions(samples, Grid=True, Method=SAMPLING_SCHEME)
-#         ylm = ssht.create_ylm(thetas, phis, self.L)
+#         ylm = ssht.create_ylm(THETA_GRID, PHI_GRID, self.L)
 #         self.delta_phi = np.ediff1d(phis[0]).mean()
 #         self.delta_theta = np.ediff1d(thetas[:, 0]).mean()
 #         self.N = self.L * self.L

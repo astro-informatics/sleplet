@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import numpy as np
-import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -11,10 +10,10 @@ from pys2sleplet.slepian.slepian_region.specific_region.slepian_limit_lat_long i
 from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import (
     SlepianPolarCap,
 )
+from pys2sleplet.utils.arrays import PHI_GRID, THETA_GRID
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -64,19 +63,18 @@ def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
     when manipulating Slepian functions we need a map which has mask similar
     to that of the function so we can see the effect of convolutions etc
     """
-    thetas, phis = ssht.sample_positions(config.L, Grid=True, Method=SAMPLING_SCHEME)
     whole_sphere_field = function.field
 
     if isinstance(slepian, SlepianPolarCap):
-        mask = thetas <= slepian.theta_max
+        mask = THETA_GRID <= slepian.theta_max
         region_field = np.where(mask, whole_sphere_field, 0)
 
     elif isinstance(slepian, SlepianLimitLatLong):
         mask = (
-            (thetas >= slepian.theta_min)
-            & (thetas <= slepian.theta_max)
-            & (phis >= slepian.phi_min)
-            & (phis <= slepian.phi_max)
+            (THETA_GRID >= slepian.theta_min)
+            & (THETA_GRID <= slepian.theta_max)
+            & (PHI_GRID >= slepian.phi_min)
+            & (PHI_GRID <= slepian.phi_max)
         )
         region_field = np.where(mask, whole_sphere_field, 0)
 
