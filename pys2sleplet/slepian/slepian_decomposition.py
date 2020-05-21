@@ -10,27 +10,28 @@ from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 @dataclass
 class SlepianDecomposition:
-    L: int
     function: Functions
     slepian: SlepianFunctions
-    flm: np.ndarray = field(init=False, repr=False)
-    f: np.ndarray = field(init=False, repr=False)
-    lambdas: np.ndarray = field(init=False, repr=False)
-    s: np.ndarray = field(init=False, repr=False)
-    theta_grid: np.ndarray = field(init=False, repr=False)
-    weight: np.ndarray = field(init=False, repr=False)
+    _L: int = field(init=False, repr=False)
+    _flm: np.ndarray = field(init=False, repr=False)
+    _f: np.ndarray = field(init=False, repr=False)
+    _lambdas: np.ndarray = field(init=False, repr=False)
+    _s: np.ndarray = field(init=False, repr=False)
+    _theta_grid: np.ndarray = field(init=False, repr=False)
+    _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.flm = self.function.multipole
-        self.f = np.where(self.slepian.mask, self.function.field, 0)
-        self.lambdas = self.slepian.eigenvalues
-        self.s = self.slepian.eigenvectors
-        self.theta_grid, phi_grid = ssht.sample_positions(
-            self.L, Grid=True, Method=SAMPLING_SCHEME
+        self._L = self.function.L
+        self._flm = self.function.multipole
+        self._f = np.where(self.slepian.mask, self.function.field, 0)
+        self._lambdas = self.slepian.eigenvalues
+        self._s = self.slepian.eigenvectors
+        self._theta_grid, phi_grid = ssht.sample_positions(
+            self._L, Grid=True, Method=SAMPLING_SCHEME
         )
-        delta_theta = np.ediff1d(self.theta_grid[:, 0]).mean()
+        delta_theta = np.ediff1d(self._theta_grid[:, 0]).mean()
         delta_phi = np.ediff1d(phi_grid[0]).mean()
-        self.weight = self.theta_grid * delta_theta * delta_phi
+        self._weight = self._theta_grid * delta_theta * delta_phi
 
     def decompose(self, rank: int, method: str) -> np.ndarray:
         """
@@ -56,9 +57,9 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}
         """
         region = self.slepian.mask
-        integrand = self.f * self.s[rank].conj()
-        integral = (integrand * self.weight)[region].sum()
-        f_p = integral / self.lambdas[rank]
+        integrand = self._f * self._s[rank].conj()
+        integral = (integrand * self._weight)[region].sum()
+        f_p = integral / self._lambdas[rank]
         return f_p
 
     def _integrate_sphere(self, rank: int) -> np.ndarray:
@@ -67,8 +68,8 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        integrand = self.f * self.s[rank].conj()
-        f_p = (integrand * self.weight).sum()
+        integrand = self._f * self._s[rank].conj()
+        f_p = (integrand * self._weight).sum()
         return f_p
 
     def _forward_transform(self, rank: int) -> np.ndarray:
@@ -80,8 +81,8 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         Y_{\ell m}(\omega) \overline{S_{p}(\omega)}
         """
-        s_p_lm = ssht.forward(self.s[rank], self.L, Method=SAMPLING_SCHEME)
-        summation = self.flm * s_p_lm.conj()
+        s_p_lm = ssht.forward(self._s[rank], self._L, Method=SAMPLING_SCHEME)
+        summation = self._flm * s_p_lm.conj()
 
         # equivalent to looping through l and m
         f_p = summation.sum()
