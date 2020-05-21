@@ -12,8 +12,6 @@ from pys2sleplet.flm.kernels.squashed_gaussian import SquashedGaussian
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.flm.maps.wmap import Wmap
 
-ARROW_STYLE: Dict[str, int] = dict(arrowhead=6, ax=5, ay=5)
-
 KERNELS: Dict[str, Functions] = dict(
     dirac_delta=DiracDelta,
     elongated_gaussian=ElongatedGaussian,

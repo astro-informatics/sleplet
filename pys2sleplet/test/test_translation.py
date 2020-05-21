@@ -6,7 +6,7 @@ from numpy.testing import assert_allclose, assert_raises
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.dicts import KERNELS
+from pys2sleplet.utils.functions import KERNELS
 from pys2sleplet.utils.logger import logger
 
 

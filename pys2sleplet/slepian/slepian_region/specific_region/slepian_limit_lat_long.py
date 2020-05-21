@@ -9,8 +9,7 @@ import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.dicts import ARROW_STYLE
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from pys2sleplet.utils.vars import ARROW_STYLE, SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 

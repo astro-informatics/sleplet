@@ -11,8 +11,7 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.dicts import ARROW_STYLE
-from pys2sleplet.utils.vars import ANNOTATION_DOTS, SAMPLING_SCHEME
+from pys2sleplet.utils.vars import ANNOTATION_DOTS, ARROW_STYLE, SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 

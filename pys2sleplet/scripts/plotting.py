@@ -6,7 +6,7 @@ import numpy as np
 
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.dicts import FUNCTIONS
+from pys2sleplet.utils.functions import FUNCTIONS
 from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
