@@ -176,12 +176,12 @@ class Functions:
         self._name = name
 
     @property
-    def plot(self) -> np.ndarray:
-        return self._plot
+    def field_padded(self) -> np.ndarray:
+        return self._field_padded
 
-    @plot.setter
-    def plot(self, plot: np.ndarray) -> None:
-        self._plot = plot
+    @field_padded.setter
+    def field_padded(self, field_padded: np.ndarray) -> None:
+        self._field_padded = field_padded
 
     @property
     def reality(self) -> bool:
