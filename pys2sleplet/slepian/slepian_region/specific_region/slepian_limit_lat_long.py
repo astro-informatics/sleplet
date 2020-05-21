@@ -8,9 +8,9 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
-from pys2sleplet.utils.arrays import PHI_GRID, THETA_GRID
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.dicts import ARROW_STYLE
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -35,11 +35,14 @@ class SlepianLimitLatLong(SlepianSpecific):
         super().__post_init__()
 
     def _create_mask(self) -> np.ndarray:
+        theta_grid, phi_grid = ssht.sample_positions(
+            self.L, Grid=True, Method=SAMPLING_SCHEME
+        )
         mask = (
-            (THETA_GRID >= self.theta_min)
-            & (THETA_GRID <= self.theta_max)
-            & (PHI_GRID >= self.phi_min)
-            & (PHI_GRID <= self.phi_max)
+            (theta_grid >= self.theta_min)
+            & (theta_grid <= self.theta_max)
+            & (phi_grid >= self.phi_min)
+            & (phi_grid <= self.phi_max)
         )
         return mask
 

@@ -4,7 +4,6 @@ import numpy as np
 import pyssht as ssht
 from matplotlib import colors
 
-from pys2sleplet.utils.arrays import PHI_GRID, PHI_SAMPLES, THETA_GRID, THETA_SAMPLES
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -70,7 +69,8 @@ def ensure_f_bandlimited(
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it
     """
-    f = grid_fun(THETA_GRID, PHI_GRID)
+    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    f = grid_fun(theta_grid, phi_grid)
     flm = ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME)
     return flm
 
@@ -84,7 +84,8 @@ def calc_nearest_grid_point(
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small
     """
-    pix_j = np.abs(PHI_SAMPLES - alpha_pi_fraction * np.pi).argmin()
-    pix_i = np.abs(THETA_SAMPLES - beta_pi_fraction * np.pi).argmin()
-    alpha, beta = PHI_SAMPLES[pix_j], THETA_SAMPLES[pix_i]
+    thetas, phis = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
+    pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
+    pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
+    alpha, beta = phis[pix_j], thetas[pix_i]
     return alpha, beta
