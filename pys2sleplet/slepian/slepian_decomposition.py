@@ -16,7 +16,6 @@ class SlepianDecomposition:
     _flm: np.ndarray = field(init=False, repr=False)
     _f: np.ndarray = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
-    _s: np.ndarray = field(init=False, repr=False)
     _theta_grid: np.ndarray = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
@@ -26,7 +25,6 @@ class SlepianDecomposition:
         self._flm = self.function.multipole
         self._f = np.where(self.slepian.mask, self.function.field, 0)
         self._lambdas = self.slepian.eigenvalues
-        self._s = self.slepian.eigenvectors
         self._theta_grid, phi_grid = ssht.sample_positions(
             self._L, Grid=True, Method=SAMPLING_SCHEME
         )
@@ -38,19 +36,24 @@ class SlepianDecomposition:
         """
         decompose the signal into its Slepian coefficients via the given method
         """
+        s_p = ssht.inverse(
+            self.slepian.eigenvectors[rank], self._L, Method=SAMPLING_SCHEME
+        )
+        l_p = self._lambdas[rank]
+
         if method == "integrate_region":
-            f_p = self._integrate_region(rank)
+            f_p = self._integrate_region(s_p, l_p)
         elif method == "integrate_sphere":
-            f_p = self._integrate_sphere(rank)
+            f_p = self._integrate_sphere(s_p)
         elif method == "forward_transform":
-            f_p = self._forward_transform(rank)
+            f_p = self._forward_transform(s_p)
         else:
             raise ValueError(
                 f"{method} is not a recognised Slepian decomposition method"
             )
         return f_p
 
-    def _integrate_region(self, rank: int) -> np.ndarray:
+    def _integrate_region(self, s_p: np.ndarray, l_p: float) -> np.ndarray:
         """
         f_{p} =
         \frac{1}{\lambda_{p}}
@@ -58,22 +61,22 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}
         """
         region = self.slepian.mask
-        integrand = self._f * self._s[rank].conj()
+        integrand = self._f * s_p.conj()
         integral = (integrand * self._weight)[region].sum()
-        f_p = integral / self._lambdas[rank]
+        f_p = integral / l_p
         return f_p
 
-    def _integrate_sphere(self, rank: int) -> np.ndarray:
+    def _integrate_sphere(self, s_p: np.ndarray) -> np.ndarray:
         """
         f_{p} =
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        integrand = self._f * self._s[rank].conj()
+        integrand = self._f * s_p.conj()
         f_p = (integrand * self._weight).sum()
         return f_p
 
-    def _forward_transform(self, rank: int) -> np.ndarray:
+    def _forward_transform(self, s_p: np.ndarray) -> np.ndarray:
         """
         f_{p} =
         \sum\limits_{\ell=0}^{L^{2}}
@@ -82,7 +85,7 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         Y_{\ell m}(\omega) \overline{S_{p}(\omega)}
         """
-        s_p_lm = ssht.forward(self._s[rank], self._L, Method=SAMPLING_SCHEME)
+        s_p_lm = ssht.forward(s_p, self._L, Method=SAMPLING_SCHEME)
         summation = self._flm * s_p_lm.conj()
 
         # equivalent to looping through l and m
