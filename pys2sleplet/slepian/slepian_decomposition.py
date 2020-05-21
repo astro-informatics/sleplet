@@ -21,6 +21,7 @@ class SlepianDecomposition:
     _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self._input_validation()
         self._L = self.function.L
         self._flm = self.function.multipole
         self._f = np.where(self.slepian.mask, self.function.field, 0)
@@ -87,3 +88,13 @@ class SlepianDecomposition:
         # equivalent to looping through l and m
         f_p = summation.sum()
         return f_p
+
+    def _input_validation(self) -> None:
+        """
+        check the bandlimits of the inputs agree
+        """
+        if self.function.L != self.slepian.L:
+            raise AttributeError(
+                f"bandlimits must agree: the function has an  of {self.function.L} "
+                f"whereas the Slepian function has a L of {self.slepian.L}"
+            )
