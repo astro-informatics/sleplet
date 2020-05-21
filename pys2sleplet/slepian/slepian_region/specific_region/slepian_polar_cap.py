@@ -9,6 +9,7 @@ import pyssht as ssht
 from scipy.special import factorial as fact
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
+from pys2sleplet.utils.arrays import THETA_GRID
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.dicts import ARROW_STYLE
@@ -30,6 +31,10 @@ class SlepianPolarCap(SlepianSpecific):
             f"{config.THETA_MAX}_m{self.order}"
         )
         super().__post_init__()
+
+    def _create_mask(self) -> np.ndarray:
+        mask = THETA_GRID <= self.theta_max
+        return mask
 
     def _create_annotations(self) -> List[Dict]:
         annotation: List[Dict] = []

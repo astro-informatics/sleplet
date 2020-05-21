@@ -8,6 +8,7 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
+from pys2sleplet.utils.arrays import PHI_GRID, THETA_GRID
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.dicts import ARROW_STYLE
 
@@ -32,6 +33,15 @@ class SlepianLimitLatLong(SlepianSpecific):
 
     def __post_init__(self) -> None:
         super().__post_init__()
+
+    def _create_mask(self) -> np.ndarray:
+        mask = (
+            (THETA_GRID >= self.theta_min)
+            & (THETA_GRID <= self.theta_max)
+            & (PHI_GRID >= self.phi_min)
+            & (PHI_GRID <= self.phi_max)
+        )
+        return mask
 
     def _create_annotations(self) -> List[Dict]:
         annotation = []

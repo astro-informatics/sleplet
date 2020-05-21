@@ -2,7 +2,6 @@ from pathlib import Path
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.specific_region.slepian_limit_lat_long import (
     SlepianLimitLatLong,
@@ -10,7 +9,6 @@ from pys2sleplet.slepian.slepian_region.specific_region.slepian_limit_lat_long i
 from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import (
     SlepianPolarCap,
 )
-from pys2sleplet.utils.arrays import PHI_GRID, THETA_GRID
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
@@ -56,32 +54,3 @@ def choose_slepian_method(L: int) -> SlepianFunctions:
         raise RuntimeError("no angle or file specified for Slepian region")
 
     return slepian
-
-
-def apply_slepian_mask(function: Functions, slepian: SlepianFunctions) -> None:
-    """
-    when manipulating Slepian functions we need a map which has mask similar
-    to that of the function so we can see the effect of convolutions etc
-    """
-    whole_sphere_field = function.field
-
-    if isinstance(slepian, SlepianPolarCap):
-        mask = THETA_GRID <= slepian.theta_max
-        region_field = np.where(mask, whole_sphere_field, 0)
-
-    elif isinstance(slepian, SlepianLimitLatLong):
-        mask = (
-            (THETA_GRID >= slepian.theta_min)
-            & (THETA_GRID <= slepian.theta_max)
-            & (PHI_GRID >= slepian.phi_min)
-            & (PHI_GRID <= slepian.phi_max)
-        )
-        region_field = np.where(mask, whole_sphere_field, 0)
-
-    # elif isinstance(slepian, SlepianArbitrary):
-    #     region_field = whole_sphere_field * slepian.mask
-
-    else:
-        raise RuntimeError(f"{slepian} is not a valid slepian function type")
-
-    return region_field

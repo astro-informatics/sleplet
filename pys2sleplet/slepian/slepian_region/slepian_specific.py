@@ -87,6 +87,10 @@ class SlepianSpecific(SlepianFunctions):
         self._order = order
 
     @abstractmethod
+    def _create_mask(self) -> np.ndarray:
+        raise NotImplementedError
+
+    @abstractmethod
     def _create_annotations(self) -> List[dict]:
         raise NotImplementedError
 
