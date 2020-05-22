@@ -17,24 +17,8 @@ class SquashedGaussian(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
-        """
-        function on the grid
-        """
-        f = np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
-            self.freq * phi
-        )
-        return f
-
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
-            num_args = 2
-            if len(extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.t_sigma, self.freq = [10 ** x for x in extra_args]
-
-    def _set_reality(self) -> bool:
-        return True
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)
@@ -48,16 +32,24 @@ class SquashedGaussian(Functions):
         )
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return True
 
-    @property
-    def t_sigma(self) -> float:
-        return self._t_sigma
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            num_args = 2
+            if len(extra_args) != num_args:
+                raise ValueError(f"The number of extra arguments should be {num_args}")
+            self.t_sigma, self.freq = [10 ** x for x in extra_args]
 
-    @t_sigma.setter
-    def t_sigma(self, t_sigma: float) -> None:
-        self._t_sigma = t_sigma
+    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
+        """
+        function on the grid
+        """
+        f = np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
+            self.freq * phi
+        )
+        return f
 
     @property
     def freq(self) -> float:
@@ -66,3 +58,11 @@ class SquashedGaussian(Functions):
     @freq.setter
     def freq(self, freq: float) -> None:
         self._freq = freq
+
+    @property
+    def t_sigma(self) -> float:
+        return self._t_sigma
+
+    @t_sigma.setter
+    def t_sigma(self, t_sigma: float) -> None:
+        self._t_sigma = t_sigma

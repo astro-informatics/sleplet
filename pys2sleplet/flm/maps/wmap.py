@@ -16,26 +16,8 @@ class Wmap(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    @staticmethod
-    def _load_cl(file_ending: str = "_lcdm_pl_model_wmap7baoh0") -> np.ndarray:
-        """
-        pick coefficients from file options are:
-        * _lcdm_pl_model_yr1_v1.mat
-        * _tt_spectrum_7yr_v4p1.mat
-        * _lcdm_pl_model_wmap7baoh0.mat
-        """
-        filename = f"wmap{file_ending}.mat"
-        matfile = str(_file_location.parents[2] / "data" / "maps" / "wmap" / filename)
-        mat_contents = sio.loadmat(matfile)
-        cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
-        return cl
-
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
-            raise AttributeError(f"Does not support extra arguments")
-
-    def _set_reality(self) -> bool:
-        return True
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     def _create_flm(self, L: int) -> np.ndarray:
         # load in data
@@ -64,5 +46,23 @@ class Wmap(Functions):
         name = "wmap"
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return True
+
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            raise AttributeError(f"Does not support extra arguments")
+
+    @staticmethod
+    def _load_cl(file_ending: str = "_lcdm_pl_model_wmap7baoh0") -> np.ndarray:
+        """
+        pick coefficients from file options are:
+        * _lcdm_pl_model_yr1_v1.mat
+        * _tt_spectrum_7yr_v4p1.mat
+        * _lcdm_pl_model_wmap7baoh0.mat
+        """
+        filename = f"wmap{file_ending}.mat"
+        matfile = str(_file_location.parents[2] / "data" / "maps" / "wmap" / filename)
+        mat_contents = sio.loadmat(matfile)
+        cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
+        return cl

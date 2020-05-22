@@ -12,12 +12,8 @@ class DiracDelta(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
-            raise AttributeError(f"Does not support extra arguments")
-
-    def _set_reality(self) -> bool:
-        return True
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
@@ -30,5 +26,9 @@ class DiracDelta(Functions):
         name = "dirac_delta"
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return True
+
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            raise AttributeError(f"Does not support extra arguments")

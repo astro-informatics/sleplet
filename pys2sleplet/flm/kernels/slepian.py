@@ -18,17 +18,9 @@ class Slepian(Functions):
         self._slepian = choose_slepian_method(self.L)
         super().__post_init__()
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
-            num_args = 1
-            if len(extra_args) != num_args:
-                raise ValueError(
-                    f"The number of extra arguments should be 1 or {num_args}"
-                )
-            self.rank = extra_args[0]
-
-    def _set_reality(self) -> bool:
-        return False
+    def _create_annotations(self) -> List[Dict]:
+        annotations = self._slepian.annotations
+        return annotations
 
     def _create_name(self) -> str:
         name = f"{self._slepian.name}_rank{self.rank}"
@@ -39,9 +31,17 @@ class Slepian(Functions):
         logger.info(f"Eigenvalue {self.rank}: {self._slepian.eigenvalues[self.rank]:e}")
         return flm
 
-    def _create_annotations(self) -> List[Dict]:
-        annotations = self._slepian.annotations
-        return annotations
+    def _set_reality(self) -> bool:
+        return False
+
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            num_args = 1
+            if len(extra_args) != num_args:
+                raise ValueError(
+                    f"The number of extra arguments should be 1 or {num_args}"
+                )
+            self.rank = extra_args[0]
 
     @property
     def rank(self) -> int:

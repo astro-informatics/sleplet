@@ -184,17 +184,9 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+    def _create_annotations(self) -> List[Dict]:
         """
-        initialises function specific args
-        either default value or user input
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _set_reality(self) -> bool:
-        """
-        sets the reality flag to speed up computations
+        creates the annotations for the plot
         """
         raise NotImplementedError
 
@@ -213,8 +205,16 @@ class Functions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
+    def _set_reality(self) -> bool:
         """
-        creates the annotations for the plot
+        sets the reality flag to speed up computations
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        """
+        initialises function specific args
+        either default value or user input
         """
         raise NotImplementedError

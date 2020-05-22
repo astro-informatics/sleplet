@@ -16,28 +16,8 @@ class Earth(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    @staticmethod
-    def _load_flm() -> np.ndarray:
-        """
-        load coefficients from file
-        """
-        matfile = str(
-            _file_location.parents[2]
-            / "data"
-            / "maps"
-            / "earth"
-            / "EGM2008_Topography_flms_L2190.mat"
-        )
-        mat_contents = sio.loadmat(matfile)
-        flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
-        return flm
-
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
-            raise AttributeError(f"Does not support extra arguments")
-
-    def _set_reality(self) -> bool:
-        return True
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     def _create_flm(self, L: int) -> np.ndarray:
         # load in data
@@ -60,5 +40,25 @@ class Earth(Functions):
         name = "earth"
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return True
+
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            raise AttributeError(f"Does not support extra arguments")
+
+    @staticmethod
+    def _load_flm() -> np.ndarray:
+        """
+        load coefficients from file
+        """
+        matfile = str(
+            _file_location.parents[2]
+            / "data"
+            / "maps"
+            / "earth"
+            / "EGM2008_Topography_flms_L2190.mat"
+        )
+        mat_contents = sio.loadmat(matfile)
+        flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
+        return flm

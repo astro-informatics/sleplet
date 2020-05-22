@@ -16,15 +16,8 @@ class HarmonicGaussian(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
-            num_args = 2
-            if len(extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.l_sigma, self.m_sigma = [10 ** x for x in extra_args]
-
-    def _set_reality(self) -> bool:
-        return False
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
@@ -43,8 +36,15 @@ class HarmonicGaussian(Functions):
         )
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return False
+
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            num_args = 2
+            if len(extra_args) != num_args:
+                raise ValueError(f"The number of extra arguments should be {num_args}")
+            self.l_sigma, self.m_sigma = [10 ** x for x in extra_args]
 
     @property
     def l_sigma(self) -> float:

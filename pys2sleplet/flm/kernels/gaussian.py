@@ -15,15 +15,8 @@ class Gaussian(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
-            num_args = 1
-            if len(extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.sigma = 10 ** extra_args[0]
-
-    def _set_reality(self) -> bool:
-        return True
+    def _create_annotations(self) -> List[Dict]:
+        pass
 
     def _create_flm(self, L: int) -> np.ndarray:
         flm = np.zeros((L * L), dtype=complex)
@@ -36,8 +29,15 @@ class Gaussian(Functions):
         name = f"gaussian{filename_args(self.sigma, 'sig')}"
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return True
+
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            num_args = 1
+            if len(extra_args) != num_args:
+                raise ValueError(f"The number of extra arguments should be {num_args}")
+            self.sigma = 10 ** extra_args[0]
 
     @property
     def sigma(self) -> float:
