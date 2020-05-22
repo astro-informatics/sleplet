@@ -16,8 +16,8 @@ class SlepianFunctions:
     _name: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.mask = self._create_mask()
         self.annotations = self._create_annotations()
+        self.mask = self._create_mask()
         self.name = self._create_fn_name()
         self.matrix_location = self._create_matrix_location()
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
