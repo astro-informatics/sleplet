@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -16,7 +16,7 @@ class Wmap(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         pass
 
     def _create_flm(self, L: int) -> np.ndarray:

@@ -2,7 +2,7 @@ import multiprocessing.sharedctypes as sct
 from dataclasses import dataclass, field
 from multiprocessing import Pool
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -30,30 +30,25 @@ class SlepianPolarCap(SlepianSpecific):
         )
         super().__post_init__()
 
-    def _create_mask(self) -> np.ndarray:
-        theta_grid, _ = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
-        mask = theta_grid <= self.theta_max
-        return mask
-
-    def _create_annotations(self) -> List[Dict]:
-        annotation: List[Dict] = []
-
+    def _create_annotations(self) -> None:
         if is_small_polar_cap(self.theta_max):
             theta_top = np.array(self.theta_max)
             for i in range(ANNOTATION_DOTS):
-                self._add_to_annotation(annotation, theta_top, i)
+                self._add_to_annotation(theta_top, i)
 
                 if config.POLAR_GAP:
                     theta_bottom = np.array(np.pi - self.theta_max)
                     for j in range(ANNOTATION_DOTS):
-                        self._add_to_annotation(
-                            annotation, theta_bottom, j, colour="white"
-                        )
-        return annotation
+                        self._add_to_annotation(theta_bottom, j, colour="white")
 
     def _create_fn_name(self) -> str:
         name = f"slepian{self._name_ending}"
         return name
+
+    def _create_mask(self) -> np.ndarray:
+        theta_grid, _ = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
+        mask = theta_grid <= self.theta_max
+        return mask
 
     def _create_matrix_location(self) -> Path:
         location = (
@@ -360,16 +355,13 @@ class SlepianPolarCap(SlepianSpecific):
         return factor
 
     def _add_to_annotation(
-        self,
-        annotation: Union[List[Dict], List],
-        theta: np.ndarray,
-        i: int,
-        colour: str = "black",
+        self, theta: np.ndarray, i: int, colour: str = "black"
     ) -> None:
         """
         add to annotation list for given theta
         """
         phi = np.array(2 * np.pi / ANNOTATION_DOTS * (i + 1))
         x, y, z = ssht.s2_to_cart(theta, phi)
-        to_append = {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
-        annotation.append(to_append)
+        self.annotation.append(
+            {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
+        )

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import numpy as np
 
@@ -18,9 +18,8 @@ class Slepian(Functions):
         self._slepian = choose_slepian_method(self.L)
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
-        annotations = self._slepian.annotations
-        return annotations
+    def _create_annotations(self) -> None:
+        self.annotations = self._slepian.annotations
 
     def _create_name(self) -> str:
         name = f"{self._slepian.name}_rank{self.rank}"

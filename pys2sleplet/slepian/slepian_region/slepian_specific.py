@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Tuple
+from typing import Tuple
 
 import numpy as np
 
@@ -26,16 +26,17 @@ class SlepianSpecific(SlepianFunctions):
         super().__post_init__()
 
     @property
-    def phi_min(self) -> float:
-        return self._phi_min
+    def order(self) -> int:
+        return self._order
 
-    @phi_min.setter
-    def phi_min(self, phi_min: float) -> None:
-        if phi_min < np.deg2rad(PHI_MIN_DEFAULT):
-            raise ValueError("phi_min cannot be negative")
-        if phi_min > np.deg2rad(PHI_MAX_DEFAULT):
-            raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
-        self._phi_min = phi_min
+    @order.setter
+    def order(self, order: int) -> None:
+        if not isinstance(order, int):
+            raise TypeError("order should be an integer")
+        # check order is in correct range
+        if abs(order) >= self.L:
+            raise ValueError(f"Order magnitude should be less than {self.L}")
+        self._order = order
 
     @property
     def phi_max(self) -> float:
@@ -50,16 +51,16 @@ class SlepianSpecific(SlepianFunctions):
         self._phi_max = phi_max
 
     @property
-    def theta_min(self) -> float:
-        return self._theta_min
+    def phi_min(self) -> float:
+        return self._phi_min
 
-    @theta_min.setter
-    def theta_min(self, theta_min: float) -> None:
-        if theta_min < np.deg2rad(THETA_MIN_DEFAULT):
-            raise ValueError("theta_min cannot be negative")
-        if theta_min > np.deg2rad(THETA_MAX_DEFAULT):
-            raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
-        self._theta_min = theta_min
+    @phi_min.setter
+    def phi_min(self, phi_min: float) -> None:
+        if phi_min < np.deg2rad(PHI_MIN_DEFAULT):
+            raise ValueError("phi_min cannot be negative")
+        if phi_min > np.deg2rad(PHI_MAX_DEFAULT):
+            raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
+        self._phi_min = phi_min
 
     @property
     def theta_max(self) -> float:
@@ -74,28 +75,27 @@ class SlepianSpecific(SlepianFunctions):
         self._theta_max = theta_max
 
     @property
-    def order(self) -> int:
-        return self._order
+    def theta_min(self) -> float:
+        return self._theta_min
 
-    @order.setter
-    def order(self, order: int) -> None:
-        if not isinstance(order, int):
-            raise TypeError("order should be an integer")
-        # check order is in correct range
-        if abs(order) >= self.L:
-            raise ValueError(f"Order magnitude should be less than {self.L}")
-        self._order = order
-
-    @abstractmethod
-    def _create_mask(self) -> np.ndarray:
-        raise NotImplementedError
+    @theta_min.setter
+    def theta_min(self, theta_min: float) -> None:
+        if theta_min < np.deg2rad(THETA_MIN_DEFAULT):
+            raise ValueError("theta_min cannot be negative")
+        if theta_min > np.deg2rad(THETA_MAX_DEFAULT):
+            raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
+        self._theta_min = theta_min
 
     @abstractmethod
-    def _create_annotations(self) -> List[dict]:
+    def _create_annotations(self) -> None:
         raise NotImplementedError
 
     @abstractmethod
     def _create_fn_name(self) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_mask(self) -> np.ndarray:
         raise NotImplementedError
 
     @abstractmethod

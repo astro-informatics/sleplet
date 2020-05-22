@@ -2,7 +2,7 @@ import multiprocessing.sharedctypes as sct
 from dataclasses import dataclass, field
 from multiprocessing import Pool
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -33,20 +33,7 @@ class SlepianLimitLatLong(SlepianSpecific):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_mask(self) -> np.ndarray:
-        theta_grid, phi_grid = ssht.sample_positions(
-            self.L, Grid=True, Method=SAMPLING_SCHEME
-        )
-        mask = (
-            (theta_grid >= self.theta_min)
-            & (theta_grid <= self.theta_max)
-            & (phi_grid >= self.phi_min)
-            & (phi_grid <= self.phi_max)
-        )
-        return mask
-
-    def _create_annotations(self) -> List[Dict]:
-        annotation = []
+    def _create_annotations(self) -> None:
         p1, p2, t1, t2 = (
             np.array(self.phi_min),
             np.array(self.phi_max),
@@ -65,14 +52,25 @@ class SlepianLimitLatLong(SlepianSpecific):
                 p_condition = p in {p3, p4}
                 if not (t_condition and p_condition):
                     x, y, z = ssht.s2_to_cart(t, p)
-                    annotation.append(
+                    self.annotation.append(
                         {**dict(x=x, y=y, z=z, arrowcolor="black"), **ARROW_STYLE}
                     )
-        return annotation
 
     def _create_fn_name(self) -> str:
         name = f"slepian{self._name_ending}"
         return name
+
+    def _create_mask(self) -> np.ndarray:
+        theta_grid, phi_grid = ssht.sample_positions(
+            self.L, Grid=True, Method=SAMPLING_SCHEME
+        )
+        mask = (
+            (theta_grid >= self.theta_min)
+            & (theta_grid <= self.theta_max)
+            & (phi_grid >= self.phi_min)
+            & (phi_grid <= self.phi_max)
+        )
+        return mask
 
     def _create_matrix_location(self) -> Path:
         location = (

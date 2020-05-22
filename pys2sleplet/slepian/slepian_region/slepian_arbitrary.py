@@ -38,7 +38,7 @@
 #         self.name_ending = f"_{config.SLEPIAN_MASK}"
 #         super().__post_init__()
 
-#     def _create_annotations(self) -> List[Dict]:
+#     def _create_annotations(self) -> None:
 #         pass
 
 #     def _create_fn_name(self) -> str:

@@ -29,7 +29,7 @@ class Functions:
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.annotations = self._create_annotations()
+        self._create_annotations()
         self.reality = self._set_reality()
 
     def rotate(
@@ -184,7 +184,7 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         """
         creates the annotations for the plot
         """

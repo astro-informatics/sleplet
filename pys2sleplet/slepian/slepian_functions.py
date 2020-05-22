@@ -16,7 +16,7 @@ class SlepianFunctions:
     _name: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.annotations = self._create_annotations()
+        self._create_annotations()
         self.mask = self._create_mask()
         self.name = self._create_fn_name()
         self.matrix_location = self._create_matrix_location()
@@ -55,20 +55,20 @@ class SlepianFunctions:
         self._L = L
 
     @property
-    def matrix_location(self) -> Path:
-        return self._matrix_location
-
-    @matrix_location.setter
-    def matrix_location(self, matrix_location: Path) -> None:
-        self._matrix_location = matrix_location
-
-    @property
     def mask(self) -> np.ndarray:
         return self._mask
 
     @mask.setter
     def mask(self, mask: np.ndarray) -> None:
         self._mask = mask
+
+    @property
+    def matrix_location(self) -> Path:
+        return self._matrix_location
+
+    @matrix_location.setter
+    def matrix_location(self, matrix_location: Path) -> None:
+        self._matrix_location = matrix_location
 
     @property
     def name(self) -> str:
@@ -79,14 +79,7 @@ class SlepianFunctions:
         self._name = name
 
     @abstractmethod
-    def _create_mask(self) -> np.ndarray:
-        """
-        creates a mask of the region of interest
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         """
         creates the annotations for the plot
         """
@@ -96,6 +89,13 @@ class SlepianFunctions:
     def _create_fn_name(self) -> str:
         """
         creates the name for plotting
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_mask(self) -> np.ndarray:
+        """
+        creates a mask of the region of interest
         """
         raise NotImplementedError
 
