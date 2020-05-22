@@ -31,9 +31,9 @@ class SlepianSpecific(SlepianFunctions):
 
     @phi_min.setter
     def phi_min(self, phi_min: float) -> None:
-        if np.rad2deg(phi_min) < PHI_MIN_DEFAULT:
+        if phi_min < np.deg2rad(PHI_MIN_DEFAULT):
             raise ValueError("phi_min cannot be negative")
-        if np.rad2deg(phi_min) > PHI_MAX_DEFAULT:
+        if phi_min > np.deg2rad(PHI_MAX_DEFAULT):
             raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
         self._phi_min = phi_min
 
@@ -43,9 +43,9 @@ class SlepianSpecific(SlepianFunctions):
 
     @phi_max.setter
     def phi_max(self, phi_max: float) -> None:
-        if np.rad2deg(phi_max) < PHI_MIN_DEFAULT:
+        if phi_max < np.deg2rad(PHI_MIN_DEFAULT):
             raise ValueError("phi_max cannot be negative")
-        if np.rad2deg(phi_max) > PHI_MAX_DEFAULT:
+        if phi_max > np.deg2rad(PHI_MAX_DEFAULT):
             raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
         self._phi_max = phi_max
 
@@ -55,9 +55,9 @@ class SlepianSpecific(SlepianFunctions):
 
     @theta_min.setter
     def theta_min(self, theta_min: float) -> None:
-        if np.rad2deg(theta_min) < THETA_MIN_DEFAULT:
+        if theta_min < np.deg2rad(THETA_MIN_DEFAULT):
             raise ValueError("theta_min cannot be negative")
-        if np.rad2deg(theta_min) > THETA_MAX_DEFAULT:
+        if theta_min > np.deg2rad(THETA_MAX_DEFAULT):
             raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_min = theta_min
 
@@ -67,9 +67,9 @@ class SlepianSpecific(SlepianFunctions):
 
     @theta_max.setter
     def theta_max(self, theta_max: float) -> None:
-        if np.rad2deg(theta_max) < THETA_MIN_DEFAULT:
+        if theta_max < np.deg2rad(THETA_MIN_DEFAULT):
             raise ValueError("theta_max cannot be negative")
-        if np.rad2deg(theta_max) > THETA_MAX_DEFAULT:
+        if theta_max > np.deg2rad(THETA_MAX_DEFAULT):
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_max = theta_max
 
