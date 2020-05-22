@@ -70,7 +70,8 @@ class SlepianPolarCap(SlepianSpecific):
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(L, eigenvalues, gl, emm)
         return eigenvalues, eigenvectors
 
-    def _create_emm_vec(self, L: int) -> np.ndarray:
+    @staticmethod
+    def _create_emm_vec(L: int) -> np.ndarray:
         """
         create emm vector for eigenproblem
         """
@@ -81,7 +82,6 @@ class SlepianPolarCap(SlepianSpecific):
             M = 2 * l + 1
             emm[k : k + M] = np.arange(-l, l + 1)
             k = k + M
-
         return emm
 
     def _load_Dm_matrix(self, L: int, emm: np.ndarray) -> np.ndarray:
@@ -249,26 +249,7 @@ class SlepianPolarCap(SlepianSpecific):
         lvec = np.arange(m, L)
 
         for i in range(L - m):
-            l = lvec[i]
-            for j in range(i, L - m):
-                p = lvec[j]
-                c = 0
-                for n in range(abs(l - p), l + p + 1):
-                    if n - 1 == -1:
-                        A = 1
-                    else:
-                        A = Pl[ell == n - 1]
-                    c += (
-                        self._wigner3j(l, n, p, 0, 0, 0)
-                        * self._wigner3j(l, n, p, m, 0, -m)
-                        * (A - Pl[ell == n + 1])
-                    )
-                Dm[i, j] = (
-                    self._polar_gap_modification(l, p)
-                    * np.sqrt((2 * l + 1) * (2 * p + 1))
-                    * c
-                )
-                Dm[j, i] = Dm[i, j]
+            self._dm_matrix_helper(Dm, L, i, m, lvec, Pl, ell)
 
         Dm *= (-1) ** m / 2
 
@@ -311,26 +292,7 @@ class SlepianPolarCap(SlepianSpecific):
 
             # deal with chunk
             for i in chunk:
-                l = lvec[i]
-                for j in range(i, L - m):
-                    p = lvec[j]
-                    c = 0
-                    for n in range(abs(l - p), l + p + 1):
-                        if n - 1 == -1:
-                            A = 1
-                        else:
-                            A = Pl[ell == n - 1]
-                        c += (
-                            self._wigner3j(l, n, p, 0, 0, 0)
-                            * self._wigner3j(l, n, p, m, 0, -m)
-                            * (A - Pl[ell == n + 1])
-                        )
-                    tmp[i, j] = (
-                        self._polar_gap_modification(l, p)
-                        * np.sqrt((2 * l + 1) * (2 * p + 1))
-                        * c
-                    )
-                    tmp[j, i] = tmp[i, j]
+                self._dm_matrix_helper(tmp, L, i, m, lvec, Pl, ell)
 
         # split up L range to maximise effiency
         arr = np.arange(L - m)
@@ -346,6 +308,40 @@ class SlepianPolarCap(SlepianSpecific):
         Dm = np.ctypeslib.as_array(shared_array) * (-1) ** m / 2
 
         return Dm
+
+    def _dm_matrix_helper(
+        self,
+        Dm: np.ndarray,
+        L: int,
+        i: int,
+        m: int,
+        lvec: np.ndarray,
+        Pl: np.ndarray,
+        ell: np.ndarray,
+    ) -> None:
+        """
+        used in both serial and parallel calculations
+        """
+        l = lvec[i]
+        for j in range(i, L - m):
+            p = lvec[j]
+            c = 0
+            for n in range(abs(l - p), l + p + 1):
+                if n - 1 == -1:
+                    A = 1
+                else:
+                    A = Pl[ell == n - 1]
+                c += (
+                    self._wigner3j(l, n, p, 0, 0, 0)
+                    * self._wigner3j(l, n, p, m, 0, -m)
+                    * (A - Pl[ell == n + 1])
+                )
+            Dm[i, j] = (
+                self._polar_gap_modification(l, p)
+                * np.sqrt((2 * l + 1) * (2 * p + 1))
+                * c
+            )
+            Dm[j, i] = Dm[i, j]
 
     @staticmethod
     def _polar_gap_modification(ell1: int, ell2: int) -> int:

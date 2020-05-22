@@ -192,7 +192,8 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return G
 
-    def _slepian_matrix_serial(self, L: int, G: np.ndarray) -> np.ndarray:
+    @staticmethod
+    def _slepian_matrix_serial(L: int, G: np.ndarray) -> np.ndarray:
         """
         Syntax:
         K = _slepian_matrix_serial(L, G)
@@ -246,7 +247,8 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return K
 
-    def _slepian_matrix_parallel(self, L: int, G: np.ndarray, ncpu: int) -> np.ndarray:
+    @staticmethod
+    def _slepian_matrix_parallel(L: int, G: np.ndarray, ncpu: int) -> np.ndarray:
         """
         Syntax:
         K = _slepian_matrix_parallel(L, G, ncpu)
