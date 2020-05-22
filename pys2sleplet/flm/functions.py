@@ -30,7 +30,6 @@ class Functions:
 
     def __post_init__(self) -> None:
         self.annotations = self._create_annotations()
-        self.name = self._create_name()
         self.reality = self._set_reality()
 
     def rotate(
@@ -117,6 +116,7 @@ class Functions:
         self._extra_args = extra_args
         self._setup_args(self.extra_args)
         self.multipole = self._create_flm(self.L)
+        self.name = self._create_name()
 
     @property
     def field(self) -> np.ndarray:
