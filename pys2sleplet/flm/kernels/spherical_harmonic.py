@@ -30,7 +30,11 @@ class SphericalHarmonic(Functions):
         return flm
 
     def _create_name(self) -> str:
-        name = f"spherical_harmonic{filename_args(self.ell, 'l')}{filename_args(self.m, 'm')}"
+        name = (
+            "spherical_harmonic"
+            f"{filename_args(self.ell, 'l')}"
+            f"{filename_args(self.m, 'm')}"
+        )
         return name
 
     def _create_annotations(self) -> List[Dict]:

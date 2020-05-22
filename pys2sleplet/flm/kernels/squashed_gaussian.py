@@ -41,7 +41,11 @@ class SquashedGaussian(Functions):
         return flm
 
     def _create_name(self) -> str:
-        name = f"squashed_gaussian{filename_args(self.t_sigma, 'tsig')}{filename_args(self.freq, 'freq')}"
+        name = (
+            "squashed_gaussian"
+            f"{filename_args(self.t_sigma, 'tsig')}"
+            f"{filename_args(self.freq, 'freq')}"
+        )
         return name
 
     def _create_annotations(self) -> List[Dict]:
