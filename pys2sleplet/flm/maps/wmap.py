@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -13,13 +13,11 @@ _file_location = Path(__file__).resolve()
 
 @dataclass
 class Wmap(Functions):
-    extra_args: Optional[List[int]] = field(default=None, repr=False)
-
     def __post_init__(self) -> None:
         super().__post_init__()
 
     @staticmethod
-    def _load_cl(file_ending: str) -> np.ndarray:
+    def _load_cl(file_ending: str = "_lcdm_pl_model_wmap7baoh0") -> np.ndarray:
         """
         pick coefficients from file options are:
         * _lcdm_pl_model_yr1_v1.mat
@@ -32,22 +30,23 @@ class Wmap(Functions):
         cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
         return cl
 
-    def _setup_args(self) -> None:
-        pass
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            raise AttributeError(f"Does not support extra arguments")
 
     def _set_reality(self) -> bool:
         return True
 
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self, L: int) -> np.ndarray:
         # load in data
-        cl = self._load_cl("_lcdm_pl_model_wmap7baoh0")
+        cl = self._load_cl()
 
         # same random seed
         np.random.seed(0)
 
         # Simulate CMB in harmonic space.
-        flm = np.zeros((self.L * self.L), dtype=complex)
-        for ell in range(2, self.L):
+        flm = np.zeros((L * L), dtype=complex)
+        for ell in range(2, L):
             cl_val = cl[ell - 1]
             cl_val *= 2 * np.pi / (ell * (ell + 1))
             for m in range(-ell, ell + 1):

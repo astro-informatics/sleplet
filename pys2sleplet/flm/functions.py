@@ -7,9 +7,9 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.utils.config import config
+from pys2sleplet.utils.harmonic_methods import invert_flm
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -17,6 +17,7 @@ _file_location = Path(__file__).resolve()
 @dataclass  # type: ignore
 class Functions:
     L: int
+    extra_args: Optional[List[int]]
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _field: np.ndarray = field(init=False, repr=False)
@@ -28,14 +29,10 @@ class Functions:
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._setup_args()
-        self.resolution = calc_resolution(self.L)
-        self.reality = self._set_reality()
-        self.name = self._create_name()
-        self.multipole = self._create_flm()
-        self.field = self._invert(self.multipole)
-        self.field_padded = self._invert(self.multipole, boosted=True)
+        self._setup_args(self.extra_args)
         self.annotations = self._create_annotations()
+        self.name = self._create_name()
+        self.reality = self._set_reality()
 
     def rotate(
         self,
@@ -100,29 +97,6 @@ class Functions:
 
         self.multipole *= glm.conj()
 
-    def _boost_res(self, flm) -> np.ndarray:
-        """
-        calculates a boost in resolution for given flm
-        """
-        boost = self.resolution * self.resolution - self.L * self.L
-        flm_boost = np.pad(self.multipole, (0, boost), "constant")
-        return flm_boost
-
-    def _invert(self, flm: np.ndarray, boosted: bool = False) -> np.ndarray:
-        """
-        performs the inverse harmonic transform
-        """
-        # boost resolution for plot
-        if boosted:
-            flm = self._boost_res(flm)
-            bandlimit = self.resolution
-        else:
-            bandlimit = self.L
-
-        # perform inverse
-        f = ssht.inverse(flm, bandlimit, Reality=self.reality, Method=SAMPLING_SCHEME)
-        return f
-
     @property
     def annotations(self) -> List[Dict]:
         return self._annotations
@@ -130,6 +104,17 @@ class Functions:
     @annotations.setter
     def annotations(self, annotations: List[Dict]) -> None:
         self._annotations = annotations
+
+    @property  # type:ignore
+    def extra_args(self) -> Optional[List[int]]:
+        return self._extra_args
+
+    @extra_args.setter
+    def extra_args(self, extra_args: Optional[List[int]]) -> None:
+        if isinstance(extra_args, property):
+            # initial value not specified, use default
+            extra_args = Functions._extra_args
+        self._extra_args = extra_args
 
     @property
     def field(self) -> np.ndarray:
@@ -146,6 +131,12 @@ class Functions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
+        self.resolution = calc_resolution(L)
+        self.multipole = self._create_flm(L)
+        self.field = invert_flm(self.multipole, L, reality=self.reality)
+        self.field_padded = invert_flm(
+            self.multipole, L, reality=self.reality, resolution=self.resolution
+        )
 
     @property
     def multipole(self) -> np.ndarray:
@@ -157,8 +148,10 @@ class Functions:
         update multipole value and hence field value
         """
         self._multipole = multipole
-        self.field = self._invert(self.multipole)
-        self.field_padded = self._invert(self.multipole, boosted=True)
+        self.field = invert_flm(multipole, self.L, reality=self.reality)
+        self.field_padded = invert_flm(
+            multipole, self.L, reality=self.reality, resolution=self.resolution
+        )
 
     @property
     def name(self) -> np.ndarray:
@@ -182,6 +175,9 @@ class Functions:
 
     @reality.setter
     def reality(self, reality: bool) -> None:
+        if isinstance(reality, property):
+            # initial value not specified, use default
+            reality = Functions._reality
         self._reality = reality
 
     @property
@@ -193,7 +189,7 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _setup_args(self) -> None:
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
         """
         initialises function specific args
         either default value or user input
@@ -208,7 +204,7 @@ class Functions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self, L: int) -> np.ndarray:
         """
         creates the flm on the north pole
         """

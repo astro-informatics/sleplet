@@ -10,22 +10,21 @@ from pys2sleplet.utils.string_methods import filename_args
 
 @dataclass
 class SphericalHarmonic(Functions):
-    extra_args: Optional[List[int]] = field(default=None)
     _ell: int = field(default=0, init=False, repr=False)
     _m: int = field(default=0, init=False, repr=False)
 
-    def _setup_args(self) -> None:
-        if self.extra_args is not None:
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
             num_args = 2
-            if len(self.extra_args) != num_args:
+            if len(extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.ell, self.m = self.extra_args
+            self.ell, self.m = extra_args
 
     def _set_reality(self) -> bool:
         return False
 
-    def _create_flm(self) -> np.ndarray:
-        flm = np.zeros((self.L * self.L), dtype=complex)
+    def _create_flm(self, L: int) -> np.ndarray:
+        flm = np.zeros((L * L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
         flm[ind] = 1
         return flm

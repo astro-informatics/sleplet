@@ -11,7 +11,6 @@ from pys2sleplet.utils.vars import THETA_0
 
 @dataclass
 class SquashedGaussian(Functions):
-    extra_args: Optional[List[int]] = field(default=None)
     _t_sigma: float = field(default=0.01, init=False, repr=False)
     _freq: float = field(default=0.1, init=False, repr=False)
 
@@ -27,18 +26,18 @@ class SquashedGaussian(Functions):
         )
         return f
 
-    def _setup_args(self) -> None:
-        if self.extra_args is not None:
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
             num_args = 2
-            if len(self.extra_args) != num_args:
+            if len(extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.t_sigma, self.freq = [10 ** x for x in self.extra_args]
+            self.t_sigma, self.freq = [10 ** x for x in extra_args]
 
     def _set_reality(self) -> bool:
         return True
 
-    def _create_flm(self) -> np.ndarray:
-        flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
+    def _create_flm(self, L: int) -> np.ndarray:
+        flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)
         return flm
 
     def _create_name(self) -> str:

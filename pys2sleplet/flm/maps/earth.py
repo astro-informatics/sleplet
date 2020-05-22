@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -13,8 +13,6 @@ _file_location = Path(__file__).resolve()
 
 @dataclass
 class Earth(Functions):
-    extra_args: Optional[List[int]] = field(default=None, repr=False)
-
     def __post_init__(self) -> None:
         super().__post_init__()
 
@@ -34,19 +32,20 @@ class Earth(Functions):
         flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
         return flm
 
-    def _setup_args(self) -> None:
-        pass
+    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+        if extra_args is not None:
+            raise AttributeError(f"Does not support extra arguments")
 
     def _set_reality(self) -> bool:
         return True
 
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self, L: int) -> np.ndarray:
         # load in data
         flm = self._load_flm()
 
         # fill in negative m components so as to
         # avoid confusion with zero values
-        for ell in range(1, self.L):
+        for ell in range(1, L):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
@@ -54,7 +53,7 @@ class Earth(Functions):
 
         # don't take the full L
         # invert dataset as Earth backwards
-        flm = flm[: self.L * self.L].conj()
+        flm = flm[: L * L].conj()
         return flm
 
     def _create_name(self) -> str:
