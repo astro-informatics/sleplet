@@ -21,15 +21,14 @@ class Functions:
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _field: np.ndarray = field(init=False, repr=False)
+    _field_padded: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
     _multipole: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _plot: np.ndarray = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._setup_args(self.extra_args)
         self.annotations = self._create_annotations()
         self.name = self._create_name()
         self.reality = self._set_reality()
@@ -115,6 +114,8 @@ class Functions:
             # initial value not specified, use default
             extra_args = Functions._extra_args
         self._extra_args = extra_args
+        self._setup_args(self.extra_args)
+        self.multipole = self._create_flm(self.L)
 
     @property
     def field(self) -> np.ndarray:
@@ -131,12 +132,8 @@ class Functions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        self.resolution = calc_resolution(L)
-        self.multipole = self._create_flm(L)
-        self.field = invert_flm(self.multipole, L, reality=self.reality)
-        self.field_padded = invert_flm(
-            self.multipole, L, reality=self.reality, resolution=self.resolution
-        )
+        self.resolution = calc_resolution(self.L)
+        self.multipole = self._create_flm(self.L)
 
     @property
     def multipole(self) -> np.ndarray:
@@ -148,9 +145,9 @@ class Functions:
         update multipole value and hence field value
         """
         self._multipole = multipole
-        self.field = invert_flm(multipole, self.L, reality=self.reality)
+        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
         self.field_padded = invert_flm(
-            multipole, self.L, reality=self.reality, resolution=self.resolution
+            self.multipole, self.L, reality=self.reality, resolution=self.resolution
         )
 
     @property
