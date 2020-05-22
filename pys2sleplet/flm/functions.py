@@ -112,6 +112,7 @@ class Functions:
     def extra_args(self, extra_args: Optional[List[int]]) -> None:
         if isinstance(extra_args, property):
             # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
             extra_args = Functions._extra_args
         self._extra_args = extra_args
         self._setup_args(self.extra_args)
@@ -172,9 +173,6 @@ class Functions:
 
     @reality.setter
     def reality(self, reality: bool) -> None:
-        if isinstance(reality, property):
-            # initial value not specified, use default
-            reality = Functions._reality
         self._reality = reality
 
     @property
