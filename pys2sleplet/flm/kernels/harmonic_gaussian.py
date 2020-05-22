@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -16,7 +16,7 @@ class HarmonicGaussian(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> None:
+    def _create_annotations(self) -> List[Dict]:
         pass
 
     def _create_flm(self, L: int) -> np.ndarray:

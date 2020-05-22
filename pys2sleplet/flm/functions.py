@@ -184,7 +184,7 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _create_annotations(self) -> None:
+    def _create_annotations(self) -> List[Dict]:
         """
         creates the annotations for the plot
         """
