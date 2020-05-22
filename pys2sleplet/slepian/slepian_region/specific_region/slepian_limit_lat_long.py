@@ -16,7 +16,6 @@ _file_location = Path(__file__).resolve()
 
 @dataclass
 class SlepianLimitLatLong(SlepianSpecific):
-    L: int
     theta_min: float
     theta_max: float
     phi_min: float
@@ -60,9 +59,9 @@ class SlepianLimitLatLong(SlepianSpecific):
         name = f"slepian{self._name_ending}"
         return name
 
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self, L: int) -> np.ndarray:
         theta_grid, phi_grid = ssht.sample_positions(
-            self.L, Grid=True, Method=SAMPLING_SCHEME
+            L, Grid=True, Method=SAMPLING_SCHEME
         )
         mask = (
             (theta_grid >= self.theta_min)
@@ -72,26 +71,49 @@ class SlepianLimitLatLong(SlepianSpecific):
         )
         return mask
 
-    def _create_matrix_location(self) -> Path:
+    def _create_matrix_location(self, L: int) -> Path:
         location = (
             _file_location.parents[3]
             / "data"
             / "slepian"
             / "lat_lon"
-            / f"D_L{self.L}{self._name_ending}.npy"
+            / f"D_L{L}{self._name_ending}.npy"
         )
         return location
 
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        K = self._load_K_matrix()
+    def _solve_eigenproblem(self, L: int) -> Tuple[np.ndarray, np.ndarray]:
+        K = self._load_K_matrix(L)
 
         eigenvalues, eigenvectors = np.linalg.eigh(K)
 
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
-
         return eigenvalues, eigenvectors
+
+    def _load_K_matrix(self, L: int) -> np.ndarray:
+        """
+        if the K matrix already exists load it
+        otherwise create it and save the result
+        """
+        # check if matrix already exists
+        if Path(self.matrix_location).exists():
+            K = np.load(self.matrix_location)
+        else:
+            # Compute sub-integral matrix
+            G = self._slepian_integral(L)
+
+            # Compute Slepian matrix
+            if config.NCPU == 1:
+                K = self._slepian_matrix_serial(L, G)
+            else:
+                K = self._slepian_matrix_parallel(L, G, config.NCPU)
+
+            # save to speed up for future
+            if config.SAVE_MATRICES:
+                np.save(self.matrix_location, K)
+
+        return K
 
     @staticmethod
     def _clean_evals_and_evecs(
@@ -113,34 +135,10 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return eigenvalues, eigenvectors
 
-    def _load_K_matrix(self) -> np.ndarray:
-        """
-        if the K matrix already exists load it
-        otherwise create it and save the result
-        """
-        # check if matrix already exists
-        if Path(self.matrix_location).exists():
-            K = np.load(self.matrix_location)
-        else:
-            # Compute sub-integral matrix
-            G = self.slepian_integral()
-
-            # Compute Slepian matrix
-            if config.NCPU == 1:
-                K = self.slepian_matrix_serial(G)
-            else:
-                K = self.slepian_matrix_parallel(G, config.NCPU)
-
-            # save to speed up for future
-            if config.SAVE_MATRICES:
-                np.save(self.matrix_location, K)
-
-        return K
-
-    def slepian_integral(self) -> np.ndarray:
+    def _slepian_integral(self, L: int) -> np.ndarray:
         """
         Syntax:
-        G = slepian_integral()
+        G = _slepian_integral(L)
 
         Output:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -154,11 +152,11 @@ class SlepianLimitLatLong(SlepianSpecific):
         colatitude-longitude spatial region" by A. P. Bates, Z. Khalid and R. A.
         Kennedy.
         """
-        G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=complex)
+        G = np.zeros((4 * L - 3, 4 * L - 3), dtype=complex)
 
-        # Using conjugate symmetry property to reduce the number of iterations
-        def _helper(row: int, col: int, S: float) -> None:
+        def helper(row: int, col: int, S: float) -> None:
             """
+            Using conjugate symmetry property to reduce the number of iterations
             """
             try:
                 Q = (1 / (col * col - 1)) * (
@@ -174,30 +172,30 @@ class SlepianLimitLatLong(SlepianSpecific):
                     - np.exp(2 * 1j * col * self.theta_max)
                 )
 
-            G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col] = Q * S
-            G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = G[
-                2 * (self.L - 1) + row, 2 * (self.L - 1) + col
+            G[2 * (L - 1) + row, 2 * (L - 1) + col] = Q * S
+            G[2 * (L - 1) - row, 2 * (L - 1) - col] = G[
+                2 * (L - 1) + row, 2 * (L - 1) + col
             ].conj()
 
         # row = 0
         S = self.phi_max - self.phi_min
-        for col in range(-2 * (self.L - 1), 1):
-            _helper(0, col, S)
+        for col in range(-2 * (L - 1), 1):
+            helper(0, col, S)
 
         # row != 0
-        for row in range(-2 * (self.L - 1), 0):
+        for row in range(-2 * (L - 1), 0):
             S = (1j / row) * (
                 np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)
             )
-            for col in range(-2 * (self.L - 1), 2 * (self.L - 1) + 1):
-                _helper(row, col, S)
+            for col in range(-2 * (L - 1), 2 * (L - 1) + 1):
+                helper(row, col, S)
 
         return G
 
-    def slepian_matrix_serial(self, G: np.ndarray) -> np.ndarray:
+    def _slepian_matrix_serial(self, L: int, G: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        K = slepian_matrix_serial(G)
+        K = _slepian_matrix_serial(L, G)
 
         Input:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -212,10 +210,10 @@ class SlepianLimitLatLong(SlepianSpecific):
         Analytical formulation for limited colatitude-longitude spatial region"
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
-        dl_array = ssht.generate_dl(np.pi / 2, self.L)
-        K = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
+        dl_array = ssht.generate_dl(np.pi / 2, L)
+        K = np.zeros((L * L, L * L), dtype=complex)
 
-        for l in range(self.L):
+        for l in range(L):
             dl = dl_array[l]
 
             for p in range(l + 1):
@@ -227,22 +225,16 @@ class SlepianLimitLatLong(SlepianSpecific):
 
                         row = m - q
                         C2 = (-1j) ** row
-                        ind_r = 2 * (self.L - 1) + row
+                        ind_r = 2 * (L - 1) + row
 
                         for mp in range(-l, l + 1):
-                            C3 = (
-                                dl[self.L - 1 + mp, self.L - 1 + m]
-                                * dl[self.L - 1 + mp, self.L - 1]
-                            )
+                            C3 = dl[L - 1 + mp, L - 1 + m] * dl[L - 1 + mp, L - 1]
                             S1 = 0
 
                             for qp in range(-p, p + 1):
                                 col = mp - qp
-                                C4 = (
-                                    dp[self.L - 1 + qp, self.L - 1 + q]
-                                    * dp[self.L - 1 + qp, self.L - 1]
-                                )
-                                ind_c = 2 * (self.L - 1) + col
+                                C4 = dp[L - 1 + qp, L - 1 + q] * dp[L - 1 + qp, L - 1]
+                                ind_c = 2 * (L - 1) + col
                                 S1 += C4 * G[ind_r, ind_c]
 
                             K[l * (l + 1) + m, p * (p + 1) + q] += C3 * S1
@@ -254,10 +246,10 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return K
 
-    def slepian_matrix_parallel(self, G: np.ndarray, ncpu: int) -> np.ndarray:
+    def _slepian_matrix_parallel(self, L: int, G: np.ndarray, ncpu: int) -> np.ndarray:
         """
         Syntax:
-        K = slepian_matrix_parallel(G, ncpu)
+        K = _slepian_matrix_parallel(L, G, ncpu)
 
         Input:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -272,11 +264,11 @@ class SlepianLimitLatLong(SlepianSpecific):
         Analytical formulation for limited colatitude-longitude spatial region"
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
-        dl_array = ssht.generate_dl(np.pi / 2, self.L)
+        dl_array = ssht.generate_dl(np.pi / 2, L)
 
         # initialise
-        real = np.zeros((self.L * self.L, self.L * self.L))
-        imag = np.zeros((self.L * self.L, self.L * self.L))
+        real = np.zeros((L * L, L * L))
+        imag = np.zeros((L * L, L * L))
 
         # create arrays to store final and intermediate steps
         result_r = np.ctypeslib.as_ctypes(real)
@@ -305,22 +297,19 @@ class SlepianLimitLatLong(SlepianSpecific):
 
                             row = m - q
                             C2 = (-1j) ** row
-                            ind_r = 2 * (self.L - 1) + row
+                            ind_r = 2 * (L - 1) + row
 
                             for mp in range(-l, l + 1):
-                                C3 = (
-                                    dl[self.L - 1 + mp, self.L - 1 + m]
-                                    * dl[self.L - 1 + mp, self.L - 1]
-                                )
+                                C3 = dl[L - 1 + mp, L - 1 + m] * dl[L - 1 + mp, L - 1]
                                 S1 = 0
 
                                 for qp in range(-p, p + 1):
                                     col = mp - qp
                                     C4 = (
-                                        dp[self.L - 1 + qp, self.L - 1 + q]
-                                        * dp[self.L - 1 + qp, self.L - 1]
+                                        dp[L - 1 + qp, L - 1 + q]
+                                        * dp[L - 1 + qp, L - 1]
                                     )
-                                    ind_c = 2 * (self.L - 1) + col
+                                    ind_c = 2 * (L - 1) + col
                                     S1 += C4 * G[ind_r, ind_c]
 
                                 idx = (l * (l + 1) + m, p * (p + 1) + q)
@@ -333,7 +322,7 @@ class SlepianLimitLatLong(SlepianSpecific):
                             tmp_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
 
         # split up L range to maximise effiency
-        arr = np.arange(self.L)
+        arr = np.arange(L)
         size = len(arr)
         arr[size // 2 : size] = arr[size // 2 : size][::-1]
         chunks = [np.sort(arr[i::ncpu]) for i in range(ncpu)]

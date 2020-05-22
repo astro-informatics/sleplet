@@ -33,7 +33,6 @@ class SlepianSpecific(SlepianFunctions):
     def order(self, order: int) -> None:
         if not isinstance(order, int):
             raise TypeError("order should be an integer")
-        # check order is in correct range
         if abs(order) >= self.L:
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
@@ -95,13 +94,13 @@ class SlepianSpecific(SlepianFunctions):
         raise NotImplementedError
 
     @abstractmethod
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self, L: int) -> np.ndarray:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_matrix_location(self) -> Path:
+    def _create_matrix_location(self, L: int) -> Path:
         raise NotImplementedError
 
     @abstractmethod
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self, L: int) -> Tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError

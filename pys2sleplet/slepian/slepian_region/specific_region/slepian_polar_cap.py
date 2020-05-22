@@ -18,7 +18,6 @@ _file_location = Path(__file__).resolve()
 
 @dataclass
 class SlepianPolarCap(SlepianSpecific):
-    L: int
     theta_max: float
     order: int = field(default=0)
     _name_ending: str = field(init=False, repr=False)
@@ -45,35 +44,76 @@ class SlepianPolarCap(SlepianSpecific):
         name = f"slepian{self._name_ending}"
         return name
 
-    def _create_mask(self) -> np.ndarray:
-        theta_grid, _ = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
+    def _create_mask(self, L: int) -> np.ndarray:
+        theta_grid, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
         mask = theta_grid <= self.theta_max
         return mask
 
-    def _create_matrix_location(self) -> Path:
+    def _create_matrix_location(self, L: int) -> Path:
         location = (
             _file_location.parents[3]
             / "data"
             / "slepian"
             / "polar"
-            / f"D_L{self.L}{self._name_ending}.npy"
+            / f"D_L{L}{self._name_ending}.npy"
         )
         return location
 
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
-        emm = self._create_emm_vec()
+    def _solve_eigenproblem(self, L: int) -> Tuple[np.ndarray, np.ndarray]:
+        emm = self._create_emm_vec(L)
 
-        Dm = self._load_Dm_matrix(emm)
+        Dm = self._load_Dm_matrix(L, emm)
 
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eigh(Dm)
 
-        eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm)
-
+        eigenvalues, eigenvectors = self._clean_evals_and_evecs(L, eigenvalues, gl, emm)
         return eigenvalues, eigenvectors
 
+    def _create_emm_vec(self, L: int) -> np.ndarray:
+        """
+        create emm vector for eigenproblem
+        """
+        emm = np.zeros(2 * L * 2 * L)
+        k = 0
+
+        for l in range(2 * L):
+            M = 2 * l + 1
+            emm[k : k + M] = np.arange(-l, l + 1)
+            k = k + M
+
+        return emm
+
+    def _load_Dm_matrix(self, L: int, emm: np.ndarray) -> np.ndarray:
+        """
+        if the Dm matrix already exists load it
+        otherwise create it and save the result
+        """
+        # check if matrix already exists
+        if Path(self.matrix_location).exists():
+            Dm = np.load(self.matrix_location)
+        else:
+            # create Legendre polynomials table
+            Plm = ssht.create_ylm(self.theta_max, 0, 2 * L).real.reshape(-1)
+            ind = emm == 0
+            l = np.arange(2 * L).reshape(1, -1)
+            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
+            P = np.concatenate((Pl, l))
+
+            # Computing order 'm' Slepian matrix
+            if config.NCPU == 1:
+                Dm = self._dm_matrix_serial(L, abs(self.order), P)
+            else:
+                Dm = self._dm_matrix_parallel(L, abs(self.order), P, config.NCPU)
+
+            # save to speed up for future
+            if config.SAVE_MATRICES:
+                np.save(self.matrix_location, Dm)
+
+        return Dm
+
     def _clean_evals_and_evecs(
-        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
+        self, L: int, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
     ) -> Tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
@@ -87,11 +127,9 @@ class SlepianPolarCap(SlepianSpecific):
         gl = gl[:, idx].conj()
 
         # put back in full D space for harmonic transform
-        emm = emm[: self.L * self.L]
-        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
-        eigenvectors = np.zeros(
-            (self.L - abs(self.order), self.L * self.L), dtype=complex
-        )
+        emm = emm[: L * L]
+        ind = np.tile(emm == self.order, (L - abs(self.order), 1))
+        eigenvectors = np.zeros((L - abs(self.order), L * L), dtype=complex)
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
@@ -103,53 +141,11 @@ class SlepianPolarCap(SlepianSpecific):
 
         return eigenvalues, eigenvectors
 
-    def _load_Dm_matrix(self, emm: np.ndarray) -> np.ndarray:
-        """
-        if the Dm matrix already exists load it
-        otherwise create it and save the result
-        """
-        # check if matrix already exists
-        if Path(self.matrix_location).exists():
-            Dm = np.load(self.matrix_location)
-        else:
-            # create Legendre polynomials table
-            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
-            ind = emm == 0
-            l = np.arange(2 * self.L).reshape(1, -1)
-            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-            P = np.concatenate((Pl, l))
-
-            # Computing order 'm' Slepian matrix
-            if config.NCPU == 1:
-                Dm = self.Dm_matrix_serial(abs(self.order), P)
-            else:
-                Dm = self.Dm_matrix_parallel(abs(self.order), P, config.NCPU)
-
-            # save to speed up for future
-            if config.SAVE_MATRICES:
-                np.save(self.matrix_location, Dm)
-
-        return Dm
-
-    def _create_emm_vec(self) -> np.ndarray:
-        """
-        create emm vector for eigenproblem
-        """
-        emm = np.zeros(2 * self.L * 2 * self.L)
-        k = 0
-
-        for l in range(2 * self.L):
-            M = 2 * l + 1
-            emm[k : k + M] = np.arange(-l, l + 1)
-            k = k + M
-
-        return emm
-
     @staticmethod
-    def Wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
+    def _wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
         """
         Syntax:
-        s = Wigner3j (l1, l2, l3, m1, m2, m3)
+        s = _wigner3j (l1, l2, l3, m1, m2, m3)
 
         Input:
         l1  =  first degree in Wigner 3j symbol
@@ -230,10 +226,10 @@ class SlepianPolarCap(SlepianSpecific):
 
         return s
 
-    def Dm_matrix_serial(self, m: int, P: np.ndarray) -> np.ndarray:
+    def _dm_matrix_serial(self, L: int, m: int, P: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        Dm = Dm_matrix_serial(m, P)
+        Dm = _dm_matrix_serial(m, P)
 
         Input:
         m  =  order
@@ -248,13 +244,13 @@ class SlepianPolarCap(SlepianSpecific):
         degrees, using the formulation given in "Spatiospectral Concentration on
         a Sphere" by F.J. Simons, F.A. Dahlen and M.A. Wieczorek.
         """
-        Dm = np.zeros((self.L - m, self.L - m))
+        Dm = np.zeros((L - m, L - m))
         Pl, ell = P
-        lvec = np.arange(m, self.L)
+        lvec = np.arange(m, L)
 
-        for i in range(self.L - m):
+        for i in range(L - m):
             l = lvec[i]
-            for j in range(i, self.L - m):
+            for j in range(i, L - m):
                 p = lvec[j]
                 c = 0
                 for n in range(abs(l - p), l + p + 1):
@@ -263,12 +259,12 @@ class SlepianPolarCap(SlepianSpecific):
                     else:
                         A = Pl[ell == n - 1]
                     c += (
-                        self.Wigner3j(l, n, p, 0, 0, 0)
-                        * self.Wigner3j(l, n, p, m, 0, -m)
+                        self._wigner3j(l, n, p, 0, 0, 0)
+                        * self._wigner3j(l, n, p, m, 0, -m)
                         * (A - Pl[ell == n + 1])
                     )
                 Dm[i, j] = (
-                    self.polar_gap_modification(l, p)
+                    self._polar_gap_modification(l, p)
                     * np.sqrt((2 * l + 1) * (2 * p + 1))
                     * c
                 )
@@ -278,10 +274,12 @@ class SlepianPolarCap(SlepianSpecific):
 
         return Dm
 
-    def Dm_matrix_parallel(self, m: int, P: np.ndarray, ncpu: int) -> np.ndarray:
+    def _dm_matrix_parallel(
+        self, L: int, m: int, P: np.ndarray, ncpu: int
+    ) -> np.ndarray:
         """
         Syntax:
-        Dm = Dm_matrix_parallel(m, P, ncpu)
+        Dm = _dm_matrix_parallel(m, P, ncpu)
 
         Input:
         m  =  order
@@ -296,9 +294,9 @@ class SlepianPolarCap(SlepianSpecific):
         degrees, using the formulation given in "Spatiospectral Concentration on
         a Sphere" by F.J. Simons, F.A. Dahlen and M.A. Wieczorek.
         """
-        Dm = np.zeros((self.L - m, self.L - m))
+        Dm = np.zeros((L - m, L - m))
         Pl, ell = P
-        lvec = np.arange(m, self.L)
+        lvec = np.arange(m, L)
 
         # create arrays to store final and intermediate steps
         result = np.ctypeslib.as_ctypes(Dm)
@@ -314,7 +312,7 @@ class SlepianPolarCap(SlepianSpecific):
             # deal with chunk
             for i in chunk:
                 l = lvec[i]
-                for j in range(i, self.L - m):
+                for j in range(i, L - m):
                     p = lvec[j]
                     c = 0
                     for n in range(abs(l - p), l + p + 1):
@@ -323,19 +321,19 @@ class SlepianPolarCap(SlepianSpecific):
                         else:
                             A = Pl[ell == n - 1]
                         c += (
-                            self.Wigner3j(l, n, p, 0, 0, 0)
-                            * self.Wigner3j(l, n, p, m, 0, -m)
+                            self._wigner3j(l, n, p, 0, 0, 0)
+                            * self._wigner3j(l, n, p, m, 0, -m)
                             * (A - Pl[ell == n + 1])
                         )
                     tmp[i, j] = (
-                        self.polar_gap_modification(l, p)
+                        self._polar_gap_modification(l, p)
                         * np.sqrt((2 * l + 1) * (2 * p + 1))
                         * c
                     )
                     tmp[j, i] = tmp[i, j]
 
         # split up L range to maximise effiency
-        arr = np.arange(self.L - m)
+        arr = np.arange(L - m)
         size = len(arr)
         arr[size // 2 : size] = arr[size // 2 : size][::-1]
         chunks = [np.sort(arr[i::ncpu]) for i in range(ncpu)]
@@ -350,7 +348,7 @@ class SlepianPolarCap(SlepianSpecific):
         return Dm
 
     @staticmethod
-    def polar_gap_modification(ell1: int, ell2: int) -> int:
+    def _polar_gap_modification(ell1: int, ell2: int) -> int:
         factor = 1 + config.POLAR_GAP * (-1) ** (ell1 + ell2)
         return factor
 
