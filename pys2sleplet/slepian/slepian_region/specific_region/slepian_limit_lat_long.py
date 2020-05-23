@@ -211,11 +211,18 @@ class SlepianLimitLatLong(SlepianSpecific):
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
         dl_array = ssht.generate_dl(np.pi / 2, L)
-        K = np.zeros((L * L, L * L), dtype=complex)
+
+        # initialise real and imaginary matrices
+        real = np.zeros((L * L, L * L), dtype=complex)
+        imag = np.zeros((L * L, L * L), dtype=complex)
 
         for l in range(L):
-            self._slepian_matrix_helper(K, K, L, l, dl_array, G)
+            self._slepian_matrix_helper(real, imag, L, l, dl_array, G)
 
+        # retrieve real and imag components
+        K = real + 1j * imag
+
+        # fill in remaining triangle section
         i_upper = np.triu_indices(K.shape[0])
         K[i_upper] = K.T[i_upper].conj()
 
@@ -241,7 +248,7 @@ class SlepianLimitLatLong(SlepianSpecific):
         """
         dl_array = ssht.generate_dl(np.pi / 2, L)
 
-        # initialise
+        # initialise real and imaginary matrices
         real = np.zeros((L * L, L * L))
         imag = np.zeros((L * L, L * L))
 
@@ -280,7 +287,6 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         # fill in remaining triangle section
         i_upper = np.triu_indices(K.shape[0])
-        K[i_upper] = K.T[i_upper].conj()
         K[i_upper] = K.T[i_upper].conj()
 
         return K
