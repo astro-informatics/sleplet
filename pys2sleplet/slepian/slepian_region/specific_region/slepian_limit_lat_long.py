@@ -9,7 +9,7 @@ import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.parellel_methods import split_L_into_chunks
+from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.vars import ARROW_STYLE, SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
