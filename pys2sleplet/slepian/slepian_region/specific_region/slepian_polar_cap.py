@@ -11,6 +11,7 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
+from pys2sleplet.utils.parellel_methods import split_L_into_chunks
 from pys2sleplet.utils.vars import ANNOTATION_DOTS, ARROW_STYLE, SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
@@ -295,10 +296,7 @@ class SlepianPolarCap(SlepianSpecific):
                 self._dm_matrix_helper(tmp, L, i, m, lvec, Pl, ell)
 
         # split up L range to maximise effiency
-        arr = np.arange(L - m)
-        size = len(arr)
-        arr[size // 2 : size] = arr[size // 2 : size][::-1]
-        chunks = [np.sort(arr[i::ncpu]) for i in range(ncpu)]
+        chunks = split_L_into_chunks(L - m, ncpu)
 
         # initialise pool and apply function
         with Pool(processes=ncpu) as p:

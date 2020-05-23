@@ -9,6 +9,7 @@ import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
 from pys2sleplet.utils.config import config
+from pys2sleplet.utils.parellel_methods import split_L_into_chunks
 from pys2sleplet.utils.vars import ARROW_STYLE, SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
@@ -271,10 +272,7 @@ class SlepianLimitLatLong(SlepianSpecific):
                 self._slepian_matrix_helper(tmp_r, tmp_i, L, l, dl_array, G)
 
         # split up L range to maximise effiency
-        arr = np.arange(L)
-        size = len(arr)
-        arr[size // 2 : size] = arr[size // 2 : size][::-1]
-        chunks = [np.sort(arr[i::ncpu]) for i in range(ncpu)]
+        chunks = split_L_into_chunks(L, ncpu)
 
         # initialise pool and apply function
         with Pool(processes=ncpu) as p:
