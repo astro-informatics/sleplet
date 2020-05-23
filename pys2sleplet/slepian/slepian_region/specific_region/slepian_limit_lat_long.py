@@ -192,8 +192,7 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return G
 
-    @staticmethod
-    def _slepian_matrix_serial(L: int, G: np.ndarray) -> np.ndarray:
+    def _slepian_matrix_serial(self, L: int, G: np.ndarray) -> np.ndarray:
         """
         Syntax:
         K = _slepian_matrix_serial(L, G)
@@ -215,40 +214,14 @@ class SlepianLimitLatLong(SlepianSpecific):
         K = np.zeros((L * L, L * L), dtype=complex)
 
         for l in range(L):
-            dl = dl_array[l]
-
-            for p in range(l + 1):
-                dp = dl_array[p]
-                C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
-
-                for m in range(-l, l + 1):
-                    for q in range(-p, p + 1):
-
-                        row = m - q
-                        C2 = (-1j) ** row
-                        ind_r = 2 * (L - 1) + row
-
-                        for mp in range(-l, l + 1):
-                            C3 = dl[L - 1 + mp, L - 1 + m] * dl[L - 1 + mp, L - 1]
-                            S1 = 0
-
-                            for qp in range(-p, p + 1):
-                                col = mp - qp
-                                C4 = dp[L - 1 + qp, L - 1 + q] * dp[L - 1 + qp, L - 1]
-                                ind_c = 2 * (L - 1) + col
-                                S1 += C4 * G[ind_r, ind_c]
-
-                            K[l * (l + 1) + m, p * (p + 1) + q] += C3 * S1
-
-                        K[l * (l + 1) + m, p * (p + 1) + q] *= C1 * C2
+            self._slepian_matrix_helper(K, K, L, l, dl_array, G)
 
         i_upper = np.triu_indices(K.shape[0])
         K[i_upper] = K.T[i_upper].conj()
 
         return K
 
-    @staticmethod
-    def _slepian_matrix_parallel(L: int, G: np.ndarray, ncpu: int) -> np.ndarray:
+    def _slepian_matrix_parallel(self, L: int, G: np.ndarray, ncpu: int) -> np.ndarray:
         """
         Syntax:
         K = _slepian_matrix_parallel(L, G, ncpu)
@@ -288,40 +261,7 @@ class SlepianLimitLatLong(SlepianSpecific):
 
             # deal with chunk
             for l in chunk:
-                dl = dl_array[l]
-
-                for p in range(l + 1):
-                    dp = dl_array[p]
-                    C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
-
-                    for m in range(-l, l + 1):
-                        for q in range(-p, p + 1):
-
-                            row = m - q
-                            C2 = (-1j) ** row
-                            ind_r = 2 * (L - 1) + row
-
-                            for mp in range(-l, l + 1):
-                                C3 = dl[L - 1 + mp, L - 1 + m] * dl[L - 1 + mp, L - 1]
-                                S1 = 0
-
-                                for qp in range(-p, p + 1):
-                                    col = mp - qp
-                                    C4 = (
-                                        dp[L - 1 + qp, L - 1 + q]
-                                        * dp[L - 1 + qp, L - 1]
-                                    )
-                                    ind_c = 2 * (L - 1) + col
-                                    S1 += C4 * G[ind_r, ind_c]
-
-                                idx = (l * (l + 1) + m, p * (p + 1) + q)
-                                tmp_r[idx] += (C3 * S1).real
-                                tmp_i[idx] += (C3 * S1).imag
-
-                            idx = (l * (l + 1) + m, p * (p + 1) + q)
-                            real, imag = tmp_r[idx], tmp_i[idx]
-                            tmp_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
-                            tmp_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
+                self._slepian_matrix_helper(tmp_r, tmp_i, L, l, dl_array, G)
 
         # split up L range to maximise effiency
         arr = np.arange(L)
@@ -344,3 +284,50 @@ class SlepianLimitLatLong(SlepianSpecific):
         K[i_upper] = K.T[i_upper].conj()
 
         return K
+
+    @staticmethod
+    def _slepian_matrix_helper(
+        K_r: np.ndarray,
+        K_i: np.ndarray,
+        L: int,
+        l: int,
+        dl_array: np.ndarray,
+        G: np.ndarray,
+    ) -> None:
+        """
+        used in both serial and parallel calculations
+
+        the hack with splitting into real and imaginary parts
+        is not required for the serial case but here for ease
+        """
+        dl = dl_array[l]
+
+        for p in range(l + 1):
+            dp = dl_array[p]
+            C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
+
+            for m in range(-l, l + 1):
+                for q in range(-p, p + 1):
+
+                    row = m - q
+                    C2 = (-1j) ** row
+                    ind_r = 2 * (L - 1) + row
+
+                    for mp in range(-l, l + 1):
+                        C3 = dl[L - 1 + mp, L - 1 + m] * dl[L - 1 + mp, L - 1]
+                        S1 = 0
+
+                        for qp in range(-p, p + 1):
+                            col = mp - qp
+                            C4 = dp[L - 1 + qp, L - 1 + q] * dp[L - 1 + qp, L - 1]
+                            ind_c = 2 * (L - 1) + col
+                            S1 += C4 * G[ind_r, ind_c]
+
+                        idx = (l * (l + 1) + m, p * (p + 1) + q)
+                        K_r[idx] += (C3 * S1).real
+                        K_i[idx] += (C3 * S1).imag
+
+                    idx = (l * (l + 1) + m, p * (p + 1) + q)
+                    real, imag = K_r[idx], K_i[idx]
+                    K_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
+                    K_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
