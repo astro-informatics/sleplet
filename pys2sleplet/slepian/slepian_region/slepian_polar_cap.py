@@ -8,23 +8,31 @@ import numpy as np
 import pyssht as ssht
 from scipy.special import factorial as fact
 
-from pys2sleplet.slepian.slepian_region.slepian_specific import SlepianSpecific
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
-from pys2sleplet.utils.vars import ANNOTATION_DOTS, ARROW_STYLE, SAMPLING_SCHEME
+from pys2sleplet.utils.vars import (
+    ANNOTATION_DOTS,
+    ARROW_STYLE,
+    ORDER_DEFAULT,
+    SAMPLING_SCHEME,
+    THETA_MAX_DEFAULT,
+    THETA_MIN_DEFAULT,
+)
 
 _file_location = Path(__file__).resolve()
+_name_ending = (
+    f"_polar{'_gap' if config.POLAR_GAP else ''}{config.THETA_MAX}_m{config.ORDER}"
+)
 
 
 @dataclass
-class SlepianPolarCap(SlepianSpecific):
+class SlepianPolarCap(SlepianFunctions):
     theta_max: float
-    _name_ending: str = field(
-        default=f"_polar{'_gap' if config.POLAR_GAP else ''}{config.THETA_MAX}_m{config.ORDER}",
-        init=False,
-        repr=False,
-    )
+    order: int
+    _theta_max: float = field(init=False, repr=False)
+    _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -41,7 +49,7 @@ class SlepianPolarCap(SlepianSpecific):
                         self._add_to_annotation(theta_bottom, j, colour="white")
 
     def _create_fn_name(self) -> str:
-        name = f"slepian{self._name_ending}"
+        name = f"slepian{_name_ending}"
         return name
 
     def _create_mask(self, L: int) -> np.ndarray:
@@ -55,7 +63,7 @@ class SlepianPolarCap(SlepianSpecific):
             / "data"
             / "slepian"
             / "polar"
-            / f"D_L{L}{self._name_ending}.npy"
+            / f"D_L{L}{_name_ending}.npy"
         )
         return location
 
@@ -102,9 +110,9 @@ class SlepianPolarCap(SlepianSpecific):
 
             # Computing order 'm' Slepian matrix
             if config.NCPU == 1:
-                Dm = self._dm_matrix_serial(L, abs(config.ORDER), P)
+                Dm = self._dm_matrix_serial(L, abs(self.ORDER), P)
             else:
-                Dm = self._dm_matrix_parallel(L, abs(config.ORDER), P)
+                Dm = self._dm_matrix_parallel(L, abs(self.ORDER), P)
 
             # save to speed up for future
             if config.SAVE_MATRICES:
@@ -128,15 +136,15 @@ class SlepianPolarCap(SlepianSpecific):
 
         # put back in full D space for harmonic transform
         emm = emm[: L * L]
-        ind = np.tile(emm == config.ORDER, (L - abs(config.ORDER), 1))
-        eigenvectors = np.zeros((L - abs(config.ORDER), L * L), dtype=complex)
+        ind = np.tile(emm == self.ORDER, (L - abs(self.ORDER), 1))
+        eigenvectors = np.zeros((L - abs(self.ORDER), L * L), dtype=complex)
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
-        if config.ORDER < 0:
+        if self.ORDER < 0:
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors
@@ -354,3 +362,27 @@ class SlepianPolarCap(SlepianSpecific):
         self.annotations.append(
             {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
         )
+
+    @property  # type:ignore
+    def order(self) -> int:
+        return self._order
+
+    @order.setter
+    def order(self, order: int) -> None:
+        if not isinstance(order, int):
+            raise TypeError("order should be an integer")
+        if abs(order) >= self.L:
+            raise ValueError(f"Order magnitude should be less than {self.L}")
+        self._order = order
+
+    @property  # type:ignore
+    def theta_max(self) -> float:
+        return self._theta_max
+
+    @theta_max.setter
+    def theta_max(self, theta_max: float) -> None:
+        if theta_max < np.deg2rad(THETA_MIN_DEFAULT):
+            raise ValueError("theta_max cannot be negative")
+        if theta_max > np.deg2rad(THETA_MAX_DEFAULT):
+            raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
+        self._theta_max = theta_max

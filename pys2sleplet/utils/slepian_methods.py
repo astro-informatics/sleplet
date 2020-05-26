@@ -3,12 +3,10 @@ from pathlib import Path
 import numpy as np
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.slepian.slepian_region.specific_region.slepian_limit_lat_long import (
+from pys2sleplet.slepian.slepian_region.slepian_limit_lat_long import (
     SlepianLimitLatLong,
 )
-from pys2sleplet.slepian.slepian_region.specific_region.slepian_polar_cap import (
-    SlepianPolarCap,
-)
+from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger

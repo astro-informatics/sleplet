@@ -4,6 +4,7 @@ from numpy import pi
 
 ANNOTATION_DOTS: int = 12
 ARROW_STYLE: Dict[str, int] = dict(arrowhead=6, ax=5, ay=5)
+ORDER_DEFAULT: int = 0
 PHI_0: float = pi
 PHI_MIN_DEFAULT: int = 0
 PHI_MAX_DEFAULT: int = 360
