@@ -16,7 +16,6 @@ class SlepianDecomposition:
     _flm: np.ndarray = field(init=False, repr=False)
     _f: np.ndarray = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
-    _theta_grid: np.ndarray = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -25,12 +24,12 @@ class SlepianDecomposition:
         self._flm = self.function.multipole
         self._f = np.where(self.slepian.mask, self.function.field, 0)
         self._lambdas = self.slepian.eigenvalues
-        self._theta_grid, phi_grid = ssht.sample_positions(
+        theta_grid, phi_grid = ssht.sample_positions(
             self._L, Grid=True, Method=SAMPLING_SCHEME
         )
-        delta_theta = np.ediff1d(self._theta_grid[:, 0]).mean()
+        delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
         delta_phi = np.ediff1d(phi_grid[0]).mean()
-        self._weight = self._theta_grid * delta_theta * delta_phi
+        self._weight = theta_grid * delta_theta * delta_phi
 
     def decompose(self, rank: int, method: str) -> np.ndarray:
         """
