@@ -35,10 +35,10 @@ class SlepianLimitLatLong(SlepianSpecific):
 
     def _create_annotations(self) -> None:
         p1, p2, t1, t2 = (
-            np.array(self.phi_min),
-            np.array(self.phi_max),
-            np.array(self.theta_min),
-            np.array(self.theta_max),
+            np.array([self.phi_min]),
+            np.array([self.phi_max]),
+            np.array([self.theta_min]),
+            np.array([self.theta_max]),
         )
         p3, p4, t3, t4 = (
             (p1 + 2 * p2) / 3,
@@ -47,12 +47,12 @@ class SlepianLimitLatLong(SlepianSpecific):
             (2 * t1 + t2) / 3,
         )
         for t in [t1, t2, t3, t4]:
-            t_condition = t in {t3, t4}
+            t_condition = (t == [t3, t4]).any()
             for p in [p1, p2, p3, p4]:
-                p_condition = p in {p3, p4}
+                p_condition = (p == [p3, p4]).any()
                 if not (t_condition and p_condition):
                     x, y, z = ssht.s2_to_cart(t, p)
-                    self.annotation.append(
+                    self.annotations.append(
                         {**dict(x=x, y=y, z=z, arrowcolor="black"), **ARROW_STYLE}
                     )
 

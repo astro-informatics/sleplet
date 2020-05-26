@@ -32,12 +32,12 @@ class SlepianPolarCap(SlepianSpecific):
 
     def _create_annotations(self) -> None:
         if is_small_polar_cap(self.theta_max):
-            theta_top = np.array(self.theta_max)
+            theta_top = np.array([self.theta_max])
+            theta_bottom = np.array([np.pi - self.theta_max])
             for i in range(ANNOTATION_DOTS):
                 self._add_to_annotation(theta_top, i)
 
                 if config.POLAR_GAP:
-                    theta_bottom = np.array(np.pi - self.theta_max)
                     for j in range(ANNOTATION_DOTS):
                         self._add_to_annotation(theta_bottom, j, colour="white")
 
@@ -352,8 +352,8 @@ class SlepianPolarCap(SlepianSpecific):
         """
         add to annotation list for given theta
         """
-        phi = np.array(2 * np.pi / ANNOTATION_DOTS * (i + 1))
+        phi = np.array([2 * np.pi / ANNOTATION_DOTS * (i + 1)])
         x, y, z = ssht.s2_to_cart(theta, phi)
-        self.annotation.append(
+        self.annotations.append(
             {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
         )
