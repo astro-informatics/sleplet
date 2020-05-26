@@ -80,6 +80,18 @@ class SlepianPolarCap(SlepianFunctions):
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm)
         return eigenvalues, eigenvectors
 
+    def _add_to_annotation(
+        self, theta: np.ndarray, i: int, colour: str = "black"
+    ) -> None:
+        """
+        add to annotation list for given theta
+        """
+        phi = np.array([2 * np.pi / ANNOTATION_DOTS * (i + 1)])
+        x, y, z = ssht.s2_to_cart(theta, phi)
+        self.annotations.append(
+            {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
+        )
+
     def _create_emm_vec(self) -> np.ndarray:
         """
         create emm vector for eigenproblem
@@ -102,12 +114,7 @@ class SlepianPolarCap(SlepianFunctions):
         if Path(self.matrix_location).exists():
             Dm = np.load(self.matrix_location)
         else:
-            # create Legendre polynomials table
-            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
-            ind = emm == 0
-            l = np.arange(2 * self.L).reshape(1, -1)
-            Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-            P = np.concatenate((Pl, l))
+            P = self._create_legendre_polynomials_table(emm)
 
             # Computing order 'm' Slepian matrix
             if config.NCPU == 1:
@@ -121,121 +128,16 @@ class SlepianPolarCap(SlepianFunctions):
 
         return Dm
 
-    def _clean_evals_and_evecs(
-        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    def _create_legendre_polynomials_table(self, emm: np.ndarray) -> np.ndarray:
         """
-        need eigenvalues and eigenvectors to be in a certain format
+        create Legendre polynomials table for matrix calculation
         """
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        gl = gl[:, idx].conj()
-
-        # put back in full D space for harmonic transform
-        emm = emm[: self.L * self.L]
-        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
-        eigenvectors = np.zeros(
-            (self.L - abs(self.order), self.L * self.L), dtype=complex
-        )
-        eigenvectors[ind] = gl.T.flatten()
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
-        if self.order < 0:
-            eigenvectors *= 1j
-
-        return eigenvalues, eigenvectors
-
-    @staticmethod
-    def _wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
-        """
-        Syntax:
-        s = _wigner3j (l1, l2, l3, m1, m2, m3)
-
-        Input:
-        l1  =  first degree in Wigner 3j symbol
-        l2  =  second degree in Wigner 3j symbol
-        l3  =  third degree in Wigner 3j symbol
-        m1  =  first order in Wigner 3j symbol
-        m2  =  second order in Wigner 3j symbol
-        m3  =  third order in Wigner 3j symbol
-
-        Output:
-        s  =  Wigner 3j symbol for l1,m1; l2,m2; l3,m3
-
-        Description:
-        Computes Wigner 3j symbol using Racah formula
-        """
-        if (
-            2 * l1 != np.floor(2 * l1)
-            or 2 * l2 != np.floor(2 * l2)
-            or 2 * l3 != np.floor(2 * l3)
-            or 2 * m1 != np.floor(2 * m1)
-            or 2 * m2 != np.floor(2 * m2)
-            or 2 * m3 != np.floor(2 * m3)
-        ):
-            raise Exception("Arguments must either be integer or half-integer!")
-
-        if (
-            m1 + m2 + m3 != 0
-            or l3 < abs(l1 - l2)
-            or l3 > (l1 + l2)
-            or abs(m1) > abs(l1)
-            or abs(m2) > abs(l2)
-            or abs(m3) > abs(l3)
-            or l1 + l2 + l3 != np.floor(l1 + l2 + l3)
-        ):
-            s = 0
-        else:
-            t1 = l2 - l3 - m1
-            t2 = l1 - l3 + m2
-            t3 = l1 + l2 - l3
-            t4 = l1 - m1
-            t5 = l2 + m2
-
-            tmin = max(0, max(t1, t2))
-            tmax = min(t3, min(t4, t5))
-
-            s = 0
-            # sum is over all those t for which the following factorials have
-            # non-zero arguments.
-            for t in range(tmin, tmax + 1):
-                s += (-1) ** t / (
-                    fact(t, exact=False)
-                    * fact(t - t1, exact=False)
-                    * fact(t - t2, exact=False)
-                    * fact(t3 - t, exact=False)
-                    * fact(t4 - t, exact=False)
-                    * fact(t5 - t, exact=False)
-                )
-
-            triangle_coefficient = (
-                fact(l1 + l2 - l3, exact=False)
-                * fact(l1 - l2 + l3, exact=False)
-                * fact(-l1 + l2 + l3, exact=False)
-                / fact(l1 + l2 + l3 + 1, exact=False)
-            )
-
-            s *= (
-                np.float_power(-1, l1 - l2 - m3)
-                * np.sqrt(triangle_coefficient)
-                * np.sqrt(
-                    fact(l1 + m1, exact=False)
-                    * fact(l1 - m1, exact=False)
-                    * fact(l2 + m2, exact=False)
-                    * fact(l2 - m2, exact=False)
-                    * fact(l3 + m3, exact=False)
-                    * fact(l3 - m3, exact=False)
-                )
-            )
-
-        return s
+        Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
+        ind = emm == 0
+        l = np.arange(2 * self.L).reshape(1, -1)
+        Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
+        P = np.concatenate((Pl, l))
+        return P
 
     def _dm_matrix_serial(self, m: int, P: np.ndarray) -> np.ndarray:
         """
@@ -349,21 +251,124 @@ class SlepianPolarCap(SlepianFunctions):
             Dm[j, i] = Dm[i, j]
 
     @staticmethod
+    def _wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
+        """
+        Syntax:
+        s = _wigner3j (l1, l2, l3, m1, m2, m3)
+
+        Input:
+        l1  =  first degree in Wigner 3j symbol
+        l2  =  second degree in Wigner 3j symbol
+        l3  =  third degree in Wigner 3j symbol
+        m1  =  first order in Wigner 3j symbol
+        m2  =  second order in Wigner 3j symbol
+        m3  =  third order in Wigner 3j symbol
+
+        Output:
+        s  =  Wigner 3j symbol for l1,m1; l2,m2; l3,m3
+
+        Description:
+        Computes Wigner 3j symbol using Racah formula
+        """
+        if (
+            2 * l1 != np.floor(2 * l1)
+            or 2 * l2 != np.floor(2 * l2)
+            or 2 * l3 != np.floor(2 * l3)
+            or 2 * m1 != np.floor(2 * m1)
+            or 2 * m2 != np.floor(2 * m2)
+            or 2 * m3 != np.floor(2 * m3)
+        ):
+            raise Exception("Arguments must either be integer or half-integer!")
+
+        if (
+            m1 + m2 + m3 != 0
+            or l3 < abs(l1 - l2)
+            or l3 > (l1 + l2)
+            or abs(m1) > abs(l1)
+            or abs(m2) > abs(l2)
+            or abs(m3) > abs(l3)
+            or l1 + l2 + l3 != np.floor(l1 + l2 + l3)
+        ):
+            s = 0
+        else:
+            t1 = l2 - l3 - m1
+            t2 = l1 - l3 + m2
+            t3 = l1 + l2 - l3
+            t4 = l1 - m1
+            t5 = l2 + m2
+
+            tmin = max(0, max(t1, t2))
+            tmax = min(t3, min(t4, t5))
+
+            s = 0
+            # sum is over all those t for which the following factorials have
+            # non-zero arguments.
+            for t in range(tmin, tmax + 1):
+                s += (-1) ** t / (
+                    fact(t, exact=False)
+                    * fact(t - t1, exact=False)
+                    * fact(t - t2, exact=False)
+                    * fact(t3 - t, exact=False)
+                    * fact(t4 - t, exact=False)
+                    * fact(t5 - t, exact=False)
+                )
+
+            triangle_coefficient = (
+                fact(l1 + l2 - l3, exact=False)
+                * fact(l1 - l2 + l3, exact=False)
+                * fact(-l1 + l2 + l3, exact=False)
+                / fact(l1 + l2 + l3 + 1, exact=False)
+            )
+
+            s *= (
+                np.float_power(-1, l1 - l2 - m3)
+                * np.sqrt(triangle_coefficient)
+                * np.sqrt(
+                    fact(l1 + m1, exact=False)
+                    * fact(l1 - m1, exact=False)
+                    * fact(l2 + m2, exact=False)
+                    * fact(l2 - m2, exact=False)
+                    * fact(l3 + m3, exact=False)
+                    * fact(l3 - m3, exact=False)
+                )
+            )
+        return s
+
+    @staticmethod
     def _polar_gap_modification(ell1: int, ell2: int) -> int:
         factor = 1 + config.POLAR_GAP * (-1) ** (ell1 + ell2)
         return factor
 
-    def _add_to_annotation(
-        self, theta: np.ndarray, i: int, colour: str = "black"
-    ) -> None:
+    def _clean_evals_and_evecs(
+        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray]:
         """
-        add to annotation list for given theta
+        need eigenvalues and eigenvectors to be in a certain format
         """
-        phi = np.array([2 * np.pi / ANNOTATION_DOTS * (i + 1)])
-        x, y, z = ssht.s2_to_cart(theta, phi)
-        self.annotations.append(
-            {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
+        # eigenvalues should be real
+        eigenvalues = eigenvalues.real
+
+        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        gl = gl[:, idx].conj()
+
+        # put back in full D space for harmonic transform
+        emm = emm[: self.L * self.L]
+        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
+        eigenvectors = np.zeros(
+            (self.L - abs(self.order), self.L * self.L), dtype=complex
         )
+        eigenvectors[ind] = gl.T.flatten()
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+
+        # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
+        if self.order < 0:
+            eigenvectors *= 1j
+
+        return eigenvalues, eigenvectors
 
     @property  # type:ignore
     def order(self) -> int:
