@@ -20,15 +20,13 @@ _file_location = Path(__file__).resolve()
 @dataclass
 class SlepianPolarCap(SlepianSpecific):
     theta_max: float
-    order: int = field(default=0)
     _name_ending: str = field(
-        default=f"_polar{'_gap' if config.POLAR_GAP else ''}{config.THETA_MAX}_m",
+        default=f"_polar{'_gap' if config.POLAR_GAP else ''}{config.THETA_MAX}_m{config.ORDER}",
         init=False,
         repr=False,
     )
 
     def __post_init__(self) -> None:
-        self._name_ending += str(self.order)
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -104,9 +102,9 @@ class SlepianPolarCap(SlepianSpecific):
 
             # Computing order 'm' Slepian matrix
             if config.NCPU == 1:
-                Dm = self._dm_matrix_serial(L, abs(self.order), P)
+                Dm = self._dm_matrix_serial(L, abs(config.ORDER), P)
             else:
-                Dm = self._dm_matrix_parallel(L, abs(self.order), P, config.NCPU)
+                Dm = self._dm_matrix_parallel(L, abs(config.ORDER), P)
 
             # save to speed up for future
             if config.SAVE_MATRICES:
@@ -130,15 +128,15 @@ class SlepianPolarCap(SlepianSpecific):
 
         # put back in full D space for harmonic transform
         emm = emm[: L * L]
-        ind = np.tile(emm == self.order, (L - abs(self.order), 1))
-        eigenvectors = np.zeros((L - abs(self.order), L * L), dtype=complex)
+        ind = np.tile(emm == config.ORDER, (L - abs(config.ORDER), 1))
+        eigenvectors = np.zeros((L - abs(config.ORDER), L * L), dtype=complex)
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
-        if self.order < 0:
+        if config.ORDER < 0:
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors
@@ -257,12 +255,10 @@ class SlepianPolarCap(SlepianSpecific):
 
         return Dm
 
-    def _dm_matrix_parallel(
-        self, L: int, m: int, P: np.ndarray, ncpu: int
-    ) -> np.ndarray:
+    def _dm_matrix_parallel(self, L: int, m: int, P: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        Dm = _dm_matrix_parallel(m, P, ncpu)
+        Dm = _dm_matrix_parallel(m, P)
 
         Input:
         m  =  order
@@ -297,10 +293,10 @@ class SlepianPolarCap(SlepianSpecific):
                 self._dm_matrix_helper(tmp, L, i, m, lvec, Pl, ell)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(L - m, ncpu)
+        chunks = split_L_into_chunks(L - m, config.NCPU)
 
         # initialise pool and apply function
-        with Pool(processes=ncpu) as p:
+        with Pool(processes=config.NCPU) as p:
             p.map(func, chunks)
 
         # retrieve from parallel function

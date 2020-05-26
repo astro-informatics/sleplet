@@ -108,7 +108,7 @@ class SlepianLimitLatLong(SlepianSpecific):
             if config.NCPU == 1:
                 K = self._slepian_matrix_serial(L, G)
             else:
-                K = self._slepian_matrix_parallel(L, G, config.NCPU)
+                K = self._slepian_matrix_parallel(L, G)
 
             # save to speed up for future
             if config.SAVE_MATRICES:
@@ -229,10 +229,10 @@ class SlepianLimitLatLong(SlepianSpecific):
 
         return K
 
-    def _slepian_matrix_parallel(self, L: int, G: np.ndarray, ncpu: int) -> np.ndarray:
+    def _slepian_matrix_parallel(self, L: int, G: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        K = _slepian_matrix_parallel(L, G, ncpu)
+        K = _slepian_matrix_parallel(L, G)
 
         Input:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -272,10 +272,10 @@ class SlepianLimitLatLong(SlepianSpecific):
                 self._slepian_matrix_helper(tmp_r, tmp_i, L, l, dl_array, G)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(L, ncpu)
+        chunks = split_L_into_chunks(L, config.NCPU)
 
         # initialise pool and apply function
-        with Pool(processes=ncpu) as p:
+        with Pool(processes=config.NCPU) as p:
             p.map(func, chunks)
 
         # retrieve real and imag components
