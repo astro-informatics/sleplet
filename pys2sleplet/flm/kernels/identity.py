@@ -15,7 +15,7 @@ class Identity(Functions):
         pass
 
     def _create_flm(self) -> np.ndarray:
-        flm = np.ones((self.L * self.L)) + 1j * np.zeros((self.L * self.L))
+        flm = np.ones((self.L * self.L), dtype=complex)
         return flm
 
     def _create_name(self) -> str:
