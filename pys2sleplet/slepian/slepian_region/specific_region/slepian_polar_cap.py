@@ -21,13 +21,14 @@ _file_location = Path(__file__).resolve()
 class SlepianPolarCap(SlepianSpecific):
     theta_max: float
     order: int = field(default=0)
-    _name_ending: str = field(init=False, repr=False)
+    _name_ending: str = field(
+        default=f"_polar{'_gap' if config.POLAR_GAP else ''}{config.THETA_MAX}_m",
+        init=False,
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
-        self._name_ending = (
-            f"_polar{'_gap' if config.POLAR_GAP else ''}"
-            f"{config.THETA_MAX}_m{self.order}"
-        )
+        self._name_ending += str(self.order)
         super().__post_init__()
 
     def _create_annotations(self) -> None:
