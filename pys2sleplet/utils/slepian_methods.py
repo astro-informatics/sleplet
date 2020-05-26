@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 
@@ -16,7 +15,7 @@ from pys2sleplet.utils.logger import logger
 _file_location = Path(__file__).resolve()
 
 
-def choose_slepian_method() -> Optional[SlepianFunctions]:
+def choose_slepian_method() -> SlepianFunctions:
     """
     initialise Slepian object depending on input
     """
