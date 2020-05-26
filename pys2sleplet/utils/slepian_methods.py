@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 
@@ -14,10 +15,11 @@ from pys2sleplet.utils.logger import logger
 _file_location = Path(__file__).resolve()
 
 
-def choose_slepian_method() -> SlepianFunctions:
+def choose_slepian_method() -> Optional[SlepianFunctions]:
     """
     initialise Slepian object depending on input
     """
+    slepian = None
     phi_min = np.deg2rad(config.PHI_MIN)
     phi_max = np.deg2rad(config.PHI_MAX)
     theta_min = np.deg2rad(config.THETA_MIN)
@@ -47,8 +49,5 @@ def choose_slepian_method() -> SlepianFunctions:
     #     except FileNotFoundError:
     #         logger.error(f"can not find the file: {config.SLEPIAN_MASK}")
     #         raise
-
-    else:
-        raise RuntimeError("no angle or file specified for Slepian region")
 
     return slepian
