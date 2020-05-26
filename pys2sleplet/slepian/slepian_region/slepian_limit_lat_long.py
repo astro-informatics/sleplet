@@ -124,26 +124,6 @@ class SlepianLimitLatLong(SlepianFunctions):
 
         return K
 
-    @staticmethod
-    def _clean_evals_and_evecs(
-        eigenvalues: np.ndarray, eigenvectors: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        need eigenvalues and eigenvectors to be in a certain format
-        """
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = eigenvectors[:, idx].conj().T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        return eigenvalues, eigenvectors
-
     def _slepian_integral(self) -> np.ndarray:
         """
         Syntax:
@@ -348,6 +328,26 @@ class SlepianLimitLatLong(SlepianFunctions):
                     real, imag = K_r[idx], K_i[idx]
                     K_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
                     K_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
+
+    @staticmethod
+    def _clean_evals_and_evecs(
+        eigenvalues: np.ndarray, eigenvectors: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        need eigenvalues and eigenvectors to be in a certain format
+        """
+        # eigenvalues should be real
+        eigenvalues = eigenvalues.real
+
+        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = eigenvectors[:, idx].conj().T
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+
+        return eigenvalues, eigenvectors
 
     @property  # type:ignore
     def phi_max(self) -> float:
