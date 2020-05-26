@@ -4,6 +4,7 @@ from typing import Optional
 import numpy as np
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_long import (
     SlepianLimitLatLong,
 )
@@ -32,21 +33,8 @@ def choose_slepian_method() -> Optional[SlepianFunctions]:
         logger.info("limited latitude longitude region detected")
         slepian = SlepianLimitLatLong(config.L, theta_min, theta_max, phi_min, phi_max)
 
-    # elif config.SLEPIAN_MASK:
-    #     logger.info("no angles specified, looking for a file with mask")
-    #     location = (
-    #         _file_location.parents[2]
-    #         / "data"
-    #         / "slepian"
-    #         / "arbitrary"
-    #         / "masks"
-    #         / config.SLEPIAN_MASK
-    #     )
-    #     try:
-    #         mask = np.load(location)
-    #         slepian = SlepianArbitrary(L, mask)
-    #     except FileNotFoundError:
-    #         logger.error(f"can not find the file: {config.SLEPIAN_MASK}")
-    #         raise
+    elif config.SLEPIAN_MASK:
+        logger.info("mask specified in file detected")
+        slepian = SlepianArbitrary(config.L, config.SLEPIAN_MASK)
 
     return slepian
