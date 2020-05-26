@@ -54,47 +54,46 @@ class SlepianPolarCap(SlepianFunctions):
         name = f"slepian{self._name_ending}"
         return name
 
-    def _create_mask(self, L: int) -> np.ndarray:
-        theta_grid, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    def _create_mask(self) -> np.ndarray:
+        theta_grid, _ = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
         mask = theta_grid <= self.theta_max
         return mask
 
-    def _create_matrix_location(self, L: int) -> Path:
+    def _create_matrix_location(self) -> Path:
         location = (
             _file_location.parents[3]
             / "data"
             / "slepian"
             / "polar"
-            / f"D_L{L}{self._name_ending}.npy"
+            / f"D_L{self.L}{self._name_ending}.npy"
         )
         return location
 
-    def _solve_eigenproblem(self, L: int) -> Tuple[np.ndarray, np.ndarray]:
-        emm = self._create_emm_vec(L)
+    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        emm = self._create_emm_vec()
 
-        Dm = self._load_Dm_matrix(L, emm)
+        Dm = self._load_Dm_matrix(emm)
 
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eigh(Dm)
 
-        eigenvalues, eigenvectors = self._clean_evals_and_evecs(L, eigenvalues, gl, emm)
+        eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm)
         return eigenvalues, eigenvectors
 
-    @staticmethod
-    def _create_emm_vec(L: int) -> np.ndarray:
+    def _create_emm_vec(self) -> np.ndarray:
         """
         create emm vector for eigenproblem
         """
-        emm = np.zeros(2 * L * 2 * L)
+        emm = np.zeros(2 * self.L * 2 * self.L)
         k = 0
 
-        for l in range(2 * L):
+        for l in range(2 * self.L):
             M = 2 * l + 1
             emm[k : k + M] = np.arange(-l, l + 1)
             k = k + M
         return emm
 
-    def _load_Dm_matrix(self, L: int, emm: np.ndarray) -> np.ndarray:
+    def _load_Dm_matrix(self, emm: np.ndarray) -> np.ndarray:
         """
         if the Dm matrix already exists load it
         otherwise create it and save the result
@@ -104,17 +103,17 @@ class SlepianPolarCap(SlepianFunctions):
             Dm = np.load(self.matrix_location)
         else:
             # create Legendre polynomials table
-            Plm = ssht.create_ylm(self.theta_max, 0, 2 * L).real.reshape(-1)
+            Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
             ind = emm == 0
-            l = np.arange(2 * L).reshape(1, -1)
+            l = np.arange(2 * self.L).reshape(1, -1)
             Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
             P = np.concatenate((Pl, l))
 
             # Computing order 'm' Slepian matrix
             if config.NCPU == 1:
-                Dm = self._dm_matrix_serial(L, abs(self.order), P)
+                Dm = self._dm_matrix_serial(abs(self.order), P)
             else:
-                Dm = self._dm_matrix_parallel(L, abs(self.order), P)
+                Dm = self._dm_matrix_parallel(abs(self.order), P)
 
             # save to speed up for future
             if config.SAVE_MATRICES:
@@ -123,7 +122,7 @@ class SlepianPolarCap(SlepianFunctions):
         return Dm
 
     def _clean_evals_and_evecs(
-        self, L: int, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
+        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
     ) -> Tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
@@ -137,9 +136,11 @@ class SlepianPolarCap(SlepianFunctions):
         gl = gl[:, idx].conj()
 
         # put back in full D space for harmonic transform
-        emm = emm[: L * L]
-        ind = np.tile(emm == self.order, (L - abs(self.order), 1))
-        eigenvectors = np.zeros((L - abs(self.order), L * L), dtype=complex)
+        emm = emm[: self.L * self.L]
+        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
+        eigenvectors = np.zeros(
+            (self.L - abs(self.order), self.L * self.L), dtype=complex
+        )
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
@@ -236,7 +237,7 @@ class SlepianPolarCap(SlepianFunctions):
 
         return s
 
-    def _dm_matrix_serial(self, L: int, m: int, P: np.ndarray) -> np.ndarray:
+    def _dm_matrix_serial(self, m: int, P: np.ndarray) -> np.ndarray:
         """
         Syntax:
         Dm = _dm_matrix_serial(m, P)
@@ -254,18 +255,18 @@ class SlepianPolarCap(SlepianFunctions):
         degrees, using the formulation given in "Spatiospectral Concentration on
         a Sphere" by F.J. Simons, F.A. Dahlen and M.A. Wieczorek.
         """
-        Dm = np.zeros((L - m, L - m))
+        Dm = np.zeros((self.L - m, self.L - m))
         Pl, ell = P
-        lvec = np.arange(m, L)
+        lvec = np.arange(m, self.L)
 
-        for i in range(L - m):
-            self._dm_matrix_helper(Dm, L, i, m, lvec, Pl, ell)
+        for i in range(self.L - m):
+            self._dm_matrix_helper(Dm, i, m, lvec, Pl, ell)
 
         Dm *= (-1) ** m / 2
 
         return Dm
 
-    def _dm_matrix_parallel(self, L: int, m: int, P: np.ndarray) -> np.ndarray:
+    def _dm_matrix_parallel(self, m: int, P: np.ndarray) -> np.ndarray:
         """
         Syntax:
         Dm = _dm_matrix_parallel(m, P)
@@ -283,9 +284,9 @@ class SlepianPolarCap(SlepianFunctions):
         degrees, using the formulation given in "Spatiospectral Concentration on
         a Sphere" by F.J. Simons, F.A. Dahlen and M.A. Wieczorek.
         """
-        Dm = np.zeros((L - m, L - m))
+        Dm = np.zeros((self.L - m, self.L - m))
         Pl, ell = P
-        lvec = np.arange(m, L)
+        lvec = np.arange(m, self.L)
 
         # create arrays to store final and intermediate steps
         result = np.ctypeslib.as_ctypes(Dm)
@@ -300,10 +301,10 @@ class SlepianPolarCap(SlepianFunctions):
 
             # deal with chunk
             for i in chunk:
-                self._dm_matrix_helper(tmp, L, i, m, lvec, Pl, ell)
+                self._dm_matrix_helper(tmp, i, m, lvec, Pl, ell)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(L - m, config.NCPU)
+        chunks = split_L_into_chunks(self.L - m, config.NCPU)
 
         # initialise pool and apply function
         with Pool(processes=config.NCPU) as p:
@@ -317,7 +318,6 @@ class SlepianPolarCap(SlepianFunctions):
     def _dm_matrix_helper(
         self,
         Dm: np.ndarray,
-        L: int,
         i: int,
         m: int,
         lvec: np.ndarray,
@@ -328,7 +328,7 @@ class SlepianPolarCap(SlepianFunctions):
         used in both serial and parallel calculations
         """
         l = lvec[i]
-        for j in range(i, L - m):
+        for j in range(i, self.L - m):
             p = lvec[j]
             c = 0
             for n in range(abs(l - p), l + p + 1):

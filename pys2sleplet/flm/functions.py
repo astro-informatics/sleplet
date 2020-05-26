@@ -29,16 +29,16 @@ class Functions:
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._setup_args(self.extra_args)
-        self.reality = self._set_reality()
+        self._setup_args()
+        self.name = self._create_name()
         self.annotations = self._create_annotations()
-        self.multipole = self._create_flm(self.L)
+        self.reality = self._set_reality()
+        self.multipole = self._create_flm()
         self.field = invert_flm(self.multipole, self.L, reality=self.reality)
         self.resolution = calc_resolution(self.L)
         self.field_padded = invert_flm(
             self.multipole, self.L, reality=self.reality, resolution=self.resolution
         )
-        self.name = self._create_name()
 
     def rotate(
         self,
@@ -187,7 +187,7 @@ class Functions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_flm(self, L: int) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         """
         creates the flm on the north pole
         """
@@ -208,7 +208,7 @@ class Functions:
         raise NotImplementedError
 
     @abstractmethod
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
+    def _setup_args(self) -> None:
         """
         initialises function specific args
         either default value or user input

@@ -20,11 +20,11 @@ class SlepianFunctions:
 
     def __post_init__(self) -> None:
         self._create_annotations()
-        self.mask = self._create_mask(self.L)
-        self.matrix_location = self._create_matrix_location(self.L)
+        self.mask = self._create_mask()
+        self.matrix_location = self._create_matrix_location()
         self.name = self._create_fn_name()
         logger.info("start solving eigenproblem")
-        self.eigenvalues, self.eigenvectors = self._solve_eigenproblem(self.L)
+        self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
 
     @property
@@ -98,21 +98,21 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_mask(self, L: int) -> np.ndarray:
+    def _create_mask(self) -> np.ndarray:
         """
         creates a mask of the region of interest
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_matrix_location(self, L: int) -> Path:
+    def _create_matrix_location(self) -> Path:
         """
         creates the name of the matrix binary
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _solve_eigenproblem(self, L: int) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
         """
         solves the eigenproblem for the given function
         """

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -19,13 +19,13 @@ class Earth(Functions):
     def _create_annotations(self) -> List[Dict]:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         # load in data
         flm = self._load_flm()
 
         # fill in negative m components so as to
         # avoid confusion with zero values
-        for ell in range(1, L):
+        for ell in range(1, self.L):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
@@ -33,7 +33,7 @@ class Earth(Functions):
 
         # don't take the full L
         # invert dataset as Earth backwards
-        flm = flm[: L * L].conj()
+        flm = flm[: self.L * self.L].conj()
         return flm
 
     def _create_name(self) -> str:
@@ -43,8 +43,8 @@ class Earth(Functions):
     def _set_reality(self) -> bool:
         return True
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             raise AttributeError(f"Does not support extra arguments")
 
     @staticmethod

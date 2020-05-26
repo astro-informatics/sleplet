@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -18,9 +18,9 @@ class Gaussian(Functions):
     def _create_annotations(self) -> List[Dict]:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.zeros((L * L), dtype=complex)
-        for ell in range(L):
+    def _create_flm(self) -> np.ndarray:
+        flm = np.zeros((self.L * self.L), dtype=complex)
+        for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
             flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma * self.sigma))
         return flm
@@ -32,12 +32,12 @@ class Gaussian(Functions):
     def _set_reality(self) -> bool:
         return True
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 1
-            if len(extra_args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.sigma = 10 ** extra_args[0]
+            self.sigma = 10 ** self.extra_args[0]
 
     @property
     def sigma(self) -> float:

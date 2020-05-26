@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 
@@ -20,8 +20,8 @@ class SquashedGaussian(Functions):
     def _create_annotations(self) -> List[Dict]:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = ensure_f_bandlimited(self._grid_fun, L, self.reality)
+    def _create_flm(self) -> np.ndarray:
+        flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
         return flm
 
     def _create_name(self) -> str:
@@ -35,12 +35,12 @@ class SquashedGaussian(Functions):
     def _set_reality(self) -> bool:
         return True
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 2
-            if len(extra_args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.t_sigma, self.freq = [10 ** x for x in extra_args]
+            self.t_sigma, self.freq = [10 ** x for x in self.extra_args]
 
     def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
         """

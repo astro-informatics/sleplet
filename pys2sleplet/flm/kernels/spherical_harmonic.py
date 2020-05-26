@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -16,8 +16,8 @@ class SphericalHarmonic(Functions):
     def _create_annotations(self) -> List[Dict]:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.zeros((L * L), dtype=complex)
+    def _create_flm(self) -> np.ndarray:
+        flm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
         flm[ind] = 1
         return flm
@@ -33,12 +33,12 @@ class SphericalHarmonic(Functions):
     def _set_reality(self) -> bool:
         return False
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 2
-            if len(extra_args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.ell, self.m = extra_args
+            self.ell, self.m = self.extra_args
 
     @property
     def ell(self) -> int:

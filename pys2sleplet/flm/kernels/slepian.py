@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 
@@ -26,7 +26,7 @@ class Slepian(Functions):
         name = f"{self.slepian.name}_rank{self.rank}"
         return name
 
-    def _create_flm(self, L: int) -> np.ndarray:
+    def _create_flm(self) -> np.ndarray:
         flm = self.slepian.eigenvectors[self.rank]
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
         return flm
@@ -34,14 +34,14 @@ class Slepian(Functions):
     def _set_reality(self) -> bool:
         return False
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 1
-            if len(extra_args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(
                     f"The number of extra arguments should be 1 or {num_args}"
                 )
-            self.rank = extra_args[0]
+            self.rank = self.extra_args[0]
 
     @property
     def rank(self) -> int:

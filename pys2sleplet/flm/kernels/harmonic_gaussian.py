@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -19,9 +19,9 @@ class HarmonicGaussian(Functions):
     def _create_annotations(self) -> List[Dict]:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.zeros((L * L), dtype=complex)
-        for ell in range(L):
+    def _create_flm(self) -> np.ndarray:
+        flm = np.zeros((self.L * self.L), dtype=complex)
+        for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
@@ -39,12 +39,12 @@ class HarmonicGaussian(Functions):
     def _set_reality(self) -> bool:
         return False
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             num_args = 2
-            if len(extra_args) != num_args:
+            if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.l_sigma, self.m_sigma = [10 ** x for x in extra_args]
+            self.l_sigma, self.m_sigma = [10 ** x for x in self.extra_args]
 
     @property
     def l_sigma(self) -> float:

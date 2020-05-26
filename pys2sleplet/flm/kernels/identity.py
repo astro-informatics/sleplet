@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 
@@ -14,8 +14,8 @@ class Identity(Functions):
     def _create_annotations(self) -> List[Dict]:
         pass
 
-    def _create_flm(self, L: int) -> np.ndarray:
-        flm = np.ones((L * L)) + 1j * np.zeros((L * L))
+    def _create_flm(self) -> np.ndarray:
+        flm = np.ones((self.L * self.L)) + 1j * np.zeros((self.L * self.L))
         return flm
 
     def _create_name(self) -> str:
@@ -25,6 +25,6 @@ class Identity(Functions):
     def _set_reality(self) -> bool:
         return True
 
-    def _setup_args(self, extra_args: Optional[List[int]]) -> None:
-        if extra_args is not None:
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
             raise AttributeError(f"Does not support extra arguments")
