@@ -29,7 +29,7 @@ class SlepianDecomposition:
         )
         delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
         delta_phi = np.ediff1d(phi_grid[0]).mean()
-        self._weight = theta_grid * delta_theta * delta_phi
+        self._weight = np.sin(theta_grid) * delta_theta * delta_phi
 
     def decompose(self, rank: int, method: str) -> np.ndarray:
         """
