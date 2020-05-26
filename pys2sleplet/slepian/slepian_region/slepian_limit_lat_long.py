@@ -222,8 +222,8 @@ class SlepianLimitLatLong(SlepianFunctions):
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
 
         # initialise real and imaginary matrices
-        real = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
-        imag = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
+        real = np.zeros((self.L * self.L, self.L * self.L))
+        imag = np.zeros((self.L * self.L, self.L * self.L))
 
         for l in range(self.L):
             self._slepian_matrix_helper(real, imag, l, dl_array, G)
