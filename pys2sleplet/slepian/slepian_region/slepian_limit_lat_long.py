@@ -82,7 +82,7 @@ class SlepianLimitLatLong(SlepianFunctions):
 
     def _create_matrix_location(self) -> Path:
         location = (
-            _file_location.parents[3]
+            _file_location.parents[2]
             / "data"
             / "slepian"
             / "lat_lon"
