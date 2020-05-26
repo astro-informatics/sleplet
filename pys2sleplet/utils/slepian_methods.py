@@ -14,7 +14,7 @@ from pys2sleplet.utils.logger import logger
 _file_location = Path(__file__).resolve()
 
 
-def choose_slepian_method(L: int) -> SlepianFunctions:
+def choose_slepian_method() -> SlepianFunctions:
     """
     initialise Slepian object depending on input
     """
@@ -25,11 +25,11 @@ def choose_slepian_method(L: int) -> SlepianFunctions:
 
     if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
         logger.info("polar cap region detected")
-        slepian = SlepianPolarCap(L, theta_max, config.ORDER)
+        slepian = SlepianPolarCap(config.L, theta_max, config.ORDER)
 
     elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
         logger.info("limited latitude longitude region detected")
-        slepian = SlepianLimitLatLong(L, theta_min, theta_max, phi_min, phi_max)
+        slepian = SlepianLimitLatLong(config.L, theta_min, theta_max, phi_min, phi_max)
 
     # elif config.SLEPIAN_MASK:
     #     logger.info("no angles specified, looking for a file with mask")

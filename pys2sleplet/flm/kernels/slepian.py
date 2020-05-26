@@ -4,31 +4,30 @@ from typing import Dict, List, Optional
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
+
+_slepian = choose_slepian_method()
 
 
 @dataclass
 class Slepian(Functions):
-    _slepian: SlepianFunctions = field(init=False, repr=False)
     _rank: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._slepian = choose_slepian_method(self.L)
         super().__post_init__()
 
     def _create_annotations(self) -> List[Dict]:
-        annotations = self._slepian.annotations
+        annotations = _slepian.annotations
         return annotations
 
     def _create_name(self) -> str:
-        name = f"{self._slepian.name}_rank{self.rank}"
+        name = f"{_slepian.name}_rank{self.rank}"
         return name
 
     def _create_flm(self, L: int) -> np.ndarray:
-        flm = self._slepian.eigenvectors[self.rank]
-        logger.info(f"Eigenvalue {self.rank}: {self._slepian.eigenvalues[self.rank]:e}")
+        flm = _slepian.eigenvectors[self.rank]
+        logger.info(f"Eigenvalue {self.rank}: {_slepian.eigenvalues[self.rank]:e}")
         return flm
 
     def _set_reality(self) -> bool:
