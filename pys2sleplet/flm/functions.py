@@ -29,8 +29,16 @@ class Functions:
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.annotations = self._create_annotations()
+        self._setup_args(self.extra_args)
         self.reality = self._set_reality()
+        self.annotations = self._create_annotations()
+        self.multipole = self._create_flm(self.L)
+        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
+        self.resolution = calc_resolution(self.L)
+        self.field_padded = invert_flm(
+            self.multipole, self.L, reality=self.reality, resolution=self.resolution
+        )
+        self.name = self._create_name()
 
     def rotate(
         self,
@@ -114,9 +122,6 @@ class Functions:
             # https://stackoverflow.com/a/61480946/7359333
             extra_args = Functions._extra_args
         self._extra_args = extra_args
-        self._setup_args(self.extra_args)
-        self.multipole = self._create_flm(self.L)
-        self.name = self._create_name()
 
     @property
     def field(self) -> np.ndarray:
@@ -133,8 +138,6 @@ class Functions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        self.resolution = calc_resolution(self.L)
-        self.multipole = self._create_flm(self.L)
 
     @property
     def multipole(self) -> np.ndarray:
@@ -142,14 +145,7 @@ class Functions:
 
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
-        """
-        update multipole value and hence field value
-        """
         self._multipole = multipole
-        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
-        self.field_padded = invert_flm(
-            self.multipole, self.L, reality=self.reality, resolution=self.resolution
-        )
 
     @property
     def name(self) -> np.ndarray:

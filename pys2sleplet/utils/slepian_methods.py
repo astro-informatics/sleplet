@@ -19,7 +19,6 @@ def choose_slepian_method() -> Optional[SlepianFunctions]:
     """
     initialise Slepian object depending on input
     """
-    slepian = None
     phi_min = np.deg2rad(config.PHI_MIN)
     phi_max = np.deg2rad(config.PHI_MAX)
     theta_min = np.deg2rad(config.THETA_MIN)

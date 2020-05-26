@@ -22,9 +22,6 @@ from pys2sleplet.utils.vars import (
 )
 
 _file_location = Path(__file__).resolve()
-_name_ending = (
-    f"_polar{'_gap' if config.POLAR_GAP else ''}{config.THETA_MAX}_m{config.ORDER}"
-)
 
 
 @dataclass
@@ -33,8 +30,13 @@ class SlepianPolarCap(SlepianFunctions):
     order: int
     _theta_max: float = field(init=False, repr=False)
     _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
+    _name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self._name_ending = (
+            f"_polar{'_gap' if config.POLAR_GAP else ''}"
+            f"{int(np.rad2deg(self.theta_max))}_m{self.order}"
+        )
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -49,7 +51,7 @@ class SlepianPolarCap(SlepianFunctions):
                         self._add_to_annotation(theta_bottom, j, colour="white")
 
     def _create_fn_name(self) -> str:
-        name = f"slepian{_name_ending}"
+        name = f"slepian{self._name_ending}"
         return name
 
     def _create_mask(self, L: int) -> np.ndarray:
@@ -63,7 +65,7 @@ class SlepianPolarCap(SlepianFunctions):
             / "data"
             / "slepian"
             / "polar"
-            / f"D_L{L}{_name_ending}.npy"
+            / f"D_L{L}{self._name_ending}.npy"
         )
         return location
 
@@ -110,9 +112,9 @@ class SlepianPolarCap(SlepianFunctions):
 
             # Computing order 'm' Slepian matrix
             if config.NCPU == 1:
-                Dm = self._dm_matrix_serial(L, abs(self.ORDER), P)
+                Dm = self._dm_matrix_serial(L, abs(self.order), P)
             else:
-                Dm = self._dm_matrix_parallel(L, abs(self.ORDER), P)
+                Dm = self._dm_matrix_parallel(L, abs(self.order), P)
 
             # save to speed up for future
             if config.SAVE_MATRICES:
@@ -136,15 +138,15 @@ class SlepianPolarCap(SlepianFunctions):
 
         # put back in full D space for harmonic transform
         emm = emm[: L * L]
-        ind = np.tile(emm == self.ORDER, (L - abs(self.ORDER), 1))
-        eigenvectors = np.zeros((L - abs(self.ORDER), L * L), dtype=complex)
+        ind = np.tile(emm == self.order, (L - abs(self.order), 1))
+        eigenvectors = np.zeros((L - abs(self.order), L * L), dtype=complex)
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
-        if self.ORDER < 0:
+        if self.order < 0:
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors

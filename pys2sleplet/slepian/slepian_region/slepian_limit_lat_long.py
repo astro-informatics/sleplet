@@ -20,9 +20,6 @@ from pys2sleplet.utils.vars import (
 )
 
 _file_location = Path(__file__).resolve()
-_name_ending = (
-    f"_theta{config.THETA_MIN}-{config.THETA_MAX}_phi{config.PHI_MIN}-{config.PHI_MAX}"
-)
 
 
 @dataclass
@@ -35,8 +32,13 @@ class SlepianLimitLatLong(SlepianFunctions):
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
     _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
+    _name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self._name_ending = (
+            f"_theta{int(self.theta_min)}-{int(self.theta_max)}"
+            f"_phi{int(self.phi_min)}-{int(self.phi_max)}"
+        )
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -63,7 +65,7 @@ class SlepianLimitLatLong(SlepianFunctions):
                     )
 
     def _create_fn_name(self) -> str:
-        name = f"slepian{_name_ending}"
+        name = f"slepian{self._name_ending}"
         return name
 
     def _create_mask(self, L: int) -> np.ndarray:
@@ -84,7 +86,7 @@ class SlepianLimitLatLong(SlepianFunctions):
             / "data"
             / "slepian"
             / "lat_lon"
-            / f"D_L{L}{_name_ending}.npy"
+            / f"D_L{L}{self._name_ending}.npy"
         )
         return location
 
