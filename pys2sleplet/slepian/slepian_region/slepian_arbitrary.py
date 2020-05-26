@@ -66,37 +66,17 @@ class SlepianArbitrary(SlepianFunctions):
         )
         return eigenvalues, eigenvectors
 
-    def _f(self, i: int, j: int) -> np.ndarray:
-        f = self._ylm[i] * self._ylm[j].conj()
-        return f
-
-    def _integral(self, i: int, j: int) -> complex:
-        F = (self._f(i, j) * self._weight()).sum()
-        return F
-
-    @staticmethod
-    def _clean_evals_and_evecs(
-        eigenvalues: np.ndarray, eigenvectors: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    def _load_mask(self) -> np.ndarray:
         """
-        need eigenvalues and eigenvectors to be in a certain format
+        attempts to read the mask from the config file
         """
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = eigenvectors[:, idx].conj().T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        # find repeating eigenvalues and ensure orthorgonality
-        pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
-        eigenvectors[pairs] *= 1j
-
-        return eigenvalues, eigenvectors
+        location = _arbitrary_path / "masks" / self.mask_name
+        try:
+            mask = np.load(location)
+        except FileNotFoundError:
+            logger.error(f"can not find the file: {self.mask_name}")
+            raise
+        return mask
 
     def _matrix_serial(self) -> np.ndarray:
         # initialise real and imaginary matrices
@@ -184,17 +164,37 @@ class SlepianArbitrary(SlepianFunctions):
                 D_r[j][i] = D_r[i][j]
                 D_i[j][i] = -D_i[i][j]
 
-    def _load_mask(self) -> np.ndarray:
+    def _integral(self, i: int, j: int) -> complex:
+        F = (self._f(i, j) * self._weight()).sum()
+        return F
+
+    def _f(self, i: int, j: int) -> np.ndarray:
+        f = self._ylm[i] * self._ylm[j].conj()
+        return f
+
+    @staticmethod
+    def _clean_evals_and_evecs(
+        eigenvalues: np.ndarray, eigenvectors: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray]:
         """
-        attempts to read the mask from the config file
+        need eigenvalues and eigenvectors to be in a certain format
         """
-        location = _arbitrary_path / "masks" / self.mask_name
-        try:
-            mask = np.load(location)
-        except FileNotFoundError:
-            logger.error(f"can not find the file: {self.mask_name}")
-            raise
-        return mask
+        # eigenvalues should be real
+        eigenvalues = eigenvalues.real
+
+        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = eigenvectors[:, idx].conj().T
+
+        # ensure first element of each eigenvector is positive
+        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+
+        # find repeating eigenvalues and ensure orthorgonality
+        pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
+        eigenvectors[pairs] *= 1j
+
+        return eigenvalues, eigenvectors
 
     @property  # type: ignore
     def mask_name(self) -> str:
