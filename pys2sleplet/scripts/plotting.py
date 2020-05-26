@@ -7,7 +7,6 @@ import numpy as np
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.functions import FUNCTIONS
-from pys2sleplet.utils.plot_methods import calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
 
@@ -124,7 +123,6 @@ def plot(
     """
     master plotting method
     """
-    resolution = calc_resolution(L)
     f = FUNCTIONS[f_name](L, extra_args)
     filename = f"{f.name}_L{L}_"
 
@@ -148,7 +146,7 @@ def plot(
         filename += f"convolved_{g.name}_L{L}_"
 
     # add resolution to filename
-    filename += f"res{resolution}_"
+    filename += f"res{f.resolution}_"
 
     # check for plotting type
     if plot_type == "real":
@@ -162,7 +160,7 @@ def plot(
 
     # do plot
     filename += plot_type
-    Plot(field, resolution, filename, f.annotations).execute()
+    Plot(field, f.resolution, filename, f.annotations).execute()
 
 
 def main() -> None:
