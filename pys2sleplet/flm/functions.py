@@ -29,7 +29,7 @@ class Functions:
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._create_annotations()
+        self.annotations = self._create_annotations()
         self.reality = self._set_reality()
 
     def rotate(

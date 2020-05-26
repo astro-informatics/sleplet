@@ -23,7 +23,7 @@ class Plot:
     f: np.ndarray = field(repr=False)
     resolution: int
     filename: str
-    _annotations: List[Dict] = field(default_factory=list, repr=False)
+    annotations: List[Dict] = field(default_factory=list, repr=False)
     _fig_path: Path = field(
         default=_file_location.parents[1] / "figures", init=False, repr=False
     )
@@ -73,7 +73,7 @@ class Plot:
                 xaxis=XAxis(axis),
                 yaxis=YAxis(axis),
                 zaxis=ZAxis(axis),
-                annotations=self._annotations,
+                annotations=self.annotations,
             ),
             margin=Margin(l=0, r=0, b=0, t=0),
             paper_bgcolor="rgba(0,0,0,0)",
