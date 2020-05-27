@@ -57,7 +57,7 @@ class SlepianArbitrary(SlepianFunctions):
         if config.NCPU == 1:
             D = self.matrix_serial()
         else:
-            D = self.matrix_parallel(config.NCPU)
+            D = self.matrix_parallel()
 
         eigenvalues, eigenvectors = np.linalg.eigh(D)
 
