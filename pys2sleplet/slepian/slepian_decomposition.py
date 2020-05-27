@@ -13,8 +13,10 @@ class SlepianDecomposition:
     function: Functions
     slepian: SlepianFunctions
     _L: int = field(init=False, repr=False)
-    _flm: np.ndarray = field(init=False, repr=False)
     _f: np.ndarray = field(init=False, repr=False)
+    _flm: np.ndarray = field(init=False, repr=False)
+    _function: Functions = field(init=False, repr=False)
+    _slepian: SlepianFunctions = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
@@ -97,6 +99,22 @@ class SlepianDecomposition:
         """
         if self.function.L != self.slepian.L:
             raise AttributeError(
-                f"bandlimits must agree: the function has an  of {self.function.L} "
-                f"whereas the Slepian function has a L of {self.slepian.L}"
+                f"bandlimits must agree: the function has an L of {self.function.L} "
+                f"whereas the Slepian function has an L of {self.slepian.L}"
             )
+
+    @property  # type: ignore
+    def function(self) -> Functions:
+        return self._function
+
+    @function.setter
+    def function(self, function: Functions) -> None:
+        self._function = function
+
+    @property  # type: ignore
+    def slepian(self) -> SlepianFunctions:
+        return self._slepian
+
+    @slepian.setter
+    def slepian(self, slepian: SlepianFunctions) -> None:
+        self._slepian = slepian
