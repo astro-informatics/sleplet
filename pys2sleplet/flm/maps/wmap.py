@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -12,36 +12,16 @@ _file_location = Path(__file__).resolve()
 
 
 @dataclass
-class WMAP(Functions):
-    L: int
-    extra_args: Optional[List[int]] = field(default=None, repr=False)
-
+class Wmap(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    @staticmethod
-    def _load_cl(file_ending: str) -> np.ndarray:
-        """
-        pick coefficients from file options are:
-        * _lcdm_pl_model_yr1_v1.mat
-        * _tt_spectrum_7yr_v4p1.mat
-        * _lcdm_pl_model_wmap7baoh0.mat
-        """
-        filename = f"wmap{file_ending}.mat"
-        matfile = str(_file_location.parents[2] / "data" / "maps" / "wmap" / filename)
-        mat_contents = sio.loadmat(matfile)
-        cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
-        return cl
-
-    def _setup_args(self) -> None:
+    def _create_annotations(self) -> List[Dict]:
         pass
-
-    def _set_reality(self) -> bool:
-        return True
 
     def _create_flm(self) -> np.ndarray:
         # load in data
-        cl = self._load_cl("_lcdm_pl_model_wmap7baoh0")
+        cl = self._load_cl()
 
         # same random seed
         np.random.seed(0)
@@ -66,5 +46,23 @@ class WMAP(Functions):
         name = "wmap"
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return True
+
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
+            raise AttributeError(f"Does not support extra arguments")
+
+    @staticmethod
+    def _load_cl(file_ending: str = "_lcdm_pl_model_wmap7baoh0") -> np.ndarray:
+        """
+        pick coefficients from file options are:
+        * _lcdm_pl_model_yr1_v1.mat
+        * _tt_spectrum_7yr_v4p1.mat
+        * _lcdm_pl_model_wmap7baoh0.mat
+        """
+        filename = f"wmap{file_ending}.mat"
+        matfile = str(_file_location.parents[2] / "data" / "maps" / "wmap" / filename)
+        mat_contents = sio.loadmat(matfile)
+        cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
+        return cl

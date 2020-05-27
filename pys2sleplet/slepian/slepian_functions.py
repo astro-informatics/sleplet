@@ -5,9 +5,12 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
+from pys2sleplet.utils.logger import logger
+
 
 @dataclass  # type: ignore
 class SlepianFunctions:
+    L: int
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _eigenvalues: np.ndarray = field(init=False, repr=False)
     _eigenvectors: np.ndarray = field(init=False, repr=False)
@@ -16,10 +19,13 @@ class SlepianFunctions:
     _name: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.annotations = self._create_annotations()
-        self.name = self._create_fn_name()
+        self._create_annotations()
+        self.mask = self._create_mask()
         self.matrix_location = self._create_matrix_location()
+        self.name = self._create_fn_name()
+        logger.info("start solving eigenproblem")
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
+        logger.info("finished solving eigenproblem")
 
     @property
     def annotations(self) -> List[Dict]:
@@ -45,13 +51,22 @@ class SlepianFunctions:
     def eigenvectors(self, eigenvectors: np.ndarray) -> None:
         self._eigenvectors = eigenvectors
 
-    @property
+    @property  # type: ignore
     def L(self) -> int:
         return self._L
 
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
+        logger.info(f"L={L}")
+
+    @property
+    def mask(self) -> np.ndarray:
+        return self._mask
+
+    @mask.setter
+    def mask(self, mask: np.ndarray) -> None:
+        self._mask = mask
 
     @property
     def matrix_location(self) -> Path:
@@ -70,7 +85,7 @@ class SlepianFunctions:
         self._name = name
 
     @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         """
         creates the annotations for the plot
         """
@@ -80,6 +95,13 @@ class SlepianFunctions:
     def _create_fn_name(self) -> str:
         """
         creates the name for plotting
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_mask(self) -> np.ndarray:
+        """
+        creates a mask of the region of interest
         """
         raise NotImplementedError
 

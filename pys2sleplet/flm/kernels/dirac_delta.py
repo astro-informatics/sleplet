@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from dataclasses import dataclass
+from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -9,17 +9,11 @@ from pys2sleplet.flm.functions import Functions
 
 @dataclass
 class DiracDelta(Functions):
-    L: int
-    extra_args: Optional[List[int]] = field(default=None, repr=False)
-
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _setup_args(self) -> None:
+    def _create_annotations(self) -> List[Dict]:
         pass
-
-    def _set_reality(self) -> bool:
-        return True
 
     def _create_flm(self) -> np.ndarray:
         flm = np.zeros((self.L * self.L), dtype=complex)
@@ -32,5 +26,9 @@ class DiracDelta(Functions):
         name = "dirac_delta"
         return name
 
-    def _create_annotations(self) -> List[Dict]:
-        pass
+    def _set_reality(self) -> bool:
+        return True
+
+    def _setup_args(self) -> None:
+        if self.extra_args is not None:
+            raise AttributeError(f"Does not support extra arguments")

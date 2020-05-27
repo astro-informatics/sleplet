@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 
@@ -11,14 +11,28 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 @dataclass
 class Slepian(Functions):
-    L: int
-    extra_args: Optional[List[int]] = field(default=None)
-    s: SlepianFunctions = field(init=False, repr=False)
     _rank: int = field(default=0, init=False, repr=False)
+    _slepian: SlepianFunctions = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.slepian = choose_slepian_method()
         super().__post_init__()
-        self.s = choose_slepian_method(self.L)
+
+    def _create_annotations(self) -> List[Dict]:
+        annotations = self.slepian.annotations
+        return annotations
+
+    def _create_name(self) -> str:
+        name = f"{self.slepian.name}_rank{self.rank}"
+        return name
+
+    def _create_flm(self) -> np.ndarray:
+        flm = self.slepian.eigenvectors[self.rank]
+        logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
+        return flm
+
+    def _set_reality(self) -> bool:
+        return False
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:
@@ -28,22 +42,6 @@ class Slepian(Functions):
                     f"The number of extra arguments should be 1 or {num_args}"
                 )
             self.rank = self.extra_args[0]
-
-    def _set_reality(self) -> bool:
-        return False
-
-    def _create_name(self) -> str:
-        name = f"{self.s.name}_rank{self.rank}"
-        return name
-
-    def _create_flm(self) -> np.ndarray:
-        flm = self.s.eigenvectors[self.rank]
-        logger.info(f"Eigenvalue {self.rank}: {self.s.eigenvalues[self.rank]:e}")
-        return flm
-
-    def _create_annotations(self) -> List[Dict]:
-        annotations = self.s.annotations
-        return annotations
 
     @property
     def rank(self) -> int:
@@ -58,3 +56,12 @@ class Slepian(Functions):
         if rank >= self.L:
             raise ValueError(f"rank should be no more than {self.L}")
         self._rank = rank
+        logger.info(f"rank={rank}")
+
+    @property
+    def slepian(self) -> SlepianFunctions:
+        return self._slepian
+
+    @slepian.setter
+    def slepian(self, slepian: SlepianFunctions) -> None:
+        self._slepian = slepian

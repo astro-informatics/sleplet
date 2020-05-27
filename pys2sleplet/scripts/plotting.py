@@ -6,8 +6,7 @@ import numpy as np
 
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.dicts import functions
-from pys2sleplet.utils.plot_methods import calc_resolution
+from pys2sleplet.utils.functions import FUNCTIONS
 from pys2sleplet.utils.string_methods import filename_angle
 
 
@@ -15,7 +14,7 @@ def valid_kernels(func_name: str) -> str:
     """
     check if valid kernel
     """
-    if func_name in functions:
+    if func_name in FUNCTIONS:
         function = func_name
     else:
         raise ValueError("Not a valid kernel name to convolve")
@@ -26,7 +25,7 @@ def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    if func_name in functions:
+    if func_name in FUNCTIONS:
         function = func_name
     else:
         raise ValueError("Not a valid function name to plot")
@@ -41,7 +40,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "flm",
         type=valid_plotting,
-        choices=list(functions.keys()),
+        choices=list(FUNCTIONS.keys()),
         help="flm to plot on the sphere",
     )
     parser.add_argument(
@@ -69,7 +68,7 @@ def read_args() -> Namespace:
         "-c",
         type=valid_kernels,
         default=None,
-        choices=list(functions.keys()),
+        choices=list(FUNCTIONS.keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -120,12 +119,12 @@ def plot(
     beta_pi_fraction: float,
     gamma_pi_fraction: float,
     g_name: Optional[str],
+    annotations: bool,
 ) -> None:
     """
     master plotting method
     """
-    resolution = calc_resolution(L)
-    f = functions[f_name](L, extra_args)
+    f = FUNCTIONS[f_name](L, extra_args)
     filename = f"{f.name}_L{L}_"
 
     if routine == "rotate":
@@ -141,28 +140,34 @@ def plot(
         f.translate(alpha_pi_fraction, beta_pi_fraction)
 
     if g_name:
-        g = functions[g_name](L, extra_args)
+        g = FUNCTIONS[g_name](L, extra_args)
         # perform convolution
         f.convolve(g.multipole)
         # adjust filename
         filename += f"convolved_{g.name}_L{L}_"
 
     # add resolution to filename
-    filename += f"res{resolution}_"
+    filename += f"res{f.resolution}_"
 
     # check for plotting type
     if plot_type == "real":
-        field = f.plot.real
+        field = f.field_padded.real
     elif plot_type == "imag":
-        field = f.plot.imag
+        field = f.field_padded.imag
     elif plot_type == "abs":
-        field = np.abs(f.plot)
+        field = np.abs(f.field_padded)
     elif plot_type == "sum":
-        field = f.plot.real + f.plot.imag
+        field = f.field_padded.real + f.field_padded.imag
+
+    # turn off annotation if needed
+    if annotations:
+        annotation = f.annotations
+    else:
+        annotation = []
 
     # do plot
     filename += plot_type
-    Plot(field, resolution, filename, f.annotations).execute()
+    Plot(field, f.resolution, filename, annotation).execute()
 
 
 def main() -> None:
@@ -178,6 +183,7 @@ def main() -> None:
         args.beta,
         args.gamma,
         args.convolve,
+        args.annotation,
     )
 
 

@@ -6,6 +6,9 @@ from typing import Dict, List, Optional
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.utils.config import config
+from pys2sleplet.utils.harmonic_methods import invert_flm
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -14,25 +17,29 @@ _file_location = Path(__file__).resolve()
 
 @dataclass  # type: ignore
 class Functions:
+    L: int
+    extra_args: Optional[List[int]]
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _field: np.ndarray = field(init=False, repr=False)
+    _field_padded: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
     _multipole: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _plot: np.ndarray = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args()
-        self.resolution = calc_resolution(self.L)
-        self.reality = self._set_reality()
         self.name = self._create_name()
-        self.multipole = self._create_flm()
-        self.field = self._invert(self.multipole)
-        self.plot = self._invert(self.multipole, boosted=True)
         self.annotations = self._create_annotations()
+        self.reality = self._set_reality()
+        self.multipole = self._create_flm()
+        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
+        self.resolution = calc_resolution(self.L)
+        self.field_padded = invert_flm(
+            self.multipole, self.L, reality=self.reality, resolution=self.resolution
+        )
 
     def rotate(
         self,
@@ -76,8 +83,10 @@ class Functions:
         else:
             glm = ssht.create_ylm(beta, alpha, self.L).conj()
             glm = glm.reshape(glm.size)
+
             # save to speed up for future
-            np.save(filename, glm)
+            if config.SAVE_MATRICES:
+                np.save(filename, glm)
 
         # convolve with flm
         if self.name == "dirac_delta":
@@ -95,29 +104,6 @@ class Functions:
 
         self.multipole *= glm.conj()
 
-    def _boost_res(self, flm) -> np.ndarray:
-        """
-        calculates a boost in resolution for given flm
-        """
-        boost = self.resolution * self.resolution - self.L * self.L
-        flm_boost = np.pad(self.multipole, (0, boost), "constant")
-        return flm_boost
-
-    def _invert(self, flm: np.ndarray, boosted: bool = False) -> np.ndarray:
-        """
-        performs the inverse harmonic transform
-        """
-        # boost resolution for plot
-        if boosted:
-            flm = self._boost_res(flm)
-            bandlimit = self.resolution
-        else:
-            bandlimit = self.L
-
-        # perform inverse
-        f = ssht.inverse(flm, bandlimit, Reality=self.reality, Method="MWSS")
-        return f
-
     @property
     def annotations(self) -> List[Dict]:
         return self._annotations
@@ -126,12 +112,16 @@ class Functions:
     def annotations(self, annotations: List[Dict]) -> None:
         self._annotations = annotations
 
-    @property
+    @property  # type:ignore
     def extra_args(self) -> Optional[List[int]]:
         return self._extra_args
 
     @extra_args.setter
     def extra_args(self, extra_args: Optional[List[int]]) -> None:
+        if isinstance(extra_args, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            extra_args = Functions._extra_args
         self._extra_args = extra_args
 
     @property
@@ -142,13 +132,14 @@ class Functions:
     def field(self, field: np.ndarray) -> None:
         self._field = field
 
-    @property
+    @property  # type: ignore
     def L(self) -> int:
         return self._L
 
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
+        logger.info(f"L={L}")
 
     @property
     def multipole(self) -> np.ndarray:
@@ -156,12 +147,7 @@ class Functions:
 
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
-        """
-        update multipole value and hence field value
-        """
         self._multipole = multipole
-        self.field = self._invert(self.multipole)
-        self.plot = self._invert(self.multipole, boosted=True)
 
     @property
     def name(self) -> np.ndarray:
@@ -172,12 +158,12 @@ class Functions:
         self._name = name
 
     @property
-    def plot(self) -> np.ndarray:
-        return self._plot
+    def field_padded(self) -> np.ndarray:
+        return self._field_padded
 
-    @plot.setter
-    def plot(self, plot: np.ndarray) -> None:
-        self._plot = plot
+    @field_padded.setter
+    def field_padded(self, field_padded: np.ndarray) -> None:
+        self._field_padded = field_padded
 
     @property
     def reality(self) -> bool:
@@ -196,17 +182,9 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _setup_args(self) -> None:
+    def _create_annotations(self) -> List[Dict]:
         """
-        initialises function specific args
-        either default value or user input
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _set_reality(self) -> bool:
-        """
-        sets the reality flag to speed up computations
+        creates the annotations for the plot
         """
         raise NotImplementedError
 
@@ -225,8 +203,16 @@ class Functions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
+    def _set_reality(self) -> bool:
         """
-        creates the annotations for the plot
+        sets the reality flag to speed up computations
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _setup_args(self) -> None:
+        """
+        initialises function specific args
+        either default value or user input
         """
         raise NotImplementedError
