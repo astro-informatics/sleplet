@@ -11,6 +11,7 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.vars import (
     ANNOTATION_DOTS,
@@ -385,6 +386,7 @@ class SlepianPolarCap(SlepianFunctions):
         if abs(order) >= self.L:
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
+        logger.info(f"order={order}")
 
     @property  # type:ignore
     def theta_max(self) -> float:
@@ -397,3 +399,4 @@ class SlepianPolarCap(SlepianFunctions):
         if theta_max > np.deg2rad(THETA_MAX_DEFAULT):
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_max = theta_max
+        logger.info(f"theta_max={theta_max}")

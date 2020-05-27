@@ -9,6 +9,7 @@ import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.vars import (
     ARROW_STYLE,
@@ -364,6 +365,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if phi_max > np.deg2rad(PHI_MAX_DEFAULT):
             raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
         self._phi_max = phi_max
+        logger.info(f"phi_max={phi_max}")
 
     @property  # type:ignore
     def phi_min(self) -> float:
@@ -380,6 +382,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if phi_min > np.deg2rad(PHI_MAX_DEFAULT):
             raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
         self._phi_min = phi_min
+        logger.info(f"phi_min={phi_min}")
 
     @property  # type:ignore
     def theta_max(self) -> float:
@@ -396,6 +399,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if theta_max > np.deg2rad(THETA_MAX_DEFAULT):
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_max = theta_max
+        logger.info(f"theta_max={theta_max}")
 
     @property  # type: ignore
     def theta_min(self) -> float:
@@ -412,3 +416,4 @@ class SlepianLimitLatLong(SlepianFunctions):
         if theta_min > np.deg2rad(THETA_MAX_DEFAULT):
             raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_min = theta_min
+        logger.info(f"theta_min={theta_min}")

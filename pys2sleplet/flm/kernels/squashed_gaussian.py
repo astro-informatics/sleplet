@@ -4,6 +4,7 @@ from typing import Dict, List
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
 from pys2sleplet.utils.vars import THETA_0
@@ -58,6 +59,7 @@ class SquashedGaussian(Functions):
     @freq.setter
     def freq(self, freq: float) -> None:
         self._freq = freq
+        logger.info(f"freq={freq}")
 
     @property
     def t_sigma(self) -> float:
@@ -66,3 +68,4 @@ class SquashedGaussian(Functions):
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
         self._t_sigma = t_sigma
+        logger.info(f"t_sigma={t_sigma}")

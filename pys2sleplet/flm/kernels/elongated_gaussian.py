@@ -4,6 +4,7 @@ from typing import Dict, List
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
 from pys2sleplet.utils.vars import PHI_0, THETA_0
@@ -62,6 +63,7 @@ class ElongatedGaussian(Functions):
     @p_sigma.setter
     def p_sigma(self, p_sigma: float) -> None:
         self._p_sigma = p_sigma
+        logger.info(f"p_sigma={p_sigma}")
 
     @property
     def t_sigma(self) -> float:
@@ -70,3 +72,4 @@ class ElongatedGaussian(Functions):
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
         self._t_sigma = t_sigma
+        logger.info(f"t_sigma={t_sigma}")

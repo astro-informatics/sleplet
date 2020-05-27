@@ -58,6 +58,7 @@ class SlepianFunctions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
+        logger.info(f"L={L}")
 
     @property
     def mask(self) -> np.ndarray:

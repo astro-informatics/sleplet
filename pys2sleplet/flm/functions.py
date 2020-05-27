@@ -8,6 +8,7 @@ import pyssht as ssht
 
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.harmonic_methods import invert_flm
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -138,6 +139,7 @@ class Functions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
+        logger.info(f"L={L}")
 
     @property
     def multipole(self) -> np.ndarray:

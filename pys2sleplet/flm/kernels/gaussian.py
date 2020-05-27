@@ -5,6 +5,7 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args
 
 
@@ -46,3 +47,4 @@ class Gaussian(Functions):
     @sigma.setter
     def sigma(self, sigma: float) -> None:
         self._sigma = sigma
+        logger.info(f"sigma={sigma}")
