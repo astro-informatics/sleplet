@@ -33,7 +33,7 @@ class SlepianDecomposition:
         delta_phi = np.ediff1d(phi_grid[0]).mean()
         self._weight = np.sin(theta_grid) * delta_theta * delta_phi
 
-    def decompose(self, rank: int, method: str) -> np.ndarray:
+    def decompose(self, rank: int, method: str = "forward_transform") -> np.ndarray:
         """
         decompose the signal into its Slepian coefficients via the given method
         """
