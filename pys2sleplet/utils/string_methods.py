@@ -74,8 +74,8 @@ def multiples_of_pi(angle: float) -> str:
     i.e. pi, 2pi, 3pi
     """
     multiple = int(angle / np.pi)
-    filename = f"{multiple if multiple != 1 else ''}\u03C0"
-    return filename
+    output = f"{multiple if multiple != 1 else ''}\u03C0"
+    return output
 
 
 def angle_as_degree(radian: float) -> int:
