@@ -91,7 +91,7 @@ class SlepianPolarCap(SlepianFunctions):
         phi = np.array([2 * np.pi / ANNOTATION_DOTS * (i + 1)])
         x, y, z = ssht.s2_to_cart(theta, phi)
         self.annotations.append(
-            {**dict(x=x, y=y, z=z, arrowcolor=colour), **ARROW_STYLE}
+            {**dict(x=x[0], y=y[0], z=z[0], arrowcolor=colour), **ARROW_STYLE}
         )
 
     def _create_emm_vec(self) -> np.ndarray:

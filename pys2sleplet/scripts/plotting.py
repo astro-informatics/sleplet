@@ -119,6 +119,7 @@ def plot(
     beta_pi_fraction: float,
     gamma_pi_fraction: float,
     g_name: Optional[str],
+    annotations: bool,
 ) -> None:
     """
     master plotting method
@@ -158,9 +159,15 @@ def plot(
     elif plot_type == "sum":
         field = f.field_padded.real + f.field_padded.imag
 
+    # turn off annotation if needed
+    if annotations:
+        annotation = f.annotations
+    else:
+        annotation = []
+
     # do plot
     filename += plot_type
-    Plot(field, f.resolution, filename, f.annotations).execute()
+    Plot(field, f.resolution, filename, annotation).execute()
 
 
 def main() -> None:
@@ -176,6 +183,7 @@ def main() -> None:
         args.beta,
         args.gamma,
         args.convolve,
+        args.annotation,
     )
 
 

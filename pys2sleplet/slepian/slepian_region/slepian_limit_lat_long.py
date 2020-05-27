@@ -65,7 +65,10 @@ class SlepianLimitLatLong(SlepianFunctions):
                 if not (t_condition and p_condition):
                     x, y, z = ssht.s2_to_cart(t, p)
                     self.annotations.append(
-                        {**dict(x=x, y=y, z=z, arrowcolor="black"), **ARROW_STYLE}
+                        {
+                            **dict(x=x[0], y=y[0], z=z[0], arrowcolor="black"),
+                            **ARROW_STYLE,
+                        }
                     )
 
     def _create_fn_name(self) -> str:
