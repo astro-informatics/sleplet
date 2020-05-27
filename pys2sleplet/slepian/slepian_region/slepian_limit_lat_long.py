@@ -37,8 +37,8 @@ class SlepianLimitLatLong(SlepianFunctions):
 
     def __post_init__(self) -> None:
         self._name_ending = (
-            f"_theta{int(self.theta_min)}-{int(self.theta_max)}"
-            f"_phi{int(self.phi_min)}-{int(self.phi_max)}"
+            f"_theta{int(np.rad2deg(self.theta_min))}-{int(np.rad2deg(self.theta_max))}"
+            f"_phi{int(np.rad2deg(self.phi_min))}-{int(np.rad2deg(self.phi_max))}"
         )
         super().__post_init__()
 
@@ -360,10 +360,12 @@ class SlepianLimitLatLong(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             phi_max = SlepianLimitLatLong._phi_max
-        if phi_max < np.deg2rad(PHI_MIN_DEFAULT):
+        if phi_max < PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
-        if phi_max > np.deg2rad(PHI_MAX_DEFAULT):
-            raise ValueError(f"phi_max cannot be greater than {PHI_MAX_DEFAULT}")
+        if phi_max >= PHI_MAX_DEFAULT:
+            raise ValueError(
+                f"phi_max cannot be greater than or equal to {PHI_MAX_DEFAULT}"
+            )
         self._phi_max = phi_max
         logger.info(f"phi_max={phi_max}")
 
@@ -377,10 +379,12 @@ class SlepianLimitLatLong(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             phi_min = SlepianLimitLatLong._phi_min
-        if phi_min < np.deg2rad(PHI_MIN_DEFAULT):
+        if phi_min < PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
-        if phi_min > np.deg2rad(PHI_MAX_DEFAULT):
-            raise ValueError(f"phi_min cannot be greater than {PHI_MAX_DEFAULT}")
+        if phi_min >= PHI_MAX_DEFAULT:
+            raise ValueError(
+                f"phi_min cannot be greater than or equal to {PHI_MAX_DEFAULT}"
+            )
         self._phi_min = phi_min
         logger.info(f"phi_min={phi_min}")
 
@@ -394,9 +398,9 @@ class SlepianLimitLatLong(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             theta_max = SlepianLimitLatLong._theta_max
-        if theta_max < np.deg2rad(THETA_MIN_DEFAULT):
+        if theta_max < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
-        if theta_max > np.deg2rad(THETA_MAX_DEFAULT):
+        if theta_max > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_max = theta_max
         logger.info(f"theta_max={theta_max}")
@@ -411,9 +415,9 @@ class SlepianLimitLatLong(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             theta_min = SlepianLimitLatLong._theta_min
-        if theta_min < np.deg2rad(THETA_MIN_DEFAULT):
+        if theta_min < THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
-        if theta_min > np.deg2rad(THETA_MAX_DEFAULT):
+        if theta_min > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_min = theta_min
         logger.info(f"theta_min={theta_min}")

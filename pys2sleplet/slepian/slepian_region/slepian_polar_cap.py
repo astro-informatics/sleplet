@@ -396,9 +396,9 @@ class SlepianPolarCap(SlepianFunctions):
     def theta_max(self, theta_max: float) -> None:
         if theta_max == 0:
             raise ValueError("theta_max cannot be zero")
-        if theta_max < np.deg2rad(THETA_MIN_DEFAULT):
+        if theta_max < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
-        if theta_max > np.deg2rad(THETA_MAX_DEFAULT):
+        if theta_max > THETA_MAX_DEFAULT:
             raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
         self._theta_max = theta_max
         logger.info(f"theta_max={theta_max}")

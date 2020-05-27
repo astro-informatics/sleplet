@@ -24,11 +24,11 @@ def choose_slepian_method() -> SlepianFunctions:
     theta_min = np.deg2rad(config.THETA_MIN)
     theta_max = np.deg2rad(config.THETA_MAX)
 
-    if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
+    if is_polar_cap(phi_min, phi_max, theta_min):
         logger.info("polar cap region detected")
         slepian = SlepianPolarCap(config.L, theta_max, config.ORDER)
 
-    elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
+    elif is_limited_lat_lon(phi_min, phi_max, theta_min):
         logger.info("limited latitude longitude region detected")
         slepian = SlepianLimitLatLong(config.L, theta_min, theta_max, phi_min, phi_max)
 
