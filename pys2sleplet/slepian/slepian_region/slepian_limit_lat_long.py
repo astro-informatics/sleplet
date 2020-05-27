@@ -355,6 +355,10 @@ class SlepianLimitLatLong(SlepianFunctions):
 
     @phi_max.setter
     def phi_max(self, phi_max: float) -> None:
+        if isinstance(phi_max, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            phi_max = SlepianLimitLatLong._phi_max
         if phi_max < np.deg2rad(PHI_MIN_DEFAULT):
             raise ValueError("phi_max cannot be negative")
         if phi_max > np.deg2rad(PHI_MAX_DEFAULT):
@@ -367,6 +371,10 @@ class SlepianLimitLatLong(SlepianFunctions):
 
     @phi_min.setter
     def phi_min(self, phi_min: float) -> None:
+        if isinstance(phi_min, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            phi_min = SlepianLimitLatLong._phi_min
         if phi_min < np.deg2rad(PHI_MIN_DEFAULT):
             raise ValueError("phi_min cannot be negative")
         if phi_min > np.deg2rad(PHI_MAX_DEFAULT):
@@ -379,6 +387,10 @@ class SlepianLimitLatLong(SlepianFunctions):
 
     @theta_max.setter
     def theta_max(self, theta_max: float) -> None:
+        if isinstance(theta_max, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            theta_max = SlepianLimitLatLong._theta_max
         if theta_max < np.deg2rad(THETA_MIN_DEFAULT):
             raise ValueError("theta_max cannot be negative")
         if theta_max > np.deg2rad(THETA_MAX_DEFAULT):
@@ -391,6 +403,10 @@ class SlepianLimitLatLong(SlepianFunctions):
 
     @theta_min.setter
     def theta_min(self, theta_min: float) -> None:
+        if isinstance(theta_min, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            theta_min = SlepianLimitLatLong._theta_min
         if theta_min < np.deg2rad(THETA_MIN_DEFAULT):
             raise ValueError("theta_min cannot be negative")
         if theta_min > np.deg2rad(THETA_MAX_DEFAULT):

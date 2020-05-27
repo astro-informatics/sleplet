@@ -376,6 +376,10 @@ class SlepianPolarCap(SlepianFunctions):
 
     @order.setter
     def order(self, order: int) -> None:
+        if isinstance(order, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            order = SlepianPolarCap._order
         if not isinstance(order, int):
             raise TypeError("order should be an integer")
         if abs(order) >= self.L:
