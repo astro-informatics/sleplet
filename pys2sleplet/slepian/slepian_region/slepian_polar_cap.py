@@ -13,7 +13,7 @@ from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
-from pys2sleplet.utils.string_methods import multiples_of_pi
+from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (
     ANNOTATION_DOTS,
     ARROW_STYLE,
@@ -37,7 +37,7 @@ class SlepianPolarCap(SlepianFunctions):
     def __post_init__(self) -> None:
         self._name_ending = (
             f"_polar{'_gap' if config.POLAR_GAP else ''}"
-            f"{int(np.rad2deg(self.theta_max))}_m{self.order}"
+            f"{angle_as_degree(self.theta_max)}_m{self.order}"
         )
         super().__post_init__()
 

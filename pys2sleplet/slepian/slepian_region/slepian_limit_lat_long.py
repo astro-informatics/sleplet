@@ -11,7 +11,7 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
-from pys2sleplet.utils.string_methods import multiples_of_pi
+from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     PHI_MAX_DEFAULT,
@@ -38,8 +38,10 @@ class SlepianLimitLatLong(SlepianFunctions):
 
     def __post_init__(self) -> None:
         self._name_ending = (
-            f"_theta{int(np.rad2deg(self.theta_min))}-{int(np.rad2deg(self.theta_max))}"
-            f"_phi{int(np.rad2deg(self.phi_min))}-{int(np.rad2deg(self.phi_max))}"
+            f"_theta{angle_as_degree(self.theta_min)}"
+            f"-{angle_as_degree(self.theta_max)}"
+            f"_phi{angle_as_degree(self.phi_min)}"
+            f"-{angle_as_degree(self.phi_max)}"
         )
         super().__post_init__()
 
