@@ -11,6 +11,7 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.string_methods import multiples_of_pi
 from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     PHI_MAX_DEFAULT,
@@ -364,7 +365,7 @@ class SlepianLimitLatLong(SlepianFunctions):
             raise ValueError("phi_max cannot be negative")
         if phi_max >= PHI_MAX_DEFAULT:
             raise ValueError(
-                f"phi_max cannot be greater than or equal to {PHI_MAX_DEFAULT}"
+                f"phi_max cannot be greater than or equal to {multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_max = phi_max
         logger.info(f"phi_max={phi_max}")
@@ -383,7 +384,7 @@ class SlepianLimitLatLong(SlepianFunctions):
             raise ValueError("phi_min cannot be negative")
         if phi_min >= PHI_MAX_DEFAULT:
             raise ValueError(
-                f"phi_min cannot be greater than or equal to {PHI_MAX_DEFAULT}"
+                f"phi_min cannot be greater than or equal to {multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_min = phi_min
         logger.info(f"phi_min={phi_min}")
@@ -401,7 +402,9 @@ class SlepianLimitLatLong(SlepianFunctions):
         if theta_max < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
         if theta_max > THETA_MAX_DEFAULT:
-            raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
+            raise ValueError(
+                f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
+            )
         self._theta_max = theta_max
         logger.info(f"theta_max={theta_max}")
 
@@ -418,6 +421,8 @@ class SlepianLimitLatLong(SlepianFunctions):
         if theta_min < THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
         if theta_min > THETA_MAX_DEFAULT:
-            raise ValueError(f"theta_min cannot be greater than {THETA_MAX_DEFAULT}")
+            raise ValueError(
+                f"theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
+            )
         self._theta_min = theta_min
         logger.info(f"theta_min={theta_min}")

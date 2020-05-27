@@ -13,6 +13,7 @@ from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.string_methods import multiples_of_pi
 from pys2sleplet.utils.vars import (
     ANNOTATION_DOTS,
     ARROW_STYLE,
@@ -399,6 +400,8 @@ class SlepianPolarCap(SlepianFunctions):
         if theta_max < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
         if theta_max > THETA_MAX_DEFAULT:
-            raise ValueError(f"theta_max cannot be greater than {THETA_MAX_DEFAULT}")
+            raise ValueError(
+                f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
+            )
         self._theta_max = theta_max
         logger.info(f"theta_max={theta_max}")

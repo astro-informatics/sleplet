@@ -1,6 +1,8 @@
 from fractions import Fraction
 from typing import Tuple
 
+import numpy as np
+
 
 def _get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
     """
@@ -63,4 +65,10 @@ def filename_angle(
     # if rotation with gamma != 0
     if gamma_num:
         filename += f"_gamma{_pi_in_filename(gamma_num, gamma_den)}"
+    return filename
+
+
+def multiples_of_pi(angle: float) -> str:
+    multiple = int(angle / np.pi)
+    filename = f"{multiple if multiple != 1 else ''}\u03C0"
     return filename
