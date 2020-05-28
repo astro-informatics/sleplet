@@ -220,4 +220,4 @@ class SlepianArbitrary(SlepianFunctions):
     @mask_name.setter
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
-        logger.info(f"mask_name={mask_name}")
+        logger.info(f"mask_name={self.mask_name}")

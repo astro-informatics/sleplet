@@ -52,7 +52,7 @@ class SphericalHarmonic(Functions):
         if ell >= self.L:
             raise ValueError("ell should be less than or equal to L")
         self._ell = ell
-        logger.info(f"ell={ell}")
+        logger.info(f"ell={self.ell}")
 
     @property
     def m(self) -> int:
@@ -65,4 +65,4 @@ class SphericalHarmonic(Functions):
         if abs(m) > self.ell:
             raise ValueError("the magnitude of m should be less than ell")
         self._m = m
-        logger.info(f"m={m}")
+        logger.info(f"m={self.m}")

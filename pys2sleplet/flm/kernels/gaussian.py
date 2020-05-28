@@ -45,4 +45,4 @@ class Gaussian(Functions):
     @sigma.setter
     def sigma(self, sigma: float) -> None:
         self._sigma = sigma
-        logger.info(f"sigma={sigma}")
+        logger.info(f"sigma={self.sigma}")

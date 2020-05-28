@@ -50,7 +50,7 @@ class Slepian(Functions):
         if rank >= self.L:
             raise ValueError(f"rank should be no more than {self.L}")
         self._rank = rank
-        logger.info(f"rank={rank}")
+        logger.info(f"rank={self.rank}")
 
     @property
     def slepian(self) -> SlepianFunctions:

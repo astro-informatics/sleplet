@@ -60,7 +60,7 @@ class SlepianFunctions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        logger.info(f"L={L}")
+        logger.info(f"L={self.L}")
 
     @property
     def mask(self) -> np.ndarray:
@@ -97,6 +97,7 @@ class SlepianFunctions:
             # https://stackoverflow.com/a/61480946/7359333
             ncpu = SlepianFunctions._ncpu
         self._ncpu = ncpu
+        logger.info(f"ncpu={self.ncpu}")
 
     @abstractmethod
     def _create_annotations(self) -> None:

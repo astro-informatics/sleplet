@@ -387,7 +387,7 @@ class SlepianPolarCap(SlepianFunctions):
         if abs(order) >= self.L:
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
-        logger.info(f"order={order}")
+        logger.info(f"order={self.order}")
 
     @property  # type:ignore
     def theta_max(self) -> float:
@@ -404,4 +404,4 @@ class SlepianPolarCap(SlepianFunctions):
                 f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
         self._theta_max = theta_max
-        logger.info(f"theta_max={theta_max}")
+        logger.info(f"theta_max={self.theta_max}")

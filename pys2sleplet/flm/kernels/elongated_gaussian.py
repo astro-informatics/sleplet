@@ -60,7 +60,7 @@ class ElongatedGaussian(Functions):
     @p_sigma.setter
     def p_sigma(self, p_sigma: float) -> None:
         self._p_sigma = p_sigma
-        logger.info(f"p_sigma={p_sigma}")
+        logger.info(f"p_sigma={self.p_sigma}")
 
     @property
     def t_sigma(self) -> float:
@@ -69,4 +69,4 @@ class ElongatedGaussian(Functions):
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
         self._t_sigma = t_sigma
-        logger.info(f"t_sigma={t_sigma}")
+        logger.info(f"t_sigma={self.t_sigma}")

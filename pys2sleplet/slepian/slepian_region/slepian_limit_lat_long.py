@@ -372,7 +372,7 @@ class SlepianLimitLatLong(SlepianFunctions):
                 f"{multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_max = phi_max
-        logger.info(f"phi_max={phi_max}")
+        logger.info(f"phi_max={self.phi_max}")
 
     @property  # type:ignore
     def phi_min(self) -> float:
@@ -392,7 +392,7 @@ class SlepianLimitLatLong(SlepianFunctions):
                 f"{multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_min = phi_min
-        logger.info(f"phi_min={phi_min}")
+        logger.info(f"phi_min={self.phi_min}")
 
     @property  # type:ignore
     def theta_max(self) -> float:
@@ -411,7 +411,7 @@ class SlepianLimitLatLong(SlepianFunctions):
                 f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
         self._theta_max = theta_max
-        logger.info(f"theta_max={theta_max}")
+        logger.info(f"theta_max={self.theta_max}")
 
     @property  # type: ignore
     def theta_min(self) -> float:
@@ -430,4 +430,4 @@ class SlepianLimitLatLong(SlepianFunctions):
                 f"theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
         self._theta_min = theta_min
-        logger.info(f"theta_min={theta_min}")
+        logger.info(f"theta_min={self.theta_min}")

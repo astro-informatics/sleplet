@@ -142,7 +142,7 @@ class Functions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        logger.info(f"L={L}")
+        logger.info(f"L={self.L}")
 
     @property
     def multipole(self) -> np.ndarray:

@@ -56,7 +56,7 @@ class SquashedGaussian(Functions):
     @freq.setter
     def freq(self, freq: float) -> None:
         self._freq = freq
-        logger.info(f"freq={freq}")
+        logger.info(f"freq={self.freq}")
 
     @property
     def t_sigma(self) -> float:
@@ -65,4 +65,4 @@ class SquashedGaussian(Functions):
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
         self._t_sigma = t_sigma
-        logger.info(f"t_sigma={t_sigma}")
+        logger.info(f"t_sigma={self.t_sigma}")
