@@ -5,14 +5,12 @@ from typing import Dict, List
 
 import numpy as np
 
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 
 
 @dataclass  # type: ignore
 class SlepianFunctions:
     L: int
-    ncpu: int
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _eigenvalues: np.ndarray = field(init=False, repr=False)
     _eigenvectors: np.ndarray = field(init=False, repr=False)
@@ -20,7 +18,6 @@ class SlepianFunctions:
     _mask: np.ndarray = field(init=False, repr=False)
     _matrix_location: Path = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_annotations()
@@ -85,19 +82,6 @@ class SlepianFunctions:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @property  # type: ignore
-    def ncpu(self) -> int:
-        return self._ncpu
-
-    @ncpu.setter
-    def ncpu(self, ncpu: int) -> None:
-        if isinstance(ncpu, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            ncpu = SlepianFunctions._ncpu
-        self._ncpu = ncpu
-        logger.info(f"ncpu={self.ncpu}")
 
     @abstractmethod
     def _create_annotations(self) -> None:

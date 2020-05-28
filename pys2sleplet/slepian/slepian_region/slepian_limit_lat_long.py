@@ -30,11 +30,13 @@ class SlepianLimitLatLong(SlepianFunctions):
     theta_max: float
     phi_min: float
     phi_max: float
+    ncpu: int
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
     _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
+    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._name_ending = (
@@ -353,6 +355,19 @@ class SlepianLimitLatLong(SlepianFunctions):
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
+
+    @property  # type: ignore
+    def ncpu(self) -> int:
+        return self._ncpu
+
+    @ncpu.setter
+    def ncpu(self, ncpu: int) -> None:
+        if isinstance(ncpu, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            ncpu = SlepianLimitLatLong._ncpu
+        self._ncpu = ncpu
+        logger.info(f"ncpu={self.ncpu}")
 
     @property  # type:ignore
     def phi_max(self) -> float:
