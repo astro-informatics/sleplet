@@ -84,7 +84,7 @@ class SlepianArbitrary(SlepianFunctions):
         if Path(self.matrix_location).exists():
             D = np.load(self.matrix_location)
         else:
-            if config.NCPU == 1:
+            if self.ncpu == 1:
                 D = self.matrix_serial()
             else:
                 D = self.matrix_parallel()
@@ -132,10 +132,10 @@ class SlepianArbitrary(SlepianFunctions):
                 self._matrix_helper(tmp_r, tmp_i, i)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self._N, config.NCPU)
+        chunks = split_L_into_chunks(self._N, self.ncpu)
 
         # initialise pool and apply function
-        with mp.Pool(processes=config.NCPU) as p:
+        with mp.Pool(processes=self.ncpu) as p:
             p.map(func, chunks)
 
         # retrieve real and imag components

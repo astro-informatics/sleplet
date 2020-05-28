@@ -119,7 +119,7 @@ class SlepianPolarCap(SlepianFunctions):
             P = self._create_legendre_polynomials_table(emm)
 
             # Computing order 'm' Slepian matrix
-            if config.NCPU == 1:
+            if self.ncpu == 1:
                 Dm = self._dm_matrix_serial(abs(self.order), P)
             else:
                 Dm = self._dm_matrix_parallel(abs(self.order), P)
@@ -208,10 +208,10 @@ class SlepianPolarCap(SlepianFunctions):
                 self._dm_matrix_helper(tmp, i, m, lvec, Pl, ell)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L - m, config.NCPU)
+        chunks = split_L_into_chunks(self.L - m, self.ncpu)
 
         # initialise pool and apply function
-        with Pool(processes=config.NCPU) as p:
+        with Pool(processes=self.ncpu) as p:
             p.map(func, chunks)
 
         # retrieve from parallel function

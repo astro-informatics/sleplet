@@ -118,7 +118,7 @@ class SlepianLimitLatLong(SlepianFunctions):
             G = self._slepian_integral()
 
             # Compute Slepian matrix
-            if config.NCPU == 1:
+            if self.ncpu == 1:
                 K = self._slepian_matrix_serial(G)
             else:
                 K = self._slepian_matrix_parallel(G)
@@ -265,10 +265,10 @@ class SlepianLimitLatLong(SlepianFunctions):
                 self._slepian_matrix_helper(tmp_r, tmp_i, l, dl_array, G)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L, config.NCPU)
+        chunks = split_L_into_chunks(self.L, self.ncpu)
 
         # initialise pool and apply function
-        with Pool(processes=config.NCPU) as p:
+        with Pool(processes=self.ncpu) as p:
             p.map(func, chunks)
 
         # retrieve real and imag components
