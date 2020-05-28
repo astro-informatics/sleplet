@@ -29,7 +29,7 @@ class HarmonicGaussian(Functions):
         self.multipole = flm
 
     def _create_name(self) -> None:
-        self.Lname = (
+        self.name = (
             "harmonic_gaussian"
             f"{filename_args(self.l_sigma, 'lsig')}"
             f"{filename_args(self.m_sigma, 'msig')}"
