@@ -6,7 +6,7 @@ import pyssht as ssht
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
-def boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarray:
+def _boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarray:
     """
     calculates a boost in resolution for given flm
     """
@@ -22,7 +22,7 @@ def invert_flm(
     performs the inverse harmonic transform
     """
     if resolution is not None:
-        flm = boost_flm_resolution(flm, L, resolution)
+        flm = _boost_flm_resolution(flm, L, resolution)
         bandlimit = resolution
     else:
         bandlimit = L
