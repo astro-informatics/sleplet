@@ -54,10 +54,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> None:
         logger.info("start solving eigenproblem")
-        if config.NCPU == 1:
-            D = self.matrix_serial()
-        else:
-            D = self.matrix_parallel()
+        D = self._load_D_matrix()
 
         eigenvalues, eigenvectors = np.linalg.eigh(D)
 
@@ -77,6 +74,26 @@ class SlepianArbitrary(SlepianFunctions):
             logger.error(f"can not find the file: {self.mask_name}")
             raise
         return mask
+
+    def _load_D_matrix(self) -> np.ndarray:
+        """
+        if the D matrix already exists load it
+        otherwise create it and save the result
+        """
+        # check if matrix already exists
+        if Path(self.matrix_location).exists():
+            D = np.load(self.matrix_location)
+        else:
+            if config.NCPU == 1:
+                D = self.matrix_serial()
+            else:
+                D = self.matrix_parallel()
+
+            # save to speed up for future
+            if config.SAVE_MATRICES:
+                np.save(self.matrix_location, D)
+
+        return D
 
     def _matrix_serial(self) -> np.ndarray:
         # initialise real and imaginary matrices
