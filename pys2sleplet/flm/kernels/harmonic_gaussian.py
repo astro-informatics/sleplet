@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -17,28 +16,26 @@ class HarmonicGaussian(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> np.ndarray:
-        flm = np.zeros((self.L * self.L), dtype=complex)
+    def _create_flm(self) -> None:
+        self.flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
-        return flm
+                self.flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
 
-    def _create_name(self) -> str:
-        name = (
+    def _create_name(self) -> None:
+        self.Lname = (
             "harmonic_gaussian"
             f"{filename_args(self.l_sigma, 'lsig')}"
             f"{filename_args(self.m_sigma, 'msig')}"
         )
-        return name
 
-    def _set_reality(self) -> bool:
-        return False
+    def _set_reality(self) -> None:
+        self.reality = False
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:

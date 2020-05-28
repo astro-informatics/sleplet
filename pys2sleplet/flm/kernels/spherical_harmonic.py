@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -14,25 +13,23 @@ class SphericalHarmonic(Functions):
     _ell: int = field(default=0, init=False, repr=False)
     _m: int = field(default=0, init=False, repr=False)
 
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> np.ndarray:
-        flm = np.zeros((self.L * self.L), dtype=complex)
+    def _create_flm(self) -> None:
+        self.flm = np.zeros((self.L * self.L), dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
-        flm[ind] = 1
-        return flm
+        self.flm[ind] = 1
 
-    def _create_name(self) -> str:
-        name = (
+    def _create_name(self) -> None:
+        self.name = (
             "spherical_harmonic"
             f"{filename_args(self.ell, 'l')}"
             f"{filename_args(self.m, 'm')}"
         )
-        return name
 
-    def _set_reality(self) -> bool:
-        return False
+    def _set_reality(self) -> None:
+        self.reality = False
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:

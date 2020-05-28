@@ -41,19 +41,18 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_fn_name(self) -> str:
-        name = f"slepian{self._name_ending}"
-        return name
+    def _create_fn_name(self) -> None:
+        self.name = f"slepian{self._name_ending}"
 
-    def _create_mask(self) -> np.ndarray:
-        mask = self._load_mask()
-        return mask
+    def _create_mask(self) -> None:
+        self.mask = self._load_mask()
 
-    def _create_matrix_location(self) -> Path:
-        location = _arbitrary_path / "matrices" / f"D_L{self.L}{self._name_ending}.npy"
-        return location
+    def _create_matrix_location(self) -> None:
+        self.matrix_location = (
+            _arbitrary_path / "matrices" / f"D_L{self.L}{self._name_ending}.npy"
+        )
 
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> None:
         logger.info("start solving eigenproblem")
         if config.NCPU == 1:
             D = self.matrix_serial()
@@ -62,11 +61,10 @@ class SlepianArbitrary(SlepianFunctions):
 
         eigenvalues, eigenvectors = np.linalg.eigh(D)
 
-        eigenvalues, eigenvectors = self._clean_evals_and_evecs(
+        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
         logger.info("finished solving eigenproblem")
-        return eigenvalues, eigenvectors
 
     def _load_mask(self) -> np.ndarray:
         """

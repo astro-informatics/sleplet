@@ -1,7 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
-
-import numpy as np
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -18,21 +15,18 @@ class Slepian(Functions):
         self.slepian = choose_slepian_method()
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
-        annotations = self.slepian.annotations
-        return annotations
+    def _create_annotations(self) -> None:
+        self.annotations = self.slepian.annotations
 
-    def _create_name(self) -> str:
-        name = f"{self.slepian.name}_rank{self.rank}"
-        return name
+    def _create_name(self) -> None:
+        self.name = f"{self.slepian.name}_rank{self.rank}"
 
-    def _create_flm(self) -> np.ndarray:
-        flm = self.slepian.eigenvectors[self.rank]
+    def _create_flm(self) -> None:
+        self.flm = self.slepian.eigenvectors[self.rank]
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
-        return flm
 
-    def _set_reality(self) -> bool:
-        return False
+    def _set_reality(self) -> None:
+        self.reality = False
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:

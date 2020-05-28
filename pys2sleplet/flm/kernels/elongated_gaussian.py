@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 import numpy as np
 
@@ -18,23 +17,21 @@ class ElongatedGaussian(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> np.ndarray:
-        flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
-        return flm
+    def _create_flm(self) -> None:
+        self.flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
 
-    def _create_name(self) -> str:
-        name = (
+    def _create_name(self) -> None:
+        self.name = (
             "elongated_gaussian"
             f"{filename_args(self.t_sigma, 'tsig')}"
             f"{filename_args(self.p_sigma, 'psig')}"
         )
-        return name
 
-    def _set_reality(self) -> bool:
-        return True
+    def _set_reality(self) -> None:
+        self.reality = True
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:

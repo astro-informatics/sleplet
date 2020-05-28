@@ -52,26 +52,23 @@ class SlepianPolarCap(SlepianFunctions):
                     for j in range(ANNOTATION_DOTS):
                         self._add_to_annotation(theta_bottom, j, colour="white")
 
-    def _create_fn_name(self) -> str:
-        name = f"slepian{self._name_ending}"
-        return name
+    def _create_fn_name(self) -> None:
+        self.name = f"slepian{self._name_ending}"
 
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self) -> None:
         theta_grid, _ = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
-        mask = theta_grid <= self.theta_max
-        return mask
+        self.mask = theta_grid <= self.theta_max
 
-    def _create_matrix_location(self) -> Path:
-        location = (
+    def _create_matrix_location(self) -> None:
+        self.matrix_location = (
             _file_location.parents[2]
             / "data"
             / "slepian"
             / "polar"
             / f"D_L{self.L}{self._name_ending}.npy"
         )
-        return location
 
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> None:
         logger.info("start solving eigenproblem")
         emm = self._create_emm_vec()
 
@@ -80,9 +77,10 @@ class SlepianPolarCap(SlepianFunctions):
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eigh(Dm)
 
-        eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm)
+        self.eigenvalues, self.ordereigenvectors = self._clean_evals_and_evecs(
+            eigenvalues, gl, emm
+        )
         logger.info("finished solving eigenproblem")
-        return eigenvalues, eigenvectors
 
     def _add_to_annotation(
         self, theta: np.ndarray, i: int, colour: str = "black"

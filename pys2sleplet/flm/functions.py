@@ -31,10 +31,10 @@ class Functions:
 
     def __post_init__(self) -> None:
         self._setup_args()
-        self.name = self._create_name()
-        self.annotations = self._create_annotations()
-        self.reality = self._set_reality()
-        self.multipole = self._create_flm()
+        self._create_name()
+        self._create_annotations()
+        self._set_reality()
+        self._create_flm()
         self.field = invert_flm(self.multipole, self.L, reality=self.reality)
         self.resolution = calc_plot_resolution(self.L)
         self.field_padded = invert_flm(
@@ -182,28 +182,28 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         """
         creates the annotations for the plot
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> None:
         """
         creates the flm on the north pole
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> str:
+    def _create_name(self) -> None:
         """
         creates the name of the function
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _set_reality(self) -> bool:
+    def _set_reality(self) -> None:
         """
         sets the reality flag to speed up computations
         """

@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -16,12 +15,12 @@ class Earth(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> None:
         # load in data
-        flm = self._load_flm()
+        self.flm = self._load_flm()
 
         # fill in negative m components so as to
         # avoid confusion with zero values
@@ -29,19 +28,17 @@ class Earth(Functions):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                flm[ind_nm] = (-1) ** m * flm[ind_pm].conj()
+                self.flm[ind_nm] = (-1) ** m * self.flm[ind_pm].conj()
 
         # don't take the full L
         # invert dataset as Earth backwards
-        flm = flm[: self.L * self.L].conj()
-        return flm
+        self.flm = self.flm[: self.L * self.L].conj()
 
-    def _create_name(self) -> str:
-        name = "earth"
-        return name
+    def _create_name(self) -> None:
+        self.name = "earth"
 
-    def _set_reality(self) -> bool:
-        return True
+    def _set_reality(self) -> None:
+        self.reality = True
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:

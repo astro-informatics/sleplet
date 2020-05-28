@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -16,10 +15,10 @@ class Wmap(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> None:
         # load in data
         cl = self._load_cl()
 
@@ -27,27 +26,25 @@ class Wmap(Functions):
         np.random.seed(0)
 
         # Simulate CMB in harmonic space.
-        flm = np.zeros((self.L * self.L), dtype=complex)
+        self.flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(2, self.L):
             cl_val = cl[ell - 1]
             cl_val *= 2 * np.pi / (ell * (ell + 1))
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 if m == 0:
-                    flm[ind] = np.sqrt(cl_val) * np.random.randn()
+                    self.flm[ind] = np.sqrt(cl_val) * np.random.randn()
                 else:
-                    flm[ind] = (
+                    self.flm[ind] = (
                         np.sqrt(cl_val / 2) * np.random.randn()
                         + 1j * np.sqrt(cl_val / 2) * np.random.randn()
                     )
-        return flm
 
-    def _create_name(self) -> str:
-        name = "wmap"
-        return name
+    def _create_name(self) -> None:
+        self.name = "wmap"
 
-    def _set_reality(self) -> bool:
-        return True
+    def _set_reality(self) -> None:
+        self.reality = True
 
     def _setup_args(self) -> None:
         if self.extra_args is not None:

@@ -71,43 +71,39 @@ class SlepianLimitLatLong(SlepianFunctions):
                         }
                     )
 
-    def _create_fn_name(self) -> str:
-        name = f"slepian{self._name_ending}"
-        return name
+    def _create_fn_name(self) -> None:
+        self.name = f"slepian{self._name_ending}"
 
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self) -> None:
         theta_grid, phi_grid = ssht.sample_positions(
             self.L, Grid=True, Method=SAMPLING_SCHEME
         )
-        mask = (
+        self.mask = (
             (theta_grid >= self.theta_min)
             & (theta_grid <= self.theta_max)
             & (phi_grid >= self.phi_min)
             & (phi_grid <= self.phi_max)
         )
-        return mask
 
-    def _create_matrix_location(self) -> Path:
-        location = (
+    def _create_matrix_location(self) -> None:
+        self.matrix_location = (
             _file_location.parents[2]
             / "data"
             / "slepian"
             / "lat_lon"
             / f"D_L{self.L}{self._name_ending}.npy"
         )
-        return location
 
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> None:
         logger.info("start solving eigenproblem")
         K = self._load_K_matrix()
 
         eigenvalues, eigenvectors = np.linalg.eigh(K)
 
-        eigenvalues, eigenvectors = self._clean_evals_and_evecs(
+        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
         logger.info("finish solving eigenproblem")
-        return eigenvalues, eigenvectors
 
     def _load_K_matrix(self) -> np.ndarray:
         """
