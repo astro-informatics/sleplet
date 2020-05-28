@@ -368,7 +368,8 @@ class SlepianLimitLatLong(SlepianFunctions):
             raise ValueError("phi_max cannot be negative")
         if phi_max >= PHI_MAX_DEFAULT:
             raise ValueError(
-                f"phi_max cannot be greater than or equal to {multiples_of_pi(PHI_MAX_DEFAULT)}"
+                "phi_max cannot be greater than or equal to "
+                f"{multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_max = phi_max
         logger.info(f"phi_max={phi_max}")
@@ -387,7 +388,8 @@ class SlepianLimitLatLong(SlepianFunctions):
             raise ValueError("phi_min cannot be negative")
         if phi_min >= PHI_MAX_DEFAULT:
             raise ValueError(
-                f"phi_min cannot be greater than or equal to {multiples_of_pi(PHI_MAX_DEFAULT)}"
+                "phi_min cannot be greater than or equal to "
+                f"{multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_min = phi_min
         logger.info(f"phi_min={phi_min}")

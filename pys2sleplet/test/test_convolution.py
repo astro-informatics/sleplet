@@ -45,7 +45,8 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     assert_array_equal(flm, flm_conv)
     assert_allclose(f_map, f_conv, rtol=0.2)
     logger.info(
-        f"Earth/harmonic gaussian convolution difference max error: {np.abs(flm_diff).max()}"
+        "Earth/harmonic gaussian convolution difference max error: "
+        f"{np.abs(flm_diff).max()}"
     )
 
     if config.AUTO_OPEN:

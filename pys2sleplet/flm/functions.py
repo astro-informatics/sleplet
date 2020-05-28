@@ -73,7 +73,10 @@ class Functions:
             _file_location.parents[1]
             / "data"
             / "trans_dirac"
-            / f"trans_dd_L{self.L}_{filename_angle(alpha_pi_fraction,beta_pi_fraction)}.npy"
+            / (
+                f"trans_dd_L{self.L}_"
+                f"{filename_angle(alpha_pi_fraction,beta_pi_fraction)}.npy"
+            )
         )
 
         # check if file of translated dirac delta already

@@ -6,7 +6,7 @@ import numpy as np
 
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.functions import FUNCTIONS
+from pys2sleplet.utils.function_dicts import FUNCTIONS
 from pys2sleplet.utils.string_methods import filename_angle
 
 
@@ -128,7 +128,10 @@ def plot(
     filename = f"{f.name}_L{L}_"
 
     if routine == "rotate":
-        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
+        filename += (
+            f"{routine}_"
+            f"{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
+        )
 
         # rotate by alpha, beta, gamma
         f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
