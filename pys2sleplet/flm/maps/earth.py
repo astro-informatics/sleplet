@@ -20,7 +20,7 @@ class Earth(Functions):
 
     def _create_flm(self) -> None:
         # load in data
-        self.flm = self._load_flm()
+        flm = self._load_flm()
 
         # fill in negative m components so as to
         # avoid confusion with zero values
@@ -28,11 +28,11 @@ class Earth(Functions):
             for m in range(1, ell + 1):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
-                self.flm[ind_nm] = (-1) ** m * self.flm[ind_pm].conj()
+                flm[ind_nm] = (-1) ** m * flm[ind_pm].conj()
 
         # don't take the full L
         # invert dataset as Earth backwards
-        self.flm = self.flm[: self.L * self.L].conj()
+        self.multipole = flm[: self.L * self.L].conj()
 
     def _create_name(self) -> None:
         self.name = "earth"

@@ -21,7 +21,7 @@ class SquashedGaussian(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.flm = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
+        self.multipole = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
 
     def _create_name(self) -> None:
         self.name = (

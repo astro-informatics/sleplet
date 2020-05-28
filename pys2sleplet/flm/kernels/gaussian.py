@@ -19,10 +19,11 @@ class Gaussian(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.flm = np.zeros((self.L * self.L), dtype=complex)
+        flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
-            self.flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma * self.sigma))
+            flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma * self.sigma))
+        self.multipole = flm
 
     def _create_name(self) -> None:
         self.name = f"gaussian{filename_args(self.sigma, 'sig')}"

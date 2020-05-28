@@ -15,10 +15,11 @@ class DiracDelta(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.flm = np.zeros((self.L * self.L), dtype=complex)
+        flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
-            self.flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
+            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
+        self.multipole = flm
 
     def _create_name(self) -> None:
         self.name = "dirac_delta"

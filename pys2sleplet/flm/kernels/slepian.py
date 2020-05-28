@@ -22,7 +22,7 @@ class Slepian(Functions):
         self.name = f"{self.slepian.name}_rank{self.rank}"
 
     def _create_flm(self) -> None:
-        self.flm = self.slepian.eigenvectors[self.rank]
+        self.multipole = self.slepian.eigenvectors[self.rank]
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
 
     def _set_reality(self) -> None:
