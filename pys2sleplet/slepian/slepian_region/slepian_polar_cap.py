@@ -77,7 +77,7 @@ class SlepianPolarCap(SlepianFunctions):
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eigh(Dm)
 
-        self.eigenvalues, self.ordereigenvectors = self._clean_evals_and_evecs(
+        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, gl, emm
         )
         logger.info("finished solving eigenproblem")
