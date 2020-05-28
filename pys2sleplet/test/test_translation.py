@@ -4,7 +4,6 @@ from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
-from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 
@@ -37,12 +36,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     dd_2.translate(alpha_pi_frac, beta_pi_frac)
 
     flm_diff = dd_1.multipole - dd_2.multipole
-    f_diff = dd_1.field_padded - dd_2.field_padded
 
     assert_allclose(dd_1.multipole, dd_2.multipole, rtol=1e-13)
     assert_allclose(dd_1.field, dd_2.field, rtol=1e-11)
     logger.info(f"Translation/rotation difference max error: {np.abs(flm_diff).max()}")
-
-    if config.AUTO_OPEN:
-        filename = f"{dd_1.name}_L{dd_1.L}_diff_rot_trans_res{dd_1.resolution}"
-        Plot(f_diff.real, dd_1.resolution, filename).execute()

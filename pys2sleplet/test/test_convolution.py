@@ -4,7 +4,6 @@ from numpy.testing import assert_allclose, assert_array_equal
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
 from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 
@@ -32,15 +31,12 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     """
     f = Earth(config.L)
     g = HarmonicGaussian(config.L)
-    flm = f.multipole
-    f_map, f_map_plot = f.field, f.field_padded
+    flm, f_map = f.multipole, f.field
 
     f.convolve(g.multipole)
-    flm_conv = f.multipole
-    f_conv, f_conv_plot = f.field, f.field_padded
+    flm_conv, f_conv = f.multipole, f.field
 
     flm_diff = flm - flm_conv
-    f_diff = f_map_plot - f_conv_plot
 
     assert_array_equal(flm, flm_conv)
     assert_allclose(f_map, f_conv, rtol=0.2)
@@ -48,7 +44,3 @@ def test_earth_harmonic_gaussian_convolution() -> None:
         "Earth/harmonic gaussian convolution difference max error: "
         f"{np.abs(flm_diff).max()}"
     )
-
-    if config.AUTO_OPEN:
-        filename = f"{g.name}_L{f.L}_diff_{f.name}_res{f.resolution}_real"
-        Plot(f_diff.real, f.resolution, filename).execute()
