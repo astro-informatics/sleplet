@@ -9,7 +9,7 @@ import pyssht as ssht
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.harmonic_methods import invert_flm
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
+from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.string_methods import filename_angle
 
 _file_location = Path(__file__).resolve()
@@ -36,7 +36,7 @@ class Functions:
         self.reality = self._set_reality()
         self.multipole = self._create_flm()
         self.field = invert_flm(self.multipole, self.L, reality=self.reality)
-        self.resolution = calc_resolution(self.L)
+        self.resolution = calc_plot_resolution(self.L)
         self.field_padded = invert_flm(
             self.multipole, self.L, reality=self.reality, resolution=self.resolution
         )

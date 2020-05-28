@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Callable, Optional
 
 import numpy as np
 import pyssht as ssht
@@ -29,3 +29,16 @@ def invert_flm(
 
     f = ssht.inverse(flm, bandlimit, Reality=reality, Method=SAMPLING_SCHEME)
     return f
+
+
+def ensure_f_bandlimited(
+    grid_fun: Callable[[np.ndarray, np.ndarray], np.ndarray], L: int, reality: bool
+) -> np.ndarray:
+    """
+    if the function created is created in pixel space rather than harmonic
+    space then need to transform it into harmonic space first before using it
+    """
+    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    f = grid_fun(theta_grid, phi_grid)
+    flm = ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME)
+    return flm

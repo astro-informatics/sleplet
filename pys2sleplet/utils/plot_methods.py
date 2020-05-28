@@ -1,4 +1,4 @@
-from typing import Callable, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -7,7 +7,7 @@ from matplotlib import colors
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
-def calc_resolution(L: int) -> int:
+def calc_plot_resolution(L: int) -> int:
     """
     calculate appropriate resolution for given L
     """
@@ -19,33 +19,6 @@ def calc_resolution(L: int) -> int:
 
     # above L = 1024 just use the bandlimit
     return L
-
-
-def calc_samples(L: int) -> int:
-    """
-    calculate appropriate sample number for given L
-    chosen such that have a two samples less than 0.1deg
-    """
-    sample_dict = {
-        1: 1801,
-        2: 901,
-        3: 451,
-        4: 226,
-        5: 113,
-        6: 57,
-        7: 29,
-        8: 15,
-        9: 8,
-        10: 4,
-        11: 2,
-    }
-
-    for log_bandlimit, samples in sample_dict.items():
-        if L < 2 ** log_bandlimit:
-            return samples
-
-    # above L = 2048 just use 1 sample
-    return 1
 
 
 def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float, str]]:
@@ -60,19 +33,6 @@ def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float
         pl_colorscale.append((k * h, f"rgb{(C[0], C[1], C[2])}"))
 
     return pl_colorscale
-
-
-def ensure_f_bandlimited(
-    grid_fun: Callable[[np.ndarray, np.ndarray], np.ndarray], L: int, reality: bool
-) -> np.ndarray:
-    """
-    if the function created is created in pixel space rather than harmonic
-    space then need to transform it into harmonic space first before using it
-    """
-    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
-    f = grid_fun(theta_grid, phi_grid)
-    flm = ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME)
-    return flm
 
 
 def calc_nearest_grid_point(
