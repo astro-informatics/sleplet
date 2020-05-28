@@ -8,7 +8,7 @@ from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.utils.logger import logger
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def L() -> int:
     """
     needs to fixed for closeness tests
