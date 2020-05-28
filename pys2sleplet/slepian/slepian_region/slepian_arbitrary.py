@@ -54,6 +54,7 @@ class SlepianArbitrary(SlepianFunctions):
         return location
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        logger.info("start solving eigenproblem")
         if config.NCPU == 1:
             D = self.matrix_serial()
         else:
@@ -64,6 +65,7 @@ class SlepianArbitrary(SlepianFunctions):
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
+        logger.info("finished solving eigenproblem")
         return eigenvalues, eigenvectors
 
     def _load_mask(self) -> np.ndarray:

@@ -98,6 +98,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         return location
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        logger.info("start solving eigenproblem")
         K = self._load_K_matrix()
 
         eigenvalues, eigenvectors = np.linalg.eigh(K)
@@ -105,6 +106,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
+        logger.info("finish solving eigenproblem")
         return eigenvalues, eigenvectors
 
     def _load_K_matrix(self) -> np.ndarray:

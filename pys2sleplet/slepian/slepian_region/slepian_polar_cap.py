@@ -72,6 +72,7 @@ class SlepianPolarCap(SlepianFunctions):
         return location
 
     def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+        logger.info("start solving eigenproblem")
         emm = self._create_emm_vec()
 
         Dm = self._load_Dm_matrix(emm)
@@ -80,6 +81,7 @@ class SlepianPolarCap(SlepianFunctions):
         eigenvalues, gl = np.linalg.eigh(Dm)
 
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm)
+        logger.info("finished solving eigenproblem")
         return eigenvalues, eigenvectors
 
     def _add_to_annotation(
