@@ -7,7 +7,7 @@ from pys2sleplet.utils.harmonic_methods import invert_flm
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
-def _calc_integration_resolution(L: int) -> int:
+def calc_integration_resolution(L: int) -> int:
     """
     calculate appropriate sample number for given L
     chosen such that have a two samples less than 0.1deg
@@ -34,9 +34,13 @@ def _calc_integration_resolution(L: int) -> int:
     return 1
 
 
-def _integration_weight(resolution: int, region: Optional[np.ndarray]) -> np.ndarray:
+def _integration_weight(
+    resolution: int, boosted_region: Optional[np.ndarray]
+) -> np.ndarray:
     """
     helper method which computes the spherical Jacobian for a given region
+
+    the region must be calculated for the integration resolution
     """
     theta_grid, phi_grid = ssht.sample_positions(
         resolution, Grid=True, method=SAMPLING_SCHEME
@@ -45,8 +49,8 @@ def _integration_weight(resolution: int, region: Optional[np.ndarray]) -> np.nda
     delta_phi = np.ediff1d(phi_grid[0]).mean()
     weight = np.sin(theta_grid) * delta_theta * delta_phi
 
-    if region is not None:
-        weight = np.where(weight, region, 0)
+    if boosted_region is not None:
+        weight = np.where(weight, boosted_region, 0)
     return weight
 
 
@@ -58,7 +62,7 @@ def _integration_helper(
     glm_reality: bool,
     flm_conj: bool,
     glm_conj: bool,
-    region: Optional[np.ndarray] = None,
+    boosted_region: Optional[np.ndarray] = None,
 ) -> float:
     """
     helper method which computes the integration on the sphere for
@@ -69,19 +73,20 @@ def _integration_helper(
 
     the multipole resolutions are boosted prior to integration
     """
-    resolution = _calc_integration_resolution(L)
-    weight = _integration_weight(resolution, region)
+    resolution = calc_integration_resolution(L)
+    weight = _integration_weight(resolution, boosted_region)
 
     f = invert_flm(flm, L, reality=flm_reality, resolution=resolution)
     g = invert_flm(glm, L, reality=glm_reality, resolution=resolution)
+
     if flm_conj:
         f = f.conj()
     if glm_conj:
         g = g.conj()
 
     integrand = f * g
-    if region is not None:
-        integrand = np.where(region, integrand, 0)
+    if boosted_region is not None:
+        integrand = np.where(boosted_region, integrand, 0)
 
     integration = (integrand * weight).sum()
     return integration
@@ -109,7 +114,7 @@ def integrate_region_sphere(
     L: int,
     flm: np.ndarray,
     glm: np.ndarray,
-    region: np.ndarray,
+    boosted_region: np.ndarray,
     flm_reality: bool = False,
     glm_reality: bool = False,
     flm_conj: bool = False,
@@ -117,8 +122,17 @@ def integrate_region_sphere(
 ) -> float:
     """
     integrates over a region of the sphere using the helper method
+
+    the region must be calculated for the integration resolution
     """
     integration = _integration_helper(
-        L, flm, glm, flm_reality, glm_reality, flm_conj, glm_conj, region=region
+        L,
+        flm,
+        glm,
+        flm_reality,
+        glm_reality,
+        flm_conj,
+        glm_conj,
+        boosted_region=boosted_region,
     )
     return integration
