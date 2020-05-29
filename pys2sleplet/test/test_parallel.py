@@ -79,7 +79,7 @@ def test_slepian_polar_cap_serial_equal_to_parallel(L, theta_max, order) -> None
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
 
 
-@settings(max_examples=2, deadline=None)
+@settings(max_examples=1, deadline=None)
 @given(
     theta_min=valid_theta_min(),
     theta_max=valid_theta_max(),
