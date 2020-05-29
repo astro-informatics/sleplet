@@ -19,6 +19,7 @@ _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
 
 @dataclass
 class SlepianArbitrary(SlepianFunctions):
+    mask: np.ndarray
     mask_name: str
     ncpu: int
     _mask_name: str = field(init=False, repr=False)
@@ -47,7 +48,7 @@ class SlepianArbitrary(SlepianFunctions):
         self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = self._load_mask()
+        pass
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -64,18 +65,6 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvalues, eigenvectors
         )
         logger.info("finished solving eigenproblem")
-
-    def _load_mask(self) -> np.ndarray:
-        """
-        attempts to read the mask from the config file
-        """
-        location = _arbitrary_path / "masks" / self.mask_name
-        try:
-            mask = np.load(location)
-        except FileNotFoundError:
-            logger.error(f"can not find the file: {self.mask_name}")
-            raise
-        return mask
 
     def _load_D_matrix(self) -> np.ndarray:
         """

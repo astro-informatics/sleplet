@@ -34,7 +34,8 @@ def choose_slepian_method() -> SlepianFunctions:
 
     elif config.SLEPIAN_MASK:
         logger.info("mask specified in file detected")
-        slepian = SlepianArbitrary(config.L, config.SLEPIAN_MASK)
+        mask = _load_mask(config.SLEPIAN_MASK)
+        slepian = SlepianArbitrary(config.L, mask, config.SLEPIAN_MASK)
 
     else:
         raise AttributeError(
@@ -43,3 +44,23 @@ def choose_slepian_method() -> SlepianFunctions:
         )
 
     return slepian
+
+
+def _load_mask(mask_name: str) -> np.ndarray:
+    """
+    attempts to read the mask from the config file
+    """
+    location = (
+        _file_location.parents[1]
+        / "data"
+        / "slepian"
+        / "arbitrary"
+        / "masks"
+        / mask_name
+    )
+    try:
+        mask = np.load(location)
+    except FileNotFoundError:
+        logger.error(f"can not find the file: '{mask_name}'")
+        raise
+    return mask

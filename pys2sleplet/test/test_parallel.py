@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 from hypothesis import given, settings
+from hypothesis.extra.numpy import arrays
 from hypothesis.strategies import SearchStrategy, integers
 from numpy.testing import assert_array_equal
 
@@ -16,6 +17,11 @@ def L() -> int:
     needs to be small for speed
     """
     return 8
+
+
+@pytest.fixture(scope="module")
+def filename() -> str:
+    return "test"
 
 
 def valid_theta_min() -> SearchStrategy[int]:
@@ -51,6 +57,13 @@ def valid_orders() -> SearchStrategy[int]:
     the order of the Dm matrix, needs to be less than L
     """
     return integers(min_value=0, max_value=7)
+
+
+def valid_mask() -> SearchStrategy[np.ndarray]:
+    """
+    creates a random mask for arbitrary region
+    """
+    return arrays(bool, (9, 16))
 
 
 @settings(max_examples=8, deadline=None)
@@ -97,3 +110,16 @@ def test_slepian_lat_lon_serial_equal_to_parallel(
     )
     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
+
+
+# @settings(max_examples=2, deadline=None)
+# @given(mask=valid_mask())
+# def test_slepian_arbitrary_serial_equal_to_parallel(L, mask, filename) -> None:
+#     """
+#     ensures that the serial and parallel calculation of a given
+#     Slepian arbitrary region give the same result
+#     """
+#     serial = SlepianArbitrary(L, mask, filename, ncpu=1)
+#     parallel = SlepianArbitrary(L, mask, filename)
+#     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
+#     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
