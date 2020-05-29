@@ -87,9 +87,9 @@ class SlepianArbitrary(SlepianFunctions):
             D = np.load(self.matrix_location)
         else:
             if self.ncpu == 1:
-                D = self.matrix_serial()
+                D = self._matrix_serial()
             else:
-                D = self.matrix_parallel()
+                D = self._matrix_parallel()
 
             # save to speed up for future
             if config.SAVE_MATRICES:
