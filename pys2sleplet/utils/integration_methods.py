@@ -43,7 +43,7 @@ def _integration_weight(
     the region must be calculated for the integration resolution
     """
     theta_grid, phi_grid = ssht.sample_positions(
-        resolution, Grid=True, method=SAMPLING_SCHEME
+        resolution, Grid=True, Method=SAMPLING_SCHEME
     )
     delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
     delta_phi = np.ediff1d(phi_grid[0]).mean()
