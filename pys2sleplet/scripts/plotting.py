@@ -124,7 +124,7 @@ def plot(
     """
     master plotting method
     """
-    f = FUNCTIONS[f_name](L, extra_args)
+    f = FUNCTIONS[f_name](L, extra_args=extra_args)
     filename = f"{f.name}_L{L}_"
 
     if routine == "rotate":
@@ -143,7 +143,7 @@ def plot(
         f.translate(alpha_pi_fraction, beta_pi_fraction)
 
     if g_name:
-        g = FUNCTIONS[g_name](L, extra_args)
+        g = FUNCTIONS[g_name](L, extra_args=extra_args)
         # perform convolution
         f.convolve(g.multipole)
         # adjust filename
