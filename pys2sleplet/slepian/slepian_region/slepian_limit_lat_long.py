@@ -207,10 +207,16 @@ class SlepianLimitLatLong(SlepianFunctions):
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
-        K = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
+
+        # initialise real and imaginary matrices
+        K_r = np.zeros((self.L * self.L, self.L * self.L))
+        K_i = np.zeros((self.L * self.L, self.L * self.L))
 
         for l in range(self.L):
-            self._slepian_matrix_helper(K, l, dl_array, G)
+            self._slepian_matrix_helper(K_r, K_i, l, dl_array, G)
+
+        # combine real and imaginary parts
+        K = K_r + 1j * K_i
 
         # fill in remaining triangle section
         i_upper = np.triu_indices(K.shape[0])
@@ -237,27 +243,35 @@ class SlepianLimitLatLong(SlepianFunctions):
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
-        K = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
+
+        # initialise real and imaginary matrices
+        K_r = np.zeros((self.L * self.L, self.L * self.L))
+        K_i = np.zeros((self.L * self.L, self.L * self.L))
 
         # create shared memory block
-        shm = SharedMemory(create=True, size=K.nbytes)
+        shm_r = SharedMemory(create=True, size=K_r.nbytes)
+        shm_i = SharedMemory(create=True, size=K_i.nbytes)
         # create a array backed by shared memory
-        K_ext = np.ndarray(K.shape, dtype=K.dtype, buffer=shm.buf)
+        K_r_ext = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=shm_r.buf)
+        K_i_ext = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=shm_i.buf)
 
         def func(chunk: List[int]) -> None:
             """
             calculate K matrix components for each chunk
             """
             # attach to the existing shared memory block
-            ex_shm = SharedMemory(name=shm.name)
-            K_int = np.ndarray(K.shape, dtype=K.dtype, buffer=ex_shm.buf)
+            ex_shm_r = SharedMemory(name=shm_r.name)
+            ex_shm_i = SharedMemory(name=shm_i.name)
+            K_r_int = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=ex_shm_r.buf)
+            K_i_int = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=ex_shm_i.buf)
 
             # deal with chunk
             for l in chunk:
-                self._slepian_matrix_helper(K_int, l, dl_array, G)
+                self._slepian_matrix_helper(K_r_int, K_i_int, l, dl_array, G)
 
             # clean up shared memory
-            ex_shm.close()
+            ex_shm_r.close()
+            ex_shm_i.close()
 
         # split up L range to maximise effiency
         chunks = split_L_into_chunks(self.L, self.ncpu)
@@ -267,11 +281,13 @@ class SlepianLimitLatLong(SlepianFunctions):
             p.map(func, chunks)
 
         # retrieve from parallel function
-        K = K_ext
+        K = K_r_ext + 1j * K_i_ext
 
         # Free and release the shared memory block at the very end
-        shm.close()
-        shm.unlink()
+        shm_r.close()
+        shm_r.unlink()
+        shm_i.close()
+        shm_i.unlink()
 
         # fill in remaining triangle section
         i_upper = np.triu_indices(K.shape[0])
@@ -280,7 +296,12 @@ class SlepianLimitLatLong(SlepianFunctions):
         return K
 
     def _slepian_matrix_helper(
-        self, K: np.ndarray, l: int, dl_array: np.ndarray, G: np.ndarray
+        self,
+        K_r: np.ndarray,
+        K_i: np.ndarray,
+        l: int,
+        dl_array: np.ndarray,
+        G: np.ndarray,
     ) -> None:
         """
         used in both serial and parallel calculations
@@ -317,9 +338,14 @@ class SlepianLimitLatLong(SlepianFunctions):
                             ind_c = 2 * (self.L - 1) + col
                             S1 += C4 * G[ind_r, ind_c]
 
-                        K[l * (l + 1) + m, p * (p + 1) + q] += C3 * S1
+                        idx = (l * (l + 1) + m, p * (p + 1) + q)
+                        K_r[idx] += (C3 * S1).real
+                        K_i[idx] += (C3 * S1).imag
 
-                    K[l * (l + 1) + m, p * (p + 1) + q] *= C1 * C2
+                    idx = (l * (l + 1) + m, p * (p + 1) + q)
+                    real, imag = K_r[idx], K_i[idx]
+                    K_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
+                    K_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
 
     @staticmethod
     def _clean_evals_and_evecs(

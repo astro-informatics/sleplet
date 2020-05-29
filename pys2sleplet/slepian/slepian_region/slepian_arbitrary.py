@@ -98,35 +98,47 @@ class SlepianArbitrary(SlepianFunctions):
         return D
 
     def _matrix_serial(self) -> np.ndarray:
-        D = np.zeros((self._N, self._N), dtype=complex)
+        # initialise real and imaginary matrices
+        D_r = np.zeros((self._N, self._N))
+        D_i = np.zeros((self._N, self._N))
 
         for i in range(self._N):
-            self._matrix_helper(D, i)
+            self._matrix_helper(D_r, D_i, i)
+
+        # combine real and imaginary parts
+        D = D_r + 1j * D_i
 
         return D
 
     def _matrix_parallel(self) -> np.ndarray:
-        D = np.zeros((self._N, self._N), dtype=complex)
+        # initialise real and imaginary matrices
+        D_r = np.zeros((self._N, self._N))
+        D_i = np.zeros((self._N, self._N))
 
         # create shared memory block
-        shm = SharedMemory(create=True, size=D.nbytes)
+        shm_r = SharedMemory(create=True, size=D_r.nbytes)
+        shm_i = SharedMemory(create=True, size=D_i.nbytes)
         # create a array backed by shared memory
-        D_ext = np.ndarray(D.shape, dtype=D.dtype, buffer=shm.buf)
+        D_r_ext = np.ndarray(D_r.shape, dtype=D_r.dtype, buffer=shm_r.buf)
+        D_i_ext = np.ndarray(D_i.shape, dtype=D_i.dtype, buffer=shm_i.buf)
 
         def func(chunk: List[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
             # attach to the existing shared memory block
-            ex_shm = SharedMemory(name=shm.name)
-            D_int = np.ndarray(D.shape, dtype=D.dtype, buffer=ex_shm.buf)
+            ex_shm_r = SharedMemory(name=shm_r.name)
+            ex_shm_i = SharedMemory(name=shm_i.name)
+            D_r_int = np.ndarray(D_r.shape, dtype=D_r.dtype, buffer=ex_shm_r.buf)
+            D_i_int = np.ndarray(D_i.shape, dtype=D_i.dtype, buffer=ex_shm_i.buf)
 
             # deal with chunk
             for i in chunk:
-                self._matrix_helper(D_int, i)
+                self._matrix_helper(D_r_int, D_i_int, i)
 
             # clean up shared memory
-            ex_shm.close()
+            ex_shm_r.close()
+            ex_shm_i.close()
 
         # split up L range to maximise effiency
         chunks = split_L_into_chunks(self._N, self.ncpu)
@@ -136,15 +148,17 @@ class SlepianArbitrary(SlepianFunctions):
             p.map(func, chunks)
 
         # retrieve from parallel function
-        D = D_ext
+        D = D_r_ext + 1j * D_i_ext
 
         # Free and release the shared memory block at the very end
-        shm.close()
-        shm.unlink()
+        shm_r.close()
+        shm_r.unlink()
+        shm_i.close()
+        shm_i.unlink()
 
         return D
 
-    def _matrix_helper(self, D: np.ndarray, i: int) -> None:
+    def _matrix_helper(self, D_r: np.ndarray, D_i: np.ndarray, i: int) -> None:
         """
         used in both serial and parallel calculations
 
@@ -152,22 +166,33 @@ class SlepianArbitrary(SlepianFunctions):
         is not required for the serial case but here for ease
         """
         # fill in diagonal components
-        D[i][i] = self.integral(i, i)
+        integral = self._integral(i, i)
+        D_r[i][i] = integral.real
+        D_i[i][i] = integral.imag
         _, m_i = ssht.ind2elm(i)
+
         for j in range(i + 1, self._N):
             ell_j, m_j = ssht.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
                 # if positive m then use conjugate relation
                 if m_j > 0:
-                    D[i][j] = self.integral(i, j)
-                    D[j][i] = D[i][j].conj()
+                    integral = self._integral(i, j)
+                    D_r[i][j] = integral.real
+                    D_i[i][j] = integral.imag
+                    D_r[j][i] = D_r[i][j]
+                    D_i[j][i] = -D_i[i][j]
                     k = ssht.elm2ind(ell_j, -m_j)
-                    D[i][k] = (-1) ** m_j * D[i][j].conj()
-                    D[k][i] = D[i][k].conj()
+                    D_r[i][k] = (-1) ** m_j * D_r[i][j]
+                    D_i[i][k] = (-1) ** (m_j + 1) * D_i[i][j]
+                    D_r[k][i] = D_r[i][k]
+                    D_i[k][i] = -D_i[i][k]
             else:
-                D[i][j] = self.integral(i, j)
-                D[j][i] = D[i][j].conj()
+                integral = self._integral(i, j)
+                D_r[i][j] = integral.real
+                D_i[i][j] = integral.imag
+                D_r[j][i] = D_r[i][j]
+                D_i[j][i] = -D_i[i][j]
 
     def _integral(self, i: int, j: int) -> complex:
         F = (self._f(i, j) * self._weight()).sum()
