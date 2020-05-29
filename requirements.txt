@@ -2,6 +2,7 @@ cmocean
 dynaconf
 hypothesis
 matplotlib
+multiprocess
 plotly
 pytest
 toml
