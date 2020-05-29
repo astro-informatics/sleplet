@@ -1,11 +1,11 @@
-import multiprocessing.sharedctypes as sct
 from dataclasses import dataclass, field
-from multiprocessing import Pool
 from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
+from multiprocess import Pool
+from multiprocess.shared_memory import SharedMemory
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
@@ -207,16 +207,10 @@ class SlepianLimitLatLong(SlepianFunctions):
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
-
-        # initialise real and imaginary matrices
-        real = np.zeros((self.L * self.L, self.L * self.L))
-        imag = np.zeros((self.L * self.L, self.L * self.L))
+        K = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
 
         for l in range(self.L):
-            self._slepian_matrix_helper(real, imag, l, dl_array, G)
-
-        # retrieve real and imag components
-        K = real + 1j * imag
+            self._slepian_matrix_helper(K, l, dl_array, G)
 
         # fill in remaining triangle section
         i_upper = np.triu_indices(K.shape[0])
@@ -243,28 +237,27 @@ class SlepianLimitLatLong(SlepianFunctions):
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
+        K = np.zeros((self.L * self.L, self.L * self.L), dtype=complex)
 
-        # initialise real and imaginary matrices
-        real = np.zeros((self.L * self.L, self.L * self.L))
-        imag = np.zeros((self.L * self.L, self.L * self.L))
-
-        # create arrays to store final and intermediate steps
-        result_r = np.ctypeslib.as_ctypes(real)
-        result_i = np.ctypeslib.as_ctypes(imag)
-        shared_array_r = sct.RawArray(result_r._type_, result_r)
-        shared_array_i = sct.RawArray(result_i._type_, result_i)
+        # create shared memory block
+        shm = SharedMemory(create=True, size=K.nbytes)
+        # create a array backed by shared memory
+        K_ext = np.ndarray(K.shape, dtype=K.dtype, buffer=shm.buf)
 
         def func(chunk: List[int]) -> None:
             """
             calculate K matrix components for each chunk
             """
-            # store real and imag parts separately
-            tmp_r = np.ctypeslib.as_array(shared_array_r)
-            tmp_i = np.ctypeslib.as_array(shared_array_i)
+            # attach to the existing shared memory block
+            ex_shm = SharedMemory(name=shm.name)
+            K_int = np.ndarray(K.shape, dtype=K.dtype, buffer=ex_shm.buf)
 
             # deal with chunk
             for l in chunk:
-                self._slepian_matrix_helper(tmp_r, tmp_i, l, dl_array, G)
+                self._slepian_matrix_helper(K_int, l, dl_array, G)
+
+            # clean up shared memory
+            ex_shm.close()
 
         # split up L range to maximise effiency
         chunks = split_L_into_chunks(self.L, self.ncpu)
@@ -273,10 +266,12 @@ class SlepianLimitLatLong(SlepianFunctions):
         with Pool(processes=self.ncpu) as p:
             p.map(func, chunks)
 
-        # retrieve real and imag components
-        result_r = np.ctypeslib.as_array(shared_array_r)
-        result_i = np.ctypeslib.as_array(shared_array_i)
-        K = result_r + 1j * result_i
+        # retrieve from parallel function
+        K = K_ext
+
+        # Free and release the shared memory block at the very end
+        shm.close()
+        shm.unlink()
 
         # fill in remaining triangle section
         i_upper = np.triu_indices(K.shape[0])
@@ -285,12 +280,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         return K
 
     def _slepian_matrix_helper(
-        self,
-        K_r: np.ndarray,
-        K_i: np.ndarray,
-        l: int,
-        dl_array: np.ndarray,
-        G: np.ndarray,
+        self, K: np.ndarray, l: int, dl_array: np.ndarray, G: np.ndarray
     ) -> None:
         """
         used in both serial and parallel calculations
@@ -327,14 +317,9 @@ class SlepianLimitLatLong(SlepianFunctions):
                             ind_c = 2 * (self.L - 1) + col
                             S1 += C4 * G[ind_r, ind_c]
 
-                        idx = (l * (l + 1) + m, p * (p + 1) + q)
-                        K_r[idx] += (C3 * S1).real
-                        K_i[idx] += (C3 * S1).imag
+                        K[l * (l + 1) + m, p * (p + 1) + q] += C3 * S1
 
-                    idx = (l * (l + 1) + m, p * (p + 1) + q)
-                    real, imag = K_r[idx], K_i[idx]
-                    K_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
-                    K_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
+                    K[l * (l + 1) + m, p * (p + 1) + q] *= C1 * C2
 
     @staticmethod
     def _clean_evals_and_evecs(

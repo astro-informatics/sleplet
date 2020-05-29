@@ -1,11 +1,11 @@
-import multiprocessing.sharedctypes as sct
 from dataclasses import dataclass, field
-from multiprocessing import Pool
 from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
+from multiprocess import Pool
+from multiprocess.shared_memory import SharedMemory
 from scipy.special import factorial as fact
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -194,20 +194,25 @@ class SlepianPolarCap(SlepianFunctions):
         Pl, ell = P
         lvec = np.arange(m, self.L)
 
-        # create arrays to store final and intermediate steps
-        result = np.ctypeslib.as_ctypes(Dm)
-        shared_array = sct.RawArray(result._type_, result)
+        # create shared memory block
+        shm = SharedMemory(create=True, size=Dm.nbytes)
+        # create a array backed by shared memory
+        Dm_ext = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=shm.buf)
 
         def func(chunk: List[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
-            # temporary store
-            tmp = np.ctypeslib.as_array(shared_array)
+            # attach to the existing shared memory block
+            ex_shm = SharedMemory(name=shm.name)
+            Dm_int = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=ex_shm.buf)
 
             # deal with chunk
             for i in chunk:
-                self._dm_matrix_helper(tmp, i, m, lvec, Pl, ell)
+                self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
+
+            # clean up shared memory
+            ex_shm.close()
 
         # split up L range to maximise effiency
         chunks = split_L_into_chunks(self.L - m, self.ncpu)
@@ -217,7 +222,11 @@ class SlepianPolarCap(SlepianFunctions):
             p.map(func, chunks)
 
         # retrieve from parallel function
-        Dm = np.ctypeslib.as_array(shared_array) * (-1) ** m / 2
+        Dm = Dm_ext * (-1) ** m / 2
+
+        # Free and release the shared memory block at the very end
+        shm.close()
+        shm.unlink()
 
         return Dm
 
