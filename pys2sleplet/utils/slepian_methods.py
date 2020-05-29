@@ -24,16 +24,22 @@ def choose_slepian_method() -> SlepianFunctions:
     theta_min = np.deg2rad(config.THETA_MIN)
     theta_max = np.deg2rad(config.THETA_MAX)
 
-    if is_polar_cap(phi_min, phi_max, theta_min):
+    if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
         logger.info("polar cap region detected")
         slepian = SlepianPolarCap(config.L, theta_max, config.ORDER)
 
-    elif is_limited_lat_lon(phi_min, phi_max, theta_min):
+    elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
         logger.info("limited latitude longitude region detected")
         slepian = SlepianLimitLatLong(config.L, theta_min, theta_max, phi_min, phi_max)
 
     elif config.SLEPIAN_MASK:
         logger.info("mask specified in file detected")
         slepian = SlepianArbitrary(config.L, config.SLEPIAN_MASK)
+
+    else:
+        raise AttributeError(
+            "need to specify either a polar cap, a limited latitude "
+            "longitude region, or a file with a mask"
+        )
 
     return slepian
