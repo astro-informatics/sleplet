@@ -26,7 +26,7 @@ def choose_slepian_method() -> SlepianFunctions:
 
     if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
         logger.info("polar cap region detected")
-        slepian = SlepianPolarCap(config.L, theta_max, config.ORDER)
+        slepian = SlepianPolarCap(config.L, theta_max, order=config.ORDER)
 
     elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
         logger.info("limited latitude longitude region detected")
