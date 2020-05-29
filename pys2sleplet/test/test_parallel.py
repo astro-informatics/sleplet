@@ -50,7 +50,7 @@ def valid_orders() -> SearchStrategy[int]:
     """
     the order of the Dm matrix, needs to be less than L
     """
-    return integers(min_value=0, max_value=3)
+    return integers(min_value=0, max_value=7)
 
 
 @settings(max_examples=8, derandomize=True, deadline=None)
