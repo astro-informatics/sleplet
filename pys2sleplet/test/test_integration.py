@@ -73,7 +73,7 @@ def test_integrate_two_slepian_polar_functions_whole_sphere(
     if rank1 == rank2:
         assert_allclose(output, 1, rtol=1e-3)
     else:
-        assert_allclose(output, 0, atol=1e-3)
+        assert_allclose(output, 0, atol=1e-4)
 
 
 @seed(RANDOM_SEED)
@@ -90,6 +90,6 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere(
     glm = lim_lat_lon_evecs[rank2]
     output = integrate_whole_sphere(L, flm, glm, glm_conj=True)
     if rank1 == rank2:
-        assert_allclose(output, 1, rtol=1e-3)
+        assert_allclose(output, 1, rtol=1e-5)
     else:
-        assert_allclose(output, 0, atol=1e-3)
+        assert_allclose(output, 0, atol=1e-5)
