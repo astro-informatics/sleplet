@@ -9,7 +9,7 @@ from pys2sleplet.slepian.slepian_region.slepian_limit_lat_long import (
 )
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L
-from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
+from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1
 
 
 def valid_theta_min() -> SearchStrategy[int]:
@@ -61,8 +61,8 @@ def test_slepian_polar_cap_serial_equal_to_parallel(theta_max, order) -> None:
     ensures that the serial and parallel calculation of a given
     Slepian polar cap give the same result
     """
-    serial = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER, ncpu=1)
-    parallel = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER)
+    serial = SlepianPolarCap(L, np.deg2rad(theta_max), order=ORDER, ncpu=1)
+    parallel = SlepianPolarCap(L, np.deg2rad(theta_max), order=ORDER)
     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
 
