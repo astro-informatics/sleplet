@@ -1,6 +1,8 @@
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
+import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
@@ -9,8 +11,56 @@ from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
+
+
+def create_mask_region(
+    L: int,
+    theta_min: float = config.THETA_MIN,
+    theta_max: float = config.THETA_MAX,
+    phi_min: float = config.PHI_MIN,
+    phi_max: float = config.PHI_MAX,
+    mask: Optional[np.ndarray] = None,
+) -> np.ndarray:
+    """
+    creates a mask of a region of interested, the output will be based
+    on the value of the provided L. The mask could be either:
+    * polar cap - if theta_max provided
+    * limited latitude longitude - if one of theta_min, theta_max,
+                                   phi_min or phi_max is provided
+    * arbitrary - just checks the shape of the input mask
+    """
+    theta_grid, phi_grid = ssht.sample_position(L, Grid=True, Method=SAMPLING_SCHEME)
+
+    if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
+        logger.info("creating polar cap mask")
+        mask = theta_grid <= theta_max
+
+    elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
+        logger.info("creating limited latitude longitude mask")
+        mask = (
+            (theta_grid >= theta_min)
+            & (theta_grid <= theta_max)
+            & (phi_grid >= phi_min)
+            & (phi_grid <= phi_max)
+        )
+
+    elif mask is not None:
+        logger.info("checking shape of provided mask")
+        assert mask.shape == theta_grid.shape, (
+            f"mask shape {mask.shape} does not match the provided "
+            f"L={L}. The shape should be {theta_grid.shape}"
+        )
+
+    else:
+        raise AttributeError(
+            "need to specify either a angles for a polar cap or "
+            "a limited latitude longitude region, or an explicit mask"
+        )
+
+    return mask
 
 
 def choose_slepian_method() -> SlepianFunctions:
