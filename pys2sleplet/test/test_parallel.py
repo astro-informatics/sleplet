@@ -4,9 +4,7 @@ from hypothesis.extra.numpy import arrays
 from hypothesis.strategies import SearchStrategy, integers
 from numpy.testing import assert_array_equal
 
-from pys2sleplet.slepian.slepian_region.slepian_limit_lat_long import (
-    SlepianLimitLatLong,
-)
+from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L
 from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1
@@ -81,7 +79,7 @@ def test_slepian_lat_lon_serial_equal_to_parallel(
     ensures that the serial and parallel calculation of a given
     Slepian limited latitude longitude region give the same result
     """
-    serial = SlepianLimitLatLong(
+    serial = SlepianLimitLatLon(
         L,
         np.deg2rad(theta_min),
         np.deg2rad(theta_max),
@@ -89,7 +87,7 @@ def test_slepian_lat_lon_serial_equal_to_parallel(
         np.deg2rad(phi_max),
         ncpu=1,
     )
-    parallel = SlepianLimitLatLong(
+    parallel = SlepianLimitLatLon(
         L,
         np.deg2rad(theta_min),
         np.deg2rad(theta_max),

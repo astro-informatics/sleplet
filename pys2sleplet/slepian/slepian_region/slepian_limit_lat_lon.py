@@ -25,7 +25,7 @@ _file_location = Path(__file__).resolve()
 
 
 @dataclass
-class SlepianLimitLatLong(SlepianFunctions):
+class SlepianLimitLatLon(SlepianFunctions):
     theta_min: float
     theta_max: float
     phi_min: float
@@ -376,7 +376,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(ncpu, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            ncpu = SlepianLimitLatLong._ncpu
+            ncpu = SlepianLimitLatLon._ncpu
         self._ncpu = ncpu
         logger.info(f"ncpu={self.ncpu}")
 
@@ -389,7 +389,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(phi_max, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            phi_max = SlepianLimitLatLong._phi_max
+            phi_max = SlepianLimitLatLon._phi_max
         if phi_max < PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
         if phi_max >= PHI_MAX_DEFAULT:
@@ -409,7 +409,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(phi_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            phi_min = SlepianLimitLatLong._phi_min
+            phi_min = SlepianLimitLatLon._phi_min
         if phi_min < PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
         if phi_min >= PHI_MAX_DEFAULT:
@@ -429,7 +429,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(theta_max, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            theta_max = SlepianLimitLatLong._theta_max
+            theta_max = SlepianLimitLatLon._theta_max
         if theta_max < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
         if theta_max > THETA_MAX_DEFAULT:
@@ -448,7 +448,7 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(theta_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            theta_min = SlepianLimitLatLong._theta_min
+            theta_min = SlepianLimitLatLon._theta_min
         if theta_min < THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
         if theta_min > THETA_MAX_DEFAULT:
