@@ -1,22 +1,14 @@
 import numpy as np
-import pytest
 from numpy.testing import assert_allclose, assert_array_equal
 
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
 from pys2sleplet.flm.maps.earth import Earth
+from pys2sleplet.test.constants import L_LARGE as L
 from pys2sleplet.utils.logger import logger
 
 
-@pytest.fixture(scope="module")
-def L() -> int:
-    """
-    needs to fixed for closeness tests
-    """
-    return 32
-
-
-def test_earth_identity_convolution(L) -> None:
+def test_earth_identity_convolution() -> None:
     """
     test to ensure that the convolving with the
     identity function doesn't change the map
@@ -32,7 +24,7 @@ def test_earth_identity_convolution(L) -> None:
     logger.info("Identity convolution passed test")
 
 
-def test_earth_harmonic_gaussian_convolution(L) -> None:
+def test_earth_harmonic_gaussian_convolution() -> None:
     """
     test to ensure that convolving the Earth with the harmonic
     Gausian does not change significantly change the map

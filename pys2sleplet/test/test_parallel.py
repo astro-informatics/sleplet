@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 from hypothesis import given, settings
 from hypothesis.extra.numpy import arrays
 from hypothesis.strategies import SearchStrategy, integers
@@ -9,72 +8,61 @@ from pys2sleplet.slepian.slepian_region.slepian_limit_lat_long import (
     SlepianLimitLatLong,
 )
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-
-
-@pytest.fixture(scope="module")
-def L() -> int:
-    """
-    needs to be small for speed
-    """
-    return 8
-
-
-@pytest.fixture(scope="module")
-def filename() -> str:
-    return "test"
+from pys2sleplet.test.constants import L_SMALL as L
+from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
 
 
 def valid_theta_min() -> SearchStrategy[int]:
     """
     theta can be in the range [0, 180]
     """
-    return integers(min_value=1, max_value=30)
+    return integers(min_value=1, max_value=THETA_0)
 
 
 def valid_theta_max() -> SearchStrategy[int]:
     """
     theta can be in the range [0, 180]
     """
-    return integers(min_value=31, max_value=60)
+    return integers(min_value=THETA_0, max_value=THETA_1)
 
 
 def valid_phi_min() -> SearchStrategy[int]:
     """
     phi can be in the range [0, 360)
     """
-    return integers(min_value=1, max_value=30)
+    return integers(min_value=1, max_value=PHI_0)
 
 
 def valid_phi_max() -> SearchStrategy[int]:
     """
     phi can be in the range [0, 360)
     """
-    return integers(min_value=31, max_value=60)
+    return integers(min_value=PHI_0, max_value=PHI_1)
 
 
 def valid_orders() -> SearchStrategy[int]:
     """
     the order of the Dm matrix, needs to be less than L
     """
-    return integers(min_value=0, max_value=7)
+    return integers(min_value=0, max_value=L - 1)
 
 
 def valid_mask() -> SearchStrategy[np.ndarray]:
     """
     creates a random mask for arbitrary region
     """
-    return arrays(bool, (9, 16))
+    return arrays(bool, (L + 1, 2 * L))
 
 
 @settings(max_examples=8, deadline=None)
 @given(theta_max=valid_theta_max(), order=valid_orders())
-def test_slepian_polar_cap_serial_equal_to_parallel(L, theta_max, order) -> None:
+def test_slepian_polar_cap_serial_equal_to_parallel() -> None:
     """
     ensures that the serial and parallel calculation of a given
     Slepian polar cap give the same result
     """
-    serial = SlepianPolarCap(L, np.deg2rad(theta_max), order=order, ncpu=1)
-    parallel = SlepianPolarCap(L, np.deg2rad(theta_max), order=order)
+    serial = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER, ncpu=1)
+    parallel = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER)
     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
 
@@ -87,7 +75,7 @@ def test_slepian_polar_cap_serial_equal_to_parallel(L, theta_max, order) -> None
     phi_max=valid_phi_max(),
 )
 def test_slepian_lat_lon_serial_equal_to_parallel(
-    L, theta_min, theta_max, phi_min, phi_max
+    theta_min, theta_max, phi_min, phi_max
 ) -> None:
     """
     ensures that the serial and parallel calculation of a given
@@ -114,12 +102,12 @@ def test_slepian_lat_lon_serial_equal_to_parallel(
 
 # @settings(max_examples=2, deadline=None)
 # @given(mask=valid_mask())
-# def test_slepian_arbitrary_serial_equal_to_parallel(L, mask, filename) -> None:
+# def test_slepian_arbitrary_serial_equal_to_parallel(mask) -> None:
 #     """
 #     ensures that the serial and parallel calculation of a given
 #     Slepian arbitrary region give the same result
 #     """
-#     serial = SlepianArbitrary(L, mask, filename, ncpu=1)
-#     parallel = SlepianArbitrary(L, mask, filename)
+#     serial = SlepianArbitrary(L, mask, MASK_NAME, ncpu=1)
+#     parallel = SlepianArbitrary(L, mask, MASK_NAME)
 #     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
 #     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
