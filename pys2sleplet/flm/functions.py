@@ -30,16 +30,12 @@ class Functions:
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.resolution = calc_plot_resolution(self.L)
         self._setup_args()
         self._create_name()
         self._create_annotations()
         self._set_reality()
         self._create_flm()
-        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
-        self.resolution = calc_plot_resolution(self.L)
-        self.field_padded = invert_flm(
-            self.multipole, self.L, reality=self.reality, resolution=self.resolution
-        )
 
     def rotate(
         self,
@@ -151,6 +147,10 @@ class Functions:
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
         self._multipole = multipole
+        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
+        self.field_padded = invert_flm(
+            self.multipole, self.L, reality=self.reality, resolution=self.resolution
+        )
 
     @property
     def name(self) -> np.ndarray:
