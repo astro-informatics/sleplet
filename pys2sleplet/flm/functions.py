@@ -101,7 +101,7 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        self.multipole *= glm.conj()
+        self.multipole *= glm
 
     @property
     def annotations(self) -> List[Dict]:
