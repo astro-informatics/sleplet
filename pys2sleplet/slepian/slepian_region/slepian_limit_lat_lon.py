@@ -11,8 +11,9 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import create_mask_region
-from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
+from pys2sleplet.utils.string_methods import angle_as_degree
 from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     PHI_MAX_DEFAULT,
@@ -77,13 +78,13 @@ class SlepianLimitLatLon(SlepianFunctions):
         self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(
-            self.L,
+        region = Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
             phi_min=self.phi_min,
             phi_max=self.phi_max,
         )
+        self.mask = create_mask_region(self.L, region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -377,81 +378,3 @@ class SlepianLimitLatLon(SlepianFunctions):
             ncpu = SlepianLimitLatLon._ncpu
         self._ncpu = ncpu
         logger.info(f"ncpu={self.ncpu}")
-
-    @property  # type:ignore
-    def phi_max(self) -> float:
-        return self._phi_max
-
-    @phi_max.setter
-    def phi_max(self, phi_max: float) -> None:
-        if isinstance(phi_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            phi_max = SlepianLimitLatLon._phi_max
-        if phi_max < PHI_MIN_DEFAULT:
-            raise ValueError("phi_max cannot be negative")
-        if phi_max >= PHI_MAX_DEFAULT:
-            raise ValueError(
-                "phi_max cannot be greater than or equal to "
-                f"{multiples_of_pi(PHI_MAX_DEFAULT)}"
-            )
-        self._phi_max = phi_max
-        logger.info(f"phi_max={self.phi_max}")
-
-    @property  # type:ignore
-    def phi_min(self) -> float:
-        return self._phi_min
-
-    @phi_min.setter
-    def phi_min(self, phi_min: float) -> None:
-        if isinstance(phi_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            phi_min = SlepianLimitLatLon._phi_min
-        if phi_min < PHI_MIN_DEFAULT:
-            raise ValueError("phi_min cannot be negative")
-        if phi_min >= PHI_MAX_DEFAULT:
-            raise ValueError(
-                "phi_min cannot be greater than or equal to "
-                f"{multiples_of_pi(PHI_MAX_DEFAULT)}"
-            )
-        self._phi_min = phi_min
-        logger.info(f"phi_min={self.phi_min}")
-
-    @property  # type:ignore
-    def theta_max(self) -> float:
-        return self._theta_max
-
-    @theta_max.setter
-    def theta_max(self, theta_max: float) -> None:
-        if isinstance(theta_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            theta_max = SlepianLimitLatLon._theta_max
-        if theta_max < THETA_MIN_DEFAULT:
-            raise ValueError("theta_max cannot be negative")
-        if theta_max > THETA_MAX_DEFAULT:
-            raise ValueError(
-                f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
-            )
-        self._theta_max = theta_max
-        logger.info(f"theta_max={self.theta_max}")
-
-    @property  # type: ignore
-    def theta_min(self) -> float:
-        return self._theta_min
-
-    @theta_min.setter
-    def theta_min(self, theta_min: float) -> None:
-        if isinstance(theta_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            theta_min = SlepianLimitLatLon._theta_min
-        if theta_min < THETA_MIN_DEFAULT:
-            raise ValueError("theta_min cannot be negative")
-        if theta_min > THETA_MAX_DEFAULT:
-            raise ValueError(
-                f"theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
-            )
-        self._theta_min = theta_min
-        logger.info(f"theta_min={self.theta_min}")

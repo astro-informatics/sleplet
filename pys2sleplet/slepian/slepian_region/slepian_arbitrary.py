@@ -11,6 +11,7 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import create_mask_region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
@@ -48,7 +49,8 @@ class SlepianArbitrary(SlepianFunctions):
         self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, mask_name=self.mask_name)
+        region = Region(mask_name=self.mask_name)
+        self.mask = create_mask_region(self.L, region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -222,7 +224,7 @@ class SlepianArbitrary(SlepianFunctions):
     @mask_name.setter
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
-        logger.info(f"mask_name={self.mask_name}")
+        logger.info(f"mask_name='{self.mask_name}'")
 
     @property  # type: ignore
     def ncpu(self) -> int:

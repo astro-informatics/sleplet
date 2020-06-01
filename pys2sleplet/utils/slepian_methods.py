@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -8,22 +7,15 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
 
-def create_mask_region(
-    L: int,
-    theta_min: float = config.THETA_MIN,
-    theta_max: float = config.THETA_MAX,
-    phi_min: float = config.PHI_MIN,
-    phi_max: float = config.PHI_MAX,
-    mask_name: Optional[str] = None,
-) -> np.ndarray:
+def create_mask_region(L: int, region: Region) -> np.ndarray:
     """
     creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
@@ -34,31 +26,25 @@ def create_mask_region(
     """
     theta_grid, phi_grid = ssht.sample_position(L, Grid=True, Method=SAMPLING_SCHEME)
 
-    if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
+    if region.region_type == "polar":
         logger.info("creating polar cap mask")
-        mask = theta_grid <= theta_max
+        mask = theta_grid <= region.theta_max
 
-    elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
+    elif region.region_type == "lim_lat_lon":
         logger.info("creating limited latitude longitude mask")
         mask = (
-            (theta_grid >= theta_min)
-            & (theta_grid <= theta_max)
-            & (phi_grid >= phi_min)
-            & (phi_grid <= phi_max)
+            (theta_grid >= region.theta_min)
+            & (theta_grid <= region.theta_max)
+            & (phi_grid >= region.phi_min)
+            & (phi_grid <= region.phi_max)
         )
 
-    elif mask_name is not None:
+    elif region.region_type == "arbitrary":
         logger.info("loading and checking shape of provided mask")
-        mask = _load_mask(mask_name)
+        mask = _load_mask(region.mask_name)
         assert mask.shape == theta_grid.shape, (
             f"mask shape {mask.shape} does not match the provided "
             f"L={L}, the shape should be {theta_grid.shape}"
-        )
-
-    else:
-        raise AttributeError(
-            "need to specify either a angles for a polar cap or "
-            "a limited latitude longitude region, or an explicit mask"
         )
 
     return mask
@@ -68,28 +54,27 @@ def choose_slepian_method() -> SlepianFunctions:
     """
     initialise Slepian object depending on input
     """
-    phi_min = np.deg2rad(config.PHI_MIN)
-    phi_max = np.deg2rad(config.PHI_MAX)
-    theta_min = np.deg2rad(config.THETA_MIN)
-    theta_max = np.deg2rad(config.THETA_MAX)
+    region = Region(
+        phi_min=np.deg2rad(config.PHI_MIN),
+        phi_max=np.deg2rad(config.PHI_MAX),
+        theta_min=np.deg2rad(config.THETA_MIN),
+        theta_max=np.deg2rad(config.THETA_MAX),
+        mask_name=config.SLEPIAN_MASK,
+    )
 
-    if is_polar_cap(phi_min, phi_max, theta_min, theta_max):
+    if region.region_type == "polar":
         logger.info("polar cap region detected")
-        slepian = SlepianPolarCap(config.L, theta_max, order=config.ORDER)
+        slepian = SlepianPolarCap(config.L, region.theta_max, order=config.ORDER)
 
-    elif is_limited_lat_lon(phi_min, phi_max, theta_min, theta_max):
+    elif region.region_type == "lim_lat_lon":
         logger.info("limited latitude longitude region detected")
-        slepian = SlepianLimitLatLon(config.L, theta_min, theta_max, phi_min, phi_max)
-
-    elif config.SLEPIAN_MASK:
-        logger.info("mask specified in file detected")
-        slepian = SlepianArbitrary(config.L, config.SLEPIAN_MASK)
-
-    else:
-        raise AttributeError(
-            "need to specify either a polar cap, a limited latitude "
-            "longitude region, or a file with a mask"
+        slepian = SlepianLimitLatLon(
+            config.L, region.theta_min, region.theta_max, region.phi_min, region.phi_max
         )
+
+    elif region.region_type == "arbitrary":
+        logger.info("mask specified in file detected")
+        slepian = SlepianArbitrary(config.L, region.mask_name)
 
     return slepian
 

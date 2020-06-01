@@ -13,15 +13,10 @@ from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import create_mask_region
-from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
-from pys2sleplet.utils.vars import (
-    ANNOTATION_DOTS,
-    ARROW_STYLE,
-    ORDER_DEFAULT,
-    THETA_MAX_DEFAULT,
-    THETA_MIN_DEFAULT,
-)
+from pys2sleplet.utils.string_methods import angle_as_degree
+from pys2sleplet.utils.vars import ANNOTATION_DOTS, ARROW_STYLE, ORDER_DEFAULT
 
 _file_location = Path(__file__).resolve()
 
@@ -58,7 +53,8 @@ class SlepianPolarCap(SlepianFunctions):
         self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, theta_max=self.theta_max)
+        region = Region(theta_max=self.theta_max)
+        self.mask = create_mask_region(self.L, region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -411,20 +407,3 @@ class SlepianPolarCap(SlepianFunctions):
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
         logger.info(f"order={self.order}")
-
-    @property  # type:ignore
-    def theta_max(self) -> float:
-        return self._theta_max
-
-    @theta_max.setter
-    def theta_max(self, theta_max: float) -> None:
-        if theta_max == 0:
-            raise ValueError("theta_max cannot be zero")
-        if theta_max < THETA_MIN_DEFAULT:
-            raise ValueError("theta_max cannot be negative")
-        if theta_max > THETA_MAX_DEFAULT:
-            raise ValueError(
-                f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
-            )
-        self._theta_max = theta_max
-        logger.info(f"theta_max={self.theta_max}")
