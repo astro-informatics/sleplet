@@ -1,7 +1,7 @@
 import numpy as np
 from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, floats
-from numpy.testing import assert_allclose, assert_array_equal
+from numpy.testing import assert_allclose
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.test.constants import L_LARGE as L
@@ -40,5 +40,5 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     flm_diff = dd_1.multipole - dd_2.multipole
 
     assert_allclose(dd_1.multipole, dd_2.multipole, rtol=1e-14)
-    assert_array_equal(dd_1.field, dd_2.field)
+    assert_allclose(dd_1.field, dd_2.field, rtol=1e-12)
     logger.info(f"Translation/rotation difference max error: {np.abs(flm_diff).max()}")

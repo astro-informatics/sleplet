@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_allclose, assert_array_equal
 
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.flm.kernels.identity import Identity
@@ -39,7 +39,7 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     flm_diff = flm - flm_conv
 
     assert_array_equal(flm, flm_conv)
-    assert_array_equal(f_map, f_conv)
+    assert_allclose(f_map, f_conv, rtol=0.2)
     logger.info(
         "Earth/harmonic gaussian convolution difference max error: "
         f"{np.abs(flm_diff).max()}"
