@@ -4,6 +4,7 @@ MASK_NAME: str = "test"
 ORDER: int = 0
 PHI_0: int = 30
 PHI_1: int = 60
+RANDOM_SEED: int = 30
 THETA_MAX: int = 40
 THETA_0: int = 30
 THETA_1: int = 60

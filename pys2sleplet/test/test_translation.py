@@ -1,10 +1,11 @@
 import numpy as np
-from hypothesis import given, settings
+from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.test.constants import L_LARGE as L
+from pys2sleplet.test.constants import RANDOM_SEED
 from pys2sleplet.utils.logger import logger
 
 
@@ -22,7 +23,8 @@ def valid_betas() -> SearchStrategy[float]:
     return floats(min_value=0, max_value=1, width=16)
 
 
-@settings(max_examples=8, derandomize=True, deadline=None)
+@seed(RANDOM_SEED)
+@settings(max_examples=8, deadline=None)
 @given(alpha_pi_frac=valid_alphas(), beta_pi_frac=valid_betas())
 def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     """

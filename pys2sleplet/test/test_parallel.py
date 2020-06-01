@@ -56,7 +56,7 @@ def valid_mask() -> SearchStrategy[np.ndarray]:
 
 @settings(max_examples=8, deadline=None)
 @given(theta_max=valid_theta_max(), order=valid_orders())
-def test_slepian_polar_cap_serial_equal_to_parallel() -> None:
+def test_slepian_polar_cap_serial_equal_to_parallel(theta_max, order) -> None:
     """
     ensures that the serial and parallel calculation of a given
     Slepian polar cap give the same result
