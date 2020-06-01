@@ -143,7 +143,7 @@ def plot(
         f.translate(alpha_pi_fraction, beta_pi_fraction)
 
     if g_name:
-        g = FUNCTIONS[g_name](L, extra_args=extra_args)
+        g = FUNCTIONS[g_name](L)
         # perform convolution
         f.convolve(g.multipole)
         # adjust filename
