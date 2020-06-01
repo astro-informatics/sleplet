@@ -3,11 +3,6 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
@@ -48,35 +43,6 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
         )
 
     return mask
-
-
-def choose_slepian_method() -> SlepianFunctions:
-    """
-    initialise Slepian object depending on input
-    """
-    region = Region(
-        phi_min=np.deg2rad(config.PHI_MIN),
-        phi_max=np.deg2rad(config.PHI_MAX),
-        theta_min=np.deg2rad(config.THETA_MIN),
-        theta_max=np.deg2rad(config.THETA_MAX),
-        mask_name=config.SLEPIAN_MASK,
-    )
-
-    if region.region_type == "polar":
-        logger.info("polar cap region detected")
-        slepian = SlepianPolarCap(config.L, region.theta_max, order=config.ORDER)
-
-    elif region.region_type == "lim_lat_lon":
-        logger.info("limited latitude longitude region detected")
-        slepian = SlepianLimitLatLon(
-            config.L, region.theta_min, region.theta_max, region.phi_min, region.phi_max
-        )
-
-    elif region.region_type == "arbitrary":
-        logger.info("mask specified in file detected")
-        slepian = SlepianArbitrary(config.L, region.mask_name)
-
-    return slepian
 
 
 def _load_mask(mask_name: str) -> np.ndarray:

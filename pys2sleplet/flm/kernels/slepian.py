@@ -1,9 +1,15 @@
 from dataclasses import dataclass, field
 
+import numpy as np
+
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
+from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
+from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import choose_slepian_method
+from pys2sleplet.utils.region import Region
 
 
 @dataclass
@@ -12,7 +18,7 @@ class Slepian(Functions):
     _slepian: SlepianFunctions = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.slepian = choose_slepian_method()
+        self.slepian = self._choose_slepian_method()
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -36,6 +42,39 @@ class Slepian(Functions):
                     f"The number of extra arguments should be 1 or {num_args}"
                 )
             self.rank = self.extra_args[0]
+
+    @staticmethod
+    def _choose_slepian_method() -> SlepianFunctions:
+        """
+        initialise Slepian object depending on input
+        """
+        region = Region(
+            phi_min=np.deg2rad(config.PHI_MIN),
+            phi_max=np.deg2rad(config.PHI_MAX),
+            theta_min=np.deg2rad(config.THETA_MIN),
+            theta_max=np.deg2rad(config.THETA_MAX),
+            mask_name=config.SLEPIAN_MASK,
+        )
+
+        if region.region_type == "polar":
+            logger.info("polar cap region detected")
+            slepian = SlepianPolarCap(config.L, region.theta_max, order=config.ORDER)
+
+        elif region.region_type == "lim_lat_lon":
+            logger.info("limited latitude longitude region detected")
+            slepian = SlepianLimitLatLon(
+                config.L,
+                region.theta_min,
+                region.theta_max,
+                region.phi_min,
+                region.phi_max,
+            )
+
+        elif region.region_type == "arbitrary":
+            logger.info("mask specified in file detected")
+            slepian = SlepianArbitrary(config.L, region.mask_name)
+
+        return slepian
 
     @property
     def rank(self) -> int:
