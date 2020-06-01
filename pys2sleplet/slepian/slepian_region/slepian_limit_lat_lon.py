@@ -11,12 +11,12 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.slepian_methods import create_mask_region
 from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
-    SAMPLING_SCHEME,
     THETA_MAX_DEFAULT,
     THETA_MIN_DEFAULT,
 )
@@ -77,14 +77,12 @@ class SlepianLimitLatLon(SlepianFunctions):
         self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
-        theta_grid, phi_grid = ssht.sample_positions(
-            self.L, Grid=True, Method=SAMPLING_SCHEME
-        )
-        self.mask = (
-            (theta_grid >= self.theta_min)
-            & (theta_grid <= self.theta_max)
-            & (phi_grid >= self.phi_min)
-            & (phi_grid <= self.phi_max)
+        self.mask = create_mask_region(
+            self.L,
+            theta_min=self.theta_min,
+            theta_max=self.theta_max,
+            phi_min=self.phi_min,
+            phi_max=self.phi_max,
         )
 
     def _create_matrix_location(self) -> None:

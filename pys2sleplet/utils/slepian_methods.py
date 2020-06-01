@@ -22,7 +22,7 @@ def create_mask_region(
     theta_max: float = config.THETA_MAX,
     phi_min: float = config.PHI_MIN,
     phi_max: float = config.PHI_MAX,
-    mask: Optional[np.ndarray] = None,
+    mask_name: Optional[str] = None,
 ) -> np.ndarray:
     """
     creates a mask of a region of interested, the output will be based
@@ -47,11 +47,12 @@ def create_mask_region(
             & (phi_grid <= phi_max)
         )
 
-    elif mask is not None:
-        logger.info("checking shape of provided mask")
+    elif mask_name is not None:
+        logger.info("loading and checking shape of provided mask")
+        mask = _load_mask(mask_name)
         assert mask.shape == theta_grid.shape, (
             f"mask shape {mask.shape} does not match the provided "
-            f"L={L}. The shape should be {theta_grid.shape}"
+            f"L={L}, the shape should be {theta_grid.shape}"
         )
 
     else:
@@ -82,8 +83,7 @@ def choose_slepian_method() -> SlepianFunctions:
 
     elif config.SLEPIAN_MASK:
         logger.info("mask specified in file detected")
-        mask = _load_mask(config.SLEPIAN_MASK)
-        slepian = SlepianArbitrary(config.L, mask, config.SLEPIAN_MASK)
+        slepian = SlepianArbitrary(config.L, config.SLEPIAN_MASK)
 
     else:
         raise AttributeError(

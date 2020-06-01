@@ -11,6 +11,7 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.slepian_methods import create_mask_region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
@@ -19,7 +20,6 @@ _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
 
 @dataclass
 class SlepianArbitrary(SlepianFunctions):
-    mask: np.ndarray
     mask_name: str
     ncpu: int
     _mask_name: str = field(init=False, repr=False)
@@ -48,7 +48,7 @@ class SlepianArbitrary(SlepianFunctions):
         self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
-        pass
+        self.mask = create_mask_region(self.L, mask_name=self.mask_name)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
