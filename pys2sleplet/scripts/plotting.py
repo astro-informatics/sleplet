@@ -54,7 +54,7 @@ def read_args() -> Namespace:
         "--annotation",
         "-n",
         action="store_false",
-        help="flag which if passed removes any annotation",
+        help="flag which removes any annotation",
     )
     parser.add_argument(
         "--beta",
@@ -86,8 +86,8 @@ def read_args() -> Namespace:
         help="gamma pi fraction - defaults to 0 - rotation only",
     )
     parser.add_argument(
-        "--routine",
-        "-r",
+        "--method",
+        "-m",
         type=str,
         nargs="?",
         default="north",
@@ -112,14 +112,14 @@ def read_args() -> Namespace:
 def plot(
     f_name: str,
     L: int,
-    extra_args: Optional[List[int]],
-    plot_type: str,
-    routine: str,
     alpha_pi_fraction: float,
-    beta_pi_fraction: float,
-    gamma_pi_fraction: float,
-    g_name: Optional[str],
     annotations: bool,
+    beta_pi_fraction: float,
+    g_name: Optional[str],
+    extra_args: Optional[List[int]],
+    gamma_pi_fraction: float,
+    method: str,
+    plot_type: str,
 ) -> None:
     """
     master plotting method
@@ -127,17 +127,17 @@ def plot(
     f = FUNCTIONS[f_name](L, extra_args=extra_args)
     filename = f"{f.name}_L{L}_"
 
-    if routine == "rotate":
+    if method == "rotate":
         filename += (
-            f"{routine}_"
+            f"{method}_"
             f"{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
         )
 
         # rotate by alpha, beta, gamma
         f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
-    elif routine == "translate":
+    elif method == "translate":
         # don't add gamma if translation
-        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
+        filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
 
         # translate by alpha, beta
         f.translate(alpha_pi_fraction, beta_pi_fraction)
@@ -179,14 +179,14 @@ def main() -> None:
     plot(
         args.flm,
         config.L,
-        args.extra_args,
-        args.type,
-        args.routine,
         args.alpha,
-        args.beta,
-        args.gamma,
-        args.convolve,
         args.annotation,
+        args.beta,
+        args.convolve,
+        args.extra_args,
+        args.gamma,
+        args.method,
+        args.type,
     )
 
 

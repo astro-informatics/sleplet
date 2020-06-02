@@ -23,7 +23,7 @@ echo "north pole"
 for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaussian; do
     for t in real imag abs; do
         echo $f, $t;
-        plotting $f -t $t -r north;
+        plotting $f -t $t -m north;
     done;
 done
 
@@ -32,7 +32,7 @@ for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaus
     for r in rotate translate; do
         for t in real imag abs; do
             echo $f, $r, $t;
-            plotting $f -t $t -r $r;
+            plotting $f -t $t -m $r;
         done;
     done;
 done
@@ -47,8 +47,8 @@ echo "presentation rotation demo"
 echo Y_{43}
 plotting spherical_harmonic -e 4 3 -t real
 echo Y_{43} rot 0 0 0.25
-plotting spherical_harmonic -e 4 3 -t real -r rotate -a 0 -b 0 -g 0.25
+plotting spherical_harmonic -e 4 3 -t real -m rotate -a 0 -b 0 -g 0.25
 echo Y_{43} rot 0 0.25 0.25
-plotting spherical_harmonic -e 4 3 -t real -r rotate -a 0 -b 0.25 -g 0.25
+plotting spherical_harmonic -e 4 3 -t real -m rotate -a 0 -b 0.25 -g 0.25
 echo Y_{43} rot 0.25 0.25 0.25
-plotting spherical_harmonic -e 4 3 -t real -r rotate -a 0.25 -b 0.25 -g 0.25
+plotting spherical_harmonic -e 4 3 -t real -m rotate -a 0.25 -b 0.25 -g 0.25
