@@ -41,7 +41,7 @@ class Functions:
         alpha_pi_fraction: float,
         beta_pi_fraction: float,
         gamma_pi_fraction: float = 0,
-    ) -> None:
+    ) -> np.ndarray:
         """
         rotates given flm on the sphere by alpha/beta/gamma
         """
@@ -52,9 +52,12 @@ class Functions:
         gamma = gamma_pi_fraction * np.pi
 
         # rotate flms
-        self.multipole = ssht.rotate_flms(self.multipole, alpha, beta, gamma, self.L)
+        multipole = ssht.rotate_flms(self.multipole, alpha, beta, gamma, self.L)
+        return multipole
 
-    def translate(self, alpha_pi_fraction: float, beta_pi_fraction: float) -> None:
+    def translate(
+        self, alpha_pi_fraction: float, beta_pi_fraction: float
+    ) -> np.ndarray:
         """
         translates given flm on the sphere by alpha/beta
         """
@@ -88,11 +91,12 @@ class Functions:
 
         # convolve with flm
         if self.name == "dirac_delta":
-            self.multipole = glm
+            multipole = glm
         else:
-            self.convolve(glm)
+            multipole = self.convolve(self.multipole, glm)
+        return multipole
 
-    def convolve(self, glm: np.ndarray) -> None:
+    def convolve(self, flm: np.ndarray, glm: np.ndarray) -> np.ndarray:
         """
         computes the sifting convolution of two arrays
         """
@@ -100,7 +104,8 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        self.multipole *= glm
+        multipole = flm * glm
+        return multipole
 
     @property
     def annotations(self) -> List[Dict]:

@@ -127,6 +127,7 @@ def plot(
     """
     f = FUNCTIONS[f_name](L, extra_args=extra_args)
     filename = f"{f.name}_L{L}_"
+    multipole = f.multipole
 
     if method == "rotate":
         filename += (
@@ -135,18 +136,18 @@ def plot(
         )
 
         # rotate by alpha, beta, gamma
-        f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
+        multipole = f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
     elif method == "translate":
         # don't add gamma if translation
         filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
 
         # translate by alpha, beta
-        f.translate(alpha_pi_fraction, beta_pi_fraction)
+        multipole = f.translate(alpha_pi_fraction, beta_pi_fraction)
 
     if g_name:
         g = FUNCTIONS[g_name](L)
         # perform convolution
-        f.convolve(g.multipole)
+        multipole = f.convolve(multipole, g.multipole)
         # adjust filename
         filename += f"convolved_{g.name}_L{L}_"
 
@@ -154,7 +155,7 @@ def plot(
     filename += f"res{f.resolution}_"
 
     # create padded field to plot
-    padded_field = invert_flm_boosted(f.multipole, f.L, f.resolution, reality=f.reality)
+    padded_field = invert_flm_boosted(multipole, f.L, f.resolution, reality=f.reality)
 
     # check for plotting type
     if plot_type == "real":

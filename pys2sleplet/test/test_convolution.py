@@ -16,10 +16,7 @@ def test_earth_identity_convolution() -> None:
     f = Earth(L)
     g = Identity(L)
     flm = f.multipole
-
-    f.convolve(g.multipole)
-    flm_conv = f.multipole
-
+    flm_conv = f.convolve(flm, g.multipole)
     assert_array_equal(flm, flm_conv)
     logger.info("Identity convolution passed test")
 
@@ -31,15 +28,11 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     """
     f = Earth(L)
     g = HarmonicGaussian(L)
-    flm, f_map = f.multipole, f.field
-
-    f.convolve(g.multipole)
-    flm_conv, f_conv = f.multipole, f.field
+    flm = f.multipole
+    flm_conv = f.convolve(flm, g.multipole)
+    assert_allclose(flm, flm_conv, 1e-3)
 
     flm_diff = flm - flm_conv
-
-    assert_array_equal(flm, flm_conv)
-    assert_allclose(f_map, f_conv, rtol=0.2)
     logger.info(
         "Earth/harmonic gaussian convolution difference max error: "
         f"{np.abs(flm_diff).max()}"
