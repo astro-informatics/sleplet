@@ -6,37 +6,36 @@ from numpy.testing import assert_array_equal
 
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.test.constants import FLOAT_WIDTH
 from pys2sleplet.test.constants import L_SMALL as L
-from pys2sleplet.test.constants import MIN_ANGLE, ORDER, PHI_0, PHI_1, THETA_0, THETA_1
+from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1
 
 
 def valid_theta_min() -> SearchStrategy[float]:
     """
     theta can be in the range [0, 180]
     """
-    return floats(min_value=MIN_ANGLE, max_value=THETA_0, width=FLOAT_WIDTH)
+    return floats(min_value=0, max_value=THETA_0, exclude_min=True)
 
 
 def valid_theta_max() -> SearchStrategy[float]:
     """
     theta can be in the range [0, 180]
     """
-    return floats(min_value=THETA_0, max_value=THETA_1, width=FLOAT_WIDTH)
+    return floats(min_value=THETA_0, max_value=THETA_1)
 
 
 def valid_phi_min() -> SearchStrategy[float]:
     """
     phi can be in the range [0, 360)
     """
-    return floats(min_value=MIN_ANGLE, max_value=PHI_0, width=FLOAT_WIDTH)
+    return floats(min_value=0, max_value=PHI_0, exclude_min=True)
 
 
 def valid_phi_max() -> SearchStrategy[float]:
     """
     phi can be in the range [0, 360)
     """
-    return floats(min_value=PHI_0, max_value=PHI_1, width=FLOAT_WIDTH)
+    return floats(min_value=PHI_0, max_value=PHI_1)
 
 
 def valid_orders() -> SearchStrategy[int]:
