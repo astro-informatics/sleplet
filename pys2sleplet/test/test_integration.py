@@ -145,4 +145,4 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere(
     if rank1 == rank2:
         assert_allclose(output, lambda_p, rtol=0.7)
     else:
-        assert_allclose(output, 0, atol=0.3)
+        assert_allclose(output, 0, atol=0.7)
