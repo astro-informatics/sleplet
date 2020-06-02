@@ -13,7 +13,6 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import create_mask_region
-from pys2sleplet.utils.string_methods import angle_as_degree
 from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     PHI_MAX_DEFAULT,
@@ -32,19 +31,19 @@ class SlepianLimitLatLon(SlepianFunctions):
     phi_min: float
     phi_max: float
     ncpu: int
-    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
+    _region: Region = field(init=False, repr=False)
     _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._name_ending = (
-            f"_theta{angle_as_degree(self.theta_min)}"
-            f"-{angle_as_degree(self.theta_max)}"
-            f"_phi{angle_as_degree(self.phi_min)}"
-            f"-{angle_as_degree(self.phi_max)}"
+        self._region = Region(
+            theta_min=self.theta_min,
+            theta_max=self.theta_max,
+            phi_min=self.phi_min,
+            phi_max=self.phi_max,
         )
         super().__post_init__()
 
@@ -75,16 +74,10 @@ class SlepianLimitLatLon(SlepianFunctions):
                     )
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self._name_ending}"
+        self.name = f"slepian{self._region.name_ending}"
 
     def _create_mask(self) -> None:
-        region = Region(
-            theta_min=self.theta_min,
-            theta_max=self.theta_max,
-            phi_min=self.phi_min,
-            phi_max=self.phi_max,
-        )
-        self.mask = create_mask_region(self.L, region)
+        self.mask = create_mask_region(self.L, self._region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (

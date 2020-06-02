@@ -15,7 +15,6 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import create_mask_region
-from pys2sleplet.utils.string_methods import angle_as_degree
 from pys2sleplet.utils.vars import ANNOTATION_DOTS, ARROW_STYLE, ORDER_DEFAULT
 
 _file_location = Path(__file__).resolve()
@@ -27,15 +26,12 @@ class SlepianPolarCap(SlepianFunctions):
     order: int
     ncpu: int
     _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
-    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
+    _region: Region = field(init=False, repr=False)
     _theta_max: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._name_ending = (
-            f"_polar{'_gap' if config.POLAR_GAP else ''}"
-            f"{angle_as_degree(self.theta_max)}_m{self.order}"
-        )
+        self._region = Region(theta_max=self.theta_max, order=self.order)
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -50,11 +46,10 @@ class SlepianPolarCap(SlepianFunctions):
                         self._add_to_annotation(theta_bottom, j, colour="white")
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self._name_ending}"
+        self.name = f"slepian{self.region.name_ending}"
 
     def _create_mask(self) -> None:
-        region = Region(theta_max=self.theta_max)
-        self.mask = create_mask_region(self.L, region)
+        self.mask = create_mask_region(self.L, self._region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -401,8 +396,6 @@ class SlepianPolarCap(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             order = SlepianPolarCap._order
-        if not isinstance(order, int):
-            raise TypeError("order should be an integer")
         if abs(order) >= self.L:
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order

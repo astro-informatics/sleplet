@@ -5,7 +5,7 @@ import numpy as np
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.string_methods import multiples_of_pi
+from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -21,16 +21,19 @@ class Region:
     theta_max: float
     theta_min: float
     mask_name: str
+    order: int
+    _mask_name: str = field(default=config.SLEPIAN_MASK, init=False, repr=False)
+    _name_ending: str = field(init=False, repr=False)
+    _order: int = field(default=config.ORDER, init=False, repr=False)
     _phi_max: float = field(default=np.deg2rad(config.PHI_MAX), init=False, repr=False)
     _phi_min: float = field(default=np.deg2rad(config.PHI_MIN), init=False, repr=False)
+    _region_type: str = field(init=False, repr=False)
     _theta_max: float = field(
         default=np.deg2rad(config.THETA_MAX), init=False, repr=False
     )
     _theta_min: float = field(
         default=np.deg2rad(config.THETA_MIN), init=False, repr=False
     )
-    _mask_name: str = field(default=config.SLEPIAN_MASK, init=False, repr=False)
-    _region_type: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._identify_region()
@@ -42,16 +45,27 @@ class Region:
         if is_polar_cap(self.phi_min, self.phi_max, self.theta_min, self.theta_max):
             logger.info("polar cap region detected")
             self.region_type = "polar"
+            self.name_ending = (
+                f"_polar{'_gap' if config.POLAR_GAP else ''}"
+                f"{angle_as_degree(self.theta_max)}_m{self.order}"
+            )
 
         elif is_limited_lat_lon(
             self.phi_min, self.phi_max, self.theta_min, self.theta_max
         ):
             logger.info("limited latitude longitude region detected")
             self.region_type = "lim_lat_lon"
+            self.name_ending = (
+                f"_theta{angle_as_degree(self.theta_min)}"
+                f"-{angle_as_degree(self.theta_max)}"
+                f"_phi{angle_as_degree(self.phi_min)}"
+                f"-{angle_as_degree(self.phi_max)}"
+            )
 
         elif self.mask_name:
             logger.info("mask specified in file detected")
             self.region_type = "arbitrary"
+            self.name_ending = f"_{self.mask_name}"
 
         else:
             raise AttributeError(
@@ -70,6 +84,27 @@ class Region:
             # https://stackoverflow.com/a/61480946/7359333
             mask_name = Region._mask_name
         self._mask_name = mask_name
+
+    @property  # type: ignore
+    def name_ending(self) -> str:
+        return self._name_ending
+
+    @name_ending.setter
+    def name_ending(self, name_ending: str) -> None:
+        self._name_ending = name_ending
+        logger.info(f"name_ending='{name_ending}'")
+
+    @property  # type: ignore
+    def order(self) -> int:
+        return self._order
+
+    @order.setter
+    def order(self, order: int) -> None:
+        if isinstance(order, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            order = Region._order
+        self._order = order
 
     @property  # type:ignore
     def phi_max(self) -> float:
