@@ -25,9 +25,11 @@ _file_location = Path(__file__).resolve()
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     order: int
-    ncpu: int = field(default=config.NCPU)
+    ncpu: int
     _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
+    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
+    _theta_max: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._name_ending = (
@@ -376,6 +378,19 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
+    @property  # type: ignore
+    def ncpu(self) -> int:
+        return self._ncpu
+
+    @ncpu.setter
+    def ncpu(self, ncpu: int) -> None:
+        if isinstance(ncpu, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            ncpu = SlepianPolarCap._ncpu
+        self._ncpu = ncpu
+        logger.info(f"ncpu={self.ncpu}")
+
     @property  # type:ignore
     def order(self) -> int:
         return self._order
@@ -392,3 +407,14 @@ class SlepianPolarCap(SlepianFunctions):
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
         logger.info(f"order={self.order}")
+
+    @property  # type:ignore
+    def theta_max(self) -> float:
+        return self._theta_max
+
+    @theta_max.setter
+    def theta_max(self, theta_max: float) -> None:
+        if theta_max == 0:
+            raise ValueError("theta_max cannot be zero")
+        self._theta_max = theta_max
+        logger.info(f"theta_max={self.theta_max}")

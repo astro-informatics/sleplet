@@ -71,7 +71,6 @@ class Region:
             # https://stackoverflow.com/a/61480946/7359333
             mask_name = Region._mask_name
         self._mask_name = mask_name
-        logger.info(f"mask_name={self.mask_name}")
 
     @property  # type:ignore
     def phi_max(self) -> float:
@@ -90,7 +89,6 @@ class Region:
                 f"phi_max cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_max = phi_max
-        logger.info(f"phi_max={self.phi_max}")
 
     @property  # type:ignore
     def phi_min(self) -> float:
@@ -109,7 +107,6 @@ class Region:
                 f"phi_min cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         self._phi_min = phi_min
-        logger.info(f"phi_min={self.phi_min}")
 
     @property
     def region_type(self) -> str:
@@ -137,7 +134,6 @@ class Region:
                 f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
         self._theta_max = theta_max
-        logger.info(f"theta_max={self.theta_max}")
 
     @property  # type: ignore
     def theta_min(self) -> float:
@@ -156,4 +152,3 @@ class Region:
                 f"theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
         self._theta_min = theta_min
-        logger.info(f"theta_min={self.theta_min}")

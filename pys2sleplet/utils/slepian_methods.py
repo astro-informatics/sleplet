@@ -19,7 +19,7 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
                                    phi_min or phi_max is provided
     * arbitrary - just checks the shape of the input mask
     """
-    theta_grid, phi_grid = ssht.sample_position(L, Grid=True, Method=SAMPLING_SCHEME)
+    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
 
     if region.region_type == "polar":
         logger.info("creating polar cap mask")

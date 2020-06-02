@@ -27,12 +27,17 @@ _file_location = Path(__file__).resolve()
 
 @dataclass
 class SlepianLimitLatLon(SlepianFunctions):
-    theta_min: float = field(default=THETA_MIN_DEFAULT)
-    theta_max: float = field(default=THETA_MAX_DEFAULT)
-    phi_min: float = field(default=PHI_MIN_DEFAULT)
-    phi_max: float = field(default=PHI_MAX_DEFAULT)
-    ncpu: int = field(default=config.NCPU)
+    theta_min: float
+    theta_max: float
+    phi_min: float
+    phi_max: float
+    ncpu: int
     _name_ending: str = field(init=False, repr=False)
+    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
+    _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
+    _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
+    _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
+    _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._name_ending = (
@@ -360,3 +365,68 @@ class SlepianLimitLatLon(SlepianFunctions):
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
+
+    @property  # type: ignore
+    def ncpu(self) -> int:
+        return self._ncpu
+
+    @ncpu.setter
+    def ncpu(self, ncpu: int) -> None:
+        if isinstance(ncpu, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            ncpu = SlepianLimitLatLon._ncpu
+        self._ncpu = ncpu
+        logger.info(f"ncpu={self.ncpu}")
+
+    @property  # type:ignore
+    def phi_max(self) -> float:
+        return self._phi_max
+
+    @phi_max.setter
+    def phi_max(self, phi_max: float) -> None:
+        if isinstance(phi_max, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            phi_max = SlepianLimitLatLon._phi_max
+        self._phi_max = phi_max
+        logger.info(f"phi_max={self.phi_max}")
+
+    @property  # type:ignore
+    def phi_min(self) -> float:
+        return self._phi_min
+
+    @phi_min.setter
+    def phi_min(self, phi_min: float) -> None:
+        if isinstance(phi_min, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            phi_min = SlepianLimitLatLon._phi_min
+        self._phi_min = phi_min
+        logger.info(f"phi_min={self.phi_min}")
+
+    @property  # type:ignore
+    def theta_max(self) -> float:
+        return self._theta_max
+
+    @theta_max.setter
+    def theta_max(self, theta_max: float) -> None:
+        if isinstance(theta_max, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            theta_max = SlepianLimitLatLon._theta_max
+        self._theta_max = theta_max
+        logger.info(f"theta_max={self.theta_max}")
+
+    @property  # type: ignore
+    def theta_min(self) -> float:
+        return self._theta_min
+
+    @theta_min.setter
+    def theta_min(self, theta_min: float) -> None:
+        if isinstance(theta_min, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            theta_min = SlepianLimitLatLon._theta_min
+        self._theta_min = theta_min
+        logger.info(f"theta_min={self.theta_min}")

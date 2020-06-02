@@ -22,9 +22,11 @@ _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
 @dataclass
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
-    ncpu: int = field(default=config.NCPU)
+    ncpu: int
     _N: int = field(init=False, repr=False)
+    _mask_name: str = field(init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
+    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
     _ylm: np.ndarray = field(init=False, repr=False)
 
@@ -214,3 +216,25 @@ class SlepianArbitrary(SlepianFunctions):
         eigenvectors[pairs] *= 1j
 
         return eigenvalues, eigenvectors
+
+    @property  # type: ignore
+    def mask_name(self) -> str:
+        return self._mask_name
+
+    @mask_name.setter
+    def mask_name(self, mask_name: str) -> None:
+        self._mask_name = mask_name
+        logger.info(f"mask_name='{self.mask_name}'")
+
+    @property  # type: ignore
+    def ncpu(self) -> int:
+        return self._ncpu
+
+    @ncpu.setter
+    def ncpu(self, ncpu: int) -> None:
+        if isinstance(ncpu, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            ncpu = SlepianArbitrary._ncpu
+        self._ncpu = ncpu
+        logger.info(f"ncpu={self.ncpu}")
