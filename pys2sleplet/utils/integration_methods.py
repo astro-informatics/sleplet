@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.harmonic_methods import invert_flm
+from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import create_mask_region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
@@ -72,8 +72,8 @@ def _integration_helper(
         mask = None
 
     weight = _integration_weight(resolution)
-    f = invert_flm(flm, L, reality=flm_reality, resolution=resolution)
-    g = invert_flm(glm, L, reality=glm_reality, resolution=resolution)
+    f = invert_flm_boosted(flm, L, resolution, reality=flm_reality)
+    g = invert_flm_boosted(glm, L, resolution, reality=glm_reality)
 
     if flm_conj:
         f = f.conj()

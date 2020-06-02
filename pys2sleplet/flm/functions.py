@@ -7,10 +7,10 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.harmonic_methods import invert_flm
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.string_methods import filename_angle
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -145,8 +145,10 @@ class Functions:
 
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
+        self.field = ssht.inverse(
+            multipole, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
+        )
         self._multipole = multipole
-        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
 
     @property
     def name(self) -> np.ndarray:

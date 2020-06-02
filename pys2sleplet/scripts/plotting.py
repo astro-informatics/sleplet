@@ -7,7 +7,7 @@ import numpy as np
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.function_dicts import FUNCTIONS
-from pys2sleplet.utils.harmonic_methods import invert_flm
+from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.string_methods import filename_angle
 
 
@@ -154,9 +154,7 @@ def plot(
     filename += f"res{f.resolution}_"
 
     # create padded field to plot
-    padded_field = invert_flm(
-        f.multipole, f.L, reality=f.reality, resolution=f.resolution
-    )
+    padded_field = invert_flm_boosted(f.multipole, f.L, f.resolution, reality=f.reality)
 
     # check for plotting type
     if plot_type == "real":
@@ -181,7 +179,6 @@ def plot(
 
 def main() -> None:
     args = read_args()
-
     plot(
         args.flm,
         config.L,

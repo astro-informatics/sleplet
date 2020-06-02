@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Callable
 
 import numpy as np
 import pyssht as ssht
@@ -15,19 +15,14 @@ def _boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarra
     return flm_boost
 
 
-def invert_flm(
-    flm: np.ndarray, L: int, reality: bool = False, resolution: Optional[int] = None
+def invert_flm_boosted(
+    flm: np.ndarray, L: int, resolution: int, reality: bool = False
 ) -> np.ndarray:
     """
     performs the inverse harmonic transform
     """
-    if resolution is not None:
-        flm = _boost_flm_resolution(flm, L, resolution)
-        bandlimit = resolution
-    else:
-        bandlimit = L
-
-    f = ssht.inverse(flm, bandlimit, Reality=reality, Method=SAMPLING_SCHEME)
+    flm = _boost_flm_resolution(flm, L, resolution)
+    f = ssht.inverse(flm, resolution, Reality=reality, Method=SAMPLING_SCHEME)
     return f
 
 
