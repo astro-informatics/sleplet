@@ -9,6 +9,8 @@ import pyssht as ssht
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
+from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import create_mask_region
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
@@ -19,6 +21,7 @@ _file_location = Path(__file__).resolve()
 class Functions:
     L: int
     extra_args: Optional[List[int]]
+    region: Optional[Region]
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _field: np.ndarray = field(init=False, repr=False)
@@ -26,6 +29,7 @@ class Functions:
     _multipole: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
+    _region: Region = field(default=None, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -153,6 +157,12 @@ class Functions:
         self.field = ssht.inverse(
             multipole, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
         )
+        if self.region is not None:
+            mask = create_mask_region(self.L, self.region)
+            self.field *= mask
+            multipole = ssht.forward(
+                self.field, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
+            )
         self._multipole = multipole
 
     @property
@@ -170,6 +180,18 @@ class Functions:
     @reality.setter
     def reality(self, reality: bool) -> None:
         self._reality = reality
+
+    @property  # type: ignore
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        if isinstance(region, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            region = Functions._region
+        self._region = region
 
     @property
     def resolution(self) -> int:

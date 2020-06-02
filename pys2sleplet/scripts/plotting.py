@@ -8,6 +8,7 @@ from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.function_dicts import FUNCTIONS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
 
 
@@ -97,6 +98,12 @@ def read_args() -> Namespace:
         help="plotting routine: defaults to north",
     )
     parser.add_argument(
+        "--region",
+        "-r",
+        action="store_true",
+        help="flag which masks the function for a region (based on settings.toml)",
+    )
+    parser.add_argument(
         "--type",
         "-t",
         type=str,
@@ -120,13 +127,20 @@ def plot(
     extra_args: Optional[List[int]],
     gamma_pi_fraction: float,
     method: str,
+    region: bool,
     plot_type: str,
 ) -> None:
     """
     master plotting method
     """
-    f = FUNCTIONS[f_name](L, extra_args=extra_args)
-    filename = f"{f.name}_L{L}_"
+    # creates the field of a function just specified in the region
+    if region:
+        mask = Region()
+    else:
+        mask = None
+
+    f = FUNCTIONS[f_name](L, extra_args=extra_args, region=mask)
+    filename = f"{f.name}{'' if mask is None else mask.name_ending}_L{L}_"
     multipole = f.multipole
 
     if method == "rotate":
@@ -190,6 +204,7 @@ def main() -> None:
         args.extra_args,
         args.gamma,
         args.method,
+        args.region,
         args.type,
     )
 
