@@ -1,7 +1,5 @@
 from dataclasses import dataclass, field
 
-import numpy as np
-
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
@@ -48,13 +46,8 @@ class Slepian(Functions):
         """
         initialise Slepian object depending on input
         """
-        region = Region(
-            phi_min=np.deg2rad(config.PHI_MIN),
-            phi_max=np.deg2rad(config.PHI_MAX),
-            theta_min=np.deg2rad(config.THETA_MIN),
-            theta_max=np.deg2rad(config.THETA_MAX),
-            mask_name=config.SLEPIAN_MASK,
-        )
+        # create default region from config dict
+        region = Region()
 
         if region.region_type == "polar":
             logger.info("polar cap region detected")
@@ -64,10 +57,10 @@ class Slepian(Functions):
             logger.info("limited latitude longitude region detected")
             slepian = SlepianLimitLatLon(
                 config.L,
-                region.theta_min,
-                region.theta_max,
-                region.phi_min,
-                region.phi_max,
+                theta_min=region.theta_min,
+                theta_max=region.theta_max,
+                phi_min=region.phi_min,
+                phi_max=region.phi_max,
             )
 
         elif region.region_type == "arbitrary":

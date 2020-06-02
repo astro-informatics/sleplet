@@ -20,25 +20,21 @@ from pys2sleplet.utils.integration_methods import integrate_whole_sphere
 
 
 @pytest.fixture(scope="module")
-def polar_cap_evecs():
+def polar_cap_evecs() -> np.ndarray:
     """
     retrieve the eigenvectors of a Slepian polar cap
     """
-    slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER)
+    slepian = SlepianPolarCap(L, THETA_MAX, order=ORDER)
     return slepian.eigenvectors
 
 
 @pytest.fixture(scope="module")
-def lim_lat_lon_evecs():
+def lim_lat_lon_evecs() -> np.ndarray:
     """
     retrieve the eigenvectors of a Slepian limited latitude longitude region
     """
     slepian = SlepianLimitLatLon(
-        L,
-        np.deg2rad(THETA_0),
-        np.deg2rad(THETA_1),
-        np.deg2rad(PHI_0),
-        np.deg2rad(PHI_1),
+        L, theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1
     )
     return slepian.eigenvectors
 

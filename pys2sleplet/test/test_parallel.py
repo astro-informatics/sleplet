@@ -1,41 +1,42 @@
 import numpy as np
 from hypothesis import given, settings
 from hypothesis.extra.numpy import arrays
-from hypothesis.strategies import SearchStrategy, integers
+from hypothesis.strategies import SearchStrategy, floats, integers
 from numpy.testing import assert_array_equal
 
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from pys2sleplet.test.constants import FLOAT_WIDTH
 from pys2sleplet.test.constants import L_SMALL as L
-from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1
+from pys2sleplet.test.constants import MIN_ANGLE, ORDER, PHI_0, PHI_1, THETA_0, THETA_1
 
 
-def valid_theta_min() -> SearchStrategy[int]:
+def valid_theta_min() -> SearchStrategy[float]:
     """
     theta can be in the range [0, 180]
     """
-    return integers(min_value=1, max_value=THETA_0)
+    return floats(min_value=MIN_ANGLE, max_value=THETA_0, width=FLOAT_WIDTH)
 
 
-def valid_theta_max() -> SearchStrategy[int]:
+def valid_theta_max() -> SearchStrategy[float]:
     """
     theta can be in the range [0, 180]
     """
-    return integers(min_value=THETA_0, max_value=THETA_1)
+    return floats(min_value=THETA_0, max_value=THETA_1, width=FLOAT_WIDTH)
 
 
-def valid_phi_min() -> SearchStrategy[int]:
+def valid_phi_min() -> SearchStrategy[float]:
     """
     phi can be in the range [0, 360)
     """
-    return integers(min_value=1, max_value=PHI_0)
+    return floats(min_value=MIN_ANGLE, max_value=PHI_0, width=FLOAT_WIDTH)
 
 
-def valid_phi_max() -> SearchStrategy[int]:
+def valid_phi_max() -> SearchStrategy[float]:
     """
     phi can be in the range [0, 360)
     """
-    return integers(min_value=PHI_0, max_value=PHI_1)
+    return floats(min_value=PHI_0, max_value=PHI_1, width=FLOAT_WIDTH)
 
 
 def valid_orders() -> SearchStrategy[int]:
@@ -59,8 +60,8 @@ def test_slepian_polar_cap_serial_equal_to_parallel(theta_max, order) -> None:
     ensures that the serial and parallel calculation of a given
     Slepian polar cap give the same result
     """
-    serial = SlepianPolarCap(L, np.deg2rad(theta_max), order=ORDER, ncpu=1)
-    parallel = SlepianPolarCap(L, np.deg2rad(theta_max), order=ORDER)
+    serial = SlepianPolarCap(L, theta_max, order=ORDER, ncpu=1)
+    parallel = SlepianPolarCap(L, theta_max, order=ORDER)
     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
 
@@ -81,18 +82,14 @@ def test_slepian_lat_lon_serial_equal_to_parallel(
     """
     serial = SlepianLimitLatLon(
         L,
-        np.deg2rad(theta_min),
-        np.deg2rad(theta_max),
-        np.deg2rad(phi_min),
-        np.deg2rad(phi_max),
+        theta_min=theta_min,
+        theta_max=theta_max,
+        phi_min=phi_min,
+        phi_max=phi_max,
         ncpu=1,
     )
     parallel = SlepianLimitLatLon(
-        L,
-        np.deg2rad(theta_min),
-        np.deg2rad(theta_max),
-        np.deg2rad(phi_min),
-        np.deg2rad(phi_max),
+        L, theta_min=theta_min, theta_max=theta_max, phi_min=phi_min, phi_max=phi_max
     )
     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)

@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
 
 import numpy as np
 
@@ -21,7 +20,7 @@ class Region:
     phi_min: float
     theta_max: float
     theta_min: float
-    mask_name: Optional[str]
+    mask_name: str
     _phi_max: float = field(default=np.deg2rad(config.PHI_MAX), init=False, repr=False)
     _phi_min: float = field(default=np.deg2rad(config.PHI_MIN), init=False, repr=False)
     _theta_max: float = field(
@@ -30,7 +29,7 @@ class Region:
     _theta_min: float = field(
         default=np.deg2rad(config.THETA_MIN), init=False, repr=False
     )
-    _mask_name: Optional[str] = field(default=None, init=False, repr=False)
+    _mask_name: str = field(default=config.SLEPIAN_MASK, init=False, repr=False)
     _region_type: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -50,7 +49,7 @@ class Region:
             logger.info("limited latitude longitude region detected")
             self.region_type = "lim_lat_lon"
 
-        elif self.mask_name is not None:
+        elif self.mask_name:
             logger.info("mask specified in file detected")
             self.region_type = "arbitrary"
 
@@ -61,11 +60,11 @@ class Region:
             )
 
     @property  # type: ignore
-    def mask_name(self) -> Optional[str]:
+    def mask_name(self) -> str:
         return self._mask_name
 
     @mask_name.setter
-    def mask_name(self, mask_name: Optional[str]) -> None:
+    def mask_name(self, mask_name: str) -> None:
         if isinstance(mask_name, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
