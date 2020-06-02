@@ -35,7 +35,7 @@ def polar_cap_region() -> Region:
     """
     creates a polar cap region
     """
-    return Region(theta_max=THETA_1, order=ORDER)
+    return Region(theta_max=THETA_1)
 
 
 def valid_polar_ranks() -> SearchStrategy[int]:

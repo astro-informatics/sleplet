@@ -51,7 +51,7 @@ class Slepian(Functions):
 
         if region.region_type == "polar":
             logger.info("polar cap region detected")
-            slepian = SlepianPolarCap(config.L, region.theta_max, order=region.ORDER)
+            slepian = SlepianPolarCap(config.L, region.theta_max, order=config.ORDER)
 
         elif region.region_type == "lim_lat_lon":
             logger.info("limited latitude longitude region detected")

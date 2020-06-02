@@ -25,6 +25,7 @@ class SlepianArbitrary(SlepianFunctions):
     ncpu: int
     _N: int = field(init=False, repr=False)
     _mask_name: str = field(init=False, repr=False)
+    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
@@ -32,8 +33,8 @@ class SlepianArbitrary(SlepianFunctions):
 
     def __post_init__(self) -> None:
         self._region = Region(mask_name=self.mask_name)
+        self._name_ending = self._region.name_ending
         self._N = self.L * self.L
-        self._name_ending = f"_{self.mask_name}"
         theta_grid, phi_grid = ssht.sample_positions(
             self.L, Grid=True, Method=SAMPLING_SCHEME
         )
@@ -47,7 +48,7 @@ class SlepianArbitrary(SlepianFunctions):
         pass
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self._region.name_ending}"
+        self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.L, self._region)

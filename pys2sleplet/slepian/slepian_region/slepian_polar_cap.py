@@ -26,12 +26,14 @@ class SlepianPolarCap(SlepianFunctions):
     order: int
     ncpu: int
     _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
+    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _theta_max: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._region = Region(theta_max=self.theta_max, order=self.order)
+        self._region = Region(theta_max=self.theta_max)
+        self._name_ending = f"{self._region.name_ending}_m{self.order}"
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -46,7 +48,7 @@ class SlepianPolarCap(SlepianFunctions):
                         self._add_to_annotation(theta_bottom, j, colour="white")
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self.region.name_ending}"
+        self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.L, self._region)

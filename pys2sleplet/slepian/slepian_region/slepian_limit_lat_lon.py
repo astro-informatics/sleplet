@@ -31,6 +31,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     phi_min: float
     phi_max: float
     ncpu: int
+    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
@@ -45,6 +46,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_min=self.phi_min,
             phi_max=self.phi_max,
         )
+        self._name_ending = self._region.name_ending
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -74,7 +76,7 @@ class SlepianLimitLatLon(SlepianFunctions):
                     )
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self._region.name_ending}"
+        self.name = f"slepian{self._name_ending}"
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.L, self._region)
