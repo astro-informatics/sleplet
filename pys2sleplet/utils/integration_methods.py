@@ -60,13 +60,11 @@ def _integration_helper(
     region: Optional[Region] = None,
 ) -> float:
     """
-    helper method which computes the integration on the sphere for
-    either the whole sphere or a region depended on the region variable
-
-    the function accepts arguments that control the reality of the inputs
-    as well as the ability to have conjugates within the integral
-
-    the multipole resolutions are boosted prior to integration
+    * helper method which computes the integration on the sphere for
+      either the whole sphere or a region depended on the region variable
+    * the function accepts arguments that control the reality of the inputs
+      as well as the ability to have conjugates within the integral
+    * the multipole resolutions are boosted prior to integration
     """
     resolution = calc_integration_resolution(L)
 
@@ -122,9 +120,8 @@ def integrate_region_sphere(
     glm_conj: bool = False,
 ) -> float:
     """
-    integrates over a region of the sphere using the helper method
-
-    the region must be calculated for the integration resolution
+    * integrates over a region of the sphere using the helper method
+    * the region must be calculated for the integration resolution
     """
     integration = _integration_helper(
         L, flm, glm, flm_reality, glm_reality, flm_conj, glm_conj, region=region
