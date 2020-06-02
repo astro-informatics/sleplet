@@ -22,7 +22,6 @@ class Functions:
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _field: np.ndarray = field(init=False, repr=False)
-    _field_padded: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
     _multipole: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
@@ -148,9 +147,6 @@ class Functions:
     def multipole(self, multipole: np.ndarray) -> None:
         self._multipole = multipole
         self.field = invert_flm(self.multipole, self.L, reality=self.reality)
-        self.field_padded = invert_flm(
-            self.multipole, self.L, reality=self.reality, resolution=self.resolution
-        )
 
     @property
     def name(self) -> np.ndarray:
@@ -159,14 +155,6 @@ class Functions:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @property
-    def field_padded(self) -> np.ndarray:
-        return self._field_padded
-
-    @field_padded.setter
-    def field_padded(self, field_padded: np.ndarray) -> None:
-        self._field_padded = field_padded
 
     @property
     def reality(self) -> bool:

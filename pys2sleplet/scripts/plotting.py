@@ -7,6 +7,7 @@ import numpy as np
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.function_dicts import FUNCTIONS
+from pys2sleplet.utils.harmonic_methods import invert_flm
 from pys2sleplet.utils.string_methods import filename_angle
 
 
@@ -152,15 +153,20 @@ def plot(
     # add resolution to filename
     filename += f"res{f.resolution}_"
 
+    # create padded field to plot
+    padded_field = invert_flm(
+        f.multipole, f.L, reality=f.reality, resolution=f.resolution
+    )
+
     # check for plotting type
     if plot_type == "real":
-        field = f.field_padded.real
+        field = padded_field.real
     elif plot_type == "imag":
-        field = f.field_padded.imag
+        field = padded_field.imag
     elif plot_type == "abs":
-        field = np.abs(f.field_padded)
+        field = np.abs(padded_field)
     elif plot_type == "sum":
-        field = f.field_padded.real + f.field_padded.imag
+        field = padded_field.real + padded_field.imag
 
     # turn off annotation if needed
     if annotations:
