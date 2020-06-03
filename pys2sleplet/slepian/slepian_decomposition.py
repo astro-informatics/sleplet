@@ -1,107 +1,101 @@
 from dataclasses import dataclass, field
 
 import numpy as np
-import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from pys2sleplet.utils.integration_methods import (
+    integrate_region_sphere,
+    integrate_whole_sphere,
+)
+from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 
 @dataclass
 class SlepianDecomposition:
     function: Functions
-    slepian: SlepianFunctions
-    _L: int = field(init=False, repr=False)
-    _f: np.ndarray = field(init=False, repr=False)
     _flm: np.ndarray = field(init=False, repr=False)
     _function: Functions = field(init=False, repr=False)
-    _slepian: SlepianFunctions = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
-    _weight: np.ndarray = field(init=False, repr=False)
+    _region: Region = field(init=False, repr=False)
+    _s_p_lms: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._input_validation()
-        self._L = self.function.L
         self._flm = self.function.multipole
-        self._f = np.where(self.slepian.mask, self.function.field, 0)
-        self._lambdas = self.slepian.eigenvalues
-        theta_grid, phi_grid = ssht.sample_positions(
-            self._L, Grid=True, Method=SAMPLING_SCHEME
-        )
-        delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
-        delta_phi = np.ediff1d(phi_grid[0]).mean()
-        self._weight = np.sin(theta_grid) * delta_theta * delta_phi
+        self._region = self.function.region
+        slepian = choose_slepian_method(self.function.L, self._region)
+        self._lambdas = slepian.eigenvalues
+        self._s_p_lms = slepian.eigenvectors
 
-    def decompose(self, rank: int, method: str = "forward_transform") -> np.ndarray:
+    def decompose(self, rank: int, method: str = "summation") -> np.ndarray:
         """
         decompose the signal into its Slepian coefficients via the given method
         """
-        s_p = ssht.inverse(
-            self.slepian.eigenvectors[rank], self._L, Method=SAMPLING_SCHEME
-        )
-        l_p = self._lambdas[rank]
+        self._validate_rank(rank)
 
         if method == "integrate_region":
-            f_p = self._integrate_region(s_p, l_p)
+            f_p = self._integrate_region(rank)
         elif method == "integrate_sphere":
-            f_p = self._integrate_sphere(s_p)
-        elif method == "forward_transform":
-            f_p = self._forward_transform(s_p)
+            f_p = self._integrate_sphere(rank)
+        elif method == "summation":
+            f_p = self._summation(rank)
         else:
             raise ValueError(
                 f"{method} is not a recognised Slepian decomposition method"
             )
         return f_p
 
-    def _integrate_region(self, s_p: np.ndarray, l_p: float) -> np.ndarray:
+    def _integrate_region(self, rank: int) -> np.ndarray:
         """
         f_{p} =
         \frac{1}{\lambda_{p}}
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        region = self.slepian.mask
-        integrand = self._f * s_p.conj()
-        integral = (integrand * self._weight)[region].sum()
-        f_p = integral / l_p
+        integration = integrate_region_sphere(
+            self._flm, self._s_p_lms[rank], self._region, glm_conj=True
+        )
+        f_p = integration / self._lambdas[rank]
         return f_p
 
-    def _integrate_sphere(self, s_p: np.ndarray) -> np.ndarray:
+    def _integrate_sphere(self, rank: int) -> np.ndarray:
         """
         f_{p} =
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        integrand = self._f * s_p.conj()
-        f_p = (integrand * self._weight).sum()
+        f_p = integrate_whole_sphere(self._flm, self._s_p_lms[rank], glm_conj=True)
         return f_p
 
-    def _forward_transform(self, s_p: np.ndarray) -> np.ndarray:
+    def _summation(self, rank: int) -> np.ndarray:
         """
         f_{p} =
         \sum\limits_{\ell=0}^{L^{2}}
         \sum\limits_{m=-\ell}^{\ell}
-        f_{\ell m}
-        \int\limits_{S^{2}} \dd{\Omega(\omega)}
-        Y_{\ell m}(\omega) \overline{S_{p}(\omega)}
+        f_{\ell m} (S_{p})_{\ell m}^{*}
         """
-        s_p_lm = ssht.forward(s_p, self._L, Method=SAMPLING_SCHEME)
-        summation = self._flm * s_p_lm.conj()
-
-        # equivalent to looping through l and m
-        f_p = summation.sum()
+        f_p = (self._flm * self._s_p_lms[rank].conj()).sum()
         return f_p
 
-    def _input_validation(self) -> None:
+    def _validate_rank(self, rank: int) -> None:
         """
-        check the bandlimits of the inputs agree
+        test the validity of the rank
         """
-        if self.function.L != self.slepian.L:
-            raise AttributeError(
-                f"bandlimits must agree: the function has an L of {self.function.L} "
-                f"whereas the Slepian function has an L of {self.slepian.L}"
-            )
+        if not isinstance(rank, int):
+            raise TypeError("rank should be an integer")
+        if rank < 0:
+            raise ValueError("rank cannot be negative")
+        limit = self._s_p_lms.shape[0]
+        if rank > limit:
+            raise ValueError(f"rank should be no more than {limit}")
+
+    @property
+    def flm(self) -> np.ndarray:
+        return self._flm
+
+    @flm.setter
+    def flm(self, flm: np.ndarray) -> None:
+        self._flm = flm
 
     @property  # type: ignore
     def function(self) -> Functions:
@@ -109,12 +103,32 @@ class SlepianDecomposition:
 
     @function.setter
     def function(self, function: Functions) -> None:
+        if function.region is None:
+            raise AttributeError(
+                f"{function.__class__.__name__} needs to have a region passed to it"
+            )
         self._function = function
 
-    @property  # type: ignore
-    def slepian(self) -> SlepianFunctions:
-        return self._slepian
+    @property
+    def lambdas(self) -> np.ndarray:
+        return self._lambdas
 
-    @slepian.setter
-    def slepian(self, slepian: SlepianFunctions) -> None:
-        self._slepian = slepian
+    @lambdas.setter
+    def lambdas(self, lambdas: np.ndarray) -> None:
+        self._lambdas = lambdas
+
+    @property
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        self._region = region
+
+    @property
+    def s_p_lms(self) -> np.ndarray:
+        return self._s_p_lms
+
+    @s_p_lms.setter
+    def s_p_lms(self, s_p_lms: np.ndarray) -> None:
+        self._s_p_lms = s_p_lms
