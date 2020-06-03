@@ -63,3 +63,16 @@ def _load_mask(mask_name: str) -> np.ndarray:
         logger.error(f"can not find the file: '{mask_name}'")
         raise
     return mask
+
+
+def ensure_masked_flm_bandlimited(
+    L: int, flm: np.ndarray, region: Region, reality: bool
+) -> np.ndarray:
+    """
+    ensures the multipole is bandlimited for a given region
+    """
+    field = ssht.inverse(flm, L, Reality=reality, Method=SAMPLING_SCHEME)
+    mask = create_mask_region(L, region)
+    field *= mask
+    multipole = ssht.forward(field, L, Reality=reality, Method=SAMPLING_SCHEME)
+    return multipole

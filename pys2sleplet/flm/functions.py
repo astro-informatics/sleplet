@@ -8,11 +8,10 @@ import pyssht as ssht
 
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import create_mask_region
+from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -146,14 +145,7 @@ class Functions:
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
         if self.region is not None:
-            field = ssht.inverse(
-                multipole, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
-            )
-            mask = create_mask_region(self.L, self.region)
-            field *= mask
-            multipole = ssht.forward(
-                field, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
-            )
+            multipole = ensure_masked_flm_bandlimited(multipole)
         self._multipole = multipole
 
     @property
