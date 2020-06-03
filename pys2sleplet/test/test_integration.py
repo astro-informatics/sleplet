@@ -84,7 +84,7 @@ def test_integrate_two_slepian_polar_functions_whole_sphere(
     glm = slepian_polar_cap.eigenvectors[rank2]
     output = integrate_whole_sphere(L, flm, glm, glm_conj=True)
     if rank1 == rank2:
-        assert_allclose(output, 1, rtol=1e-3)
+        assert_allclose(output, 1, atol=1e-3)
     else:
         assert_allclose(output, 0, atol=1e-4)
 
@@ -103,7 +103,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere(
     glm = slepian_lim_lat_lon.eigenvectors[rank2]
     output = integrate_whole_sphere(L, flm, glm, glm_conj=True)
     if rank1 == rank2:
-        assert_allclose(output, 1, rtol=1e-5)
+        assert_allclose(output, 1, atol=1e-5)
     else:
         assert_allclose(output, 0, atol=1e-5)
 
@@ -123,7 +123,7 @@ def test_integrate_two_slepian_polar_functions_region_sphere(
     glm = slepian_polar_cap.eigenvectors[rank2]
     output = integrate_region_sphere(L, flm, glm, polar_cap_region, glm_conj=True)
     if rank1 == rank2:
-        assert_allclose(output, lambda_p, rtol=0.3)
+        assert_allclose(output, lambda_p, atol=1e-3)
     else:
         assert_allclose(output, 0, atol=0.2)
 
@@ -143,6 +143,6 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere(
     glm = slepian_lim_lat_lon.eigenvectors[rank2]
     output = integrate_whole_sphere(L, flm, glm, lim_lat_lon_region, glm_conj=True)
     if rank1 == rank2:
-        assert_allclose(output, lambda_p, rtol=0.7)
+        assert_allclose(output, lambda_p, atol=0.4)
     else:
-        assert_allclose(output, 0, atol=0.7)
+        assert_allclose(output, 0, atol=0.3)

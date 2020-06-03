@@ -30,7 +30,7 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     g = HarmonicGaussian(L)
     flm = f.multipole
     flm_conv = f.convolve(flm, g.multipole)
-    assert_allclose(flm, flm_conv, 1e-3)
+    assert_allclose(flm, flm_conv, atol=0.04)
 
     flm_diff = flm - flm_conv
     logger.info(
