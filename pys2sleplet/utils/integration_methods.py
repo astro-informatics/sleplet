@@ -4,8 +4,8 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
+from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import create_mask_region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 

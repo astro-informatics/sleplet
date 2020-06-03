@@ -1,65 +1,31 @@
-from pathlib import Path
-
-import numpy as np
-import pyssht as ssht
-
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
+from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
+from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
-
-_file_location = Path(__file__).resolve()
 
 
-def create_mask_region(L: int, region: Region) -> np.ndarray:
+def choose_slepian_method(L: int, region: Region, order: int = 0) -> SlepianFunctions:
     """
-    creates a mask of a region of interested, the output will be based
-    on the value of the provided L. The mask could be either:
-    * polar cap - if theta_max provided
-    * limited latitude longitude - if one of theta_min, theta_max,
-                                   phi_min or phi_max is provided
-    * arbitrary - just checks the shape of the input mask
+    initialise Slepian object depending on input
     """
-    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
-
     if region.region_type == "polar":
-        logger.info("creating polar cap mask")
-        mask = theta_grid <= region.theta_max
+        logger.info("polar cap region detected")
+        slepian = SlepianPolarCap(L, region.theta_max, order=order)
 
     elif region.region_type == "lim_lat_lon":
-        logger.info("creating limited latitude longitude mask")
-        mask = (
-            (theta_grid >= region.theta_min)
-            & (theta_grid <= region.theta_max)
-            & (phi_grid >= region.phi_min)
-            & (phi_grid <= region.phi_max)
+        logger.info("limited latitude longitude region detected")
+        slepian = SlepianLimitLatLon(
+            L,
+            theta_min=region.theta_min,
+            theta_max=region.theta_max,
+            phi_min=region.phi_min,
+            phi_max=region.phi_max,
         )
 
     elif region.region_type == "arbitrary":
-        logger.info("loading and checking shape of provided mask")
-        mask = _load_mask(region.mask_name)
-        assert mask.shape == theta_grid.shape, (
-            f"mask shape {mask.shape} does not match the provided "
-            f"L={L}, the shape should be {theta_grid.shape}"
-        )
+        logger.info("mask specified in file detected")
+        slepian = SlepianArbitrary(L, region.mask_name)
 
-    return mask
-
-
-def _load_mask(mask_name: str) -> np.ndarray:
-    """
-    attempts to read the mask from the config file
-    """
-    location = (
-        _file_location.parents[1]
-        / "data"
-        / "slepian"
-        / "arbitrary"
-        / "masks"
-        / mask_name
-    )
-    try:
-        mask = np.load(location)
-    except FileNotFoundError:
-        logger.error(f"can not find the file: '{mask_name}'")
-        raise
-    return mask
+    return slepian
