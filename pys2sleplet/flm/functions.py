@@ -24,7 +24,6 @@ class Functions:
     region: Optional[Region]
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
-    _field: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
     _multipole: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
@@ -131,14 +130,6 @@ class Functions:
             extra_args = Functions._extra_args
         self._extra_args = extra_args
 
-    @property
-    def field(self) -> np.ndarray:
-        return self._field
-
-    @field.setter
-    def field(self, field: np.ndarray) -> None:
-        self._field = field
-
     @property  # type: ignore
     def L(self) -> int:
         return self._L
@@ -154,14 +145,14 @@ class Functions:
 
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
-        self.field = ssht.inverse(
-            multipole, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
-        )
         if self.region is not None:
+            field = ssht.inverse(
+                multipole, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
+            )
             mask = create_mask_region(self.L, self.region)
-            self.field *= mask
+            field *= mask
             multipole = ssht.forward(
-                self.field, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
+                field, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
             )
         self._multipole = multipole
 
