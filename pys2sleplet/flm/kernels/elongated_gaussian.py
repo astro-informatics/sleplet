@@ -11,6 +11,8 @@ from pys2sleplet.utils.vars import PHI_0, THETA_0
 
 @dataclass
 class ElongatedGaussian(Functions):
+    p_sigma: float
+    t_sigma: float
     _p_sigma: float = field(default=0.001, init=False, repr=False)
     _t_sigma: float = field(default=1, init=False, repr=False)
 
@@ -53,20 +55,28 @@ class ElongatedGaussian(Functions):
         )
         return f
 
-    @property
+    @property  # type: ignore
     def p_sigma(self) -> float:
         return self._p_sigma
 
     @p_sigma.setter
     def p_sigma(self, p_sigma: float) -> None:
+        if isinstance(p_sigma, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            p_sigma = ElongatedGaussian._p_sigma
         self._p_sigma = p_sigma
         logger.info(f"p_sigma={self.p_sigma}")
 
-    @property
+    @property  # type: ignore
     def t_sigma(self) -> float:
         return self._t_sigma
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
+        if isinstance(t_sigma, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            t_sigma = ElongatedGaussian._t_sigma
         self._t_sigma = t_sigma
         logger.info(f"t_sigma={self.t_sigma}")

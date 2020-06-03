@@ -361,6 +361,15 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
+    @property
+    def name_ending(self) -> str:
+        return self._name_ending
+
+    @name_ending.setter
+    def name_ending(self, name_ending: str) -> None:
+        self._name_ending = name_ending
+        logger.info(f"name_ending={self.name_ending}")
+
     @property  # type: ignore
     def ncpu(self) -> int:
         return self._ncpu
@@ -399,6 +408,14 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_min = SlepianLimitLatLon._phi_min
         self._phi_min = phi_min
         logger.info(f"phi_min={self.phi_min}")
+
+    @property
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        self._region = region
 
     @property  # type:ignore
     def theta_max(self) -> float:

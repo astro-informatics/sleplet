@@ -92,7 +92,6 @@ class Region:
     @name_ending.setter
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
-        logger.info(f"name_ending='{name_ending}'")
 
     @property  # type:ignore
     def order(self) -> int:

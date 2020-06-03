@@ -227,6 +227,15 @@ class SlepianArbitrary(SlepianFunctions):
         self._mask_name = mask_name
         logger.info(f"mask_name='{self.mask_name}'")
 
+    @property
+    def name_ending(self) -> str:
+        return self._name_ending
+
+    @name_ending.setter
+    def name_ending(self, name_ending: str) -> None:
+        self._name_ending = name_ending
+        logger.info(f"name_ending={self.name_ending}")
+
     @property  # type: ignore
     def ncpu(self) -> int:
         return self._ncpu
@@ -239,3 +248,11 @@ class SlepianArbitrary(SlepianFunctions):
             ncpu = SlepianArbitrary._ncpu
         self._ncpu = ncpu
         logger.info(f"ncpu={self.ncpu}")
+
+    @property
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        self._region = region

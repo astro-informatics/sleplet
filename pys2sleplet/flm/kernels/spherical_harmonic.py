@@ -10,6 +10,8 @@ from pys2sleplet.utils.string_methods import filename_args
 
 @dataclass
 class SphericalHarmonic(Functions):
+    ell: int
+    m: int
     _ell: int = field(default=0, init=False, repr=False)
     _m: int = field(default=0, init=False, repr=False)
 
@@ -39,12 +41,16 @@ class SphericalHarmonic(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 
-    @property
+    @property  # type: ignore
     def ell(self) -> int:
         return self._ell
 
     @ell.setter
     def ell(self, ell: int) -> None:
+        if isinstance(ell, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            ell = SphericalHarmonic._ell
         if not isinstance(ell, int):
             raise TypeError("ell should be an integer")
         if ell < 0:
@@ -54,12 +60,16 @@ class SphericalHarmonic(Functions):
         self._ell = ell
         logger.info(f"ell={self.ell}")
 
-    @property
+    @property  # type: ignore
     def m(self) -> int:
         return self._m
 
     @m.setter
     def m(self, m: int) -> None:
+        if isinstance(m, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            m = SphericalHarmonic._m
         if not isinstance(m, int):
             raise TypeError("m should be an integer")
         if abs(m) > self.ell:

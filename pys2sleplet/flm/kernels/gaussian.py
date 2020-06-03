@@ -10,6 +10,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 @dataclass
 class Gaussian(Functions):
+    sigma: float
     _sigma: float = field(default=1_000, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -38,11 +39,15 @@ class Gaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.sigma = 10 ** self.extra_args[0]
 
-    @property
+    @property  # type: ignore
     def sigma(self) -> float:
         return self._sigma
 
     @sigma.setter
     def sigma(self, sigma: float) -> None:
+        if isinstance(sigma, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            sigma = Gaussian._sigma
         self._sigma = sigma
         logger.info(f"sigma={self.sigma}")

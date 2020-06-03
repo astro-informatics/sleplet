@@ -11,6 +11,8 @@ from pys2sleplet.utils.vars import THETA_0
 
 @dataclass
 class SquashedGaussian(Functions):
+    t_sigma: float
+    freq: float
     _t_sigma: float = field(default=0.01, init=False, repr=False)
     _freq: float = field(default=0.1, init=False, repr=False)
 
@@ -49,20 +51,28 @@ class SquashedGaussian(Functions):
         )
         return f
 
-    @property
+    @property  # type: ignore
     def freq(self) -> float:
         return self._freq
 
     @freq.setter
     def freq(self, freq: float) -> None:
+        if isinstance(freq, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            freq = SquashedGaussian._freq
         self._freq = freq
         logger.info(f"freq={self.freq}")
 
-    @property
+    @property  # type: ignore
     def t_sigma(self) -> float:
         return self._t_sigma
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
+        if isinstance(t_sigma, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            t_sigma = SquashedGaussian._t_sigma
         self._t_sigma = t_sigma
         logger.info(f"t_sigma={self.t_sigma}")

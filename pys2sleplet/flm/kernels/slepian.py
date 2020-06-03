@@ -9,6 +9,8 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 @dataclass
 class Slepian(Functions):
+    rank: int
+    slepian: SlepianFunctions
     _rank: int = field(default=0, init=False, repr=False)
     _slepian: SlepianFunctions = field(init=False, repr=False)
 
@@ -16,6 +18,9 @@ class Slepian(Functions):
         # create default region from config dict
         region = Region()
         self.slepian = choose_slepian_method(self.L, region)
+        limit = self.slepian.eigenvectors.shape[0]
+        if self.rank > limit:
+            raise ValueError(f"rank {self.rank} should be no more than {limit}")
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -40,22 +45,24 @@ class Slepian(Functions):
                 )
             self.rank = self.extra_args[0]
 
-    @property
+    @property  # type: ignore
     def rank(self) -> int:
         return self._rank
 
     @rank.setter
     def rank(self, rank: int) -> None:
+        if isinstance(rank, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            rank = Slepian._rank
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        if rank >= self.L:
-            raise ValueError(f"rank should be no more than {self.L}")
         self._rank = rank
         logger.info(f"rank={self.rank}")
 
-    @property
+    @property  # type: ignore
     def slepian(self) -> SlepianFunctions:
         return self._slepian
 

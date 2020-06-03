@@ -10,6 +10,8 @@ from pys2sleplet.utils.string_methods import filename_args
 
 @dataclass
 class HarmonicGaussian(Functions):
+    l_sigma: float
+    m_sigma: float
     _l_sigma: float = field(default=1_000, init=False, repr=False)
     _m_sigma: float = field(default=1_000, init=False, repr=False)
 
@@ -45,20 +47,28 @@ class HarmonicGaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.l_sigma, self.m_sigma = [10 ** x for x in self.extra_args]
 
-    @property
+    @property  # type: ignore
     def l_sigma(self) -> float:
         return self._l_sigma
 
     @l_sigma.setter
     def l_sigma(self, l_sigma: float) -> None:
+        if isinstance(l_sigma, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            l_sigma = HarmonicGaussian._l_sigma
         self._l_sigma = l_sigma
         logger.info(f"l_sigma={self.l_sigma}")
 
-    @property
+    @property  # type: ignore
     def m_sigma(self) -> float:
         return self._m_sigma
 
     @m_sigma.setter
     def m_sigma(self, m_sigma: float) -> None:
+        if isinstance(m_sigma, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            m_sigma = HarmonicGaussian._m_sigma
         self._m_sigma = m_sigma
         logger.info(f"m_sigma={self.m_sigma}")
