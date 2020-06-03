@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
@@ -16,7 +15,7 @@ class Slepian(Functions):
     def __post_init__(self) -> None:
         # create default region from config dict
         region = Region()
-        self.slepian = choose_slepian_method(self.L, region, order=config.ORDER)
+        self.slepian = choose_slepian_method(self.L, region)
         super().__post_init__()
 
     def _create_annotations(self) -> None:

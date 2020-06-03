@@ -21,8 +21,10 @@ class Region:
     theta_max: float
     theta_min: float
     mask_name: str
+    order: int
     _mask_name: str = field(default=config.SLEPIAN_MASK, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
+    _order: int = field(default=config.ORDER, init=False, repr=False)
     _phi_max: float = field(default=np.deg2rad(config.PHI_MAX), init=False, repr=False)
     _phi_min: float = field(default=np.deg2rad(config.PHI_MIN), init=False, repr=False)
     _region_type: str = field(init=False, repr=False)
@@ -91,6 +93,18 @@ class Region:
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
         logger.info(f"name_ending='{name_ending}'")
+
+    @property  # type:ignore
+    def order(self) -> int:
+        return self._order
+
+    @order.setter
+    def order(self, order: int) -> None:
+        if isinstance(order, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            order = Region._order
+        self._order = order
 
     @property  # type:ignore
     def phi_max(self) -> float:

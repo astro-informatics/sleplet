@@ -6,13 +6,13 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 
 
-def choose_slepian_method(L: int, region: Region, order: int = 0) -> SlepianFunctions:
+def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
     """
     initialise Slepian object depending on input
     """
     if region.region_type == "polar":
         logger.info("polar cap region detected")
-        slepian = SlepianPolarCap(L, region.theta_max, order=order)
+        slepian = SlepianPolarCap(L, region.theta_max, order=region.order)
 
     elif region.region_type == "lim_lat_lon":
         logger.info("limited latitude longitude region detected")
