@@ -66,7 +66,7 @@ def _load_mask(mask_name: str) -> np.ndarray:
 
 
 def ensure_masked_flm_bandlimited(
-    L: int, flm: np.ndarray, region: Region, reality: bool
+    flm: np.ndarray, L: int, region: Region, reality: bool
 ) -> np.ndarray:
     """
     ensures the multipole is bandlimited for a given region

@@ -145,7 +145,9 @@ class Functions:
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
         if self.region is not None:
-            multipole = ensure_masked_flm_bandlimited(multipole)
+            multipole = ensure_masked_flm_bandlimited(
+                multipole, self.L, self.region, self.reality
+            )
         self._multipole = multipole
 
     @property
