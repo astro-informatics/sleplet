@@ -101,7 +101,7 @@ def test_integrate_sphere_and_harmonic_sum_agree_lim_lat_lon(
     """
     f_p = lim_lat_lon_decomposition.decompose(rank, method="integrate_sphere")
     g_p = lim_lat_lon_decomposition.decompose(rank, method="harmonic_sum")
-    assert_allclose(f_p, g_p, rtol=0.3)
+    assert_allclose(f_p, g_p, rtol=0.4)
 
 
 @seed(RANDOM_SEED)
