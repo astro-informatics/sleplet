@@ -72,7 +72,7 @@ def test_integrate_region_and_harmonic_sum_agree_lim_lat_lon(
     """
     f_p = lim_lat_lon_decomposition.decompose(rank, method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose(rank, method="harmonic_sum")
-    assert_allclose(f_p, g_p, rtol=20.7)
+    assert_allclose(f_p, g_p, rtol=38.4)
 
 
 @seed(RANDOM_SEED)
@@ -130,7 +130,7 @@ def test_integrate_region_and_integrate_sphere_agree_lim_lat_lon(
     """
     f_p = lim_lat_lon_decomposition.decompose(rank, method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose(rank, method="integrate_sphere")
-    assert_allclose(f_p, g_p, rtol=38.4)
+    assert_allclose(f_p, g_p, rtol=21.5)
 
 
 def test_pass_function_without_region() -> None:
