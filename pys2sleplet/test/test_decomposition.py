@@ -49,7 +49,7 @@ def valid_lim_lat_lon_ranks() -> SearchStrategy[int]:
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank=valid_polar_ranks())
-def test_integrate_region_and_harmonic_sum_agree_polar(
+def test_decompose_region_and_harmonic_sum_agree_polar(
     polar_cap_decomposition, rank
 ) -> None:
     """
@@ -63,7 +63,7 @@ def test_integrate_region_and_harmonic_sum_agree_polar(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank=valid_lim_lat_lon_ranks())
-def test_integrate_region_and_harmonic_sum_agree_lim_lat_lon(
+def test_decompose_region_and_harmonic_sum_agree_lim_lat_lon(
     lim_lat_lon_decomposition, rank
 ) -> None:
     """
@@ -78,7 +78,7 @@ def test_integrate_region_and_harmonic_sum_agree_lim_lat_lon(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank=valid_polar_ranks())
-def test_integrate_sphere_and_harmonic_sum_agree_polar(
+def test_decompose_sphere_and_harmonic_sum_agree_polar(
     polar_cap_decomposition, rank
 ) -> None:
     """
@@ -92,7 +92,7 @@ def test_integrate_sphere_and_harmonic_sum_agree_polar(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank=valid_lim_lat_lon_ranks())
-def test_integrate_sphere_and_harmonic_sum_agree_lim_lat_lon(
+def test_decompose_sphere_and_harmonic_sum_agree_lim_lat_lon(
     lim_lat_lon_decomposition, rank
 ) -> None:
     """
@@ -107,7 +107,7 @@ def test_integrate_sphere_and_harmonic_sum_agree_lim_lat_lon(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank=valid_polar_ranks())
-def test_integrate_region_and_integrate_sphere_agree_polar(
+def test_decompose_region_and_integrate_sphere_agree_polar(
     polar_cap_decomposition, rank
 ) -> None:
     """
@@ -121,7 +121,7 @@ def test_integrate_region_and_integrate_sphere_agree_polar(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank=valid_lim_lat_lon_ranks())
-def test_integrate_region_and_integrate_sphere_agree_lim_lat_lon(
+def test_decompose_region_and_integrate_sphere_agree_lim_lat_lon(
     lim_lat_lon_decomposition, rank
 ) -> None:
     """
