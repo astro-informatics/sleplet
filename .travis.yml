@@ -28,4 +28,4 @@ script:
     - >
         docker exec
         container
-        pytest --runslow -v
+        pytest -v
