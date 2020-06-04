@@ -44,7 +44,7 @@ class SlepianDecomposition:
             )
         return f_p
 
-    def _integrate_region(self, rank: int) -> np.ndarray:
+    def _integrate_region(self, rank: int) -> complex:
         r"""
         f_{p} =
         \frac{1}{\lambda_{p}}
@@ -57,7 +57,7 @@ class SlepianDecomposition:
         f_p = integration / self.lambdas[rank]
         return f_p
 
-    def _integrate_sphere(self, rank: int) -> np.ndarray:
+    def _integrate_sphere(self, rank: int) -> complex:
         r"""
         f_{p} =
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
@@ -66,7 +66,7 @@ class SlepianDecomposition:
         f_p = integrate_sphere(self.L, self.flm, self.s_p_lms[rank], glm_conj=True)
         return f_p
 
-    def _harmonic_sum(self, rank: int) -> np.ndarray:
+    def _harmonic_sum(self, rank: int) -> complex:
         r"""
         f_{p} =
         \sum\limits_{\ell=0}^{L^{2}}
