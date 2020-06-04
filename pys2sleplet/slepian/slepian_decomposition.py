@@ -6,12 +6,14 @@ from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.integration_methods import integrate_sphere
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
+from pys2sleplet.utils.vars import DECOMPOSITION_DEFAULT
 
 
 @dataclass
 class SlepianDecomposition:
     function: Functions
     _L: int = field(init=False, repr=False)
+    _N: int = field(init=False, repr=False)
     _flm: np.ndarray = field(init=False, repr=False)
     _function: Functions = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
@@ -25,8 +27,9 @@ class SlepianDecomposition:
         slepian = choose_slepian_method(self.L, self.region)
         self.lambdas = slepian.eigenvalues
         self.s_p_lms = slepian.eigenvectors
+        self.N = self.s_p_lms.shape[0]
 
-    def decompose(self, rank: int, method: str = "harmonic_sum") -> np.ndarray:
+    def decompose(self, rank: int, method: str = DECOMPOSITION_DEFAULT) -> complex:
         """
         decompose the signal into its Slepian coefficients via the given method
         """
@@ -43,6 +46,15 @@ class SlepianDecomposition:
                 f"{method} is not a recognised Slepian decomposition method"
             )
         return f_p
+
+    def decompose_all(self, method: str = DECOMPOSITION_DEFAULT) -> np.ndarray:
+        """
+        decompose all ranks of the Slepian coefficients for a given method
+        """
+        coefficients = np.zeros(self.N, dtype=complex)
+        for rank in range(self.N):
+            coefficients[rank] = self.decompose(rank, method=method)
+        return coefficients
 
     def _integrate_region(self, rank: int) -> complex:
         r"""
@@ -84,9 +96,8 @@ class SlepianDecomposition:
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        limit = self.s_p_lms.shape[0]
-        if rank > limit:
-            raise ValueError(f"rank should be no more than {limit}")
+        if rank >= self.N:
+            raise ValueError(f"rank should be less than or equal to {self.N}")
 
     @property
     def flm(self) -> np.ndarray:
@@ -115,6 +126,14 @@ class SlepianDecomposition:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
+
+    @property
+    def N(self) -> int:
+        return self._N
+
+    @N.setter
+    def N(self, N: int) -> None:
+        self._N = N
 
     @property
     def lambdas(self) -> np.ndarray:
