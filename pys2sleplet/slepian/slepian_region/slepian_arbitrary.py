@@ -32,13 +32,13 @@ class SlepianArbitrary(SlepianFunctions):
     _ylm: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._region = Region(mask_name=self.mask_name)
-        self._name_ending = self._region.name_ending
+        self.region = Region(mask_name=self.mask_name)
+        self.name_ending = self.region.name_ending
         self._N = self.L * self.L
         theta_grid, phi_grid = ssht.sample_positions(
             self.L, Grid=True, Method=SAMPLING_SCHEME
         )
-        self._ylm = ssht.create_ylm(theta_grid, phi_grid, self.L)[:, self.mask]
+        self._ylm = ssht.create_ylm(theta_grid, phi_grid, self.L)
         delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
         delta_phi = np.ediff1d(phi_grid[0]).mean()
         self._weight = np.sin(theta_grid) * delta_theta * delta_phi
@@ -48,14 +48,14 @@ class SlepianArbitrary(SlepianFunctions):
         pass
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self._name_ending}"
+        self.name = f"slepian{self.name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self._region)
+        self.mask = create_mask_region(self.L, self.region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _arbitrary_path / "matrices" / f"D_L{self.L}{self._name_ending}.npy"
+            _arbitrary_path / "matrices" / f"D_L{self.L}{self.name_ending}.npy"
         )
 
     def _solve_eigenproblem(self) -> None:

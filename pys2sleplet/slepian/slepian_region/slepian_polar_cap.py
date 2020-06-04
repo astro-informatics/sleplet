@@ -32,8 +32,8 @@ class SlepianPolarCap(SlepianFunctions):
     _theta_max: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._region = Region(theta_max=self.theta_max)
-        self._name_ending = f"{self._region.name_ending}_m{self.order}"
+        self.region = Region(theta_max=self.theta_max)
+        self.name_ending = f"{self._region.name_ending}_m{self.order}"
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -48,10 +48,10 @@ class SlepianPolarCap(SlepianFunctions):
                         self._add_to_annotation(theta_bottom, j, colour="white")
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self._name_ending}"
+        self.name = f"slepian{self.name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self._region)
+        self.mask = create_mask_region(self.L, self.region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -59,7 +59,7 @@ class SlepianPolarCap(SlepianFunctions):
             / "data"
             / "slepian"
             / "polar"
-            / f"D_L{self.L}{self._name_ending}.npy"
+            / f"D_L{self.L}{self.name_ending}.npy"
         )
 
     def _solve_eigenproblem(self) -> None:

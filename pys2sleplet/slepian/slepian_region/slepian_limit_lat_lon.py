@@ -40,13 +40,13 @@ class SlepianLimitLatLon(SlepianFunctions):
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._region = Region(
+        self.region = Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
             phi_min=self.phi_min,
             phi_max=self.phi_max,
         )
-        self._name_ending = self._region.name_ending
+        self.name_ending = self.region.name_ending
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -76,10 +76,10 @@ class SlepianLimitLatLon(SlepianFunctions):
                     )
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self._name_ending}"
+        self.name = f"slepian{self.name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self._region)
+        self.mask = create_mask_region(self.L, self.region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -87,7 +87,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             / "data"
             / "slepian"
             / "lat_lon"
-            / f"D_L{self.L}{self._name_ending}.npy"
+            / f"D_L{self.L}{self.name_ending}.npy"
         )
 
     def _solve_eigenproblem(self) -> None:
