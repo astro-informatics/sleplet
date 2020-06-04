@@ -16,10 +16,10 @@ from pys2sleplet.utils.vars import (
 
 @dataclass
 class Region:
-    phi_max: float
-    phi_min: float
-    theta_max: float
     theta_min: float
+    theta_max: float
+    phi_min: float
+    phi_max: float
     mask_name: str
     order: int
     _mask_name: str = field(default=config.SLEPIAN_MASK, init=False, repr=False)

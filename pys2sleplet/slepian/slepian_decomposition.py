@@ -14,6 +14,7 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 @dataclass
 class SlepianDecomposition:
     function: Functions
+    _L: int = field(init=False, repr=False)
     _flm: np.ndarray = field(init=False, repr=False)
     _function: Functions = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
@@ -21,13 +22,14 @@ class SlepianDecomposition:
     _s_p_lms: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._flm = self.function.multipole
-        self._region = self.function.region
-        slepian = choose_slepian_method(self.function.L, self._region)
-        self._lambdas = slepian.eigenvalues
-        self._s_p_lms = slepian.eigenvectors
+        self.L = self.function.L
+        self.flm = self.function.multipole
+        self.region = self.function.region
+        slepian = choose_slepian_method(self.L, self.region)
+        self.lambdas = slepian.eigenvalues
+        self.s_p_lms = slepian.eigenvectors
 
-    def decompose(self, rank: int, method: str = "summation") -> np.ndarray:
+    def decompose(self, rank: int, method: str = "harmonic_sum") -> np.ndarray:
         """
         decompose the signal into its Slepian coefficients via the given method
         """
@@ -37,8 +39,8 @@ class SlepianDecomposition:
             f_p = self._integrate_region(rank)
         elif method == "integrate_sphere":
             f_p = self._integrate_sphere(rank)
-        elif method == "summation":
-            f_p = self._summation(rank)
+        elif method == "harmonic_sum":
+            f_p = self._harmonic_sum(rank)
         else:
             raise ValueError(
                 f"{method} is not a recognised Slepian decomposition method"
@@ -53,9 +55,9 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}
         """
         integration = integrate_region_sphere(
-            self._flm, self._s_p_lms[rank], self._region, glm_conj=True
+            self.L, self.flm, self.s_p_lms[rank], self.region, glm_conj=True
         )
-        f_p = integration / self._lambdas[rank]
+        f_p = integration / self.lambdas[rank]
         return f_p
 
     def _integrate_sphere(self, rank: int) -> np.ndarray:
@@ -64,17 +66,19 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        f_p = integrate_whole_sphere(self._flm, self._s_p_lms[rank], glm_conj=True)
+        f_p = integrate_whole_sphere(
+            self.L, self.flm, self.s_p_lms[rank], glm_conj=True
+        )
         return f_p
 
-    def _summation(self, rank: int) -> np.ndarray:
+    def _harmonic_sum(self, rank: int) -> np.ndarray:
         """
         f_{p} =
         \sum\limits_{\ell=0}^{L^{2}}
         \sum\limits_{m=-\ell}^{\ell}
         f_{\ell m} (S_{p})_{\ell m}^{*}
         """
-        f_p = (self._flm * self._s_p_lms[rank].conj()).sum()
+        f_p = (self.flm * self.s_p_lms[rank].conj()).sum()
         return f_p
 
     def _validate_rank(self, rank: int) -> None:
@@ -85,7 +89,7 @@ class SlepianDecomposition:
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        limit = self._s_p_lms.shape[0]
+        limit = self.s_p_lms.shape[0]
         if rank > limit:
             raise ValueError(f"rank should be no more than {limit}")
 
@@ -108,6 +112,14 @@ class SlepianDecomposition:
                 f"{function.__class__.__name__} needs to have a region passed to it"
             )
         self._function = function
+
+    @property
+    def L(self) -> int:
+        return self._L
+
+    @L.setter
+    def L(self, L: int) -> None:
+        self._L = L
 
     @property
     def lambdas(self) -> np.ndarray:
