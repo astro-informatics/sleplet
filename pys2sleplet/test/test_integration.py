@@ -16,10 +16,7 @@ from pys2sleplet.test.constants import (
     THETA_1,
     THETA_MAX,
 )
-from pys2sleplet.utils.integration_methods import (
-    integrate_region_sphere,
-    integrate_whole_sphere,
-)
+from pys2sleplet.utils.integration_methods import integrate_sphere
 from pys2sleplet.utils.region import Region
 
 
@@ -83,7 +80,7 @@ def test_integrate_two_slepian_polar_functions_whole_sphere_per_rank(
     """
     flm = slepian_polar_cap.eigenvectors[rank1]
     glm = slepian_polar_cap.eigenvectors[rank2]
-    output = integrate_whole_sphere(L, flm, glm, glm_conj=True)
+    output = integrate_sphere(L, flm, glm, glm_conj=True)
     if rank1 == rank2:
         assert_allclose(output, 1, atol=1e-3)
     else:
@@ -102,7 +99,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_per_rank(
     """
     flm = slepian_lim_lat_lon.eigenvectors[rank1]
     glm = slepian_lim_lat_lon.eigenvectors[rank2]
-    output = integrate_whole_sphere(L, flm, glm, glm_conj=True)
+    output = integrate_sphere(L, flm, glm, glm_conj=True)
     if rank1 == rank2:
         assert_allclose(output, 1, atol=1e-5)
     else:
@@ -122,7 +119,7 @@ def test_integrate_two_slepian_polar_functions_region_sphere_per_rank(
     lambda_p = slepian_polar_cap.eigenvalues[rank1]
     flm = slepian_polar_cap.eigenvectors[rank1]
     glm = slepian_polar_cap.eigenvectors[rank2]
-    output = integrate_region_sphere(L, flm, glm, polar_cap_region, glm_conj=True)
+    output = integrate_sphere(L, flm, glm, region=polar_cap_region, glm_conj=True)
     if rank1 == rank2:
         assert_allclose(output, lambda_p, atol=1e-3)
     else:
@@ -142,7 +139,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_per_rank(
     lambda_p = slepian_lim_lat_lon.eigenvalues[rank1]
     flm = slepian_lim_lat_lon.eigenvectors[rank1]
     glm = slepian_lim_lat_lon.eigenvectors[rank2]
-    output = integrate_whole_sphere(L, flm, glm, lim_lat_lon_region, glm_conj=True)
+    output = integrate_sphere(L, flm, glm, region=lim_lat_lon_region, glm_conj=True)
     if rank1 == rank2:
         assert_allclose(output, lambda_p, atol=0.4)
     else:
@@ -163,7 +160,7 @@ def test_integrate_two_slepian_polar_functions_whole_sphere_matrix(
     for i, flm in enumerate(evecs):
         for j, glm in enumerate(evecs):
             if i <= j:
-                result[i][j] = integrate_whole_sphere(L, flm, glm, glm_conj=True)
+                result[i][j] = integrate_sphere(L, flm, glm, glm_conj=True)
     i_upper = np.triu_indices(result.shape[0])
     result[i_upper] = result.T[i_upper]
     desired = np.identity(N)
@@ -185,7 +182,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
     for i, flm in enumerate(evecs):
         for j, glm in enumerate(evecs):
             if i <= j:
-                result[i][j] = integrate_whole_sphere(L, flm, glm, glm_conj=True)
+                result[i][j] = integrate_sphere(L, flm, glm, glm_conj=True)
     i_upper = np.triu_indices(result.shape[0])
     result[i_upper] = result.T[i_upper]
     desired = np.identity(N)
@@ -208,8 +205,8 @@ def test_integrate_two_slepian_polar_functions_region_sphere_matrix(
     for i, flm in enumerate(evecs):
         for j, glm in enumerate(evecs):
             if i <= j:
-                result[i][j] = integrate_region_sphere(
-                    L, flm, glm, polar_cap_region, glm_conj=True
+                result[i][j] = integrate_sphere(
+                    L, flm, glm, region=polar_cap_region, glm_conj=True
                 )
     i_upper = np.triu_indices(result.shape[0])
     result[i_upper] = result.T[i_upper]
@@ -233,8 +230,8 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
     for i, flm in enumerate(evecs):
         for j, glm in enumerate(evecs):
             if i <= j:
-                result[i][j] = integrate_region_sphere(
-                    L, flm, glm, lim_lat_lon_region, glm_conj=True
+                result[i][j] = integrate_sphere(
+                    L, flm, glm, region=lim_lat_lon_region, glm_conj=True
                 )
     i_upper = np.triu_indices(result.shape[0])
     result[i_upper] = result.T[i_upper]

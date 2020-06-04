@@ -3,10 +3,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.integration_methods import (
-    integrate_region_sphere,
-    integrate_whole_sphere,
-)
+from pys2sleplet.utils.integration_methods import integrate_sphere
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
@@ -54,8 +51,8 @@ class SlepianDecomposition:
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        integration = integrate_region_sphere(
-            self.L, self.flm, self.s_p_lms[rank], self.region, glm_conj=True
+        integration = integrate_sphere(
+            self.L, self.flm, self.s_p_lms[rank], region=self.region, glm_conj=True
         )
         f_p = integration / self.lambdas[rank]
         return f_p
@@ -66,9 +63,7 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        f_p = integrate_whole_sphere(
-            self.L, self.flm, self.s_p_lms[rank], glm_conj=True
-        )
+        f_p = integrate_sphere(self.L, self.flm, self.s_p_lms[rank], glm_conj=True)
         return f_p
 
     def _harmonic_sum(self, rank: int) -> np.ndarray:

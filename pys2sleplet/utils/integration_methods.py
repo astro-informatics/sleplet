@@ -47,18 +47,18 @@ def _integration_weight(L: int) -> np.ndarray:
     return weight
 
 
-def _integration_helper(
+def integrate_sphere(
     L: int,
     flm: np.ndarray,
     glm: np.ndarray,
-    flm_reality: bool,
-    glm_reality: bool,
-    flm_conj: bool,
-    glm_conj: bool,
     region: Optional[Region] = None,
+    flm_reality: bool = False,
+    glm_reality: bool = False,
+    flm_conj: bool = False,
+    glm_conj: bool = False,
 ) -> complex:
     """
-    * helper method which computes the integration on the sphere for
+    * method which computes the integration on the sphere for
       either the whole sphere or a region depended on the region variable
     * the function accepts arguments that control the reality of the inputs
       as well as the ability to have conjugates within the integral
@@ -86,42 +86,4 @@ def _integration_helper(
         integrand = np.where(mask, integrand, 0)
 
     integration = integrand.sum()
-    return integration
-
-
-def integrate_whole_sphere(
-    L: int,
-    flm: np.ndarray,
-    glm: np.ndarray,
-    flm_reality: bool = False,
-    glm_reality: bool = False,
-    flm_conj: bool = False,
-    glm_conj: bool = False,
-) -> complex:
-    """
-    integrates over the whole sphere using the helper method
-    """
-    integration = _integration_helper(
-        L, flm, glm, flm_reality, glm_reality, flm_conj, glm_conj
-    )
-    return integration
-
-
-def integrate_region_sphere(
-    L: int,
-    flm: np.ndarray,
-    glm: np.ndarray,
-    region: Region,
-    flm_reality: bool = False,
-    glm_reality: bool = False,
-    flm_conj: bool = False,
-    glm_conj: bool = False,
-) -> complex:
-    """
-    * integrates over a region of the sphere using the helper method
-    * the region must be calculated for the integration resolution
-    """
-    integration = _integration_helper(
-        L, flm, glm, flm_reality, glm_reality, flm_conj, glm_conj, region=region
-    )
     return integration
