@@ -56,7 +56,7 @@ def _integration_helper(
     flm_conj: bool,
     glm_conj: bool,
     region: Optional[Region] = None,
-) -> float:
+) -> complex:
     """
     * helper method which computes the integration on the sphere for
       either the whole sphere or a region depended on the region variable
@@ -97,7 +97,7 @@ def integrate_whole_sphere(
     glm_reality: bool = False,
     flm_conj: bool = False,
     glm_conj: bool = False,
-) -> float:
+) -> complex:
     """
     integrates over the whole sphere using the helper method
     """
@@ -116,7 +116,7 @@ def integrate_region_sphere(
     glm_reality: bool = False,
     flm_conj: bool = False,
     glm_conj: bool = False,
-) -> float:
+) -> complex:
     """
     * integrates over a region of the sphere using the helper method
     * the region must be calculated for the integration resolution

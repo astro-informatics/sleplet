@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, integers
@@ -73,7 +74,7 @@ def valid_lim_lat_lon_ranks() -> SearchStrategy[int]:
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank1=valid_polar_ranks(), rank2=valid_polar_ranks())
-def test_integrate_two_slepian_polar_functions_whole_sphere(
+def test_integrate_two_slepian_polar_functions_whole_sphere_per_rank(
     slepian_polar_cap, rank1, rank2
 ) -> None:
     """
@@ -92,7 +93,7 @@ def test_integrate_two_slepian_polar_functions_whole_sphere(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank1=valid_lim_lat_lon_ranks(), rank2=valid_lim_lat_lon_ranks())
-def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere(
+def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_per_rank(
     slepian_lim_lat_lon, rank1, rank2
 ) -> None:
     """
@@ -111,7 +112,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank1=valid_polar_ranks(), rank2=valid_polar_ranks())
-def test_integrate_two_slepian_polar_functions_region_sphere(
+def test_integrate_two_slepian_polar_functions_region_sphere_per_rank(
     slepian_polar_cap, polar_cap_region, rank1, rank2
 ) -> None:
     """
@@ -131,7 +132,7 @@ def test_integrate_two_slepian_polar_functions_region_sphere(
 @seed(RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(rank1=valid_lim_lat_lon_ranks(), rank2=valid_lim_lat_lon_ranks())
-def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere(
+def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_per_rank(
     slepian_lim_lat_lon, lim_lat_lon_region, rank1, rank2
 ) -> None:
     """
@@ -146,3 +147,97 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere(
         assert_allclose(output, lambda_p, atol=0.4)
     else:
         assert_allclose(output, 0, atol=0.7)
+
+
+@pytest.mark.slow
+def test_integrate_two_slepian_polar_functions_whole_sphere_matrix(
+    slepian_polar_cap,
+) -> None:
+    """
+    tests that integration two slepian functions over the
+    whole sphere gives the identity matrix
+    """
+    evecs = slepian_polar_cap.eigenvectors
+    N = len(evecs)
+    result = np.zeros((N, N), dtype=complex)
+    for i, flm in enumerate(evecs):
+        for j, glm in enumerate(evecs):
+            if i <= j:
+                result[i][j] = integrate_whole_sphere(L, flm, glm, glm_conj=True)
+    i_upper = np.triu_indices(result.shape[0])
+    result[i_upper] = result.T[i_upper]
+    desired = np.identity(N)
+    output = np.abs(result - desired).mean()
+    assert_allclose(output, 0, atol=1e-4)
+
+
+@pytest.mark.slow
+def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
+    slepian_lim_lat_lon,
+) -> None:
+    """
+    tests that integration two slepian functions over the
+    whole sphere gives the identity matrix
+    """
+    evecs = slepian_lim_lat_lon.eigenvectors
+    N = len(evecs)
+    result = np.zeros((N, N), dtype=complex)
+    for i, flm in enumerate(evecs):
+        for j, glm in enumerate(evecs):
+            if i <= j:
+                result[i][j] = integrate_whole_sphere(L, flm, glm, glm_conj=True)
+    i_upper = np.triu_indices(result.shape[0])
+    result[i_upper] = result.T[i_upper]
+    desired = np.identity(N)
+    output = np.abs(result - desired).mean()
+    assert_allclose(output, 0, atol=1e-6)
+
+
+@pytest.mark.slow
+def test_integrate_two_slepian_polar_functions_region_sphere_matrix(
+    slepian_polar_cap, polar_cap_region
+) -> None:
+    """
+    tests that integration two slepian functions over the
+    whole sphere gives the identity matrix
+    """
+    evecs = slepian_polar_cap.eigenvectors
+    evals = slepian_polar_cap.eigenvalues
+    N = len(evecs)
+    result = np.zeros((N, N), dtype=complex)
+    for i, flm in enumerate(evecs):
+        for j, glm in enumerate(evecs):
+            if i <= j:
+                result[i][j] = integrate_region_sphere(
+                    L, flm, glm, polar_cap_region, glm_conj=True
+                )
+    i_upper = np.triu_indices(result.shape[0])
+    result[i_upper] = result.T[i_upper]
+    desired = evals * np.identity(N)
+    output = np.abs(result - desired).mean()
+    assert_allclose(output, 0, atol=0.02)
+
+
+@pytest.mark.slow
+def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
+    slepian_lim_lat_lon, lim_lat_lon_region
+) -> None:
+    """
+    tests that integration two slepian functions over the
+    whole sphere gives the identity matrix
+    """
+    evecs = slepian_lim_lat_lon.eigenvectors
+    evals = slepian_lim_lat_lon.eigenvalues
+    N = len(evecs)
+    result = np.zeros((N, N), dtype=complex)
+    for i, flm in enumerate(evecs):
+        for j, glm in enumerate(evecs):
+            if i <= j:
+                result[i][j] = integrate_region_sphere(
+                    L, flm, glm, lim_lat_lon_region, glm_conj=True
+                )
+    i_upper = np.triu_indices(result.shape[0])
+    result[i_upper] = result.T[i_upper]
+    desired = evals * np.identity(N)
+    output = np.abs(result - desired).mean()
+    assert_allclose(output, 0, atol=1e-5)
