@@ -8,6 +8,7 @@ from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
@@ -213,8 +214,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         K = K_r + 1j * K_i
 
         # fill in remaining triangle section
-        i_upper = np.triu_indices(K.shape[0])
-        K[i_upper] = K.T[i_upper].conj()
+        fill_upper_triangle_of_hermitian_matrix(K)
 
         return K
 
@@ -284,8 +284,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         shm_i.unlink()
 
         # fill in remaining triangle section
-        i_upper = np.triu_indices(K.shape[0])
-        K[i_upper] = K.T[i_upper].conj()
+        fill_upper_triangle_of_hermitian_matrix(K)
 
         return K
 
