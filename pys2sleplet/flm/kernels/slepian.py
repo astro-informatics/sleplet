@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Optional
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -10,14 +11,17 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 @dataclass
 class Slepian(Functions):
     rank: int
-    slepian: SlepianFunctions
+    slepian: Optional[SlepianFunctions]
     _rank: int = field(default=0, init=False, repr=False)
-    _slepian: SlepianFunctions = field(init=False, repr=False)
+    _slepian: Optional[SlepianFunctions] = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
-        # create default region from config dict
-        region = Region()
-        self.slepian = choose_slepian_method(self.L, region)
+        if self.slepian is None:
+            # create default region from config dict
+            region = Region()
+            self.slepian = choose_slepian_method(self.L, region)
+        else:
+            self.extra_args = [self.rank]
         self._validate_rank()
         super().__post_init__()
 
@@ -27,7 +31,7 @@ class Slepian(Functions):
     def _create_name(self) -> None:
         self.name = (
             f"{self.slepian.name}_rank{self.rank}"
-            f"_l{self.slepian.eigenvalues[self.rank]:e}".replace(".", "-")
+            f"_lam{self.slepian.eigenvalues[self.rank]:e}".replace(".", "-")
         )
 
     def _create_flm(self) -> None:
@@ -78,4 +82,8 @@ class Slepian(Functions):
 
     @slepian.setter
     def slepian(self, slepian: SlepianFunctions) -> None:
+        if isinstance(slepian, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            slepian = Slepian._slepian
         self._slepian = slepian
