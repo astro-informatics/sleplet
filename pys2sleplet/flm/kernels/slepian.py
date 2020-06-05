@@ -18,9 +18,7 @@ class Slepian(Functions):
         # create default region from config dict
         region = Region()
         self.slepian = choose_slepian_method(self.L, region)
-        limit = self.slepian.eigenvectors.shape[0]
-        if self.rank > limit:
-            raise ValueError(f"rank {self.rank} should be no more than {limit}")
+        self._validate_rank()
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -44,6 +42,12 @@ class Slepian(Functions):
                     f"The number of extra arguments should be 1 or {num_args}"
                 )
             self.rank = self.extra_args[0]
+
+    def _validate_rank(self) -> None:
+        if self.extra_args is not None:
+            limit = self.slepian.eigenvectors.shape[0]
+            if self.extra_args[0] >= limit:
+                raise ValueError(f"rank should be less than or equal to {limit}")
 
     @property  # type: ignore
     def rank(self) -> int:
