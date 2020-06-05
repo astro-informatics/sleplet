@@ -30,8 +30,12 @@ class Slepian(Functions):
 
     def _create_name(self) -> None:
         self.name = (
-            f"{self.slepian.name}_rank{self.rank}"
-            f"_lam{self.slepian.eigenvalues[self.rank]:e}".replace(".", "-")
+            (
+                f"{self.slepian.name}_rank{self.rank}"
+                f"_l{self.slepian.eigenvalues[self.rank]:e}"
+            )
+            .replace(".", "-")
+            .replace("+", "")
         )
 
     def _create_flm(self) -> None:
