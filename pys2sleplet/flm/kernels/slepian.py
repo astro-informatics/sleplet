@@ -44,6 +44,9 @@ class Slepian(Functions):
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -> None:
+        """
+        checks the requested rank is valid
+        """
         if self.extra_args is not None:
             limit = self.slepian.eigenvectors.shape[0]
             if self.extra_args[0] >= limit:
