@@ -25,7 +25,10 @@ class Slepian(Functions):
         self.annotations = self.slepian.annotations
 
     def _create_name(self) -> None:
-        self.name = f"{self.slepian.name}_rank{self.rank}"
+        self.name = (
+            f"{self.slepian.name}_rank{self.rank}"
+            f"_l{self.slepian.eigenvalues[self.rank]:.e}".replace(".", "-")
+        )
 
     def _create_flm(self) -> None:
         self.multipole = self.slepian.eigenvectors[self.rank]
