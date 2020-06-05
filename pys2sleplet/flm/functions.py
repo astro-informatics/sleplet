@@ -106,7 +106,7 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        multipole = flm * glm
+        multipole = flm * glm.conj()
         return multipole
 
     @property
