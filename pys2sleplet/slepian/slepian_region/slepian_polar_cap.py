@@ -59,7 +59,7 @@ class SlepianPolarCap(SlepianFunctions):
             / "data"
             / "slepian"
             / "polar"
-            / f"D_L{self.L}{self.name_ending}.npy".replace("-", "")
+            / f"D{self.name_ending}_L{self.L}.npy".replace("-", "")
         )
 
     def _solve_eigenproblem(self) -> None:

@@ -55,7 +55,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _arbitrary_path / "matrices" / f"D_L{self.L}{self.name_ending}.npy"
+            _arbitrary_path / "matrices" / f"D{self.name_ending}_L{self.L}.npy"
         )
 
     def _solve_eigenproblem(self) -> None:
