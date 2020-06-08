@@ -24,7 +24,9 @@ class SlepianFunctions:
         self._create_mask()
         self._create_matrix_location()
         self._create_fn_name()
+        logger.info("start solving eigenproblem")
         self._solve_eigenproblem()
+        logger.info("finished solving eigenproblem")
 
     @property
     def annotations(self) -> List[Dict]:
@@ -57,7 +59,6 @@ class SlepianFunctions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        logger.info(f"L={self.L}")
 
     @property
     def mask(self) -> np.ndarray:

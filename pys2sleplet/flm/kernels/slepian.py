@@ -75,7 +75,6 @@ class Slepian(Functions):
         if rank < 0:
             raise ValueError("rank cannot be negative")
         self._rank = rank
-        logger.info(f"rank={self.rank}")
 
     @property  # type: ignore
     def region(self) -> Region:

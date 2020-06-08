@@ -4,7 +4,6 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args
 
 
@@ -58,7 +57,6 @@ class SphericalHarmonic(Functions):
         if ell >= self.L:
             raise ValueError("ell should be less than or equal to L")
         self._ell = ell
-        logger.info(f"ell={self.ell}")
 
     @property  # type: ignore
     def m(self) -> int:
@@ -75,4 +73,3 @@ class SphericalHarmonic(Functions):
         if abs(m) > self.ell:
             raise ValueError("the magnitude of m should be less than ell")
         self._m = m
-        logger.info(f"m={self.m}")

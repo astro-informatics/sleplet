@@ -4,7 +4,6 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args
 
 
@@ -58,7 +57,6 @@ class HarmonicGaussian(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             l_sigma = HarmonicGaussian._l_sigma
         self._l_sigma = l_sigma
-        logger.info(f"l_sigma={self.l_sigma}")
 
     @property  # type: ignore
     def m_sigma(self) -> float:
@@ -71,4 +69,3 @@ class HarmonicGaussian(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             m_sigma = HarmonicGaussian._m_sigma
         self._m_sigma = m_sigma
-        logger.info(f"m_sigma={self.m_sigma}")

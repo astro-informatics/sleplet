@@ -4,7 +4,6 @@ import numpy as np
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args
 from pys2sleplet.utils.vars import PHI_0, THETA_0
 
@@ -66,7 +65,6 @@ class ElongatedGaussian(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             p_sigma = ElongatedGaussian._p_sigma
         self._p_sigma = p_sigma
-        logger.info(f"p_sigma={self.p_sigma}")
 
     @property  # type: ignore
     def t_sigma(self) -> float:
@@ -79,4 +77,3 @@ class ElongatedGaussian(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             t_sigma = ElongatedGaussian._t_sigma
         self._t_sigma = t_sigma
-        logger.info(f"t_sigma={self.t_sigma}")

@@ -10,7 +10,6 @@ from multiprocess.shared_memory import SharedMemory
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -92,15 +91,11 @@ class SlepianLimitLatLon(SlepianFunctions):
         )
 
     def _solve_eigenproblem(self) -> None:
-        logger.info("start solving eigenproblem")
         K = self._load_K_matrix()
-
         eigenvalues, eigenvectors = np.linalg.eigh(K)
-
         self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
-        logger.info("finish solving eigenproblem")
 
     def _load_K_matrix(self) -> np.ndarray:
         """
@@ -367,7 +362,6 @@ class SlepianLimitLatLon(SlepianFunctions):
     @name_ending.setter
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
-        logger.info(f"name_ending={self.name_ending}")
 
     @property  # type: ignore
     def ncpu(self) -> int:
@@ -380,7 +374,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             ncpu = SlepianLimitLatLon._ncpu
         self._ncpu = ncpu
-        logger.info(f"ncpu={self.ncpu}")
 
     @property  # type:ignore
     def phi_max(self) -> float:
@@ -393,7 +386,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             phi_max = SlepianLimitLatLon._phi_max
         self._phi_max = phi_max
-        logger.info(f"phi_max={self.phi_max}")
 
     @property  # type:ignore
     def phi_min(self) -> float:
@@ -406,7 +398,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             phi_min = SlepianLimitLatLon._phi_min
         self._phi_min = phi_min
-        logger.info(f"phi_min={self.phi_min}")
 
     @property
     def region(self) -> Region:
@@ -427,7 +418,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             theta_max = SlepianLimitLatLon._theta_max
         self._theta_max = theta_max
-        logger.info(f"theta_max={self.theta_max}")
 
     @property  # type: ignore
     def theta_min(self) -> float:
@@ -440,4 +430,3 @@ class SlepianLimitLatLon(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             theta_min = SlepianLimitLatLon._theta_min
         self._theta_min = theta_min
-        logger.info(f"theta_min={self.theta_min}")

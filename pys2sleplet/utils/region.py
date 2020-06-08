@@ -148,7 +148,6 @@ class Region:
     @region_type.setter
     def region_type(self, region_type: str) -> None:
         self._region_type = region_type
-        logger.info(f"region_type='{region_type}'")
 
     @property  # type:ignore
     def theta_max(self) -> float:

@@ -4,7 +4,6 @@ import numpy as np
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args
 from pys2sleplet.utils.vars import THETA_0
 
@@ -62,7 +61,6 @@ class SquashedGaussian(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             freq = SquashedGaussian._freq
         self._freq = freq
-        logger.info(f"freq={self.freq}")
 
     @property  # type: ignore
     def t_sigma(self) -> float:
@@ -75,4 +73,3 @@ class SquashedGaussian(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             t_sigma = SquashedGaussian._t_sigma
         self._t_sigma = t_sigma
-        logger.info(f"t_sigma={self.t_sigma}")

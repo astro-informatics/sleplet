@@ -9,7 +9,6 @@ from multiprocess.shared_memory import SharedMemory
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -59,15 +58,11 @@ class SlepianArbitrary(SlepianFunctions):
         )
 
     def _solve_eigenproblem(self) -> None:
-        logger.info("start solving eigenproblem")
         D = self._load_D_matrix()
-
         eigenvalues, eigenvectors = np.linalg.eigh(D)
-
         self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
-        logger.info("finished solving eigenproblem")
 
     def _load_D_matrix(self) -> np.ndarray:
         """
@@ -225,7 +220,6 @@ class SlepianArbitrary(SlepianFunctions):
     @mask_name.setter
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
-        logger.info(f"mask_name='{self.mask_name}'")
 
     @property
     def name_ending(self) -> str:
@@ -234,7 +228,6 @@ class SlepianArbitrary(SlepianFunctions):
     @name_ending.setter
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
-        logger.info(f"name_ending={self.name_ending}")
 
     @property  # type: ignore
     def ncpu(self) -> int:
@@ -247,7 +240,6 @@ class SlepianArbitrary(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             ncpu = SlepianArbitrary._ncpu
         self._ncpu = ncpu
-        logger.info(f"ncpu={self.ncpu}")
 
     @property
     def region(self) -> Region:

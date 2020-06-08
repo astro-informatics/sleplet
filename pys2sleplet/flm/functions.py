@@ -7,7 +7,6 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.region import Region
@@ -144,7 +143,6 @@ class Functions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        logger.info(f"L={self.L}")
 
     @property
     def multipole(self) -> np.ndarray:

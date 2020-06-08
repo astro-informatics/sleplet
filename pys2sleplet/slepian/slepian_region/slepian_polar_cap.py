@@ -11,7 +11,6 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -63,9 +62,7 @@ class SlepianPolarCap(SlepianFunctions):
         )
 
     def _solve_eigenproblem(self) -> None:
-        logger.info("start solving eigenproblem")
         emm = self._create_emm_vec()
-
         Dm = self._load_Dm_matrix(emm)
 
         # solve eigenproblem for order 'm'
@@ -74,7 +71,6 @@ class SlepianPolarCap(SlepianFunctions):
         self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, gl, emm
         )
-        logger.info("finished solving eigenproblem")
 
     def _add_to_annotation(
         self, theta: np.ndarray, i: int, colour: str = "black"
@@ -382,7 +378,6 @@ class SlepianPolarCap(SlepianFunctions):
     @name_ending.setter
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
-        logger.info(f"name_ending={self.name_ending}")
 
     @property  # type: ignore
     def ncpu(self) -> int:
@@ -395,7 +390,6 @@ class SlepianPolarCap(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             ncpu = SlepianPolarCap._ncpu
         self._ncpu = ncpu
-        logger.info(f"ncpu={self.ncpu}")
 
     @property  # type:ignore
     def order(self) -> int:
@@ -410,7 +404,6 @@ class SlepianPolarCap(SlepianFunctions):
         if abs(order) >= self.L:
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
-        logger.info(f"order={self.order}")
 
     @property
     def region(self) -> Region:
@@ -429,4 +422,3 @@ class SlepianPolarCap(SlepianFunctions):
         if theta_max == 0:
             raise ValueError("theta_max cannot be zero")
         self._theta_max = theta_max
-        logger.info(f"theta_max={self.theta_max}")

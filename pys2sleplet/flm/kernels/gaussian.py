@@ -4,7 +4,6 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args
 
 
@@ -50,4 +49,3 @@ class Gaussian(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             sigma = Gaussian._sigma
         self._sigma = sigma
-        logger.info(f"sigma={self.sigma}")
