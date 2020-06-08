@@ -12,6 +12,7 @@ from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 
 from pys2sleplet.utils.config import config
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import convert_colourscale
 from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
 
@@ -82,13 +83,10 @@ class Plot:
 
         # if save_fig is true then create png and pdf in their directories
         if config.SAVE_FIG:
-            # create filenames
-            png_filename = _fig_path / "png" / f"{self.filename}.png"
-            pdf_filename = _fig_path / "png" / f"{self.filename}.png"
-
-            # save files
-            pio.write_image(fig, png_filename)
-            pio.write_image(fig, pdf_filename)
+            for file_type in ["png", "pdf"]:
+                logger.info(f"saving {file_type}")
+                filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
+                pio.write_image(fig, filename)
 
         # create html and open if auto_open is true
         html_filename = str(_fig_path / "html" / f"{self.filename}.html")
