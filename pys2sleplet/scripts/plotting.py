@@ -14,12 +14,12 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
 
 
-def valid_maps(func_name: str) -> str:
+def valid_maps(map_name: str) -> str:
     """
     check if valid map
     """
-    if func_name in MAPS:
-        function = func_name
+    if map_name in MAPS:
+        function = map_name
     else:
         raise ValueError("Not a valid map name to convolve")
     return function
