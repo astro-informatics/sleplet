@@ -37,6 +37,7 @@ class Functions:
         self._create_annotations()
         self._set_reality()
         self._create_flm()
+        self._add_region_to_name()
 
     def rotate(
         self,
@@ -108,6 +109,13 @@ class Functions:
 
         multipole = flm * glm.conj()
         return multipole
+
+    def _add_region_to_name(self) -> None:
+        """
+        adds region to the name if present if not a Slepian function
+        """
+        if self.region is not None and "slepian" not in self.name:
+            self.name += self.region.name_ending
 
     @property
     def annotations(self) -> List[Dict]:

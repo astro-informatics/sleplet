@@ -132,7 +132,7 @@ def plot(
     """
     master plotting method
     """
-    filename = f"{f.name}{'' if f.region is None else f.region.name_ending}_L{f.L}_"
+    filename = f"{f.name}_L{f.L}_"
     multipole = f.multipole
 
     logger.info(f"plotting method: '{method}'")
