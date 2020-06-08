@@ -9,6 +9,7 @@ from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
 
@@ -134,7 +135,12 @@ def plot(
     filename = f"{f.name}{'' if f.region is None else f.region.name_ending}_L{f.L}_"
     multipole = f.multipole
 
+    logger.info(f"plotting method: '{method}'")
     if method == "rotate":
+        logger.info(
+            "angles: (alpha, beta, gamma) = "
+            f"({alpha_pi_fraction}, {beta_pi_fraction}, {gamma_pi_fraction})"
+        )
         filename += (
             f"{method}_"
             f"{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
@@ -143,6 +149,9 @@ def plot(
         # rotate by alpha, beta, gamma
         multipole = f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
     elif method == "translate":
+        logger.info(
+            f"angles: (alpha, beta) = ({alpha_pi_fraction}, {beta_pi_fraction})"
+        )
         # don't add gamma if translation
         filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
 
@@ -162,6 +171,7 @@ def plot(
     padded_field = invert_flm_boosted(multipole, f.L, f.resolution, reality=f.reality)
 
     # check for plotting type
+    logger.info(f"plotting type: '{plot_type}'")
     if plot_type == "real":
         field = padded_field.real
     elif plot_type == "imag":
@@ -172,6 +182,7 @@ def plot(
         field = padded_field.real + padded_field.imag
 
     # turn off annotation if needed
+    logger.info(f"annotations on: {annotations}")
     if annotations:
         annotation = f.annotations
     else:
