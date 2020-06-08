@@ -1,25 +1,26 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 
+from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.function_dicts import FUNCTIONS
+from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
 
 
-def valid_kernels(func_name: str) -> str:
+def valid_maps(func_name: str) -> str:
     """
-    check if valid kernel
+    check if valid map
     """
-    if func_name in FUNCTIONS:
+    if func_name in MAPS:
         function = func_name
     else:
-        raise ValueError("Not a valid kernel name to convolve")
+        raise ValueError("Not a valid map name to convolve")
     return function
 
 
@@ -68,9 +69,9 @@ def read_args() -> Namespace:
     parser.add_argument(
         "--convolve",
         "-c",
-        type=valid_kernels,
+        type=valid_maps,
         default=None,
-        choices=list(FUNCTIONS.keys()),
+        choices=list(MAPS.keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -118,29 +119,19 @@ def read_args() -> Namespace:
 
 
 def plot(
-    f_name: str,
-    L: int,
-    alpha_pi_fraction: float,
-    annotations: bool,
-    beta_pi_fraction: float,
-    g_name: Optional[str],
-    extra_args: Optional[List[int]],
-    gamma_pi_fraction: float,
-    method: str,
-    region: bool,
-    plot_type: str,
+    f: Functions,
+    g: Optional[Functions] = None,
+    method: str = "north",
+    plot_type: str = "real",
+    annotations: bool = True,
+    alpha_pi_fraction: Optional[float] = None,
+    beta_pi_fraction: Optional[float] = None,
+    gamma_pi_fraction: Optional[float] = None,
 ) -> None:
     """
     master plotting method
     """
-    # creates the field of a function just specified in the region
-    if region:
-        mask = Region()
-    else:
-        mask = None
-
-    f = FUNCTIONS[f_name](L, extra_args=extra_args, region=mask)
-    filename = f"{f.name}{'' if mask is None else mask.name_ending}_L{L}_"
+    filename = f"{f.name}{'' if f.region is None else f.region.name_ending}_L{f.L}_"
     multipole = f.multipole
 
     if method == "rotate":
@@ -158,12 +149,11 @@ def plot(
         # translate by alpha, beta
         multipole = f.translate(alpha_pi_fraction, beta_pi_fraction)
 
-    if g_name:
-        g = FUNCTIONS[g_name](L)
+    if g is not None:
         # perform convolution
         multipole = f.convolve(multipole, g.multipole)
         # adjust filename
-        filename += f"convolved_{g.name}_L{L}_"
+        filename += f"convolved_{g.name}_L{f.L}_"
 
     # add resolution to filename
     filename += f"res{f.resolution}_"
@@ -194,18 +184,28 @@ def plot(
 
 def main() -> None:
     args = read_args()
+
+    if args.region:
+        mask = Region()
+    else:
+        mask = None
+
+    f = FUNCTIONS[args.flm](config.L, extra_args=args.extra_args, region=mask)
+
+    if args.convolve is not None:
+        g = FUNCTIONS[args.convolve](f.L)
+    else:
+        g = None
+
     plot(
-        args.flm,
-        config.L,
-        args.alpha,
-        args.annotation,
-        args.beta,
-        args.convolve,
-        args.extra_args,
-        args.gamma,
-        args.method,
-        args.region,
-        args.type,
+        f,
+        g=g,
+        method=args.method,
+        plot_type=args.type,
+        annotations=args.annotation,
+        alpha_pi_fraction=args.alpha,
+        beta_pi_fraction=args.beta,
+        gamma_pi_fraction=args.gamma,
     )
 
 

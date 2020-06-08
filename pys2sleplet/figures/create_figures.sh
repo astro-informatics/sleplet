@@ -14,7 +14,7 @@ for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaus
     for m in wmap earth; do
         for t in real imag abs; do
             echo $f, $m, $t;
-            plotting $m -c $f -t $t;
+            plotting $f -c $m -t $t;
         done;
     done;
 done
@@ -40,7 +40,7 @@ done
 echo "harmonic Gaussian larger kernel"
 for t in real imag abs; do
     plotting harmonic_gaussian -e 3 1 -t $t;
-    plotting earth -c harmonic_gaussian -e 3 1 -t $t;
+    plotting harmonic_gaussian -c earth -e 3 1 -t $t;
 done
 
 echo "presentation rotation demo"
