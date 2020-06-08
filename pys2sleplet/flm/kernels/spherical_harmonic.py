@@ -35,7 +35,7 @@ class SphericalHarmonic(Functions):
         self.reality = False
 
     def _setup_args(self) -> None:
-        if self.extra_args is not None:
+        if isinstance(self.extra_args, list):
             num_args = 2
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")

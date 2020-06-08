@@ -23,5 +23,5 @@ class Identity(Functions):
         self.reality = True
 
     def _setup_args(self) -> None:
-        if self.extra_args is not None:
+        if isinstance(self.extra_args, list):
             raise AttributeError(f"Does not support extra arguments")

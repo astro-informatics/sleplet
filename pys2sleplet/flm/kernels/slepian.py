@@ -11,17 +11,14 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 @dataclass
 class Slepian(Functions):
     rank: int
-    slepian: Optional[SlepianFunctions]
+    region: Optional[Region]
     _rank: int = field(default=0, init=False, repr=False)
-    _slepian: Optional[SlepianFunctions] = field(default=None, init=False, repr=False)
+    _region: Optional[Region] = field(default=None, init=False, repr=False)
+    _slepian: SlepianFunctions = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        if self.slepian is None:
-            # create default region from config dict
-            region = Region()
-            self.slepian = choose_slepian_method(self.L, region)
-        else:
-            self.extra_args = [self.rank]
+        self.region = Region() if self.region is None else self.region
+        self.slepian = choose_slepian_method(self.L, self.region)
         self._validate_rank()
         super().__post_init__()
 
@@ -32,7 +29,7 @@ class Slepian(Functions):
         self.name = (
             (
                 f"{self.slepian.name}_rank{self.rank}"
-                f"_l{self.slepian.eigenvalues[self.rank]:e}"
+                f"_lam{self.slepian.eigenvalues[self.rank]:e}"
             )
             .replace(".", "-")
             .replace("+", "")
@@ -46,7 +43,7 @@ class Slepian(Functions):
         self.reality = False
 
     def _setup_args(self) -> None:
-        if self.extra_args is not None:
+        if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
@@ -58,7 +55,7 @@ class Slepian(Functions):
         """
         checks the requested rank is valid
         """
-        if self.extra_args is not None:
+        if isinstance(self.extra_args, list):
             limit = self.slepian.eigenvectors.shape[0]
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than or equal to {limit}")
@@ -81,13 +78,21 @@ class Slepian(Functions):
         logger.info(f"rank={self.rank}")
 
     @property  # type: ignore
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        if isinstance(region, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            region = Slepian._region
+        self._region = region
+
+    @property
     def slepian(self) -> SlepianFunctions:
         return self._slepian
 
     @slepian.setter
     def slepian(self, slepian: SlepianFunctions) -> None:
-        if isinstance(slepian, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            slepian = Slepian._slepian
         self._slepian = slepian
