@@ -24,4 +24,6 @@ class Identity(Functions):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(f"Does not support extra arguments")
+            raise AttributeError(
+                f"{self.__class__.__name__} does not support extra arguments"
+            )
