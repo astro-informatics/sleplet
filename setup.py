@@ -1,9 +1,6 @@
 from setuptools import find_namespace_packages, setup
 
-scripts = [
-    "plotting=pys2sleplet.scripts.plotting:main",
-    "fried_egg=pys2sleplet.scripts.simons_fried_egg.simons_fried_egg:produce_figure",
-]
+scripts = ["plotting=pys2sleplet.scripts.plotting:main"]
 
 setup(
     name="pys2sleplet",
