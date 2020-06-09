@@ -9,18 +9,21 @@ def produce_figure() -> None:
     """
     create fig 5.4 from Spatiospectral Concentration on a Sphere by Simons et al 2006
     """
-    for order, rank in ORDER_RANK:
+    for order, rank in ORDER_RANK.items():
         _helper(order, rank)
+        if order != 0:
+            _helper(-order, rank)
 
 
 def _helper(order: int, rank: int) -> None:
     """
     helper which plots the required order and specified ranks
     """
-    logger.info(f"plotting order={order}, rank={rank}")
     region = Region(theta_max=THETA_MAX, order=order)
-    slepian = Slepian(L, rank=rank, region=region)
-    plot(slepian)
+    for r in range(rank):
+        logger.info(f"plotting order={order}, rank={r}")
+        slepian = Slepian(L, rank=r, region=region)
+        plot(slepian)
 
 
 if __name__ == "__main__":
