@@ -70,7 +70,7 @@ class SlepianLimitLatLon(SlepianFunctions):
                     x, y, z = ssht.s2_to_cart(t, p)
                     self.annotations.append(
                         {
-                            **dict(x=x[0], y=y[0], z=z[0], arrowcolor="black"),
+                            **dict(x=x[0], y=y[0], z=z[0], arrowcolor="white"),
                             **ARROW_STYLE,
                         }
                     )

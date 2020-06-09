@@ -44,7 +44,7 @@ class SlepianPolarCap(SlepianFunctions):
 
                 if config.POLAR_GAP:
                     for j in range(ANNOTATION_DOTS):
-                        self._add_to_annotation(theta_bottom, j, colour="white")
+                        self._add_to_annotation(theta_bottom, j, colour="black")
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian{self.name_ending}"
@@ -73,7 +73,7 @@ class SlepianPolarCap(SlepianFunctions):
         )
 
     def _add_to_annotation(
-        self, theta: np.ndarray, i: int, colour: str = "black"
+        self, theta: np.ndarray, i: int, colour: str = "white"
     ) -> None:
         """
         add to annotation list for given theta
