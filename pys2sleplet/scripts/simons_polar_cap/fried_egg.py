@@ -5,7 +5,7 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 
 
-def produce_figure() -> None:
+def main() -> None:
     """
     create fig 5.4 from Spatiospectral Concentration on a Sphere by Simons et al 2006
     """
@@ -27,4 +27,4 @@ def _helper(order: int, rank: int) -> None:
 
 
 if __name__ == "__main__":
-    produce_figure()
+    main()
