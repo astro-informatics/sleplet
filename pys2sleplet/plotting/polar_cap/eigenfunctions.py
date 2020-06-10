@@ -3,24 +3,20 @@ from pathlib import Path
 import numpy as np
 from matplotlib import pyplot as plt
 
-from pys2sleplet.scripts.simons_polar_cap.simons_inputs import (
-    ORDERS,
-    RANKS,
-    TEXT_BOX,
-    THETA_MAX,
-    L,
-)
+from pys2sleplet.plotting.polar_cap.inputs import ORDERS, RANKS, TEXT_BOX, THETA_MAX, L
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
+from pys2sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
+
 resolution = calc_plot_resolution(L)
-xaxis = np.linspace(0, 180, resolution + 1)
-i = np.argwhere(xaxis == np.rad2deg(THETA_MAX))[0][0]
+x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), resolution + 1)
+i = np.argwhere(x == np.rad2deg(THETA_MAX))[0][0] + 1
 
 
 def main() -> None:
@@ -63,7 +59,7 @@ def _helper(ax: np.ndarray, slepian: SlepianPolarCap, order: int, rank: int) -> 
         axs.set_title(fr"$\alpha$ = {rank}")
     if order == ORDERS - 1:
         axs.set_xlabel("colatitude $\Theta$")
-    axs.plot(xaxis[:i], f[:i, 0], "b", xaxis[i:], f[i:, 0], "k")
+    axs.plot(x[:i], f[:i, 0], "b", x[i:], f[i:, 0], "k")
     axs.text(
         0.3,
         0.75,

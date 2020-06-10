@@ -1,6 +1,6 @@
 from pys2sleplet.flm.kernels.slepian import Slepian
+from pys2sleplet.plotting.polar_cap.inputs import ORDER_RANK, THETA_MAX, L
 from pys2sleplet.scripts.plotting import plot
-from pys2sleplet.scripts.simons_polar_cap.simons_inputs import ORDER_RANK, THETA_MAX, L
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 
