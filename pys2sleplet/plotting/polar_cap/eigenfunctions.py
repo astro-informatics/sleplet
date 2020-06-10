@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.polar_cap.inputs import ORDERS, RANKS, TEXT_BOX, THETA_MAX, L
+from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, THETA_MAX, L
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
@@ -11,18 +11,22 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
+ORDERS = 5
+PHI_IDX = 0
+RANKS = 4
+
+
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-
-resolution = calc_plot_resolution(L)
-x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), resolution + 1)
-i = np.argwhere(x == np.rad2deg(THETA_MAX))[0][0] + 1
 
 
 def main() -> None:
     """
     create fig 5.1 from Spatiospectral Concentration on a Sphere by Simons et al 2006
     """
+    resolution = calc_plot_resolution(L)
+    x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), resolution + 1)
+    i = np.argwhere(x == THETA_MAX)[0][0] + 1
     fig, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
     plt.setp(
         ax,
@@ -33,9 +37,9 @@ def main() -> None:
         yticks=[-2, 0, 2],
     )
     for order in range(ORDERS):
-        slepian = SlepianPolarCap(L, THETA_MAX, order=order)
+        slepian = SlepianPolarCap(L, np.rad2deg(THETA_MAX), order=order)
         for rank in range(RANKS):
-            _helper(ax, slepian, order, rank)
+            _helper(ax, slepian, resolution, x, i, order, rank)
     if config.SAVE_FIG:
         for file_type in ["png", "pdf"]:
             filename = fig_path / file_type / f"simons_5-1.{file_type}"
@@ -44,7 +48,15 @@ def main() -> None:
         plt.show()
 
 
-def _helper(ax: np.ndarray, slepian: SlepianPolarCap, order: int, rank: int) -> None:
+def _helper(
+    ax: np.ndarray,
+    slepian: SlepianPolarCap,
+    resolution: int,
+    x: np.ndarray,
+    i: int,
+    order: int,
+    rank: int,
+) -> None:
     """
     helper which plots the required order and specified ranks
     """
