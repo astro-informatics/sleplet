@@ -37,7 +37,7 @@ def main() -> None:
         yticks=[-2, 0, 2],
     )
     for order in range(ORDERS):
-        slepian = SlepianPolarCap(L, np.rad2deg(THETA_MAX), order=order)
+        slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
             _helper(ax, slepian, resolution, x, i, order, rank)
     if config.SAVE_FIG:
