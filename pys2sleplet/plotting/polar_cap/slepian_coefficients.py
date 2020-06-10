@@ -51,7 +51,7 @@ def _create_coefficients() -> pd.DataFrame:
     """
     df = pd.DataFrame()
     for order in range(-(ORDERS - 1), ORDERS):
-        logger.info(f"plotting order={order}")
+        logger.info(f"calculating order={order}")
         coefficients = np.abs(_helper(order))
         df_tmp = pd.DataFrame()
         df_tmp["f_p"] = coefficients
