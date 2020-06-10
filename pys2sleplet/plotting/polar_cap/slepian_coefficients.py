@@ -35,8 +35,8 @@ def main() -> None:
         style=df["m"],
         markers=MarkerStyle.filled_markers[:ORDERS],
     )
-    plt.ylabel("${|f_{p}|}$")
     plt.xlabel("p")
+    plt.ylabel("${|f_{p}|}$")
     if config.SAVE_FIG:
         for file_type in ["png", "pdf"]:
             filename = fig_path / file_type / f"fp_polar{THETA_MAX}_L{L}.{file_type}"
@@ -50,17 +50,19 @@ def _create_coefficients() -> pd.DataFrame:
     calculates all Slepian coefficients for all orders and sorts them
     """
     df = pd.DataFrame()
-    for order in range(-(ORDERS - 1), ORDERS):
+    for order in range(-(L - 1), L):
         logger.info(f"calculating order={order}")
         coefficients = np.abs(_helper(order))
         df_tmp = pd.DataFrame()
         df_tmp["f_p"] = coefficients
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
-    df = df.sort_values("f_p", ascending=False).reset_index(drop=True)[:RANKS]
+    df_sorted = df.sort_values("f_p", ascending=False).reset_index(drop=True)
+    valid_orders = df_sorted["order"] < ORDERS
+    df = df_sorted.loc[valid_orders].head(RANKS)
     df["m"] = df["order"].abs().astype(str)
-    mask = df["order"] != 0
-    df.loc[mask, "m"] = "$\pm$" + df.loc[mask, "m"]
+    non_zero = df["order"] != 0
+    df.loc[non_zero, "m"] = "$\pm$" + df.loc[non_zero, "m"]
     return df
 
 

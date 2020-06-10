@@ -49,17 +49,19 @@ def _create_eigenvalues() -> pd.DataFrame:
     calculates all Slepian coefficients for all orders and sorts them
     """
     df = pd.DataFrame()
-    for order in range(-(ORDERS - 1), ORDERS):
+    for order in range(-(L - 1), L):
         logger.info(f"calculating order={order}")
         eigenvalues = _helper(order)
         df_tmp = pd.DataFrame()
         df_tmp["lam"] = eigenvalues
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
-    df = df.sort_values("lam", ascending=False).reset_index(drop=True)[:RANKS]
+    df_sorted = df.sort_values("lam", ascending=False).reset_index(drop=True)
+    valid_orders = df_sorted["order"] < ORDERS
+    df = df_sorted.loc[valid_orders].head(RANKS)
     df["m"] = df["order"].abs().astype(str)
-    mask = df["order"] != 0
-    df.loc[mask, "m"] = "$\pm$" + df.loc[mask, "m"]
+    non_zero = df["order"] != 0
+    df.loc[non_zero, "m"] = "$\pm$" + df.loc[non_zero, "m"]
     return df
 
 
