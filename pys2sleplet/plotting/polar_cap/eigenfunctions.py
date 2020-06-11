@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import numpy as np
+import seaborn as sns
 from matplotlib import pyplot as plt
 
 from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, THETA_MAX, L
@@ -18,6 +19,7 @@ RANKS = 4
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
+sns.set()
 
 
 def main() -> None:
@@ -27,7 +29,7 @@ def main() -> None:
     resolution = calc_plot_resolution(L)
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), resolution + 1)
     i = np.argwhere(x == THETA_MAX)[0][0] + 1
-    fig, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
+    _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
     plt.setp(
         ax,
         xlim=[0, 180],
@@ -40,10 +42,12 @@ def main() -> None:
         slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
             _helper(ax, slepian, resolution, x, i, order, rank)
+
+    plt.tight_layout()
     if config.SAVE_FIG:
         for file_type in ["png", "pdf"]:
             filename = fig_path / file_type / f"simons_5-1.{file_type}"
-            plt.savefig(filename)
+            plt.savefig(filename, bbox_inches="tight")
     if config.AUTO_OPEN:
         plt.show()
 
@@ -71,16 +75,15 @@ def _helper(
         axs.set_title(fr"$\alpha$ = {rank}")
     if order == ORDERS - 1:
         axs.set_xlabel("colatitude $\Theta$")
-    axs.plot(x[:i], f[:i, 0], "b", x[i:], f[i:, 0], "k")
+    axs.plot(x[:i], f[:i, PHI_IDX], "b", x[i:], f[i:, PHI_IDX], "k")
     axs.text(
-        0.3,
+        0.33,
         0.75,
         fr"$\lambda$={lam:.6f}",
         transform=axs.transAxes,
         fontsize=8,
         bbox=TEXT_BOX,
     )
-    axs.grid()
 
 
 if __name__ == "__main__":
