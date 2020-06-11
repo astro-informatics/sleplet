@@ -79,7 +79,7 @@ def _create_eigenvalues(theta_max: int) -> pd.DataFrame:
     """
     df = pd.DataFrame()
     for order in range(-(L - 1), L):
-        logger.info(f"calculating order={order}")
+        logger.info(f"calculating theta_max={theta_max}, order={order}")
         eigenvalues = _helper(theta_max, order)
         df_tmp = pd.DataFrame()
         df_tmp["lam"] = eigenvalues
