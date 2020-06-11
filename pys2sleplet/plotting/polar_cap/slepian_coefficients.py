@@ -8,6 +8,7 @@ from matplotlib.markers import MarkerStyle
 
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.polar_cap.inputs import THETA_MAX, L
+from pys2sleplet.plotting.polar_cap.utils import sort_and_clean_df
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
@@ -37,10 +38,12 @@ def main() -> None:
     )
     plt.xlabel("p")
     plt.ylabel("${|f_{p}|}$")
+
+    plt.tight_layout()
     if config.SAVE_FIG:
         for file_type in ["png", "pdf"]:
             filename = fig_path / file_type / f"fp_polar{THETA_MAX}_L{L}.{file_type}"
-            plt.savefig(filename)
+            plt.savefig(filename, bbox_inches="tight")
     if config.AUTO_OPEN:
         plt.show()
 
@@ -57,12 +60,7 @@ def _create_coefficients() -> pd.DataFrame:
         df_tmp["f_p"] = coefficients
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
-    df_sorted = df.sort_values("f_p", ascending=False).reset_index(drop=True)
-    valid_orders = df_sorted["order"] < ORDERS
-    df = df_sorted.loc[valid_orders].head(RANKS)
-    df["m"] = df["order"].abs().astype(str)
-    non_zero = df["order"] != 0
-    df.loc[non_zero, "m"] = "$\pm$" + df.loc[non_zero, "m"]
+    df = sort_and_clean_df(df, ORDERS, RANKS, "lam")
     return df
 
 
