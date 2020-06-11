@@ -65,7 +65,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
         axs.set_xlabel("rank")
     axs.text(
         0.04,
-        0.26,
+        0.34,
         fr"$\Theta$={theta_max}$^\circ$",
         transform=axs.transAxes,
         fontsize=12,

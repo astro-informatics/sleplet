@@ -60,7 +60,7 @@ def _create_coefficients() -> pd.DataFrame:
         df_tmp["f_p"] = coefficients
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
-    df = sort_and_clean_df(df, ORDERS, RANKS, "lam")
+    df = sort_and_clean_df(df, ORDERS, RANKS, "f_p")
     return df
 
 

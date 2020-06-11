@@ -28,7 +28,7 @@ def main() -> None:
     """
     resolution = calc_plot_resolution(L)
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), resolution + 1)
-    i = np.argwhere(x == THETA_MAX)[0][0] + 1
+    i = (x < THETA_MAX).sum() - 1
     _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
     plt.setp(
         ax,
