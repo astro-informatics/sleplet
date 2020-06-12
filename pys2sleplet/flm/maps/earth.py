@@ -32,7 +32,9 @@ class Earth(Functions):
 
         # don't take the full L
         # invert dataset as Earth backwards
-        self.multipole = flm[: self.L * self.L].conj()
+        flm = flm[: self.L * self.L].conj()
+        alpha, beta, gamma = np.deg2rad(54), np.deg2rad(108), np.deg2rad(63)
+        self.multipole = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
 
     def _create_name(self) -> None:
         self.name = "earth"
