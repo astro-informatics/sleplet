@@ -1,5 +1,5 @@
 #!/bin/bash
-L=256
+L=128
 
 echo "maps"
 for t in real imag abs; do
