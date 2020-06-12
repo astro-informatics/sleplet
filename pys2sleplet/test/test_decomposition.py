@@ -30,7 +30,7 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
     h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
     assert_allclose(f_p, g_p, rtol=1e8)
-    assert_allclose(g_p, h_p, rtol=1e-3)
+    assert_allclose(g_p, h_p, rtol=1e-2)
     assert_allclose(h_p, f_p, rtol=1.1)
 
 

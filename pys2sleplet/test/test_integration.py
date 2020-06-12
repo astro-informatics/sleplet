@@ -87,7 +87,7 @@ def test_integrate_two_slepian_polar_functions_whole_sphere_per_rank(
     if rank1 == rank2:
         assert_allclose(output, 1, atol=1e-3)
     else:
-        assert_allclose(output, 0, atol=1e-4)
+        assert_allclose(output, 0, atol=1e-3)
 
 
 @seed(RANDOM_SEED)
@@ -124,7 +124,7 @@ def test_integrate_two_slepian_polar_functions_region_sphere_per_rank(
     )
     lambda_p = slepian_polar_cap.eigenvalues[rank1]
     if rank1 == rank2:
-        assert_allclose(output, lambda_p, atol=1e-3)
+        assert_allclose(output, lambda_p, atol=0.2)
     else:
         assert_allclose(output, 0, atol=0.2)
 
@@ -144,9 +144,9 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_per_rank(
     )
     lambda_p = slepian_lim_lat_lon.eigenvalues[rank1]
     if rank1 == rank2:
-        assert_allclose(output, lambda_p, atol=0.4)
+        assert_allclose(output, lambda_p, atol=1e-2)
     else:
-        assert_allclose(output, 0, atol=0.7)
+        assert_allclose(output, 0, atol=1e-2)
 
 
 @pytest.mark.slow
