@@ -31,8 +31,13 @@ class Plot:
         """
         creates basic plotly plot rather than matplotlib
         """
+        # normalise function between 0 and 1
+        if not np.array_equal(self.f, np.zeros(self.f.shape)):
+            f_scaled = (self.f - self.f.min()) / self.f.ptp()
+        else:
+            f_scaled = self.f
+
         # get values from the setup
-        f_scaled = (self.f - self.f.min()) / self.f.ptp()
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f_scaled, self.resolution, method=SAMPLING_SCHEME
         )
