@@ -32,8 +32,9 @@ class Plot:
         creates basic plotly plot rather than matplotlib
         """
         # get values from the setup
+        f_scaled = (self.f - self.f.min()) / self.f.ptp()
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            self.f, self.resolution, method=SAMPLING_SCHEME
+            f_scaled, self.resolution, method=SAMPLING_SCHEME
         )
 
         # appropriate zoom in on north pole
@@ -50,9 +51,8 @@ class Plot:
                 colorscale=convert_colourscale(cmocean.cm.solar),
                 cmin=vmin,
                 cmax=vmax,
-                colorbar=dict(
-                    x=0.92, len=0.98, nticks=5, tickfont=dict(color="#666666", size=32)
-                ),
+                showscale=False,
+                reversescale=True,
             )
         ]
 
