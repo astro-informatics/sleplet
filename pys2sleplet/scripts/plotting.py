@@ -89,6 +89,9 @@ def read_args() -> Namespace:
         help="gamma pi fraction - defaults to 0 - rotation only",
     )
     parser.add_argument(
+        "--bandlimit", "-L", type=int, default=config.L, help="bandlimit"
+    )
+    parser.add_argument(
         "--method",
         "-m",
         type=str,
@@ -200,10 +203,10 @@ def main() -> None:
     else:
         mask = None
 
-    f = FUNCTIONS[args.flm](config.L, extra_args=args.extra_args, region=mask)
+    f = FUNCTIONS[args.flm](args.bandlimit, extra_args=args.extra_args, region=mask)
 
     if args.convolve is not None:
-        g = FUNCTIONS[args.convolve](f.L)
+        g = FUNCTIONS[args.convolve](args.bandlimit)
     else:
         g = None
 
