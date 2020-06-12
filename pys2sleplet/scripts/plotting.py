@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 from typing import Optional
 
