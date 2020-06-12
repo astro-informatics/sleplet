@@ -162,7 +162,7 @@ def plot(
 
     if g is not None:
         # perform convolution
-        multipole = f.convolve(multipole, g.multipole)
+        multipole = f.convolve(g.multipole, multipole)
         # adjust filename
         filename += f"convolved_{g.name}_L{f.L}_"
 
