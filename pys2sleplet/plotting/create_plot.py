@@ -48,11 +48,13 @@ class Plot:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=convert_colourscale(cmocean.cm.solar),
+                colorscale=convert_colourscale(cmocean.cm.ice),
+                reversescale=True,
                 cmin=vmin,
                 cmax=vmax,
-                showscale=False,
-                reversescale=True,
+                colorbar=dict(
+                    x=0.84, len=0.98, nticks=2, tickfont=dict(color="#666666", size=32)
+                ),
             )
         ]
 
