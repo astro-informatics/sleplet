@@ -22,6 +22,8 @@ class Region:
     phi_max: float
     mask_name: str
     order: int
+    gap: bool
+    _gap: bool = field(default=config.POLAR_GAP, init=False, repr=False)
     _mask_name: str = field(default=config.SLEPIAN_MASK, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
     _order: int = field(default=config.ORDER, init=False, repr=False)
@@ -46,7 +48,7 @@ class Region:
             logger.info("polar cap region detected")
             self.region_type = "polar"
             self.name_ending = (
-                f"_polar{'_gap' if config.POLAR_GAP else ''}"
+                f"_polar{'_gap' if self.gap else ''}"
                 f"{angle_as_degree(self.theta_max)}"
             )
 
@@ -72,6 +74,18 @@ class Region:
                 "need to specify either a polar cap, a limited latitude "
                 "longitude region, or a file with a mask"
             )
+
+    @property  # type: ignore
+    def gap(self) -> bool:
+        return self._gap
+
+    @gap.setter
+    def gap(self, gap: bool) -> None:
+        if isinstance(gap, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            gap = Region._gap
+        self._gap = gap
 
     @property  # type: ignore
     def mask_name(self) -> str:

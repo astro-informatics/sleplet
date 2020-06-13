@@ -14,7 +14,12 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import ANNOTATION_DOTS, ARROW_STYLE, ORDER_DEFAULT
+from pys2sleplet.utils.vars import (
+    ANNOTATION_DOTS,
+    ARROW_STYLE,
+    GAP_DEFAULT,
+    ORDER_DEFAULT,
+)
 
 _file_location = Path(__file__).resolve()
 
@@ -23,7 +28,9 @@ _file_location = Path(__file__).resolve()
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     order: int
+    gap: bool
     ncpu: int
+    _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
     _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
@@ -31,8 +38,8 @@ class SlepianPolarCap(SlepianFunctions):
     _theta_max: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.region = Region(theta_max=self.theta_max)
-        self.name_ending = f"{self._region.name_ending}_m{self.order}"
+        self.region = Region(theta_max=self.theta_max, order=self.order)
+        self.name_ending = f"{self.region.name_ending}_m{self.order}"
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -42,7 +49,7 @@ class SlepianPolarCap(SlepianFunctions):
             for i in range(ANNOTATION_DOTS):
                 self._add_to_annotation(theta_top, i)
 
-                if config.POLAR_GAP:
+                if self.gap:
                     for j in range(ANNOTATION_DOTS):
                         self._add_to_annotation(theta_bottom, j, colour="green")
 
@@ -335,9 +342,8 @@ class SlepianPolarCap(SlepianFunctions):
             )
         return s
 
-    @staticmethod
-    def _polar_gap_modification(ell1: int, ell2: int) -> int:
-        factor = 1 + config.POLAR_GAP * (-1) ** (ell1 + ell2)
+    def _polar_gap_modification(self, ell1: int, ell2: int) -> int:
+        factor = 1 + self.gap * (-1) ** (ell1 + ell2)
         return factor
 
     def _clean_evals_and_evecs(
@@ -370,6 +376,18 @@ class SlepianPolarCap(SlepianFunctions):
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors
+
+    @property  # type: ignore
+    def gap(self) -> bool:
+        return self._gap
+
+    @gap.setter
+    def gap(self, gap: bool) -> None:
+        if isinstance(gap, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            gap = SlepianPolarCap._gap
+        self._gap = gap
 
     @property
     def name_ending(self) -> str:

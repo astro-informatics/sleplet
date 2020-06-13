@@ -5,6 +5,7 @@ import numpy as np
 ANNOTATION_DOTS: int = 12
 ARROW_STYLE: Dict[str, int] = dict(arrowhead=6, ax=5, ay=5)
 DECOMPOSITION_DEFAULT: str = "harmonic_sum"
+GAP_DEFAULT: bool = False
 ORDER_DEFAULT: int = 0
 PHI_0: float = np.pi
 PHI_MIN_DEFAULT: float = 0.0
