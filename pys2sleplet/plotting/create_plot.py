@@ -60,6 +60,7 @@ class Plot:
                 colorbar=dict(
                     x=0.84, len=0.98, nticks=2, tickfont=dict(color="#666666", size=32)
                 ),
+                lighting=dict(ambient=1),
             )
         ]
 
