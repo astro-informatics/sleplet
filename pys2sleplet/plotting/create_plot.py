@@ -35,7 +35,7 @@ class Plot:
         if not np.array_equal(self.f, np.zeros(self.f.shape)):
             f_scaled = (self.f - self.f.min()) / self.f.ptp()
         else:
-            f_scaled = self.f
+            f_scaled = self.f + 0.5
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
