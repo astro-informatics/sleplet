@@ -32,10 +32,10 @@ class Plot:
         creates basic plotly plot rather than matplotlib
         """
         # normalise function between 0 and 1
-        if not np.array_equal(self.f, np.zeros(self.f.shape)):
-            f_scaled = (self.f - self.f.min()) / self.f.ptp()
-        else:
+        if (self.f == 0).all():
             f_scaled = self.f + 0.5
+        else:
+            f_scaled = (self.f - self.f.min()) / self.f.ptp()
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
