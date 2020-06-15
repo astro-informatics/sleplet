@@ -37,7 +37,9 @@ def main() -> None:
         markers=MarkerStyle.filled_markers[:ORDERS],
     )
     flm = _harmonic_coefficients()
-    sns.scatterplot(x=range(RANKS), y=flm, marker="+", color="black", label="harmonic")
+    sns.scatterplot(
+        x=range(len(flm)), y=flm, marker=".", color="black", label="harmonic"
+    )
     plt.legend(ncol=3)
     plt.xlabel("coefficient")
     plt.ylabel("magnitude")
@@ -84,8 +86,9 @@ def _harmonic_coefficients() -> np.ndarray:
     """
     region = Region(theta_max=np.deg2rad(THETA_MAX))
     earth = Earth(L, region=region)
-    coefficients = np.abs(earth.multipole[:RANKS])
-    return coefficients
+    coefficients = np.abs(earth.multipole)
+    coefficients[::-1].sort()
+    return coefficients[:RANKS]
 
 
 if __name__ == "__main__":
