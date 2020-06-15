@@ -343,6 +343,10 @@ class SlepianPolarCap(SlepianFunctions):
         return s
 
     def _polar_gap_modification(self, ell1: int, ell2: int) -> int:
+        """
+        eq 67 - Spherical Slepian functions and the polar gap in geodesy
+        multiply by 1 + (-1)*(ell+ell')
+        """
         factor = 1 + self.gap * (-1) ** (ell1 + ell2)
         return factor
 
