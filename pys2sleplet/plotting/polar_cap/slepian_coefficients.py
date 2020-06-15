@@ -15,7 +15,7 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 
 ORDERS = 15
-RANKS = 60
+RANKS = 100
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
