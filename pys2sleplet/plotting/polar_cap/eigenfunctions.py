@@ -15,6 +15,7 @@ from pys2sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 ORDERS = 5
 PHI_IDX = 0
 RANKS = 4
+SIGNS = [[1, -1, 1, -1], [1, -1, -1, -1], [1, 1, 1, 1], [-1, -1, -1, -1], [1, 1, 1, 1]]
 
 
 file_location = Path(__file__).resolve()
@@ -66,7 +67,7 @@ def _helper(
     """
     logger.info(f"plotting order={order}, rank={rank}")
     axs = ax[order, rank]
-    flm = slepian.eigenvectors[rank]
+    flm = slepian.eigenvectors[rank] * SIGNS[order][rank]
     lam = slepian.eigenvalues[rank]
     f = invert_flm_boosted(flm, L, resolution).real
     if rank == 0:
