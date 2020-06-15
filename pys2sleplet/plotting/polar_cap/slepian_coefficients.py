@@ -26,7 +26,7 @@ def main() -> None:
     """
     creates a plot of Slepian coefficient against rank
     """
-    df = _create_coefficients()
+    df = _slepian_coefficients()
     sns.scatterplot(
         x=df.index,
         y=df["f_p"],
@@ -53,7 +53,7 @@ def main() -> None:
         plt.show()
 
 
-def _create_coefficients() -> pd.DataFrame:
+def _slepian_coefficients() -> pd.DataFrame:
     """
     calculates all Slepian coefficients for all orders and sorts them
     """
