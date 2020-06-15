@@ -15,7 +15,9 @@ from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
+    ANNOTATION_COLOUR,
     ANNOTATION_DOTS,
+    ANNOTATION_SECOND_COLOUR,
     ARROW_STYLE,
     GAP_DEFAULT,
     ORDER_DEFAULT,
@@ -47,11 +49,13 @@ class SlepianPolarCap(SlepianFunctions):
             theta_top = np.array([self.theta_max])
             theta_bottom = np.array([np.pi - self.theta_max])
             for i in range(ANNOTATION_DOTS):
-                self._add_to_annotation(theta_top, i)
+                self._add_to_annotation(theta_top, i, ANNOTATION_COLOUR)
 
                 if self.gap:
                     for j in range(ANNOTATION_DOTS):
-                        self._add_to_annotation(theta_bottom, j, colour="green")
+                        self._add_to_annotation(
+                            theta_bottom, j, ANNOTATION_SECOND_COLOUR
+                        )
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian{self.name_ending}"
@@ -79,9 +83,7 @@ class SlepianPolarCap(SlepianFunctions):
             eigenvalues, gl, emm
         )
 
-    def _add_to_annotation(
-        self, theta: np.ndarray, i: int, colour: str = "red"
-    ) -> None:
+    def _add_to_annotation(self, theta: np.ndarray, i: int, colour: str) -> None:
         """
         add to annotation list for given theta
         """

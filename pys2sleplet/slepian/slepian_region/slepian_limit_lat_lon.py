@@ -14,6 +14,7 @@ from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
+    ANNOTATION_COLOUR,
     ARROW_STYLE,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -70,7 +71,9 @@ class SlepianLimitLatLon(SlepianFunctions):
                     x, y, z = ssht.s2_to_cart(t, p)
                     self.annotations.append(
                         {
-                            **dict(x=x[0], y=y[0], z=z[0], arrowcolor="red"),
+                            **dict(
+                                x=x[0], y=y[0], z=z[0], arrowcolor=ANNOTATION_COLOUR
+                            ),
                             **ARROW_STYLE,
                         }
                     )

@@ -2,8 +2,10 @@ from typing import Dict
 
 import numpy as np
 
+ANNOTATION_COLOUR: str = "salmon"
+ANNOTATION_SECOND_COLOUR: str = "gold"
 ANNOTATION_DOTS: int = 12
-ARROW_STYLE: Dict[str, int] = dict(arrowhead=6, ax=5, ay=5)
+ARROW_STYLE: Dict[str, int] = dict(arrowhead=7, ax=5, ay=5)
 DECOMPOSITION_DEFAULT: str = "harmonic_sum"
 GAP_DEFAULT: bool = False
 ORDER_DEFAULT: int = 0
