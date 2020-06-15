@@ -60,7 +60,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
         ax=axs,
     )
     if position[1] == 0:
-        axs.set_ylabel("$\lambda$")
+        axs.set_ylabel("eigenvalue $\lambda$")
     if position[0] == 1:
         axs.set_xlabel("rank")
     axs.text(
