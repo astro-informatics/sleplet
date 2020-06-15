@@ -36,8 +36,11 @@ def main() -> None:
         style=df["m"],
         markers=MarkerStyle.filled_markers[:ORDERS],
     )
-    plt.xlabel("p")
-    plt.ylabel("${|f_{p}|}$")
+    flm = _harmonic_coefficients()
+    sns.scatterplot(x=range(RANKS), y=flm, marker="+", color="black", label="harmonic")
+    plt.legend(ncol=3)
+    plt.xlabel("coefficient")
+    plt.ylabel("magnitude")
 
     plt.tight_layout()
     if config.SAVE_FIG:
@@ -72,6 +75,16 @@ def _helper(order: int) -> np.ndarray:
     earth = Earth(L, region=region)
     sd = SlepianDecomposition(earth)
     coefficients = sd.decompose_all()
+    return coefficients
+
+
+def _harmonic_coefficients() -> np.ndarray:
+    """
+    harmonic coefficients of the Earth for the polar cap region
+    """
+    region = Region(theta_max=np.deg2rad(THETA_MAX))
+    earth = Earth(L, region=region)
+    coefficients = np.abs(earth.multipole[:RANKS])
     return coefficients
 
 
