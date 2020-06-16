@@ -31,11 +31,7 @@ class Plot:
         """
         creates basic plotly plot rather than matplotlib
         """
-        # normalise function between 0 and 1
-        if (self.f == 0).all():
-            f_scaled = self.f + 0.5
-        else:
-            f_scaled = (self.f - self.f.min()) / self.f.ptp()
+        f_scaled = self._normalise_function(self.f)
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
@@ -164,3 +160,14 @@ class Plot:
             x, y, z = ssht.s2_to_cart(thetas, phis)
 
         return x, y, z, f_plot, vmin, vmax
+
+    @staticmethod
+    def _normalise_function(f: np.ndarray) -> np.ndarray:
+        """
+        normalise function between 0 and 1 for visualisation
+        """
+        if (f == 0).all():
+            f_scaled = f + 0.5
+        else:
+            f_scaled = (f - f.min()) / f.ptp()
+        return f_scaled
