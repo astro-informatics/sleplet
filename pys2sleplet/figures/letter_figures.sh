@@ -1,17 +1,19 @@
 #!/bin/bash
+L=128
+
 echo "figure 1"
 for t in real imag abs; do
     echo $t;
-    plotting harmonic_gaussian -r translate -t $t;
-    plotting harmonic_gaussian -e 3 1 -r translate -t $t;
+    plotting harmonic_gaussian -L $L -m translate -t $t;
+    plotting harmonic_gaussian -L $L -e 3 1 -m translate -t $t;
 done
 
 echo "figure 2"
-plotting earth -t real
+plotting earth -L $L -t real
 
 echo "figure 3"
 for t in real imag abs; do
     echo $t;
-    plotting earth -c harmonic_gaussian -t $t;
-    plotting earth -c harmonic_gaussian -e 3 1 -t $t;
+    plotting harmonic_gaussian -c earth -L $L -t $t;
+    plotting harmonic_gaussian -c earth -L $L -e 3 1 -t $t;
 done

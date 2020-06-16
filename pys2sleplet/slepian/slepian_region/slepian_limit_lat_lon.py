@@ -1,22 +1,23 @@
-import multiprocessing.sharedctypes as sct
 from dataclasses import dataclass, field
-from multiprocessing import Pool
 from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
+from multiprocess import Pool
+from multiprocess.shared_memory import SharedMemory
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
-from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
+    ANNOTATION_COLOUR,
     ARROW_STYLE,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
-    SAMPLING_SCHEME,
     THETA_MAX_DEFAULT,
     THETA_MIN_DEFAULT,
 )
@@ -25,24 +26,28 @@ _file_location = Path(__file__).resolve()
 
 
 @dataclass
-class SlepianLimitLatLong(SlepianFunctions):
+class SlepianLimitLatLon(SlepianFunctions):
     theta_min: float
     theta_max: float
     phi_min: float
     phi_max: float
+    ncpu: int
+    _name_ending: str = field(init=False, repr=False)
+    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
+    _region: Region = field(init=False, repr=False)
     _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
-    _name_ending: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._name_ending = (
-            f"_theta{angle_as_degree(self.theta_min)}"
-            f"-{angle_as_degree(self.theta_max)}"
-            f"_phi{angle_as_degree(self.phi_min)}"
-            f"-{angle_as_degree(self.phi_max)}"
+        self.region = Region(
+            theta_min=self.theta_min,
+            theta_max=self.theta_max,
+            phi_min=self.phi_min,
+            phi_max=self.phi_max,
         )
+        self.name_ending = self.region.name_ending
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -66,46 +71,34 @@ class SlepianLimitLatLong(SlepianFunctions):
                     x, y, z = ssht.s2_to_cart(t, p)
                     self.annotations.append(
                         {
-                            **dict(x=x[0], y=y[0], z=z[0], arrowcolor="black"),
+                            **dict(
+                                x=x[0], y=y[0], z=z[0], arrowcolor=ANNOTATION_COLOUR
+                            ),
                             **ARROW_STYLE,
                         }
                     )
 
-    def _create_fn_name(self) -> str:
-        name = f"slepian{self._name_ending}"
-        return name
+    def _create_fn_name(self) -> None:
+        self.name = f"slepian{self.name_ending}"
 
-    def _create_mask(self) -> np.ndarray:
-        theta_grid, phi_grid = ssht.sample_positions(
-            self.L, Grid=True, Method=SAMPLING_SCHEME
-        )
-        mask = (
-            (theta_grid >= self.theta_min)
-            & (theta_grid <= self.theta_max)
-            & (phi_grid >= self.phi_min)
-            & (phi_grid <= self.phi_max)
-        )
-        return mask
+    def _create_mask(self) -> None:
+        self.mask = create_mask_region(self.L, self.region)
 
-    def _create_matrix_location(self) -> Path:
-        location = (
+    def _create_matrix_location(self) -> None:
+        self.matrix_location = (
             _file_location.parents[2]
             / "data"
             / "slepian"
             / "lat_lon"
-            / f"D_L{self.L}{self._name_ending}.npy"
+            / f"D{self.name_ending}_L{self.L}.npy"
         )
-        return location
 
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> None:
         K = self._load_K_matrix()
-
         eigenvalues, eigenvectors = np.linalg.eigh(K)
-
-        eigenvalues, eigenvectors = self._clean_evals_and_evecs(
+        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
-        return eigenvalues, eigenvectors
 
     def _load_K_matrix(self) -> np.ndarray:
         """
@@ -120,7 +113,7 @@ class SlepianLimitLatLong(SlepianFunctions):
             G = self._slepian_integral()
 
             # Compute Slepian matrix
-            if config.NCPU == 1:
+            if self.ncpu == 1:
                 K = self._slepian_matrix_serial(G)
             else:
                 K = self._slepian_matrix_parallel(G)
@@ -209,18 +202,17 @@ class SlepianLimitLatLong(SlepianFunctions):
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
 
         # initialise real and imaginary matrices
-        real = np.zeros((self.L * self.L, self.L * self.L))
-        imag = np.zeros((self.L * self.L, self.L * self.L))
+        K_r = np.zeros((self.L * self.L, self.L * self.L))
+        K_i = np.zeros((self.L * self.L, self.L * self.L))
 
         for l in range(self.L):
-            self._slepian_matrix_helper(real, imag, l, dl_array, G)
+            self._slepian_matrix_helper(K_r, K_i, l, dl_array, G)
 
-        # retrieve real and imag components
-        K = real + 1j * imag
+        # combine real and imaginary parts
+        K = K_r + 1j * K_i
 
         # fill in remaining triangle section
-        i_upper = np.triu_indices(K.shape[0])
-        K[i_upper] = K.T[i_upper].conj()
+        fill_upper_triangle_of_hermitian_matrix(K)
 
         return K
 
@@ -245,42 +237,52 @@ class SlepianLimitLatLong(SlepianFunctions):
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
 
         # initialise real and imaginary matrices
-        real = np.zeros((self.L * self.L, self.L * self.L))
-        imag = np.zeros((self.L * self.L, self.L * self.L))
+        K_r = np.zeros((self.L * self.L, self.L * self.L))
+        K_i = np.zeros((self.L * self.L, self.L * self.L))
 
-        # create arrays to store final and intermediate steps
-        result_r = np.ctypeslib.as_ctypes(real)
-        result_i = np.ctypeslib.as_ctypes(imag)
-        shared_array_r = sct.RawArray(result_r._type_, result_r)
-        shared_array_i = sct.RawArray(result_i._type_, result_i)
+        # create shared memory block
+        shm_r = SharedMemory(create=True, size=K_r.nbytes)
+        shm_i = SharedMemory(create=True, size=K_i.nbytes)
+        # create a array backed by shared memory
+        K_r_ext = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=shm_r.buf)
+        K_i_ext = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=shm_i.buf)
 
         def func(chunk: List[int]) -> None:
             """
             calculate K matrix components for each chunk
             """
-            # store real and imag parts separately
-            tmp_r = np.ctypeslib.as_array(shared_array_r)
-            tmp_i = np.ctypeslib.as_array(shared_array_i)
+            # attach to the existing shared memory block
+            ex_shm_r = SharedMemory(name=shm_r.name)
+            ex_shm_i = SharedMemory(name=shm_i.name)
+            K_r_int = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=ex_shm_r.buf)
+            K_i_int = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=ex_shm_i.buf)
 
             # deal with chunk
             for l in chunk:
-                self._slepian_matrix_helper(tmp_r, tmp_i, l, dl_array, G)
+                self._slepian_matrix_helper(K_r_int, K_i_int, l, dl_array, G)
+
+            # clean up shared memory
+            ex_shm_r.close()
+            ex_shm_i.close()
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L, config.NCPU)
+        chunks = split_L_into_chunks(self.L, self.ncpu)
 
         # initialise pool and apply function
-        with Pool(processes=config.NCPU) as p:
+        with Pool(processes=self.ncpu) as p:
             p.map(func, chunks)
 
-        # retrieve real and imag components
-        result_r = np.ctypeslib.as_array(shared_array_r)
-        result_i = np.ctypeslib.as_array(shared_array_i)
-        K = result_r + 1j * result_i
+        # retrieve from parallel function
+        K = K_r_ext + 1j * K_i_ext
+
+        # Free and release the shared memory block at the very end
+        shm_r.close()
+        shm_r.unlink()
+        shm_i.close()
+        shm_i.unlink()
 
         # fill in remaining triangle section
-        i_upper = np.triu_indices(K.shape[0])
-        K[i_upper] = K.T[i_upper].conj()
+        fill_upper_triangle_of_hermitian_matrix(K)
 
         return K
 
@@ -356,6 +358,26 @@ class SlepianLimitLatLong(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
+    @property
+    def name_ending(self) -> str:
+        return self._name_ending
+
+    @name_ending.setter
+    def name_ending(self, name_ending: str) -> None:
+        self._name_ending = name_ending
+
+    @property  # type: ignore
+    def ncpu(self) -> int:
+        return self._ncpu
+
+    @ncpu.setter
+    def ncpu(self, ncpu: int) -> None:
+        if isinstance(ncpu, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            ncpu = SlepianLimitLatLon._ncpu
+        self._ncpu = ncpu
+
     @property  # type:ignore
     def phi_max(self) -> float:
         return self._phi_max
@@ -365,15 +387,8 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(phi_max, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            phi_max = SlepianLimitLatLong._phi_max
-        if phi_max < PHI_MIN_DEFAULT:
-            raise ValueError("phi_max cannot be negative")
-        if phi_max >= PHI_MAX_DEFAULT:
-            raise ValueError(
-                f"phi_max cannot be greater than or equal to {multiples_of_pi(PHI_MAX_DEFAULT)}"
-            )
+            phi_max = SlepianLimitLatLon._phi_max
         self._phi_max = phi_max
-        logger.info(f"phi_max={phi_max}")
 
     @property  # type:ignore
     def phi_min(self) -> float:
@@ -384,15 +399,16 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(phi_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            phi_min = SlepianLimitLatLong._phi_min
-        if phi_min < PHI_MIN_DEFAULT:
-            raise ValueError("phi_min cannot be negative")
-        if phi_min >= PHI_MAX_DEFAULT:
-            raise ValueError(
-                f"phi_min cannot be greater than or equal to {multiples_of_pi(PHI_MAX_DEFAULT)}"
-            )
+            phi_min = SlepianLimitLatLon._phi_min
         self._phi_min = phi_min
-        logger.info(f"phi_min={phi_min}")
+
+    @property
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        self._region = region
 
     @property  # type:ignore
     def theta_max(self) -> float:
@@ -403,15 +419,8 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(theta_max, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            theta_max = SlepianLimitLatLong._theta_max
-        if theta_max < THETA_MIN_DEFAULT:
-            raise ValueError("theta_max cannot be negative")
-        if theta_max > THETA_MAX_DEFAULT:
-            raise ValueError(
-                f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
-            )
+            theta_max = SlepianLimitLatLon._theta_max
         self._theta_max = theta_max
-        logger.info(f"theta_max={theta_max}")
 
     @property  # type: ignore
     def theta_min(self) -> float:
@@ -422,12 +431,5 @@ class SlepianLimitLatLong(SlepianFunctions):
         if isinstance(theta_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            theta_min = SlepianLimitLatLong._theta_min
-        if theta_min < THETA_MIN_DEFAULT:
-            raise ValueError("theta_min cannot be negative")
-        if theta_min > THETA_MAX_DEFAULT:
-            raise ValueError(
-                f"theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
-            )
+            theta_min = SlepianLimitLatLon._theta_min
         self._theta_min = theta_min
-        logger.info(f"theta_min={theta_min}")

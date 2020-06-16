@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import numpy as np
 
@@ -15,16 +15,17 @@ class SlepianFunctions:
     _eigenvalues: np.ndarray = field(init=False, repr=False)
     _eigenvectors: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
+    _mask: np.ndarray = field(init=False, repr=False)
     _matrix_location: Path = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_annotations()
-        self.mask = self._create_mask()
-        self.matrix_location = self._create_matrix_location()
-        self.name = self._create_fn_name()
+        self._create_mask()
+        self._create_matrix_location()
+        self._create_fn_name()
         logger.info("start solving eigenproblem")
-        self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
+        self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
 
     @property
@@ -58,7 +59,6 @@ class SlepianFunctions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        logger.info(f"L={L}")
 
     @property
     def mask(self) -> np.ndarray:
@@ -92,28 +92,28 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_fn_name(self) -> str:
+    def _create_fn_name(self) -> None:
         """
         creates the name for plotting
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self) -> None:
         """
         creates a mask of the region of interest
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_matrix_location(self) -> Path:
+    def _create_matrix_location(self) -> None:
         """
         creates the name of the matrix binary
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> None:
         """
         solves the eigenproblem for the given function
         """

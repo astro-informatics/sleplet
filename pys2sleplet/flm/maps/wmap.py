@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -16,10 +15,10 @@ class Wmap(Functions):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> None:
         # load in data
         cl = self._load_cl()
 
@@ -40,18 +39,19 @@ class Wmap(Functions):
                         np.sqrt(cl_val / 2) * np.random.randn()
                         + 1j * np.sqrt(cl_val / 2) * np.random.randn()
                     )
-        return flm
+        self.multipole = flm
 
-    def _create_name(self) -> str:
-        name = "wmap"
-        return name
+    def _create_name(self) -> None:
+        self.name = "wmap"
 
-    def _set_reality(self) -> bool:
-        return True
+    def _set_reality(self) -> None:
+        self.reality = True
 
     def _setup_args(self) -> None:
-        if self.extra_args is not None:
-            raise AttributeError(f"Does not support extra arguments")
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f"{self.__class__.__name__} does not support extra arguments"
+            )
 
     @staticmethod
     def _load_cl(file_ending: str = "_lcdm_pl_model_wmap7baoh0") -> np.ndarray:

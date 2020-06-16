@@ -35,7 +35,7 @@ def create_matfile(filename: str) -> None:
     # make complex flms
     df_sorted["flm"] = df_sorted["real"] + 1j * df_sorted["imag"]
 
-    filename = f"EGM2008_Topography_flms_L{str(L)}.mat"
+    filename = f"EGM2008_Topography_flms_L{L}.mat"
     flm = np.array(df_sorted["flm"])
     mat = dict(L=L, flm=flm)
     sio.savemat(filename, mat, oned_as="column")

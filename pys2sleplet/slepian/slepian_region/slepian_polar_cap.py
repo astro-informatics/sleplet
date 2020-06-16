@@ -1,26 +1,26 @@
-import multiprocessing.sharedctypes as sct
 from dataclasses import dataclass, field
-from multiprocessing import Pool
 from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
+from multiprocess import Pool
+from multiprocess.shared_memory import SharedMemory
 from scipy.special import factorial as fact
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
-from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
+    ANNOTATION_COLOUR,
     ANNOTATION_DOTS,
+    ANNOTATION_SECOND_COLOUR,
     ARROW_STYLE,
+    GAP_DEFAULT,
     ORDER_DEFAULT,
-    SAMPLING_SCHEME,
-    THETA_MAX_DEFAULT,
-    THETA_MIN_DEFAULT,
 )
 
 _file_location = Path(__file__).resolve()
@@ -30,15 +30,18 @@ _file_location = Path(__file__).resolve()
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     order: int
-    _theta_max: float = field(init=False, repr=False)
+    gap: bool
+    ncpu: int
+    _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
     _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
+    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
+    _region: Region = field(init=False, repr=False)
+    _theta_max: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._name_ending = (
-            f"_polar{'_gap' if config.POLAR_GAP else ''}"
-            f"{angle_as_degree(self.theta_max)}_m{self.order}"
-        )
+        self.region = Region(theta_max=self.theta_max, order=self.order)
+        self.name_ending = f"{self.region.name_ending}_m{self.order}"
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -46,45 +49,41 @@ class SlepianPolarCap(SlepianFunctions):
             theta_top = np.array([self.theta_max])
             theta_bottom = np.array([np.pi - self.theta_max])
             for i in range(ANNOTATION_DOTS):
-                self._add_to_annotation(theta_top, i)
+                self._add_to_annotation(theta_top, i, ANNOTATION_COLOUR)
 
-                if config.POLAR_GAP:
+                if self.gap:
                     for j in range(ANNOTATION_DOTS):
-                        self._add_to_annotation(theta_bottom, j, colour="white")
+                        self._add_to_annotation(
+                            theta_bottom, j, ANNOTATION_SECOND_COLOUR
+                        )
 
-    def _create_fn_name(self) -> str:
-        name = f"slepian{self._name_ending}"
-        return name
+    def _create_fn_name(self) -> None:
+        self.name = f"slepian{self.name_ending}"
 
-    def _create_mask(self) -> np.ndarray:
-        theta_grid, _ = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
-        mask = theta_grid <= self.theta_max
-        return mask
+    def _create_mask(self) -> None:
+        self.mask = create_mask_region(self.L, self.region)
 
-    def _create_matrix_location(self) -> Path:
-        location = (
+    def _create_matrix_location(self) -> None:
+        self.matrix_location = (
             _file_location.parents[2]
             / "data"
             / "slepian"
             / "polar"
-            / f"D_L{self.L}{self._name_ending}.npy"
+            / f"D{self.name_ending}_L{self.L}.npy".replace("-", "")
         )
-        return location
 
-    def _solve_eigenproblem(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> None:
         emm = self._create_emm_vec()
-
         Dm = self._load_Dm_matrix(emm)
 
         # solve eigenproblem for order 'm'
         eigenvalues, gl = np.linalg.eigh(Dm)
 
-        eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm)
-        return eigenvalues, eigenvectors
+        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
+            eigenvalues, gl, emm
+        )
 
-    def _add_to_annotation(
-        self, theta: np.ndarray, i: int, colour: str = "black"
-    ) -> None:
+    def _add_to_annotation(self, theta: np.ndarray, i: int, colour: str) -> None:
         """
         add to annotation list for given theta
         """
@@ -119,7 +118,7 @@ class SlepianPolarCap(SlepianFunctions):
             P = self._create_legendre_polynomials_table(emm)
 
             # Computing order 'm' Slepian matrix
-            if config.NCPU == 1:
+            if self.ncpu == 1:
                 Dm = self._dm_matrix_serial(abs(self.order), P)
             else:
                 Dm = self._dm_matrix_parallel(abs(self.order), P)
@@ -192,30 +191,39 @@ class SlepianPolarCap(SlepianFunctions):
         Pl, ell = P
         lvec = np.arange(m, self.L)
 
-        # create arrays to store final and intermediate steps
-        result = np.ctypeslib.as_ctypes(Dm)
-        shared_array = sct.RawArray(result._type_, result)
+        # create shared memory block
+        shm = SharedMemory(create=True, size=Dm.nbytes)
+        # create a array backed by shared memory
+        Dm_ext = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=shm.buf)
 
         def func(chunk: List[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
-            # temporary store
-            tmp = np.ctypeslib.as_array(shared_array)
+            # attach to the existing shared memory block
+            ex_shm = SharedMemory(name=shm.name)
+            Dm_int = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=ex_shm.buf)
 
             # deal with chunk
             for i in chunk:
-                self._dm_matrix_helper(tmp, i, m, lvec, Pl, ell)
+                self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
+
+            # clean up shared memory
+            ex_shm.close()
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L - m, config.NCPU)
+        chunks = split_L_into_chunks(self.L - m, self.ncpu)
 
         # initialise pool and apply function
-        with Pool(processes=config.NCPU) as p:
+        with Pool(processes=self.ncpu) as p:
             p.map(func, chunks)
 
         # retrieve from parallel function
-        Dm = np.ctypeslib.as_array(shared_array) * (-1) ** m / 2
+        Dm = Dm_ext * (-1) ** m / 2
+
+        # Free and release the shared memory block at the very end
+        shm.close()
+        shm.unlink()
 
         return Dm
 
@@ -336,9 +344,12 @@ class SlepianPolarCap(SlepianFunctions):
             )
         return s
 
-    @staticmethod
-    def _polar_gap_modification(ell1: int, ell2: int) -> int:
-        factor = 1 + config.POLAR_GAP * (-1) ** (ell1 + ell2)
+    def _polar_gap_modification(self, ell1: int, ell2: int) -> int:
+        """
+        eq 67 - Spherical Slepian functions and the polar gap in geodesy
+        multiply by 1 + (-1)*(ell+ell')
+        """
+        factor = 1 + self.gap * (-1) ** (ell1 + ell2)
         return factor
 
     def _clean_evals_and_evecs(
@@ -372,6 +383,38 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
+    @property  # type: ignore
+    def gap(self) -> bool:
+        return self._gap
+
+    @gap.setter
+    def gap(self, gap: bool) -> None:
+        if isinstance(gap, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            gap = SlepianPolarCap._gap
+        self._gap = gap
+
+    @property
+    def name_ending(self) -> str:
+        return self._name_ending
+
+    @name_ending.setter
+    def name_ending(self, name_ending: str) -> None:
+        self._name_ending = name_ending
+
+    @property  # type: ignore
+    def ncpu(self) -> int:
+        return self._ncpu
+
+    @ncpu.setter
+    def ncpu(self, ncpu: int) -> None:
+        if isinstance(ncpu, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            ncpu = SlepianPolarCap._ncpu
+        self._ncpu = ncpu
+
     @property  # type:ignore
     def order(self) -> int:
         return self._order
@@ -382,12 +425,17 @@ class SlepianPolarCap(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             order = SlepianPolarCap._order
-        if not isinstance(order, int):
-            raise TypeError("order should be an integer")
         if abs(order) >= self.L:
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
-        logger.info(f"order={order}")
+
+    @property
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        self._region = region
 
     @property  # type:ignore
     def theta_max(self) -> float:
@@ -397,11 +445,4 @@ class SlepianPolarCap(SlepianFunctions):
     def theta_max(self, theta_max: float) -> None:
         if theta_max == 0:
             raise ValueError("theta_max cannot be zero")
-        if theta_max < THETA_MIN_DEFAULT:
-            raise ValueError("theta_max cannot be negative")
-        if theta_max > THETA_MAX_DEFAULT:
-            raise ValueError(
-                f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
-            )
         self._theta_max = theta_max
-        logger.info(f"theta_max={theta_max}")

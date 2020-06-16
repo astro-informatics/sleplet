@@ -7,9 +7,9 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.harmonic_methods import invert_flm
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_resolution
+from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
+from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
 
 _file_location = Path(__file__).resolve()
@@ -19,34 +19,31 @@ _file_location = Path(__file__).resolve()
 class Functions:
     L: int
     extra_args: Optional[List[int]]
+    region: Optional[Region]
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
-    _field: np.ndarray = field(init=False, repr=False)
-    _field_padded: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
     _multipole: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
+    _region: Region = field(default=None, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.resolution = calc_plot_resolution(self.L)
         self._setup_args()
-        self.name = self._create_name()
-        self.annotations = self._create_annotations()
-        self.reality = self._set_reality()
-        self.multipole = self._create_flm()
-        self.field = invert_flm(self.multipole, self.L, reality=self.reality)
-        self.resolution = calc_resolution(self.L)
-        self.field_padded = invert_flm(
-            self.multipole, self.L, reality=self.reality, resolution=self.resolution
-        )
+        self._create_name()
+        self._create_annotations()
+        self._set_reality()
+        self._create_flm()
+        self._add_region_to_name()
 
     def rotate(
         self,
         alpha_pi_fraction: float,
         beta_pi_fraction: float,
         gamma_pi_fraction: float = 0,
-    ) -> None:
+    ) -> np.ndarray:
         """
         rotates given flm on the sphere by alpha/beta/gamma
         """
@@ -57,9 +54,12 @@ class Functions:
         gamma = gamma_pi_fraction * np.pi
 
         # rotate flms
-        self.multipole = ssht.rotate_flms(self.multipole, alpha, beta, gamma, self.L)
+        multipole = ssht.rotate_flms(self.multipole, alpha, beta, gamma, self.L)
+        return multipole
 
-    def translate(self, alpha_pi_fraction: float, beta_pi_fraction: float) -> None:
+    def translate(
+        self, alpha_pi_fraction: float, beta_pi_fraction: float
+    ) -> np.ndarray:
         """
         translates given flm on the sphere by alpha/beta
         """
@@ -73,7 +73,10 @@ class Functions:
             _file_location.parents[1]
             / "data"
             / "trans_dirac"
-            / f"trans_dd_L{self.L}_{filename_angle(alpha_pi_fraction,beta_pi_fraction)}.npy"
+            / (
+                f"trans_dd_L{self.L}_"
+                f"{filename_angle(alpha_pi_fraction,beta_pi_fraction)}.npy"
+            )
         )
 
         # check if file of translated dirac delta already
@@ -90,11 +93,12 @@ class Functions:
 
         # convolve with flm
         if self.name == "dirac_delta":
-            self.multipole = glm
+            multipole = glm
         else:
-            self.convolve(glm)
+            multipole = self.convolve(self.multipole, glm)
+        return multipole
 
-    def convolve(self, glm: np.ndarray) -> None:
+    def convolve(self, flm: np.ndarray, glm: np.ndarray) -> np.ndarray:
         """
         computes the sifting convolution of two arrays
         """
@@ -102,7 +106,15 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        self.multipole *= glm.conj()
+        multipole = flm * glm.conj()
+        return multipole
+
+    def _add_region_to_name(self) -> None:
+        """
+        adds region to the name if present if not a Slepian function
+        """
+        if self.region is not None and "slepian" not in self.name:
+            self.name += self.region.name_ending
 
     @property
     def annotations(self) -> List[Dict]:
@@ -124,14 +136,6 @@ class Functions:
             extra_args = Functions._extra_args
         self._extra_args = extra_args
 
-    @property
-    def field(self) -> np.ndarray:
-        return self._field
-
-    @field.setter
-    def field(self, field: np.ndarray) -> None:
-        self._field = field
-
     @property  # type: ignore
     def L(self) -> int:
         return self._L
@@ -139,7 +143,6 @@ class Functions:
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-        logger.info(f"L={L}")
 
     @property
     def multipole(self) -> np.ndarray:
@@ -147,6 +150,10 @@ class Functions:
 
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
+        if self.region is not None:
+            multipole = ensure_masked_flm_bandlimited(
+                multipole, self.L, self.region, self.reality
+            )
         self._multipole = multipole
 
     @property
@@ -158,20 +165,24 @@ class Functions:
         self._name = name
 
     @property
-    def field_padded(self) -> np.ndarray:
-        return self._field_padded
-
-    @field_padded.setter
-    def field_padded(self, field_padded: np.ndarray) -> None:
-        self._field_padded = field_padded
-
-    @property
     def reality(self) -> bool:
         return self._reality
 
     @reality.setter
     def reality(self, reality: bool) -> None:
         self._reality = reality
+
+    @property  # type: ignore
+    def region(self) -> Region:
+        return self._region
+
+    @region.setter
+    def region(self, region: Region) -> None:
+        if isinstance(region, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            region = Functions._region
+        self._region = region
 
     @property
     def resolution(self) -> int:
@@ -182,28 +193,28 @@ class Functions:
         self._resolution = resolution
 
     @abstractmethod
-    def _create_annotations(self) -> List[Dict]:
+    def _create_annotations(self) -> None:
         """
         creates the annotations for the plot
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_flm(self) -> np.ndarray:
+    def _create_flm(self) -> None:
         """
         creates the flm on the north pole
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> str:
+    def _create_name(self) -> None:
         """
         creates the name of the function
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _set_reality(self) -> bool:
+    def _set_reality(self) -> None:
         """
         sets the reality flag to speed up computations
         """

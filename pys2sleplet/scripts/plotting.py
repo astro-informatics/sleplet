@@ -1,23 +1,29 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
+import pyssht as ssht
 
+from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.functions import FUNCTIONS
+from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
+from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
+from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 
 
-def valid_kernels(func_name: str) -> str:
+def valid_maps(map_name: str) -> str:
     """
-    check if valid kernel
+    check if valid map
     """
-    if func_name in FUNCTIONS:
-        function = func_name
+    if map_name in MAPS:
+        function = map_name
     else:
-        raise ValueError("Not a valid kernel name to convolve")
+        raise ValueError("Not a valid map name to convolve")
     return function
 
 
@@ -54,7 +60,7 @@ def read_args() -> Namespace:
         "--annotation",
         "-n",
         action="store_false",
-        help="flag which if passed removes any annotation",
+        help="flag which removes any annotation",
     )
     parser.add_argument(
         "--beta",
@@ -66,9 +72,9 @@ def read_args() -> Namespace:
     parser.add_argument(
         "--convolve",
         "-c",
-        type=valid_kernels,
+        type=valid_maps,
         default=None,
-        choices=list(FUNCTIONS.keys()),
+        choices=list(MAPS.keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -86,14 +92,23 @@ def read_args() -> Namespace:
         help="gamma pi fraction - defaults to 0 - rotation only",
     )
     parser.add_argument(
-        "--routine",
-        "-r",
+        "--bandlimit", "-L", type=int, default=config.L, help="bandlimit"
+    )
+    parser.add_argument(
+        "--method",
+        "-m",
         type=str,
         nargs="?",
         default="north",
         const="north",
         choices=["north", "rotate", "translate"],
         help="plotting routine: defaults to north",
+    )
+    parser.add_argument(
+        "--region",
+        "-r",
+        action="store_true",
+        help="flag which masks the function for a region (based on settings.toml)",
     )
     parser.add_argument(
         "--type",
@@ -110,56 +125,75 @@ def read_args() -> Namespace:
 
 
 def plot(
-    f_name: str,
-    L: int,
-    extra_args: Optional[List[int]],
-    plot_type: str,
-    routine: str,
-    alpha_pi_fraction: float,
-    beta_pi_fraction: float,
-    gamma_pi_fraction: float,
-    g_name: Optional[str],
-    annotations: bool,
+    f: Functions,
+    g: Optional[Functions] = None,
+    method: str = "north",
+    plot_type: str = "real",
+    annotations: bool = True,
+    alpha_pi_fraction: Optional[float] = None,
+    beta_pi_fraction: Optional[float] = None,
+    gamma_pi_fraction: Optional[float] = None,
 ) -> None:
     """
     master plotting method
     """
-    f = FUNCTIONS[f_name](L, extra_args)
-    filename = f"{f.name}_L{L}_"
+    filename = f"{f.name}_L{f.L}_"
+    multipole = f.multipole
 
-    if routine == "rotate":
-        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
+    logger.info(f"plotting method: '{method}'")
+    if method == "rotate":
+        logger.info(
+            "angles: (alpha, beta, gamma) = "
+            f"({alpha_pi_fraction}, {beta_pi_fraction}, {gamma_pi_fraction})"
+        )
+        filename += (
+            f"{method}_"
+            f"{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
+        )
 
         # rotate by alpha, beta, gamma
-        f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
-    elif routine == "translate":
+        multipole = f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
+    elif method == "translate":
+        logger.info(
+            f"angles: (alpha, beta) = ({alpha_pi_fraction}, {beta_pi_fraction})"
+        )
         # don't add gamma if translation
-        filename += f"{routine}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
+        filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
 
         # translate by alpha, beta
-        f.translate(alpha_pi_fraction, beta_pi_fraction)
+        multipole = f.translate(alpha_pi_fraction, beta_pi_fraction)
 
-    if g_name:
-        g = FUNCTIONS[g_name](L, extra_args)
+    if g is not None:
         # perform convolution
-        f.convolve(g.multipole)
+        multipole = f.convolve(g.multipole, multipole)
         # adjust filename
-        filename += f"convolved_{g.name}_L{L}_"
+        filename += f"convolved_{g.name}_L{f.L}_"
 
     # add resolution to filename
     filename += f"res{f.resolution}_"
 
+    # rotate plot of Earth to South America
+    if f.__class__.__name__ == "Earth" or g.__class__.__name__ == "Earth":
+        multipole = ssht.rotate_flms(
+            multipole, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, f.L
+        )
+
+    # create padded field to plot
+    padded_field = invert_flm_boosted(multipole, f.L, f.resolution, reality=f.reality)
+
     # check for plotting type
+    logger.info(f"plotting type: '{plot_type}'")
     if plot_type == "real":
-        field = f.field_padded.real
+        field = padded_field.real
     elif plot_type == "imag":
-        field = f.field_padded.imag
+        field = padded_field.imag
     elif plot_type == "abs":
-        field = np.abs(f.field_padded)
+        field = np.abs(padded_field)
     elif plot_type == "sum":
-        field = f.field_padded.real + f.field_padded.imag
+        field = padded_field.real + padded_field.imag
 
     # turn off annotation if needed
+    logger.info(f"annotations on: {annotations}")
     if annotations:
         annotation = f.annotations
     else:
@@ -173,17 +207,27 @@ def plot(
 def main() -> None:
     args = read_args()
 
+    if args.region:
+        mask = Region()
+    else:
+        mask = None
+
+    f = FUNCTIONS[args.flm](args.bandlimit, extra_args=args.extra_args, region=mask)
+
+    if args.convolve is not None:
+        g = FUNCTIONS[args.convolve](args.bandlimit)
+    else:
+        g = None
+
     plot(
-        args.flm,
-        config.L,
-        args.extra_args,
-        args.type,
-        args.routine,
-        args.alpha,
-        args.beta,
-        args.gamma,
-        args.convolve,
-        args.annotation,
+        f,
+        g=g,
+        method=args.method,
+        plot_type=args.type,
+        annotations=args.annotation,
+        alpha_pi_fraction=args.alpha,
+        beta_pi_fraction=args.beta,
+        gamma_pi_fraction=args.gamma,
     )
 
 

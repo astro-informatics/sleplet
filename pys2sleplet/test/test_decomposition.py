@@ -1,69 +1,63 @@
-# from typing import List
+import pytest
+from numpy.testing import assert_allclose, assert_raises
 
-# import numpy as np
-# import pytest
-
-# from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
-# from pys2sleplet.utils.config import config
-
-
-# @pytest.fixture
-# def function() -> np.ndarray:
-#     pass
+from pys2sleplet.flm.maps.earth import Earth
+from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
+from pys2sleplet.test.constants import L_SMALL as L
+from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
+from pys2sleplet.utils.region import Region
 
 
-# @pytest.fixture
-# def ranks() -> List[int]:
-#     L_squared = config.L * config.L
-#     return [0, L_squared // 2, L_squared - 1]
+@pytest.fixture(scope="module")
+def polar_cap_decomposition() -> SlepianDecomposition:
+    region = Region(theta_max=THETA_MAX, order=ORDER)
+    earth = Earth(L, region=region)
+    return SlepianDecomposition(earth)
 
 
-# def test_slepian_decomposition_integrate_region_and_forward_transform() -> None:
-#     """
-#     test to ensure that the alternaitve methods of Slepian decomposition
-#     are as expected i.e. return coefficients close in value to each other
-
-#     LHS: integral over the region divided by the eigenvalues
-#     RHS: Slepian forward transform
-#     """
-#     sd = SlepianDecomposition(config.L, function)
-
-#     for rank in ranks:
-#         integrate_region = sd.decompose(rank, method="integrate_region")
-#         forward_transform = sd.decompose(rank, method="forward_transform")
-
-#         assert integrate_region == pytest.approx(forward_transform)
+@pytest.fixture(scope="module")
+def lim_lat_lon_decomposition() -> SlepianDecomposition:
+    region = Region(theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1)
+    earth = Earth(L, region=region)
+    return SlepianDecomposition(earth)
 
 
-# def test_slepian_decomposition_forward_transform_and_harmonic_sum() -> None:
-#     """
-#     test to ensure that the alternaitve methods of Slepian decomposition
-#     are as expected i.e. return coefficients close in value to each other
-
-#     LHS: Slepian forward transform
-#     RHS: sum over flm and the (Sp)lm* quantity
-#     """
-#     sd = SlepianDecomposition(config.L, function)
-
-#     for rank in ranks:
-#         forward_transform = sd.decompose(rank, method="forward_transform")
-#         harmonic_sum = sd.decompose(rank, method="harmonic_sum")
-
-#         assert forward_transform == pytest.approx(harmonic_sum)
+def test_decompose_all_polar(polar_cap_decomposition) -> None:
+    """
+    tests that all three methods produce the same coefficients for polar cap
+    """
+    f_p = polar_cap_decomposition.decompose_all(method="integrate_region")
+    g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
+    h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
+    assert_allclose(f_p, g_p, rtol=1e8)
+    assert_allclose(g_p, h_p, rtol=1e-2)
+    assert_allclose(h_p, f_p, rtol=1.1)
 
 
-# def test_slepian_decomposition_harmonic_sum_and_integrate_region() -> None:
-#     """
-#     test to ensure that the alternaitve methods of Slepian decomposition
-#     are as expected i.e. return coefficients close in value to each other
+@pytest.mark.slow
+def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
+    """
+    tests that all three methods produce the same coefficients for
+    limited latitude longitude region
+    """
+    f_p = lim_lat_lon_decomposition.decompose_all(method="integrate_region")
+    g_p = lim_lat_lon_decomposition.decompose_all(method="integrate_sphere")
+    h_p = lim_lat_lon_decomposition.decompose_all(method="harmonic_sum")
+    assert_allclose(f_p, g_p, rtol=1e10)
+    assert_allclose(g_p, h_p, rtol=0.3)
+    assert_allclose(h_p, f_p, rtol=2)
 
-#     LHS: sum over flm and the (Sp)lm* quantity
-#     RHS: integral over the region divided by the eigenvalues
-#     """
-#     sd = SlepianDecomposition(config.L, function)
 
-#     for rank in ranks:
-#         harmonic_sum = sd.decompose(rank, method="harmonic_sum")
-#         integrate_region = sd.decompose(rank, method="integrate_region")
+def test_pass_function_without_region() -> None:
+    """
+    tests that the class throws an exception if no Region is passed to the function
+    """
+    earth = Earth(L)
+    assert_raises(AttributeError, SlepianDecomposition, earth)
 
-#         assert harmonic_sum == pytest.approx(integrate_region)
+
+def test_pass_rank_higher_than_available(polar_cap_decomposition) -> None:
+    """
+    tests that asking for a Slepian coefficient above the limit fails
+    """
+    assert_raises(ValueError, polar_cap_decomposition.decompose, L)
