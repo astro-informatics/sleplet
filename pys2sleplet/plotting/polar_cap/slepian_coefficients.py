@@ -47,7 +47,9 @@ def main() -> None:
     plt.tight_layout()
     if config.SAVE_FIG:
         for file_type in ["png", "pdf"]:
-            filename = fig_path / file_type / f"fp_polar{THETA_MAX}_L{L}.{file_type}"
+            filename = (
+                fig_path / file_type / f"fp_earth_polar{THETA_MAX}_L{L}.{file_type}"
+            )
             plt.savefig(filename, bbox_inches="tight")
     if config.AUTO_OPEN:
         plt.show()
