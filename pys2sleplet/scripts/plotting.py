@@ -3,6 +3,7 @@ from argparse import ArgumentParser, Namespace
 from typing import Optional
 
 import numpy as np
+import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
@@ -12,6 +13,7 @@ from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 
 
 def valid_maps(map_name: str) -> str:
@@ -169,6 +171,12 @@ def plot(
 
     # add resolution to filename
     filename += f"res{f.resolution}_"
+
+    # rotate plot of Earth to South America
+    if f.__class__.__name__ == "Earth" or g.__class__.__name__ == "Earth":
+        multipole = ssht.rotate_flms(
+            multipole, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, f.L
+        )
 
     # create padded field to plot
     padded_field = invert_flm_boosted(multipole, f.L, f.resolution, reality=f.reality)
