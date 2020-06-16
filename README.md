@@ -5,4 +5,4 @@
 
 ## Formatting
 
-Execute `pip install pre-commit; pre-commit install` to install git hooks in your .git/ directory
+Execute `pip install pre-commit; pre-commit install` to install git hooks in your `.git/` directory
