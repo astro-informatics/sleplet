@@ -36,7 +36,7 @@ def main() -> None:
     plt.tight_layout()
     if config.SAVE_FIG:
         for file_type in ["png", "pdf"]:
-            filename = fig_path / file_type / f"simons_5-3.{file_type}"
+            filename = fig_path / file_type / f"simons_5_3.{file_type}"
             plt.savefig(filename, bbox_inches="tight")
     if config.AUTO_OPEN:
         plt.show()
