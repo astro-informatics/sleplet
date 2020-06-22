@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Tuple
 
-import numexpr as ne
 import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
@@ -42,7 +41,6 @@ class SlepianLimitLatLon(SlepianFunctions):
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.N = self.L - 1
         self.region = Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
@@ -60,10 +58,10 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.array([self.theta_max]),
         )
         p3, p4, t3, t4 = (
-            ne.evaluate("(p1 + 2 * p2) / 3"),
-            ne.evaluate("(2 * p1 + p2) / 3"),
-            ne.evaluate("(t1 + 2 * t2) / 3"),
-            ne.evaluate("(2 * t1 + t2) / 3"),
+            (p1 + 2 * p2) / 3,
+            (2 * p1 + p2) / 3,
+            (t1 + 2 * t2) / 3,
+            (2 * t1 + t2) / 3,
         )
         for t in [t1, t2, t3, t4]:
             t_condition = (t == [t3, t4]).any()
@@ -150,34 +148,35 @@ class SlepianLimitLatLon(SlepianFunctions):
             Using conjugate symmetry property to reduce the number of iterations
             """
             try:
-                Q = ne.evaluate(
-                    f"(1/({col}*{col}-1))*(exp(1j*col*{self.theta_min})*"
-                    f"(1j*col*sin({self.theta_min})-cos({self.theta_min}))"
-                    f"+exp(1j*col*{self.theta_max})"
-                    f"*(cos({self.theta_max})-1j*col*sin({self.theta_max})))"
+                Q = (1 / (col * col - 1)) * (
+                    np.exp(1j * col * self.theta_min)
+                    * (1j * col * np.sin(self.theta_min) - np.cos(self.theta_min))
+                    + np.exp(1j * col * self.theta_max)
+                    * (np.cos(self.theta_max) - 1j * col * np.sin(self.theta_max))
                 )
             except ZeroDivisionError:
-                Q = ne.evaluate(
-                    f"(2*1j*col*({self.theta_max}-{self.theta_min})+exp("
-                    f"2*1j*col*{self.theta_min})-exp(2*1j*col*{self.theta_max}))/4"
+                Q = 0.25 * (
+                    2 * 1j * col * (self.theta_max - self.theta_min)
+                    + np.exp(2 * 1j * col * self.theta_min)
+                    - np.exp(2 * 1j * col * self.theta_max)
                 )
 
-            G[2 * self.N + row, 2 * self.N + col] = ne.evaluate(f"{Q}*S")
-            G[2 * self.N - row, 2 * self.N - col] = G[
-                2 * self.N + row, 2 * self.N + col
+            G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col] = Q * S
+            G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = G[
+                2 * (self.L - 1) + row, 2 * (self.L - 1) + col
             ].conj()
 
         # row = 0
-        S = ne.evaluate(f"{self.phi_max}-{self.phi_min}")
-        for col in range(-2 * self.N, 1):
+        S = self.phi_max - self.phi_min
+        for col in range(-2 * (self.L - 1), 1):
             helper(0, col, S)
 
         # row != 0
-        for row in range(-2 * self.N, 0):
-            S = ne.evaluate(
-                f"(1j/row)*(exp(1j*row*{self.phi_min})-exp(1j*row*{self.phi_max}))"
+        for row in range(-2 * (self.L - 1), 0):
+            S = (1j / row) * (
+                np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)
             )
-            for col in range(-2 * self.N, 2 * self.N + 1):
+            for col in range(-2 * (self.L - 1), 2 * (self.L - 1) + 1):
                 helper(row, col, S)
 
         return G
@@ -210,7 +209,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             self._slepian_matrix_helper(K_r, K_i, l, dl_array, G)
 
         # combine real and imaginary parts
-        K = ne.evaluate("K_r+1j*K_i")
+        K = K_r + 1j * K_i
 
         # fill in remaining triangle section
         fill_upper_triangle_of_hermitian_matrix(K)
@@ -245,8 +244,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         shm_r = SharedMemory(create=True, size=K_r.nbytes)
         shm_i = SharedMemory(create=True, size=K_i.nbytes)
         # create a array backed by shared memory
-        K_r_ext = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=shm_r.buf)  # noqa: F841
-        K_i_ext = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=shm_i.buf)  # noqa: F841
+        K_r_ext = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=shm_r.buf)
+        K_i_ext = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=shm_i.buf)
 
         def func(chunk: List[int]) -> None:
             """
@@ -274,7 +273,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             p.map(func, chunks)
 
         # retrieve from parallel function
-        K = ne.evaluate(f"K_r_ext+1j*K_i_ext")
+        K = K_r_ext + 1j * K_i_ext
 
         # Free and release the shared memory block at the very end
         shm_r.close()
@@ -305,37 +304,39 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         for p in range(l + 1):
             dp = dl_array[p]
-            C1 = ne.evaluate(f"sqrt((2*l+1)*(2*p+1))/(4*{np.pi})")
+            C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
 
             for m in range(-l, l + 1):
                 for q in range(-p, p + 1):
 
                     row = m - q
-                    C2 = ne.evaluate(f"(-1j)**{row}")
-                    ind_r = ne.evaluate(f"2*{self.N}+{row}")
+                    C2 = (-1j) ** row
+                    ind_r = 2 * (self.L - 1) + row
 
                     for mp in range(-l, l + 1):
-                        C3 = dl[self.N + mp, self.N + m] * dl[self.N + mp, self.N]
+                        C3 = (
+                            dl[self.L - 1 + mp, self.L - 1 + m]
+                            * dl[self.L - 1 + mp, self.L - 1]
+                        )
                         S1 = 0
 
                         for qp in range(-p, p + 1):
-                            col = ne.evaluate("mp-qp")
-                            C4 = dp[self.N + qp, self.N + q] * dp[self.N + qp, self.N]
-                            ind_c = ne.evaluate(f"2*{self.N}+{col}")
+                            col = mp - qp
+                            C4 = (
+                                dp[self.L - 1 + qp, self.L - 1 + q]
+                                * dp[self.L - 1 + qp, self.L - 1]
+                            )
+                            ind_c = 2 * (self.L - 1) + col
                             S1 += C4 * G[ind_r, ind_c]
 
                         idx = (l * (l + 1) + m, p * (p + 1) + q)
-                        K_r[idx] += ne.evaluate(f"({C3}*S1).real")
-                        K_i[idx] += ne.evaluate(f"({C3}*S1).imag")
+                        K_r[idx] += (C3 * S1).real
+                        K_i[idx] += (C3 * S1).imag
 
-                    idx = (ne.evaluate("l*(l+1)+m"), ne.evaluate("p*(p+1)+q"))
+                    idx = (l * (l + 1) + m, p * (p + 1) + q)
                     real, imag = K_r[idx], K_i[idx]
-                    K_r[idx] = ne.evaluate(
-                        f"{real}*({C1}*{C2}).real - {imag}*({C1}*{C2}).imag"
-                    )
-                    K_i[idx] = ne.evaluate(
-                        f"{real}*({C1}*{C2}).imag + {imag}*({C1}*{C2}).real"
-                    )
+                    K_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
+                    K_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
 
     @staticmethod
     def _clean_evals_and_evecs(
@@ -345,7 +346,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         need eigenvalues and eigenvectors to be in a certain format
         """
         # eigenvalues should be real
-        eigenvalues = ne.evaluate("eigenvalues.real")
+        eigenvalues = eigenvalues.real
 
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
@@ -356,14 +357,6 @@ class SlepianLimitLatLon(SlepianFunctions):
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
-
-    @property
-    def N(self) -> int:
-        return self._N
-
-    @N.setter
-    def N(self, N: int) -> None:
-        self._N = N
 
     @property
     def name_ending(self) -> str:
