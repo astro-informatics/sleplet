@@ -107,7 +107,7 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        multipole = ne.evaluate("flm*conj(glm)")
+        multipole = ne.evaluate("flm * conj(glm)")
         return multipole
 
     def _add_region_to_name(self) -> None:

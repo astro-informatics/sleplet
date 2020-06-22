@@ -23,7 +23,9 @@ class Gaussian(Functions):
         flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
-            flm[ind] = ne.evaluate(f"exp(-ell*(ell+1)/(2*{self.sigma}*{self.sigma}))")
+            flm[ind] = ne.evaluate(
+                f"exp(-ell * (ell + 1) / (2 * {self.sigma} * {self.sigma}))"
+            )
         self.multipole = flm
 
     def _create_name(self) -> None:

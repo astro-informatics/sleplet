@@ -27,7 +27,9 @@ class HarmonicGaussian(Functions):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
-                flm[ind] = ne.evaluate(f"{upsilon_l}*exp(-((m/{self.m_sigma})**2)/2)")
+                flm[ind] = ne.evaluate(
+                    f"{upsilon_l} * exp(-((m / {self.m_sigma}) ** 2) / 2)"
+                )
         self.multipole = flm
 
     def _create_name(self) -> None:

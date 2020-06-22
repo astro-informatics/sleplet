@@ -30,7 +30,7 @@ class Earth(Functions):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
                 flm_pm = flm[ind_pm]  # noqa: F841
-                flm[ind_nm] = ne.evaluate("(-1)**m*conj(flm_pm)")
+                flm[ind_nm] = ne.evaluate("(-1) ** m * conj(flm_pm)")
 
         # don't take the full L
         # invert dataset as Earth backwards

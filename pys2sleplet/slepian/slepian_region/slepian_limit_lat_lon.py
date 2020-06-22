@@ -60,10 +60,10 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.array([self.theta_max]),
         )
         p3, p4, t3, t4 = (
-            ne.evaluate("(p1+2*p2)/3"),
-            ne.evaluate("(2*p1+p2)/3"),
-            ne.evaluate("(t1+2*t2)/3"),
-            ne.evaluate("(2*t1+t2)/3"),
+            ne.evaluate("(p1 + 2 * p2) / 3"),
+            ne.evaluate("(2 * p1 + p2) / 3"),
+            ne.evaluate("(t1 + 2 * t2) / 3"),
+            ne.evaluate("(2 * t1 + t2) / 3"),
         )
         for t in [t1, t2, t3, t4]:
             t_condition = (t == [t3, t4]).any()
@@ -274,7 +274,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             p.map(func, chunks)
 
         # retrieve from parallel function
-        K = ne.evaluate("K_r_ext+1j*K_i_ext")
+        K = ne.evaluate(f"K_r_ext+1j*K_i_ext")
 
         # Free and release the shared memory block at the very end
         shm_r.close()
@@ -331,10 +331,10 @@ class SlepianLimitLatLon(SlepianFunctions):
                     idx = (ne.evaluate("l*(l+1)+m"), ne.evaluate("p*(p+1)+q"))
                     real, imag = K_r[idx], K_i[idx]
                     K_r[idx] = ne.evaluate(
-                        f"{real}*({C1}*{C2}).real-{imag}*({C1}*{C2}).imag"
+                        f"{real}*({C1}*{C2}).real - {imag}*({C1}*{C2}).imag"
                     )
                     K_i[idx] = ne.evaluate(
-                        f"{real}*({C1}*{C2}).imag+{imag}*({C1}*{C2}).real"
+                        f"{real}*({C1}*{C2}).imag + {imag}*({C1}*{C2}).real"
                     )
 
     @staticmethod

@@ -102,9 +102,9 @@ class SlepianPolarCap(SlepianFunctions):
         k = 0
 
         for l in range(2 * self.L):
-            M = ne.evaluate("2*l+1")
+            M = ne.evaluate("2 * l + 1")
             emm[k : k + M] = np.arange(-l, l + 1)
-            k = ne.evaluate("k+M")
+            k = ne.evaluate("k + M")
         return emm
 
     def _load_Dm_matrix(self, emm: np.ndarray) -> np.ndarray:
@@ -138,7 +138,7 @@ class SlepianPolarCap(SlepianFunctions):
         ind = emm == 0
         l = np.arange(2 * self.L).reshape(1, -1)
         Plm_ind = Plm[ind]  # noqa: F841
-        Pl = ne.evaluate(f"sqrt((4*{np.pi})/(2*l+1))*Plm_ind")
+        Pl = ne.evaluate(f"sqrt((4 * {np.pi}) / (2 * l + 1)) * Plm_ind")
         P = np.concatenate((Pl, l))
         return P
 
@@ -167,7 +167,7 @@ class SlepianPolarCap(SlepianFunctions):
         for i in range(self.L - m):
             self._dm_matrix_helper(Dm, i, m, lvec, Pl, ell)
 
-        Dm *= ne.evaluate("(-1)**m/2")
+        Dm *= ne.evaluate("(-1) ** m / 2")
 
         return Dm
 
@@ -221,7 +221,7 @@ class SlepianPolarCap(SlepianFunctions):
             p.map(func, chunks)
 
         # retrieve from parallel function
-        Dm = ne.evaluate("Dm_ext*(-1)**m/2")
+        Dm = ne.evaluate("Dm_ext * (-1) ** m / 2")
 
         # Free and release the shared memory block at the very end
         shm.close()
@@ -252,11 +252,14 @@ class SlepianPolarCap(SlepianFunctions):
                     A = Pl[ell == n - 1]  # noqa: F841
                 B = Pl[ell == n + 1]  # noqa: F841
                 c += ne.evaluate(
-                    f"{self._wigner3j(l, n, p, 0, 0, 0)}*"
-                    f"{self._wigner3j(l, n, p, m, 0, -m)}*(A-B)"
+                    f"{self._wigner3j(l, n, p, 0, 0, 0)}"
+                    f"*{self._wigner3j(l, n, p, m, 0, -m)}"
+                    "*(A - B)"
                 )
             Dm[i, j] = ne.evaluate(
-                f"{self._polar_gap_modification(l, p)}*sqrt((2*l+1)*(2*p+1))*c"
+                f"{self._polar_gap_modification(l, p)}"
+                "*sqrt((2 * l + 1) * (2 * p + 1))"
+                "*c"
             )
             Dm[j, i] = Dm[i, j]
 
@@ -281,31 +284,31 @@ class SlepianPolarCap(SlepianFunctions):
         Computes Wigner 3j symbol using Racah formula
         """
         if (
-            ne.evaluate("2*l1!=floor(2*l1)")
-            or ne.evaluate("2*l2!=floor(2*l2)")
-            or ne.evaluate("2*l3!=floor(2*l3)")
-            or ne.evaluate("2*m1!=floor(2*m1)")
-            or ne.evaluate("2*m2!=floor(2*m2)")
-            or ne.evaluate("2*m3!=floor(2*m3)")
+            ne.evaluate("2 * l1 != floor(2 * l1)")
+            or ne.evaluate("2 * l2 != floor(2 * l2)")
+            or ne.evaluate("2 * l3 != floor(2 * l3)")
+            or ne.evaluate("2 * m1 != floor(2 * m1)")
+            or ne.evaluate("2 * m2 != floor(2 * m2)")
+            or ne.evaluate("2 * m3 != floor(2 * m3)")
         ):
             raise Exception("Arguments must either be integer or half-integer!")
 
         if (
-            ne.evaluate("m1+m2+m3!=0")
-            or ne.evaluate("l3<abs(l1-l2)")
-            or ne.evaluate("l3>(l1+l2)")
-            or ne.evaluate("abs(m1)>abs(l1)")
-            or ne.evaluate("abs(m2)>abs(l2)")
-            or ne.evaluate("abs(m3)>abs(l3)")
-            or ne.evaluate("l1+l2+l3!=floor(l1+l2+l3)")
+            ne.evaluate("m1 + m2 + m3 != 0")
+            or ne.evaluate("l3 < abs(l1 - l2)")
+            or ne.evaluate("l3 > (l1 + l2)")
+            or ne.evaluate("abs(m1) > abs(l1)")
+            or ne.evaluate("abs(m2) > abs(l2)")
+            or ne.evaluate("abs(m3) > abs(l3)")
+            or ne.evaluate("l1 + l2 + l3 != floor(l1 + l2 + l3)")
         ):
             s = 0
         else:
-            t1 = ne.evaluate("l2-l3-m1")
-            t2 = ne.evaluate("l1-l3+m2")
-            t3 = ne.evaluate("l1+l2-l3")
-            t4 = ne.evaluate("l1-m1")
-            t5 = ne.evaluate("l2+m2")
+            t1 = ne.evaluate("l2 - l3 - m1")
+            t2 = ne.evaluate("l1 - l3 + m2")
+            t3 = ne.evaluate("l1 + l2 - l3")
+            t4 = ne.evaluate("l1 - m1")
+            t5 = ne.evaluate("l2 + m2")
 
             tmin = max(0, max(t1, t2))
             tmax = min(t3, min(t4, t5))
@@ -315,7 +318,8 @@ class SlepianPolarCap(SlepianFunctions):
             # non-zero arguments.
             for t in range(tmin, tmax + 1):
                 s += ne.evaluate(
-                    f"(-1)**t/({fact(t, exact=False)}"
+                    "(-1) ** t / ("
+                    f"{fact(t, exact=False)}"
                     f"*{fact(t - t1, exact=False)}"
                     f"*{fact(t - t2, exact=False)}"
                     f"*{fact(t3 - t, exact=False)}"
@@ -347,7 +351,7 @@ class SlepianPolarCap(SlepianFunctions):
         eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell')
         """
-        factor = ne.evaluate(f"1+{self.gap}*(-1)**(ell1+ell2)")
+        factor = ne.evaluate(f"1 + {self.gap} * (-1) ** (ell1 + ell2)")
         return factor
 
     def _clean_evals_and_evecs(
