@@ -14,7 +14,7 @@ from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import convert_colourscale
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
+from pys2sleplet.utils.vars import MID_COLOURBAR, SAMPLING_SCHEME, ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -52,6 +52,7 @@ class Plot:
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 reversescale=True,
                 cmin=vmin,
+                cmid=MID_COLOURBAR,
                 cmax=vmax,
                 colorbar=dict(
                     x=0.84, len=0.98, nticks=2, tickfont=dict(color="#666666", size=32)
@@ -167,7 +168,12 @@ class Plot:
         normalise function between 0 and 1 for visualisation
         """
         if (f == 0).all():
-            f_scaled = f + 0.5
+            # if all 0, set to 0
+            f_scaled = f
+        elif (f == f.max()).all():
+            # if all non-zero, set to 1
+            f_scaled = f / f.max()
         else:
+            # scale from [0, 1]
             f_scaled = (f - f.min()) / f.ptp()
         return f_scaled
