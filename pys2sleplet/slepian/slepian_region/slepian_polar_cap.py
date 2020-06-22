@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Tuple
 
-import numexpr as ne
 import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
@@ -102,9 +101,9 @@ class SlepianPolarCap(SlepianFunctions):
         k = 0
 
         for l in range(2 * self.L):
-            M = ne.evaluate("2 * l + 1")
+            M = 2 * l + 1
             emm[k : k + M] = np.arange(-l, l + 1)
-            k = ne.evaluate("k + M")
+            k = k + M
         return emm
 
     def _load_Dm_matrix(self, emm: np.ndarray) -> np.ndarray:
@@ -137,8 +136,7 @@ class SlepianPolarCap(SlepianFunctions):
         Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
         ind = emm == 0
         l = np.arange(2 * self.L).reshape(1, -1)
-        Plm_ind = Plm[ind]  # noqa: F841
-        Pl = ne.evaluate(f"sqrt((4 * {np.pi}) / (2 * l + 1)) * Plm_ind")
+        Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
         P = np.concatenate((Pl, l))
         return P
 
@@ -167,7 +165,7 @@ class SlepianPolarCap(SlepianFunctions):
         for i in range(self.L - m):
             self._dm_matrix_helper(Dm, i, m, lvec, Pl, ell)
 
-        Dm *= ne.evaluate("(-1) ** m / 2")
+        Dm *= (-1) ** m / 2
 
         return Dm
 
@@ -196,7 +194,7 @@ class SlepianPolarCap(SlepianFunctions):
         # create shared memory block
         shm = SharedMemory(create=True, size=Dm.nbytes)
         # create a array backed by shared memory
-        Dm_ext = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=shm.buf)  # noqa: F841
+        Dm_ext = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=shm.buf)
 
         def func(chunk: List[int]) -> None:
             """
@@ -221,7 +219,7 @@ class SlepianPolarCap(SlepianFunctions):
             p.map(func, chunks)
 
         # retrieve from parallel function
-        Dm = ne.evaluate("Dm_ext * (-1) ** m / 2")
+        Dm = Dm_ext * (-1) ** m / 2
 
         # Free and release the shared memory block at the very end
         shm.close()
@@ -249,17 +247,16 @@ class SlepianPolarCap(SlepianFunctions):
                 if n - 1 == -1:
                     A = 1
                 else:
-                    A = Pl[ell == n - 1]  # noqa: F841
-                B = Pl[ell == n + 1]  # noqa: F841
-                c += ne.evaluate(
-                    f"{self._wigner3j(l, n, p, 0, 0, 0)}"
-                    f"*{self._wigner3j(l, n, p, m, 0, -m)}"
-                    "*(A - B)"
+                    A = Pl[ell == n - 1]
+                c += (
+                    self._wigner3j(l, n, p, 0, 0, 0)
+                    * self._wigner3j(l, n, p, m, 0, -m)
+                    * (A - Pl[ell == n + 1])
                 )
-            Dm[i, j] = ne.evaluate(
-                f"{self._polar_gap_modification(l, p)}"
-                "*sqrt((2 * l + 1) * (2 * p + 1))"
-                "*c"
+            Dm[i, j] = (
+                self._polar_gap_modification(l, p)
+                * np.sqrt((2 * l + 1) * (2 * p + 1))
+                * c
             )
             Dm[j, i] = Dm[i, j]
 
@@ -284,31 +281,31 @@ class SlepianPolarCap(SlepianFunctions):
         Computes Wigner 3j symbol using Racah formula
         """
         if (
-            ne.evaluate("2 * l1 != floor(2 * l1)")
-            or ne.evaluate("2 * l2 != floor(2 * l2)")
-            or ne.evaluate("2 * l3 != floor(2 * l3)")
-            or ne.evaluate("2 * m1 != floor(2 * m1)")
-            or ne.evaluate("2 * m2 != floor(2 * m2)")
-            or ne.evaluate("2 * m3 != floor(2 * m3)")
+            2 * l1 != np.floor(2 * l1)
+            or 2 * l2 != np.floor(2 * l2)
+            or 2 * l3 != np.floor(2 * l3)
+            or 2 * m1 != np.floor(2 * m1)
+            or 2 * m2 != np.floor(2 * m2)
+            or 2 * m3 != np.floor(2 * m3)
         ):
             raise Exception("Arguments must either be integer or half-integer!")
 
         if (
-            ne.evaluate("m1 + m2 + m3 != 0")
-            or ne.evaluate("l3 < abs(l1 - l2)")
-            or ne.evaluate("l3 > (l1 + l2)")
-            or ne.evaluate("abs(m1) > abs(l1)")
-            or ne.evaluate("abs(m2) > abs(l2)")
-            or ne.evaluate("abs(m3) > abs(l3)")
-            or ne.evaluate("l1 + l2 + l3 != floor(l1 + l2 + l3)")
+            m1 + m2 + m3 != 0
+            or l3 < abs(l1 - l2)
+            or l3 > (l1 + l2)
+            or abs(m1) > abs(l1)
+            or abs(m2) > abs(l2)
+            or abs(m3) > abs(l3)
+            or l1 + l2 + l3 != np.floor(l1 + l2 + l3)
         ):
             s = 0
         else:
-            t1 = ne.evaluate("l2 - l3 - m1")
-            t2 = ne.evaluate("l1 - l3 + m2")
-            t3 = ne.evaluate("l1 + l2 - l3")
-            t4 = ne.evaluate("l1 - m1")
-            t5 = ne.evaluate("l2 + m2")
+            t1 = l2 - l3 - m1
+            t2 = l1 - l3 + m2
+            t3 = l1 + l2 - l3
+            t4 = l1 - m1
+            t5 = l2 + m2
 
             tmin = max(0, max(t1, t2))
             tmax = min(t3, min(t4, t5))
@@ -317,32 +314,33 @@ class SlepianPolarCap(SlepianFunctions):
             # sum is over all those t for which the following factorials have
             # non-zero arguments.
             for t in range(tmin, tmax + 1):
-                s += ne.evaluate(
-                    "(-1) ** t / ("
-                    f"{fact(t, exact=False)}"
-                    f"*{fact(t - t1, exact=False)}"
-                    f"*{fact(t - t2, exact=False)}"
-                    f"*{fact(t3 - t, exact=False)}"
-                    f"*{fact(t4 - t, exact=False)}"
-                    f"*{fact(t5 - t, exact=False)})"
+                s += (-1) ** t / (
+                    fact(t, exact=False)
+                    * fact(t - t1, exact=False)
+                    * fact(t - t2, exact=False)
+                    * fact(t3 - t, exact=False)
+                    * fact(t4 - t, exact=False)
+                    * fact(t5 - t, exact=False)
                 )
 
-            triangle_coefficient = ne.evaluate(
-                f"{fact(l1 + l2 - l3, exact=False)}"
-                f"*{fact(l1 - l2 + l3, exact=False)}"
-                f"*{fact(-l1 + l2 + l3, exact=False)}"
-                f"/{fact(l1 + l2 + l3 + 1, exact=False)}"
+            triangle_coefficient = (
+                fact(l1 + l2 - l3, exact=False)
+                * fact(l1 - l2 + l3, exact=False)
+                * fact(-l1 + l2 + l3, exact=False)
+                / fact(l1 + l2 + l3 + 1, exact=False)
             )
 
-            s *= ne.evaluate(
-                f"{np.float_power(-1, l1 - l2 - m3)}"
-                f"*sqrt({triangle_coefficient})"
-                f"*sqrt({fact(l1 + m1, exact=False)}"
-                f"*{fact(l1 - m1, exact=False)}"
-                f"*{fact(l2 + m2, exact=False)}"
-                f"*{fact(l2 - m2, exact=False)}"
-                f"*{fact(l3 + m3, exact=False)}"
-                f"*{fact(l3 - m3, exact=False)})"
+            s *= (
+                np.float_power(-1, l1 - l2 - m3)
+                * np.sqrt(triangle_coefficient)
+                * np.sqrt(
+                    fact(l1 + m1, exact=False)
+                    * fact(l1 - m1, exact=False)
+                    * fact(l2 + m2, exact=False)
+                    * fact(l2 - m2, exact=False)
+                    * fact(l3 + m3, exact=False)
+                    * fact(l3 - m3, exact=False)
+                )
             )
         return s
 
@@ -351,7 +349,7 @@ class SlepianPolarCap(SlepianFunctions):
         eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell')
         """
-        factor = ne.evaluate(f"1 + {self.gap} * (-1) ** (ell1 + ell2)")
+        factor = 1 + self.gap * (-1) ** (ell1 + ell2)
         return factor
 
     def _clean_evals_and_evecs(
