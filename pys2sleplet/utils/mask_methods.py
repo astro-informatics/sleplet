@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import numexpr as ne
 import numpy as np
 import pyssht as ssht
 
@@ -23,15 +24,15 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
 
     if region.region_type == "polar":
         logger.info("creating polar cap mask")
-        mask = theta_grid <= region.theta_max
+        mask = ne.evaluate(f"theta_grid <= {region.theta_max}")
 
     elif region.region_type == "lim_lat_lon":
         logger.info("creating limited latitude longitude mask")
-        mask = (
-            (theta_grid >= region.theta_min)
-            & (theta_grid <= region.theta_max)
-            & (phi_grid >= region.phi_min)
-            & (phi_grid <= region.phi_max)
+        mask = ne.evaluate(
+            f"(theta_grid >= {region.theta_min})"
+            f"& (theta_grid <= {region.theta_max})"
+            f"& (phi_grid >= {region.phi_min})"
+            f"& (phi_grid <= {region.phi_max})"
         )
 
     elif region.region_type == "arbitrary":
