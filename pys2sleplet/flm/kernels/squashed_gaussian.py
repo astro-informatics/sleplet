@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 
+import numexpr as ne
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
@@ -45,8 +46,9 @@ class SquashedGaussian(Functions):
         """
         function on the grid
         """
-        f = np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
-            self.freq * phi
+        f = ne.evaluate(
+            f"exp(-(((theta - {THETA_0}) / {self.t_sigma}) ** 2) / 2)"
+            f"*sin({self.freq} * phi)"
         )
         return f
 

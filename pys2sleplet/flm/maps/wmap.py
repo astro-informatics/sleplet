@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
+import numexpr as ne
 import numpy as np
 import pyssht as ssht
 from scipy import io as sio
@@ -29,15 +30,15 @@ class Wmap(Functions):
         flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(2, self.L):
             cl_val = cl[ell - 1]
-            cl_val *= 2 * np.pi / (ell * (ell + 1))
+            cl_val *= ne.evaluate(f"2 * {np.pi} / (ell * (ell + 1))")
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 if m == 0:
-                    flm[ind] = np.sqrt(cl_val) * np.random.randn()
+                    flm[ind] = ne.evaluate(f"sqrt(cl_val) * {np.random.randn()}")
                 else:
-                    flm[ind] = (
-                        np.sqrt(cl_val / 2) * np.random.randn()
-                        + 1j * np.sqrt(cl_val / 2) * np.random.randn()
+                    flm[ind] = ne.evaluate(
+                        f"sqrt(cl_val / 2) * {np.random.randn()}"
+                        f"+1j * sqrt(cl_val / 2) * {np.random.randn()}"
                     )
         self.multipole = flm
 
