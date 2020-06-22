@@ -47,10 +47,8 @@ class ElongatedGaussian(Functions):
         function on the grid
         """
         f = ne.evaluate(
-            "exp(-("
-            f"((theta - {THETA_0}) / {self.t_sigma}) ** 2"
-            f"+((phi - {PHI_0}) / {self.p_sigma}) ** 2"
-            ")/2)"
+            f"exp(-(((theta-{THETA_0})/{self.t_sigma})**2"
+            f"+((phi-{PHI_0})/{self.p_sigma})**2)/2)"
         )
         return f
 

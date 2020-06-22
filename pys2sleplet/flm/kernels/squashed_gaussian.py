@@ -47,8 +47,7 @@ class SquashedGaussian(Functions):
         function on the grid
         """
         f = ne.evaluate(
-            f"exp(-(((theta - {THETA_0}) / {self.t_sigma}) ** 2) / 2)"
-            f"*sin({self.freq} * phi)"
+            f"exp(-(((theta-{THETA_0})/{self.t_sigma})**2)/2)*sin({self.freq}*phi)"
         )
         return f
 

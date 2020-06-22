@@ -193,7 +193,7 @@ def plot(
             complex_magnitude(padded_field), local_dict=dict(x=padded_field)
         )
     elif plot_type == "sum":
-        field = ne.evaluate("padded_field.real + padded_field.imag")
+        field = ne.evaluate("padded_field.real+padded_field.imag")
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
