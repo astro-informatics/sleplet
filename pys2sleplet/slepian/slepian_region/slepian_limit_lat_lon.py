@@ -41,6 +41,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.N = self.L - 1
         self.region = Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
@@ -161,22 +162,22 @@ class SlepianLimitLatLon(SlepianFunctions):
                     - np.exp(2 * 1j * col * self.theta_max)
                 )
 
-            G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col] = Q * S
-            G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = G[
-                2 * (self.L - 1) + row, 2 * (self.L - 1) + col
+            G[2 * self.N + row, 2 * self.N + col] = Q * S
+            G[2 * self.N - row, 2 * self.N - col] = G[
+                2 * self.N + row, 2 * self.N + col
             ].conj()
 
         # row = 0
         S = self.phi_max - self.phi_min
-        for col in range(-2 * (self.L - 1), 1):
+        for col in range(-2 * self.N, 1):
             helper(0, col, S)
 
         # row != 0
-        for row in range(-2 * (self.L - 1), 0):
+        for row in range(-2 * self.N, 0):
             S = (1j / row) * (
                 np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)
             )
-            for col in range(-2 * (self.L - 1), 2 * (self.L - 1) + 1):
+            for col in range(-2 * self.N, 2 * self.N + 1):
                 helper(row, col, S)
 
         return G
@@ -311,22 +312,16 @@ class SlepianLimitLatLon(SlepianFunctions):
 
                     row = m - q
                     C2 = (-1j) ** row
-                    ind_r = 2 * (self.L - 1) + row
+                    ind_r = 2 * self.N + row
 
                     for mp in range(-l, l + 1):
-                        C3 = (
-                            dl[self.L - 1 + mp, self.L - 1 + m]
-                            * dl[self.L - 1 + mp, self.L - 1]
-                        )
+                        C3 = dl[self.N + mp, self.N + m] * dl[self.N + mp, self.N]
                         S1 = 0
 
                         for qp in range(-p, p + 1):
                             col = mp - qp
-                            C4 = (
-                                dp[self.L - 1 + qp, self.L - 1 + q]
-                                * dp[self.L - 1 + qp, self.L - 1]
-                            )
-                            ind_c = 2 * (self.L - 1) + col
+                            C4 = dp[self.N + qp, self.N + q] * dp[self.N + qp, self.N]
+                            ind_c = 2 * self.N + col
                             S1 += C4 * G[ind_r, ind_c]
 
                         idx = (l * (l + 1) + m, p * (p + 1) + q)
@@ -357,6 +352,14 @@ class SlepianLimitLatLon(SlepianFunctions):
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
+
+    @property
+    def N(self) -> int:
+        return self._N
+
+    @N.setter
+    def N(self, N: int) -> None:
+        self._N = N
 
     @property
     def name_ending(self) -> str:
