@@ -32,6 +32,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     phi_min: float
     phi_max: float
     ncpu: int
+    _N: int = field(init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
