@@ -9,7 +9,10 @@ import plotly.offline as py
 import pyssht as ssht
 from plotly.graph_objs import Figure, Layout, Surface
 from plotly.graph_objs.layout import Margin, Scene
-from plotly.graph_objs.layout.scene import XAxis, YAxis, ZAxis
+from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
+from plotly.graph_objs.layout.scene.camera import Eye
+from plotly.graph_objs.surface import ColorBar, Lighting
+from plotly.graph_objs.surface.colorbar import Tickfont
 
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
@@ -39,8 +42,8 @@ class Plot:
         )
 
         # appropriate zoom in on north pole
-        camera = dict(
-            eye=dict(x=-0.1 / ZOOM_DEFAULT, y=-0.1 / ZOOM_DEFAULT, z=10 / ZOOM_DEFAULT)
+        camera = Camera(
+            eye=Eye(x=-0.1 / ZOOM_DEFAULT, y=-0.1 / ZOOM_DEFAULT, z=10 / ZOOM_DEFAULT)
         )
 
         data = [
@@ -54,10 +57,13 @@ class Plot:
                 cmin=vmin,
                 cmid=MID_COLOURBAR,
                 cmax=vmax,
-                colorbar=dict(
-                    x=0.84, len=0.98, nticks=2, tickfont=dict(color="#666666", size=32)
+                colorbar=ColorBar(
+                    x=0.84,
+                    len=0.98,
+                    nticks=2,
+                    tickfont=Tickfont(color="#666666", size=32),
                 ),
-                lighting=dict(ambient=1),
+                lighting=Lighting(ambient=1),
             )
         ]
 
