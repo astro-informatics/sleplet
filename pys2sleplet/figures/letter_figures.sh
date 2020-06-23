@@ -12,8 +12,5 @@ echo "figure 2"
 plotting earth -L $L -t real
 
 echo "figure 3"
-for t in real imag abs; do
-    echo $t;
-    plotting harmonic_gaussian -c earth -L $L -t $t;
-    plotting harmonic_gaussian -c earth -L $L -e 3 1 -t $t;
-done
+plotting harmonic_gaussian -c earth -L $L;
+plotting harmonic_gaussian -c earth -L $L -e 3 1;
