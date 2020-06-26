@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-import numexpr as ne
 import numpy as np
 import pyssht as ssht
 from scipy import io as sio
@@ -30,7 +29,7 @@ class Earth(Functions):
                 ind_pm = ssht.elm2ind(ell, m)
                 ind_nm = ssht.elm2ind(ell, -m)
                 flm_pm = flm[ind_pm]  # noqa: F841
-                flm[ind_nm] = ne.evaluate("(-1) ** m * conj(flm_pm)")
+                flm[ind_nm] = (-1) ** m * flm_pm.conj()
 
         # don't take the full L
         # invert dataset as Earth backwards

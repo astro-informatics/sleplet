@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-import numexpr as ne
 import numpy as np
 import pyssht as ssht
 
@@ -19,7 +18,7 @@ class DiracDelta(Functions):
         flm = np.zeros((self.L * self.L), dtype=complex)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
-            flm[ind] = ne.evaluate(f"sqrt((2 * ell + 1) / (4 * {np.pi}))")
+            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
         self.multipole = flm
 
     def _create_name(self) -> None:

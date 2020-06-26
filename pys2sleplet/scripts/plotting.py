@@ -2,12 +2,11 @@
 from argparse import ArgumentParser, Namespace
 from typing import Optional
 
-import numexpr as ne
+import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.array_methods import complex_magnitude
 from pys2sleplet.utils.config import config
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
@@ -185,15 +184,13 @@ def plot(
     # check for plotting type
     logger.info(f"plotting type: '{plot_type}'")
     if plot_type == "real":
-        field = ne.evaluate("padded_field.real")
+        field = padded_field.real
     elif plot_type == "imag":
-        field = ne.evaluate("padded_field.imag")
+        field = padded_field.imag
     elif plot_type == "abs":
-        field = ne.evaluate(
-            complex_magnitude(padded_field), local_dict=dict(x=padded_field)
-        )
+        field = np.abs(padded_field)
     elif plot_type == "sum":
-        field = ne.evaluate("padded_field.real + padded_field.imag")
+        field = padded_field.real + padded_field.imag
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")

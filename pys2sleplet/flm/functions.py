@@ -3,7 +3,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import numexpr as ne
 import numpy as np
 import pyssht as ssht
 
@@ -107,7 +106,7 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        multipole = ne.evaluate("flm * conj(glm)")
+        multipole = flm * glm.conj()
         return multipole
 
     def _add_region_to_name(self) -> None:

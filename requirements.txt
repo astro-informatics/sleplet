@@ -3,7 +3,6 @@ dynaconf
 hypothesis
 matplotlib
 multiprocess
-numexpr
 plotly
 pytest
 toml

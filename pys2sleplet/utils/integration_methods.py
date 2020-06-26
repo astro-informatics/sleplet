@@ -1,6 +1,5 @@
 from typing import Optional
 
-import numexpr as ne
 import numpy as np
 import pyssht as ssht
 
@@ -44,7 +43,7 @@ def _integration_weight(L: int) -> np.ndarray:
     theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
     delta_phi = np.ediff1d(phi_grid[0]).mean()
-    weight = ne.evaluate(f"sin(theta_grid) * {delta_theta} * {delta_phi}")
+    weight = np.sin(theta_grid) * delta_theta * delta_phi
     return weight
 
 
@@ -77,14 +76,14 @@ def integrate_sphere(
     g = invert_flm_boosted(glm, L, resolution, reality=glm_reality)
 
     if flm_conj:
-        f = ne.evaluate("conj(f)")
+        f = f.conj()
     if glm_conj:
-        g = ne.evaluate("conj(g)")
+        g = g.conj()
 
     integrand = f * g * weight
 
     if mask is not None:
-        integrand = ne.evaluate("where(mask, integrand, 0)")
+        integrand = np.where(mask, integrand, 0)
 
     integration = integrand.sum()
     return integration
