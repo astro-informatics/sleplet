@@ -3,8 +3,11 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.integration_methods import integrate_sphere
-from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.integration_methods import (
+    calc_integration_resolution,
+    integrate_sphere,
+)
+from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
 from pys2sleplet.utils.vars import DECOMPOSITION_DEFAULT
 
@@ -17,14 +20,17 @@ class SlepianDecomposition:
     _flm: np.ndarray = field(init=False, repr=False)
     _function: Functions = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
-    _region: Region = field(init=False, repr=False)
+    _mask: np.ndarray = field(init=False, repr=False)
+    _resolution: int = field(init=False, repr=False)
     _s_p_lms: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.L = self.function.L
         self.flm = self.function.multipole
-        self.region = self.function.region
-        slepian = choose_slepian_method(self.L, self.region)
+        region = self.function.region
+        slepian = choose_slepian_method(self.L, region)
+        self.resolution = calc_integration_resolution(self.L)
+        self.mask = create_mask_region(self.resolution, region)
         self.lambdas = slepian.eigenvalues
         self.s_p_lms = slepian.eigenvectors
         self.N = self.s_p_lms.shape[0]
@@ -64,7 +70,12 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}
         """
         integration = integrate_sphere(
-            self.L, self.flm, self.s_p_lms[rank], region=self.region, glm_conj=True
+            self.L,
+            self.resolution,
+            self.flm,
+            self.s_p_lms[rank],
+            glm_conj=True,
+            mask_boosted=self.mask,
         )
         f_p = integration / self.lambdas[rank]
         return f_p
@@ -75,7 +86,9 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        f_p = integrate_sphere(self.L, self.flm, self.s_p_lms[rank], glm_conj=True)
+        f_p = integrate_sphere(
+            self.L, self.resolution, self.flm, self.s_p_lms[rank], glm_conj=True
+        )
         return f_p
 
     def _harmonic_sum(self, rank: int) -> complex:
@@ -144,12 +157,20 @@ class SlepianDecomposition:
         self._lambdas = lambdas
 
     @property
-    def region(self) -> Region:
-        return self._region
+    def mask(self) -> np.ndarray:
+        return self._mask
 
-    @region.setter
-    def region(self, region: Region) -> None:
-        self._region = region
+    @mask.setter
+    def mask(self, mask: np.ndarray) -> None:
+        self._mask = mask
+
+    @property
+    def resolution(self) -> int:
+        return self._resolution
+
+    @resolution.setter
+    def resolution(self, resolution: int) -> None:
+        self._resolution = resolution
 
     @property
     def s_p_lms(self) -> np.ndarray:

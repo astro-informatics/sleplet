@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, integers
-from numpy.testing import assert_allclose
+from numpy.testing import assert_allclose, assert_raises
 
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -19,8 +19,14 @@ from pys2sleplet.test.constants import (
     THETA_MAX,
 )
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from pys2sleplet.utils.integration_methods import integrate_sphere
+from pys2sleplet.utils.integration_methods import (
+    calc_integration_resolution,
+    integrate_sphere,
+)
+from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
+
+RESOLUTION = calc_integration_resolution(L)
 
 
 @pytest.fixture(scope="module")
@@ -32,11 +38,13 @@ def slepian_polar_cap() -> SlepianPolarCap:
 
 
 @pytest.fixture(scope="module")
-def polar_cap_region() -> Region:
+def polar_cap_region() -> np.ndarray:
     """
-    creates a polar cap region
+    creates a polar cap boosted mask
     """
-    return Region(theta_max=THETA_1, order=ORDER)
+    region = Region(theta_max=THETA_1, order=ORDER)
+    mask = create_mask_region(RESOLUTION, region)
+    return mask
 
 
 def valid_polar_ranks() -> SearchStrategy[int]:
@@ -57,11 +65,13 @@ def slepian_lim_lat_lon() -> SlepianLimitLatLon:
 
 
 @pytest.fixture(scope="module")
-def lim_lat_lon_region() -> Region:
+def lim_lat_lon_region() -> np.ndarray:
     """
-    creates a limited latitude longitude region
+    creates a limited latitude longitude boosted mask
     """
-    return Region(theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1)
+    region = Region(theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1)
+    mask = create_mask_region(RESOLUTION, region)
+    return mask
 
 
 def valid_lim_lat_lon_ranks() -> SearchStrategy[int]:
@@ -120,7 +130,7 @@ def test_integrate_two_slepian_polar_functions_region_sphere_per_rank(
     the sphere gives the Kronecker delta multiplied by the eigenvalue
     """
     output = _integrate_two_functions_per_rank_helper(
-        slepian_polar_cap.eigenvectors, rank1, rank2, region=polar_cap_region
+        slepian_polar_cap.eigenvectors, rank1, rank2, mask=polar_cap_region
     )
     lambda_p = slepian_polar_cap.eigenvalues[rank1]
     if rank1 == rank2:
@@ -140,7 +150,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_per_rank(
     the sphere gives the Kronecker delta multiplied by the eigenvalue
     """
     output = _integrate_two_functions_per_rank_helper(
-        slepian_lim_lat_lon.eigenvectors, rank1, rank2, region=lim_lat_lon_region
+        slepian_lim_lat_lon.eigenvectors, rank1, rank2, mask=lim_lat_lon_region
     )
     lambda_p = slepian_lim_lat_lon.eigenvalues[rank1]
     if rank1 == rank2:
@@ -186,7 +196,7 @@ def test_integrate_two_slepian_polar_functions_region_sphere_matrix(
     the sphere gives the identity matrix multiplied by the eigenvalue
     """
     output = _integrate_whole_matrix_helper(
-        slepian_polar_cap.eigenvectors, region=polar_cap_region
+        slepian_polar_cap.eigenvectors, mask=polar_cap_region
     )
     desired = slepian_polar_cap.eigenvalues * np.identity(output.shape[0])
     test = np.abs(output - desired).mean()
@@ -202,7 +212,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
     the sphere gives the identity matrix multiplied by the eigenvalue
     """
     output = _integrate_whole_matrix_helper(
-        slepian_lim_lat_lon.eigenvectors, region=lim_lat_lon_region
+        slepian_lim_lat_lon.eigenvectors, mask=lim_lat_lon_region
     )
     desired = slepian_lim_lat_lon.eigenvalues * np.identity(output.shape[0])
     test = np.abs(output - desired).mean()
@@ -210,19 +220,19 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
 
 
 def _integrate_two_functions_per_rank_helper(
-    eigenvectors: np.ndarray, rank1: int, rank2: int, region: Optional[Region] = None
+    eigenvectors: np.ndarray, rank1: int, rank2: int, mask: Optional[np.ndarray] = None
 ) -> complex:
     """
     helper function which integrates two slepian functions of given ranks
     """
     flm = eigenvectors[rank1]
     glm = eigenvectors[rank2]
-    output = integrate_sphere(L, flm, glm, region=region, glm_conj=True)
+    output = integrate_sphere(L, RESOLUTION, flm, glm, glm_conj=True, mask_boosted=mask)
     return output
 
 
 def _integrate_whole_matrix_helper(
-    eigenvectors: np.ndarray, region: Optional[Region] = None
+    eigenvectors: np.ndarray, mask: Optional[np.ndarray] = None
 ) -> np.ndarray:
     """
     helper function which integrates all of the slepian functionss
@@ -234,7 +244,21 @@ def _integrate_whole_matrix_helper(
             # Hermitian matrix so can use symmetry
             if i <= j:
                 output[i][j] = integrate_sphere(
-                    L, flm, glm, region=region, glm_conj=True
+                    L, RESOLUTION, flm, glm, glm_conj=True, mask_boosted=mask
                 )
     fill_upper_triangle_of_hermitian_matrix(output)
     return output
+
+
+def test_pass_incorrect_mask_size_to_integrate_region() -> None:
+    """
+    tests an exception is thrown if the mask passed to the function is the wrong shape
+    """
+    slepian = SlepianPolarCap(L, THETA_MAX, order=ORDER)
+    region = Region(theta_max=THETA_1, order=ORDER)
+    assert_raises(
+        AttributeError,
+        _integrate_whole_matrix_helper,
+        slepian.eigenvectors,
+        mask=region,
+    )

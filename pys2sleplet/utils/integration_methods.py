@@ -4,8 +4,6 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
-from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -49,13 +47,14 @@ def _integration_weight(L: int) -> np.ndarray:
 
 def integrate_sphere(
     L: int,
+    resolution: int,
     flm: np.ndarray,
     glm: np.ndarray,
-    region: Optional[Region] = None,
     flm_reality: bool = False,
     glm_reality: bool = False,
     flm_conj: bool = False,
     glm_conj: bool = False,
+    mask_boosted: Optional[np.ndarray] = None,
 ) -> complex:
     """
     * method which computes the integration on the sphere for
@@ -64,12 +63,11 @@ def integrate_sphere(
       as well as the ability to have conjugates within the integral
     * the multipole resolutions are boosted prior to integration
     """
-    resolution = calc_integration_resolution(L)
-
-    if region is not None:
-        mask = create_mask_region(resolution, region)
-    else:
-        mask = None
+    if mask_boosted is not None:
+        if mask_boosted.shape[0] - 1 == L:
+            raise AttributeError(
+                f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
+            )
 
     weight = _integration_weight(resolution)
     f = invert_flm_boosted(flm, L, resolution, reality=flm_reality)
@@ -82,8 +80,8 @@ def integrate_sphere(
 
     integrand = f * g * weight
 
-    if mask is not None:
-        integrand = np.where(mask, integrand, 0)
+    if mask_boosted is not None:
+        integrand = np.where(mask_boosted, integrand, 0)
 
     integration = integrand.sum()
     return integration
