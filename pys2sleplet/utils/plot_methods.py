@@ -17,7 +17,7 @@ def calc_plot_resolution(L: int) -> int:
         if L < 2 ** log_bandlimit:
             return L * 2 ** exponent
 
-    # above L = 1024 just use the bandlimit
+    # otherwise just use the bandlimit
     return L
 
 

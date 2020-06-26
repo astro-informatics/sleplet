@@ -219,6 +219,18 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
     assert_allclose(test, 0, atol=1e-5)
 
 
+def test_pass_incorrect_mask_size_to_integrate_region() -> None:
+    """
+    tests an exception is thrown if the mask passed to the function is the wrong shape
+    """
+    slepian = SlepianPolarCap(L, THETA_MAX, order=ORDER)
+    region = Region(theta_max=THETA_1, order=ORDER)
+    mask = create_mask_region(L, region)
+    assert_raises(
+        AttributeError, _integrate_whole_matrix_helper, slepian.eigenvectors, mask=mask
+    )
+
+
 def _integrate_two_functions_per_rank_helper(
     eigenvectors: np.ndarray, rank1: int, rank2: int, mask: Optional[np.ndarray] = None
 ) -> complex:
@@ -248,17 +260,3 @@ def _integrate_whole_matrix_helper(
                 ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output
-
-
-def test_pass_incorrect_mask_size_to_integrate_region() -> None:
-    """
-    tests an exception is thrown if the mask passed to the function is the wrong shape
-    """
-    slepian = SlepianPolarCap(L, THETA_MAX, order=ORDER)
-    region = Region(theta_max=THETA_1, order=ORDER)
-    assert_raises(
-        AttributeError,
-        _integrate_whole_matrix_helper,
-        slepian.eigenvectors,
-        mask=region,
-    )
