@@ -243,9 +243,9 @@ def _integrate_whole_matrix_helper(
         for j, glm in enumerate(eigenvectors):
             # Hermitian matrix so can use symmetry
             if i <= j:
-                output[i][j] = integrate_sphere(
+                output[j][i] = integrate_sphere(
                     L, RESOLUTION, flm, glm, glm_conj=True, mask_boosted=mask
-                )
+                ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output
 
