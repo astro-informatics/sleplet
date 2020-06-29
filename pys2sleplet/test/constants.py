@@ -2,7 +2,6 @@ import numpy as np
 
 L_SMALL: int = 8
 L_LARGE: int = 32
-MASK_NAME: str = "test"
 ORDER: int = 0
 PHI_0: float = np.pi / 6
 PHI_1: float = np.pi / 3

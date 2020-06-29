@@ -34,7 +34,7 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     assert_allclose(h_p, f_p, rtol=1.1)
 
 
-@pytest.mark.slow
+# @pytest.mark.slow
 def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     """
     tests that all three methods produce the same coefficients for
@@ -43,9 +43,9 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     f_p = lim_lat_lon_decomposition.decompose_all(method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose_all(method="integrate_sphere")
     h_p = lim_lat_lon_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(f_p, g_p, rtol=1e10)
-    assert_allclose(g_p, h_p, rtol=0.3)
-    assert_allclose(h_p, f_p, rtol=2)
+    assert_allclose(f_p, g_p, rtol=1e15)
+    assert_allclose(g_p, h_p, rtol=1.0)
+    assert_allclose(h_p, f_p, rtol=1.3)
 
 
 def test_pass_function_without_region() -> None:
