@@ -4,22 +4,6 @@ from numpy.testing import assert_allclose, assert_raises
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.test.constants import L_SMALL as L
-from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
-from pys2sleplet.utils.region import Region
-
-
-@pytest.fixture(scope="module")
-def polar_cap_decomposition() -> SlepianDecomposition:
-    region = Region(theta_max=THETA_MAX, order=ORDER)
-    earth = Earth(L, region=region)
-    return SlepianDecomposition(earth)
-
-
-@pytest.fixture(scope="module")
-def lim_lat_lon_decomposition() -> SlepianDecomposition:
-    region = Region(theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1)
-    earth = Earth(L, region=region)
-    return SlepianDecomposition(earth)
 
 
 def test_decompose_all_polar(polar_cap_decomposition) -> None:
@@ -34,7 +18,7 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     assert_allclose(h_p, f_p, rtol=1.1)
 
 
-# @pytest.mark.slow
+@pytest.mark.slow
 def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     """
     tests that all three methods produce the same coefficients for
