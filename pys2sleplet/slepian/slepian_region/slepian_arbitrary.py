@@ -12,7 +12,6 @@ from pys2sleplet.utils.config import config
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
@@ -27,20 +26,12 @@ class SlepianArbitrary(SlepianFunctions):
     _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=config.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
-    _weight: np.ndarray = field(init=False, repr=False)
     _ylm: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.N = self.L * self.L
         self.region = Region(mask_name=self.mask_name)
         self.name_ending = self.region.name_ending
-        self._N = self.L * self.L
-        theta_grid, phi_grid = ssht.sample_positions(
-            self.L, Grid=True, Method=SAMPLING_SCHEME
-        )
-        self._ylm = ssht.create_ylm(theta_grid, phi_grid, self.L)
-        delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
-        delta_phi = np.ediff1d(phi_grid[0]).mean()
-        self._weight = np.sin(theta_grid) * delta_theta * delta_phi
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -85,11 +76,14 @@ class SlepianArbitrary(SlepianFunctions):
         return D
 
     def _matrix_serial(self) -> np.ndarray:
+        """
+        computes the D matrix in serial
+        """
         # initialise real and imaginary matrices
-        D_r = np.zeros((self._N, self._N))
-        D_i = np.zeros((self._N, self._N))
+        D_r = np.zeros((self.N, self.N))
+        D_i = np.zeros((self.N, self.N))
 
-        for i in range(self._N):
+        for i in range(self.N):
             self._matrix_helper(D_r, D_i, i)
 
         # combine real and imaginary parts
@@ -98,9 +92,12 @@ class SlepianArbitrary(SlepianFunctions):
         return D
 
     def _matrix_parallel(self) -> np.ndarray:
+        """
+        computes the D matrix in parallel
+        """
         # initialise real and imaginary matrices
-        D_r = np.zeros((self._N, self._N))
-        D_i = np.zeros((self._N, self._N))
+        D_r = np.zeros((self.N, self.N))
+        D_i = np.zeros((self.N, self.N))
 
         # create shared memory block
         shm_r = SharedMemory(create=True, size=D_r.nbytes)
@@ -128,7 +125,7 @@ class SlepianArbitrary(SlepianFunctions):
             ex_shm_i.close()
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self._N, self.ncpu)
+        chunks = split_L_into_chunks(self.N, self.ncpu)
 
         # initialise pool and apply function
         with Pool(processes=self.ncpu) as p:
@@ -158,7 +155,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i[i][i] = integral.imag
         _, m_i = ssht.ind2elm(i)
 
-        for j in range(i + 1, self._N):
+        for j in range(i + 1, self.N):
             ell_j, m_j = ssht.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
@@ -180,10 +177,6 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[i][j] = integral.imag
                 D_r[j][i] = D_r[i][j]
                 D_i[j][i] = -D_i[i][j]
-
-    def _integral(self, i: int, j: int) -> complex:
-        F = (self._f(i, j) * self._weight()).sum()
-        return F
 
     def _f(self, i: int, j: int) -> np.ndarray:
         f = self._ylm[i] * self._ylm[j].conj()
@@ -220,6 +213,14 @@ class SlepianArbitrary(SlepianFunctions):
     @mask_name.setter
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
+
+    @property
+    def N(self) -> int:
+        return self.N
+
+    @N.setter
+    def N(self, N: int) -> None:
+        self.N = N
 
     @property
     def name_ending(self) -> str:
