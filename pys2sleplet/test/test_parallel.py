@@ -1,13 +1,16 @@
 import numpy as np
+import pytest
 from hypothesis import given, settings
 from hypothesis.extra.numpy import arrays
 from hypothesis.strategies import SearchStrategy, floats, integers
 from numpy.testing import assert_array_equal
 
+from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L
-from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1
+from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
+from pys2sleplet.utils.string_methods import angle_as_degree
 
 
 def valid_theta_min() -> SearchStrategy[float]:
@@ -94,14 +97,14 @@ def test_slepian_lat_lon_serial_equal_to_parallel(
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
 
 
-# @settings(max_examples=2, deadline=None)
-# @given(mask=valid_mask())
-# def test_slepian_arbitrary_serial_equal_to_parallel(mask) -> None:
-#     """
-#     ensures that the serial and parallel calculation of a given
-#     Slepian arbitrary region give the same result
-#     """
-#     serial = SlepianArbitrary(L, mask, MASK_NAME, ncpu=1)
-#     parallel = SlepianArbitrary(L, mask, MASK_NAME)
-#     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
-#     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
+@pytest.mark.slow
+def test_slepian_arbitrary_serial_equal_to_parallel() -> None:
+    """
+    ensures that the serial and parallel calculation of a given
+    Slepian arbitrary region give the same result
+    """
+    mask_name = f"polar{angle_as_degree(THETA_MAX)}"
+    serial = SlepianArbitrary(L, mask_name, ncpu=1)
+    parallel = SlepianArbitrary(L, mask_name)
+    assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
+    assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
