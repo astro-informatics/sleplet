@@ -18,7 +18,7 @@ class SphericalHarmonic(Functions):
         pass
 
     def _create_flm(self) -> None:
-        flm = np.zeros((self.L * self.L), dtype=complex)
+        flm = np.zeros(self.L * self.L, dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
         flm[ind] = 1
         self.multipole = flm
