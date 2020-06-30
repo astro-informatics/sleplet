@@ -8,6 +8,7 @@ from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.integration_methods import integrate_sphere
 from pys2sleplet.utils.mask_methods import create_mask_region
@@ -88,6 +89,9 @@ class SlepianArbitrary(SlepianFunctions):
         # combine real and imaginary parts
         D = D_r + 1j * D_i
 
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
         return D
 
     def _matrix_parallel(self) -> np.ndarray:
@@ -139,6 +143,9 @@ class SlepianArbitrary(SlepianFunctions):
         shm_i.close()
         shm_i.unlink()
 
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
         return D
 
     def _matrix_helper(self, D_r: np.ndarray, D_i: np.ndarray, i: int) -> None:
@@ -160,22 +167,16 @@ class SlepianArbitrary(SlepianFunctions):
             if m_i == 0 and m_j != 0 and ell_j < self.L:
                 # if positive m then use conjugate relation
                 if m_j > 0:
-                    integral = self._integral(i, j)
-                    D_r[i][j] = integral.real
-                    D_i[i][j] = integral.imag
-                    D_r[j][i] = D_r[i][j]
-                    D_i[j][i] = -D_i[i][j]
+                    integral = self._integral(j, i)
+                    D_r[j][i] = integral.real
+                    D_i[j][i] = integral.imag
                     k = ssht.elm2ind(ell_j, -m_j)
-                    D_r[i][k] = (-1) ** m_j * D_r[i][j]
-                    D_i[i][k] = (-1) ** (m_j + 1) * D_i[i][j]
-                    D_r[k][i] = D_r[i][k]
-                    D_i[k][i] = -D_i[i][k]
+                    D_r[k][i] = (-1) ** m_j * D_r[j][i]
+                    D_i[k][i] = (-1) ** (m_j + 1) * D_i[j][i]
             else:
-                integral = self._integral(i, j)
-                D_r[i][j] = integral.real
-                D_i[i][j] = integral.imag
-                D_r[j][i] = D_r[i][j]
-                D_i[j][i] = -D_i[i][j]
+                integral = self._integral(j, i)
+                D_r[j][i] = integral.real
+                D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -> complex:
         flm = self._f(i)
