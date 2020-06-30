@@ -9,6 +9,7 @@ from multiprocess.shared_memory import SharedMemory
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.integration_methods import integrate_sphere
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -23,7 +24,6 @@ class SlepianArbitrary(SlepianFunctions):
     ncpu: int
     _N: int = field(init=False, repr=False)
     _mask_name: str = field(init=False, repr=False)
-    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _ylm: np.ndarray = field(init=False, repr=False)
@@ -31,21 +31,20 @@ class SlepianArbitrary(SlepianFunctions):
     def __post_init__(self) -> None:
         self.N = self.L * self.L
         self.region = Region(mask_name=self.mask_name)
-        self.name_ending = self.region.name_ending
         super().__post_init__()
 
     def _create_annotations(self) -> None:
         pass
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self.name_ending}"
+        self.name = f"slepian_{self.mask_name}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self.region)
+        self.mask = create_mask_region(self.resolution, self.region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _arbitrary_path / "matrices" / f"D{self.name_ending}_L{self.L}.npy"
+            _arbitrary_path / "matrices" / f"D_{self.mask_name}_L{self.L}.npy"
         )
 
     def _solve_eigenproblem(self) -> None:
@@ -178,9 +177,18 @@ class SlepianArbitrary(SlepianFunctions):
                 D_r[j][i] = D_r[i][j]
                 D_i[j][i] = -D_i[i][j]
 
-    def _f(self, i: int, j: int) -> np.ndarray:
-        f = self._ylm[i] * self._ylm[j].conj()
-        return f
+    def _integral(self, i: int, j: int) -> complex:
+        flm = self._f(i)
+        glm = self._f(j)
+        integration = integrate_sphere(
+            self.L, self.resolution, flm, glm, mask_boosted=self.mask, glm_conj=True
+        )
+        return integration
+
+    def _f(self, i: int) -> np.ndarray:
+        flm = np.zeros(self.L * self.L, dtype=complex)
+        flm[i] = 1
+        return flm
 
     @staticmethod
     def _clean_evals_and_evecs(
@@ -216,19 +224,11 @@ class SlepianArbitrary(SlepianFunctions):
 
     @property
     def N(self) -> int:
-        return self.N
+        return self._N
 
     @N.setter
     def N(self, N: int) -> None:
-        self.N = N
-
-    @property
-    def name_ending(self) -> str:
-        return self._name_ending
-
-    @name_ending.setter
-    def name_ending(self, name_ending: str) -> None:
-        self._name_ending = name_ending
+        self._N = N
 
     @property  # type: ignore
     def ncpu(self) -> int:

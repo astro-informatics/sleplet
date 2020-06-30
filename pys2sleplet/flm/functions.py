@@ -114,7 +114,7 @@ class Functions:
         adds region to the name if present if not a Slepian function
         """
         if self.region is not None and "slepian" not in self.name:
-            self.name += self.region.name_ending
+            self.name += f"_{self.region.name_ending}"
 
     @property
     def annotations(self) -> List[Dict]:

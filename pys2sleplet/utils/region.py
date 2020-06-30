@@ -52,7 +52,7 @@ class Region:
             logger.info("polar cap region detected")
             self.region_type = "polar"
             self.name_ending = (
-                f"_polar{'_gap' if self.gap else ''}"
+                f"polar{'_gap' if self.gap else ''}"
                 f"{angle_as_degree(self.theta_max)}"
             )
 
@@ -62,7 +62,7 @@ class Region:
             logger.info("limited latitude longitude region detected")
             self.region_type = "lim_lat_lon"
             self.name_ending = (
-                f"_theta{angle_as_degree(self.theta_min)}"
+                f"theta{angle_as_degree(self.theta_min)}"
                 f"-{angle_as_degree(self.theta_max)}"
                 f"_phi{angle_as_degree(self.phi_min)}"
                 f"-{angle_as_degree(self.phi_max)}"
@@ -71,7 +71,7 @@ class Region:
         elif self.mask_name:
             logger.info("mask specified in file detected")
             self.region_type = "arbitrary"
-            self.name_ending = f"_{self.mask_name}"
+            self.name_ending = self.mask_name
 
         else:
             raise AttributeError(

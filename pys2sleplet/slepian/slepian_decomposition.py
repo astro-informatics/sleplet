@@ -3,11 +3,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.integration_methods import (
-    calc_integration_resolution,
-    integrate_sphere,
-)
-from pys2sleplet.utils.mask_methods import create_mask_region
+from pys2sleplet.utils.integration_methods import integrate_sphere
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
 from pys2sleplet.utils.vars import DECOMPOSITION_DEFAULT
 
@@ -29,9 +25,9 @@ class SlepianDecomposition:
         self.flm = self.function.multipole
         region = self.function.region
         slepian = choose_slepian_method(self.L, region)
-        self.resolution = calc_integration_resolution(self.L)
-        self.mask = create_mask_region(self.resolution, region)
         self.lambdas = slepian.eigenvalues
+        self.mask = slepian.mask
+        self.resolution = slepian.resolution
         self.s_p_lms = slepian.eigenvectors
         self.N = self.s_p_lms.shape[0]
 

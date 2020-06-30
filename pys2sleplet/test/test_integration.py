@@ -74,14 +74,14 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_per_rank(
 @settings(max_examples=8, deadline=None)
 @given(rank1=valid_polar_ranks(), rank2=valid_polar_ranks())
 def test_integrate_two_slepian_polar_functions_region_sphere_per_rank(
-    slepian_polar_cap, polar_cap_boosted_mask, rank1, rank2
+    slepian_polar_cap, rank1, rank2
 ) -> None:
     """
     tests that integration of two slepian polar functions over a region on
     the sphere gives the Kronecker delta multiplied by the eigenvalue
     """
     output = _integrate_two_functions_per_rank_helper(
-        slepian_polar_cap.eigenvectors, rank1, rank2, mask=polar_cap_boosted_mask
+        slepian_polar_cap.eigenvectors, rank1, rank2, mask=slepian_polar_cap.mask
     )
     lambda_p = slepian_polar_cap.eigenvalues[rank1]
     if rank1 == rank2:
@@ -94,14 +94,14 @@ def test_integrate_two_slepian_polar_functions_region_sphere_per_rank(
 @settings(max_examples=8, deadline=None)
 @given(rank1=valid_lim_lat_lon_ranks(), rank2=valid_lim_lat_lon_ranks())
 def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_per_rank(
-    slepian_lim_lat_lon, lim_lat_lon_boosted_mask, rank1, rank2
+    slepian_lim_lat_lon, rank1, rank2
 ) -> None:
     """
     tests that integration of two slepian lim lat lon functions over a region on
     the sphere gives the Kronecker delta multiplied by the eigenvalue
     """
     output = _integrate_two_functions_per_rank_helper(
-        slepian_lim_lat_lon.eigenvectors, rank1, rank2, mask=lim_lat_lon_boosted_mask
+        slepian_lim_lat_lon.eigenvectors, rank1, rank2, mask=slepian_lim_lat_lon.mask
     )
     lambda_p = slepian_lim_lat_lon.eigenvalues[rank1]
     if rank1 == rank2:
@@ -140,14 +140,14 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
 
 @pytest.mark.slow
 def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
-    slepian_polar_cap, polar_cap_boosted_mask
+    slepian_polar_cap,
 ) -> None:
     """
     tests that integration of two slepian lim lat lon functions over a region on
     the sphere gives the identity matrix multiplied by the eigenvalue
     """
     output = _integrate_whole_matrix_helper(
-        slepian_polar_cap.eigenvectors, mask=polar_cap_boosted_mask
+        slepian_polar_cap.eigenvectors, mask=slepian_polar_cap.mask
     )
     desired = slepian_polar_cap.eigenvalues * np.identity(output.shape[0])
     test = np.abs(output - desired).mean()
@@ -156,14 +156,14 @@ def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
 
 @pytest.mark.slow
 def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
-    slepian_lim_lat_lon, lim_lat_lon_boosted_mask
+    slepian_lim_lat_lon,
 ) -> None:
     """
     tests that integration of two slepian lim lat lon functions over a region on
     the sphere gives the identity matrix multiplied by the eigenvalue
     """
     output = _integrate_whole_matrix_helper(
-        slepian_lim_lat_lon.eigenvectors, mask=lim_lat_lon_boosted_mask
+        slepian_lim_lat_lon.eigenvectors, mask=slepian_lim_lat_lon.mask
     )
     desired = slepian_lim_lat_lon.eigenvalues * np.identity(output.shape[0])
     test = np.abs(output - desired).mean()

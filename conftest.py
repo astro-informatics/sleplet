@@ -1,4 +1,3 @@
-import numpy as np
 import pytest
 
 from pys2sleplet.flm.maps.earth import Earth
@@ -7,11 +6,7 @@ from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimi
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L
 from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
-from pys2sleplet.utils.integration_methods import calc_integration_resolution
-from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
-
-RESOLUTION = calc_integration_resolution(L)
 
 
 def pytest_addoption(parser):
@@ -70,24 +65,6 @@ def lim_lat_lon_region() -> Region:
     """
     region = Region(theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1)
     return region
-
-
-@pytest.fixture(scope="session")
-def polar_cap_boosted_mask(polar_cap_region) -> np.ndarray:
-    """
-    creates a polar cap boosted mask
-    """
-    mask = create_mask_region(RESOLUTION, polar_cap_region)
-    return mask
-
-
-@pytest.fixture(scope="session")
-def lim_lat_lon_boosted_mask(lim_lat_lon_region) -> np.ndarray:
-    """
-    creates a limited latitude longitude boosted mask
-    """
-    mask = create_mask_region(RESOLUTION, lim_lat_lon_region)
-    return mask
 
 
 @pytest.fixture(scope="session")

@@ -58,10 +58,10 @@ class SlepianPolarCap(SlepianFunctions):
                         )
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian{self.name_ending}"
+        self.name = f"slepian_{self.name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self.region)
+        self.mask = create_mask_region(self.resolution, self.region)
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -69,7 +69,7 @@ class SlepianPolarCap(SlepianFunctions):
             / "data"
             / "slepian"
             / "polar"
-            / f"D{self.name_ending}_L{self.L}.npy".replace("-", "")
+            / f"D_{self.name_ending}_L{self.L}.npy".replace("-", "")
         )
 
     def _solve_eigenproblem(self) -> None:

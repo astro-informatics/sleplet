@@ -36,10 +36,11 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
 
     elif region.region_type == "arbitrary":
         logger.info("loading and checking shape of provided mask")
-        mask = _load_mask(region.mask_name)
+        name = f"{region.mask_name}_L{L}.npy"
+        mask = _load_mask(name)
         assert mask.shape == theta_grid.shape, (
-            f"mask shape {mask.shape} does not match the provided "
-            f"L={L}, the shape should be {theta_grid.shape}"
+            f"mask {name} has shape {mask.shape} which does not match "
+            f"the provided L={L}, the shape should be {theta_grid.shape}"
         )
 
     return mask
