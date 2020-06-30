@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.config import config
+from pys2sleplet.config.config import settings
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.region import Region
@@ -88,7 +88,7 @@ class Functions:
             glm = glm.reshape(glm.size)
 
             # save to speed up for future
-            if config.SAVE_MATRICES:
+            if settings.SAVE_MATRICES:
                 np.save(filename, glm)
 
         # convolve with flm

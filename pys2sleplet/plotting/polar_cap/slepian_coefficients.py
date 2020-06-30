@@ -6,11 +6,11 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
+from pys2sleplet.config.config import settings
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.polar_cap.inputs import THETA_MAX, L
 from pys2sleplet.plotting.polar_cap.utils import sort_and_clean_df
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 
@@ -45,13 +45,13 @@ def main() -> None:
     plt.ylabel("magnitude")
 
     plt.tight_layout()
-    if config.SAVE_FIG:
+    if settings.SAVE_FIG:
         for file_type in ["png", "pdf"]:
             filename = (
                 fig_path / file_type / f"fp_earth_polar{THETA_MAX}_L{L}.{file_type}"
             )
             plt.savefig(filename, bbox_inches="tight")
-    if config.AUTO_OPEN:
+    if settings.AUTO_OPEN:
         plt.show()
 
 

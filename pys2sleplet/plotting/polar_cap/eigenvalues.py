@@ -7,10 +7,10 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
+from pys2sleplet.config.config import settings
 from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, L
 from pys2sleplet.plotting.polar_cap.utils import sort_and_clean_df
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 
 LEGEND_POS = (0, 0)
@@ -34,11 +34,11 @@ def main() -> None:
     ax[LEGEND_POS].legend(ncol=2)
 
     plt.tight_layout()
-    if config.SAVE_FIG:
+    if settings.SAVE_FIG:
         for file_type in ["png", "pdf"]:
             filename = fig_path / file_type / f"simons_5_3.{file_type}"
             plt.savefig(filename, bbox_inches="tight")
-    if config.AUTO_OPEN:
+    if settings.AUTO_OPEN:
         plt.show()
 
 

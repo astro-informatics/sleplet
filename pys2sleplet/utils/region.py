@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from pys2sleplet.config.config import settings
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (
@@ -23,18 +23,22 @@ class Region:
     mask_name: str
     order: int
     gap: bool
-    _gap: bool = field(default=config.POLAR_GAP, init=False, repr=False)
-    _mask_name: str = field(default=config.SLEPIAN_MASK, init=False, repr=False)
+    _gap: bool = field(default=settings.POLAR_GAP, init=False, repr=False)
+    _mask_name: str = field(default=settings.SLEPIAN_MASK, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
-    _order: int = field(default=config.ORDER, init=False, repr=False)
-    _phi_max: float = field(default=np.deg2rad(config.PHI_MAX), init=False, repr=False)
-    _phi_min: float = field(default=np.deg2rad(config.PHI_MIN), init=False, repr=False)
+    _order: int = field(default=settings.ORDER, init=False, repr=False)
+    _phi_max: float = field(
+        default=np.deg2rad(settings.PHI_MAX), init=False, repr=False
+    )
+    _phi_min: float = field(
+        default=np.deg2rad(settings.PHI_MIN), init=False, repr=False
+    )
     _region_type: str = field(init=False, repr=False)
     _theta_max: float = field(
-        default=np.deg2rad(config.THETA_MAX), init=False, repr=False
+        default=np.deg2rad(settings.THETA_MAX), init=False, repr=False
     )
     _theta_min: float = field(
-        default=np.deg2rad(config.THETA_MIN), init=False, repr=False
+        default=np.deg2rad(settings.THETA_MIN), init=False, repr=False
     )
 
     def __post_init__(self) -> None:

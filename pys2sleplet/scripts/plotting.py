@@ -5,9 +5,9 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.config.config import settings
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
@@ -92,7 +92,7 @@ def read_args() -> Namespace:
         help="gamma pi fraction - defaults to 0 - rotation only",
     )
     parser.add_argument(
-        "--bandlimit", "-L", type=int, default=config.L, help="bandlimit"
+        "--bandlimit", "-L", type=int, default=settings.L, help="bandlimit"
     )
     parser.add_argument(
         "--method",

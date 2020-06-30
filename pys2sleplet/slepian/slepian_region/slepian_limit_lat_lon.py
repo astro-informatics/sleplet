@@ -7,9 +7,9 @@ import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 
+from pys2sleplet.config.config import settings
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -34,7 +34,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     ncpu: int
     _N: int = field(init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
-    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
+    _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
@@ -121,7 +121,7 @@ class SlepianLimitLatLon(SlepianFunctions):
                 K = self._slepian_matrix_parallel(G)
 
             # save to speed up for future
-            if config.SAVE_MATRICES:
+            if settings.SAVE_MATRICES:
                 np.save(self.matrix_location, K)
 
         return K

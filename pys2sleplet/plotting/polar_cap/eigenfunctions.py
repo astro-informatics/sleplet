@@ -4,9 +4,9 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
+from pys2sleplet.config.config import settings
 from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, THETA_MAX, L
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
@@ -45,11 +45,11 @@ def main() -> None:
             _helper(ax, slepian, resolution, x, i, order, rank)
 
     plt.tight_layout()
-    if config.SAVE_FIG:
+    if settings.SAVE_FIG:
         for file_type in ["png", "pdf"]:
             filename = fig_path / file_type / f"simons_5_1.{file_type}"
             plt.savefig(filename, bbox_inches="tight")
-    if config.AUTO_OPEN:
+    if settings.AUTO_OPEN:
         plt.show()
 
 

@@ -7,8 +7,8 @@ import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 
+from pys2sleplet.config.config import settings
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.config import config
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -24,7 +24,7 @@ class SlepianArbitrary(SlepianFunctions):
     _N: int = field(init=False, repr=False)
     _mask_name: str = field(init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
-    _ncpu: int = field(default=config.NCPU, init=False, repr=False)
+    _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _ylm: np.ndarray = field(init=False, repr=False)
 
@@ -70,7 +70,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D = self._matrix_parallel()
 
             # save to speed up for future
-            if config.SAVE_MATRICES:
+            if settings.SAVE_MATRICES:
                 np.save(self.matrix_location, D)
 
         return D
