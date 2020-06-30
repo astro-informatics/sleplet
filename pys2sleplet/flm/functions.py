@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.config.config import settings
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.region import Region

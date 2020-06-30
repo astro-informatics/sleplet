@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.config.config import settings
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (

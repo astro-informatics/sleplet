@@ -7,10 +7,10 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
-from pys2sleplet.config.config import settings
 from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, L
 from pys2sleplet.plotting.polar_cap.utils import sort_and_clean_df
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 
 LEGEND_POS = (0, 0)

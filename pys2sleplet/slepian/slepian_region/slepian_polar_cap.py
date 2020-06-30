@@ -8,9 +8,9 @@ from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 from scipy.special import factorial as fact
 
-from pys2sleplet.config.config import settings
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region

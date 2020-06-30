@@ -6,11 +6,11 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
-from pys2sleplet.config.config import settings
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.polar_cap.inputs import THETA_MAX, L
 from pys2sleplet.plotting.polar_cap.utils import sort_and_clean_df
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 

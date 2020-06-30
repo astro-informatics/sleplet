@@ -14,7 +14,7 @@ from plotly.graph_objs.layout.scene.camera import Eye
 from plotly.graph_objs.surface import ColorBar, Lighting
 from plotly.graph_objs.surface.colorbar import Tickfont
 
-from pys2sleplet.config.config import settings
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import convert_colourscale
 from pys2sleplet.utils.vars import MID_COLOURBAR, SAMPLING_SCHEME, ZOOM_DEFAULT
