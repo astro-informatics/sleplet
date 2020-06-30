@@ -120,8 +120,7 @@ def test_integrate_two_slepian_polar_cap_functions_whole_sphere_matrix(
     """
     output = _integrate_whole_matrix_helper(slepian_polar_cap.eigenvectors)
     desired = np.identity(output.shape[0])
-    test = np.abs(output - desired).mean()
-    assert_allclose(test, 0, atol=1e-3)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
 
 
 @pytest.mark.slow
@@ -134,8 +133,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
     """
     output = _integrate_whole_matrix_helper(slepian_lim_lat_lon.eigenvectors)
     desired = np.identity(output.shape[0])
-    test = np.abs(output - desired).mean()
-    assert_allclose(test, 0, atol=1e-5)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-5)
 
 
 @pytest.mark.slow
@@ -150,8 +148,7 @@ def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
         slepian_polar_cap.eigenvectors, mask=slepian_polar_cap.mask
     )
     desired = slepian_polar_cap.eigenvalues * np.identity(output.shape[0])
-    test = np.abs(output - desired).mean()
-    assert_allclose(test, 0, atol=1e-3)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
 
 
 @pytest.mark.slow
@@ -166,8 +163,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
         slepian_lim_lat_lon.eigenvectors, mask=slepian_lim_lat_lon.mask
     )
     desired = slepian_lim_lat_lon.eigenvalues * np.identity(output.shape[0])
-    test = np.abs(output - desired).mean()
-    assert_allclose(test, 0, atol=1e-4)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-4)
 
 
 def test_pass_incorrect_mask_size_to_integrate_region(

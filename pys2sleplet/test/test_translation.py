@@ -6,7 +6,6 @@ from numpy.testing import assert_allclose
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.test.constants import L_LARGE as L
 from pys2sleplet.test.constants import RANDOM_SEED
-from pys2sleplet.utils.logger import logger
 
 
 def valid_alphas() -> SearchStrategy[float]:
@@ -34,7 +33,4 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     dd = DiracDelta(L)
     dd_rot = dd.rotate(alpha_pi_frac, beta_pi_frac)
     dd_trans = dd.translate(alpha_pi_frac, beta_pi_frac)
-    assert_allclose(dd_rot, dd_trans, rtol=1e-14)
-
-    flm_diff = dd_rot - dd_trans
-    logger.info(f"Translation/rotation difference max error: {np.abs(flm_diff).max()}")
+    assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=1e-16)
