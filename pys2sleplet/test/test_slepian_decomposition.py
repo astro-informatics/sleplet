@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 from numpy.testing import assert_allclose, assert_raises
 
@@ -13,9 +14,8 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     f_p = polar_cap_decomposition.decompose_all(method="integrate_region")
     g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
     h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(f_p, g_p, rtol=1e8)
-    assert_allclose(g_p, h_p, rtol=1e-2)
-    assert_allclose(h_p, f_p, rtol=1.1)
+    assert_allclose(np.abs(f_p - h_p).mean(), 0, atol=1e8)
+    assert_allclose(np.abs(g_p - h_p).mean(), 0, atol=0.04)
 
 
 @pytest.mark.slow
@@ -27,9 +27,8 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     f_p = lim_lat_lon_decomposition.decompose_all(method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose_all(method="integrate_sphere")
     h_p = lim_lat_lon_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(f_p, g_p, rtol=1e15)
-    assert_allclose(g_p, h_p, rtol=1.0)
-    assert_allclose(h_p, f_p, rtol=1.3)
+    assert_allclose(np.abs(f_p - h_p).mean(), 0, atol=1e9)
+    assert_allclose(np.abs(g_p - h_p).mean(), 0, atol=1e-3)
 
 
 def test_pass_function_without_region() -> None:
