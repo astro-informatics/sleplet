@@ -11,7 +11,6 @@ from scipy.special import factorial as fact
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import config
-from pys2sleplet.utils.harmonic_methods import create_emm_vector
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -74,7 +73,7 @@ class SlepianPolarCap(SlepianFunctions):
         )
 
     def _solve_eigenproblem(self) -> None:
-        emm = create_emm_vector(self.L)
+        emm = self._create_emm_vec()
         Dm = self._load_Dm_matrix(emm)
 
         # solve eigenproblem for order 'm'
@@ -93,6 +92,19 @@ class SlepianPolarCap(SlepianFunctions):
         self.annotations.append(
             {**dict(x=x[0], y=y[0], z=z[0], arrowcolor=colour), **ARROW_STYLE}
         )
+
+    def _create_emm_vec(self) -> np.ndarray:
+        """
+        create emm vector for eigenproblem
+        """
+        emm = np.zeros(2 * self.L * 2 * self.L)
+        k = 0
+
+        for l in range(2 * self.L):
+            M = 2 * l + 1
+            emm[k : k + M] = np.arange(-l, l + 1)
+            k = k + M
+        return emm
 
     def _load_Dm_matrix(self, emm: np.ndarray) -> np.ndarray:
         """
