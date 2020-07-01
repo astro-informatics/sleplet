@@ -123,9 +123,11 @@ class Plot:
             else:
                 f, f_sp, phi_sp = f
 
-        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
+        theta_grid, phi_grid = ssht.sample_positions(
+            resolution, Grid=True, Method=method
+        )
 
-        if thetas.size != f.size:
+        if theta_grid.size != f.size:
             raise Exception("Bandlimit L deos not match that of f")
 
         f_plot = f.copy()
@@ -157,8 +159,8 @@ class Plot:
                 f_normalised = np.insert(
                     f_normalised, n_phi, f_normalised[:, 0], axis=1
                 )
-            thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
-            phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
+            thetas = np.insert(theta_grid, n_phi, theta_grid[:, 0], axis=1)
+            phis = np.insert(phi_grid, n_phi, phi_grid[:, 0], axis=1)
 
         # % Compute location of vertices.
         if parametric:

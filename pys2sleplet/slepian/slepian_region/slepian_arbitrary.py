@@ -27,7 +27,6 @@ class SlepianArbitrary(SlepianFunctions):
     _mask_name: str = field(init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
-    _ylm: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.N = self.L * self.L
