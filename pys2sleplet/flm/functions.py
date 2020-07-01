@@ -150,7 +150,7 @@ class Functions:
 
     @multipole.setter
     def multipole(self, multipole: np.ndarray) -> None:
-        if self.region is not None:
+        if self.region is not None and "slepian" not in self.name:
             multipole = ensure_masked_flm_bandlimited(
                 multipole, self.L, self.region, self.reality
             )
