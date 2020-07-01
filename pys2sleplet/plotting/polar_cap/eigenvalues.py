@@ -1,17 +1,15 @@
 from pathlib import Path
-from typing import Tuple
+from typing import Dict, Tuple
 
 import numpy as np
-import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
 from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, L
-from pys2sleplet.plotting.polar_cap.utils import sort_and_clean_df
+from pys2sleplet.plotting.polar_cap.utils import create_table
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.logger import logger
 
 LEGEND_POS = (0, 0)
 ORDERS = 15
@@ -46,12 +44,12 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     """
     helper method which actually makes the plot
     """
-    df = _create_eigenvalues(theta_max)
+    df = create_table(_helper, ORDERS, RANKS, theta_max=theta_max)
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
     sns.scatterplot(
         x=df.index,
-        y=df["lam"],
+        y=df["qty"],
         hue=df["m"],
         hue_order=df.sort_values(by="order")["m"],
         legend=legend,
@@ -73,27 +71,11 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     )
 
 
-def _create_eigenvalues(theta_max: int) -> pd.DataFrame:
-    """
-    calculates all Slepian eigenvalues for all orders and sorts them
-    """
-    df = pd.DataFrame()
-    for order in range(-(L - 1), L):
-        logger.info(f"calculating theta_max={theta_max}, order={order}")
-        eigenvalues = _helper(theta_max, order)
-        df_tmp = pd.DataFrame()
-        df_tmp["lam"] = eigenvalues
-        df_tmp["order"] = abs(order)
-        df = pd.concat([df, df_tmp], ignore_index=True)
-    df = sort_and_clean_df(df, ORDERS, RANKS, "lam")
-    return df
-
-
-def _helper(theta_max: int, order: int) -> np.ndarray:
+def _helper(order: int, kwargs: Dict) -> np.ndarray:
     """
     computes the Slepian eigenvalues for the given order
     """
-    slepian = SlepianPolarCap(L, np.deg2rad(theta_max), order=order)
+    slepian = SlepianPolarCap(L, np.deg2rad(kwargs["theta_max"]), order=order)
     return slepian.eigenvalues
 
 

@@ -1,18 +1,16 @@
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
-from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.polar_cap.inputs import THETA_MAX, L
-from pys2sleplet.plotting.polar_cap.utils import sort_and_clean_df
-from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
+from pys2sleplet.plotting.polar_cap.utils import (
+    create_table,
+    earth_region_harmonic_coefficients,
+    earth_region_slepian_coefficients,
+)
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.region import Region
 
 ORDERS = 15
 RANKS = 100
@@ -26,17 +24,19 @@ def main() -> None:
     """
     creates a plot of Slepian coefficient against rank
     """
-    df = _slepian_coefficients()
+    df = create_table(
+        earth_region_slepian_coefficients, ORDERS, RANKS, method="harmonic_sum"
+    )
     sns.scatterplot(
         x=df.index,
-        y=df["f_p"],
+        y=df["qty"],
         hue=df["m"],
         hue_order=df.sort_values(by="order")["m"],
         legend="full",
         style=df["m"],
         markers=MarkerStyle.filled_markers[:ORDERS],
     )
-    flm = _harmonic_coefficients()
+    flm = earth_region_harmonic_coefficients()[:RANKS]
     sns.scatterplot(
         x=range(len(flm)), y=flm, marker=".", color="black", label="harmonic"
     )
@@ -53,44 +53,6 @@ def main() -> None:
             plt.savefig(filename, bbox_inches="tight")
     if settings.AUTO_OPEN:
         plt.show()
-
-
-def _slepian_coefficients() -> pd.DataFrame:
-    """
-    calculates all Slepian coefficients for all orders and sorts them
-    """
-    df = pd.DataFrame()
-    for order in range(-(L - 1), L):
-        logger.info(f"calculating order={order}")
-        coefficients = np.abs(_helper(order))
-        df_tmp = pd.DataFrame()
-        df_tmp["f_p"] = coefficients
-        df_tmp["order"] = abs(order)
-        df = pd.concat([df, df_tmp], ignore_index=True)
-    df = sort_and_clean_df(df, ORDERS, RANKS, "f_p")
-    return df
-
-
-def _helper(order: int) -> np.ndarray:
-    """
-    computes the Slepian coefficients for the given order
-    """
-    region = Region(theta_max=np.deg2rad(THETA_MAX), order=order)
-    earth = Earth(L, region=region)
-    sd = SlepianDecomposition(earth)
-    coefficients = sd.decompose_all()
-    return coefficients
-
-
-def _harmonic_coefficients() -> np.ndarray:
-    """
-    harmonic coefficients of the Earth for the polar cap region
-    """
-    region = Region(theta_max=np.deg2rad(THETA_MAX))
-    earth = Earth(L, region=region)
-    coefficients = np.abs(earth.multipole)
-    coefficients[::-1].sort()
-    return coefficients[:RANKS]
 
 
 if __name__ == "__main__":

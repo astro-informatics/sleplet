@@ -1,7 +1,56 @@
+from typing import Callable, Dict
+
+import numpy as np
 import pandas as pd
 
+from pys2sleplet.flm.maps.earth import Earth
+from pys2sleplet.plotting.polar_cap.inputs import THETA_MAX, L
+from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
+from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.region import Region
 
-def sort_and_clean_df(
+
+def earth_region_harmonic_coefficients() -> np.ndarray:
+    """
+    harmonic coefficients of the Earth for the polar cap region
+    """
+    region = Region(theta_max=np.deg2rad(THETA_MAX))
+    earth = Earth(L, region=region)
+    coefficients = np.abs(earth.multipole)
+    coefficients[::-1].sort()
+    return coefficients
+
+
+def earth_region_slepian_coefficients(order: int, kwargs: Dict) -> np.ndarray:
+    """
+    computes the Slepian coefficients for the given order
+    """
+    region = Region(theta_max=np.deg2rad(THETA_MAX), order=order)
+    earth = Earth(L, region=region)
+    sd = SlepianDecomposition(earth)
+    coefficients = np.abs(sd.decompose_all(method=kwargs["method"]))
+    return coefficients
+
+
+def create_table(
+    helper: Callable[..., float], order_max: int, rank_max: int, **kwargs: int
+) -> pd.DataFrame:
+    """
+    calculates given quantity for all Slepian orders and sorts them
+    """
+    df = pd.DataFrame()
+    for order in range(-(L - 1), L):
+        logger.info(f"calculating order={order}")
+        quantity = helper(order, kwargs)
+        df_tmp = pd.DataFrame()
+        df_tmp["qty"] = quantity
+        df_tmp["order"] = abs(order)
+        df = pd.concat([df, df_tmp], ignore_index=True)
+    df = _sort_and_clean_df(df, order_max, rank_max, "qty")
+    return df
+
+
+def _sort_and_clean_df(
     df: pd.DataFrame, order_max: int, rank_max: int, col: str
 ) -> pd.DataFrame:
     """
