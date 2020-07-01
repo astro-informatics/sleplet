@@ -179,6 +179,9 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -> complex:
+        """
+        calculates the D integral between two spherical harmonics
+        """
         flm = self._f(i)
         glm = self._f(j)
         integration = integrate_sphere(
@@ -187,6 +190,9 @@ class SlepianArbitrary(SlepianFunctions):
         return integration
 
     def _f(self, i: int) -> np.ndarray:
+        """
+        computes the spherical harmonic for the provided index
+        """
         flm = np.zeros(self.L * self.L, dtype=complex)
         flm[i] = 1
         return flm
