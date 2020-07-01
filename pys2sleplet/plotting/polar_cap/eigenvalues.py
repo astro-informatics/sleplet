@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Tuple
 
 import numpy as np
 import seaborn as sns
@@ -71,7 +71,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     )
 
 
-def _helper(L: int, theta_max: int, order: int, kwargs: Dict) -> np.ndarray:
+def _helper(L: int, theta_max: int, order: int) -> np.ndarray:
     """
     computes the Slepian eigenvalues for the given order
     """

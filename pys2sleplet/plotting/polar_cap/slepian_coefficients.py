@@ -2,18 +2,14 @@ from pathlib import Path
 
 import seaborn as sns
 from matplotlib import pyplot as plt
-from matplotlib.markers import MarkerStyle
 
-from pys2sleplet.plotting.polar_cap.inputs import THETA_MAX, L
+from pys2sleplet.plotting.polar_cap.inputs import ALPHA, SECOND_COLOUR, THETA_MAX, L
 from pys2sleplet.plotting.polar_cap.utils import (
     create_table,
     earth_region_harmonic_coefficients,
     earth_region_slepian_coefficients,
 )
 from pys2sleplet.utils.config import settings
-
-ORDERS = 15
-RANKS = 100
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -24,28 +20,18 @@ def main() -> None:
     """
     creates a plot of Slepian coefficient against rank
     """
-    df = create_table(
-        earth_region_slepian_coefficients,
-        L,
-        THETA_MAX,
-        ORDERS,
-        RANKS,
-        method="harmonic_sum",
-    )
+    flm = earth_region_harmonic_coefficients(L, THETA_MAX)
+    df = create_table(earth_region_slepian_coefficients, L, THETA_MAX)
+    sns.scatterplot(x=range(len(flm)), y=flm, label="harmonic", linewidth=0, marker=".")
     sns.scatterplot(
         x=df.index,
         y=df["qty"],
-        hue=df["m"],
-        hue_order=df.sort_values(by="order")["m"],
-        legend="full",
-        style=df["m"],
-        markers=MarkerStyle.filled_markers[:ORDERS],
+        alpha=ALPHA,
+        color=SECOND_COLOUR,
+        label="slepian",
+        linewidth=0,
+        marker="*",
     )
-    flm = earth_region_harmonic_coefficients(L, THETA_MAX)[:RANKS]
-    sns.scatterplot(
-        x=range(len(flm)), y=flm, marker=".", color="black", label="harmonic"
-    )
-    plt.legend(ncol=3)
     plt.xlabel("coefficient")
     plt.ylabel("magnitude")
 

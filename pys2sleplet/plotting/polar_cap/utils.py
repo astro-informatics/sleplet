@@ -1,4 +1,4 @@
-from typing import Callable, Dict
+from typing import Callable, Optional
 
 import numpy as np
 import pandas as pd
@@ -21,7 +21,7 @@ def earth_region_harmonic_coefficients(L: int, theta_max: int) -> np.ndarray:
 
 
 def earth_region_slepian_coefficients(
-    L: int, theta_max: int, order: int, kwargs: Dict
+    L: int, theta_max: int, order: int, method: str = "harmonic_sum"
 ) -> np.ndarray:
     """
     computes the Slepian coefficients for the given order
@@ -29,7 +29,7 @@ def earth_region_slepian_coefficients(
     region = Region(theta_max=np.deg2rad(theta_max), order=order)
     earth = Earth(L, region=region)
     sd = SlepianDecomposition(earth)
-    coefficients = np.abs(sd.decompose_all(method=kwargs["method"]))
+    coefficients = np.abs(sd.decompose_all(method=method))
     return coefficients
 
 
@@ -37,9 +37,8 @@ def create_table(
     helper: Callable[..., float],
     L: int,
     theta_max: int,
-    order_max: int,
-    rank_max: int,
-    **kwargs: int,
+    order_max: Optional[int] = None,
+    rank_max: Optional[int] = None,
 ) -> pd.DataFrame:
     """
     calculates given quantity for all Slepian orders and sorts them
@@ -47,11 +46,15 @@ def create_table(
     df = pd.DataFrame()
     for order in range(-(L - 1), L):
         logger.info(f"calculating order={order}")
-        quantity = helper(L, theta_max, order, kwargs)
+        quantity = helper(L, theta_max, order)
         df_tmp = pd.DataFrame()
         df_tmp["qty"] = quantity
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
+    if order_max is None:
+        order_max = L - 1
+    if rank_max is None:
+        rank_max = L * L
     df = _sort_and_clean_df(df, order_max, rank_max, "qty")
     return df
 
