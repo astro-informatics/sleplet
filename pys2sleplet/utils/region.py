@@ -4,7 +4,6 @@ import numpy as np
 
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
@@ -49,7 +48,6 @@ class Region:
         identify region type based on the angle inputs or a mask name
         """
         if is_polar_cap(self.phi_min, self.phi_max, self.theta_min, self.theta_max):
-            logger.info("polar cap region detected")
             self.region_type = "polar"
             self.name_ending = (
                 f"polar{'_gap' if self.gap else ''}"
@@ -59,7 +57,6 @@ class Region:
         elif is_limited_lat_lon(
             self.phi_min, self.phi_max, self.theta_min, self.theta_max
         ):
-            logger.info("limited latitude longitude region detected")
             self.region_type = "lim_lat_lon"
             self.name_ending = (
                 f"theta{angle_as_degree(self.theta_min)}"
@@ -69,7 +66,6 @@ class Region:
             )
 
         elif self.mask_name:
-            logger.info("mask specified in file detected")
             self.region_type = "arbitrary"
             self.name_ending = self.mask_name
 
