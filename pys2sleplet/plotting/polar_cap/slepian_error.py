@@ -35,7 +35,9 @@ def main() -> None:
         marker="*",
     )
     plt.xlabel("coefficient")
-    plt.ylabel("error")
+    plt.ylabel("relative error")
+    plt.yscale("log")
+    plt.ylim([1e-17, 1e13])
 
     plt.tight_layout()
     if settings.SAVE_FIG:
@@ -58,7 +60,7 @@ def _helper_sphere(L: int, theta_max: int, order: int) -> np.ndarray:
         L, theta_max, order, method="integrate_sphere"
     )
     desired = earth_region_slepian_coefficients(L, theta_max, order)
-    error = np.abs(output - desired)
+    error = np.abs(output - desired) / desired
     return error
 
 
@@ -70,7 +72,7 @@ def _helper_region(L: int, theta_max: int, order: int) -> np.ndarray:
         L, theta_max, order, method="integrate_region"
     )
     desired = earth_region_slepian_coefficients(L, theta_max, order)
-    error = np.abs(output - desired)
+    error = np.abs(output - desired) / desired
     return error
 
 
