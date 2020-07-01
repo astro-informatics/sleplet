@@ -37,3 +37,17 @@ def ensure_f_bandlimited(
     f = grid_fun(theta_grid, phi_grid)
     flm = ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME)
     return flm
+
+
+def create_emm_vector(L: int) -> np.ndarray:
+    """
+    create vector of m values for a given L
+    """
+    emm = np.zeros(2 * L * 2 * L)
+    k = 0
+
+    for l in range(2 * L):
+        M = 2 * l + 1
+        emm[k : k + M] = np.arange(-l, l + 1)
+        k = k + M
+    return emm
