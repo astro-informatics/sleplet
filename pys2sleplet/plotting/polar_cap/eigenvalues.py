@@ -25,7 +25,7 @@ sns.set()
 
 def main() -> None:
     """
-    creates a plot of Slepian coefficient against rank
+    creates a plot of Slepian eigenvalues against rank
     """
     N = len(THETA_RANGE) // 2
     _, ax = plt.subplots(N, N, sharex="col", sharey="row")
@@ -75,7 +75,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
 
 def _create_eigenvalues(theta_max: int) -> pd.DataFrame:
     """
-    calculates all Slepian coefficients for all orders and sorts them
+    calculates all Slepian eigenvalues for all orders and sorts them
     """
     df = pd.DataFrame()
     for order in range(-(L - 1), L):
@@ -91,7 +91,7 @@ def _create_eigenvalues(theta_max: int) -> pd.DataFrame:
 
 def _helper(theta_max: int, order: int) -> np.ndarray:
     """
-    computes the Slepian coefficients for the given order
+    computes the Slepian eigenvalues for the given order
     """
     slepian = SlepianPolarCap(L, np.deg2rad(theta_max), order=order)
     return slepian.eigenvalues
