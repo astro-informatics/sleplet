@@ -106,7 +106,7 @@ class SlepianDecomposition:
         if rank < 0:
             raise ValueError("rank cannot be negative")
         if rank >= self.N:
-            raise ValueError(f"rank should be less than or equal to {self.N}")
+            raise ValueError(f"rank should be less than {self.N}")
 
     @property
     def flm(self) -> np.ndarray:

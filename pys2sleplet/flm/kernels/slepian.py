@@ -58,7 +58,7 @@ class Slepian(Functions):
         if isinstance(self.extra_args, list):
             limit = self.slepian.eigenvectors.shape[0]
             if self.extra_args[0] >= limit:
-                raise ValueError(f"rank should be less than or equal to {limit}")
+                raise ValueError(f"rank should be less than {limit}")
 
     @property  # type: ignore
     def rank(self) -> int:
