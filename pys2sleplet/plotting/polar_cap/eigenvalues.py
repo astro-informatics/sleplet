@@ -44,7 +44,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     """
     helper method which actually makes the plot
     """
-    df = create_table(_helper, ORDERS, RANKS, theta_max=theta_max)
+    df = create_table(_helper, L, theta_max, ORDERS, RANKS)
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
     sns.scatterplot(
@@ -71,11 +71,11 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     )
 
 
-def _helper(order: int, kwargs: Dict) -> np.ndarray:
+def _helper(L: int, theta_max: int, order: int, kwargs: Dict) -> np.ndarray:
     """
     computes the Slepian eigenvalues for the given order
     """
-    slepian = SlepianPolarCap(L, np.deg2rad(kwargs["theta_max"]), order=order)
+    slepian = SlepianPolarCap(L, np.deg2rad(theta_max), order=order)
     return slepian.eigenvalues
 
 

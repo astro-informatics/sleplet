@@ -25,7 +25,12 @@ def main() -> None:
     creates a plot of Slepian coefficient against rank
     """
     df = create_table(
-        earth_region_slepian_coefficients, ORDERS, RANKS, method="harmonic_sum"
+        earth_region_slepian_coefficients,
+        L,
+        THETA_MAX,
+        ORDERS,
+        RANKS,
+        method="harmonic_sum",
     )
     sns.scatterplot(
         x=df.index,
@@ -36,7 +41,7 @@ def main() -> None:
         style=df["m"],
         markers=MarkerStyle.filled_markers[:ORDERS],
     )
-    flm = earth_region_harmonic_coefficients()[:RANKS]
+    flm = earth_region_harmonic_coefficients(L, THETA_MAX)[:RANKS]
     sns.scatterplot(
         x=range(len(flm)), y=flm, marker=".", color="black", label="harmonic"
     )
