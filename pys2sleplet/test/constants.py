@@ -1,6 +1,6 @@
 import numpy as np
 
-L_SMALL: int = 8
+L_SMALL: int = 4
 L_LARGE: int = 32
 ORDER: int = 0
 PHI_0: float = np.pi / 6

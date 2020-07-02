@@ -65,9 +65,9 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_per_rank(
         slepian_lim_lat_lon.eigenvectors, rank1, rank2
     )
     if rank1 == rank2:
-        assert_allclose(output, 1, atol=1e-5)
+        assert_allclose(output, 1, atol=1e-3)
     else:
-        assert_allclose(output, 0, atol=1e-5)
+        assert_allclose(output, 0, atol=1e-4)
 
 
 @seed(RANDOM_SEED)
@@ -85,7 +85,7 @@ def test_integrate_two_slepian_polar_functions_region_sphere_per_rank(
     )
     lambda_p = slepian_polar_cap.eigenvalues[rank1]
     if rank1 == rank2:
-        assert_allclose(output, lambda_p, rtol=1e-3)
+        assert_allclose(output, lambda_p, rtol=0.05)
     else:
         assert_allclose(output, 0, atol=1e-2)
 
@@ -105,12 +105,11 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_per_rank(
     )
     lambda_p = slepian_lim_lat_lon.eigenvalues[rank1]
     if rank1 == rank2:
-        assert_allclose(output, lambda_p, rtol=1e-2)
+        assert_allclose(output, lambda_p, rtol=0.09)
     else:
         assert_allclose(output, 0, atol=1e-2)
 
 
-@pytest.mark.slow
 def test_integrate_two_slepian_polar_cap_functions_whole_sphere_matrix(
     slepian_polar_cap,
 ) -> None:
@@ -120,7 +119,7 @@ def test_integrate_two_slepian_polar_cap_functions_whole_sphere_matrix(
     """
     output = _integrate_whole_matrix_helper(slepian_polar_cap.eigenvectors)
     desired = np.identity(output.shape[0])
-    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-4)
 
 
 @pytest.mark.slow
@@ -136,7 +135,6 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
     assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-5)
 
 
-@pytest.mark.slow
 def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
     slepian_polar_cap,
 ) -> None:
