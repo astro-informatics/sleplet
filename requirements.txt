@@ -5,4 +5,3 @@ matplotlib
 multiprocess
 plotly
 pytest
-toml
