@@ -10,6 +10,7 @@ from multiprocess.shared_memory import SharedMemory
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.harmonic_methods import create_spherical_harmonic
 from pys2sleplet.utils.integration_methods import integrate_sphere
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
@@ -181,20 +182,12 @@ class SlepianArbitrary(SlepianFunctions):
         """
         calculates the D integral between two spherical harmonics
         """
-        flm = self._f(i)
-        glm = self._f(j)
+        flm = create_spherical_harmonic(i)
+        glm = create_spherical_harmonic(j)
         integration = integrate_sphere(
             self.L, self.resolution, flm, glm, mask_boosted=self.mask, glm_conj=True
         )
         return integration
-
-    def _f(self, i: int) -> np.ndarray:
-        """
-        computes the spherical harmonic for the provided index
-        """
-        flm = np.zeros(self.L * self.L, dtype=complex)
-        flm[i] = 1
-        return flm
 
     @staticmethod
     def _clean_evals_and_evecs(

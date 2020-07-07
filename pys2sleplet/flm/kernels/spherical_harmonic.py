@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 
-import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.harmonic_methods import create_spherical_harmonic
 from pys2sleplet.utils.string_methods import filename_args
 
 
@@ -18,10 +18,8 @@ class SphericalHarmonic(Functions):
         pass
 
     def _create_flm(self) -> None:
-        flm = np.zeros(self.L * self.L, dtype=complex)
         ind = ssht.elm2ind(self.ell, self.m)
-        flm[ind] = 1
-        self.multipole = flm
+        self.multipole = create_spherical_harmonic(self.L, ind)
 
     def _create_name(self) -> None:
         self.name = (

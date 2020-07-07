@@ -6,6 +6,15 @@ import pyssht as ssht
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
+def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
+    """
+    create a spherical harmonic in harmonic space for the given index
+    """
+    flm = np.zeros(L * L, dtype=complex)
+    flm[ind] = 1
+    return flm
+
+
 def _boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarray:
     """
     calculates a boost in resolution for given flm
