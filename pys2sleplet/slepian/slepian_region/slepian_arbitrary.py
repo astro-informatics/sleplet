@@ -182,8 +182,8 @@ class SlepianArbitrary(SlepianFunctions):
         """
         calculates the D integral between two spherical harmonics
         """
-        flm = create_spherical_harmonic(i)
-        glm = create_spherical_harmonic(j)
+        flm = create_spherical_harmonic(self.L, i)
+        glm = create_spherical_harmonic(self.L, j)
         integration = integrate_sphere(
             self.L, self.resolution, flm, glm, mask_boosted=self.mask, glm_conj=True
         )
