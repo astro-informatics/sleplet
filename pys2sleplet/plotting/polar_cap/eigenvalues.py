@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
-from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, L
+from pys2sleplet.plotting.polar_cap.polar_inputs import TEXT_BOX, L
 from pys2sleplet.plotting.polar_cap.utils import create_table
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings

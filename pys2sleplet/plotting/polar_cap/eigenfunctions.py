@@ -4,7 +4,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.polar_cap.inputs import TEXT_BOX, THETA_MAX, L
+from pys2sleplet.plotting.polar_cap.polar_inputs import TEXT_BOX, THETA_MAX, L
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted

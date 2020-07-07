@@ -4,7 +4,12 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.polar_cap.inputs import ALPHA, SECOND_COLOUR, THETA_MAX, L
+from pys2sleplet.plotting.polar_cap.polar_inputs import (
+    ALPHA,
+    SECOND_COLOUR,
+    THETA_MAX,
+    L,
+)
 from pys2sleplet.plotting.polar_cap.utils import (
     create_table,
     earth_region_slepian_coefficients,
