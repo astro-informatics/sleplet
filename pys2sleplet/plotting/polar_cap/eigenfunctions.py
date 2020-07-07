@@ -4,7 +4,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.polar_cap.polar_inputs import TEXT_BOX, THETA_MAX, L
+from pys2sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
@@ -12,9 +12,11 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
+L = 19
 ORDERS = 5
 PHI_IDX = 0
 RANKS = 4
+RESOLUTION = calc_plot_resolution(L)
 SIGNS = [[1, -1, 1, -1], [1, -1, -1, -1], [1, 1, 1, 1], [-1, -1, -1, -1], [1, 1, 1, 1]]
 
 
@@ -27,8 +29,7 @@ def main() -> None:
     """
     create fig 5.1 from Spatiospectral Concentration on a Sphere by Simons et al 2006
     """
-    resolution = calc_plot_resolution(L)
-    x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), resolution + 1)
+    x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
     i = (x < THETA_MAX).sum() - 1
     _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
     plt.setp(
@@ -42,7 +43,7 @@ def main() -> None:
     for order in range(ORDERS):
         slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
-            _helper(ax, slepian, resolution, x, i, order, rank)
+            _helper(ax, slepian, RESOLUTION, x, i, order, rank)
 
     plt.tight_layout()
     if settings.SAVE_FIG:

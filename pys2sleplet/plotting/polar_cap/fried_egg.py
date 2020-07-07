@@ -1,11 +1,12 @@
 import numpy as np
 
 from pys2sleplet.flm.kernels.slepian import Slepian
-from pys2sleplet.plotting.polar_cap.polar_inputs import THETA_MAX, L
+from pys2sleplet.plotting.inputs import THETA_MAX
 from pys2sleplet.scripts.plotting import plot
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 
+L = 19
 ORDER_RANK = {0: 4, 1: 3, 2: 3, 3: 2, 4: 2, 5: 2, 6: 1, 7: 1}
 
 

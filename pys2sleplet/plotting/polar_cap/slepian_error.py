@@ -4,17 +4,14 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.polar_cap.polar_inputs import (
-    ALPHA,
-    SECOND_COLOUR,
-    THETA_MAX,
-    L,
-)
+from pys2sleplet.plotting.inputs import ALPHA, SECOND_COLOUR, THETA_MAX
 from pys2sleplet.plotting.polar_cap.utils import (
     create_table,
     earth_region_slepian_coefficients,
 )
 from pys2sleplet.utils.config import settings
+
+L = 19
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
