@@ -2,5 +2,11 @@ black
 flake8
 isort
 mypy
+numpy
+pandas
 pre-commit
+pyssht
+scipy
+seaborn
 seed-isort-config
+setuptools
