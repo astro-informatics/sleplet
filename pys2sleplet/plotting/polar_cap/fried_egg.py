@@ -28,8 +28,7 @@ def _helper(order: int, rank: int) -> None:
     for r in range(rank):
         logger.info(f"plotting order={order}, rank={r}")
         slepian = Slepian(L, rank=r, region=region)
-        for plot_type in ["real", "imag", "abs"]:
-            plot(slepian, plot_type=plot_type)
+        plot(slepian)
 
 
 if __name__ == "__main__":
