@@ -10,6 +10,7 @@ from pys2sleplet.plotting.inputs import TEXT_BOX
 from pys2sleplet.plotting.polar_cap.utils import create_table
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.logger import logger
 
 L = 19
 LEGEND_POS = (0, 0)
@@ -45,6 +46,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     """
     helper method which actually makes the plot
     """
+    logger.info(f"theta_max={theta_max}")
     df = create_table(_helper, L, theta_max, ORDERS, RANKS)
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
