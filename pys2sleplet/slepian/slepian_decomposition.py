@@ -3,7 +3,10 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.integration_methods import integrate_sphere
+from pys2sleplet.utils.integration_methods import (
+    calc_integration_weight,
+    integrate_sphere,
+)
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
 from pys2sleplet.utils.vars import DECOMPOSITION_DEFAULT
 
@@ -19,6 +22,7 @@ class SlepianDecomposition:
     _mask: np.ndarray = field(init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
     _s_p_lms: np.ndarray = field(init=False, repr=False)
+    _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.L = self.function.L
@@ -28,6 +32,7 @@ class SlepianDecomposition:
         self.lambdas = slepian.eigenvalues
         self.mask = slepian.mask
         self.resolution = slepian.resolution
+        self.weight = calc_integration_weight(self.resolution)
         self.s_p_lms = slepian.eigenvectors
         self.N = self.s_p_lms.shape[0]
 
@@ -70,6 +75,7 @@ class SlepianDecomposition:
             self.resolution,
             self.flm,
             self.s_p_lms[rank],
+            self.weight,
             glm_conj=True,
             mask_boosted=self.mask,
         )
@@ -83,7 +89,12 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}
         """
         f_p = integrate_sphere(
-            self.L, self.resolution, self.flm, self.s_p_lms[rank], glm_conj=True
+            self.L,
+            self.resolution,
+            self.flm,
+            self.s_p_lms[rank],
+            self.weight,
+            glm_conj=True,
         )
         return f_p
 
@@ -175,3 +186,11 @@ class SlepianDecomposition:
     @s_p_lms.setter
     def s_p_lms(self, s_p_lms: np.ndarray) -> None:
         self._s_p_lms = s_p_lms
+
+    @property
+    def weight(self) -> np.ndarray:
+        return self._weight
+
+    @weight.setter
+    def weight(self, weight: np.ndarray) -> None:
+        self._weight = weight

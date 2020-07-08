@@ -24,7 +24,7 @@ def calc_integration_resolution(L: int) -> int:
     return 1
 
 
-def _integration_weight(L: int) -> np.ndarray:
+def calc_integration_weight(L: int) -> np.ndarray:
     """
     computes the spherical Jacobian for the integration
     """
@@ -40,6 +40,7 @@ def integrate_sphere(
     resolution: int,
     flm: np.ndarray,
     glm: np.ndarray,
+    weight: np.ndarray,
     flm_reality: bool = False,
     glm_reality: bool = False,
     flm_conj: bool = False,
@@ -59,7 +60,6 @@ def integrate_sphere(
                 f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
             )
 
-    weight = _integration_weight(resolution)
     f = invert_flm_boosted(flm, L, resolution, reality=flm_reality)
     g = invert_flm_boosted(glm, L, resolution, reality=glm_reality)
 

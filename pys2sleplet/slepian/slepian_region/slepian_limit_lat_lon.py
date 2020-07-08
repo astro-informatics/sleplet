@@ -86,6 +86,11 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.resolution, self.region)
 
+    def _calculate_area(self) -> None:
+        self.area = (self.phi_max - self.phi_min) * (
+            np.cos(self.theta_min) - np.cos(self.theta_max)
+        )
+
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
             _file_location.parents[2]

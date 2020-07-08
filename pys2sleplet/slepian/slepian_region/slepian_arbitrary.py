@@ -11,7 +11,10 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import create_spherical_harmonic
-from pys2sleplet.utils.integration_methods import integrate_sphere
+from pys2sleplet.utils.integration_methods import (
+    calc_integration_weight,
+    integrate_sphere,
+)
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -28,6 +31,7 @@ class SlepianArbitrary(SlepianFunctions):
     _mask_name: str = field(init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
+    _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.N = self.L * self.L
@@ -42,6 +46,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.resolution, self.region)
+
+    def _calculate_area(self) -> None:
+        self.weight = calc_integration_weight(self.resolution)
+        self.area = np.where(self.mask, self.weight, 0).sum()
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -185,7 +193,13 @@ class SlepianArbitrary(SlepianFunctions):
         flm = create_spherical_harmonic(self.L, i)
         glm = create_spherical_harmonic(self.L, j)
         integration = integrate_sphere(
-            self.L, self.resolution, flm, glm, mask_boosted=self.mask, glm_conj=True
+            self.L,
+            self.resolution,
+            flm,
+            glm,
+            self.weight,
+            mask_boosted=self.mask,
+            glm_conj=True,
         )
         return integration
 
@@ -248,3 +262,11 @@ class SlepianArbitrary(SlepianFunctions):
     @region.setter
     def region(self, region: Region) -> None:
         self._region = region
+
+    @property
+    def weight(self) -> np.ndarray:
+        return self._weight
+
+    @weight.setter
+    def weight(self, weight: np.ndarray) -> None:
+        self._weight = weight

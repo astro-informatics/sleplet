@@ -7,7 +7,10 @@ from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrar
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from pys2sleplet.utils.integration_methods import integrate_sphere
+from pys2sleplet.utils.integration_methods import (
+    calc_integration_weight,
+    integrate_sphere,
+)
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 
@@ -52,7 +55,10 @@ def integrate_two_slepian_functions_per_rank(
     """
     flm = eigenvectors[rank1]
     glm = eigenvectors[rank2]
-    output = integrate_sphere(L, resolution, flm, glm, glm_conj=True, mask_boosted=mask)
+    weight = calc_integration_weight(resolution)
+    output = integrate_sphere(
+        L, resolution, flm, glm, weight, glm_conj=True, mask_boosted=mask
+    )
     return output
 
 
@@ -62,6 +68,7 @@ def integrate_whole_matrix_slepian_functions(
     """
     helper function which integrates all of the slepian functionss
     """
+    weight = calc_integration_weight(resolution)
     N = len(eigenvectors)
     output = np.zeros((N, N), dtype=complex)
     for i, flm in enumerate(eigenvectors):
@@ -69,7 +76,7 @@ def integrate_whole_matrix_slepian_functions(
             # Hermitian matrix so can use symmetry
             if i <= j:
                 output[j][i] = integrate_sphere(
-                    L, resolution, flm, glm, glm_conj=True, mask_boosted=mask
+                    L, resolution, flm, glm, weight, glm_conj=True, mask_boosted=mask
                 ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output

@@ -13,6 +13,7 @@ from pys2sleplet.utils.logger import logger
 class SlepianFunctions:
     L: int
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
+    _area: float = field(init=False, repr=False)
     _eigenvalues: np.ndarray = field(init=False, repr=False)
     _eigenvectors: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
@@ -20,6 +21,7 @@ class SlepianFunctions:
     _matrix_location: Path = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
+    _shannon: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.resolution = calc_integration_resolution(self.L)
@@ -27,6 +29,8 @@ class SlepianFunctions:
         self._create_mask()
         self._create_matrix_location()
         self._create_fn_name()
+        self._calculate_area()
+        self.shannon = round(self.area * self.L * self.L / (4 * np.pi))
         logger.info("start solving eigenproblem")
         self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
@@ -38,6 +42,14 @@ class SlepianFunctions:
     @annotations.setter
     def annotations(self, annotations: np.ndarray) -> None:
         self._annotations = annotations
+
+    @property
+    def area(self) -> float:
+        return self._area
+
+    @area.setter
+    def area(self, area: float) -> None:
+        self._area = area
 
     @property
     def eigenvalues(self) -> np.ndarray:
@@ -95,6 +107,14 @@ class SlepianFunctions:
     def resolution(self, resolution: int) -> None:
         self._resolution = resolution
 
+    @property
+    def shannon(self) -> int:
+        return self._shannon
+
+    @shannon.setter
+    def shannon(self, shannon: int) -> None:
+        self._shannon = shannon
+
     @abstractmethod
     def _create_annotations(self) -> None:
         """
@@ -113,6 +133,13 @@ class SlepianFunctions:
     def _create_mask(self) -> None:
         """
         creates a mask of the region of interest
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _calculate_area(self) -> None:
+        """
+        calculates area of region
         """
         raise NotImplementedError
 
