@@ -4,6 +4,7 @@ from typing import Tuple
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+from matplotlib.colors import LogNorm
 
 from pys2sleplet.plotting.inputs import PHI_0, PHI_1, THETA_0, THETA_1
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
@@ -13,6 +14,9 @@ from pys2sleplet.utils.slepian_methods import integrate_whole_matrix_slepian_fun
 
 L = 16
 RESOLUTION_RANGE = {16: (0, 0), 24: (0, 1), 32: (1, 0), 40: (1, 1)}
+TICK_LABELS = [
+    x if np.log2(x + 1).is_integer() and (x == 0 or x > L) else "" for x in range(L * L)
+]
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -44,8 +48,19 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], resolution: int) -> 
     logger.info(f"resolution={resolution}")
     error = _helper(L, resolution, THETA_0, THETA_1, PHI_0, PHI_1)
     axs = ax[position]
-    sns.heatmap(error, ax=axs, square=True, xticklabels=False, yticklabels=False)
+    sns.heatmap(
+        error,
+        ax=axs,
+        norm=LogNorm(),
+        square=True,
+        xticklabels=TICK_LABELS,
+        yticklabels=TICK_LABELS,
+    )
     axs.set_title(r"$L_{\mathrm{effective}}=%s$" % resolution)
+    if position[1] == 0:
+        axs.set_ylabel("p")
+    if position[0] == 1:
+        axs.set_xlabel("p")
 
 
 def _helper(
