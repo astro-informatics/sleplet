@@ -6,6 +6,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
+from numba import jit
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -213,7 +214,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         K_i = np.zeros((self.L * self.L, self.L * self.L))
 
         for l in range(self.L):
-            self._slepian_matrix_helper(K_r, K_i, l, dl_array, G)
+            self._slepian_matrix_helper(K_r, K_i, l, dl_array, G, self.N)
 
         # combine real and imaginary parts
         K = K_r + 1j * K_i
@@ -266,7 +267,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
             # deal with chunk
             for l in chunk:
-                self._slepian_matrix_helper(K_r_int, K_i_int, l, dl_array, G)
+                self._slepian_matrix_helper(K_r_int, K_i_int, l, dl_array, G, self.N)
 
             # clean up shared memory
             ex_shm_r.close()
@@ -293,13 +294,15 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         return K
 
+    @staticmethod
+    @jit
     def _slepian_matrix_helper(
-        self,
         K_r: np.ndarray,
         K_i: np.ndarray,
         l: int,
         dl_array: np.ndarray,
         G: np.ndarray,
+        N: int,
     ) -> None:
         """
         used in both serial and parallel calculations
@@ -315,22 +318,16 @@ class SlepianLimitLatLon(SlepianFunctions):
                     idx = (l * (l + 1) + m, p * (p + 1) + q)
                     row = m - q
                     C2 = (-1j) ** row
-                    ind_r = 2 * self.N + row
+                    ind_r = 2 * N + row
 
                     for mp in range(-l, l + 1):
-                        C3 = (
-                            dl_array[l, self.N + mp, self.N + m]
-                            * dl_array[l, self.N + mp, self.N]
-                        )
+                        C3 = dl_array[l, N + mp, N + m] * dl_array[l, N + mp, N]
                         S1 = 0
 
                         for qp in range(-p, p + 1):
                             col = mp - qp
-                            C4 = (
-                                dl_array[p, self.N + qp, self.N + q]
-                                * dl_array[p, self.N + qp, self.N]
-                            )
-                            ind_c = 2 * self.N + col
+                            C4 = dl_array[p, N + qp, N + q] * dl_array[p, N + qp, N]
+                            ind_c = 2 * N + col
                             S1 += C4 * G[ind_r, ind_c]
 
                         K_r[idx] += (C3 * S1).real
