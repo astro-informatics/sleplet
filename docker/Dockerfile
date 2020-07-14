@@ -10,7 +10,8 @@ WORKDIR /home/project/src/s2sleplet
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
     libmpc-dev \
-    libmpfr-dev
+    libmpfr-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 
