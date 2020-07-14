@@ -214,7 +214,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         K_i = np.zeros((self.L * self.L, self.L * self.L))
 
         for l in range(self.L):
-            self._slepian_matrix_helper(K_r, K_i, l, dl_array, G, self.N)
+            self._slepian_matrix_helper(self.N, G, dl_array, K_r, K_i, l)
 
         # combine real and imaginary parts
         K = K_r + 1j * K_i
@@ -267,7 +267,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
             # deal with chunk
             for l in chunk:
-                self._slepian_matrix_helper(K_r_int, K_i_int, l, dl_array, G, self.N)
+                self._slepian_matrix_helper(self.N, G, dl_array, K_r_int, K_i_int, l)
 
             # clean up shared memory
             ex_shm_r.close()
@@ -297,12 +297,12 @@ class SlepianLimitLatLon(SlepianFunctions):
     @staticmethod
     @njit
     def _slepian_matrix_helper(
+        N: int,
+        G: np.ndarray,
+        dl_array: np.ndarray,
         K_r: np.ndarray,
         K_i: np.ndarray,
         l: int,
-        dl_array: np.ndarray,
-        G: np.ndarray,
-        N: int,
     ) -> None:
         """
         used in both serial and parallel calculations
