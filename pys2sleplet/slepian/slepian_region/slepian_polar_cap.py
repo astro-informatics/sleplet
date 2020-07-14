@@ -2,11 +2,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Tuple
 
+import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
-from scipy.special import factorial as fact
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
@@ -230,9 +230,9 @@ class SlepianPolarCap(SlepianFunctions):
         """
         used in both serial and parallel calculations
         """
-        l = lvec[i]
+        l = int(lvec[i])
         for j in range(i, self.L - m):
-            p = lvec[j]
+            p = int(lvec[j])
             c = 0
             for n in range(abs(l - p), l + p + 1):
                 if n - 1 == -1:
@@ -306,31 +306,31 @@ class SlepianPolarCap(SlepianFunctions):
             # non-zero arguments.
             for t in range(tmin, tmax + 1):
                 s += (-1) ** t / (
-                    fact(t)
-                    * fact(t - t1)
-                    * fact(t - t2)
-                    * fact(t3 - t)
-                    * fact(t4 - t)
-                    * fact(t5 - t)
+                    gp.factorial(t)
+                    * gp.factorial(t - t1)
+                    * gp.factorial(t - t2)
+                    * gp.factorial(t3 - t)
+                    * gp.factorial(t4 - t)
+                    * gp.factorial(t5 - t)
                 )
 
             triangle_coefficient = (
-                fact(l1 + l2 - l3)
-                * fact(l1 - l2 + l3)
-                * fact(-l1 + l2 + l3)
-                / fact(l1 + l2 + l3 + 1)
+                gp.factorial(t3)
+                * gp.factorial(l1 - l2 + l3)
+                * gp.factorial(-l1 + l2 + l3)
+                / gp.factorial(l1 + l2 + l3 + 1)
             )
 
             s *= (
                 np.float_power(-1, l1 - l2 - m3)
-                * np.sqrt(triangle_coefficient)
-                * np.sqrt(
-                    fact(l1 + m1)
-                    * fact(l1 - m1)
-                    * fact(l2 + m2)
-                    * fact(l2 - m2)
-                    * fact(l3 + m3)
-                    * fact(l3 - m3)
+                * gp.sqrt(triangle_coefficient)
+                * gp.sqrt(
+                    gp.factorial(l1 + m1)
+                    * gp.factorial(t4)
+                    * gp.factorial(t5)
+                    * gp.factorial(l2 - m2)
+                    * gp.factorial(l3 + m3)
+                    * gp.factorial(l3 - m3)
                 )
             )
         return s
