@@ -6,7 +6,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
-from numba import jit
+from numba import njit
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -295,7 +295,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         return K
 
     @staticmethod
-    @jit
+    @njit
     def _slepian_matrix_helper(
         K_r: np.ndarray,
         K_i: np.ndarray,
