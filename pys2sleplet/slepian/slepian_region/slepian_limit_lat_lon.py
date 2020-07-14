@@ -307,34 +307,35 @@ class SlepianLimitLatLon(SlepianFunctions):
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease
         """
-        dl = dl_array[l]
-
         for p in range(l + 1):
-            dp = dl_array[p]
             C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
 
             for m in range(-l, l + 1):
                 for q in range(-p, p + 1):
-
+                    idx = (l * (l + 1) + m, p * (p + 1) + q)
                     row = m - q
                     C2 = (-1j) ** row
                     ind_r = 2 * self.N + row
 
                     for mp in range(-l, l + 1):
-                        C3 = dl[self.N + mp, self.N + m] * dl[self.N + mp, self.N]
+                        C3 = (
+                            dl_array[l, self.N + mp, self.N + m]
+                            * dl_array[l, self.N + mp, self.N]
+                        )
                         S1 = 0
 
                         for qp in range(-p, p + 1):
                             col = mp - qp
-                            C4 = dp[self.N + qp, self.N + q] * dp[self.N + qp, self.N]
+                            C4 = (
+                                dl_array[p, self.N + qp, self.N + q]
+                                * dl_array[p, self.N + qp, self.N]
+                            )
                             ind_c = 2 * self.N + col
                             S1 += C4 * G[ind_r, ind_c]
 
-                        idx = (l * (l + 1) + m, p * (p + 1) + q)
                         K_r[idx] += (C3 * S1).real
                         K_i[idx] += (C3 * S1).imag
 
-                    idx = (l * (l + 1) + m, p * (p + 1) + q)
                     real, imag = K_r[idx], K_i[idx]
                     K_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
                     K_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
