@@ -7,8 +7,8 @@ FROM ${DOCKER_USERNAME}/${DOCKER_IMAGE}
 WORKDIR /home/project/src/s2sleplet
 
 # required for gmpy2
-RUN apt-get install -y --no-install-recommends \
-    libgmp-dev \
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
     libmpc-dev \
     libmpfr-dev
 
