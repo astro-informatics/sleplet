@@ -306,31 +306,31 @@ class SlepianPolarCap(SlepianFunctions):
             # non-zero arguments.
             for t in range(tmin, tmax + 1):
                 s += (-1) ** t / (
-                    fact(t, exact=False)
-                    * fact(t - t1, exact=False)
-                    * fact(t - t2, exact=False)
-                    * fact(t3 - t, exact=False)
-                    * fact(t4 - t, exact=False)
-                    * fact(t5 - t, exact=False)
+                    fact(t)
+                    * fact(t - t1)
+                    * fact(t - t2)
+                    * fact(t3 - t)
+                    * fact(t4 - t)
+                    * fact(t5 - t)
                 )
 
             triangle_coefficient = (
-                fact(l1 + l2 - l3, exact=False)
-                * fact(l1 - l2 + l3, exact=False)
-                * fact(-l1 + l2 + l3, exact=False)
-                / fact(l1 + l2 + l3 + 1, exact=False)
+                fact(l1 + l2 - l3)
+                * fact(l1 - l2 + l3)
+                * fact(-l1 + l2 + l3)
+                / fact(l1 + l2 + l3 + 1)
             )
 
             s *= (
                 np.float_power(-1, l1 - l2 - m3)
                 * np.sqrt(triangle_coefficient)
                 * np.sqrt(
-                    fact(l1 + m1, exact=False)
-                    * fact(l1 - m1, exact=False)
-                    * fact(l2 + m2, exact=False)
-                    * fact(l2 - m2, exact=False)
-                    * fact(l3 + m3, exact=False)
-                    * fact(l3 - m3, exact=False)
+                    fact(l1 + m1)
+                    * fact(l1 - m1)
+                    * fact(l2 + m2)
+                    * fact(l2 - m2)
+                    * fact(l3 + m3)
+                    * fact(l3 - m3)
                 )
             )
         return s
