@@ -1,5 +1,6 @@
 cmocean
 dynaconf
+gmpy2
 hypothesis
 matplotlib
 multiprocess
