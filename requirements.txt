@@ -3,5 +3,6 @@ dynaconf
 hypothesis
 matplotlib
 multiprocess
+numba
 plotly
 pytest
