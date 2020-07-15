@@ -210,8 +210,10 @@ class SlepianLimitLatLon(SlepianFunctions):
                 C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
 
                 for m in prange(-l, l + 1):
+                    ind_lm = l * (l + 1) + m
+
                     for q in prange(-p, p + 1):
-                        idx = (l * (l + 1) + m, p * (p + 1) + q)
+                        ind_pq = p * (p + 1) + q
                         row = m - q
                         C2 = (-1j) ** row
                         ind_r = 2 * N + row
@@ -226,9 +228,9 @@ class SlepianLimitLatLon(SlepianFunctions):
                                 ind_c = 2 * N + col
                                 S1 += C4 * G[ind_r, ind_c]
 
-                            K[idx] += C3 * S1
+                            K[ind_lm, ind_pq] += C3 * S1
 
-                        K[idx] *= C1 * C2
+                        K[ind_lm, ind_pq] *= C1 * C2
         return K
 
     @staticmethod
