@@ -235,10 +235,10 @@ class SlepianPolarCap(SlepianFunctions):
             p = int(lvec[j])
             c = 0
             for n in range(abs(l - p), l + p + 1):
-                if n - 1 == -1:
-                    A = 1
-                else:
+                if n != 0:
                     A = Pl[ell == n - 1]
+                else:
+                    A = 1
                 c += (
                     self._wigner3j(l, n, p, 0, 0, 0)
                     * self._wigner3j(l, n, p, m, 0, -m)
