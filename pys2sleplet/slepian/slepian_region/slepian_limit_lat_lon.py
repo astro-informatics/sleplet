@@ -1,18 +1,15 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Tuple
+from typing import Tuple
 
 import numpy as np
 import pyssht as ssht
-from multiprocess import Pool
-from multiprocess.shared_memory import SharedMemory
-from numba import njit
+from numba import njit, prange
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
     ANNOTATION_COLOUR,
@@ -121,10 +118,9 @@ class SlepianLimitLatLon(SlepianFunctions):
             G = self._slepian_integral()
 
             # Compute Slepian matrix
-            if self.ncpu == 1:
-                K = self._slepian_matrix_serial(G)
-            else:
-                K = self._slepian_matrix_parallel(G)
+            dl_array = ssht.generate_dl(np.pi / 2, self.L)
+            K = self._slepian_matrix(dl_array, self.L, self.N, G)
+            fill_upper_triangle_of_hermitian_matrix(K)
 
             # save to speed up for future
             if settings.SAVE_MATRICES:
@@ -189,153 +185,53 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         return G
 
-    def _slepian_matrix_serial(self, G: np.ndarray) -> np.ndarray:
-        """
-        Syntax:
-        K = _slepian_matrix_serial(G)
-
-        Input:
-        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
-        Wigner-d functions in computing the Slepian integral) for all orders
-
-        Output:
-        K  =  Slepian matrix
-
-        Description:
-        This piece of code computes the Slepian matrix using the formulation
-        given in "Slepian spatialspectral concentration problem on the sphere:
-        Analytical formulation for limited colatitude-longitude spatial region"
-        by A. P. Bates, Z. Khalid and R. A. Kennedy.
-        """
-        dl_array = ssht.generate_dl(np.pi / 2, self.L)
-
-        # initialise real and imaginary matrices
-        K_r = np.zeros((self.L * self.L, self.L * self.L))
-        K_i = np.zeros((self.L * self.L, self.L * self.L))
-
-        for l in range(self.L):
-            self._slepian_matrix_helper(self.N, G, dl_array, K_r, K_i, l)
-
-        # combine real and imaginary parts
-        K = K_r + 1j * K_i
-
-        # fill in remaining triangle section
-        fill_upper_triangle_of_hermitian_matrix(K)
-
-        return K
-
-    def _slepian_matrix_parallel(self, G: np.ndarray) -> np.ndarray:
-        """
-        Syntax:
-        K = _slepian_matrix_parallel(G)
-
-        Input:
-        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
-        Wigner-d functions in computing the Slepian integral) for all orders
-
-        Output:
-        K  =  Slepian matrix
-
-        Description:
-        This piece of code computes the Slepian matrix using the formulation
-        given in "Slepian spatialspectral concentration problem on the sphere:
-        Analytical formulation for limited colatitude-longitude spatial region"
-        by A. P. Bates, Z. Khalid and R. A. Kennedy.
-        """
-        dl_array = ssht.generate_dl(np.pi / 2, self.L)
-
-        # initialise real and imaginary matrices
-        K_r = np.zeros((self.L * self.L, self.L * self.L))
-        K_i = np.zeros((self.L * self.L, self.L * self.L))
-
-        # create shared memory block
-        shm_r = SharedMemory(create=True, size=K_r.nbytes)
-        shm_i = SharedMemory(create=True, size=K_i.nbytes)
-        # create a array backed by shared memory
-        K_r_ext = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=shm_r.buf)
-        K_i_ext = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=shm_i.buf)
-
-        def func(chunk: List[int]) -> None:
-            """
-            calculate K matrix components for each chunk
-            """
-            # attach to the existing shared memory block
-            ex_shm_r = SharedMemory(name=shm_r.name)
-            ex_shm_i = SharedMemory(name=shm_i.name)
-            K_r_int = np.ndarray(K_r.shape, dtype=K_r.dtype, buffer=ex_shm_r.buf)
-            K_i_int = np.ndarray(K_i.shape, dtype=K_i.dtype, buffer=ex_shm_i.buf)
-
-            # deal with chunk
-            for l in chunk:
-                self._slepian_matrix_helper(self.N, G, dl_array, K_r_int, K_i_int, l)
-
-            # clean up shared memory
-            ex_shm_r.close()
-            ex_shm_i.close()
-
-        # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L, self.ncpu)
-
-        # initialise pool and apply function
-        with Pool(processes=self.ncpu) as p:
-            p.map(func, chunks)
-
-        # retrieve from parallel function
-        K = K_r_ext + 1j * K_i_ext
-
-        # Free and release the shared memory block at the very end
-        shm_r.close()
-        shm_r.unlink()
-        shm_i.close()
-        shm_i.unlink()
-
-        # fill in remaining triangle section
-        fill_upper_triangle_of_hermitian_matrix(K)
-
-        return K
-
     @staticmethod
-    @njit
-    def _slepian_matrix_helper(
-        N: int,
-        G: np.ndarray,
-        dl_array: np.ndarray,
-        K_r: np.ndarray,
-        K_i: np.ndarray,
-        l: int,
-    ) -> None:
+    @njit(parallel=True)
+    def _slepian_matrix(dl: np.ndarray, L: int, N: int, G: np.ndarray) -> np.ndarray:
         """
-        used in both serial and parallel calculations
+        Syntax:
+        K = _slepian_matrix(dl, L, N, G)
 
-        the hack with splitting into real and imaginary parts
-        is not required for the serial case but here for ease
+        Input:
+        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
+        Wigner-d functions in computing the Slepian integral) for all orders
+
+        Output:
+        K  =  Slepian matrix
+
+        Description:
+        This piece of code computes the Slepian matrix using the formulation
+        given in "Slepian spatialspectral concentration problem on the sphere:
+        Analytical formulation for limited colatitude-longitude spatial region"
+        by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
-        for p in range(l + 1):
-            C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
+        K = np.zeros((L * L, L * L), dtype=np.complex128)
 
-            for m in range(-l, l + 1):
-                for q in range(-p, p + 1):
-                    idx = (l * (l + 1) + m, p * (p + 1) + q)
-                    row = m - q
-                    C2 = (-1j) ** row
-                    ind_r = 2 * N + row
+        for l in prange(L):
+            for p in prange(l + 1):
+                C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
 
-                    for mp in range(-l, l + 1):
-                        C3 = dl_array[l, N + mp, N + m] * dl_array[l, N + mp, N]
-                        S1 = 0
+                for m in prange(-l, l + 1):
+                    for q in prange(-p, p + 1):
+                        idx = (l * (l + 1) + m, p * (p + 1) + q)
+                        row = m - q
+                        C2 = (-1j) ** row
+                        ind_r = 2 * N + row
 
-                        for qp in range(-p, p + 1):
-                            col = mp - qp
-                            C4 = dl_array[p, N + qp, N + q] * dl_array[p, N + qp, N]
-                            ind_c = 2 * N + col
-                            S1 += C4 * G[ind_r, ind_c]
+                        for mp in prange(-l, l + 1):
+                            C3 = dl[l, N + mp, N + m] * dl[l, N + mp, N]
+                            S1 = 0
 
-                        K_r[idx] += (C3 * S1).real
-                        K_i[idx] += (C3 * S1).imag
+                            for qp in prange(-p, p + 1):
+                                col = mp - qp
+                                C4 = dl[p, N + qp, N + q] * dl[p, N + qp, N]
+                                ind_c = 2 * N + col
+                                S1 += C4 * G[ind_r, ind_c]
 
-                    real, imag = K_r[idx], K_i[idx]
-                    K_r[idx] = real * (C1 * C2).real - imag * (C1 * C2).imag
-                    K_i[idx] = real * (C1 * C2).imag + imag * (C1 * C2).real
+                            K[idx] += C3 * S1
+
+                        K[idx] *= C1 * C2
+        return K
 
     @staticmethod
     def _clean_evals_and_evecs(
