@@ -184,7 +184,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         return G
 
     @staticmethod
-    @njit(parallel=True)
+    @njit(parallel=True, fastmath=True)
     def _slepian_matrix(dl: np.ndarray, L: int, N: int, G: np.ndarray) -> np.ndarray:
         """
         Syntax:
