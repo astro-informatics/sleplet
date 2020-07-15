@@ -206,23 +206,23 @@ class SlepianLimitLatLon(SlepianFunctions):
         K = np.zeros((L * L, L * L), dtype=np.complex128)
 
         for l in prange(L):
-            for p in prange(l + 1):
+            for p in range(l + 1):
                 C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
 
-                for m in prange(-l, l + 1):
+                for m in range(-l, l + 1):
                     ind_lm = l * (l + 1) + m
 
-                    for q in prange(-p, p + 1):
+                    for q in range(-p, p + 1):
                         ind_pq = p * (p + 1) + q
                         row = m - q
                         C2 = (-1j) ** row
                         ind_r = 2 * N + row
 
-                        for mp in prange(-l, l + 1):
+                        for mp in range(-l, l + 1):
                             C3 = dl[l, N + mp, N + m] * dl[l, N + mp, N]
                             S1 = 0
 
-                            for qp in prange(-p, p + 1):
+                            for qp in range(-p, p + 1):
                                 col = mp - qp
                                 C4 = dl[p, N + qp, N + q] * dl[p, N + qp, N]
                                 ind_c = 2 * N + col
