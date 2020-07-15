@@ -269,7 +269,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
 
-    @property  # type:ignore
+    @property  # type: ignore
     def phi_max(self) -> float:
         return self._phi_max
 
@@ -281,7 +281,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_max = SlepianLimitLatLon._phi_max
         self._phi_max = phi_max
 
-    @property  # type:ignore
+    @property  # type: ignore
     def phi_min(self) -> float:
         return self._phi_min
 
@@ -301,7 +301,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     def region(self, region: Region) -> None:
         self._region = region
 
-    @property  # type:ignore
+    @property  # type: ignore
     def theta_max(self) -> float:
         return self._theta_max
 

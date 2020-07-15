@@ -406,7 +406,7 @@ class SlepianPolarCap(SlepianFunctions):
             ncpu = SlepianPolarCap._ncpu
         self._ncpu = ncpu
 
-    @property  # type:ignore
+    @property  # type: ignore
     def order(self) -> int:
         return self._order
 
@@ -428,7 +428,7 @@ class SlepianPolarCap(SlepianFunctions):
     def region(self, region: Region) -> None:
         self._region = region
 
-    @property  # type:ignore
+    @property  # type: ignore
     def theta_max(self) -> float:
         return self._theta_max
 

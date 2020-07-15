@@ -124,7 +124,7 @@ class Functions:
     def annotations(self, annotations: List[Dict]) -> None:
         self._annotations = annotations
 
-    @property  # type:ignore
+    @property  # type: ignore
     def extra_args(self) -> Optional[List[int]]:
         return self._extra_args
 

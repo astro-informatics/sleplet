@@ -99,7 +99,7 @@ class Region:
             mask_name = Region._mask_name
         self._mask_name = mask_name
 
-    @property  # type: ignore
+    @property
     def name_ending(self) -> str:
         return self._name_ending
 
@@ -107,7 +107,7 @@ class Region:
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
 
-    @property  # type:ignore
+    @property  # type: ignore
     def order(self) -> int:
         return self._order
 
@@ -119,7 +119,7 @@ class Region:
             order = Region._order
         self._order = order
 
-    @property  # type:ignore
+    @property  # type: ignore
     def phi_max(self) -> float:
         return self._phi_max
 
@@ -137,7 +137,7 @@ class Region:
             )
         self._phi_max = phi_max
 
-    @property  # type:ignore
+    @property  # type: ignore
     def phi_min(self) -> float:
         return self._phi_min
 
@@ -163,7 +163,7 @@ class Region:
     def region_type(self, region_type: str) -> None:
         self._region_type = region_type
 
-    @property  # type:ignore
+    @property  # type: ignore
     def theta_max(self) -> float:
         return self._theta_max
 
