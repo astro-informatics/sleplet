@@ -29,10 +29,8 @@ class SlepianLimitLatLon(SlepianFunctions):
     theta_max: float
     phi_min: float
     phi_max: float
-    ncpu: int
     _N: int = field(init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
-    _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
@@ -268,18 +266,6 @@ class SlepianLimitLatLon(SlepianFunctions):
     @name_ending.setter
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
-
-    @property  # type: ignore
-    def ncpu(self) -> int:
-        return self._ncpu
-
-    @ncpu.setter
-    def ncpu(self, ncpu: int) -> None:
-        if isinstance(ncpu, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            ncpu = SlepianLimitLatLon._ncpu
-        self._ncpu = ncpu
 
     @property  # type:ignore
     def phi_max(self) -> float:

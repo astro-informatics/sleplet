@@ -6,7 +6,6 @@ from hypothesis.strategies import SearchStrategy, floats, integers
 from numpy.testing import assert_array_equal
 
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L
 from pys2sleplet.test.constants import ORDER, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
@@ -64,35 +63,6 @@ def test_slepian_polar_cap_serial_equal_to_parallel(theta_max, order) -> None:
     """
     serial = SlepianPolarCap(L, theta_max, order=ORDER, ncpu=1)
     parallel = SlepianPolarCap(L, theta_max, order=ORDER)
-    assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
-    assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
-
-
-@settings(max_examples=1, deadline=None)
-@given(
-    theta_min=valid_theta_min(),
-    theta_max=valid_theta_max(),
-    phi_min=valid_phi_min(),
-    phi_max=valid_phi_max(),
-)
-def test_slepian_lat_lon_serial_equal_to_parallel(
-    theta_min, theta_max, phi_min, phi_max
-) -> None:
-    """
-    ensures that the serial and parallel calculation of a given
-    Slepian limited latitude longitude region give the same result
-    """
-    serial = SlepianLimitLatLon(
-        L,
-        theta_min=theta_min,
-        theta_max=theta_max,
-        phi_min=phi_min,
-        phi_max=phi_max,
-        ncpu=1,
-    )
-    parallel = SlepianLimitLatLon(
-        L, theta_min=theta_min, theta_max=theta_max, phi_min=phi_min, phi_max=phi_max
-    )
     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
 
