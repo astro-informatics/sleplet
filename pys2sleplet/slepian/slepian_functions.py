@@ -30,7 +30,7 @@ class SlepianFunctions:
         self._create_matrix_location()
         self._create_fn_name()
         self._calculate_area()
-        self.shannon = round(self.area * self.L * self.L / (4 * np.pi))
+        self.shannon = int(round(self.area * self.L * self.L / (4 * np.pi)))
         logger.info("start solving eigenproblem")
         self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")

@@ -37,6 +37,7 @@ class Slepian(Functions):
 
     def _create_flm(self) -> None:
         self.multipole = self.slepian.eigenvectors[self.rank]
+        logger.info(f"Shannon number: {self.slepian.shannon}")
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
 
     def _set_reality(self) -> None:
