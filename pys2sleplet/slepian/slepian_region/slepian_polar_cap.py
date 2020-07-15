@@ -361,7 +361,7 @@ class SlepianPolarCap(SlepianFunctions):
         emm = emm[: self.L * self.L]
         ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
         eigenvectors = np.zeros(
-            (self.L - abs(self.order), self.L * self.L), dtype=complex
+            (self.L - abs(self.order), self.L * self.L), dtype=np.complex128
         )
         eigenvectors[ind] = gl.T.flatten()
 

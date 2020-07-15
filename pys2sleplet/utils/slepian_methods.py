@@ -70,7 +70,7 @@ def integrate_whole_matrix_slepian_functions(
     """
     weight = calc_integration_weight(resolution)
     N = len(eigenvectors)
-    output = np.zeros((N, N), dtype=complex)
+    output = np.zeros((N, N), dtype=np.complex128)
     for i, flm in enumerate(eigenvectors):
         for j, glm in enumerate(eigenvectors):
             # Hermitian matrix so can use symmetry

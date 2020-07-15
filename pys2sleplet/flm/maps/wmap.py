@@ -26,7 +26,7 @@ class Wmap(Functions):
         np.random.seed(0)
 
         # Simulate CMB in harmonic space.
-        flm = np.zeros(self.L * self.L, dtype=complex)
+        flm = np.zeros(self.L * self.L, dtype=np.complex128)
         for ell in range(2, self.L):
             cl_val = cl[ell - 1]
             cl_val *= 2 * np.pi / (ell * (ell + 1))

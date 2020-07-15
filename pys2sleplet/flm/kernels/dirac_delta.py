@@ -15,7 +15,7 @@ class DiracDelta(Functions):
         pass
 
     def _create_flm(self) -> None:
-        flm = np.zeros(self.L * self.L, dtype=complex)
+        flm = np.zeros(self.L * self.L, dtype=np.complex128)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, m=0)
             flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
