@@ -4,12 +4,11 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import FIGSIZE, TEXT_BOX, THETA_MAX
+from pys2sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import calc_plot_resolution
+from pys2sleplet.utils.plot_methods import calc_plot_resolution, save_plot
 from pys2sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
 L = 19
@@ -22,7 +21,7 @@ SIGNS = [[1, -1, 1, -1], [1, -1, -1, -1], [1, 1, 1, 1], [-1, -1, -1, -1], [1, 1,
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-sns.set()
+sns.set(context="paper")
 
 
 def main() -> None:
@@ -30,8 +29,8 @@ def main() -> None:
     create fig 5.1 from Spatiospectral Concentration on a Sphere by Simons et al 2006
     """
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
-    i = (x < THETA_MAX).sum() - 1
-    _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row", figsize=FIGSIZE)
+    i = (x < THETA_MAX).sum()
+    _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
     plt.setp(
         ax,
         xlim=[0, 180],
@@ -44,14 +43,7 @@ def main() -> None:
         slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
             _helper(ax, slepian, RESOLUTION, x, i, order, rank)
-
-    plt.tight_layout()
-    if settings.SAVE_FIG:
-        for file_type in ["png", "pdf"]:
-            filename = fig_path / file_type / f"simons_5_1.{file_type}"
-            plt.savefig(filename, bbox_inches="tight")
-    if settings.AUTO_OPEN:
-        plt.show()
+    save_plot(fig_path, "simons_5_1")
 
 
 def _helper(
@@ -77,14 +69,9 @@ def _helper(
         axs.set_title(fr"$\alpha$ = {rank}")
     if order == ORDERS - 1:
         axs.set_xlabel("colatitude $\Theta$")
-    axs.plot(x[:i], f[:i, PHI_IDX], "b", x[i:], f[i:, PHI_IDX], "k")
+    axs.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])
     axs.text(
-        0.33,
-        0.75,
-        fr"$\lambda$={lam:.6f}",
-        transform=axs.transAxes,
-        fontsize=8,
-        bbox=TEXT_BOX,
+        0.33, 0.75, fr"$\lambda$={lam:.6f}", transform=axs.transAxes, bbox=TEXT_BOX
     )
 
 

@@ -1,9 +1,12 @@
+from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
 import pyssht as ssht
 from matplotlib import colors
+from matplotlib import pyplot as plt
 
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -49,3 +52,16 @@ def calc_nearest_grid_point(
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
     return alpha, beta
+
+
+def save_plot(path: Path, name: str) -> None:
+    """
+    helper method to save plots
+    """
+    plt.tight_layout()
+    if settings.SAVE_FIG:
+        for file_type in ["png", "pdf"]:
+            filename = path / file_type / f"{name}.{file_type}"
+            plt.savefig(filename, bbox_inches="tight")
+    if settings.AUTO_OPEN:
+        plt.show()

@@ -3,26 +3,20 @@ from pathlib import Path
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import (
-    ALPHA,
-    LINEWIDTH,
-    SECOND_COLOUR,
-    TEXT_BOX,
-    THETA_MAX,
-)
+from pys2sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
 from pys2sleplet.plotting.polar_cap.utils import (
     create_table,
     earth_region_harmonic_coefficients,
     earth_region_slepian_coefficients,
     get_shannon,
 )
-from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.plot_methods import save_plot
 
 L = 19
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-sns.set()
+sns.set(context="paper")
 
 
 def main() -> None:
@@ -32,31 +26,18 @@ def main() -> None:
     flm = earth_region_harmonic_coefficients(L, THETA_MAX)
     df = create_table(earth_region_slepian_coefficients, L, THETA_MAX)
     N = get_shannon(L, THETA_MAX)
-    sns.scatterplot(x=range(len(flm)), y=flm, label="harmonic", linewidth=0, marker=".")
-    sns.scatterplot(
-        x=df.index,
-        y=df["qty"],
-        alpha=ALPHA,
-        color=SECOND_COLOUR,
-        label="slepian",
-        linewidth=0,
-        marker="*",
-    )
-    plt.axvline(x=N - 1, linewidth=LINEWIDTH, color="red")
     ax = plt.gca()
-    plt.text(0.17, 0.93, f"N={N}", fontsize=12, transform=ax.transAxes, bbox=TEXT_BOX)
-    plt.xlabel("coefficient")
-    plt.ylabel("magnitude")
-
-    plt.tight_layout()
-    if settings.SAVE_FIG:
-        for file_type in ["png", "pdf"]:
-            filename = (
-                fig_path / file_type / f"fp_earth_polar{THETA_MAX}_L{L}.{file_type}"
-            )
-            plt.savefig(filename, bbox_inches="tight")
-    if settings.AUTO_OPEN:
-        plt.show()
+    sns.scatterplot(
+        x=df.index, y=df["qty"], ax=ax, label="slepian", linewidth=0, marker="*"
+    )
+    sns.scatterplot(
+        x=range(len(flm)), y=flm, ax=ax, label="harmonic", linewidth=0, marker="."
+    )
+    ax.axvline(x=N - 1, color="k")
+    ax.text(0.17, 0.93, f"N={N}", transform=ax.transAxes, bbox=TEXT_BOX)
+    ax.set_xlabel("coefficient")
+    ax.set_ylabel("magnitude")
+    save_plot(fig_path, f"fp_earth_polar{THETA_MAX}_L{L}")
 
 
 if __name__ == "__main__":

@@ -6,18 +6,10 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.colors import LogNorm
 
-from pys2sleplet.plotting.inputs import (
-    FIGSIZE,
-    FIRST_COLOUR,
-    LINEWIDTH,
-    PHI_0,
-    PHI_1,
-    THETA_0,
-    THETA_1,
-)
+from pys2sleplet.plotting.inputs import PHI_0, PHI_1, THETA_0, THETA_1
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
-from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.plot_methods import save_plot
 from pys2sleplet.utils.slepian_methods import integrate_whole_matrix_slepian_functions
 
 L = 16
@@ -25,29 +17,18 @@ RESOLUTION_RANGE = {16: (0, 0), 24: (0, 1), 32: (1, 0), 40: (1, 1)}
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-sns.set()
+sns.set(context="paper")
 
 
 def main(zoom: bool = False):
     """
     plots the error matrix of integrating all ranks of Slepian functions
     """
-    N = len(RESOLUTION_RANGE) // 2
-    _, ax = plt.subplots(N, N, sharex="col", sharey="row", figsize=FIGSIZE)
+    x = len(RESOLUTION_RANGE) // 2
+    _, ax = plt.subplots(x, x, sharex="col", sharey="row")
     for resolution, position in RESOLUTION_RANGE.items():
         _create_plot(ax, position, resolution, zoom)
-
-    plt.tight_layout()
-    if settings.SAVE_FIG:
-        for file_type in ["png", "pdf"]:
-            filename = (
-                fig_path
-                / file_type
-                / f"integration_error_sphere{'_zoom' if zoom else ''}.{file_type}"
-            )
-            plt.savefig(filename, bbox_inches="tight")
-    if settings.AUTO_OPEN:
-        plt.show()
+    save_plot(fig_path, f"integration_error_sphere{'_zoom' if zoom else ''}")
 
 
 def _create_plot(
@@ -66,8 +47,8 @@ def _create_plot(
         axs.set_xlabel("p")
 
     if not zoom:
-        axs.axvline(x=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
-        axs.axhline(y=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
+        axs.axvline(x=N, color="w")
+        axs.axhline(y=N, color="w")
         region = L * L
         ticks: Union[str, List] = _create_ticks(L, N)
     else:

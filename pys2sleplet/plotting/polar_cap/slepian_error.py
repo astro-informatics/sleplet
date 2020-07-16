@@ -4,18 +4,18 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import ALPHA, SECOND_COLOUR, THETA_MAX
+from pys2sleplet.plotting.inputs import THETA_MAX
 from pys2sleplet.plotting.polar_cap.utils import (
     create_table,
     earth_region_slepian_coefficients,
 )
-from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.plot_methods import save_plot
 
 L = 19
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-sns.set()
+sns.set(context="paper")
 
 
 def main() -> None:
@@ -24,34 +24,28 @@ def main() -> None:
     """
     df_region = create_table(_helper_region, L, THETA_MAX)
     df_sphere = create_table(_helper_sphere, L, THETA_MAX)
+    ax = plt.gca()
     sns.scatterplot(
-        x=df_region.index, y=df_region["qty"], label="region", linewidth=0, marker="."
+        x=df_region.index,
+        y=df_region["qty"],
+        ax=ax,
+        label="region",
+        linewidth=0,
+        marker=".",
     )
     sns.scatterplot(
         x=df_sphere.index,
         y=df_sphere["qty"],
-        alpha=ALPHA,
-        color=SECOND_COLOUR,
+        ax=ax,
         label="sphere",
         linewidth=0,
         marker="*",
     )
-    plt.xlabel("coefficient")
-    plt.ylabel("relative error")
-    plt.yscale("log")
-    plt.ylim([1e-17, 1e13])
-
-    plt.tight_layout()
-    if settings.SAVE_FIG:
-        for file_type in ["png", "pdf"]:
-            filename = (
-                fig_path
-                / file_type
-                / f"fp_error_earth_polar{THETA_MAX}_L{L}.{file_type}"
-            )
-            plt.savefig(filename, bbox_inches="tight")
-    if settings.AUTO_OPEN:
-        plt.show()
+    ax.set_xlabel("coefficient")
+    ax.set_ylabel("relative error")
+    ax.set_yscale("log")
+    ax.set_ylim([1e-17, 1e13])
+    save_plot(fig_path, f"fp_error_earth_polar{THETA_MAX}_L{L}")
 
 
 def _helper_sphere(L: int, theta_max: int, order: int) -> np.ndarray:
