@@ -20,12 +20,12 @@ def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
     assert_allclose(
         np.abs(slepian.eigenvalues[cond] - slepian_polar_cap.eigenvalues).mean(),
         0,
-        atol=0.1,
+        atol=0.2,
     )
     assert_allclose(
         np.abs(slepian.eigenvectors[cond] - slepian_polar_cap.eigenvectors).mean(),
         0,
-        atol=0.2,
+        atol=0.04,
     )
 
 
@@ -40,10 +40,10 @@ def test_equality_to_lim_lat_lon_method(slepian_lim_lat_lon) -> None:
     assert_allclose(
         np.abs(slepian.eigenvalues - slepian_lim_lat_lon.eigenvalues).mean(),
         0,
-        atol=1e-3,
+        atol=1e-2,
     )
     assert_allclose(
         np.abs(slepian.eigenvectors - slepian_lim_lat_lon.eigenvectors).mean(),
         0,
-        atol=0.09,
+        atol=0.08,
     )
