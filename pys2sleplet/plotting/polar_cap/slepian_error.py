@@ -11,6 +11,7 @@ from pys2sleplet.plotting.polar_cap.utils import (
     earth_region_slepian_coefficients,
     get_shannon,
 )
+from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.plot_methods import save_plot
 
 L = 19
@@ -62,7 +63,8 @@ def _helper_sphere(L: int, theta_max: int, order: int) -> Tuple[np.ndarray, np.n
     )
     desired = earth_region_slepian_coefficients(L, theta_max, order)
     error = np.abs(output - desired) / desired
-    return desired, error
+    ev = SlepianPolarCap(L, np.deg2rad(theta_max), order=order).eigenvalues
+    return ev, error
 
 
 def _helper_region(L: int, theta_max: int, order: int) -> Tuple[np.ndarray, np.ndarray]:
@@ -74,7 +76,8 @@ def _helper_region(L: int, theta_max: int, order: int) -> Tuple[np.ndarray, np.n
     )
     desired = earth_region_slepian_coefficients(L, theta_max, order)
     error = np.abs(output - desired) / desired
-    return desired, error
+    ev = SlepianPolarCap(L, np.deg2rad(theta_max), order=order).eigenvalues
+    return ev, error
 
 
 if __name__ == "__main__":
