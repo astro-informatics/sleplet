@@ -55,7 +55,7 @@ def integrate_sphere(
     * the multipole resolutions are boosted prior to integration
     """
     if mask_boosted is not None:
-        if mask_boosted.shape[0] - 1 == L:
+        if mask_boosted.shape[0] - 1 != resolution:
             raise AttributeError(
                 f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
             )
