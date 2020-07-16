@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
-from pys2sleplet.plotting.inputs import FIGSIZE, TEXT_BOX
+from pys2sleplet.plotting.inputs import FIGSIZE, LINEWIDTH, TEXT_BOX
 from pys2sleplet.plotting.polar_cap.utils import create_table
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
@@ -48,6 +48,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     """
     logger.info(f"theta_max={theta_max}")
     df = create_table(_helper, L, theta_max, ORDERS, RANKS)
+    N = df["N"].max()
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
     sns.scatterplot(
@@ -59,6 +60,15 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
         style=df["m"],
         markers=MarkerStyle.filled_markers[:ORDERS],
         ax=axs,
+    )
+    axs.axvline(x=N - 1, linewidth=LINEWIDTH)
+    axs.annotate(
+        f"N={N}",
+        xy=(N - 1, 1),
+        xytext=(0, 7),
+        ha="center",
+        textcoords="offset points",
+        annotation_clip=False,
     )
     if position[1] == 0:
         axs.set_ylabel("eigenvalue $\lambda$")
@@ -74,12 +84,12 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     )
 
 
-def _helper(L: int, theta_max: int, order: int) -> np.ndarray:
+def _helper(L: int, theta_max: int, order: int) -> Tuple[np.ndarray, int]:
     """
-    computes the Slepian eigenvalues for the given order
+    computes the Slepian eigenvalues for the given order and the Shannon number
     """
     slepian = SlepianPolarCap(L, np.deg2rad(theta_max), order=order)
-    return slepian.eigenvalues
+    return slepian.eigenvalues, slepian.shannon
 
 
 if __name__ == "__main__":

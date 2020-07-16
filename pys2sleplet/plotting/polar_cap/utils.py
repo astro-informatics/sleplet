@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Callable, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -34,7 +34,7 @@ def earth_region_slepian_coefficients(
 
 
 def create_table(
-    helper: Callable[..., float],
+    helper: Callable[..., Tuple[float, int]],
     L: int,
     theta_max: int,
     order_max: Optional[int] = None,
@@ -46,9 +46,10 @@ def create_table(
     df = pd.DataFrame()
     for order in range(-(L - 1), L):
         logger.info(f"calculating order={order}")
-        quantity = helper(L, theta_max, order)
+        quantity, shannon = helper(L, theta_max, order)
         df_tmp = pd.DataFrame()
         df_tmp["qty"] = quantity
+        df_tmp["N"] = shannon
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
     if order_max is None:
