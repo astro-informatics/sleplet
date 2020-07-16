@@ -3,11 +3,18 @@ from pathlib import Path
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import ALPHA, SECOND_COLOUR, THETA_MAX
+from pys2sleplet.plotting.inputs import (
+    ALPHA,
+    LINEWIDTH,
+    SECOND_COLOUR,
+    TEXT_BOX,
+    THETA_MAX,
+)
 from pys2sleplet.plotting.polar_cap.utils import (
     create_table,
     earth_region_harmonic_coefficients,
     earth_region_slepian_coefficients,
+    get_shannon,
 )
 from pys2sleplet.utils.config import settings
 
@@ -24,6 +31,7 @@ def main() -> None:
     """
     flm = earth_region_harmonic_coefficients(L, THETA_MAX)
     df = create_table(earth_region_slepian_coefficients, L, THETA_MAX)
+    N = get_shannon(L, THETA_MAX)
     sns.scatterplot(x=range(len(flm)), y=flm, label="harmonic", linewidth=0, marker=".")
     sns.scatterplot(
         x=df.index,
@@ -34,6 +42,9 @@ def main() -> None:
         linewidth=0,
         marker="*",
     )
+    plt.axvline(x=N - 1, linewidth=LINEWIDTH, color="red")
+    ax = plt.gca()
+    plt.text(0.17, 0.93, f"N={N}", fontsize=12, transform=ax.transAxes, bbox=TEXT_BOX)
     plt.xlabel("coefficient")
     plt.ylabel("magnitude")
 
