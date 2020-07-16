@@ -10,18 +10,9 @@ from pys2sleplet.utils.vars import SAMPLING_SCHEME
 def calc_integration_resolution(L: int) -> int:
     """
     calculate appropriate sample number for given L
-    numbers based on test getting an atol=1e-5
-    test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix
-    TODO: increase support to L=32 and beyond
     """
-    sample_dict = {1: 287, 2: 210, 3: 159, 4: 157, 5: 129}
-
-    for log_bandlimit, samples in sample_dict.items():
-        if L < 2 ** log_bandlimit:
-            return samples
-
-    # otherwise use one sample
-    return 1
+    resolution = L * 2
+    return resolution
 
 
 def calc_integration_weight(L: int) -> np.ndarray:
