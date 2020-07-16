@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
 from pys2sleplet.plotting.inputs import FIGSIZE, LINEWIDTH, TEXT_BOX
-from pys2sleplet.plotting.polar_cap.utils import create_table
+from pys2sleplet.plotting.polar_cap.utils import create_table, get_shannon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
@@ -48,7 +48,7 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     """
     logger.info(f"theta_max={theta_max}")
     df = create_table(_helper, L, theta_max, ORDERS, RANKS)
-    N = df["N"].max()
+    N = get_shannon(L, theta_max)
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
     sns.scatterplot(
@@ -84,12 +84,12 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     )
 
 
-def _helper(L: int, theta_max: int, order: int) -> Tuple[np.ndarray, int]:
+def _helper(L: int, theta_max: int, order: int) -> np.ndarray:
     """
-    computes the Slepian eigenvalues for the given order and the Shannon number
+    computes the Slepian eigenvalues for the given order
     """
     slepian = SlepianPolarCap(L, np.deg2rad(theta_max), order=order)
-    return slepian.eigenvalues, slepian.shannon
+    return slepian.eigenvalues
 
 
 if __name__ == "__main__":

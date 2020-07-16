@@ -1,12 +1,21 @@
-from typing import Callable, Optional, Tuple
+from typing import Callable, Optional
 
 import numpy as np
 import pandas as pd
 
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
+from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
+
+
+def get_shannon(L: int, theta_max: int) -> int:
+    """
+    computes the Shannon number
+    """
+    slepian = SlepianPolarCap(L, np.deg2rad(theta_max))
+    return slepian.shannon
 
 
 def earth_region_harmonic_coefficients(L: int, theta_max: int) -> np.ndarray:
@@ -34,7 +43,7 @@ def earth_region_slepian_coefficients(
 
 
 def create_table(
-    helper: Callable[..., Tuple[float, int]],
+    helper: Callable[..., float],
     L: int,
     theta_max: int,
     order_max: Optional[int] = None,
@@ -46,10 +55,9 @@ def create_table(
     df = pd.DataFrame()
     for order in range(-(L - 1), L):
         logger.info(f"calculating order={order}")
-        quantity, shannon = helper(L, theta_max, order)
+        quantity = helper(L, theta_max, order)
         df_tmp = pd.DataFrame()
         df_tmp["qty"] = quantity
-        df_tmp["N"] = shannon
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
     if order_max is None:
