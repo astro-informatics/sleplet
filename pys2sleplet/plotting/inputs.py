@@ -1,6 +1,7 @@
-from typing import Dict, Union
+from typing import Dict, Tuple, Union
 
 ALPHA: float = 0.6
+FIGSIZE: Tuple[float, float] = (6.8, 5.1)
 FIRST_COLOUR: str = "white"
 LINEWIDTH: int = 1
 SECOND_COLOUR: str = "black"

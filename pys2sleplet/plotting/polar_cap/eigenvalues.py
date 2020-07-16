@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
-from pys2sleplet.plotting.inputs import TEXT_BOX
+from pys2sleplet.plotting.inputs import FIGSIZE, TEXT_BOX
 from pys2sleplet.plotting.polar_cap.utils import create_table
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
@@ -28,7 +28,7 @@ def main() -> None:
     creates a plot of Slepian eigenvalues against rank
     """
     N = len(THETA_RANGE) // 2
-    _, ax = plt.subplots(N, N, sharex="col", sharey="row")
+    _, ax = plt.subplots(N, N, sharex="col", sharey="row", figsize=FIGSIZE)
     for theta_max, position in THETA_RANGE.items():
         _create_plot(ax, position, theta_max)
     ax[LEGEND_POS].legend(ncol=2)

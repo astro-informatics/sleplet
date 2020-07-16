@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 from matplotlib.colors import LogNorm
 
 from pys2sleplet.plotting.inputs import (
+    FIGSIZE,
     FIRST_COLOUR,
     LINEWIDTH,
     PHI_0,
@@ -32,7 +33,7 @@ def main(zoom: bool = False):
     plots the error matrix of integrating all ranks of Slepian functions
     """
     N = len(RESOLUTION_RANGE) // 2
-    _, ax = plt.subplots(N, N, sharex="col", sharey="row")
+    _, ax = plt.subplots(N, N, sharex="col", sharey="row", figsize=FIGSIZE)
     for resolution, position in RESOLUTION_RANGE.items():
         _create_plot(ax, position, resolution, zoom)
 

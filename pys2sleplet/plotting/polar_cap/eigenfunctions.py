@@ -4,7 +4,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
+from pys2sleplet.plotting.inputs import FIGSIZE, TEXT_BOX, THETA_MAX
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
@@ -31,7 +31,7 @@ def main() -> None:
     """
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
     i = (x < THETA_MAX).sum() - 1
-    _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
+    _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row", figsize=FIGSIZE)
     plt.setp(
         ax,
         xlim=[0, 180],
