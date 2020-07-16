@@ -58,7 +58,7 @@ def _create_plot(
     logger.info(f"resolution={resolution}")
     error, N = _helper(L, resolution, THETA_0, THETA_1, PHI_0, PHI_1)
     axs = ax[position]
-    axs.set_title(r"$L_{\mathrm{effective}}=%s$" % resolution)
+    axs.set_title(r"$L_{\mathrm{eff}}=%s$" % resolution)
     if position[1] == 0:
         axs.set_ylabel("p")
     if position[0] == 1:
