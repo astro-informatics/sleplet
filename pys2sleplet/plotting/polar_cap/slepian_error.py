@@ -47,6 +47,7 @@ def main() -> None:
     )
     ax.axvline(x=N - 1, color="k")
     ax.text(0.17, 0.93, f"N={N}", transform=ax.transAxes, bbox=TEXT_BOX)
+    ax.legend(loc=(0.8, 0.6))
     ax.set_xlabel("coefficient")
     ax.set_ylabel("relative error")
     ax.set_yscale("log")
