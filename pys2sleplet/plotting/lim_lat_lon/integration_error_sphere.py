@@ -21,9 +21,6 @@ from pys2sleplet.utils.slepian_methods import integrate_whole_matrix_slepian_fun
 
 L = 16
 RESOLUTION_RANGE = {16: (0, 0), 24: (0, 1), 32: (1, 0), 40: (1, 1)}
-TICK_LABELS = [
-    x if np.log2(x + 1).is_integer() and (x == 0 or x > L) else "" for x in range(L * L)
-]
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -68,10 +65,10 @@ def _create_plot(
         axs.set_xlabel("p")
 
     if not zoom:
-        region = L * L
-        ticks: Union[str, List] = TICK_LABELS
         axs.axvline(x=N, ymin=0, ymax=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
         axs.axhline(y=N, xmin=0, xmax=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
+        region = L * L
+        ticks: Union[str, List] = _create_ticks(L, N)
     else:
         ticks = "auto"
         region = N
@@ -105,6 +102,15 @@ def _helper(
     desired = np.identity(output.shape[0])
     error = np.abs(output - desired)
     return error, slepian.shannon
+
+
+def _create_ticks(L: int, N: int) -> List[str]:
+    """
+    create custom tick labels for the plot
+    """
+    ticks = [""] * (L * L)
+    ticks[N - 1] = "N"
+    return ticks
 
 
 if __name__ == "__main__":
