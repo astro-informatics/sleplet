@@ -43,7 +43,7 @@ def earth_region_slepian_coefficients(
 
 
 def create_table(
-    helper: Callable[..., float],
+    helper: Callable,
     L: int,
     theta_max: int,
     order_max: Optional[int] = None,
@@ -57,7 +57,11 @@ def create_table(
         logger.info(f"calculating order={order}")
         quantity = helper(L, theta_max, order)
         df_tmp = pd.DataFrame()
-        df_tmp["qty"] = quantity
+        if isinstance(quantity, tuple):
+            df_tmp["qty"] = quantity[0]
+            df_tmp["other"] = quantity[1]
+        else:
+            df_tmp["qty"] = quantity
         df_tmp["order"] = abs(order)
         df = pd.concat([df, df_tmp], ignore_index=True)
     if order_max is None:
