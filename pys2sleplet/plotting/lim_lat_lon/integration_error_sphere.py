@@ -65,8 +65,8 @@ def _create_plot(
         axs.set_xlabel("p")
 
     if not zoom:
-        axs.axvline(x=N, ymin=0, ymax=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
-        axs.axhline(y=N, xmin=0, xmax=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
+        axs.axvline(x=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
+        axs.axhline(y=N, color=FIRST_COLOUR, linewidth=LINEWIDTH)
         region = L * L
         ticks: Union[str, List] = _create_ticks(L, N)
     else:
