@@ -3,6 +3,7 @@ from typing import Optional
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.config import default_region
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
@@ -17,7 +18,7 @@ class Slepian(Functions):
     _slepian: SlepianFunctions = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.region = Region() if self.region is None else self.region
+        self.region = default_region if self.region is None else self.region
         self.slepian = choose_slepian_method(self.L, self.region)
         self._validate_rank()
         super().__post_init__()

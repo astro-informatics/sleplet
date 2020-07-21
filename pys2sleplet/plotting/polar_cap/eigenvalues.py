@@ -7,14 +7,12 @@ from matplotlib import pyplot as plt
 from matplotlib.markers import MarkerStyle
 
 from pys2sleplet.plotting.inputs import TEXT_BOX
-from pys2sleplet.plotting.polar_cap.utils import create_table, get_shannon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import save_plot
 
 L = 19
 LEGEND_POS = (0, 0)
-ORDERS = 15
 RANKS = 60
 THETA_RANGE = {10: (0, 0), 20: (0, 1), 30: (1, 0), 40: (1, 1)}
 
@@ -40,24 +38,26 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
     helper method which actually makes the plot
     """
     logger.info(f"theta_max={theta_max}")
-    df = create_table(_helper, L, theta_max, ORDERS, RANKS)
-    N = get_shannon(L, theta_max)
+    slepian = SlepianPolarCap(L, np.deg2rad(theta_max))
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
+    orders = np.abs(slepian.order[:RANKS])
+    labels = np.array([f"$\pm${m}" if m != 0 else m for m in orders])
+    idx = np.argsort(orders)
     sns.scatterplot(
-        x=df.index,
-        y=df["qty"],
-        hue=df["m"],
-        hue_order=df.sort_values(by="order")["m"],
+        x=range(RANKS),
+        y=slepian.eigenvalues[:RANKS],
+        hue=labels,
+        hue_order=labels[idx],
         legend=legend,
-        style=df["m"],
-        markers=MarkerStyle.filled_markers[:ORDERS],
+        style=labels,
+        markers=MarkerStyle.filled_markers,
         ax=axs,
     )
-    axs.axvline(x=N - 1)
+    axs.axvline(x=slepian.shannon - 1)
     axs.annotate(
-        f"N={N}",
-        xy=(N - 1, 1),
+        f"N={slepian.shannon}",
+        xy=(slepian.shannon - 1, 1),
         xytext=(0, 7),
         ha="center",
         textcoords="offset points",
@@ -74,14 +74,6 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
         transform=axs.transAxes,
         bbox=TEXT_BOX,
     )
-
-
-def _helper(L: int, theta_max: int, order: int) -> np.ndarray:
-    """
-    computes the Slepian eigenvalues for the given order
-    """
-    slepian = SlepianPolarCap(L, np.deg2rad(theta_max), order=order)
-    return slepian.eigenvalues
 
 
 if __name__ == "__main__":

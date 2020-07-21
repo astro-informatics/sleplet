@@ -42,26 +42,6 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
     return slepian
 
 
-def integrate_two_slepian_functions_per_rank(
-    eigenvectors: np.ndarray,
-    L: int,
-    resolution: int,
-    rank1: int,
-    rank2: int,
-    mask: Optional[np.ndarray] = None,
-) -> complex:
-    """
-    helper function which integrates two slepian functions of given ranks
-    """
-    flm = eigenvectors[rank1]
-    glm = eigenvectors[rank2]
-    weight = calc_integration_weight(resolution)
-    output = integrate_sphere(
-        L, resolution, flm, glm, weight, glm_conj=True, mask_boosted=mask
-    )
-    return output
-
-
 def integrate_whole_matrix_slepian_functions(
     eigenvectors: np.ndarray, L: int, resolution: int, mask: Optional[np.ndarray] = None
 ) -> np.ndarray:

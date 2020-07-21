@@ -4,7 +4,6 @@ from numpy.testing import assert_allclose
 
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.test.constants import L_SMALL as L
-from pys2sleplet.utils.harmonic_methods import create_emm_vector
 
 
 @pytest.mark.slow
@@ -15,17 +14,19 @@ def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
     """
     mask_name = slepian_polar_cap.region.name_ending
     slepian = SlepianArbitrary(L, mask_name)
-    emm = create_emm_vector(L)[: L * L]
-    cond = emm == slepian_polar_cap.order
     assert_allclose(
-        np.abs(slepian.eigenvalues[cond] - slepian_polar_cap.eigenvalues).mean(),
+        np.abs(slepian.eigenvalues - slepian_polar_cap.eigenvalues)[
+            : slepian_polar_cap.shannon
+        ].mean(),
         0,
-        atol=0.2,
+        atol=0.05,
     )
     assert_allclose(
-        np.abs(slepian.eigenvectors[cond] - slepian_polar_cap.eigenvectors).mean(),
+        np.abs(slepian.eigenvectors - slepian_polar_cap.eigenvectors)[
+            : slepian_polar_cap.shannon
+        ].mean(),
         0,
-        atol=0.04,
+        atol=0.03,
     )
 
 
@@ -38,12 +39,16 @@ def test_equality_to_lim_lat_lon_method(slepian_lim_lat_lon) -> None:
     mask_name = slepian_lim_lat_lon.region.name_ending
     slepian = SlepianArbitrary(L, mask_name)
     assert_allclose(
-        np.abs(slepian.eigenvalues - slepian_lim_lat_lon.eigenvalues).mean(),
+        np.abs(slepian.eigenvalues - slepian_lim_lat_lon.eigenvalues)[
+            : slepian_lim_lat_lon.shannon
+        ].mean(),
         0,
-        atol=1e-2,
+        atol=0.3,
     )
     assert_allclose(
-        np.abs(slepian.eigenvectors - slepian_lim_lat_lon.eigenvectors).mean(),
+        np.abs(slepian.eigenvectors - slepian_lim_lat_lon.eigenvectors)[
+            : slepian_lim_lat_lon.shannon
+        ].mean(),
         0,
-        atol=0.08,
+        atol=0.06,
     )

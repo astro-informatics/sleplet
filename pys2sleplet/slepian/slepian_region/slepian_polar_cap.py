@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple, Union
 
 import gmpy2 as gp
 import numpy as np
@@ -21,7 +21,6 @@ from pys2sleplet.utils.vars import (
     ANNOTATION_SECOND_COLOUR,
     ARROW_STYLE,
     GAP_DEFAULT,
-    ORDER_DEFAULT,
 )
 
 _file_location = Path(__file__).resolve()
@@ -30,19 +29,20 @@ _file_location = Path(__file__).resolve()
 @dataclass
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
-    order: int
+    order: Optional[int]
     gap: bool
     ncpu: int
     _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
-    _order: int = field(default=ORDER_DEFAULT, init=False, repr=False)
+    _order: Optional[Union[int, np.ndarray]] = field(
+        default=None, init=False, repr=False
+    )
     _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _theta_max: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.region = Region(theta_max=self.theta_max, order=self.order)
-        self.name_ending = f"{self.region.name_ending}_m{self.order}"
+        self.region = Region(gap=self.gap, order=self.order, theta_max=self.theta_max)
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -59,7 +59,7 @@ class SlepianPolarCap(SlepianFunctions):
                         )
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian_{self.name_ending}"
+        self.name = f"slepian_{self.region.name_ending}_m{self.order}"
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.resolution, self.region)
@@ -73,19 +73,50 @@ class SlepianPolarCap(SlepianFunctions):
             / "data"
             / "slepian"
             / "polar"
-            / f"D_{self.name_ending}_L{self.L}.npy".replace("-", "")
+            / f"{self.region.name_ending}_L{self.L}"
         )
 
     def _solve_eigenproblem(self) -> None:
+        if self.order is not None:
+            self.eigenvalues, self.eigenvectors = self._solve_eigenproblem_order(
+                self.order
+            )
+        else:
+            evals_all = np.empty(0)
+            evecs_all = np.empty((0, self.L * self.L), dtype=np.complex128)
+            emm = np.empty(0, dtype=int)
+            for m in range(-(self.L - 1), self.L):
+                evals_m, evecs_m = self._solve_eigenproblem_order(m)
+                evals_all = np.append(evals_all, evals_m)
+                evecs_all = np.concatenate((evecs_all, evecs_m))
+                emm = np.append(emm, [m] * len(evals_m))
+            (
+                self.eigenvalues,
+                self.eigenvectors,
+                self.order,
+            ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
+
+    def _solve_eigenproblem_order(self, m: int) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        solves the eigenproblem for a given order 'm;
+        """
         emm = create_emm_vector(self.L)
-        Dm = self._load_Dm_matrix(emm)
-
-        # solve eigenproblem for order 'm'
+        Dm = self._load_Dm_matrix(emm, m)
         eigenvalues, gl = np.linalg.eigh(Dm)
+        eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)
+        return eigenvalues, eigenvectors
 
-        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
-            eigenvalues, gl, emm
-        )
+    def _sort_all_evals_and_evecs(
+        self, eigenvalues: np.ndarray, eigenvectors: np.ndarray, orders: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+        sorts all eigenvalues and eigenvectors for all orders
+        """
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = eigenvectors[:, idx]
+        orders = orders[idx]
+        return eigenvalues, eigenvectors, orders
 
     def _add_to_annotation(self, theta: np.ndarray, i: int, colour: str) -> None:
         """
@@ -97,22 +128,23 @@ class SlepianPolarCap(SlepianFunctions):
             {**dict(x=x[0], y=y[0], z=z[0], arrowcolor=colour), **ARROW_STYLE}
         )
 
-    def _load_Dm_matrix(self, emm: np.ndarray) -> np.ndarray:
+    def _load_Dm_matrix(self, emm: np.ndarray, m: int) -> np.ndarray:
         """
         if the Dm matrix already exists load it
         otherwise create it and save the result
         """
         # check if matrix already exists
-        if Path(self.matrix_location).exists():
-            Dm = np.load(self.matrix_location)
+        filename = self.matrix_location / f"D_m{abs(m)}.npy"
+        if Path(filename).exists():
+            Dm = np.load(filename)
         else:
             P = self._create_legendre_polynomials_table(emm)
 
             # Computing order 'm' Slepian matrix
             if self.ncpu == 1:
-                Dm = self._dm_matrix_serial(abs(self.order), P)
+                Dm = self._dm_matrix_serial(abs(m), P)
             else:
-                Dm = self._dm_matrix_parallel(abs(self.order), P)
+                Dm = self._dm_matrix_parallel(abs(m), P)
 
             # save to speed up for future
             if settings.SAVE_MATRICES:
@@ -344,7 +376,7 @@ class SlepianPolarCap(SlepianFunctions):
         return factor
 
     def _clean_evals_and_evecs(
-        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray
+        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray, m: int
     ) -> Tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
@@ -359,17 +391,15 @@ class SlepianPolarCap(SlepianFunctions):
 
         # put back in full D space for harmonic transform
         emm = emm[: self.L * self.L]
-        ind = np.tile(emm == self.order, (self.L - abs(self.order), 1))
-        eigenvectors = np.zeros(
-            (self.L - abs(self.order), self.L * self.L), dtype=np.complex128
-        )
+        ind = np.tile(emm == m, (self.L - abs(m), 1))
+        eigenvectors = np.zeros((self.L - abs(m), self.L * self.L), dtype=np.complex128)
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         # if -ve 'm' find orthogonal eigenvectors to +ve 'm' eigenvectors
-        if self.order < 0:
+        if m < 0:
             eigenvectors *= 1j
 
         return eigenvalues, eigenvectors
@@ -407,17 +437,18 @@ class SlepianPolarCap(SlepianFunctions):
         self._ncpu = ncpu
 
     @property  # type: ignore
-    def order(self) -> int:
+    def order(self) -> Optional[Union[int, np.ndarray]]:
         return self._order
 
     @order.setter
-    def order(self, order: int) -> None:
+    def order(self, order: Optional[Union[int, np.ndarray]]) -> None:
         if isinstance(order, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             order = SlepianPolarCap._order
-        if abs(order) >= self.L:
-            raise ValueError(f"Order magnitude should be less than {self.L}")
+        if order is not None:
+            if (np.abs(order) >= self.L).any():
+                raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
 
     @property

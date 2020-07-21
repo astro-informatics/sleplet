@@ -7,11 +7,10 @@ import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.config import default_region, settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 
@@ -207,17 +206,11 @@ def plot(
 def main() -> None:
     args = read_args()
 
-    if args.region:
-        mask = Region()
-    else:
-        mask = None
+    mask = default_region if args.region else None
 
     f = FUNCTIONS[args.flm](args.bandlimit, extra_args=args.extra_args, region=mask)
 
-    if args.convolve is not None:
-        g = FUNCTIONS[args.convolve](args.bandlimit)
-    else:
-        g = None
+    g = FUNCTIONS[args.convolve](args.bandlimit) if args.convolve is not None else None
 
     plot(
         f,

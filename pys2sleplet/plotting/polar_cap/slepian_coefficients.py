@@ -1,11 +1,11 @@
 from pathlib import Path
 
+import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
 from pys2sleplet.plotting.inputs import THETA_MAX
 from pys2sleplet.plotting.polar_cap.utils import (
-    create_table,
     earth_region_harmonic_coefficients,
     earth_region_slepian_coefficients,
 )
@@ -23,13 +23,13 @@ def main() -> None:
     creates a plot of Slepian coefficient against rank
     """
     flm = earth_region_harmonic_coefficients(L, THETA_MAX)
-    df = create_table(earth_region_slepian_coefficients, L, THETA_MAX)
+    f_p = np.sort(earth_region_slepian_coefficients(L, THETA_MAX))[::-1]
     ax = plt.gca()
     sns.scatterplot(
-        x=df.index, y=df["qty"], ax=ax, label="slepian", linewidth=0, marker="*"
+        x=range(L * L), y=f_p, ax=ax, label="slepian", linewidth=0, marker="*"
     )
     sns.scatterplot(
-        x=range(len(flm)), y=flm, ax=ax, label="harmonic", linewidth=0, marker="."
+        x=range(L * L), y=flm, ax=ax, label="harmonic", linewidth=0, marker="."
     )
     ax.set_xlabel("coefficient")
     ax.set_ylabel("magnitude")

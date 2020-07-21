@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 from numpy.testing import assert_allclose, assert_raises
 
 from pys2sleplet.flm.maps.earth import Earth
@@ -14,11 +13,14 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     f_p = polar_cap_decomposition.decompose_all(method="integrate_region")
     g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
     h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(np.abs(f_p - h_p).mean(), 0, atol=1e10)
-    assert_allclose(np.abs(g_p - h_p).mean(), 0, atol=3)
+    assert_allclose(
+        np.abs(f_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=7
+    )
+    assert_allclose(
+        np.abs(g_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=0.04
+    )
 
 
-@pytest.mark.slow
 def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     """
     tests that all three methods produce the same coefficients for
@@ -27,8 +29,12 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     f_p = lim_lat_lon_decomposition.decompose_all(method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose_all(method="integrate_sphere")
     h_p = lim_lat_lon_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(np.abs(f_p - h_p).mean(), 0, atol=1e10)
-    assert_allclose(np.abs(g_p - h_p).mean(), 0, atol=1e-2)
+    assert_allclose(
+        np.abs(f_p - h_p)[: lim_lat_lon_decomposition.shannon].mean(), 0, atol=18
+    )
+    assert_allclose(
+        np.abs(g_p - h_p)[: lim_lat_lon_decomposition.shannon].mean(), 0, atol=1e-2
+    )
 
 
 def test_pass_function_without_region() -> None:
@@ -43,4 +49,4 @@ def test_pass_rank_higher_than_available(polar_cap_decomposition) -> None:
     """
     tests that asking for a Slepian coefficient above the limit fails
     """
-    assert_raises(ValueError, polar_cap_decomposition.decompose, L)
+    assert_raises(ValueError, polar_cap_decomposition.decompose, L * L)
