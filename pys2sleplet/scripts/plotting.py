@@ -11,7 +11,7 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import default_region
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 
@@ -207,7 +207,18 @@ def plot(
 def main() -> None:
     args = read_args()
 
-    mask = default_region if args.region else None
+    mask = (
+        Region(
+            gap=settings.POLAR_GAP,
+            mask_name=settings.SLEPIAN_MASK,
+            phi_max=np.deg2rad(settings.PHI_MAX),
+            phi_min=np.deg2rad(settings.PHI_MIN),
+            theta_max=np.deg2rad(settings.THETA_MAX),
+            theta_min=np.deg2rad(settings.THETA_MIN),
+        )
+        if args.region
+        else None
+    )
 
     f = FUNCTIONS[args.flm](args.bandlimit, extra_args=args.extra_args, region=mask)
 

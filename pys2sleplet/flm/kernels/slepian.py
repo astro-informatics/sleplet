@@ -1,10 +1,12 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
+import numpy as np
+
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import default_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
@@ -18,7 +20,18 @@ class Slepian(Functions):
     _slepian: SlepianFunctions = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.region = default_region if self.region is None else self.region
+        self.region = (
+            Region(
+                gap=settings.POLAR_GAP,
+                mask_name=settings.SLEPIAN_MASK,
+                phi_max=np.deg2rad(settings.PHI_MAX),
+                phi_min=np.deg2rad(settings.PHI_MIN),
+                theta_max=np.deg2rad(settings.THETA_MAX),
+                theta_min=np.deg2rad(settings.THETA_MIN),
+            )
+            if self.region is None
+            else self.region
+        )
         self.slepian = choose_slepian_method(self.L, self.region)
         self._validate_rank()
         super().__post_init__()
