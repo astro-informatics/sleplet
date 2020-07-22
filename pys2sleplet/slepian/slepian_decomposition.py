@@ -21,7 +21,7 @@ class SlepianDecomposition:
     _lambdas: np.ndarray = field(init=False, repr=False)
     _mask: np.ndarray = field(init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
-    _s_p_lms: np.ndarray = field(init=False, repr=False)
+    _s_p: np.ndarray = field(init=False, repr=False)
     _shannon: int = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
@@ -35,8 +35,8 @@ class SlepianDecomposition:
         self.resolution = slepian.resolution
         self.shannon = slepian.shannon
         self.weight = calc_integration_weight(self.resolution)
-        self.s_p_lms = slepian.eigenvectors
-        self.N = self.s_p_lms.shape[0]
+        self.s_p = slepian.eigenvectors
+        self.N = self.s_p.shape[0]
 
     def decompose(self, rank: int, method: str = DECOMPOSITION_DEFAULT) -> complex:
         """
@@ -76,7 +76,7 @@ class SlepianDecomposition:
             self.L,
             self.resolution,
             self.flm,
-            self.s_p_lms[rank],
+            self.s_p[rank],
             self.weight,
             glm_conj=True,
             mask_boosted=self.mask,
@@ -94,7 +94,7 @@ class SlepianDecomposition:
             self.L,
             self.resolution,
             self.flm,
-            self.s_p_lms[rank],
+            self.s_p[rank],
             self.weight,
             glm_conj=True,
         )
@@ -107,7 +107,7 @@ class SlepianDecomposition:
         \sum\limits_{m=-\ell}^{\ell}
         f_{\ell m} (S_{p})_{\ell m}^{*}
         """
-        f_p = (self.flm * self.s_p_lms[rank].conj()).sum()
+        f_p = (self.flm * self.s_p[rank].conj()).sum()
         return f_p
 
     def _validate_rank(self, rank: int) -> None:
@@ -182,12 +182,12 @@ class SlepianDecomposition:
         self._resolution = resolution
 
     @property
-    def s_p_lms(self) -> np.ndarray:
-        return self._s_p_lms
+    def s_p(self) -> np.ndarray:
+        return self._s_p
 
-    @s_p_lms.setter
-    def s_p_lms(self, s_p_lms: np.ndarray) -> None:
-        self._s_p_lms = s_p_lms
+    @s_p.setter
+    def s_p(self, s_p: np.ndarray) -> None:
+        self._s_p = s_p
 
     @property
     def shannon(self) -> int:
