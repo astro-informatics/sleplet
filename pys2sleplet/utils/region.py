@@ -19,12 +19,10 @@ class Region:
     phi_min: float
     phi_max: float
     mask_name: Optional[str]
-    order: Optional[int]
     gap: bool
     _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
     _mask_name: Optional[str] = field(default=None, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
-    _order: Optional[int] = field(default=None, init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
     _region_type: str = field(init=False, repr=False)
@@ -97,18 +95,6 @@ class Region:
     @name_ending.setter
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
-
-    @property  # type: ignore
-    def order(self) -> Optional[int]:
-        return self._order
-
-    @order.setter
-    def order(self, order: Optional[int]) -> None:
-        if isinstance(order, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            order = Region._order
-        self._order = order
 
     @property  # type: ignore
     def phi_max(self) -> float:

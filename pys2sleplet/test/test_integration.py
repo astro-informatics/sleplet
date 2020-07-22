@@ -19,7 +19,7 @@ def test_integrate_two_slepian_polar_cap_functions_whole_sphere_matrix(
         slepian_polar_cap.resolution,
     )
     desired = np.identity(output.shape[0])
-    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-4)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
 
 
 def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
@@ -54,7 +54,7 @@ def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
     desired = slepian_polar_cap.eigenvalues[: slepian_polar_cap.shannon] * np.identity(
         output.shape[0]
     )
-    assert_allclose(np.abs(output - desired).mean(), 0, atol=0.04)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-2)
 
 
 def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(

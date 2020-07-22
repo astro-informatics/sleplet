@@ -3,8 +3,8 @@ from typing import Optional
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.config import default_region
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mask_methods import default_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
@@ -27,9 +27,14 @@ class Slepian(Functions):
         self.annotations = self.slepian.annotations
 
     def _create_name(self) -> None:
+        order = (
+            f"_m{self.slepian.order[self.rank]}"
+            if hasattr(self.slepian, "order")
+            else ""
+        )
         self.name = (
             (
-                f"{self.slepian.name}_rank{self.rank}"
+                f"{self.slepian.name}{order}_rank{self.rank}"
                 f"_lam{self.slepian.eigenvalues[self.rank]:e}"
             )
             .replace(".", "-")

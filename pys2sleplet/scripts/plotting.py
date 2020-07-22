@@ -7,10 +7,11 @@ import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.config import default_region, settings
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mask_methods import default_region
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 

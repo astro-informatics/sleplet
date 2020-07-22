@@ -1,7 +1,6 @@
 auto_open = true
 L = 16
 ncpu = 4
-order = 0
 phi_min = 0
 phi_max = 360
 polar_gap = false

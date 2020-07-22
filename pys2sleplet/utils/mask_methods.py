@@ -3,11 +3,20 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
+default_region = Region(
+    gap=settings.POLAR_GAP,
+    mask_name=settings.SLEPIAN_MASK,
+    phi_max=np.deg2rad(settings.PHI_MAX),
+    phi_min=np.deg2rad(settings.PHI_MIN),
+    theta_max=np.deg2rad(settings.THETA_MAX),
+    theta_min=np.deg2rad(settings.THETA_MIN),
+)
 
 
 def create_mask_region(L: int, region: Region) -> np.ndarray:

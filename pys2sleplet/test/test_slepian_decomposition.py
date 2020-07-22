@@ -14,10 +14,10 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
     h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
     assert_allclose(
-        np.abs(f_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=7
+        np.abs(f_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=8
     )
     assert_allclose(
-        np.abs(g_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=0.04
+        np.abs(g_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=2
     )
 
 
