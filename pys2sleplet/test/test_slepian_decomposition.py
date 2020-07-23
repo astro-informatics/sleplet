@@ -1,6 +1,5 @@
 import numpy as np
 import pyssht as ssht
-import pytest
 from numpy.testing import assert_allclose, assert_raises
 
 from pys2sleplet.flm.maps.earth import Earth
@@ -40,7 +39,6 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     )
 
 
-@pytest.mark.slow
 def test_equality_to_harmonic_transform_polar(polar_cap_decomposition) -> None:
     """
     tests that fp*Sp up to N is roughly equal to flm*Ylm
@@ -56,7 +54,6 @@ def test_equality_to_harmonic_transform_polar(polar_cap_decomposition) -> None:
     assert_allclose(np.abs(f_slepian - f_harmonic).mean(), 0, atol=16)
 
 
-@pytest.mark.slow
 def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     """
     tests that fp*Sp up to N is roughly equal to flm*Ylm
