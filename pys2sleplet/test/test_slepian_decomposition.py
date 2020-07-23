@@ -1,9 +1,12 @@
 import numpy as np
+import pyssht as ssht
+import pytest
 from numpy.testing import assert_allclose, assert_raises
 
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.test.constants import L_SMALL as L
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def test_decompose_all_polar(polar_cap_decomposition) -> None:
@@ -35,6 +38,38 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     assert_allclose(
         np.abs(g_p - h_p)[: lim_lat_lon_decomposition.shannon].mean(), 0, atol=1e-2
     )
+
+
+@pytest.mark.slow
+def test_equality_to_harmonic_transform_polar(polar_cap_decomposition) -> None:
+    """
+    tests that fp*Sp up to N is roughly equal to flm*Ylm
+    """
+    f_slepian = np.zeros((L + 1, 2 * L), dtype=np.complex128)
+    for p in range(polar_cap_decomposition.shannon):
+        f_p = polar_cap_decomposition.decompose(p)
+        s_p = ssht.inverse(
+            polar_cap_decomposition.s_p_lms[p], L, Method=SAMPLING_SCHEME
+        )
+        f_slepian += f_p * s_p
+    f_harmonic = ssht.inverse(polar_cap_decomposition.flm, L, Method=SAMPLING_SCHEME)
+    assert_allclose(np.abs(f_slepian - f_harmonic).mean(), 0, atol=16)
+
+
+@pytest.mark.slow
+def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -> None:
+    """
+    tests that fp*Sp up to N is roughly equal to flm*Ylm
+    """
+    f_slepian = np.zeros((L + 1, 2 * L), dtype=np.complex128)
+    for p in range(lim_lat_lon_decomposition.shannon):
+        f_p = lim_lat_lon_decomposition.decompose(p)
+        s_p = ssht.inverse(
+            lim_lat_lon_decomposition.s_p_lms[p], L, Method=SAMPLING_SCHEME
+        )
+        f_slepian += f_p * s_p
+    f_harmonic = ssht.inverse(lim_lat_lon_decomposition.flm, L, Method=SAMPLING_SCHEME)
+    assert_allclose(np.abs(f_slepian - f_harmonic).mean(), 0, atol=20)
 
 
 def test_pass_function_without_region() -> None:
