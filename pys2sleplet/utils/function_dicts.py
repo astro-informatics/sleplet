@@ -10,6 +10,7 @@ from pys2sleplet.flm.kernels.slepian import Slepian
 from pys2sleplet.flm.kernels.spherical_harmonic import SphericalHarmonic
 from pys2sleplet.flm.kernels.squashed_gaussian import SquashedGaussian
 from pys2sleplet.flm.maps.earth import Earth
+from pys2sleplet.flm.maps.south_america import SouthAmerica
 from pys2sleplet.flm.maps.wmap import Wmap
 
 KERNELS: Dict[str, Functions] = dict(
@@ -23,6 +24,6 @@ KERNELS: Dict[str, Functions] = dict(
     squashed_gaussian=SquashedGaussian,
 )
 
-MAPS: Dict[str, Functions] = dict(earth=Earth, wmap=Wmap)
+MAPS: Dict[str, Functions] = dict(earth=Earth, south_america=SouthAmerica, wmap=Wmap)
 
 FUNCTIONS: Dict[str, Functions] = {**KERNELS, **MAPS}
