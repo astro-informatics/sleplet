@@ -85,7 +85,7 @@ def _helper(
     )
     desired = slepian.eigenvalues * np.identity(output.shape[0])
     error = np.abs(output - desired)
-    return error, slepian.shannon
+    return error, slepian.N
 
 
 def _create_ticks(L: int, N: int) -> List[str]:

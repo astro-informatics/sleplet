@@ -11,7 +11,7 @@ def get_shannon(L: int, theta_max: int) -> int:
     computes the Shannon number
     """
     slepian = SlepianPolarCap(L, np.deg2rad(theta_max))
-    return slepian.shannon
+    return slepian.N
 
 
 def earth_region_harmonic_coefficients(L: int, theta_max: int) -> np.ndarray:

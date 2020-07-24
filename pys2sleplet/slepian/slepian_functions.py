@@ -21,7 +21,7 @@ class SlepianFunctions:
     _matrix_location: Path = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
-    _shannon: int = field(init=False, repr=False)
+    _N: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.resolution = calc_integration_resolution(self.L)
@@ -30,7 +30,7 @@ class SlepianFunctions:
         self._create_matrix_location()
         self._create_fn_name()
         self._calculate_area()
-        self.shannon = int(round(self.area * self.L * self.L / (4 * np.pi)))
+        self.N = int(round(self.area * self.L * self.L / (4 * np.pi)))
         logger.info("start solving eigenproblem")
         self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
@@ -92,6 +92,14 @@ class SlepianFunctions:
         self._matrix_location = matrix_location
 
     @property
+    def N(self) -> int:
+        return self._N
+
+    @N.setter
+    def N(self, N: int) -> None:
+        self._N = N
+
+    @property
     def name(self) -> str:
         return self._name
 
@@ -106,14 +114,6 @@ class SlepianFunctions:
     @resolution.setter
     def resolution(self, resolution: int) -> None:
         self._resolution = resolution
-
-    @property
-    def shannon(self) -> int:
-        return self._shannon
-
-    @shannon.setter
-    def shannon(self, shannon: int) -> None:
-        self._shannon = shannon
 
     @abstractmethod
     def _create_annotations(self) -> None:

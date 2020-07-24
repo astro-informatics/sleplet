@@ -54,10 +54,10 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
         markers=MarkerStyle.filled_markers,
         ax=axs,
     )
-    axs.axvline(x=slepian.shannon - 1)
+    axs.axvline(x=slepian.N - 1)
     axs.annotate(
-        f"N={slepian.shannon}",
-        xy=(slepian.shannon - 1, 1),
+        f"N={slepian.N}",
+        xy=(slepian.N - 1, 1),
         xytext=(0, 7),
         ha="center",
         textcoords="offset points",

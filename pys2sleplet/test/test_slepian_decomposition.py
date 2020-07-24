@@ -15,12 +15,8 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     f_p = polar_cap_decomposition.decompose_all(method="integrate_region")
     g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
     h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(
-        np.abs(f_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=8
-    )
-    assert_allclose(
-        np.abs(g_p - h_p)[: polar_cap_decomposition.shannon].mean(), 0, atol=2
-    )
+    assert_allclose(np.abs(f_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=8)
+    assert_allclose(np.abs(g_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=2)
 
 
 def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
@@ -31,11 +27,9 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     f_p = lim_lat_lon_decomposition.decompose_all(method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose_all(method="integrate_sphere")
     h_p = lim_lat_lon_decomposition.decompose_all(method="harmonic_sum")
+    assert_allclose(np.abs(f_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=18)
     assert_allclose(
-        np.abs(f_p - h_p)[: lim_lat_lon_decomposition.shannon].mean(), 0, atol=18
-    )
-    assert_allclose(
-        np.abs(g_p - h_p)[: lim_lat_lon_decomposition.shannon].mean(), 0, atol=1e-2
+        np.abs(g_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=1e-2
     )
 
 
@@ -44,7 +38,7 @@ def test_equality_to_harmonic_transform_polar(polar_cap_decomposition) -> None:
     tests that fp*Sp up to N is roughly equal to flm*Ylm
     """
     f_slepian = np.zeros((L + 1, 2 * L), dtype=np.complex128)
-    for p in range(polar_cap_decomposition.shannon):
+    for p in range(polar_cap_decomposition.N):
         f_p = polar_cap_decomposition.decompose(p)
         s_p = ssht.inverse(
             polar_cap_decomposition.s_p_lms[p], L, Method=SAMPLING_SCHEME
@@ -59,7 +53,7 @@ def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -
     tests that fp*Sp up to N is roughly equal to flm*Ylm
     """
     f_slepian = np.zeros((L + 1, 2 * L), dtype=np.complex128)
-    for p in range(lim_lat_lon_decomposition.shannon):
+    for p in range(lim_lat_lon_decomposition.N):
         f_p = lim_lat_lon_decomposition.decompose(p)
         s_p = ssht.inverse(
             lim_lat_lon_decomposition.s_p_lms[p], L, Method=SAMPLING_SCHEME

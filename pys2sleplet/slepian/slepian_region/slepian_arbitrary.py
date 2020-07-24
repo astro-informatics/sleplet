@@ -27,14 +27,12 @@ _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     ncpu: int
-    _N: int = field(init=False, repr=False)
     _mask_name: str = field(init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.N = self.L * self.L
         self.region = Region(mask_name=self.mask_name)
         super().__post_init__()
 
@@ -88,10 +86,10 @@ class SlepianArbitrary(SlepianFunctions):
         computes the D matrix in serial
         """
         # initialise real and imaginary matrices
-        D_r = np.zeros((self.N, self.N))
-        D_i = np.zeros((self.N, self.N))
+        D_r = np.zeros((self.L * self.L, self.L * self.L))
+        D_i = np.zeros((self.L * self.L, self.L * self.L))
 
-        for i in range(self.N):
+        for i in range(self.L * self.L):
             self._matrix_helper(D_r, D_i, i)
 
         # combine real and imaginary parts
@@ -107,8 +105,8 @@ class SlepianArbitrary(SlepianFunctions):
         computes the D matrix in parallel
         """
         # initialise real and imaginary matrices
-        D_r = np.zeros((self.N, self.N))
-        D_i = np.zeros((self.N, self.N))
+        D_r = np.zeros((self.L * self.L, self.L * self.L))
+        D_i = np.zeros((self.L * self.L, self.L * self.L))
 
         # create shared memory block
         shm_r = SharedMemory(create=True, size=D_r.nbytes)
@@ -136,7 +134,7 @@ class SlepianArbitrary(SlepianFunctions):
             ex_shm_i.close()
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.N, self.ncpu)
+        chunks = split_L_into_chunks(self.L * self.L, self.ncpu)
 
         # initialise pool and apply function
         with Pool(processes=self.ncpu) as p:
@@ -169,7 +167,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i[i][i] = integral.imag
         _, m_i = ssht.ind2elm(i)
 
-        for j in range(i + 1, self.N):
+        for j in range(i + 1, self.L * self.L):
             ell_j, m_j = ssht.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
@@ -234,14 +232,6 @@ class SlepianArbitrary(SlepianFunctions):
     @mask_name.setter
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
-
-    @property
-    def N(self) -> int:
-        return self._N
-
-    @N.setter
-    def N(self, N: int) -> None:
-        self._N = N
 
     @property  # type: ignore
     def ncpu(self) -> int:

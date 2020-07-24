@@ -22,7 +22,6 @@ class SlepianDecomposition:
     _mask: np.ndarray = field(init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
     _s_p_lms: np.ndarray = field(init=False, repr=False)
-    _shannon: int = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -33,10 +32,9 @@ class SlepianDecomposition:
         self.lambdas = slepian.eigenvalues
         self.mask = slepian.mask
         self.resolution = slepian.resolution
-        self.shannon = slepian.shannon
+        self.N = slepian.N
         self.weight = calc_integration_weight(self.resolution)
         self.s_p_lms = slepian.eigenvectors
-        self.N = self.s_p_lms.shape[0]
 
     def decompose(self, rank: int, method: str = DECOMPOSITION_DEFAULT) -> complex:
         """
@@ -60,8 +58,8 @@ class SlepianDecomposition:
         """
         decompose all ranks of the Slepian coefficients for a given method
         """
-        coefficients = np.zeros(self.N, dtype=np.complex128)
-        for rank in range(self.N):
+        coefficients = np.zeros(self.s_p_lms.shape[0], dtype=np.complex128)
+        for rank in range(self.s_p_lms.shape[0]):
             coefficients[rank] = self.decompose(rank, method=method)
         return coefficients
 
@@ -118,8 +116,8 @@ class SlepianDecomposition:
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        if rank >= self.N:
-            raise ValueError(f"rank should be less than {self.N}")
+        if rank >= self.s_p_lms.shape[0]:
+            raise ValueError(f"rank should be less than {self.s_p_lms.shape[0]}")
 
     @property
     def flm(self) -> np.ndarray:
@@ -188,14 +186,6 @@ class SlepianDecomposition:
     @s_p_lms.setter
     def s_p_lms(self, s_p_lms: np.ndarray) -> None:
         self._s_p_lms = s_p_lms
-
-    @property
-    def shannon(self) -> int:
-        return self._shannon
-
-    @shannon.setter
-    def shannon(self, shannon: int) -> None:
-        self._shannon = shannon
 
     @property
     def weight(self) -> np.ndarray:
