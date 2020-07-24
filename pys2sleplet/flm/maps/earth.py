@@ -1,10 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-import numpy as np
-import pyssht as ssht
-from scipy import io as sio
-
+from pys2sleplet.data.maps.earth.create_earth_flm import create_flm
 from pys2sleplet.flm.functions import Functions
 
 _file_location = Path(__file__).resolve()
@@ -19,21 +16,7 @@ class Earth(Functions):
         pass
 
     def _create_flm(self) -> None:
-        # load in data
-        flm = self._load_flm()
-
-        # fill in negative m components so as to
-        # avoid confusion with zero values
-        for ell in range(1, self.L):
-            for m in range(1, ell + 1):
-                ind_pm = ssht.elm2ind(ell, m)
-                ind_nm = ssht.elm2ind(ell, -m)
-                flm_pm = flm[ind_pm]  # noqa: F841
-                flm[ind_nm] = (-1) ** m * flm_pm.conj()
-
-        # don't take the full L
-        # invert dataset as Earth backwards
-        self.multipole = flm[: self.L * self.L].conj()
+        self.multipole = create_flm(self.L)
 
     def _create_name(self) -> None:
         self.name = "earth"
@@ -46,19 +29,3 @@ class Earth(Functions):
             raise AttributeError(
                 f"{self.__class__.__name__} does not support extra arguments"
             )
-
-    @staticmethod
-    def _load_flm() -> np.ndarray:
-        """
-        load coefficients from file
-        """
-        matfile = str(
-            _file_location.parents[2]
-            / "data"
-            / "maps"
-            / "earth"
-            / "EGM2008_Topography_flms_L2190.mat"
-        )
-        mat_contents = sio.loadmat(matfile)
-        flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
-        return flm
