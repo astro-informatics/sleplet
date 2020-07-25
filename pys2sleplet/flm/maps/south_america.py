@@ -6,7 +6,14 @@ import pyssht as ssht
 
 from pys2sleplet.data.maps.earth.create_earth_flm import create_flm
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLING_SCHEME
+from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
+from pys2sleplet.utils.vars import (
+    EARTH_ALPHA,
+    EARTH_BETA,
+    EARTH_GAMMA,
+    SAMPLING_SCHEME,
+    SOUTH_AMERICA_RANGE,
+)
 
 _file_location = Path(__file__).resolve()
 
@@ -20,19 +27,7 @@ class SouthAmerica(Functions):
         pass
 
     def _create_flm(self) -> None:
-        earth_flm = create_flm(self.L)
-        rot_flm = ssht.rotate_flms(
-            earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, self.L
-        )
-        earth_f = ssht.inverse(
-            rot_flm, self.L, Method=SAMPLING_SCHEME, Reality=self.reality
-        )
-        theta_grid, _ = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
-        mask = (theta_grid <= np.deg2rad(40)) & (earth_f >= 0)
-        masked_f = np.where(mask, earth_f, 0)
-        self.multipole = ssht.forward(
-            masked_f, self.L, Method="MWSS", Reality=self.reality
-        )
+        self.multipole = ensure_f_bandlimited(self._grid_fun, self.L, self.reality)
 
     def _create_name(self) -> None:
         self.name = "south_america"
@@ -45,3 +40,18 @@ class SouthAmerica(Functions):
             raise AttributeError(
                 f"{self.__class__.__name__} does not support extra arguments"
             )
+
+    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
+        """
+        function on the grid
+        """
+        earth_flm = create_flm(self.L)
+        rot_flm = ssht.rotate_flms(
+            earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, self.L
+        )
+        earth_f = ssht.inverse(
+            rot_flm, self.L, Method=SAMPLING_SCHEME, Reality=self.reality
+        )
+        mask = (theta <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
+        f = np.where(mask, earth_f, 0)
+        return f

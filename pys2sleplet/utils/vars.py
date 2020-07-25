@@ -16,6 +16,7 @@ PHI_0: float = np.pi
 PHI_MIN_DEFAULT: float = 0.0
 PHI_MAX_DEFAULT: float = 2 * np.pi
 SAMPLING_SCHEME: str = "MWSS"
+SOUTH_AMERICA_RANGE: int = np.deg2rad(40)
 THETA_0: float = 0.0
 THETA_MIN_DEFAULT: float = 0
 THETA_MAX_DEFAULT: float = np.pi
