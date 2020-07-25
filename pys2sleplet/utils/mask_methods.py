@@ -77,6 +77,6 @@ def ensure_masked_flm_bandlimited(
     """
     field = ssht.inverse(flm, L, Reality=reality, Method=SAMPLING_SCHEME)
     mask = create_mask_region(L, region)
-    field *= mask
+    field = np.where(mask, field, 0)
     multipole = ssht.forward(field, L, Reality=reality, Method=SAMPLING_SCHEME)
     return multipole
