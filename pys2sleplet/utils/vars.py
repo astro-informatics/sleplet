@@ -1,11 +1,11 @@
-from typing import Dict
+from typing import Any, Dict
 
 import numpy as np
 
 ANNOTATION_COLOUR: str = "salmon"
 ANNOTATION_SECOND_COLOUR: str = "gold"
 ANNOTATION_DOTS: int = 12
-ARROW_STYLE: Dict[str, int] = dict(arrowhead=7, ax=5, ay=5)
+ARROW_STYLE: Dict[str, Any] = dict(arrowhead=7, ax=5, ay=5, opacity=0.5)
 MID_COLOURBAR: float = 0.5
 DECOMPOSITION_DEFAULT: str = "harmonic_sum"
 EARTH_ALPHA: float = np.deg2rad(54)

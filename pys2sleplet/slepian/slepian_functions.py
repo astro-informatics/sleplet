@@ -25,8 +25,8 @@ class SlepianFunctions:
 
     def __post_init__(self) -> None:
         self.resolution = calc_integration_resolution(self.L)
-        self._create_annotations()
         self._create_mask()
+        self._create_annotations()
         self._create_matrix_location()
         self._create_fn_name()
         self._calculate_area()

@@ -18,6 +18,7 @@ from pys2sleplet.utils.integration_methods import (
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.vars import ANNOTATION_COLOUR, ARROW_STYLE, SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
@@ -37,7 +38,20 @@ class SlepianArbitrary(SlepianFunctions):
         super().__post_init__()
 
     def _create_annotations(self) -> None:
-        pass
+        self.mask: np.ndarray
+        theta_grid, phi_grid = ssht.sample_positions(
+            self.resolution, Grid=True, Method=SAMPLING_SCHEME
+        )
+        for i in range(self.mask.shape[0]):
+            for j in range(self.mask.shape[1]):
+                if self.mask[i, j]:
+                    x, y, z = ssht.s2_to_cart(theta_grid[i, j], phi_grid[i, j])
+                    self.annotations.append(
+                        {
+                            **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR),
+                            **ARROW_STYLE,
+                        }
+                    )
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian_{self.mask_name}"
