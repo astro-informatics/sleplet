@@ -20,7 +20,7 @@ def create_flm(L: int) -> np.ndarray:
         for m in range(1, ell + 1):
             ind_pm = ssht.elm2ind(ell, m)
             ind_nm = ssht.elm2ind(ell, -m)
-            flm_pm = flm[ind_pm]  # noqa: F841
+            flm_pm = flm[ind_pm]
             flm[ind_nm] = (-1) ** m * flm_pm.conj()
 
     # don't take the full L
