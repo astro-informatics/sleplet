@@ -234,7 +234,7 @@ class SlepianArbitrary(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mask_name(self) -> str:
         return self._mask_name
 
@@ -242,7 +242,7 @@ class SlepianArbitrary(SlepianFunctions):
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
 
-    @property  # type: ignore
+    @property  # type:ignore
     def ncpu(self) -> int:
         return self._ncpu
 

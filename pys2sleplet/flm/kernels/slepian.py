@@ -80,7 +80,7 @@ class Slepian(Functions):
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 
-    @property  # type: ignore
+    @property  # type:ignore
     def rank(self) -> int:
         return self._rank
 
@@ -96,7 +96,7 @@ class Slepian(Functions):
             raise ValueError("rank cannot be negative")
         self._rank = rank
 
-    @property  # type: ignore
+    @property  # type:ignore
     def region(self) -> Region:
         return self._region
 

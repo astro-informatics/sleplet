@@ -15,7 +15,7 @@ from pys2sleplet.utils.string_methods import filename_angle
 _file_location = Path(__file__).resolve()
 
 
-@dataclass  # type: ignore
+@dataclass  # type:ignore
 class Functions:
     L: int
     extra_args: Optional[List[int]]
@@ -123,7 +123,7 @@ class Functions:
     def annotations(self, annotations: List[Dict]) -> None:
         self._annotations = annotations
 
-    @property  # type: ignore
+    @property  # type:ignore
     def extra_args(self) -> Optional[List[int]]:
         return self._extra_args
 
@@ -135,7 +135,7 @@ class Functions:
             extra_args = Functions._extra_args
         self._extra_args = extra_args
 
-    @property  # type: ignore
+    @property  # type:ignore
     def L(self) -> int:
         return self._L
 
@@ -171,7 +171,7 @@ class Functions:
     def reality(self, reality: bool) -> None:
         self._reality = reality
 
-    @property  # type: ignore
+    @property  # type:ignore
     def region(self) -> Region:
         return self._region
 

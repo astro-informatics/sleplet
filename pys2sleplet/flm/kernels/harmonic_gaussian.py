@@ -46,7 +46,7 @@ class HarmonicGaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.l_sigma, self.m_sigma = [10 ** x for x in self.extra_args]
 
-    @property  # type: ignore
+    @property  # type:ignore
     def l_sigma(self) -> float:
         return self._l_sigma
 
@@ -58,7 +58,7 @@ class HarmonicGaussian(Functions):
             l_sigma = HarmonicGaussian._l_sigma
         self._l_sigma = l_sigma
 
-    @property  # type: ignore
+    @property  # type:ignore
     def m_sigma(self) -> float:
         return self._m_sigma
 

@@ -53,7 +53,7 @@ class ElongatedGaussian(Functions):
             / 2
         )
 
-    @property  # type: ignore
+    @property  # type:ignore
     def p_sigma(self) -> float:
         return self._p_sigma
 
@@ -65,7 +65,7 @@ class ElongatedGaussian(Functions):
             p_sigma = ElongatedGaussian._p_sigma
         self._p_sigma = p_sigma
 
-    @property  # type: ignore
+    @property  # type:ignore
     def t_sigma(self) -> float:
         return self._t_sigma
 

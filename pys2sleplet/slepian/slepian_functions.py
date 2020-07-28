@@ -9,7 +9,7 @@ from pys2sleplet.utils.integration_methods import calc_integration_resolution
 from pys2sleplet.utils.logger import logger
 
 
-@dataclass  # type: ignore
+@dataclass  # type:ignore
 class SlepianFunctions:
     L: int
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
@@ -67,7 +67,7 @@ class SlepianFunctions:
     def eigenvectors(self, eigenvectors: np.ndarray) -> None:
         self._eigenvectors = eigenvectors
 
-    @property  # type: ignore
+    @property  # type:ignore
     def L(self) -> int:
         return self._L
 

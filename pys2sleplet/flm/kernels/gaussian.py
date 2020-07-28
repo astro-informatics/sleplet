@@ -38,7 +38,7 @@ class Gaussian(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.sigma = 10 ** self.extra_args[0]
 
-    @property  # type: ignore
+    @property  # type:ignore
     def sigma(self) -> float:
         return self._sigma
 

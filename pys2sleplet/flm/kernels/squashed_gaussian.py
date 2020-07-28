@@ -49,7 +49,7 @@ class SquashedGaussian(Functions):
             self.freq * phi
         )
 
-    @property  # type: ignore
+    @property  # type:ignore
     def freq(self) -> float:
         return self._freq
 
@@ -61,7 +61,7 @@ class SquashedGaussian(Functions):
             freq = SquashedGaussian._freq
         self._freq = freq
 
-    @property  # type: ignore
+    @property  # type:ignore
     def t_sigma(self) -> float:
         return self._t_sigma
 

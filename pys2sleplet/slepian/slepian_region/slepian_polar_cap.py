@@ -399,7 +399,7 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @property  # type: ignore
+    @property  # type:ignore
     def gap(self) -> bool:
         return self._gap
 
@@ -419,7 +419,7 @@ class SlepianPolarCap(SlepianFunctions):
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
 
-    @property  # type: ignore
+    @property  # type:ignore
     def ncpu(self) -> int:
         return self._ncpu
 
@@ -431,7 +431,7 @@ class SlepianPolarCap(SlepianFunctions):
             ncpu = SlepianPolarCap._ncpu
         self._ncpu = ncpu
 
-    @property  # type: ignore
+    @property  # type:ignore
     def order(self) -> Optional[Union[int, np.ndarray]]:
         return self._order
 
@@ -453,7 +453,7 @@ class SlepianPolarCap(SlepianFunctions):
     def region(self, region: Region) -> None:
         self._region = region
 
-    @property  # type: ignore
+    @property  # type:ignore
     def theta_max(self) -> float:
         return self._theta_max
 

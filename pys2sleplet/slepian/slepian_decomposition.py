@@ -124,7 +124,7 @@ class SlepianDecomposition:
     def flm(self, flm: np.ndarray) -> None:
         self._flm = flm
 
-    @property  # type: ignore
+    @property  # type:ignore
     def function(self) -> Functions:
         return self._function
 

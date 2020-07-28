@@ -64,7 +64,7 @@ class Region:
                 "longitude region, or a file with a mask"
             )
 
-    @property  # type: ignore
+    @property  # type:ignore
     def gap(self) -> bool:
         return self._gap
 
@@ -76,7 +76,7 @@ class Region:
             gap = Region._gap
         self._gap = gap
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mask_name(self) -> Optional[str]:
         return self._mask_name
 
@@ -96,7 +96,7 @@ class Region:
     def name_ending(self, name_ending: str) -> None:
         self._name_ending = name_ending
 
-    @property  # type: ignore
+    @property  # type:ignore
     def phi_max(self) -> float:
         return self._phi_max
 
@@ -114,7 +114,7 @@ class Region:
             )
         self._phi_max = phi_max
 
-    @property  # type: ignore
+    @property  # type:ignore
     def phi_min(self) -> float:
         return self._phi_min
 
@@ -140,7 +140,7 @@ class Region:
     def region_type(self, region_type: str) -> None:
         self._region_type = region_type
 
-    @property  # type: ignore
+    @property  # type:ignore
     def theta_max(self) -> float:
         return self._theta_max
 
@@ -158,7 +158,7 @@ class Region:
             )
         self._theta_max = theta_max
 
-    @property  # type: ignore
+    @property  # type:ignore
     def theta_min(self) -> float:
         return self._theta_min
 

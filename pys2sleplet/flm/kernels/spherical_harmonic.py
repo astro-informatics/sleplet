@@ -38,7 +38,7 @@ class SphericalHarmonic(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 
-    @property  # type: ignore
+    @property  # type:ignore
     def ell(self) -> int:
         return self._ell
 
@@ -56,7 +56,7 @@ class SphericalHarmonic(Functions):
             raise ValueError("ell should be less than or equal to L")
         self._ell = ell
 
-    @property  # type: ignore
+    @property  # type:ignore
     def m(self) -> int:
         return self._m
 
