@@ -18,7 +18,7 @@ def create_flm(L: int) -> np.ndarray:
     np.random.seed(0)
 
     # Simulate CMB in harmonic space.
-    flm = np.zeros(L * L, dtype=np.complex128)
+    flm = np.zeros(L ** 2, dtype=np.complex128)
     for ell in range(2, L):
         cl_val = cl[ell - 1]
         cl_val *= 2 * np.pi / (ell * (ell + 1))
@@ -43,5 +43,4 @@ def _load_cl(file_ending: str = "_lcdm_pl_model_wmap7baoh0") -> np.ndarray:
     """
     matfile = str(_file_location.parent / f"wmap{file_ending}.mat")
     mat_contents = sio.loadmat(matfile)
-    cl = np.ascontiguousarray(mat_contents["cl"][:, 0])
-    return cl
+    return np.ascontiguousarray(mat_contents["cl"][:, 0])

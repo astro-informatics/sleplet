@@ -53,5 +53,4 @@ class SouthAmerica(Functions):
             rot_flm, self.L, Method=SAMPLING_SCHEME, Reality=self.reality
         )
         mask = (theta <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
-        f = np.where(mask, earth_f, 0)
-        return f
+        return np.where(mask, earth_f, 0)

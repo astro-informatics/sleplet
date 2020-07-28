@@ -84,11 +84,7 @@ class SlepianArbitrary(SlepianFunctions):
         if Path(self.matrix_location).exists():
             D = np.load(self.matrix_location)
         else:
-            if self.ncpu == 1:
-                D = self._matrix_serial()
-            else:
-                D = self._matrix_parallel()
-
+            D = self._matrix_serial() if self.ncpu == 1 else self._matrix_parallel()
             # save to speed up for future
             if settings.SAVE_MATRICES:
                 np.save(self.matrix_location, D)
@@ -100,10 +96,10 @@ class SlepianArbitrary(SlepianFunctions):
         computes the D matrix in serial
         """
         # initialise real and imaginary matrices
-        D_r = np.zeros((self.L * self.L, self.L * self.L))
-        D_i = np.zeros((self.L * self.L, self.L * self.L))
+        D_r = np.zeros((self.L ** 2, self.L ** 2))
+        D_i = np.zeros((self.L ** 2, self.L ** 2))
 
-        for i in range(self.L * self.L):
+        for i in range(self.L ** 2):
             self._matrix_helper(D_r, D_i, i)
 
         # combine real and imaginary parts
@@ -119,8 +115,8 @@ class SlepianArbitrary(SlepianFunctions):
         computes the D matrix in parallel
         """
         # initialise real and imaginary matrices
-        D_r = np.zeros((self.L * self.L, self.L * self.L))
-        D_i = np.zeros((self.L * self.L, self.L * self.L))
+        D_r = np.zeros((self.L ** 2, self.L ** 2))
+        D_i = np.zeros((self.L ** 2, self.L ** 2))
 
         # create shared memory block
         shm_r = SharedMemory(create=True, size=D_r.nbytes)
@@ -148,7 +144,7 @@ class SlepianArbitrary(SlepianFunctions):
             ex_shm_i.close()
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L * self.L, self.ncpu)
+        chunks = split_L_into_chunks(self.L ** 2, self.ncpu)
 
         # initialise pool and apply function
         with Pool(processes=self.ncpu) as p:
@@ -181,7 +177,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i[i][i] = integral.imag
         _, m_i = ssht.ind2elm(i)
 
-        for j in range(i + 1, self.L * self.L):
+        for j in range(i + 1, self.L ** 2):
             ell_j, m_j = ssht.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
@@ -204,7 +200,7 @@ class SlepianArbitrary(SlepianFunctions):
         """
         flm = create_spherical_harmonic(self.L, i)
         glm = create_spherical_harmonic(self.L, j)
-        integration = integrate_sphere(
+        return integrate_sphere(
             self.L,
             self.resolution,
             flm,
@@ -213,7 +209,6 @@ class SlepianArbitrary(SlepianFunctions):
             mask_boosted=self.mask,
             glm_conj=True,
         )
-        return integration
 
     @staticmethod
     def _clean_evals_and_evecs(

@@ -83,7 +83,7 @@ class SlepianPolarCap(SlepianFunctions):
             )
         else:
             evals_all = np.empty(0)
-            evecs_all = np.empty((0, self.L * self.L), dtype=np.complex128)
+            evecs_all = np.empty((0, self.L ** 2), dtype=np.complex128)
             emm = np.empty(0, dtype=int)
             for m in range(-(self.L - 1), self.L):
                 evals_m, evecs_m = self._solve_eigenproblem_order(m)
@@ -160,8 +160,7 @@ class SlepianPolarCap(SlepianFunctions):
         ind = emm == 0
         l = np.arange(2 * self.L).reshape(1, -1)
         Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-        P = np.concatenate((Pl, l))
-        return P
+        return np.concatenate((Pl, l))
 
     def _dm_matrix_serial(self, m: int, P: np.ndarray) -> np.ndarray:
         """
@@ -267,10 +266,7 @@ class SlepianPolarCap(SlepianFunctions):
             p = int(lvec[j])
             c = 0
             for n in range(abs(l - p), l + p + 1):
-                if n != 0:
-                    A = Pl[ell == n - 1]
-                else:
-                    A = 1
+                A = Pl[ell == n - 1] if n != 0 else 1
                 c += (
                     self._wigner3j(l, n, p, 0, 0, 0)
                     * self._wigner3j(l, n, p, m, 0, -m)
@@ -372,8 +368,7 @@ class SlepianPolarCap(SlepianFunctions):
         eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell')
         """
-        factor = 1 + self.gap * (-1) ** (ell1 + ell2)
-        return factor
+        return 1 + self.gap * (-1) ** (ell1 + ell2)
 
     def _clean_evals_and_evecs(
         self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray, m: int
@@ -390,9 +385,9 @@ class SlepianPolarCap(SlepianFunctions):
         gl = gl[:, idx].conj()
 
         # put back in full D space for harmonic transform
-        emm = emm[: self.L * self.L]
+        emm = emm[: self.L ** 2]
         ind = np.tile(emm == m, (self.L - abs(m), 1))
-        eigenvectors = np.zeros((self.L - abs(m), self.L * self.L), dtype=np.complex128)
+        eigenvectors = np.zeros((self.L - abs(m), self.L ** 2), dtype=np.complex128)
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive
@@ -446,9 +441,8 @@ class SlepianPolarCap(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             order = SlepianPolarCap._order
-        if order is not None:
-            if (np.abs(order) >= self.L).any():
-                raise ValueError(f"Order magnitude should be less than {self.L}")
+        if order is not None and (np.abs(order) >= self.L).any():
+            raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
 
     @property

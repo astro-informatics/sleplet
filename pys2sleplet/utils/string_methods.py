@@ -74,13 +74,11 @@ def multiples_of_pi(angle: float) -> str:
     i.e. pi, 2pi, 3pi
     """
     multiple = int(angle / np.pi)
-    output = f"{multiple if multiple != 1 else ''}\u03C0"
-    return output
+    return f"{multiple if multiple != 1 else ''}\u03C0"
 
 
 def angle_as_degree(radian: float) -> int:
     """
     converts radian angle to integer degree
     """
-    degree = int(round(np.rad2deg(radian)))
-    return degree
+    return int(round(np.rad2deg(radian)))

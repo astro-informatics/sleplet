@@ -21,12 +21,14 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
     """
     theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
 
-    if region.region_type == "polar":
-        logger.info("creating polar cap mask")
-        mask = theta_grid <= region.theta_max
-        if region.gap:
-            logger.info("creating polar gap mask")
-            mask |= theta_grid >= np.pi - region.theta_max
+    if region.region_type == "arbitrary":
+        logger.info("loading and checking shape of provided mask")
+        name = f"{region.mask_name}_L{L}.npy"
+        mask = _load_mask(name)
+        assert mask.shape == theta_grid.shape, (
+            f"mask {name} has shape {mask.shape} which does not match "
+            f"the provided L={L}, the shape should be {theta_grid.shape}"
+        )
 
     elif region.region_type == "lim_lat_lon":
         logger.info("creating limited latitude longitude mask")
@@ -37,14 +39,12 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
             & (phi_grid <= region.phi_max)
         )
 
-    elif region.region_type == "arbitrary":
-        logger.info("loading and checking shape of provided mask")
-        name = f"{region.mask_name}_L{L}.npy"
-        mask = _load_mask(name)
-        assert mask.shape == theta_grid.shape, (
-            f"mask {name} has shape {mask.shape} which does not match "
-            f"the provided L={L}, the shape should be {theta_grid.shape}"
-        )
+    elif region.region_type == "polar":
+        logger.info("creating polar cap mask")
+        mask = theta_grid <= region.theta_max
+        if region.gap:
+            logger.info("creating polar gap mask")
+            mask |= theta_grid >= np.pi - region.theta_max
 
     return mask
 
@@ -78,5 +78,4 @@ def ensure_masked_flm_bandlimited(
     field = ssht.inverse(flm, L, Reality=reality, Method=SAMPLING_SCHEME)
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
-    multipole = ssht.forward(field, L, Reality=reality, Method=SAMPLING_SCHEME)
-    return multipole
+    return ssht.forward(field, L, Reality=reality, Method=SAMPLING_SCHEME)

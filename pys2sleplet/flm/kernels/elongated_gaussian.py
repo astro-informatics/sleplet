@@ -45,14 +45,13 @@ class ElongatedGaussian(Functions):
         """
         function on the grid
         """
-        f = np.exp(
+        return np.exp(
             -(
                 ((theta - {THETA_0}) / {self.t_sigma}) ** 2
                 + ((phi - {PHI_0}) / {self.p_sigma}) ** 2
             )
             / 2
         )
-        return f
 
     @property  # type: ignore
     def p_sigma(self) -> float:

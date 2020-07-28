@@ -11,8 +11,7 @@ def calc_integration_resolution(L: int) -> int:
     """
     calculate appropriate sample number for given L
     """
-    resolution = L * 2
-    return resolution
+    return L * 2
 
 
 def calc_integration_weight(L: int) -> np.ndarray:
@@ -22,8 +21,7 @@ def calc_integration_weight(L: int) -> np.ndarray:
     theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
     delta_phi = np.ediff1d(phi_grid[0]).mean()
-    weight = np.sin(theta_grid) * delta_theta * delta_phi
-    return weight
+    return np.sin(theta_grid) * delta_theta * delta_phi
 
 
 def integrate_sphere(
@@ -45,11 +43,10 @@ def integrate_sphere(
       as well as the ability to have conjugates within the integral
     * the multipole resolutions are boosted prior to integration
     """
-    if mask_boosted is not None:
-        if mask_boosted.shape[0] - 1 != resolution:
-            raise AttributeError(
-                f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
-            )
+    if mask_boosted is not None and mask_boosted.shape[0] - 1 != resolution:
+        raise AttributeError(
+            f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
+        )
 
     f = invert_flm_boosted(flm, L, resolution, reality=flm_reality)
     g = invert_flm_boosted(glm, L, resolution, reality=glm_reality)
@@ -64,5 +61,4 @@ def integrate_sphere(
     if mask_boosted is not None:
         integrand = np.where(mask_boosted, integrand, 0)
 
-    integration = integrand.sum()
-    return integration
+    return integrand.sum()

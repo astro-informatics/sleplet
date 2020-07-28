@@ -34,5 +34,4 @@ def earth_region_slepian_coefficients(
     region = Region(theta_max=np.deg2rad(theta_max))
     earth = Earth(L, region=region)
     sd = SlepianDecomposition(earth)
-    coefficients = np.abs(sd.decompose_all(method=method))
-    return coefficients
+    return np.abs(sd.decompose_all(method=method))

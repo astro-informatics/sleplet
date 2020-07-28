@@ -14,7 +14,7 @@ class Identity(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.multipole = np.ones(self.L * self.L, dtype=np.complex128)
+        self.multipole = np.ones(self.L ** 2, dtype=np.complex128)
 
     def _create_name(self) -> None:
         self.name = "identity"

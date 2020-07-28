@@ -10,7 +10,7 @@ def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
     """
     create a spherical harmonic in harmonic space for the given index
     """
-    flm = np.zeros(L * L, dtype=np.complex128)
+    flm = np.zeros(L ** 2, dtype=np.complex128)
     flm[ind] = 1
     return flm
 
@@ -19,9 +19,8 @@ def _boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarra
     """
     calculates a boost in resolution for given flm
     """
-    boost = resolution * resolution - L * L
-    flm_boost = np.pad(flm, (0, boost), "constant")
-    return flm_boost
+    boost = resolution ** 2 - L ** 2
+    return np.pad(flm, (0, boost), "constant")
 
 
 def invert_flm_boosted(
@@ -31,8 +30,7 @@ def invert_flm_boosted(
     performs the inverse harmonic transform
     """
     flm = _boost_flm_resolution(flm, L, resolution)
-    f = ssht.inverse(flm, resolution, Reality=reality, Method=SAMPLING_SCHEME)
-    return f
+    return ssht.inverse(flm, resolution, Reality=reality, Method=SAMPLING_SCHEME)
 
 
 def ensure_f_bandlimited(
@@ -44,8 +42,7 @@ def ensure_f_bandlimited(
     """
     theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     f = grid_fun(theta_grid, phi_grid)
-    flm = ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME)
-    return flm
+    return ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME)
 
 
 def create_emm_vector(L: int) -> np.ndarray:
@@ -58,5 +55,5 @@ def create_emm_vector(L: int) -> np.ndarray:
     for l in range(2 * L):
         M = 2 * l + 1
         emm[k : k + M] = np.arange(-l, l + 1)
-        k = k + M
+        k += M
     return emm

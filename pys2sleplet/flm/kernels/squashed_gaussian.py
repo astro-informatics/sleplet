@@ -45,10 +45,9 @@ class SquashedGaussian(Functions):
         """
         function on the grid
         """
-        f = np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
+        return np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
             self.freq * phi
         )
-        return f
 
     @property  # type: ignore
     def freq(self) -> float:

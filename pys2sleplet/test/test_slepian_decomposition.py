@@ -75,4 +75,4 @@ def test_pass_rank_higher_than_available(polar_cap_decomposition) -> None:
     """
     tests that asking for a Slepian coefficient above the limit fails
     """
-    assert_raises(ValueError, polar_cap_decomposition.decompose, L * L)
+    assert_raises(ValueError, polar_cap_decomposition.decompose, L ** 2)

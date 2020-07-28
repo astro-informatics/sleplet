@@ -28,10 +28,10 @@ def main() -> None:
     N = get_shannon(L, THETA_MAX)
     ax = plt.gca()
     sns.scatterplot(
-        x=range(L * L), y=region, ax=ax, label="region", linewidth=0, marker="."
+        x=range(L ** 2), y=region, ax=ax, label="region", linewidth=0, marker="."
     )
     sns.scatterplot(
-        x=range(L * L), y=sphere, ax=ax, label="sphere", linewidth=0, marker="*"
+        x=range(L ** 2), y=sphere, ax=ax, label="sphere", linewidth=0, marker="*"
     )
     ax.axvline(x=N - 1, color="k")
     ax.text(0.17, 0.93, f"N={N}", transform=ax.transAxes, bbox=TEXT_BOX)
@@ -47,8 +47,7 @@ def _helper_sphere(L: int, theta_max: int) -> Tuple[np.ndarray, np.ndarray]:
     """
     output = earth_region_slepian_coefficients(L, theta_max, method="integrate_sphere")
     desired = earth_region_slepian_coefficients(L, theta_max)
-    error = np.abs(output - desired) / desired
-    return error
+    return np.abs(output - desired) / desired
 
 
 def _helper_region(L: int, theta_max: int) -> Tuple[np.ndarray, np.ndarray]:
@@ -57,8 +56,7 @@ def _helper_region(L: int, theta_max: int) -> Tuple[np.ndarray, np.ndarray]:
     """
     output = earth_region_slepian_coefficients(L, theta_max, method="integrate_region")
     desired = earth_region_slepian_coefficients(L, theta_max)
-    error = np.abs(output - desired) / desired
-    return error
+    return np.abs(output - desired) / desired
 
 
 if __name__ == "__main__":

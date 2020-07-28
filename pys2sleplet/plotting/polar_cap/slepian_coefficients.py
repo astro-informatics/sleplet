@@ -26,10 +26,10 @@ def main() -> None:
     f_p = np.sort(earth_region_slepian_coefficients(L, THETA_MAX))[::-1]
     ax = plt.gca()
     sns.scatterplot(
-        x=range(L * L), y=f_p, ax=ax, label="slepian", linewidth=0, marker="*"
+        x=range(L ** 2), y=f_p, ax=ax, label="slepian", linewidth=0, marker="*"
     )
     sns.scatterplot(
-        x=range(L * L), y=flm, ax=ax, label="harmonic", linewidth=0, marker="."
+        x=range(L ** 2), y=flm, ax=ax, label="harmonic", linewidth=0, marker="."
     )
     ax.set_xlabel("coefficient")
     ax.set_ylabel("magnitude")

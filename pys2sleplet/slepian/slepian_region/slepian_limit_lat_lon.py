@@ -149,7 +149,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             Using conjugate symmetry property to reduce the number of iterations
             """
             try:
-                Q = (1 / (col * col - 1)) * (
+                Q = (1 / (col ** 2 - 1)) * (
                     np.exp(1j * col * self.theta_min)
                     * (1j * col * np.sin(self.theta_min) - np.cos(self.theta_min))
                     + np.exp(1j * col * self.theta_max)
@@ -202,7 +202,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         Analytical formulation for limited colatitude-longitude spatial region"
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
-        K = np.zeros((L * L, L * L), dtype=np.complex128)
+        K = np.zeros((L ** 2, L ** 2), dtype=np.complex128)
 
         for l in prange(L):
             for p in range(l + 1):

@@ -50,7 +50,7 @@ def _create_plot(
     if not zoom:
         axs.axvline(x=N, color="w")
         axs.axhline(y=N, color="w")
-        region = L * L
+        region = L ** 2
         ticks: Union[str, List] = _create_ticks(L, N)
     else:
         ticks = "auto"
@@ -92,7 +92,7 @@ def _create_ticks(L: int, N: int) -> List[str]:
     """
     create custom tick labels for the plot
     """
-    ticks = [""] * (L * L)
+    ticks = [""] * L ** 2
     ticks[N - 1] = "N"
     return ticks
 

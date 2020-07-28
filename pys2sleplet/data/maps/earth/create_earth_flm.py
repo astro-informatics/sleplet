@@ -25,7 +25,7 @@ def create_flm(L: int) -> np.ndarray:
 
     # don't take the full L
     # invert dataset as Earth backwards
-    flm = flm[: L * L].conj()
+    flm = flm[: L ** 2].conj()
     return flm
 
 
@@ -35,5 +35,4 @@ def _load_flm() -> np.ndarray:
     """
     matfile = str(_file_location.parent / "EGM2008_Topography_flms_L2190.mat")
     mat_contents = sio.loadmat(matfile)
-    flm = np.ascontiguousarray(mat_contents["flm"][:, 0])
-    return flm
+    return np.ascontiguousarray(mat_contents["flm"][:, 0])

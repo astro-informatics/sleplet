@@ -120,8 +120,7 @@ def read_args() -> Namespace:
         choices=["abs", "real", "imag", "sum"],
         help="plotting type: defaults to real",
     )
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def plot(
@@ -183,22 +182,18 @@ def plot(
 
     # check for plotting type
     logger.info(f"plotting type: '{plot_type}'")
-    if plot_type == "real":
-        field = padded_field.real
+    if plot_type == "abs":
+        field = np.abs(padded_field)
     elif plot_type == "imag":
         field = padded_field.imag
-    elif plot_type == "abs":
-        field = np.abs(padded_field)
+    elif plot_type == "real":
+        field = padded_field.real
     elif plot_type == "sum":
         field = padded_field.real + padded_field.imag
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
-    if annotations:
-        annotation = f.annotations
-    else:
-        annotation = []
-
+    annotation = f.annotations if annotations else []
     # do plot
     filename += plot_type
     Plot(field, f.resolution, filename, annotation).execute()

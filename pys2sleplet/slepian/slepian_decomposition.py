@@ -79,8 +79,7 @@ class SlepianDecomposition:
             glm_conj=True,
             mask_boosted=self.mask,
         )
-        f_p = integration / self.lambdas[rank]
-        return f_p
+        return integration / self.lambdas[rank]
 
     def _integrate_sphere(self, rank: int) -> complex:
         r"""
@@ -88,7 +87,7 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        f_p = integrate_sphere(
+        return integrate_sphere(
             self.L,
             self.resolution,
             self.flm,
@@ -96,7 +95,6 @@ class SlepianDecomposition:
             self.weight,
             glm_conj=True,
         )
-        return f_p
 
     def _harmonic_sum(self, rank: int) -> complex:
         r"""
@@ -105,8 +103,7 @@ class SlepianDecomposition:
         \sum\limits_{m=-\ell}^{\ell}
         f_{\ell m} (S_{p})_{\ell m}^{*}
         """
-        f_p = (self.flm * self.s_p_lms[rank].conj()).sum()
-        return f_p
+        return (self.flm * self.s_p_lms[rank].conj()).sum()
 
     def _validate_rank(self, rank: int) -> None:
         """
