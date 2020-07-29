@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -9,13 +10,13 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 @dataclass
-class AxsymWaveletCoefficients(Functions):
+class AxisymWavelet(Functions):
     B: int
     j_min: int
-    j: int
+    j: Optional[int]
     _B: int = field(default=3, init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
-    _j: int = field(default=0, init=False, repr=False)
+    _j: Optional[int] = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -24,19 +25,25 @@ class AxsymWaveletCoefficients(Functions):
         pass
 
     def _create_flm(self) -> None:
-        _, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
+        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
+        k = kappa0 if self.j is None else kappa[:, self.j]
         flm = np.zeros(self.L ** 2, dtype=np.complex128)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            flm[ind] = kappa[ell, self.j]
+            flm[ind] = k[ell]
         self.multipole = flm
 
     def _create_name(self) -> None:
+        coefficient = (
+            "_scaling"
+            if self.j is None
+            else f"{filename_args(self.j + self.j_min, 'j')}"
+        )
         self.name = (
-            "axsym_wavelet_coefficients"
+            "axisym_wavelet"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
-            f"{filename_args(self.j + self.j_min, 'j')}"
+            f"{coefficient}"
         )
 
     def _set_reality(self) -> None:
@@ -58,7 +65,7 @@ class AxsymWaveletCoefficients(Functions):
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = AxsymWaveletCoefficients._B
+            B = AxisymWavelet._B
         self._B = B
 
     @property  # type:ignore
@@ -70,23 +77,23 @@ class AxsymWaveletCoefficients(Functions):
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = AxsymWaveletCoefficients._j_min
+            j_min = AxisymWavelet._j_min
         self._j_min = j_min
 
     @property  # type:ignore
-    def j(self) -> int:
+    def j(self) -> Optional[int]:
         return self._j
 
     @j.setter
-    def j(self, j: int) -> None:
+    def j(self, j: Optional[int]) -> None:
         if isinstance(j, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j = AxsymWaveletCoefficients._j
+            j = AxisymWavelet._j
         j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
-        if j < 0:
+        if j is not None and j < 0:
             raise ValueError("j should be positive")
-        if j > j_max - self.j_min:
+        if j is not None and j > j_max - self.j_min:
             raise ValueError(
                 f"j should be less than j_max - j_min: {j_max - self.j_min + 1}"
             )

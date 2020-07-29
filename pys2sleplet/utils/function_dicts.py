@@ -1,8 +1,7 @@
 from typing import Dict
 
 from pys2sleplet.flm.functions import Functions
-from pys2sleplet.flm.kernels.axsymwaveletcoefficients import AxsymWaveletCoefficients
-from pys2sleplet.flm.kernels.axsymwaveletscaling import AxsymWaveletScaling
+from pys2sleplet.flm.kernels.axisym_wavelet import AxisymWavelet
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.flm.kernels.elongated_gaussian import ElongatedGaussian
 from pys2sleplet.flm.kernels.gaussian import Gaussian
@@ -24,8 +23,7 @@ KERNELS: Dict[str, Functions] = dict(
     slepian=Slepian,
     spherical_harmonic=SphericalHarmonic,
     squashed_gaussian=SquashedGaussian,
-    axsym_wavelet_coefficients=AxsymWaveletCoefficients,
-    axsym_wavelet_scaling=AxsymWaveletScaling,
+    axisym_wavelet=AxisymWavelet,
 )
 
 MAPS: Dict[str, Functions] = dict(earth=Earth, south_america=SouthAmerica, wmap=Wmap)
