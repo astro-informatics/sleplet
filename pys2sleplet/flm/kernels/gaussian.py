@@ -21,7 +21,7 @@ class Gaussian(Functions):
     def _create_flm(self) -> None:
         flm = np.zeros(self.L ** 2, dtype=np.complex128)
         for ell in range(self.L):
-            ind = ssht.elm2ind(ell, m=0)
+            ind = ssht.elm2ind(ell, 0)
             flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma * self.sigma))
         self.multipole = flm
 
@@ -30,6 +30,9 @@ class Gaussian(Functions):
 
     def _set_reality(self) -> None:
         self.reality = True
+
+    def _set_spin(self) -> None:
+        self.spin = 0
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):

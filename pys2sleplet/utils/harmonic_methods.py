@@ -24,17 +24,22 @@ def _boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarra
 
 
 def invert_flm_boosted(
-    flm: np.ndarray, L: int, resolution: int, reality: bool = False
+    flm: np.ndarray, L: int, resolution: int, reality: bool = False, spin: int = 0
 ) -> np.ndarray:
     """
     performs the inverse harmonic transform
     """
     flm = _boost_flm_resolution(flm, L, resolution)
-    return ssht.inverse(flm, resolution, Reality=reality, Method=SAMPLING_SCHEME)
+    return ssht.inverse(
+        flm, resolution, Reality=reality, Method=SAMPLING_SCHEME, Spin=spin
+    )
 
 
 def ensure_f_bandlimited(
-    grid_fun: Callable[[np.ndarray, np.ndarray], np.ndarray], L: int, reality: bool
+    grid_fun: Callable[[np.ndarray, np.ndarray], np.ndarray],
+    L: int,
+    reality: bool,
+    spin: int,
 ) -> np.ndarray:
     """
     if the function created is created in pixel space rather than harmonic
@@ -42,7 +47,7 @@ def ensure_f_bandlimited(
     """
     theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     f = grid_fun(theta_grid, phi_grid)
-    return ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME)
+    return ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME, Spin=spin)
 
 
 def create_emm_vector(L: int) -> np.ndarray:

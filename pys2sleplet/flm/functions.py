@@ -34,6 +34,7 @@ class Functions:
         self._setup_args()
         self._create_name()
         self._create_annotations()
+        self._set_spin()
         self._set_reality()
         self._create_flm()
         self._add_region_to_name()
@@ -151,7 +152,7 @@ class Functions:
     def multipole(self, multipole: np.ndarray) -> None:
         if self.region is not None and "slepian" not in self.name:
             multipole = ensure_masked_flm_bandlimited(
-                multipole, self.L, self.region, self.reality
+                multipole, self.L, self.region, self.reality, self.spin
             )
         self._multipole = multipole
 
@@ -191,6 +192,14 @@ class Functions:
     def resolution(self, resolution: int) -> None:
         self._resolution = resolution
 
+    @property
+    def spin(self) -> bool:
+        return self._spin
+
+    @spin.setter
+    def spin(self, spin: bool) -> None:
+        self._spin = spin
+
     @abstractmethod
     def _create_annotations(self) -> None:
         """
@@ -216,6 +225,13 @@ class Functions:
     def _set_reality(self) -> None:
         """
         sets the reality flag to speed up computations
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _set_spin(self) -> None:
+        """
+        sets the spin value in computations
         """
         raise NotImplementedError
 

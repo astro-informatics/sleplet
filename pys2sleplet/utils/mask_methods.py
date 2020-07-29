@@ -70,12 +70,12 @@ def _load_mask(mask_name: str) -> np.ndarray:
 
 
 def ensure_masked_flm_bandlimited(
-    flm: np.ndarray, L: int, region: Region, reality: bool
+    flm: np.ndarray, L: int, region: Region, reality: bool, spin: int
 ) -> np.ndarray:
     """
     ensures the multipole is bandlimited for a given region
     """
-    field = ssht.inverse(flm, L, Reality=reality, Method=SAMPLING_SCHEME)
+    field = ssht.inverse(flm, L, Reality=reality, Method=SAMPLING_SCHEME, Spin=spin)
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
-    return ssht.forward(field, L, Reality=reality, Method=SAMPLING_SCHEME)
+    return ssht.forward(field, L, Reality=reality, Method=SAMPLING_SCHEME, Spin=spin)

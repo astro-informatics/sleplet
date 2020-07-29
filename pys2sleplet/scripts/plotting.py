@@ -178,7 +178,9 @@ def plot(
         )
 
     # create padded field to plot
-    padded_field = invert_flm_boosted(multipole, f.L, f.resolution, reality=f.reality)
+    padded_field = invert_flm_boosted(
+        multipole, f.L, f.resolution, reality=f.reality, spin=f.spin
+    )
 
     # check for plotting type
     logger.info(f"plotting type: '{plot_type}'")

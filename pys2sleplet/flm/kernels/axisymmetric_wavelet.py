@@ -49,6 +49,9 @@ class AxisymmetricWavelet(Functions):
     def _set_reality(self) -> None:
         self.reality = True
 
+    def _set_spin(self) -> None:
+        self.spin = 0
+
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
             num_args = 3
@@ -69,18 +72,6 @@ class AxisymmetricWavelet(Functions):
         self._B = B
 
     @property  # type:ignore
-    def j_min(self) -> int:
-        return self._j_min
-
-    @j_min.setter
-    def j_min(self, j_min: int) -> None:
-        if isinstance(j_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            j_min = AxisymmetricWavelet._j_min
-        self._j_min = j_min
-
-    @property  # type:ignore
     def j(self) -> Optional[int]:
         return self._j
 
@@ -98,3 +89,15 @@ class AxisymmetricWavelet(Functions):
                 f"j should be less than j_max - j_min: {j_max - self.j_min + 1}"
             )
         self._j = j
+
+    @property  # type:ignore
+    def j_min(self) -> int:
+        return self._j_min
+
+    @j_min.setter
+    def j_min(self, j_min: int) -> None:
+        if isinstance(j_min, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            j_min = AxisymmetricWavelet._j_min
+        self._j_min = j_min

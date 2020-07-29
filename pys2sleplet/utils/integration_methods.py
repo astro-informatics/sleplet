@@ -34,6 +34,8 @@ def integrate_sphere(
     glm_reality: bool = False,
     flm_conj: bool = False,
     glm_conj: bool = False,
+    flm_spin: int = 0,
+    glm_spin: int = 0,
     mask_boosted: Optional[np.ndarray] = None,
 ) -> complex:
     """
@@ -48,8 +50,8 @@ def integrate_sphere(
             f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
         )
 
-    f = invert_flm_boosted(flm, L, resolution, reality=flm_reality)
-    g = invert_flm_boosted(glm, L, resolution, reality=glm_reality)
+    f = invert_flm_boosted(flm, L, resolution, reality=flm_reality, spin=flm_spin)
+    g = invert_flm_boosted(glm, L, resolution, reality=glm_reality, spin=glm_spin)
 
     if flm_conj:
         f = f.conj()
