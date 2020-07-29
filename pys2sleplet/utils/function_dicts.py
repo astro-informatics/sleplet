@@ -15,6 +15,7 @@ from pys2sleplet.flm.maps.south_america import SouthAmerica
 from pys2sleplet.flm.maps.wmap import Wmap
 
 KERNELS: Dict[str, Functions] = dict(
+    axisymmetric_wavelet=AxisymmetricWavelet,
     dirac_delta=DiracDelta,
     elongated_gaussian=ElongatedGaussian,
     gaussian=Gaussian,
@@ -23,7 +24,6 @@ KERNELS: Dict[str, Functions] = dict(
     slepian=Slepian,
     spherical_harmonic=SphericalHarmonic,
     squashed_gaussian=SquashedGaussian,
-    axisymmetric_wavelet=AxisymmetricWavelet,
 )
 
 MAPS: Dict[str, Functions] = dict(earth=Earth, south_america=SouthAmerica, wmap=Wmap)
