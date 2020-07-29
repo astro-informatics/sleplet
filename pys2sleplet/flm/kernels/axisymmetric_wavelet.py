@@ -10,7 +10,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 @dataclass
-class AxisymWavelet(Functions):
+class AxisymmetricWavelet(Functions):
     B: int
     j_min: int
     j: Optional[int]
@@ -65,7 +65,7 @@ class AxisymWavelet(Functions):
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = AxisymWavelet._B
+            B = AxisymmetricWavelet._B
         self._B = B
 
     @property  # type:ignore
@@ -77,7 +77,7 @@ class AxisymWavelet(Functions):
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = AxisymWavelet._j_min
+            j_min = AxisymmetricWavelet._j_min
         self._j_min = j_min
 
     @property  # type:ignore
@@ -89,7 +89,7 @@ class AxisymWavelet(Functions):
         if isinstance(j, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j = AxisymWavelet._j
+            j = AxisymmetricWavelet._j
         j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
