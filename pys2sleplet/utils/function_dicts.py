@@ -3,6 +3,7 @@ from typing import Dict
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.flm.kernels.axisymmetric_wavelet import AxisymmetricWavelet
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
+from pys2sleplet.flm.kernels.directional_spin_wavelet import DirectionalSpinWavelet
 from pys2sleplet.flm.kernels.elongated_gaussian import ElongatedGaussian
 from pys2sleplet.flm.kernels.gaussian import Gaussian
 from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
@@ -17,6 +18,7 @@ from pys2sleplet.flm.maps.wmap import Wmap
 KERNELS: Dict[str, Functions] = dict(
     axisymmetric_wavelet=AxisymmetricWavelet,
     dirac_delta=DiracDelta,
+    directional_spin_wavelet=DirectionalSpinWavelet,
     elongated_gaussian=ElongatedGaussian,
     gaussian=Gaussian,
     harmonic_gaussian=HarmonicGaussian,
