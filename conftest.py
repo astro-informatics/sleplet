@@ -33,8 +33,7 @@ def slepian_polar_cap() -> SlepianPolarCap:
     """
     create a Slepian polar cap class
     """
-    slepian = SlepianPolarCap(L, THETA_MAX)
-    return slepian
+    return SlepianPolarCap(L, THETA_MAX)
 
 
 @pytest.fixture(scope="session")
@@ -42,21 +41,18 @@ def slepian_lim_lat_lon() -> SlepianLimitLatLon:
     """
     create a Slepian limited latitude longitude class
     """
-    slepian = SlepianLimitLatLon(
+    return SlepianLimitLatLon(
         L, theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1
     )
-    return slepian
 
 
 @pytest.fixture(scope="session")
 def polar_cap_decomposition(slepian_polar_cap) -> SlepianDecomposition:
     earth = Earth(L, region=slepian_polar_cap.region)
-    coefficients = SlepianDecomposition(earth)
-    return coefficients
+    return SlepianDecomposition(earth)
 
 
 @pytest.fixture(scope="session")
 def lim_lat_lon_decomposition(slepian_lim_lat_lon) -> SlepianDecomposition:
     earth = Earth(L, region=slepian_lim_lat_lon.region)
-    coefficients = SlepianDecomposition(earth)
-    return coefficients
+    return SlepianDecomposition(earth)

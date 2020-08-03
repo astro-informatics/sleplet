@@ -5,6 +5,7 @@ from numpy.testing import assert_allclose, assert_raises
 from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.test.constants import L_SMALL as L
+from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -45,7 +46,8 @@ def test_equality_to_harmonic_transform_polar(polar_cap_decomposition) -> None:
         )
         f_slepian += f_p * s_p
     f_harmonic = ssht.inverse(polar_cap_decomposition.flm, L, Method=SAMPLING_SCHEME)
-    assert_allclose(np.abs(f_slepian - f_harmonic).mean(), 0, atol=16)
+    mask = create_mask_region(L, polar_cap_decomposition.function.region)
+    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=14)
 
 
 def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -> None:
@@ -60,7 +62,8 @@ def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -
         )
         f_slepian += f_p * s_p
     f_harmonic = ssht.inverse(lim_lat_lon_decomposition.flm, L, Method=SAMPLING_SCHEME)
-    assert_allclose(np.abs(f_slepian - f_harmonic).mean(), 0, atol=20)
+    mask = create_mask_region(L, lim_lat_lon_decomposition.function.region)
+    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=123)
 
 
 def test_pass_function_without_region() -> None:
