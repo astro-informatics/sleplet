@@ -19,32 +19,32 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
                                    phi_min or phi_max is provided
     * arbitrary - just checks the shape of the input mask
     """
-    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
 
     if region.region_type == "arbitrary":
         logger.info("loading and checking shape of provided mask")
         name = f"{region.mask_name}_L{L}.npy"
         mask = _load_mask(name)
-        assert mask.shape == theta_grid.shape, (
+        assert mask.shape == thetas.shape, (
             f"mask {name} has shape {mask.shape} which does not match "
-            f"the provided L={L}, the shape should be {theta_grid.shape}"
+            f"the provided L={L}, the shape should be {thetas.shape}"
         )
 
     elif region.region_type == "lim_lat_lon":
         logger.info("creating limited latitude longitude mask")
         mask = (
-            (theta_grid >= region.theta_min)
-            & (theta_grid <= region.theta_max)
-            & (phi_grid >= region.phi_min)
-            & (phi_grid <= region.phi_max)
+            (thetas >= region.theta_min)
+            & (thetas <= region.theta_max)
+            & (phis >= region.phi_min)
+            & (phis <= region.phi_max)
         )
 
     elif region.region_type == "polar":
         logger.info("creating polar cap mask")
-        mask = theta_grid <= region.theta_max
+        mask = thetas <= region.theta_max
         if region.gap:
             logger.info("creating polar gap mask")
-            mask |= theta_grid >= np.pi - region.theta_max
+            mask |= thetas >= np.pi - region.theta_max
 
     return mask
 

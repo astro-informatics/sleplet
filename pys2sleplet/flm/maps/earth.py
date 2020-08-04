@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from pys2sleplet.data.maps.earth.create_earth_flm import create_flm
+from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.flm.functions import Functions
 
 _file_location = Path(__file__).resolve()

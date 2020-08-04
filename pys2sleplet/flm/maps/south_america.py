@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.data.maps.earth.create_earth_flm import create_flm
+from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
 from pys2sleplet.utils.vars import (

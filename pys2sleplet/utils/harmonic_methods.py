@@ -45,8 +45,8 @@ def ensure_f_bandlimited(
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it
     """
-    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
-    f = grid_fun(theta_grid, phi_grid)
+    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    f = grid_fun(thetas, phis)
     return ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME, Spin=spin)
 
 

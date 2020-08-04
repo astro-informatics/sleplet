@@ -18,10 +18,10 @@ def calc_integration_weight(L: int) -> np.ndarray:
     """
     computes the spherical Jacobian for the integration
     """
-    theta_grid, phi_grid = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
-    delta_theta = np.ediff1d(theta_grid[:, 0]).mean()
-    delta_phi = np.ediff1d(phi_grid[0]).mean()
-    return np.sin(theta_grid) * delta_theta * delta_phi
+    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    delta_theta = np.ediff1d(thetas[:, 0]).mean()
+    delta_phi = np.ediff1d(phis[0]).mean()
+    return np.sin(thetas) * delta_theta * delta_phi
 
 
 def integrate_sphere(

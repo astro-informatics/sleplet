@@ -39,13 +39,13 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_annotations(self) -> None:
         self.mask: np.ndarray
-        theta_grid, phi_grid = ssht.sample_positions(
+        thetas, phis = ssht.sample_positions(
             self.resolution, Grid=True, Method=SAMPLING_SCHEME
         )
         for i in range(self.mask.shape[0]):
             for j in range(self.mask.shape[1]):
                 if self.mask[i, j]:
-                    x, y, z = ssht.s2_to_cart(theta_grid[i, j], phi_grid[i, j])
+                    x, y, z = ssht.s2_to_cart(thetas[i, j], phis[i, j])
                     self.annotations.append(
                         {
                             **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR),
