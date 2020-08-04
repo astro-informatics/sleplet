@@ -45,13 +45,7 @@ class SlepianArbitrary(SlepianFunctions):
         for i in range(self.mask.shape[0]):
             for j in range(self.mask.shape[1]):
                 if self.mask[i, j]:
-                    x, y, z = ssht.s2_to_cart(thetas[i, j], phis[i, j])
-                    self.annotations.append(
-                        {
-                            **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR),
-                            **ARROW_STYLE,
-                        }
-                    )
+                    self._add_to_annotation(thetas[i, j], phis[i, j])
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian_{self.mask_name}"
@@ -73,6 +67,15 @@ class SlepianArbitrary(SlepianFunctions):
         eigenvalues, eigenvectors = np.linalg.eigh(D)
         self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
+        )
+
+    def _add_to_annotation(self, theta: float, phi: float) -> None:
+        """
+        add to annotation list for given theta
+        """
+        x, y, z = ssht.s2_to_cart(theta, phi)
+        self.annotations.append(
+            {**dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR), **ARROW_STYLE}
         )
 
     def _load_D_matrix(self) -> np.ndarray:
