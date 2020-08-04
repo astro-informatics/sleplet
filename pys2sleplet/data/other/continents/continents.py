@@ -20,8 +20,7 @@ def create_boundaries() -> Scatter3d:
     creates continental boundaries of the Earth
     """
     # Recast data in good form
-    cont = _load_data()
-    cont = cont / 100
+    cont = _load_data() / 100
     cont[cont == cont.max()] = np.nan
 
     # Convert to spherical coordinates
