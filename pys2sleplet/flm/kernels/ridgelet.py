@@ -44,7 +44,7 @@ class Ridgelet(Functions):
             else f"{filename_args(self.j + self.j_min, 'j')}"
         )
         self.name = (
-            "directional_spin_wavelet"
+            "ridgelet"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{filename_args(self.spin, 'spin')}"
