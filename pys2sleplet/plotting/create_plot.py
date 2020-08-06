@@ -17,7 +17,7 @@ from plotly.graph_objs.surface.colorbar import Tickfont
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import convert_colourscale
-from pys2sleplet.utils.vars import MID_COLOURBAR, SAMPLING_SCHEME, ZOOM_DEFAULT
+from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -52,18 +52,18 @@ class Plot:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                colorscale=convert_colourscale(cmocean.cm.ice),
-                reversescale=True,
-                cmin=vmin,
-                cmid=MID_COLOURBAR,
                 cmax=vmax,
+                cmid=(vmax - vmin) / 2,
+                cmin=vmin,
                 colorbar=ColorBar(
                     x=0.84,
                     len=0.98,
                     nticks=2,
                     tickfont=Tickfont(color="#666666", size=32),
                 ),
+                colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
+                reversescale=True,
             )
         ]
 
