@@ -11,7 +11,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 @dataclass
-class Ridgelet(Functions):
+class Ridgelets(Functions):
     B: int
     j_min: int
     spin: int
@@ -44,7 +44,7 @@ class Ridgelet(Functions):
             else f"{filename_args(self.j + self.j_min, 'j')}"
         )
         self.name = (
-            "ridgelet"
+            "ridgelets"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{filename_args(self.spin, 'spin')}"
@@ -99,7 +99,7 @@ class Ridgelet(Functions):
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = Ridgelet._B
+            B = Ridgelets._B
         self._B = B
 
     @property  # type:ignore
@@ -111,7 +111,7 @@ class Ridgelet(Functions):
         if isinstance(j, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j = Ridgelet._j
+            j = Ridgelets._j
         j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
@@ -130,7 +130,7 @@ class Ridgelet(Functions):
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = Ridgelet._j_min
+            j_min = Ridgelets._j_min
         self._j_min = j_min
 
     @property  # type:ignore
@@ -142,5 +142,5 @@ class Ridgelet(Functions):
         if isinstance(spin, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            spin = Ridgelet._spin
+            spin = Ridgelets._spin
         self._spin = spin
