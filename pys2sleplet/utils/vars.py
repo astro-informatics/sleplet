@@ -5,7 +5,15 @@ import numpy as np
 ANNOTATION_COLOUR: str = "salmon"
 ANNOTATION_SECOND_COLOUR: str = "gold"
 ANNOTATION_DOTS: int = 12
-ARROW_STYLE: Dict = dict(arrowhead=7, ax=5, ay=5, opacity=0.5)
+ARROW_STYLE: Dict = dict(
+    arrowhead=0,
+    arrowside="start",
+    ax=4,
+    ay=4,
+    opacity=0.4,
+    startarrowsize=1.5,
+    startarrowhead=6,
+)
 CONTINENT_ALPHA: float = np.deg2rad(116)
 CONTINENT_BETA: float = np.deg2rad(252)
 CONTINENT_GAMMA: float = np.deg2rad(38)

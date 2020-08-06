@@ -44,7 +44,7 @@ class SlepianArbitrary(SlepianFunctions):
         )
         for i in range(self.mask.shape[0]):
             for j in range(self.mask.shape[1]):
-                if self.mask[i, j]:
+                if not self.mask[i, j] and thetas[i, j] <= np.pi / 3:
                     self._add_to_annotation(thetas[i, j], phis[i, j])
 
     def _create_fn_name(self) -> None:
