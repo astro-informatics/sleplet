@@ -14,7 +14,7 @@ class AxisymmetricWavelets(Functions):
     B: int
     j_min: int
     j: Optional[int]
-    _B: int = field(default=3, init=False, repr=False)
+    _B: int = field(default=2, init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
 
