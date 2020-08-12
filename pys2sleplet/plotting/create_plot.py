@@ -52,9 +52,8 @@ class Plot:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                cmax=vmax,
-                cmid=(vmax - vmin) / 2,
-                cmin=vmin,
+                cmax=1,
+                cmin=0,
                 colorbar=ColorBar(
                     x=0.84,
                     len=0.98,
@@ -175,7 +174,7 @@ class Plot:
         """
         if (f == 0).all():
             # if all 0, set to 0
-            f_scaled = f
+            f_scaled = f + 0.5
         elif (f == f.max()).all():
             # if all non-zero, set to 1
             f_scaled = f / f.max()
