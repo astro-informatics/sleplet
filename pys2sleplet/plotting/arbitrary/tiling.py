@@ -1,15 +1,13 @@
 from pathlib import Path
 
 import numpy as np
+import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
-from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
-from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.utils.plot_methods import save_plot
 from pys2sleplet.utils.pys2let import s2let
-from pys2sleplet.utils.region import Region
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -25,34 +23,34 @@ def main() -> None:
     """
     plots the tiling of the Slepian line
     """
-    j_max = s2let.pys2let_j_max(B, L, J_MIN)
-    j_vals = np.append(None, range(j_max - J_MIN + 1))
+    kappas = _create_tiling_funcs()
     x_lim = L ** 2
-    x = range(x_lim)
     xi = np.arange(0, x_lim - 1 + STEP, STEP)
-    region = Region(mask_name="south_america")
-    for j in j_vals:
-        sw = SlepianWavelets(L, B=B, j_min=J_MIN, j=j, region=region)
-        sd = SlepianDecomposition(sw)
-        k_p = sd.decompose_all()
-        yi = pchip(x, k_p.real)
-        label = r"$\Phi_p$" if j is None else rf"$\Psi^{j}_p$"
+    x = np.arange(x_lim)
+    for j, k in enumerate(kappas):
+        label = r"$\Phi_p$" if j == 0 else rf"$\Psi^{j}_p$"
+        yi = pchip(x, k)
         plt.semilogx(xi, yi(xi), label=label)
-    plt.axvline(x=sd.N, color="k")
-    plt.annotate(
-        f"N={sd.N}",
-        xy=(sd.N + 2.5, 1.5),
-        xytext=(0, 7),
-        ha="center",
-        textcoords="offset points",
-        annotation_clip=False,
-    )
     plt.xlim([1, x_lim])
     ticks = 2 ** np.arange(np.log2(x_lim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
     plt.legend()
     save_plot(fig_path, f"slepian_tiling_south_america_L{L}")
+
+
+def _create_tiling_funcs() -> np.ndarray:
+    """
+    create tiling functions in Slepian space
+    """
+    kappa0, kappa = s2let.axisym_wav_l(B, L, J_MIN)
+    kappas = np.zeros((kappa.shape[1] + 1, L ** 2))
+    for ell in range(L):
+        ind = ssht.elm2ind(ell, 0)
+        kappas[0, ind] = kappa0[ell]
+        for j in range(kappa.shape[1]):
+            kappas[j + 1, ind] = kappa[ell, j]
+    return kappas
 
 
 if __name__ == "__main__":
