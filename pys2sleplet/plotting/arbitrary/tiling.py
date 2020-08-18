@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
 from pys2sleplet.utils.plot_methods import save_plot
-from pys2sleplet.utils.wavelet_methods import kappas_slepian_space
+from pys2sleplet.utils.pys2let import s2let
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -22,16 +22,17 @@ def main() -> None:
     """
     plots the tiling of the Slepian line
     """
-    kappas = kappas_slepian_space(L, B, J_MIN)
-    x_lim = L ** 2
-    xi = np.arange(0, x_lim - 1 + STEP, STEP)
-    x = np.arange(x_lim)
-    for j, k in enumerate(kappas):
-        label = r"$\Phi_p$" if j == 0 else rf"$\Psi^{j}_p$"
+    xlim = L ** 2
+    x = np.arange(xlim)
+    xi = np.arange(0, xlim - 1 + STEP, STEP)
+    kappa0, kappa = s2let.axisym_wav_l(B, xlim, J_MIN)
+    yi = pchip(x, kappa0)
+    plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
+    for j, k in enumerate(kappa.T):
         yi = pchip(x, k)
-        plt.semilogx(xi, yi(xi), label=label)
-    plt.xlim([1, x_lim])
-    ticks = 2 ** np.arange(np.log2(x_lim) + 1, dtype=int)
+        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{j+J_MIN}_p$")
+    plt.xlim([1, xlim])
+    ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
     plt.legend()
