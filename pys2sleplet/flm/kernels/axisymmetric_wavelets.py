@@ -30,7 +30,7 @@ class AxisymmetricWavelets(Functions):
         flm = np.zeros(self.L ** 2, dtype=np.complex128)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            flm[ind] = np.sqrt((2 * ell + 1) / 4 * np.pi) * k[ell]
+            flm[ind] = k[ell]
         self.multipole = flm
 
     def _create_name(self) -> None:
