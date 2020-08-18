@@ -58,7 +58,7 @@ class SlepianWavelets(Functions):
             else f"{filename_args(self.j + self.j_min, 'j')}"
         )
         self.name = (
-            "slepian_wavelets"
+            f"slepian_wavelets_{self.slepian.region.name_ending}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{coefficient}"
