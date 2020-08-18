@@ -36,7 +36,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
     plt.legend()
-    save_plot(fig_path, f"slepian_tiling_south_america_L{L}")
+    save_plot(fig_path, f"slepian_tiling_L{L}")
 
 
 if __name__ == "__main__":
