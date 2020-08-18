@@ -9,11 +9,10 @@ from pys2sleplet.flm.functions import Functions
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
-from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLING_SCHEME
 
 
 def valid_maps(map_name: str) -> str:
@@ -139,6 +138,10 @@ def plot(
     filename = f"{f.name}_L{f.L}_"
     multipole = f.multipole
 
+    # turn off annotation if needed
+    logger.info(f"annotations on: {annotations}")
+    annotation = f.annotations if annotations else []
+
     logger.info(f"plotting method: '{method}'")
     if method == "rotate":
         logger.info(
@@ -177,28 +180,23 @@ def plot(
             multipole, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, f.L
         )
 
-    # create padded field to plot
-    padded_field = invert_flm_boosted(
-        multipole, f.L, f.resolution, reality=f.reality, spin=f.spin
+    # get field value
+    field = ssht.inverse(
+        multipole, f.L, Method=SAMPLING_SCHEME, Reality=f.reality, Spin=f.spin
     )
 
-    # check for plotting type
-    logger.info(f"plotting type: '{plot_type}'")
-    if plot_type == "abs":
-        field = np.abs(padded_field)
-    elif plot_type == "imag":
-        field = padded_field.imag
-    elif plot_type == "real":
-        field = padded_field.real
-    elif plot_type == "sum":
-        field = padded_field.real + padded_field.imag
-
-    # turn off annotation if needed
-    logger.info(f"annotations on: {annotations}")
-    annotation = f.annotations if annotations else []
     # do plot
     filename += plot_type
-    Plot(field, f.resolution, filename, annotation).execute()
+    Plot(
+        field,
+        f.L,
+        f.resolution,
+        filename,
+        plot_type=plot_type,
+        annotations=annotation,
+        reality=f.reality,
+        spin=f.spin,
+    ).execute()
 
 
 def main() -> None:

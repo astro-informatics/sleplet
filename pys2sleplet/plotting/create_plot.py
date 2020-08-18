@@ -15,6 +15,7 @@ from plotly.graph_objs.surface import ColorBar, Lighting
 from plotly.graph_objs.surface.colorbar import Tickfont
 
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import convert_colourscale
 from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
@@ -26,19 +27,23 @@ _fig_path = _file_location.parents[1] / "figures"
 @dataclass
 class Plot:
     f: np.ndarray = field(repr=False)
+    L: int
     resolution: int
     filename: str
+    plot_type: str = field(default="real", repr=False)
     annotations: List[Dict] = field(default_factory=list, repr=False)
+    reality: bool = field(default=False, repr=False)
+    spin: int = field(default=0, repr=False)
 
     def execute(self) -> None:
         """
         creates basic plotly plot rather than matplotlib
         """
-        f_scaled = self._normalise_function(self.f)
+        f = self._prepare_field(self.f)
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            f_scaled, self.resolution, method=SAMPLING_SCHEME
+            f, self.resolution, method=SAMPLING_SCHEME
         )
 
         # appropriate zoom in on north pole
@@ -166,6 +171,38 @@ class Plot:
             x, y, z = ssht.s2_to_cart(thetas, phis)
 
         return x, y, z, f_plot, vmin, vmax
+
+    def _prepare_field(self, f: np.ndarray) -> np.ndarray:
+        """
+        boosts, forces plot type and then scales the field before plotting
+        """
+        return self._normalise_function(self._create_plot_type(self._boost_field(f)))
+
+    def _boost_field(self, f: np.ndarray) -> np.ndarray:
+        """
+        inverts and then boosts the field before plotting
+        """
+        flm = ssht.forward(
+            f, self.L, Method=SAMPLING_SCHEME, Reality=self.reality, Spin=self.spin
+        )
+        return invert_flm_boosted(
+            flm, self.L, self.resolution, reality=self.reality, spin=self.spin
+        )
+
+    def _create_plot_type(self, f: np.ndarray) -> np.ndarray:
+        """
+        gets the given plot type of the field
+        """
+        logger.info(f"plotting type: '{self.plot_type}'")
+        if self.plot_type == "abs":
+            field = np.abs(f)
+        elif self.plot_type == "imag":
+            field = f.imag
+        elif self.plot_type == "real":
+            field = f.real
+        elif self.plot_type == "sum":
+            field = f.real + f.imag
+        return field
 
     @staticmethod
     def _normalise_function(f: np.ndarray) -> np.ndarray:
