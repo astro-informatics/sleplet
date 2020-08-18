@@ -8,7 +8,7 @@ from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.pys2let import s2let
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import choose_slepian_method
+from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_args
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
@@ -46,12 +46,9 @@ class SlepianWavelets(Functions):
     def _create_flm(self) -> None:
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
         k = kappa0 if self.j is None else kappa[:, self.j]
-        f = np.zeros((self.L + 1, 2 * self.L), dtype=np.complex128)
-        for p in range(self.slepian.N):
-            s_p = ssht.inverse(
-                self.slepian.eigenvectors[p], self.L, Method=SAMPLING_SCHEME
-            )
-            f += k[p] * s_p
+        f = slepian_inverse(
+            self.L, k, self.slepian.eigenvectors, coefficients=self.slepian.N
+        )
         self.multipole = ssht.forward(f, self.L, Method=SAMPLING_SCHEME)
 
     def _create_name(self) -> None:

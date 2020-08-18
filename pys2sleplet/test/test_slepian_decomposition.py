@@ -6,6 +6,7 @@ from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.test.constants import L_SMALL as L
 from pys2sleplet.utils.mask_methods import create_mask_region
+from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -38,13 +39,10 @@ def test_equality_to_harmonic_transform_polar(polar_cap_decomposition) -> None:
     """
     tests that fp*Sp up to N is roughly equal to flm*Ylm
     """
-    f_slepian = np.zeros((L + 1, 2 * L), dtype=np.complex128)
-    for p in range(polar_cap_decomposition.N):
-        f_p = polar_cap_decomposition.decompose(p)
-        s_p = ssht.inverse(
-            polar_cap_decomposition.s_p_lms[p], L, Method=SAMPLING_SCHEME
-        )
-        f_slepian += f_p * s_p
+    f_p = polar_cap_decomposition.decompose_all()
+    f_slepian = slepian_inverse(
+        L, f_p, polar_cap_decomposition.s_p_lms, coefficients=polar_cap_decomposition.N
+    )
     f_harmonic = ssht.inverse(polar_cap_decomposition.flm, L, Method=SAMPLING_SCHEME)
     mask = create_mask_region(L, polar_cap_decomposition.function.region)
     assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=14)
@@ -54,13 +52,13 @@ def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -
     """
     tests that fp*Sp up to N is roughly equal to flm*Ylm
     """
-    f_slepian = np.zeros((L + 1, 2 * L), dtype=np.complex128)
-    for p in range(lim_lat_lon_decomposition.N):
-        f_p = lim_lat_lon_decomposition.decompose(p)
-        s_p = ssht.inverse(
-            lim_lat_lon_decomposition.s_p_lms[p], L, Method=SAMPLING_SCHEME
-        )
-        f_slepian += f_p * s_p
+    f_p = lim_lat_lon_decomposition.decompose_all()
+    f_slepian = slepian_inverse(
+        L,
+        f_p,
+        lim_lat_lon_decomposition.s_p_lms,
+        coefficients=lim_lat_lon_decomposition.N,
+    )
     f_harmonic = ssht.inverse(lim_lat_lon_decomposition.flm, L, Method=SAMPLING_SCHEME)
     mask = create_mask_region(L, lim_lat_lon_decomposition.function.region)
     assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=123)

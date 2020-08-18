@@ -1,6 +1,7 @@
 from typing import Optional
 
 import numpy as np
+import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
@@ -13,6 +14,7 @@ from pys2sleplet.utils.integration_methods import (
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
@@ -58,3 +60,17 @@ def integrate_whole_matrix_slepian_functions(
                 ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output
+
+
+def slepian_inverse(
+    L: int, f_p: np.ndarray, s_p_lm: np.ndarray, coefficients: Optional[int] = None
+) -> None:
+    """
+    computes the Slepian inverse transform up to a given number of coefficients
+    """
+    n = L ** 2 if coefficients is None else coefficients
+    f = np.zeros((L + 1, 2 * L), dtype=np.complex128)
+    for p in range(n):
+        s_p = ssht.inverse(s_p_lm[p], L, Method=SAMPLING_SCHEME)
+        f += f_p[p] * s_p
+    return f
