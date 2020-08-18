@@ -100,11 +100,11 @@ class Slepian(Functions):
         self._rank = rank
 
     @property  # type:ignore
-    def region(self) -> Region:
+    def region(self) -> Optional[Region]:
         return self._region
 
     @region.setter
-    def region(self, region: Region) -> None:
+    def region(self, region: Optional[Region]) -> None:
         if isinstance(region, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
