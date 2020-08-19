@@ -148,7 +148,7 @@ class SlepianPolarCap(SlepianFunctions):
 
             # save to speed up for future
             if settings.SAVE_MATRICES:
-                np.save(self.matrix_location, Dm)
+                np.save(filename, Dm)
 
         return Dm
 
