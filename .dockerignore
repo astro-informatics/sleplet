@@ -12,6 +12,6 @@
 **/*.sh
 
 # except
-!**/polar40_L32/*
+!**/polar40_L32.npy
 !**/theta30-60_phi30-60_L32.npy
 !**/trans_dd_L128_alpha3pi4_beta1pi8.npy
