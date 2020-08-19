@@ -13,7 +13,7 @@ fig_path = file_location.parents[2] / "figures"
 sns.set(context="paper")
 
 B = 2
-J_MIN = 2
+J_MIN = 0
 L = 16
 STEP = 0.01
 
