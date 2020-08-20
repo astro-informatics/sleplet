@@ -17,6 +17,7 @@ class AxisymmetricWavelets(Functions):
     _B: int = field(default=2, init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
+    _j_max: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -81,14 +82,22 @@ class AxisymmetricWavelets(Functions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             j = AxisymmetricWavelets._j
-        j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
+        self.j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
-        if j is not None and j > j_max - self.j_min:
+        if j is not None and j > self.j_max - self.j_min:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - self.j_min + 1}"
+                f"j should be less than j_max - j_min: {self.j_max - self.j_min + 1}"
             )
         self._j = j
+
+    @property  # type:ignore
+    def j_max(self) -> int:
+        return self._j_max
+
+    @j_max.setter
+    def j_max(self, j_max: int) -> None:
+        self._j_max = j_max
 
     @property  # type:ignore
     def j_min(self) -> int:
