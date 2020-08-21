@@ -18,7 +18,7 @@ def main() -> None:
     f_p = sd.decompose_all()
     f = slepian_inverse(L, f_p, sd.s_p_lms, coefficients=sd.N)
     resolution = calc_plot_resolution(L)
-    name = f"south_america_reconstruction_L{L}_res{resolution}"
+    name = f"south_america_slepian_reconstruction_L{L}_res{resolution}"
     Plot(f, L, resolution, name).execute()
 
 
