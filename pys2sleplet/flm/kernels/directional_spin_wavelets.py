@@ -19,7 +19,7 @@ class DirectionalSpinWavelets(Functions):
     _B: int = field(default=2, init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
-    _N: int = field(default=0, init=False, repr=False)
+    _N: int = field(default=2, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
 
@@ -39,7 +39,7 @@ class DirectionalSpinWavelets(Functions):
                 ind = ssht.elm2ind(ell, 0)
                 flm[ind] = phi_l[ell]
         else:
-            flm = psi_lm[:, self.j]
+            flm = np.ascontiguousarray(psi_lm[:, self.j])
         self.multipole = flm
 
     def _create_name(self) -> None:
