@@ -6,6 +6,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
+from scipy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -64,7 +65,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> None:
         D = self._load_D_matrix()
-        eigenvalues, eigenvectors = np.linalg.eigh(D)
+        eigenvalues, eigenvectors = LA.eigh(D)
         self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )

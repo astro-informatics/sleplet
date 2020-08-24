@@ -7,6 +7,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
+from scipy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
@@ -102,7 +103,7 @@ class SlepianPolarCap(SlepianFunctions):
         """
         emm = create_emm_vector(self.L)
         Dm = self._load_Dm_matrix(emm, m)
-        eigenvalues, gl = np.linalg.eigh(Dm)
+        eigenvalues, gl = LA.eigh(Dm)
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)
         return eigenvalues, eigenvectors
 

@@ -5,6 +5,7 @@ from typing import Tuple
 import numpy as np
 import pyssht as ssht
 from numba import njit, prange
+from scipy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -97,7 +98,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> None:
         K = self._load_K_matrix()
-        eigenvalues, eigenvectors = np.linalg.eigh(K)
+        eigenvalues, eigenvectors = LA.eigh(K)
         self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
             eigenvalues, eigenvectors
         )
