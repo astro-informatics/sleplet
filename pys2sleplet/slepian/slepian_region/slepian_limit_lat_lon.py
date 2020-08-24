@@ -93,36 +93,35 @@ class SlepianLimitLatLon(SlepianFunctions):
             / "data"
             / "slepian"
             / "lat_lon"
-            / f"D_{self.name_ending}_L{self.L}.npy"
+            / f"D_{self.name_ending}_L{self.L}"
         )
 
     def _solve_eigenproblem(self) -> None:
-        K = self._load_K_matrix()
-        eigenvalues, eigenvectors = LA.eigh(K)
-        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
-            eigenvalues, eigenvectors
-        )
-
-    def _load_K_matrix(self) -> np.ndarray:
-        """
-        if the K matrix already exists load it
-        otherwise create it and save the result
-        """
-        # check if matrix already exists
-        if Path(self.matrix_location).exists():
-            K = np.load(self.matrix_location)
+        eval_loc = self.matrix_location / "eigenvalues.npy"
+        evec_loc = self.matrix_location / "eigenvectors.npy"
+        if Path(eval_loc).exists() and Path(evec_loc).exists():
+            self.eigenvalues = np.load(eval_loc)
+            self.eigenvectors = np.load(evec_loc)
         else:
-            # Compute sub-integral matrix
-            G = self._slepian_integral()
-
-            # Compute Slepian matrix
-            dl_array = ssht.generate_dl(np.pi / 2, self.L)
-            K = self._slepian_matrix(dl_array, self.L, self.L - 1, G)
-            fill_upper_triangle_of_hermitian_matrix(K)
-
-            # save to speed up for future
+            K = self._create_K_matrix()
+            self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
+                LA.eigh(K)
+            )
             if settings.SAVE_MATRICES:
-                np.save(self.matrix_location, K)
+                np.save(eval_loc, self.eigenvalues)
+                np.save(evec_loc, self.eigenvectors)
+
+    def _create_K_matrix(self) -> np.ndarray:
+        """
+        computes the K matrix
+        """
+        # Compute sub-integral matrix
+        G = self._slepian_integral()
+
+        # Compute Slepian matrix
+        dl_array = ssht.generate_dl(np.pi / 2, self.L)
+        K = self._slepian_matrix(dl_array, self.L, self.L - 1, G)
+        fill_upper_triangle_of_hermitian_matrix(K)
 
         return K
 
@@ -235,11 +234,14 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigenvalues: np.ndarray, eigenvectors: np.ndarray
+        eigendecomposition: Tuple[np.ndarray, np.ndarray]
     ) -> Tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """
+        # access values
+        eigenvalues, eigenvectors = eigendecomposition
+
         # eigenvalues should be real
         eigenvalues = eigenvalues.real
 
