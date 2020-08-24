@@ -66,7 +66,7 @@ class SlepianArbitrary(SlepianFunctions):
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
-        if Path(eval_loc).exists() and Path(evec_loc).exists():
+        if eval_loc.exists() and evec_loc.exists():
             self.eigenvalues = np.load(eval_loc)
             self.eigenvectors = np.load(evec_loc)
         else:
