@@ -78,6 +78,39 @@ class SlepianPolarCap(SlepianFunctions):
         )
 
     def _solve_eigenproblem(self) -> None:
+        eval_loc = self.matrix_location / "eigenvalues.npy"
+        evec_loc = self.matrix_location / "eigenvectors.npy"
+        order_loc = self.matrix_location / "orders.npy"
+        if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
+            self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
+        else:
+            self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
+
+    def _solve_eigenproblem_from_files(
+        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+    ) -> None:
+        """
+        solves eigenproblem with files already saved
+        """
+        eigenvalues = np.load(eval_loc)
+        eigenvectors = np.load(evec_loc)
+        orders = np.load(order_loc)
+
+        if self.order is not None:
+            idx = np.where(orders == self.order)
+            self.eigenvalues = eigenvalues[idx]
+            self.eigenvectors = eigenvectors[idx]
+        else:
+            self.eigenvalues = eigenvalues
+            self.eigenvectors = eigenvectors
+            self.order = orders
+
+    def _solve_eigenproblem_from_scratch(
+        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+    ) -> None:
+        """
+        sovles eigenproblem from scratch and then saves the files
+        """
         if self.order is not None:
             self.eigenvalues, self.eigenvectors = self._solve_eigenproblem_order(
                 self.order
@@ -96,13 +129,17 @@ class SlepianPolarCap(SlepianFunctions):
                 self.eigenvectors,
                 self.order,
             ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
+            if settings.SAVE_MATRICES:
+                np.save(eval_loc, self.eigenvalues)
+                np.save(evec_loc, self.eigenvectors)
+                np.save(order_loc, self.order)
 
     def _solve_eigenproblem_order(self, m: int) -> Tuple[np.ndarray, np.ndarray]:
         """
         solves the eigenproblem for a given order 'm;
         """
         emm = create_emm_vector(self.L)
-        Dm = self._load_Dm_matrix(emm, m)
+        Dm = self._create_Dm_matrix(emm, m)
         eigenvalues, gl = LA.eigh(Dm)
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)
         return eigenvalues, eigenvectors
@@ -129,29 +166,16 @@ class SlepianPolarCap(SlepianFunctions):
             {**dict(x=x[0], y=y[0], z=z[0], arrowcolor=colour), **ARROW_STYLE}
         )
 
-    def _load_Dm_matrix(self, emm: np.ndarray, m: int) -> np.ndarray:
+    def _create_Dm_matrix(self, emm: np.ndarray, m: int) -> np.ndarray:
         """
-        if the Dm matrix already exists load it
-        otherwise create it and save the result
+        calculates the given D matrix for an order m
         """
-        # check if matrix already exists
-        filename = self.matrix_location / f"D_m{abs(m)}.npy"
-        if Path(filename).exists():
-            Dm = np.load(filename)
-        else:
-            P = self._create_legendre_polynomials_table(emm)
-
-            # Computing order 'm' Slepian matrix
-            if self.ncpu == 1:
-                Dm = self._dm_matrix_serial(abs(m), P)
-            else:
-                Dm = self._dm_matrix_parallel(abs(m), P)
-
-            # save to speed up for future
-            if settings.SAVE_MATRICES:
-                np.save(filename, Dm)
-
-        return Dm
+        P = self._create_legendre_polynomials_table(emm)
+        return (
+            self._dm_matrix_serial(abs(m), P)
+            if self.ncpu == 1
+            else self._dm_matrix_parallel(abs(m), P)
+        )
 
     def _create_legendre_polynomials_table(self, emm: np.ndarray) -> np.ndarray:
         """
