@@ -60,15 +60,23 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _arbitrary_path / "matrices" / f"D_{self.mask_name}_L{self.L}.npy"
+            _arbitrary_path / "matrices" / f"D_{self.mask_name}_L{self.L}"
         )
 
     def _solve_eigenproblem(self) -> None:
-        D = self._load_D_matrix()
-        eigenvalues, eigenvectors = LA.eigh(D)
-        self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
-            eigenvalues, eigenvectors
-        )
+        eval_loc = self.matrix_location / "eigenvalues.npy"
+        evec_loc = self.matrix_location / "eigenvectors.npy"
+        if Path(eval_loc).exists() and Path(evec_loc).exists():
+            self.eigenvalues = np.load(eval_loc)
+            self.eigenvectors = np.load(evec_loc)
+        else:
+            D = self._create_D_matrix()
+            self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
+                LA.eigh(D)
+            )
+            if settings.SAVE_MATRICES:
+                np.save(eval_loc, self.eigenvalues)
+                np.save(evec_loc, self.eigenvectors)
 
     def _add_to_annotation(self, theta: float, phi: float) -> None:
         """
@@ -79,21 +87,11 @@ class SlepianArbitrary(SlepianFunctions):
             {**dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR), **ARROW_STYLE}
         )
 
-    def _load_D_matrix(self) -> np.ndarray:
+    def _create_D_matrix(self) -> np.ndarray:
         """
-        if the D matrix already exists load it
-        otherwise create it and save the result
+        computes the D matrix either in parallel or serially
         """
-        # check if matrix already exists
-        if Path(self.matrix_location).exists():
-            D = np.load(self.matrix_location)
-        else:
-            D = self._matrix_serial() if self.ncpu == 1 else self._matrix_parallel()
-            # save to speed up for future
-            if settings.SAVE_MATRICES:
-                np.save(self.matrix_location, D)
-
-        return D
+        return self._matrix_serial() if self.ncpu == 1 else self._matrix_parallel()
 
     def _matrix_serial(self) -> np.ndarray:
         """
@@ -216,11 +214,14 @@ class SlepianArbitrary(SlepianFunctions):
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigenvalues: np.ndarray, eigenvectors: np.ndarray
+        eigendecomposition: Tuple[np.ndarray, np.ndarray]
     ) -> Tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """
+        # access values
+        eigenvalues, eigenvectors = eigendecomposition
+
         # eigenvalues should be real
         eigenvalues = eigenvalues.real
 
