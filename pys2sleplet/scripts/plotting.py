@@ -56,8 +56,8 @@ def read_args() -> Namespace:
         help="alpha/phi pi fraction - defaults to 0",
     )
     parser.add_argument(
-        "--annotation",
-        "-n",
+        "--outline",
+        "-o",
         action="store_false",
         help="flag which removes any annotation",
     )
@@ -224,7 +224,7 @@ def main() -> None:
         g=g,
         method=args.method,
         plot_type=args.type,
-        annotations=args.annotation,
+        annotations=args.outline,
         alpha_pi_fraction=args.alpha,
         beta_pi_fraction=args.beta,
         gamma_pi_fraction=args.gamma,
