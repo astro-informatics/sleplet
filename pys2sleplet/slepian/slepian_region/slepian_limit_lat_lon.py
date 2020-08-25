@@ -5,7 +5,7 @@ from typing import Tuple
 import numpy as np
 import pyssht as ssht
 from numba import njit, prange
-from scipy import linalg as LA
+from numpy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
