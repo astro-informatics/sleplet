@@ -104,6 +104,12 @@ def read_args() -> Namespace:
         help="plotting routine: defaults to north",
     )
     parser.add_argument(
+        "--noise",
+        "-n",
+        action="store_true",
+        help="flag which adds Gaussian white noise to the signal",
+    )
+    parser.add_argument(
         "--region",
         "-r",
         action="store_true",
@@ -131,11 +137,12 @@ def plot(
     alpha_pi_fraction: Optional[float] = None,
     beta_pi_fraction: Optional[float] = None,
     gamma_pi_fraction: Optional[float] = None,
+    noise: bool = False,
 ) -> None:
     """
     master plotting method
     """
-    filename = f"{f.name}_L{f.L}_"
+    filename = f"{f.name}{'_noised' if noise else ''}_L{f.L}_"
     multipole = f.multipole
 
     # turn off annotation if needed
@@ -215,7 +222,9 @@ def main() -> None:
         else None
     )
 
-    f = FUNCTIONS[args.flm](args.bandlimit, extra_args=args.extra_args, region=mask)
+    f = FUNCTIONS[args.flm](
+        args.bandlimit, extra_args=args.extra_args, region=mask, noise=args.noise
+    )
 
     g = FUNCTIONS[args.convolve](args.bandlimit) if args.convolve is not None else None
 
@@ -228,6 +237,7 @@ def main() -> None:
         alpha_pi_fraction=args.alpha,
         beta_pi_fraction=args.beta,
         gamma_pi_fraction=args.gamma,
+        noise=args.noise,
     )
 
 

@@ -1,6 +1,7 @@
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
@@ -11,7 +12,7 @@ def _signal_power(L: int, flm: np.ndarray) -> np.ndarray:
     return (np.abs(flm) ** 2).sum() / L ** 2
 
 
-def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:
+def _compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:
     """
     computes the signal to noise ratio
     """
@@ -42,4 +43,8 @@ def create_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> np.ndarray:
                 2 * np.random.uniform() - 1
             ) + 1j * sigmanoise * (2 * np.random.uniform() - 1)
             nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
+
+    # compute SNR
+    snr = _compute_snr(L, signal, nlm)
+    logger.info(f"Noise applied - SNR: {snr:.2f}")
     return nlm

@@ -8,6 +8,7 @@ import pyssht as ssht
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
+from pys2sleplet.utils.noise import create_noise
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
@@ -20,6 +21,7 @@ class Functions:
     L: int
     extra_args: Optional[List[int]]
     region: Optional[Region]
+    noise: bool
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _L: int = field(init=False, repr=False)
@@ -27,6 +29,7 @@ class Functions:
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
     _region: Region = field(default=None, init=False, repr=False)
+    _noise: bool = field(default=False, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -38,6 +41,7 @@ class Functions:
         self._set_reality()
         self._create_flm()
         self._add_region_to_name()
+        self._add_noise_to_signal()
 
     def rotate(
         self,
@@ -116,6 +120,14 @@ class Functions:
         if self.region is not None and "slepian" not in self.name:
             self.name += f"_{self.region.name_ending}"
 
+    def _add_noise_to_signal(self) -> None:
+        """
+        adds Gaussian white noise to the signal
+        """
+        if self.noise:
+            nlm = create_noise(self.L, self.multipole)
+            self.multipole += nlm
+
     @property
     def annotations(self) -> List[Dict]:
         return self._annotations
@@ -165,6 +177,18 @@ class Functions:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
+
+    @property  # type:ignore
+    def noise(self) -> bool:
+        return self._noise
+
+    @noise.setter
+    def noise(self, noise: bool) -> None:
+        if isinstance(noise, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            noise = Functions._noise
+        self._noise = noise
 
     @property
     def reality(self) -> bool:
