@@ -28,7 +28,6 @@ def test_synthesis_polar(polar_cap_decomposition) -> None:
     assert_allclose(np.abs(f_wavelets - f_harmonic)[mask].mean(), 0, atol=343)
 
 
-# @pytest.mark.slow
 def test_synthesis_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     """
     tests that Slepian lim_lat_lon wavelet synthesis matches the real space
