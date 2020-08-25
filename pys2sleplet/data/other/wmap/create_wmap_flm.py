@@ -4,6 +4,8 @@ import numpy as np
 import pyssht as ssht
 from scipy import io as sio
 
+from pys2sleplet.utils.vars import RANDOM_SEED
+
 _file_location = Path(__file__).resolve()
 
 
@@ -15,7 +17,7 @@ def create_flm(L: int) -> np.ndarray:
     cl = _load_cl()
 
     # same random seed
-    np.random.seed(0)
+    np.random.seed(RANDOM_SEED)
 
     # Simulate CMB in harmonic space.
     flm = np.zeros(L ** 2, dtype=np.complex128)

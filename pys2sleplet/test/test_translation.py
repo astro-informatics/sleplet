@@ -5,7 +5,7 @@ from numpy.testing import assert_allclose
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.test.constants import L_LARGE as L
-from pys2sleplet.test.constants import RANDOM_SEED
+from pys2sleplet.utils.vars import RANDOM_SEED
 
 
 def valid_alphas() -> SearchStrategy[float]:
