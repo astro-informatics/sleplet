@@ -10,7 +10,7 @@ from pys2sleplet.utils.wavelet_methods import wavelet_inverse
 
 B = 2
 J_MIN = 0
-L = 16
+L = 64
 
 
 def main() -> None:

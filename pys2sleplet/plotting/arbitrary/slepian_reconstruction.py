@@ -5,7 +5,7 @@ from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 
-L = 16
+L = 64
 
 
 def main() -> None:
