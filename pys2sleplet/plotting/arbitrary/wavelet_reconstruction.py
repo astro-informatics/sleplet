@@ -8,8 +8,6 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 from pys2sleplet.utils.wavelet_methods import wavelet_inverse
 
-B = 2
-J_MIN = 0
 L = 64
 
 
@@ -19,10 +17,10 @@ def main() -> None:
     """
     south_america = SouthAmerica(L)
     region = Region(mask_name="south_america")
-    scaling = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
+    scaling = SlepianWavelets(L, region=region)
     flm = wavelet_inverse(south_america, scaling.multipole)
-    for j in range(scaling.j_max - J_MIN):
-        wavelet = SlepianWavelets(L, B=B, j_min=J_MIN, j=j, region=region)
+    for j in range(scaling.j_max - scaling.j_min):
+        wavelet = SlepianWavelets(L, j=j, region=region)
         flm += wavelet_inverse(south_america, wavelet.multipole)
     f = ssht.inverse(flm, L, Method=SAMPLING_SCHEME)
     resolution = calc_plot_resolution(L)
