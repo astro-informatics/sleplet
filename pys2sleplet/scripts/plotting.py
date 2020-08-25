@@ -137,12 +137,11 @@ def plot(
     alpha_pi_fraction: Optional[float] = None,
     beta_pi_fraction: Optional[float] = None,
     gamma_pi_fraction: Optional[float] = None,
-    noise: bool = False,
 ) -> None:
     """
     master plotting method
     """
-    filename = f"{f.name}{'_noised' if noise else ''}_L{f.L}_"
+    filename = f"{f.name}{'_noised' if f.noise else ''}_L{f.L}_"
     multipole = f.multipole
 
     # turn off annotation if needed
@@ -237,7 +236,6 @@ def main() -> None:
         alpha_pi_fraction=args.alpha,
         beta_pi_fraction=args.beta,
         gamma_pi_fraction=args.gamma,
-        noise=args.noise,
     )
 
 
