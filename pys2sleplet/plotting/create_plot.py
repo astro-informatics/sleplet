@@ -182,11 +182,14 @@ class Plot:
         """
         inverts and then boosts the field before plotting
         """
-        flm = ssht.forward(
-            f, self.L, Method=SAMPLING_SCHEME, Reality=self.reality, Spin=self.spin
-        )
+        flm = ssht.forward(f, self.L, Reality=self.reality, Spin=self.spin)
         return invert_flm_boosted(
-            flm, self.L, self.resolution, reality=self.reality, spin=self.spin
+            flm,
+            self.L,
+            self.resolution,
+            method=SAMPLING_SCHEME,
+            reality=self.reality,
+            spin=self.spin,
         )
 
     def _create_plot_type(self, f: np.ndarray) -> np.ndarray:

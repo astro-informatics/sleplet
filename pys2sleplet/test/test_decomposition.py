@@ -7,7 +7,6 @@ from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.test.constants import L_SMALL as L
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def test_decompose_all_polar(polar_cap_decomposition) -> None:
@@ -17,8 +16,8 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     f_p = polar_cap_decomposition.decompose_all(method="integrate_region")
     g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
     h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(np.abs(f_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=8)
-    assert_allclose(np.abs(g_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=2)
+    assert_allclose(np.abs(f_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=1.1)
+    assert_allclose(np.abs(g_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=0.8)
 
 
 def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
@@ -29,7 +28,7 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     f_p = lim_lat_lon_decomposition.decompose_all(method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose_all(method="integrate_sphere")
     h_p = lim_lat_lon_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(np.abs(f_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=18)
+    assert_allclose(np.abs(f_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=36)
     assert_allclose(
         np.abs(g_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=1e-2
     )
@@ -43,9 +42,9 @@ def test_equality_to_harmonic_transform_polar(polar_cap_decomposition) -> None:
     f_slepian = slepian_inverse(
         L, f_p, polar_cap_decomposition.s_p_lms, coefficients=polar_cap_decomposition.N
     )
-    f_harmonic = ssht.inverse(polar_cap_decomposition.flm, L, Method=SAMPLING_SCHEME)
+    f_harmonic = ssht.inverse(polar_cap_decomposition.flm, L)
     mask = create_mask_region(L, polar_cap_decomposition.function.region)
-    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=14)
+    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=15)
 
 
 def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -> None:
@@ -59,9 +58,9 @@ def test_equality_to_harmonic_transform_lim_lat_lon(lim_lat_lon_decomposition) -
         lim_lat_lon_decomposition.s_p_lms,
         coefficients=lim_lat_lon_decomposition.N,
     )
-    f_harmonic = ssht.inverse(lim_lat_lon_decomposition.flm, L, Method=SAMPLING_SCHEME)
+    f_harmonic = ssht.inverse(lim_lat_lon_decomposition.flm, L)
     mask = create_mask_region(L, lim_lat_lon_decomposition.function.region)
-    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=123)
+    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=95)
 
 
 def test_pass_function_without_region() -> None:

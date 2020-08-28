@@ -7,7 +7,6 @@ from matplotlib import colors
 from matplotlib import pyplot as plt
 
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -47,7 +46,7 @@ def calc_nearest_grid_point(
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small
     """
-    thetas, phis = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(L)
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]

@@ -10,7 +10,6 @@ from pys2sleplet.utils.pys2let import s2let
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_args
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 @dataclass
@@ -50,7 +49,7 @@ class SlepianWavelets(Functions):
         f = slepian_inverse(
             self.L, k, self.slepian.eigenvectors, coefficients=self.slepian.N
         )
-        self.multipole = ssht.forward(f, self.L, Method=SAMPLING_SCHEME)
+        self.multipole = ssht.forward(f, self.L)
 
     def _create_name(self) -> None:
         coefficient = (

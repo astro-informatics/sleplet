@@ -12,7 +12,7 @@ from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLING_SCHEME
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 
 
 def valid_maps(map_name: str) -> str:
@@ -187,9 +187,7 @@ def plot(
         )
 
     # get field value
-    field = ssht.inverse(
-        multipole, f.L, Method=SAMPLING_SCHEME, Reality=f.reality, Spin=f.spin
-    )
+    field = ssht.inverse(multipole, f.L, Reality=f.reality, Spin=f.spin)
 
     # do plot
     filename += plot_type

@@ -11,7 +11,6 @@ from pys2sleplet.utils.vars import (
     EARTH_ALPHA,
     EARTH_BETA,
     EARTH_GAMMA,
-    SAMPLING_SCHEME,
     SOUTH_AMERICA_RANGE,
 )
 
@@ -54,8 +53,6 @@ class SouthAmerica(Functions):
         rot_flm = ssht.rotate_flms(
             earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, self.L
         )
-        earth_f = ssht.inverse(
-            rot_flm, self.L, Method=SAMPLING_SCHEME, Reality=self.reality
-        )
+        earth_f = ssht.inverse(rot_flm, self.L, Reality=self.reality)
         mask = (theta <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
         return np.where(mask, earth_f, 0)

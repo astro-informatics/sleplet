@@ -5,7 +5,6 @@ from pys2sleplet.flm.maps.south_america import SouthAmerica
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 from pys2sleplet.utils.wavelet_methods import wavelet_inverse
 
 L = 64
@@ -22,7 +21,7 @@ def main() -> None:
     for j in range(scaling.j_max - scaling.j_min):
         wavelet = SlepianWavelets(L, j=j, region=region)
         flm += wavelet_inverse(south_america, wavelet.multipole)
-    f = ssht.inverse(flm, L, Method=SAMPLING_SCHEME)
+    f = ssht.inverse(flm, L)
     resolution = calc_plot_resolution(L)
     name = f"south_america_wavelet_reconstruction_L{L}_res{resolution}"
     Plot(f, L, resolution, name).execute()

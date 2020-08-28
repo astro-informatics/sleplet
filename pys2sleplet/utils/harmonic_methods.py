@@ -3,8 +3,6 @@ from typing import Callable
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
-
 
 def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
     """
@@ -24,15 +22,18 @@ def _boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarra
 
 
 def invert_flm_boosted(
-    flm: np.ndarray, L: int, resolution: int, reality: bool = False, spin: int = 0
+    flm: np.ndarray,
+    L: int,
+    resolution: int,
+    method: str = "MW",
+    reality: bool = False,
+    spin: int = 0,
 ) -> np.ndarray:
     """
     performs the inverse harmonic transform
     """
     flm = _boost_flm_resolution(flm, L, resolution)
-    return ssht.inverse(
-        flm, resolution, Reality=reality, Method=SAMPLING_SCHEME, Spin=spin
-    )
+    return ssht.inverse(flm, resolution, Method=method, Reality=reality, Spin=spin)
 
 
 def ensure_f_bandlimited(
@@ -45,9 +46,9 @@ def ensure_f_bandlimited(
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it
     """
-    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(L, Grid=True)
     f = grid_fun(thetas, phis)
-    return ssht.forward(f, L, Reality=reality, Method=SAMPLING_SCHEME, Spin=spin)
+    return ssht.forward(f, L, Reality=reality, Spin=spin)
 
 
 def create_emm_vector(L: int) -> np.ndarray:

@@ -14,7 +14,6 @@ from pys2sleplet.utils.integration_methods import (
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
@@ -68,9 +67,10 @@ def slepian_inverse(
     """
     computes the Slepian inverse transform up to a given number of coefficients
     """
-    n = L ** 2 if coefficients is None else coefficients
-    f = np.zeros((L + 1, 2 * L), dtype=np.complex128)
-    for p in range(n):
-        s_p = ssht.inverse(s_p_lm[p], L, Method=SAMPLING_SCHEME)
+    n_theta, n_phi = ssht.sample_shape(L)
+    f = np.zeros((n_theta, n_phi), dtype=np.complex128)
+    c = L ** 2 if coefficients is None else coefficients
+    for p in range(c):
+        s_p = ssht.inverse(s_p_lm[p], L)
         f += f_p[p] * s_p
     return f
