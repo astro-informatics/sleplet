@@ -5,18 +5,19 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
-def _signal_power(L: int, flm: np.ndarray) -> np.ndarray:
+def signal_power(L: int, flm: np.ndarray) -> np.ndarray:
     """
     computes the power of the harmonic signal
     """
     return (np.abs(flm) ** 2).sum() / L ** 2
 
 
-def _compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:
+def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> None:
     """
     computes the signal to noise ratio
     """
-    return 10 * np.log10(_signal_power(L, signal) / _signal_power(L, noise))
+    snr = 10 * np.log10(signal_power(L, signal) / signal_power(L, noise))
+    logger.info(f"Noise SNR: {snr:.2f}")
 
 
 def create_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> np.ndarray:
@@ -30,7 +31,7 @@ def create_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> np.ndarray:
     nlm = np.zeros(L ** 2, dtype=np.complex128)
 
     # std dev of the noise
-    sigma_noise = np.sqrt(10 ** (-snr_in / 10) * _signal_power(L, signal))
+    sigma_noise = np.sqrt(10 ** (-snr_in / 10) * signal_power(L, signal))
 
     # compute noise
     for ell in range(L):
@@ -45,6 +46,5 @@ def create_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> np.ndarray:
             nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
 
     # compute SNR
-    snr = _compute_snr(L, signal, nlm)
-    logger.info(f"Noise applied - SNR: {snr:.2f}")
+    compute_snr(L, signal, nlm)
     return nlm
