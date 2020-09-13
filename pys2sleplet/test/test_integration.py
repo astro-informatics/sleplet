@@ -14,10 +14,12 @@ def test_integrate_two_slepian_polar_cap_functions_whole_sphere_matrix(
     whole sphere gives the identity matrix
     """
     output = integrate_whole_matrix_slepian_functions(
-        slepian_polar_cap.eigenvectors[: slepian_polar_cap.N], L
+        slepian_polar_cap.eigenvectors[: slepian_polar_cap.N],
+        L,
+        slepian_polar_cap.resolution,
     )
     desired = np.identity(output.shape[0])
-    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-2)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
 
 
 def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
@@ -28,10 +30,12 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
     whole sphere gives the identity matrix
     """
     output = integrate_whole_matrix_slepian_functions(
-        slepian_lim_lat_lon.eigenvectors[: slepian_lim_lat_lon.N], L
+        slepian_lim_lat_lon.eigenvectors[: slepian_lim_lat_lon.N],
+        L,
+        slepian_lim_lat_lon.resolution,
     )
     desired = np.identity(output.shape[0])
-    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-2)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-4)
 
 
 def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
@@ -44,12 +48,13 @@ def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
     output = integrate_whole_matrix_slepian_functions(
         slepian_polar_cap.eigenvectors[: slepian_polar_cap.N],
         L,
+        slepian_polar_cap.resolution,
         mask=slepian_polar_cap.mask,
     )
     desired = slepian_polar_cap.eigenvalues[: slepian_polar_cap.N] * np.identity(
         output.shape[0]
     )
-    assert_allclose(np.abs(output - desired).mean(), 0, atol=0.02)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
 
 
 def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
@@ -62,23 +67,25 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
     output = integrate_whole_matrix_slepian_functions(
         slepian_lim_lat_lon.eigenvectors[: slepian_lim_lat_lon.N],
         L,
+        slepian_lim_lat_lon.resolution,
         mask=slepian_lim_lat_lon.mask,
     )
     desired = slepian_lim_lat_lon.eigenvalues[: slepian_lim_lat_lon.N] * np.identity(
         output.shape[0]
     )
-    assert_allclose(np.abs(output - desired).mean(), 0, atol=0.07)
+    assert_allclose(np.abs(output - desired).mean(), 0, atol=0.05)
 
 
 def test_pass_incorrect_mask_size_to_integrate_region(slepian_polar_cap) -> None:
     """
     tests an exception is thrown if the mask passed to the function is the wrong shape
     """
-    mask = create_mask_region(L * 2, slepian_polar_cap.region)
+    mask = create_mask_region(L, slepian_polar_cap.region)
     assert_raises(
         AttributeError,
         integrate_whole_matrix_slepian_functions,
         slepian_polar_cap.eigenvectors,
         L,
+        slepian_polar_cap.resolution,
         mask=mask,
     )

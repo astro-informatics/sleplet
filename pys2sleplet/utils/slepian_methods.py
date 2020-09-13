@@ -42,12 +42,12 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
 
 
 def integrate_whole_matrix_slepian_functions(
-    eigenvectors: np.ndarray, L: int, mask: Optional[np.ndarray] = None
+    eigenvectors: np.ndarray, L: int, resolution: int, mask: Optional[np.ndarray] = None
 ) -> np.ndarray:
     """
     helper function which integrates all of the slepian functionss
     """
-    weight = calc_integration_weight(L)
+    weight = calc_integration_weight(resolution)
     N = len(eigenvectors)
     output = np.zeros((N, N), dtype=np.complex128)
     for i, flm in enumerate(eigenvectors):
@@ -55,7 +55,7 @@ def integrate_whole_matrix_slepian_functions(
             # Hermitian matrix so can use symmetry
             if i <= j:
                 output[j][i] = integrate_sphere(
-                    L, flm, glm, weight, glm_conj=True, mask=mask
+                    L, resolution, flm, glm, weight, glm_conj=True, mask_boosted=mask
                 ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output

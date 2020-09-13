@@ -3,6 +3,15 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
+
+
+def calc_integration_resolution(L: int) -> int:
+    """
+    calculate appropriate sample number for given L
+    """
+    return L * 2
+
 
 def calc_integration_weight(L: int) -> np.ndarray:
     """
@@ -16,6 +25,7 @@ def calc_integration_weight(L: int) -> np.ndarray:
 
 def integrate_sphere(
     L: int,
+    resolution: int,
     flm: np.ndarray,
     glm: np.ndarray,
     weight: np.ndarray,
@@ -25,19 +35,22 @@ def integrate_sphere(
     glm_conj: bool = False,
     flm_spin: int = 0,
     glm_spin: int = 0,
-    mask: Optional[np.ndarray] = None,
+    mask_boosted: Optional[np.ndarray] = None,
 ) -> complex:
     """
     * method which computes the integration on the sphere for
       either the whole sphere or a region depended on the region variable
     * the function accepts arguments that control the reality of the inputs
       as well as the ability to have conjugates within the integral
+    * the multipole resolutions are boosted prior to integration
     """
-    if mask is not None and mask.shape != ssht.sample_shape(L):
-        raise AttributeError(f"mismatch in mask shape {mask.shape} & bandlimit {L}")
+    if mask_boosted is not None and mask_boosted.shape != ssht.sample_shape(resolution):
+        raise AttributeError(
+            f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
+        )
 
-    f = ssht.inverse(flm, L, Reality=flm_reality, Spin=flm_spin)
-    g = ssht.inverse(glm, L, Reality=glm_reality, Spin=glm_spin)
+    f = invert_flm_boosted(flm, L, resolution, reality=flm_reality, spin=flm_spin)
+    g = invert_flm_boosted(glm, L, resolution, reality=glm_reality, spin=glm_spin)
 
     if flm_conj:
         f = f.conj()
@@ -46,7 +59,7 @@ def integrate_sphere(
 
     integrand = f * g * weight
 
-    if mask is not None:
-        integrand = np.where(mask, integrand, 0)
+    if mask_boosted is not None:
+        integrand = np.where(mask_boosted, integrand, 0)
 
     return integrand.sum()

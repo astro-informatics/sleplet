@@ -80,7 +80,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         self.name = f"slepian_{self.name_ending}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self.region)
+        self.mask = create_mask_region(self.resolution, self.region)
 
     def _calculate_area(self) -> None:
         self.area = (self.phi_max - self.phi_min) * (
