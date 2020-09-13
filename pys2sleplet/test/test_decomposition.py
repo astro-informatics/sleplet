@@ -16,8 +16,8 @@ def test_decompose_all_polar(polar_cap_decomposition) -> None:
     f_p = polar_cap_decomposition.decompose_all(method="integrate_region")
     g_p = polar_cap_decomposition.decompose_all(method="integrate_sphere")
     h_p = polar_cap_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(np.abs(f_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=1.1)
-    assert_allclose(np.abs(g_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=0.8)
+    assert_allclose(np.abs(f_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=16)
+    assert_allclose(np.abs(g_p - h_p)[: polar_cap_decomposition.N].mean(), 0, atol=11)
 
 
 def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
@@ -28,9 +28,9 @@ def test_decompose_all_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     f_p = lim_lat_lon_decomposition.decompose_all(method="integrate_region")
     g_p = lim_lat_lon_decomposition.decompose_all(method="integrate_sphere")
     h_p = lim_lat_lon_decomposition.decompose_all(method="harmonic_sum")
-    assert_allclose(np.abs(f_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=36)
+    assert_allclose(np.abs(f_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=25)
     assert_allclose(
-        np.abs(g_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=1e-2
+        np.abs(g_p - h_p)[: lim_lat_lon_decomposition.N].mean(), 0, atol=1.1
     )
 
 

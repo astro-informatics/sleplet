@@ -20,7 +20,6 @@ class SlepianDecomposition:
     _function: Functions = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
     _mask: np.ndarray = field(init=False, repr=False)
-    _resolution: int = field(init=False, repr=False)
     _s_p_lms: np.ndarray = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
@@ -31,9 +30,8 @@ class SlepianDecomposition:
         slepian = choose_slepian_method(self.L, region)
         self.lambdas = slepian.eigenvalues
         self.mask = slepian.mask
-        self.resolution = slepian.resolution
         self.N = slepian.N
-        self.weight = calc_integration_weight(self.resolution)
+        self.weight = calc_integration_weight(self.L)
         self.s_p_lms = slepian.eigenvectors
 
     def decompose(self, rank: int, method: str = DECOMPOSITION_DEFAULT) -> complex:
@@ -72,12 +70,11 @@ class SlepianDecomposition:
         """
         integration = integrate_sphere(
             self.L,
-            self.resolution,
             self.flm,
             self.s_p_lms[rank],
             self.weight,
             glm_conj=True,
-            mask_boosted=self.mask,
+            mask=self.mask,
         )
         return integration / self.lambdas[rank]
 
@@ -88,12 +85,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}
         """
         return integrate_sphere(
-            self.L,
-            self.resolution,
-            self.flm,
-            self.s_p_lms[rank],
-            self.weight,
-            glm_conj=True,
+            self.L, self.flm, self.s_p_lms[rank], self.weight, glm_conj=True
         )
 
     def _harmonic_sum(self, rank: int) -> complex:
@@ -167,14 +159,6 @@ class SlepianDecomposition:
     @mask.setter
     def mask(self, mask: np.ndarray) -> None:
         self._mask = mask
-
-    @property
-    def resolution(self) -> int:
-        return self._resolution
-
-    @resolution.setter
-    def resolution(self, resolution: int) -> None:
-        self._resolution = resolution
 
     @property
     def s_p_lms(self) -> np.ndarray:

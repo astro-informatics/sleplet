@@ -5,7 +5,6 @@ from typing import Dict, List
 
 import numpy as np
 
-from pys2sleplet.utils.integration_methods import calc_integration_resolution
 from pys2sleplet.utils.logger import logger
 
 
@@ -20,11 +19,9 @@ class SlepianFunctions:
     _mask: np.ndarray = field(init=False, repr=False)
     _matrix_location: Path = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _resolution: int = field(init=False, repr=False)
     _N: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.resolution = calc_integration_resolution(self.L)
         self._create_mask()
         self._create_annotations()
         self._create_matrix_location()
@@ -106,14 +103,6 @@ class SlepianFunctions:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @property
-    def resolution(self) -> int:
-        return self._resolution
-
-    @resolution.setter
-    def resolution(self, resolution: int) -> None:
-        self._resolution = resolution
 
     @abstractmethod
     def _create_annotations(self) -> None:

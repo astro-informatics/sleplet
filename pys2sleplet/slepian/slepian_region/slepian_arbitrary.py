@@ -40,7 +40,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_annotations(self) -> None:
         self.mask: np.ndarray
-        thetas, phis = ssht.sample_positions(self.resolution, Grid=True)
+        thetas, phis = ssht.sample_positions(self.L, Grid=True)
         for i in range(self.mask.shape[0]):
             for j in range(self.mask.shape[1]):
                 if not self.mask[i, j] and thetas[i, j] <= np.pi / 3:
@@ -50,10 +50,10 @@ class SlepianArbitrary(SlepianFunctions):
         self.name = f"slepian_{self.mask_name}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.resolution, self.region)
+        self.mask = create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -> None:
-        self.weight = calc_integration_weight(self.resolution)
+        self.weight = calc_integration_weight(self.L)
         self.area = np.where(self.mask, self.weight, 0).sum()
 
     def _create_matrix_location(self) -> None:
@@ -201,13 +201,7 @@ class SlepianArbitrary(SlepianFunctions):
         flm = create_spherical_harmonic(self.L, i)
         glm = create_spherical_harmonic(self.L, j)
         return integrate_sphere(
-            self.L,
-            self.resolution,
-            flm,
-            glm,
-            self.weight,
-            mask_boosted=self.mask,
-            glm_conj=True,
+            self.L, flm, glm, self.weight, mask=self.mask, glm_conj=True
         )
 
     @staticmethod
