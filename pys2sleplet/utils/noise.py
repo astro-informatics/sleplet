@@ -36,13 +36,11 @@ def create_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> np.ndarray:
     # compute noise
     for ell in range(L):
         ind = ssht.elm2ind(ell, 0)
-        nlm[ind] = 2 * np.random.uniform() - 1
+        nlm[ind] = np.random.uniform()
         for m in range(1, ell + 1):
             ind_pm = ssht.elm2ind(ell, m)
             ind_nm = ssht.elm2ind(ell, -m)
-            nlm[ind_pm] = sigma_noise * (
-                2 * np.random.uniform() - 1
-            ) + 1j * sigma_noise * (2 * np.random.uniform() - 1)
+            nlm[ind_pm] = sigma_noise * (np.random.uniform() + 1j * np.random.uniform())
             nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
 
     # compute SNR
