@@ -82,3 +82,10 @@ def angle_as_degree(radian: float) -> int:
     converts radian angle to integer degree
     """
     return int(round(np.rad2deg(radian)))
+
+
+def wavelet_ending(j_min: int, j: int) -> str:
+    """
+    the ending name of the given wavelet
+    """
+    return "_scaling" if j is None else f"{filename_args(j + j_min, 'j')}"

@@ -7,7 +7,7 @@ from scipy.special import gammaln
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.pys2let import s2let
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 
 @dataclass
@@ -38,17 +38,12 @@ class Ridgelets(Functions):
         self.multipole = flm
 
     def _create_name(self) -> None:
-        coefficient = (
-            "_scaling"
-            if self.j is None
-            else f"{filename_args(self.j + self.j_min, 'j')}"
-        )
         self.name = (
             "ridgelets"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{filename_args(self.spin, 'spin')}"
-            f"{coefficient}"
+            f"{wavelet_ending(self.j_min, self.j)}"
         )
 
     def _set_reality(self) -> None:

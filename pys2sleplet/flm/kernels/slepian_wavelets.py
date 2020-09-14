@@ -9,7 +9,7 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.pys2let import s2let
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 
 @dataclass
@@ -52,16 +52,11 @@ class SlepianWavelets(Functions):
         self.multipole = ssht.forward(f, self.L)
 
     def _create_name(self) -> None:
-        coefficient = (
-            "_scaling"
-            if self.j is None
-            else f"{filename_args(self.j + self.j_min, 'j')}"
-        )
         self.name = (
             f"slepian_wavelets_{self.slepian.region.name_ending}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
-            f"{coefficient}"
+            f"{wavelet_ending(self.j_min, self.j)}"
         )
 
     def _set_reality(self) -> None:
