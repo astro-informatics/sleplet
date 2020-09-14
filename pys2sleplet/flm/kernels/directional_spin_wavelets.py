@@ -29,18 +29,20 @@ class DirectionalSpinWavelets(Functions):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> None:
+    def _create_wavelets(self) -> np.ndarray:
         phi_l, psi_lm = s2let.wavelet_tiling(
             self.B, self.L, self.N, self.j_min, self.spin
         )
-        if self.j is None:
-            flm = np.zeros(self.L ** 2, dtype=np.complex128)
-            for ell in range(self.L):
-                ind = ssht.elm2ind(ell, 0)
-                flm[ind] = phi_l[ell]
-        else:
-            flm = np.ascontiguousarray(psi_lm[:, self.j])
-        self.multipole = flm
+        wavelets = np.zeros((psi_lm.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            wavelets[0, ind] = phi_l[ell]
+        wavelets[1:] = psi_lm.T
+        return wavelets
+
+    def _create_flm(self) -> None:
+        wavelets = self._create_wavelets()
+        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
 
     def _create_name(self) -> None:
         self.name = (
