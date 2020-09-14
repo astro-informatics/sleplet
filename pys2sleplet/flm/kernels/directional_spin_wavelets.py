@@ -4,54 +4,72 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.kernels.wavelet import Wavelet
+from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.pys2let import s2let
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 
 @dataclass
-class AxisymmetricWavelets(Wavelet):
+class DirectionalSpinWavelets(Functions):
     B: int
     j_min: int
+    spin: int
+    N: int
     j: Optional[int]
-    _B: int = field(default=3, init=False, repr=False)
+    _B: int = field(default=2, init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
+    _N: int = field(default=2, init=False, repr=False)
+    _spin: int = field(default=0, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
+    _wavelets: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_wavelets(self) -> np.ndarray:
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
-        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
-        for ell in range(self.L):
-            factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
-            ind = ssht.elm2ind(ell, 0)
-            wavelets[0, ind] = factor * kappa0[ell]
-            wavelets[1:, ind] = factor * kappa[ell]
-        return wavelets
+    def _create_annotations(self) -> None:
+        pass
+
+    def _create_flm(self) -> None:
+        logger.info("start computing wavelets")
+        wavelets = self._create_wavelets()
+        logger.info("finish computing wavelets")
+        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
 
     def _create_name(self) -> None:
         self.name = (
-            "axisymmetric_wavelets"
+            "directional_spin_wavelets"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
+            f"{filename_args(self.spin, 'spin')}"
+            f"{filename_args(self.N, 'N')}"
             f"{wavelet_ending(self.j_min, self.j)}"
         )
 
     def _set_reality(self) -> None:
-        self.reality = True
+        self.reality = self.j is None or self.spin == 0
 
     def _set_spin(self) -> None:
-        self.spin = 0
+        self.spin = self.spin
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            num_args = 3
+            num_args = 5
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.B, self.j_min, self.j = self.extra_args
+            self.B, self.j_min, self.spin, self.N, self.j = self.extra_args
+
+    def _create_wavelets(self) -> np.ndarray:
+        phi_l, psi_lm = s2let.wavelet_tiling(
+            self.B, self.L, self.N, self.j_min, self.spin
+        )
+        wavelets = np.zeros((psi_lm.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            wavelets[0, ind] = phi_l[ell]
+        wavelets[1:] = psi_lm.T
+        return wavelets
 
     @property  # type:ignore
     def B(self) -> int:
@@ -62,7 +80,7 @@ class AxisymmetricWavelets(Wavelet):
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = AxisymmetricWavelets._B
+            B = DirectionalSpinWavelets._B
         self._B = B
 
     @property  # type:ignore
@@ -74,7 +92,7 @@ class AxisymmetricWavelets(Wavelet):
         if isinstance(j, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j = AxisymmetricWavelets._j
+            j = DirectionalSpinWavelets._j
         self.j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
@@ -101,5 +119,37 @@ class AxisymmetricWavelets(Wavelet):
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = AxisymmetricWavelets._j_min
+            j_min = DirectionalSpinWavelets._j_min
         self._j_min = j_min
+
+    @property  # type:ignore
+    def N(self) -> int:
+        return self._N
+
+    @N.setter
+    def N(self, N: int) -> None:
+        if isinstance(N, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            N = DirectionalSpinWavelets._N
+        self._N = N
+
+    @property  # type:ignore
+    def spin(self) -> int:
+        return self._spin
+
+    @spin.setter
+    def spin(self, spin: int) -> None:
+        if isinstance(spin, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            spin = DirectionalSpinWavelets._spin
+        self._spin = spin
+
+    @property  # type:ignore
+    def wavelets(self) -> np.ndarray:
+        return self._wavelets
+
+    @wavelets.setter
+    def wavelets(self, wavelets: np.ndarray) -> None:
+        self._wavelets = wavelets

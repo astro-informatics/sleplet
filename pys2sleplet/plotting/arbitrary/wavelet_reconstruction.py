@@ -1,6 +1,6 @@
 import pyssht as ssht
 
-from pys2sleplet.flm.kernels.wavelets.slepian_wavelets import SlepianWavelets
+from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
 from pys2sleplet.flm.maps.south_america import SouthAmerica
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.plot_methods import calc_plot_resolution

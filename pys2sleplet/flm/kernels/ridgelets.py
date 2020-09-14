@@ -6,6 +6,7 @@ import pyssht as ssht
 from scipy.special import gammaln
 
 from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.pys2let import s2let
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
@@ -27,18 +28,10 @@ class Ridgelets(Functions):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_wavelets(self) -> np.ndarray:
-        ring_lm = self._compute_ring()
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
-        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
-        for ell in range(self.L):
-            ind = ssht.elm2ind(ell, 0)
-            wavelets[0, ind] = kappa0[ell] * ring_lm[ind]
-            wavelets[1:, ind] = kappa[ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
-        return wavelets
-
     def _create_flm(self) -> None:
+        logger.info("start computing wavelets")
         wavelets = self._create_wavelets()
+        logger.info("finish computing wavelets")
         self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
 
     def _create_name(self) -> None:
@@ -62,6 +55,16 @@ class Ridgelets(Functions):
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.spin, self.j = self.extra_args
+
+    def _create_wavelets(self) -> np.ndarray:
+        ring_lm = self._compute_ring()
+        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
+        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            wavelets[0, ind] = kappa0[ell] * ring_lm[ind]
+            wavelets[1:, ind] = kappa[ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
+        return wavelets
 
     def _compute_ring(self) -> np.ndarray:
         """
@@ -143,3 +146,11 @@ class Ridgelets(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             spin = Ridgelets._spin
         self._spin = spin
+
+    @property  # type:ignore
+    def wavelets(self) -> np.ndarray:
+        return self._wavelets
+
+    @wavelets.setter
+    def wavelets(self, wavelets: np.ndarray) -> None:
+        self._wavelets = wavelets

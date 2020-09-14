@@ -6,6 +6,7 @@ import pyssht as ssht
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.pys2let import s2let
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
@@ -43,29 +44,10 @@ class SlepianWavelets(Functions):
     def _create_annotations(self) -> None:
         self.annotations = self.slepian.annotations
 
-    def _create_wavelets(self) -> np.ndarray:
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
-        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
-        wavelets[0] = ssht.forward(
-            slepian_inverse(
-                self.L, kappa0, self.slepian.eigenvectors, coefficients=self.slepian.N
-            ),
-            self.L,
-        )
-        for j in range(self.j_max - self.j_min):
-            wavelets[j + 1] = ssht.forward(
-                slepian_inverse(
-                    self.L,
-                    kappa[:, j],
-                    self.slepian.eigenvectors,
-                    coefficients=self.slepian.N,
-                ),
-                self.L,
-            )
-        return wavelets
-
     def _create_flm(self) -> None:
+        logger.info("start computing wavelets")
         wavelets = self._create_wavelets()
+        logger.info("finish computing wavelets")
         self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
 
     def _create_name(self) -> None:
@@ -88,6 +70,27 @@ class SlepianWavelets(Functions):
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args[:num_args]
+
+    def _create_wavelets(self) -> np.ndarray:
+        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
+        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        wavelets[0] = ssht.forward(
+            slepian_inverse(
+                self.L, kappa0, self.slepian.eigenvectors, coefficients=self.slepian.N
+            ),
+            self.L,
+        )
+        for j in range(self.j_max - self.j_min):
+            wavelets[j + 1] = ssht.forward(
+                slepian_inverse(
+                    self.L,
+                    kappa[:, j],
+                    self.slepian.eigenvectors,
+                    coefficients=self.slepian.N,
+                ),
+                self.L,
+            )
+        return wavelets
 
     @property  # type:ignore
     def B(self) -> int:
@@ -151,3 +154,11 @@ class SlepianWavelets(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             region = SlepianWavelets._region
         self._region = region
+
+    @property  # type:ignore
+    def wavelets(self) -> np.ndarray:
+        return self._wavelets
+
+    @wavelets.setter
+    def wavelets(self, wavelets: np.ndarray) -> None:
+        self._wavelets = wavelets
