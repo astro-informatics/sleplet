@@ -25,14 +25,19 @@ class AxisymmetricWavelets(Functions):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> None:
+    def _create_wavelets(self) -> np.ndarray:
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
-        k = kappa0 if self.j is None else kappa[:, self.j]
-        flm = np.zeros(self.L ** 2, dtype=np.complex128)
+        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
         for ell in range(self.L):
+            factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
             ind = ssht.elm2ind(ell, 0)
-            flm[ind] = k[ell]
-        self.multipole = flm
+            wavelets[0, ind] = factor * kappa0[ell]
+            wavelets[1:, ind] = factor * kappa[ell]
+        return wavelets
+
+    def _create_flm(self) -> None:
+        wavelets = self._create_wavelets()
+        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
 
     def _create_name(self) -> None:
         self.name = (
