@@ -41,8 +41,8 @@ def create_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> np.ndarray:
             ind_pm = ssht.elm2ind(ell, m)
             ind_nm = ssht.elm2ind(ell, -m)
             nlm[ind_pm] = sigma_noise * (
-                2 * np.random.uniform() - 1
-            ) + 1j * sigma_noise * (2 * np.random.uniform() - 1)
+                2 * np.random.uniform() - 1 + 1j * (2 * np.random.uniform() - 1)
+            )
             nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
 
     # compute SNR
