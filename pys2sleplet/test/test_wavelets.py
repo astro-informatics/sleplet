@@ -3,7 +3,7 @@ import pyssht as ssht
 import pytest
 from numpy.testing import assert_allclose
 
-from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
+from pys2sleplet.flm.kernels.wavelets.slepian_wavelets import SlepianWavelets
 from pys2sleplet.test.constants import L_SMALL as L
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.wavelet_methods import wavelet_inverse
