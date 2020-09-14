@@ -46,9 +46,11 @@ class SlepianWavelets(Functions):
 
     def _create_flm(self) -> None:
         logger.info("start computing wavelets")
-        wavelets = self._create_wavelets()
+        self._create_wavelets()
         logger.info("finish computing wavelets")
-        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
+        self.multipole = (
+            self.wavelets[0] if self.j is None else self.wavelets[self.j + 1]
+        )
 
     def _create_name(self) -> None:
         self.name = (
@@ -71,17 +73,17 @@ class SlepianWavelets(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args[:num_args]
 
-    def _create_wavelets(self) -> np.ndarray:
+    def _create_wavelets(self) -> None:
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
-        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
-        wavelets[0] = ssht.forward(
+        self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        self.wavelets[0] = ssht.forward(
             slepian_inverse(
                 self.L, kappa0, self.slepian.eigenvectors, coefficients=self.slepian.N
             ),
             self.L,
         )
         for j in range(self.j_max - self.j_min):
-            wavelets[j + 1] = ssht.forward(
+            self.wavelets[j + 1] = ssht.forward(
                 slepian_inverse(
                     self.L,
                     kappa[:, j],
@@ -90,7 +92,6 @@ class SlepianWavelets(Functions):
                 ),
                 self.L,
             )
-        return wavelets
 
     @property  # type:ignore
     def B(self) -> int:

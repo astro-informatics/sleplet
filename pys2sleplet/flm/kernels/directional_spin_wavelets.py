@@ -33,9 +33,11 @@ class DirectionalSpinWavelets(Functions):
 
     def _create_flm(self) -> None:
         logger.info("start computing wavelets")
-        wavelets = self._create_wavelets()
+        self._create_wavelets()
         logger.info("finish computing wavelets")
-        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
+        self.multipole = (
+            self.wavelets[0] if self.j is None else self.wavelets[self.j + 1]
+        )
 
     def _create_name(self) -> None:
         self.name = (
@@ -64,12 +66,13 @@ class DirectionalSpinWavelets(Functions):
         phi_l, psi_lm = s2let.wavelet_tiling(
             self.B, self.L, self.N, self.j_min, self.spin
         )
-        wavelets = np.zeros((psi_lm.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        self.wavelets = np.zeros(
+            (psi_lm.shape[1] + 1, self.L ** 2), dtype=np.complex128
+        )
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            wavelets[0, ind] = phi_l[ell]
-        wavelets[1:] = psi_lm.T
-        return wavelets
+            self.wavelets[0, ind] = phi_l[ell]
+        self.wavelets[1:] = psi_lm.T
 
     @property  # type:ignore
     def B(self) -> int:

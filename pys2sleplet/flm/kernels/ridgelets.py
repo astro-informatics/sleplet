@@ -30,9 +30,11 @@ class Ridgelets(Functions):
 
     def _create_flm(self) -> None:
         logger.info("start computing wavelets")
-        wavelets = self._create_wavelets()
+        self._create_wavelets()
         logger.info("finish computing wavelets")
-        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
+        self.multipole = (
+            self.wavelets[0] if self.j is None else self.wavelets[self.j + 1]
+        )
 
     def _create_name(self) -> None:
         self.name = (
@@ -56,15 +58,14 @@ class Ridgelets(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.spin, self.j = self.extra_args
 
-    def _create_wavelets(self) -> np.ndarray:
+    def _create_wavelets(self) -> None:
         ring_lm = self._compute_ring()
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
-        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            wavelets[0, ind] = kappa0[ell] * ring_lm[ind]
-            wavelets[1:, ind] = kappa[ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
-        return wavelets
+            self.wavelets[0, ind] = kappa0[ell] * ring_lm[ind]
+            self.wavelets[1:, ind] = kappa[ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
 
     def _compute_ring(self) -> np.ndarray:
         """
