@@ -53,7 +53,7 @@ class DirectionalSpinWavelets(Functions):
         )
 
     def _set_reality(self) -> None:
-        self.reality = True if self.j is None or self.spin == 0 else False
+        self.reality = self.j is None or self.spin == 0
 
     def _set_spin(self) -> None:
         self.spin = self.spin
