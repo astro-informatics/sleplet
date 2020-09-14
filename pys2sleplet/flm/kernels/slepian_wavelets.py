@@ -43,13 +43,30 @@ class SlepianWavelets(Functions):
     def _create_annotations(self) -> None:
         self.annotations = self.slepian.annotations
 
-    def _create_flm(self) -> None:
+    def _create_wavelets(self) -> np.ndarray:
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
-        k = kappa0 if self.j is None else kappa[:, self.j]
-        f = slepian_inverse(
-            self.L, k, self.slepian.eigenvectors, coefficients=self.slepian.N
+        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
+        wavelets[0] = ssht.forward(
+            slepian_inverse(
+                self.L, kappa0, self.slepian.eigenvectors, coefficients=self.slepian.N
+            ),
+            self.L,
         )
-        self.multipole = ssht.forward(f, self.L)
+        for j in range(self.j_max - self.j_min):
+            wavelets[j + 1] = ssht.forward(
+                slepian_inverse(
+                    self.L,
+                    kappa[:, j],
+                    self.slepian.eigenvectors,
+                    coefficients=self.slepian.N,
+                ),
+                self.L,
+            )
+        return wavelets
+
+    def _create_flm(self) -> None:
+        wavelets = self._create_wavelets()
+        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
 
     def _create_name(self) -> None:
         self.name = (
