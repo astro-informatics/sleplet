@@ -27,15 +27,19 @@ class Ridgelets(Functions):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> None:
+    def _create_wavelets(self) -> np.ndarray:
         ring_lm = self._compute_ring()
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
-        k = kappa0 if self.j is None else kappa[:, self.j] / np.sqrt(2 * np.pi)
-        flm = np.zeros(self.L ** 2, dtype=np.complex128)
+        wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            flm[ind] = k[ell] * ring_lm[ind]
-        self.multipole = flm
+            wavelets[0, ind] = kappa0[ell] * ring_lm[ind]
+            wavelets[1:, ind] = kappa[ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
+        return wavelets
+
+    def _create_flm(self) -> None:
+        wavelets = self._create_wavelets()
+        self.multipole = wavelets[0] if self.j is None else wavelets[self.j + 1]
 
     def _create_name(self) -> None:
         self.name = (
