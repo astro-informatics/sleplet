@@ -74,6 +74,9 @@ class SlepianWavelets(Functions):
             self.B, self.j_min, self.j = self.extra_args[:num_args]
 
     def _create_wavelets(self) -> None:
+        """
+        compute all wavelets
+        """
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
         self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
         self.wavelets[0] = ssht.forward(

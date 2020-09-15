@@ -57,6 +57,9 @@ class AxisymmetricWavelets(Functions):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> None:
+        """
+        compute all wavelets
+        """
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
         self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
         for ell in range(self.L):

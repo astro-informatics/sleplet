@@ -63,6 +63,9 @@ class DirectionalSpinWavelets(Functions):
             self.B, self.j_min, self.spin, self.N, self.j = self.extra_args
 
     def _create_wavelets(self) -> np.ndarray:
+        """
+        compute all wavelets
+        """
         phi_l, psi_lm = s2let.wavelet_tiling(
             self.B, self.L, self.N, self.j_min, self.spin
         )

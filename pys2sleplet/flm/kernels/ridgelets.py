@@ -59,6 +59,9 @@ class Ridgelets(Functions):
             self.B, self.j_min, self.spin, self.j = self.extra_args
 
     def _create_wavelets(self) -> None:
+        """
+        compute all wavelets
+        """
         ring_lm = self._compute_ring()
         kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
         self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
