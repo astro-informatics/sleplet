@@ -1,23 +1,49 @@
+from typing import Optional
+
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.utils.integration_methods import (
+    calc_integration_resolution,
+    calc_integration_weight,
+    integrate_sphere,
+)
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mask_methods import create_mask_region
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
-def _signal_power(L: int, flm: np.ndarray) -> np.ndarray:
+def _signal_power(
+    L: int, flm: np.ndarray, region: Optional[Region] = None
+) -> np.ndarray:
     """
     computes the power of the harmonic signal
     """
-    return (np.abs(flm) ** 2).sum() / L ** 2
+    if region is None:
+        integral = (np.abs(flm) ** 2).sum()
+    else:
+        resolution = calc_integration_resolution(L)
+        weight = calc_integration_weight(resolution)
+        mask = create_mask_region(resolution, region)
+        integral = np.abs(
+            integrate_sphere(
+                L, resolution, flm, flm, weight, mask_boosted=mask, glm_conj=True
+            )
+        )
+    return integral / L ** 2
 
 
-def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> None:
+def compute_snr(
+    L: int, signal: np.ndarray, noise: np.ndarray, region: Optional[Region] = None
+) -> None:
     """
     computes the signal to noise ratio
     """
-    snr = 10 * np.log10(_signal_power(L, signal) / _signal_power(L, noise))
-    logger.info(f"Noise SNR: {snr:.2f}")
+    snr = 10 * np.log10(
+        _signal_power(L, signal, region=region) / _signal_power(L, noise, region=region)
+    )
+    logger.info(f"Noise SNR {'region' if region is not None else ''}: {snr:.2f}")
 
 
 def _compute_sigma_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> float:
