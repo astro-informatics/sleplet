@@ -58,7 +58,7 @@ def create_noise(L: int, signal: np.ndarray) -> np.ndarray:
 
 
 def hard_thresholding(
-    L: int, wav_coeffs: np.ndarray, sigma_j: np.ndarray, n_sigma: int = 3
+    L: int, wav_coeffs: np.ndarray, sigma_j: np.ndarray, n_sigma: int
 ) -> None:
     """
     set pixels in real space to zero if the magnitude is less than the threshold

@@ -10,6 +10,7 @@ from pys2sleplet.utils.plot_methods import calc_plot_resolution
 B = 2
 J_MIN = 0
 L = 128
+N_SIGMA = 3
 
 
 def main() -> None:
@@ -36,7 +37,7 @@ def main() -> None:
             w[:, ind] = wav_0 * earth_noised.multipole[ind]
 
     # hard thresholding
-    w_denoised = hard_thresholding(L, w, sigma_j)
+    w_denoised = hard_thresholding(L, w, sigma_j, N_SIGMA)
 
     # wavelet synthesis
     flm = np.zeros(L ** 2, dtype=np.complex128)
