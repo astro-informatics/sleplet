@@ -79,7 +79,7 @@ class Slepian(Functions):
         checks the requested rank is valid
         """
         if isinstance(self.extra_args, list):
-            limit = self.slepian.eigenvectors.shape[0]
+            limit = len(self.slepian.eigenvectors)
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 

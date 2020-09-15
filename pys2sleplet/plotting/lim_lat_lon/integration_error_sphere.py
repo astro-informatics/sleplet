@@ -81,7 +81,7 @@ def _helper(
     output = integrate_whole_matrix_slepian_functions(
         slepian.eigenvectors, L, resolution
     )
-    desired = np.identity(output.shape[0])
+    desired = np.identity(len(output))
     error = np.abs(output - desired)
     return error, slepian.N
 

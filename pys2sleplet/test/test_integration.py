@@ -18,7 +18,7 @@ def test_integrate_two_slepian_polar_cap_functions_whole_sphere_matrix(
         L,
         slepian_polar_cap.resolution,
     )
-    desired = np.identity(output.shape[0])
+    desired = np.identity(len(output))
     assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
 
 
@@ -34,7 +34,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_whole_sphere_matrix(
         L,
         slepian_lim_lat_lon.resolution,
     )
-    desired = np.identity(output.shape[0])
+    desired = np.identity(len(output))
     assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-4)
 
 
@@ -52,7 +52,7 @@ def test_integrate_two_slepian_polar_cap_functions_region_sphere_matrix(
         mask=slepian_polar_cap.mask,
     )
     desired = slepian_polar_cap.eigenvalues[: slepian_polar_cap.N] * np.identity(
-        output.shape[0]
+        len(output)
     )
     assert_allclose(np.abs(output - desired).mean(), 0, atol=1e-3)
 
@@ -71,7 +71,7 @@ def test_integrate_two_slepian_lim_lat_lon_functions_region_sphere_matrix(
         mask=slepian_lim_lat_lon.mask,
     )
     desired = slepian_lim_lat_lon.eigenvalues[: slepian_lim_lat_lon.N] * np.identity(
-        output.shape[0]
+        len(output)
     )
     assert_allclose(np.abs(output - desired).mean(), 0, atol=0.05)
 

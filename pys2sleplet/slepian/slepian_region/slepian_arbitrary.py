@@ -41,7 +41,7 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_annotations(self) -> None:
         self.mask: np.ndarray
         thetas, phis = ssht.sample_positions(self.resolution, Grid=True)
-        for i in range(self.mask.shape[0]):
+        for i in range(len(self.mask)):
             for j in range(self.mask.shape[1]):
                 if not self.mask[i, j] and thetas[i, j] <= np.pi / 3:
                     self._add_to_annotation(thetas[i, j], phis[i, j])

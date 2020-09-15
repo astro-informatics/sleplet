@@ -58,8 +58,8 @@ class SlepianDecomposition:
         """
         decompose all ranks of the Slepian coefficients for a given method
         """
-        coefficients = np.zeros(self.s_p_lms.shape[0], dtype=np.complex128)
-        for rank in range(self.s_p_lms.shape[0]):
+        coefficients = np.zeros(len(self.s_p_lms), dtype=np.complex128)
+        for rank in range(len(self.s_p_lms)):
             coefficients[rank] = self.decompose(rank, method=method)
         return coefficients
 
@@ -113,8 +113,8 @@ class SlepianDecomposition:
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        if rank >= self.s_p_lms.shape[0]:
-            raise ValueError(f"rank should be less than {self.s_p_lms.shape[0]}")
+        if rank >= len(self.s_p_lms):
+            raise ValueError(f"rank should be less than {len(self.s_p_lms)}")
 
     @property
     def flm(self) -> np.ndarray:
