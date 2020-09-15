@@ -16,11 +16,8 @@ def main() -> None:
     """
     south_america = SouthAmerica(L)
     region = Region(mask_name="south_america")
-    scaling = SlepianWavelets(L, region=region)
-    flm = wavelet_inverse(south_america, scaling.multipole)
-    for j in range(scaling.j_max - scaling.j_min):
-        wavelet = SlepianWavelets(L, j=j, region=region)
-        flm += wavelet_inverse(south_america, wavelet.multipole)
+    sw = SlepianWavelets(L, region=region)
+    flm = wavelet_inverse(south_america, sw.wavelets)
     f = ssht.inverse(flm, L)
     resolution = calc_plot_resolution(L)
     name = f"south_america_wavelet_reconstruction_L{L}_res{resolution}"

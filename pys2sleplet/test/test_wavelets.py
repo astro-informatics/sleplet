@@ -14,13 +14,8 @@ def test_synthesis_polar(polar_cap_decomposition) -> None:
     """
     tests that Slepian polar wavelet synthesis matches the real space
     """
-    scaling = SlepianWavelets(L, region=polar_cap_decomposition.function.region)
-    flm = wavelet_inverse(polar_cap_decomposition.function, scaling.multipole)
-    for j in range(scaling.j_max - scaling.j_min):
-        wavelet = SlepianWavelets(
-            L, j=j, region=polar_cap_decomposition.function.region
-        )
-        flm += wavelet_inverse(polar_cap_decomposition.function, wavelet.multipole)
+    sw = SlepianWavelets(L, region=polar_cap_decomposition.function.region)
+    flm = wavelet_inverse(polar_cap_decomposition.function, sw.wavelets)
     f_wavelets = ssht.inverse(flm, L)
     f_harmonic = ssht.inverse(polar_cap_decomposition.flm, L)
     mask = create_mask_region(L, polar_cap_decomposition.function.region)
@@ -31,13 +26,8 @@ def test_synthesis_lim_lat_lon(lim_lat_lon_decomposition) -> None:
     """
     tests that Slepian lim_lat_lon wavelet synthesis matches the real space
     """
-    scaling = SlepianWavelets(L, region=lim_lat_lon_decomposition.function.region)
-    flm = wavelet_inverse(lim_lat_lon_decomposition.function, scaling.multipole)
-    for j in range(scaling.j_max - scaling.j_min):
-        wavelet = SlepianWavelets(
-            L, j=j, region=lim_lat_lon_decomposition.function.region
-        )
-        flm += wavelet_inverse(lim_lat_lon_decomposition.function, wavelet.multipole)
+    sw = SlepianWavelets(L, region=lim_lat_lon_decomposition.function.region)
+    flm = wavelet_inverse(lim_lat_lon_decomposition.function, sw.wavelets)
     f_wavelets = ssht.inverse(flm, L)
     f_harmonic = ssht.inverse(lim_lat_lon_decomposition.flm, L)
     mask = create_mask_region(L, lim_lat_lon_decomposition.function.region)
