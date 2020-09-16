@@ -2,6 +2,7 @@ from typing import Optional
 
 import numpy as np
 import pyssht as ssht
+from numpy.random import default_rng
 
 from pys2sleplet.utils.integration_methods import (
     calc_integration_resolution,
@@ -58,7 +59,7 @@ def create_noise(L: int, signal: np.ndarray) -> np.ndarray:
     computes Gaussian white noise
     """
     # set random seed
-    np.random.seed(RANDOM_SEED)
+    rng = default_rng(RANDOM_SEED)
 
     # initialise
     nlm = np.zeros(L ** 2, dtype=np.complex128)
@@ -69,13 +70,11 @@ def create_noise(L: int, signal: np.ndarray) -> np.ndarray:
     # compute noise
     for ell in range(L):
         ind = ssht.elm2ind(ell, 0)
-        nlm[ind] = 2 * np.random.uniform() - 1
+        nlm[ind] = rng.uniform(-1, 1)
         for m in range(1, ell + 1):
             ind_pm = ssht.elm2ind(ell, m)
             ind_nm = ssht.elm2ind(ell, -m)
-            nlm[ind_pm] = sigma_noise * (
-                2 * np.random.uniform() - 1 + 1j * (2 * np.random.uniform() - 1)
-            )
+            nlm[ind_pm] = sigma_noise * (rng.uniform(-1, 1) + 1j * rng.uniform(-1, 1))
             nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
 
     # compute SNR

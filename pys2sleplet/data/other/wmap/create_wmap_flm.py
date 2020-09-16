@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+from numpy.random import default_rng
 from scipy import io as sio
 
 from pys2sleplet.utils.vars import RANDOM_SEED
@@ -17,7 +18,7 @@ def create_flm(L: int) -> np.ndarray:
     cl = _load_cl()
 
     # same random seed
-    np.random.seed(RANDOM_SEED)
+    rng = default_rng(RANDOM_SEED)
 
     # Simulate CMB in harmonic space.
     flm = np.zeros(L ** 2, dtype=np.complex128)
@@ -27,11 +28,11 @@ def create_flm(L: int) -> np.ndarray:
         for m in range(-ell, ell + 1):
             ind = ssht.elm2ind(ell, m)
             if m == 0:
-                flm[ind] = np.sqrt(cl_val) * np.random.randn()
+                flm[ind] = np.sqrt(cl_val) * rng.standard_normal()
             else:
                 flm[ind] = (
-                    np.sqrt(cl_val / 2) * np.random.randn()
-                    + 1j * np.sqrt(cl_val / 2) * np.random.randn()
+                    np.sqrt(cl_val / 2) * rng.standard_normal()
+                    + 1j * np.sqrt(cl_val / 2) * rng.standard_normal()
                 )
     return flm
 
