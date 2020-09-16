@@ -37,7 +37,7 @@ def _signal_power(
 
 def compute_snr(
     L: int, signal: np.ndarray, noise: np.ndarray, region: Optional[Region] = None
-) -> None:
+) -> float:
     """
     computes the signal to noise ratio
     """
@@ -45,6 +45,7 @@ def compute_snr(
         _signal_power(L, signal, region=region) / _signal_power(L, noise, region=region)
     )
     logger.info(f"Noise SNR {'region' if region is not None else ''}: {snr:.2f}")
+    return snr
 
 
 def _compute_sigma_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> float:
@@ -76,9 +77,6 @@ def create_noise(L: int, signal: np.ndarray) -> np.ndarray:
             ind_nm = ssht.elm2ind(ell, -m)
             nlm[ind_pm] = sigma_noise * (rng.uniform(-1, 1) + 1j * rng.uniform(-1, 1))
             nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
-
-    # compute SNR
-    compute_snr(L, signal, nlm)
     return nlm
 
 

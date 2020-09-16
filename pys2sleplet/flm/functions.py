@@ -8,7 +8,7 @@ import pyssht as ssht
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
-from pys2sleplet.utils.noise import create_noise
+from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
@@ -126,6 +126,7 @@ class Functions:
         """
         if self.noise:
             nlm = create_noise(self.L, self.multipole)
+            compute_snr(self.L, self.multipole, nlm)
             self.multipole += nlm
 
     @property
