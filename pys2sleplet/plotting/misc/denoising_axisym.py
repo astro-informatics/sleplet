@@ -1,4 +1,3 @@
-import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.flm.kernels.axisymmetric_wavelets import AxisymmetricWavelets
@@ -6,6 +5,10 @@ from pys2sleplet.flm.maps.earth import Earth
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.noise import compute_sigma_j, compute_snr, hard_thresholding
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
+from pys2sleplet.utils.wavelet_methods import (
+    axisymmetric_wavelet_forward,
+    axisymmetric_wavelet_inverse,
+)
 
 B = 2
 J_MIN = 0
@@ -24,29 +27,17 @@ def main() -> None:
     # create wavelets
     aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
 
+    # compute wavelet coefficients
+    w = axisymmetric_wavelet_forward(L, earth_noised, aw.wavelets)
+
     # compute wavelet noise
     sigma_j = compute_sigma_j(L, earth.multipole, aw.wavelets[1:])
-
-    # compute wavelet coefficients
-    w = np.zeros(aw.wavelets.shape, dtype=np.complex128)
-    for ell in range(L):
-        ind_m0 = ssht.elm2ind(ell, 0)
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * aw.wavelets[:, ind_m0].conj()
-        for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
-            w[:, ind] = wav_0 * earth_noised.multipole[ind]
 
     # hard thresholding
     w_denoised = hard_thresholding(L, w, sigma_j, N_SIGMA)
 
     # wavelet synthesis
-    flm = np.zeros(L ** 2, dtype=np.complex128)
-    for ell in range(L):
-        ind_m0 = ssht.elm2ind(ell, 0)
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * aw.wavelets[:, ind_m0]
-        for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
-            flm[ind] = (w_denoised[:, ind] * wav_0).sum()
+    flm = axisymmetric_wavelet_inverse(L, w_denoised, aw.wavelets)
 
     # compute SNR
     compute_snr(L, earth.multipole, flm - earth.multipole)
