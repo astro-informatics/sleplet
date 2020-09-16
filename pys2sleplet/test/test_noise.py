@@ -1,6 +1,6 @@
 import numpy as np
 import pyssht as ssht
-from numpy.testing import assert_array_less
+from numpy.testing import assert_array_equal, assert_array_less, assert_raises
 
 from pys2sleplet.flm.kernels.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.flm.maps.earth import Earth
@@ -50,3 +50,14 @@ def test_denoising_earth_axisymmetric_wavelets() -> None:
     denoised = compute_snr(L, earth.multipole, flm - earth.multipole)
 
     assert_array_less(noised, denoised)
+
+
+def test_adding_noise_changes_flm() -> None:
+    """
+    tests the addition of Gaussian noise changes the multipole
+    """
+    earth = Earth(L)
+    earth_noised = Earth(L, noise=True)
+    assert_raises(
+        AssertionError, assert_array_equal, earth.multipole, earth_noised.multipole
+    )
