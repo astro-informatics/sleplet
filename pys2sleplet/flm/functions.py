@@ -7,6 +7,7 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
@@ -111,7 +112,7 @@ class Functions:
         # function so turn off reality except for Dirac delta
         self.reality = False
 
-        return flm * glm.conj()
+        return sifting_convolution(flm, glm)
 
     def _add_region_to_name(self) -> None:
         """

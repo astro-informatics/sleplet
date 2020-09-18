@@ -24,7 +24,7 @@ def test_denoising_earth_axisymmetric_wavelets() -> None:
     aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
 
     # compute wavelet coefficients
-    w = axisymmetric_wavelet_forward(L, earth_noised, aw.wavelets)
+    w = axisymmetric_wavelet_forward(L, earth_noised.multipole, aw.wavelets)
 
     # compute wavelet noise
     sigma_j = compute_sigma_j(L, earth.multipole, aw.wavelets[1:])

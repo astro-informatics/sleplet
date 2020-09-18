@@ -30,7 +30,7 @@ def main() -> None:
     sigma_j = compute_sigma_j(L, sa.multipole, sw.wavelets[1:])
 
     # compute wavelet coefficients
-    w = wavelet_forward(sa_noised, sw.wavelets)
+    w = wavelet_forward(sa_noised.multipole, sw.wavelets)
 
     # hard thresholding
     w_denoised = hard_thresholding(L, w, sigma_j, N_SIGMA)

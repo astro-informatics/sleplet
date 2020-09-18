@@ -1,14 +1,14 @@
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.utils.convolution_methods import sifting_convolution
 
 
-def wavelet_forward(f: Functions, wavelets: np.ndarray) -> np.ndarray:
+def wavelet_forward(flm: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
     """
     computes the coefficient of the given tiling function in harmonic space
     """
-    return f.convolve(wavelets, f.multipole)
+    return sifting_convolution(wavelets, flm)
 
 
 def wavelet_inverse(wav_coeffs: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
@@ -19,7 +19,7 @@ def wavelet_inverse(wav_coeffs: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
 
 
 def axisymmetric_wavelet_forward(
-    L: int, f: Functions, wavelets: np.ndarray
+    L: int, flm: np.ndarray, wavelets: np.ndarray
 ) -> np.ndarray:
     """
     computes the coefficients of the axisymmetric wavelets
@@ -30,7 +30,7 @@ def axisymmetric_wavelet_forward(
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0].conj()
         for m in range(-ell, ell + 1):
             ind = ssht.elm2ind(ell, m)
-            w[:, ind] = wav_0 * f.multipole[ind]
+            w[:, ind] = wav_0 * flm[ind]
     return w
 
 
