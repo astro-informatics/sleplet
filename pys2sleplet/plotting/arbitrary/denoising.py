@@ -6,7 +6,10 @@ from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.noise import compute_sigma_j, compute_snr, hard_thresholding
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.wavelet_methods import wavelet_forward, wavelet_inverse
+from pys2sleplet.utils.wavelet_methods import (
+    slepian_wavelet_forward,
+    slepian_wavelet_inverse,
+)
 
 B = 2
 J_MIN = 0
@@ -30,13 +33,13 @@ def main() -> None:
     sigma_j = compute_sigma_j(L, sa.multipole, sw.wavelets[1:])
 
     # compute wavelet coefficients
-    w = wavelet_forward(sa_noised.multipole, sw.wavelets)
+    w = slepian_wavelet_forward(sa_noised.multipole, sw.wavelets)
 
     # hard thresholding
     w_denoised = hard_thresholding(L, w, sigma_j, N_SIGMA)
 
     # wavelet synthesis
-    flm = wavelet_inverse(w_denoised, sw.wavelets)
+    flm = slepian_wavelet_inverse(w_denoised, sw.wavelets)
 
     # compute SNR
     compute_snr(L, sa.multipole, sa_noised.multipole - sa.multipole, region=region)

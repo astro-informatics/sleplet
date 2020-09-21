@@ -4,14 +4,14 @@ import pyssht as ssht
 from pys2sleplet.utils.convolution_methods import sifting_convolution
 
 
-def wavelet_forward(flm: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
+def slepian_wavelet_forward(flm: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
     """
     computes the coefficient of the given tiling function in harmonic space
     """
     return sifting_convolution(wavelets, flm)
 
 
-def wavelet_inverse(wav_coeffs: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
+def slepian_wavelet_inverse(wav_coeffs: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
     """
     computes the inverse wavelet transform
     """
