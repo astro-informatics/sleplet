@@ -2,6 +2,7 @@ from typing import Callable
 
 import numpy as np
 import pyssht as ssht
+from numpy.random import Generator
 
 
 def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
@@ -63,3 +64,13 @@ def create_emm_vector(L: int) -> np.ndarray:
         emm[k : k + M] = np.arange(-l, l + 1)
         k += M
     return emm
+
+
+def compute_random_flm(L: int, rng: Generator, var_flm: float) -> np.ndarray:
+    """
+    generates a normally distributed random flm of a
+    complex signal with mean 0 and variance 1
+    """
+    return np.sqrt(var_flm / 2) * (
+        rng.standard_normal(L ** 2) + 1j * rng.standard_normal(L ** 2)
+    )

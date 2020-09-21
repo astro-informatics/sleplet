@@ -48,3 +48,13 @@ def axisymmetric_wavelet_inverse(
             ind = ssht.elm2ind(ell, m)
             flm[ind] = (wav_coeffs[:, ind] * wav_0).sum()
     return flm
+
+
+def compute_wavelet_covariance(wavelets: np.ndarray, var_flm: float) -> np.ndarray:
+    """
+    computes the theoretical covariance of the wavelet coefficients
+    """
+    covar_w_theory = np.zeros(wavelets.shape[0], dtype=np.complex128)
+    for j in range(wavelets.shape[0]):
+        covar_w_theory[j] = wavelets[j, np.newaxis] @ wavelets[j, np.newaxis].T
+    return covar_w_theory * var_flm
