@@ -45,7 +45,7 @@ def axisymmetric_wavelet_covariance(
 
     for i in range(runs):
         # Generate normally distributed random flmn of complex signal
-        flm = compute_random_flm(L, rng, var_flm=var_flm)
+        flm = compute_random_flm(L, rng, var_flm)
 
         # compute wavelet coefficients
         w = axisymmetric_wavelet_forward(L, flm, aw.wavelets)
