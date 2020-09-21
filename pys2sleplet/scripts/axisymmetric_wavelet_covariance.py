@@ -27,7 +27,7 @@ def axisymmetric_wavelet_covariance(
 
     a similar expression applies for the scaling function coefficients
 
-    # should we use the actual variance var(flmn) of each realisation instead?
+    should we use the actual variance var(flmn) of each realisation instead?
     """
     logger.info(f"L={L}, B={B}, j_min={j_min}")
 
