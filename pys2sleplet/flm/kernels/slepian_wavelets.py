@@ -25,6 +25,7 @@ class SlepianWavelets(Functions):
     _region: Optional[Region] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
     _wavelets: np.ndarray = field(init=False, repr=False)
+    _slepian_coefficients: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.region = (
@@ -74,23 +75,24 @@ class SlepianWavelets(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args[:num_args]
 
+    def _create_fp(self) -> None:
+        """
+        computes Slepian coefficients i.e. tiling function
+        """
+        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
+        self.slepian_coefficients = np.concatenate((kappa0[np.newaxis], kappa.T))
+
     def _create_wavelets(self) -> None:
         """
         compute all wavelets
         """
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
-        self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
-        self.wavelets[0] = ssht.forward(
-            slepian_inverse(
-                self.L, kappa0, self.slepian.eigenvectors, coefficients=self.slepian.N
-            ),
-            self.L,
-        )
-        for j in range(self.j_max - self.j_min):
-            self.wavelets[j + 1] = ssht.forward(
+        self._create_fp()
+        self.wavelets = np.zeros(self.slepian_coefficients.shape, dtype=np.complex128)
+        for j in range(self.wavelets.shape[0]):
+            self.wavelets[j] = ssht.forward(
                 slepian_inverse(
                     self.L,
-                    kappa[:, j],
+                    self.slepian_coefficients[j],
                     self.slepian.eigenvectors,
                     coefficients=self.slepian.N,
                 ),
@@ -159,6 +161,14 @@ class SlepianWavelets(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             region = SlepianWavelets._region
         self._region = region
+
+    @property  # type:ignore
+    def slepian_coefficients(self) -> np.ndarray:
+        return self._slepian_coefficients
+
+    @slepian_coefficients.setter
+    def slepian_coefficients(self, slepian_coefficients: np.ndarray) -> None:
+        self._slepian_coefficients = slepian_coefficients
 
     @property  # type:ignore
     def wavelets(self) -> np.ndarray:
