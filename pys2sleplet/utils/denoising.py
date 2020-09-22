@@ -61,22 +61,21 @@ def denoising_slepian(
     denoising demo using Slepian wavelets
     """
     # create map & noised map
-    sa = MAPS[name](L)
-    sa_noised = MAPS[name](L, noise=True)
+    fun = MAPS[name](L)
+    fun_noised = MAPS[name](L, noise=True)
 
     # create wavelets
-    region = Region(mask_name="south_america")
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
 
     # compute Slepian coefficients
-    sa_p = slepian_forward(L, sa.multipole, sw.slepian)
-    sa_noised_p = slepian_forward(L, sa_noised.multipole, sw.slepian)
+    fun_p = slepian_forward(L, fun.multipole, sw.slepian)
+    fun_noised_p = slepian_forward(L, fun_noised.multipole, sw.slepian)
 
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, sa_p, sw.wavelets[1:])
+    sigma_j = compute_sigma_j(L, fun_p, sw.wavelets[1:])
 
     # compute wavelet coefficients
-    w = slepian_wavelet_forward(sa_noised_p, sw.wavelets)
+    w = slepian_wavelet_forward(fun_noised_p, sw.wavelets)
 
     # hard thresholding
     w_denoised = slepian_hard_thresholding(L, w, sigma_j, n_sigma, sw.slepian)
@@ -86,6 +85,6 @@ def denoising_slepian(
     f = slepian_inverse(L, f_p, sw.slepian)
 
     # compute SNR
-    compute_snr(L, sa_p, sa_noised_p - sa_p)
-    compute_snr(L, sa_p, f_p - sa_p)
+    compute_snr(L, fun_p, fun_noised_p - fun_p)
+    compute_snr(L, fun_p, f_p - fun_p)
     return f
