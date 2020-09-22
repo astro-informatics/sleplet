@@ -1,7 +1,6 @@
 import pytest
 
 from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L
@@ -47,12 +46,10 @@ def slepian_lim_lat_lon() -> SlepianLimitLatLon:
 
 
 @pytest.fixture(scope="session")
-def polar_cap_decomposition(slepian_polar_cap) -> SlepianDecomposition:
-    earth = Earth(L, region=slepian_polar_cap.region)
-    return SlepianDecomposition(earth)
+def earth_polar_cap(slepian_polar_cap) -> Earth:
+    return Earth(L, region=slepian_polar_cap.region)
 
 
 @pytest.fixture(scope="session")
-def lim_lat_lon_decomposition(slepian_lim_lat_lon) -> SlepianDecomposition:
-    earth = Earth(L, region=slepian_lim_lat_lon.region)
-    return SlepianDecomposition(earth)
+def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
+    return Earth(L, region=slepian_lim_lat_lon.region)

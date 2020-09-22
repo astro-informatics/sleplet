@@ -1,12 +1,11 @@
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
 from pys2sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
-from pys2sleplet.plotting.polar_cap.utils import (
+from pys2sleplet.plotting.plotting_utils import (
     earth_region_slepian_coefficients,
     get_shannon,
 )
@@ -41,7 +40,7 @@ def main() -> None:
     save_plot(fig_path, f"fp_error_earth_polar{THETA_MAX}_L{L}")
 
 
-def _helper_sphere(L: int, theta_max: int) -> Tuple[np.ndarray, np.ndarray]:
+def _helper_sphere(L: int, theta_max: int) -> np.ndarray:
     """
     the difference in Slepian coefficients by integration of whole sphere
     """
@@ -50,7 +49,7 @@ def _helper_sphere(L: int, theta_max: int) -> Tuple[np.ndarray, np.ndarray]:
     return np.abs(output - desired) / desired
 
 
-def _helper_region(L: int, theta_max: int) -> Tuple[np.ndarray, np.ndarray]:
+def _helper_region(L: int, theta_max: int) -> np.ndarray:
     """
     the difference in Slepian coefficients by integration of region on the sphere
     """

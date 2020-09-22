@@ -32,6 +32,7 @@ class Functions:
     _region: Region = field(default=None, init=False, repr=False)
     _noise: bool = field(default=False, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
+    _spin: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.resolution = calc_plot_resolution(self.L)
@@ -220,12 +221,16 @@ class Functions:
     def resolution(self, resolution: int) -> None:
         self._resolution = resolution
 
-    @property
-    def spin(self) -> bool:
+    @property  # type:ignore
+    def spin(self) -> int:
         return self._spin
 
     @spin.setter
-    def spin(self, spin: bool) -> None:
+    def spin(self, spin: int) -> None:
+        if isinstance(spin, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            spin = Functions._spin
         self._spin = spin
 
     @abstractmethod

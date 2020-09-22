@@ -21,11 +21,11 @@ class SlepianWavelets(Functions):
     region: Optional[Region]
     _B: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
+    _j_max: int = field(init=False, repr=False)
     _j_min: int = field(default=0, init=False, repr=False)
     _region: Optional[Region] = field(default=None, init=False, repr=False)
-    _j_max: int = field(init=False, repr=False)
+    _slepian: np.ndarray = field(init=False, repr=False)
     _wavelets: np.ndarray = field(init=False, repr=False)
-    _slepian_coefficients: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.region = (
@@ -50,8 +50,9 @@ class SlepianWavelets(Functions):
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")
-        self.multipole = (
-            self.wavelets[0] if self.j is None else self.wavelets[self.j + 1]
+        jth = 0 if self.j is None else self.j + 1
+        self.multipole = ssht.forward(
+            slepian_inverse(self.L, self.wavelets[jth], self.slepian), self.L
         )
 
     def _create_name(self) -> None:
@@ -75,29 +76,12 @@ class SlepianWavelets(Functions):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args[:num_args]
 
-    def _create_fp(self) -> None:
-        """
-        computes Slepian coefficients i.e. tiling function
-        """
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
-        self.slepian_coefficients = np.concatenate((kappa0[np.newaxis], kappa.T))
-
     def _create_wavelets(self) -> None:
         """
-        compute all wavelets
+        computes wavelets in Slepian space
         """
-        self._create_fp()
-        self.wavelets = np.zeros(self.slepian_coefficients.shape, dtype=np.complex128)
-        for j in range(self.wavelets.shape[0]):
-            self.wavelets[j] = ssht.forward(
-                slepian_inverse(
-                    self.L,
-                    self.slepian_coefficients[j],
-                    self.slepian.eigenvectors,
-                    coefficients=self.slepian.N,
-                ),
-                self.L,
-            )
+        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
+        self.wavelets = np.concatenate((kappa0[np.newaxis], kappa.T))
 
     @property  # type:ignore
     def B(self) -> int:

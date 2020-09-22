@@ -2,41 +2,37 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_sphere,
 )
-from pys2sleplet.utils.slepian_methods import choose_slepian_method
-from pys2sleplet.utils.vars import DECOMPOSITION_DEFAULT
 
 
 @dataclass
 class SlepianDecomposition:
-    function: Functions
+    L: int
+    flm: np.ndarray
+    slepian: SlepianFunctions
+    _flm: np.ndarray = field(init=False, repr=False)
     _L: int = field(init=False, repr=False)
     _N: int = field(init=False, repr=False)
-    _flm: np.ndarray = field(init=False, repr=False)
-    _function: Functions = field(init=False, repr=False)
     _lambdas: np.ndarray = field(init=False, repr=False)
     _mask: np.ndarray = field(init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
     _s_p_lms: np.ndarray = field(init=False, repr=False)
+    _slepian: SlepianFunctions = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.L = self.function.L
-        self.flm = self.function.multipole
-        region = self.function.region
-        slepian = choose_slepian_method(self.L, region)
-        self.lambdas = slepian.eigenvalues
-        self.mask = slepian.mask
-        self.resolution = slepian.resolution
-        self.N = slepian.N
+        self.lambdas = self.slepian.eigenvalues
+        self.mask = self.slepian.mask
+        self.N = self.slepian.N
+        self.resolution = self.slepian.resolution
+        self.s_p_lms = self.slepian.eigenvectors
         self.weight = calc_integration_weight(self.resolution)
-        self.s_p_lms = slepian.eigenvectors
 
-    def decompose(self, rank: int, method: str = DECOMPOSITION_DEFAULT) -> complex:
+    def decompose(self, rank: int, method: str = "harmonic_sum") -> complex:
         """
         decompose the signal into its Slepian coefficients via the given method
         """
@@ -54,7 +50,7 @@ class SlepianDecomposition:
             )
         return f_p
 
-    def decompose_all(self, method: str = DECOMPOSITION_DEFAULT) -> np.ndarray:
+    def decompose_all(self, method: str = "harmonic_sum") -> np.ndarray:
         """
         decompose all ranks of the Slepian coefficients for a given method
         """
@@ -116,7 +112,7 @@ class SlepianDecomposition:
         if rank >= len(self.s_p_lms):
             raise ValueError(f"rank should be less than {len(self.s_p_lms)}")
 
-    @property
+    @property  # type:ignore
     def flm(self) -> np.ndarray:
         return self._flm
 
@@ -125,18 +121,6 @@ class SlepianDecomposition:
         self._flm = flm
 
     @property  # type:ignore
-    def function(self) -> Functions:
-        return self._function
-
-    @function.setter
-    def function(self, function: Functions) -> None:
-        if function.region is None:
-            raise AttributeError(
-                f"{function.__class__.__name__} needs to have a region passed to it"
-            )
-        self._function = function
-
-    @property
     def L(self) -> int:
         return self._L
 
@@ -175,6 +159,14 @@ class SlepianDecomposition:
     @resolution.setter
     def resolution(self, resolution: int) -> None:
         self._resolution = resolution
+
+    @property  # type:ignore
+    def slepian(self) -> int:
+        return self._slepian
+
+    @slepian.setter
+    def slepian(self, slepian: SlepianFunctions) -> None:
+        self._slepian = slepian
 
     @property
     def s_p_lms(self) -> np.ndarray:

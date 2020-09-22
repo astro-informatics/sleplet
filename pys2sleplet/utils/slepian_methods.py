@@ -3,6 +3,7 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
@@ -61,16 +62,23 @@ def integrate_whole_matrix_slepian_functions(
     return output
 
 
-def slepian_inverse(
-    L: int, f_p: np.ndarray, s_p_lm: np.ndarray, coefficients: Optional[int] = None
-) -> None:
+def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.ndarray:
     """
-    computes the Slepian inverse transform up to a given number of coefficients
+    computes the Slepian inverse transform up to the Shannon number
     """
     n_theta, n_phi = ssht.sample_shape(L)
     f = np.zeros((n_theta, n_phi), dtype=np.complex128)
-    c = L ** 2 if coefficients is None else coefficients
-    for p in range(c):
-        s_p = ssht.inverse(s_p_lm[p], L)
+    for p in range(slepian.N):
+        s_p = ssht.inverse(slepian.eigenvectors[p], L)
         f += f_p[p] * s_p
     return f
+
+
+def slepian_forward(
+    L: int, flm: np.ndarray, slepian: SlepianFunctions, method: str = "harmonic_sum"
+) -> np.ndarray:
+    """
+    computes the Slepian forward transform for all coefficients
+    """
+    sd = SlepianDecomposition(L, flm, slepian)
+    return sd.decompose_all(method=method)

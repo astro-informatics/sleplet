@@ -66,11 +66,11 @@ def create_emm_vector(L: int) -> np.ndarray:
     return emm
 
 
-def compute_random_flm(L: int, rng: Generator, var_flm: float) -> np.ndarray:
+def compute_random_signal(L: int, rng: Generator, var_signal: float) -> np.ndarray:
     """
-    generates a normally distributed random flm of a
+    generates a normally distributed random signal of a
     complex signal with mean 0 and variance 1
     """
-    return np.sqrt(var_flm / 2) * (
+    return np.sqrt(var_signal / 2) * (
         rng.standard_normal(L ** 2) + 1j * rng.standard_normal(L ** 2)
     )

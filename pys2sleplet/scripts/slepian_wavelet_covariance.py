@@ -1,20 +1,21 @@
 import numpy as np
-import pyssht as ssht
 from numpy.random import default_rng
 
-from pys2sleplet.flm.kernels.axisymmetric_wavelets import AxisymmetricWavelets
+from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
 from pys2sleplet.utils.bool_methods import is_ergodic
 from pys2sleplet.utils.harmonic_methods import compute_random_signal
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import RANDOM_SEED
 from pys2sleplet.utils.wavelet_methods import (
-    axisymmetric_wavelet_forward,
     compute_wavelet_covariance,
+    slepian_wavelet_forward,
 )
 
 
-def axisymmetric_wavelet_covariance(
-    L: int, B: int, j_min: int, runs: int = 100, var_flm: float = 1
+def slepian_wavelet_covariance(
+    L: int, B: int, j_min: int, region: Region, runs: int = 10, var_fp: float = 1
 ) -> None:
     """
     compute theoretical covariance of wavelet coefficients
@@ -29,16 +30,16 @@ def axisymmetric_wavelet_covariance(
 
     should we use the actual variance of each realisation instead?
     """
-    logger.info(f"L={L}, B={B}, j_min={j_min}")
+    logger.info(f"L={L}, B={B}, j_min={j_min}, region='{region.name_ending}'")
 
     # compute wavelets
-    aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
+    sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
 
     # theoretical covariance
-    covar_w_theory = compute_wavelet_covariance(aw.wavelets, var_flm)
+    covar_w_theory = compute_wavelet_covariance(sw.wavelets, var_fp)
 
     # initialise matrix
-    covar_w_data = np.zeros((aw.wavelets.shape[0], runs), dtype=np.complex128)
+    covar_w_data = np.zeros((sw.wavelets.shape[0], runs), dtype=np.complex128)
 
     # set seed
     rng = default_rng(RANDOM_SEED)
@@ -47,14 +48,14 @@ def axisymmetric_wavelet_covariance(
         logger.info(f"start run: {i}")
 
         # Generate normally distributed random complex signal
-        flm = compute_random_signal(L, rng, var_flm)
+        f_p = compute_random_signal(L, rng, var_fp)
 
         # compute wavelet coefficients
-        wlm = axisymmetric_wavelet_forward(L, flm, aw.wavelets)
+        w_p = slepian_wavelet_forward(f_p, sw.wavelets)
 
         # compute covariance from data
-        for j in range(aw.wavelets.shape[0]):
-            f_wav_j = ssht.inverse(wlm[j], L)
+        for j in range(sw.wavelets.shape[0]):
+            f_wav_j = slepian_inverse(L, w_p[j], sw.slepian)
             covar_w_data[j, i] = (
                 f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
             )
@@ -70,16 +71,18 @@ def axisymmetric_wavelet_covariance(
     # compute errors
     w_error_absolute = np.abs(mean_covar_w_data - covar_w_theory)
     w_error_in_std = w_error_absolute / std_covar_w_data
+    error_to_report = np.where(np.isinf(w_error_in_std), np.nan, w_error_in_std)
 
     # report errors
-    for j in range(aw.wavelets.shape[0]):
+    for j in range(sw.wavelets.shape[0]):
         message = (
-            f"error in std: {w_error_in_std[j]:e}"
+            f"error in std: {error_to_report[j]:e}"
             if is_ergodic(j_min, j)
             else f"absolute error: {w_error_absolute[j]:e}"
         )
-        logger.info(f"axisymmetric wavelet covariance {j}: '{message}'")
+        logger.info(f"slepian wavelet covariance {j}: '{message}'")
 
 
 if __name__ == "__main__":
-    axisymmetric_wavelet_covariance(L=128, B=2, j_min=0)
+    region = Region(mask_name="south_america")
+    slepian_wavelet_covariance(L=64, B=2, j_min=0, region=region)

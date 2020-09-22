@@ -1,9 +1,9 @@
 import numpy as np
 
 from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 
 
 def get_shannon(L: int, theta_max: int) -> int:
@@ -33,5 +33,5 @@ def earth_region_slepian_coefficients(
     """
     region = Region(theta_max=np.deg2rad(theta_max))
     earth = Earth(L, region=region)
-    sd = SlepianDecomposition(earth)
-    return np.abs(sd.decompose_all(method=method))
+    slepian = choose_slepian_method(L, region)
+    return np.abs(slepian_forward(L, earth.multipole, slepian, method=method))

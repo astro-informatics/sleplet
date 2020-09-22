@@ -4,16 +4,16 @@ import pyssht as ssht
 from pys2sleplet.utils.convolution_methods import sifting_convolution
 
 
-def slepian_wavelet_forward(flm: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
+def slepian_wavelet_forward(f_p: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
     """
-    computes the coefficient of the given tiling function in harmonic space
+    computes the coefficient of the given tiling function in Slepian space
     """
-    return sifting_convolution(wavelets, flm)
+    return sifting_convolution(wavelets, f_p)
 
 
 def slepian_wavelet_inverse(wav_coeffs: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
     """
-    computes the inverse wavelet transform
+    computes the inverse wavelet transform in Slepian space
     """
     return (wav_coeffs.conj() * wavelets).sum(axis=0)
 
@@ -50,11 +50,11 @@ def axisymmetric_wavelet_inverse(
     return flm
 
 
-def compute_wavelet_covariance(wavelets: np.ndarray, var_flm: float) -> np.ndarray:
+def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.ndarray:
     """
     computes the theoretical covariance of the wavelet coefficients
     """
     covar_w_theory = np.zeros(wavelets.shape[0], dtype=np.complex128)
     for j in range(wavelets.shape[0]):
         covar_w_theory[j] = wavelets[j, np.newaxis] @ wavelets[j, np.newaxis].T
-    return covar_w_theory * var_flm
+    return covar_w_theory * var_signal

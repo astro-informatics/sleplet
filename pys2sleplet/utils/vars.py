@@ -14,7 +14,6 @@ ARROW_STYLE: Dict = dict(
     startarrowsize=1.5,
     startarrowhead=6,
 )
-DECOMPOSITION_DEFAULT: str = "harmonic_sum"
 EARTH_ALPHA: float = np.deg2rad(54)
 EARTH_BETA: float = np.deg2rad(108)
 EARTH_GAMMA: float = np.deg2rad(63)

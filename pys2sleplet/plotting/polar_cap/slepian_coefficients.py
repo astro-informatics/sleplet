@@ -5,7 +5,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 
 from pys2sleplet.plotting.inputs import THETA_MAX
-from pys2sleplet.plotting.polar_cap.utils import (
+from pys2sleplet.plotting.plotting_utils import (
     earth_region_harmonic_coefficients,
     earth_region_slepian_coefficients,
 )

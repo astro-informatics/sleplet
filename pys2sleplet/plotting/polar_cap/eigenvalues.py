@@ -4,7 +4,6 @@ from typing import Tuple
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
-from matplotlib.markers import MarkerStyle
 
 from pys2sleplet.plotting.inputs import TEXT_BOX
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -51,7 +50,6 @@ def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> N
         hue_order=labels[idx],
         legend=legend,
         style=labels,
-        markers=MarkerStyle.filled_markers,
         ax=axs,
     )
     axs.axvline(x=slepian.N - 1)
