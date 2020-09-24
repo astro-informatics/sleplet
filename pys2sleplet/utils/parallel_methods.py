@@ -11,7 +11,7 @@ def split_L_into_chunks(
     """
     split L into a list of arrays for parallelism
     """
-    arr = np.arange(L_min ** 2, L_max ** 2)
+    arr = np.arange(L_min, L_max)
     size = len(arr)
     arr[size // 2 : size] = arr[size // 2 : size][::-1]
     return [np.sort(arr[i::ncpu]) for i in range(ncpu)]

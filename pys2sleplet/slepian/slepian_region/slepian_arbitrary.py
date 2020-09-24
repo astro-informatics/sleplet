@@ -167,7 +167,7 @@ class SlepianArbitrary(SlepianFunctions):
             ex_shm_i.close()
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L_max, self.ncpu, L_min=self.L_min)
+        chunks = split_L_into_chunks(self.L_max ** 2, self.ncpu, L_min=self.L_min ** 2)
 
         # initialise pool and apply function
         with Pool(processes=self.ncpu) as p:
