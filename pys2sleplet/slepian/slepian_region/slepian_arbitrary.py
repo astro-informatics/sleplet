@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
 import pyssht as ssht
@@ -16,10 +16,17 @@ from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_sphere,
 )
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import ANNOTATION_COLOUR, ARROW_STYLE
+from pys2sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
+from pys2sleplet.utils.vars import (
+    ANNOTATION_COLOUR,
+    ARROW_STYLE,
+    L_MAX_DEFAULT,
+    L_MIN_DEFAULT,
+)
 
 _file_location = Path(__file__).resolve()
 _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
@@ -29,7 +36,11 @@ _arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     ncpu: int
+    L_min: int
+    L_max: int
     _mask_name: str = field(init=False, repr=False)
+    _L_max: int = field(default=settings.L_MAX, init=False, repr=False)
+    _L_min: int = field(default=settings.L_MIN, init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
@@ -69,9 +80,22 @@ class SlepianArbitrary(SlepianFunctions):
             self.eigenvectors = np.load(evec_loc)
         else:
             D = self._create_D_matrix()
-            self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
-                LA.eigh(D)
-            )
+
+            # check whether the large job has been split up
+            if (
+                self.L_min != L_MIN_DEFAULT or self.L_max != L_MAX_DEFAULT
+            ) and settings.SAVE_MATRICES:
+                logger.info("large job has been used, saving intermediate matrix")
+                inter_loc = (
+                    self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
+                )
+                np.save(inter_loc, D)
+
+            # fill in remaining triangle section
+            fill_upper_triangle_of_hermitian_matrix(D)
+
+            # solve eigenproblem
+            self.eigenvalues, self.eigenvectors = clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.eigenvalues)
                 np.save(evec_loc, self.eigenvectors)
@@ -99,16 +123,13 @@ class SlepianArbitrary(SlepianFunctions):
         D_r = np.zeros((self.L ** 2, self.L ** 2))
         D_i = np.zeros((self.L ** 2, self.L ** 2))
 
-        for i in range(self.L ** 2):
+        for i in range(self.L_max ** 2 - self.L_min ** 2):
+            logger.info(f"start ell: {i}")
             self._matrix_helper(D_r, D_i, i)
+            logger.info(f"start ell: {i}")
 
         # combine real and imaginary parts
-        D = D_r + 1j * D_i
-
-        # fill in remaining triangle section
-        fill_upper_triangle_of_hermitian_matrix(D)
-
-        return D
+        return D_r + 1j * D_i
 
     def _matrix_parallel(self) -> np.ndarray:
         """
@@ -137,14 +158,16 @@ class SlepianArbitrary(SlepianFunctions):
 
             # deal with chunk
             for i in chunk:
+                logger.info(f"start ell: {i}")
                 self._matrix_helper(D_r_int, D_i_int, i)
+                logger.info(f"finish ell: {i}")
 
             # clean up shared memory
             ex_shm_r.close()
             ex_shm_i.close()
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L ** 2, self.ncpu)
+        chunks = split_L_into_chunks(self.L_max, self.ncpu, L_min=self.L_min)
 
         # initialise pool and apply function
         with Pool(processes=self.ncpu) as p:
@@ -158,10 +181,6 @@ class SlepianArbitrary(SlepianFunctions):
         shm_r.unlink()
         shm_i.close()
         shm_i.unlink()
-
-        # fill in remaining triangle section
-        fill_upper_triangle_of_hermitian_matrix(D)
-
         return D
 
     def _matrix_helper(self, D_r: np.ndarray, D_i: np.ndarray, i: int) -> None:
@@ -210,33 +229,6 @@ class SlepianArbitrary(SlepianFunctions):
             glm_conj=True,
         )
 
-    @staticmethod
-    def _clean_evals_and_evecs(
-        eigendecomposition: Tuple[np.ndarray, np.ndarray]
-    ) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        need eigenvalues and eigenvectors to be in a certain format
-        """
-        # access values
-        eigenvalues, eigenvectors = eigendecomposition
-
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = eigenvectors[:, idx].conj().T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-        # find repeating eigenvalues and ensure orthorgonality
-        pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
-        eigenvectors[pairs] *= 1j
-
-        return eigenvalues, eigenvectors
-
     @property  # type:ignore
     def mask_name(self) -> str:
         return self._mask_name
@@ -244,6 +236,38 @@ class SlepianArbitrary(SlepianFunctions):
     @mask_name.setter
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
+
+    @property  # type:ignore
+    def L_max(self) -> int:
+        return self._L_max
+
+    @L_max.setter
+    def L_max(self, L_max: int) -> None:
+        if isinstance(L_max, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            L_max = SlepianArbitrary._L_max
+        if L_max > self.L:
+            raise ValueError(f"L_max cannot be greater than L: {self.L}")
+        if not isinstance(L_max, int):
+            raise TypeError("L_max must be an integer")
+        self._L_max = L_max if L_max != L_MAX_DEFAULT else self.L
+
+    @property  # type:ignore
+    def L_min(self) -> int:
+        return self._L_min
+
+    @L_min.setter
+    def L_min(self, L_min: int) -> None:
+        if isinstance(L_min, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            L_min = SlepianArbitrary._L_min
+        if L_min < 0:
+            raise ValueError("L_min cannot be negative")
+        if not isinstance(L_min, int):
+            raise TypeError("L_min must be an integer")
+        self._L_min = L_min
 
     @property  # type:ignore
     def ncpu(self) -> int:
