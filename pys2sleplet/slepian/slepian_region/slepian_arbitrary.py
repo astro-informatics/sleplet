@@ -90,6 +90,7 @@ class SlepianArbitrary(SlepianFunctions):
                     self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
                 )
                 np.save(inter_loc, D)
+                return
 
             # fill in remaining triangle section
             fill_upper_triangle_of_hermitian_matrix(D)
