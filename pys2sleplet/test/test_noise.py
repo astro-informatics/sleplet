@@ -11,7 +11,9 @@ def test_denoising_earth_axisymmetric_wavelets() -> None:
     """
     tests that hard thresholding improves the SNR over the map
     """
-    _, noised_snr, denoised_snr = denoising_axisym("earth", L, B, J_MIN, N_SIGMA)
+    _, noised_snr, denoised_snr = denoising_axisym(
+        "earth", L, B, J_MIN, N_SIGMA, SNR_IN
+    )
     assert_array_less(noised_snr, denoised_snr)
 
 
