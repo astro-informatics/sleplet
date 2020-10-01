@@ -7,6 +7,7 @@ import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 from numpy import linalg as LA
+import zarr
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -74,13 +75,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_real_loc = self.matrix_location / "eigenvectors_real.npy"
-        evec_imag_loc = self.matrix_location / "eigenvectors_imag.npy"
-        if eval_loc.exists() and evec_real_loc.exists() and evec_imag_loc.exists():
+        evec_loc = str(self.matrix_location / "eigenvectors.zarr")
+        if eval_loc.exists() and Path(evec_loc).exists():
             self.eigenvalues = np.load(eval_loc)
-            evec_real = np.load(evec_real_loc)
-            evec_imag = np.load(evec_imag_loc)
-            self.eigenvectors = evec_real + 1j * evec_imag
+            self.eigenvectors = zarr.load(evec_loc)
         else:
             D = self._create_D_matrix()
 
@@ -102,8 +100,7 @@ class SlepianArbitrary(SlepianFunctions):
             self.eigenvalues, self.eigenvectors = clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.eigenvalues)
-                np.save(evec_real_loc, self.eigenvectors.real)
-                np.save(evec_imag_loc, self.eigenvectors.imag)
+                zarr.save(evec_loc, self.eigenvectors)
 
     def _add_to_annotation(self, theta: float, phi: float) -> None:
         """

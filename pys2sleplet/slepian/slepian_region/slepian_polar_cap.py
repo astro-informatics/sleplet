@@ -8,6 +8,7 @@ import pyssht as ssht
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 from numpy import linalg as LA
+import zarr
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
@@ -79,21 +80,21 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = self.matrix_location / "eigenvectors.npy"
+        evec_loc = str(self.matrix_location / "eigenvectors.zarr")
         order_loc = self.matrix_location / "orders.npy"
-        if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
+        if eval_loc.exists() and Path(evec_loc).exists() and order_loc.exists():
             self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
         else:
             self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
 
     def _solve_eigenproblem_from_files(
-        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+        self, eval_loc: Path, evec_loc: str, order_loc: Path
     ) -> None:
         """
         solves eigenproblem with files already saved
         """
         eigenvalues = np.load(eval_loc)
-        eigenvectors = np.load(evec_loc)
+        eigenvectors = zarr.load(evec_loc)
         orders = np.load(order_loc)
 
         if self.order is not None:
@@ -106,7 +107,7 @@ class SlepianPolarCap(SlepianFunctions):
             self.order = orders
 
     def _solve_eigenproblem_from_scratch(
-        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+        self, eval_loc: Path, evec_loc: str, order_loc: Path
     ) -> None:
         """
         sovles eigenproblem from scratch and then saves the files
@@ -131,7 +132,7 @@ class SlepianPolarCap(SlepianFunctions):
             ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors)
+                zarr.save(evec_loc, self.eigenvectors)
                 np.save(order_loc, self.order)
 
     def _solve_eigenproblem_order(self, m: int) -> Tuple[np.ndarray, np.ndarray]:

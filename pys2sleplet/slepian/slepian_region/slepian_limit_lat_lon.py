@@ -6,6 +6,7 @@ import numpy as np
 import pyssht as ssht
 from numba import njit, prange
 from numpy import linalg as LA
+import zarr
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -98,10 +99,10 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = self.matrix_location / "eigenvectors.npy"
-        if eval_loc.exists() and evec_loc.exists():
+        evec_loc = str(self.matrix_location / "eigenvectors.zarr")
+        if eval_loc.exists() and Path(evec_loc).exists():
             self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = np.load(evec_loc)
+            self.eigenvectors = zarr.load(evec_loc)
         else:
             K = self._create_K_matrix()
             self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
@@ -109,7 +110,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             )
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors)
+                zarr.save(evec_loc, self.eigenvectors)
 
     def _create_K_matrix(self) -> np.ndarray:
         """
