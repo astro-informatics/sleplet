@@ -6,6 +6,7 @@ B = 2
 J_MIN = 0
 L = 128
 N_SIGMA = 3
+SNR_IN = 10
 
 
 def main() -> None:
@@ -13,7 +14,7 @@ def main() -> None:
     reproduce the denoising demo from s2let paper
     """
     fun = "earth"
-    f, _, _ = denoising_axisym(fun, L, B, J_MIN, N_SIGMA)
+    f, _, _ = denoising_axisym(fun, L, B, J_MIN, N_SIGMA, SNR_IN)
     resolution = calc_plot_resolution(L)
     name = f"{fun}_denoised_axisym_L{L}_res{resolution}"
     Plot(f, L, resolution, name).execute()

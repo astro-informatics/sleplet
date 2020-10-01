@@ -24,14 +24,14 @@ def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:
     return snr
 
 
-def _compute_sigma_noise(L: int, signal: np.ndarray, snr_in: float = 10) -> float:
+def _compute_sigma_noise(L: int, signal: np.ndarray, snr_in: int) -> float:
     """
     compute the std dev of the noise
     """
     return np.sqrt(10 ** (-snr_in / 10) * _signal_power(L, signal))
 
 
-def create_noise(L: int, signal: np.ndarray) -> np.ndarray:
+def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
     """
     computes Gaussian white noise
     """
@@ -42,7 +42,7 @@ def create_noise(L: int, signal: np.ndarray) -> np.ndarray:
     nlm = np.zeros(L ** 2, dtype=np.complex128)
 
     # std dev of the noise
-    sigma_noise = _compute_sigma_noise(L, signal)
+    sigma_noise = _compute_sigma_noise(L, signal, snr_in)
 
     # compute noise
     for ell in range(L):
@@ -72,7 +72,9 @@ def harmonic_hard_thresholding(
     """
     perform thresholding in harmonic space
     """
+    logger.info("begin harmonic hard thresholding")
     for j in range(1, len(wav_coeffs)):
+        logger.info(f"start Psi^{j}/{len(wav_coeffs)-1}")
         f = ssht.inverse(wav_coeffs[j], L)
         f_thresholded = _perform_thresholding(f, sigma_j, n_sigma, j)
         wav_coeffs[j] = ssht.forward(f_thresholded, L)
@@ -89,7 +91,9 @@ def slepian_hard_thresholding(
     """
     perform thresholding in Slepian space
     """
+    logger.info("begin Slepian hard thresholding")
     for j in range(1, len(wav_coeffs)):
+        logger.info(f"start Psi^{j}/{len(wav_coeffs)-1}")
         f = slepian_inverse(L, wav_coeffs[j], slepian)
         f_thresholded = _perform_thresholding(f, sigma_j, n_sigma, j)
         flm = ssht.forward(f_thresholded, L)
@@ -97,11 +101,13 @@ def slepian_hard_thresholding(
     return wav_coeffs
 
 
-def compute_sigma_j(L: int, signal: np.ndarray, psi_j: np.ndarray) -> np.ndarray:
+def compute_sigma_j(
+    L: int, signal: np.ndarray, psi_j: np.ndarray, snr_in: int
+) -> np.ndarray:
     """
     compute sigma_j for wavelets used in denoising the signal
     """
-    sigma_noise = _compute_sigma_noise(L, signal)
+    sigma_noise = _compute_sigma_noise(L, signal, snr_in)
     return np.apply_along_axis(
         lambda j: sigma_noise * L * np.sqrt(_signal_power(L, j)), 1, psi_j
     )

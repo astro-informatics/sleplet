@@ -9,7 +9,7 @@ from pys2sleplet.utils.wavelet_methods import (
     slepian_wavelet_inverse,
 )
 
-L = 64
+L = 128
 
 
 def main() -> None:

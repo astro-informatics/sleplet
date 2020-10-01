@@ -104,10 +104,7 @@ def read_args() -> Namespace:
         help="plotting routine: defaults to north",
     )
     parser.add_argument(
-        "--noise",
-        "-n",
-        action="store_true",
-        help="flag which adds Gaussian white noise to the signal",
+        "--noise", "-n", type=int, default=0, help="the SNR_IN of the noise level"
     )
     parser.add_argument(
         "--region",

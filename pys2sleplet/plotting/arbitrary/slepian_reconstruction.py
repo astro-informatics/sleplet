@@ -8,7 +8,7 @@ from pys2sleplet.utils.slepian_methods import (
     slepian_inverse,
 )
 
-L = 64
+L = 128
 
 
 def main() -> None:

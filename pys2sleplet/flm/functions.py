@@ -30,7 +30,7 @@ class Functions:
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
     _region: Region = field(default=None, init=False, repr=False)
-    _noise: bool = field(default=False, init=False, repr=False)
+    _noise: int = field(default=0, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
 
@@ -127,7 +127,7 @@ class Functions:
         adds Gaussian white noise to the signal
         """
         if self.noise:
-            nlm = create_noise(self.L, self.multipole)
+            nlm = create_noise(self.L, self.multipole, self.noise)
             compute_snr(self.L, self.multipole, nlm)
             self.multipole += nlm
 
@@ -182,11 +182,11 @@ class Functions:
         self._name = name
 
     @property  # type:ignore
-    def noise(self) -> bool:
+    def noise(self) -> int:
         return self._noise
 
     @noise.setter
-    def noise(self, noise: bool) -> None:
+    def noise(self, noise: int) -> None:
         if isinstance(noise, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333

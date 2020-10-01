@@ -23,14 +23,14 @@ from pys2sleplet.utils.wavelet_methods import (
 
 
 def denoising_axisym(
-    name: str, L: int, B: int, j_min: int, n_sigma: int
+    name: str, L: int, B: int, j_min: int, n_sigma: int, snr_in: int
 ) -> Tuple[np.ndarray, float, float]:
     """
     reproduce the denoising demo from s2let paper
     """
     # create map & noised map
     fun = MAPS[name](L)
-    fun_noised = MAPS[name](L, noise=True)
+    fun_noised = MAPS[name](L, noise=snr_in)
 
     # create wavelets
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
@@ -39,7 +39,7 @@ def denoising_axisym(
     w = axisymmetric_wavelet_forward(L, fun_noised.multipole, aw.wavelets)
 
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, fun.multipole, aw.wavelets[1:])
+    sigma_j = compute_sigma_j(L, fun.multipole, aw.wavelets[1:], snr_in)
 
     # hard thresholding
     w_denoised = harmonic_hard_thresholding(L, w, sigma_j, n_sigma)
@@ -55,14 +55,14 @@ def denoising_axisym(
 
 
 def denoising_slepian(
-    name: str, L: int, B: int, j_min: int, n_sigma: int, region: Region
+    name: str, L: int, B: int, j_min: int, n_sigma: int, region: Region, snr_in: int
 ) -> np.ndarray:
     """
     denoising demo using Slepian wavelets
     """
     # create map & noised map
     fun = MAPS[name](L)
-    fun_noised = MAPS[name](L, noise=True)
+    fun_noised = MAPS[name](L, noise=snr_in)
 
     # create wavelets
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
@@ -72,7 +72,7 @@ def denoising_slepian(
     fun_noised_p = slepian_forward(L, fun_noised.multipole, sw.slepian)
 
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, fun_p, sw.wavelets[1:])
+    sigma_j = compute_sigma_j(L, fun_p, sw.wavelets[1:], snr_in)
 
     # compute wavelet coefficients
     w = slepian_wavelet_forward(fun_noised_p, sw.wavelets)

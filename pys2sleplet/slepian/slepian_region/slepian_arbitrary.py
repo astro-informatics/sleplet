@@ -74,10 +74,13 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = self.matrix_location / "eigenvectors.npy"
-        if eval_loc.exists() and evec_loc.exists():
+        evec_real_loc = self.matrix_location / "eigenvectors_real.npy"
+        evec_imag_loc = self.matrix_location / "eigenvectors_imag.npy"
+        if eval_loc.exists() and evec_real_loc.exists() and evec_imag_loc.exists():
             self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = np.load(evec_loc)
+            evec_real = np.load(evec_real_loc)
+            evec_imag = np.load(evec_imag_loc)
+            self.eigenvectors = evec_real + 1j * evec_imag
         else:
             D = self._create_D_matrix()
 
@@ -99,7 +102,8 @@ class SlepianArbitrary(SlepianFunctions):
             self.eigenvalues, self.eigenvectors = clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors)
+                np.save(evec_real_loc, self.eigenvectors.real)
+                np.save(evec_imag_loc, self.eigenvectors.imag)
 
     def _add_to_annotation(self, theta: float, phi: float) -> None:
         """

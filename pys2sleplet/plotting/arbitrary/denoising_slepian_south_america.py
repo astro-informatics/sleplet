@@ -5,8 +5,9 @@ from pys2sleplet.utils.region import Region
 
 B = 2
 J_MIN = 0
-L = 64
+L = 128
 N_SIGMA = 3
+SNR_IN = 1
 
 
 def main() -> None:
@@ -15,7 +16,7 @@ def main() -> None:
     """
     fun = "south_america"
     region = Region(mask_name=fun)
-    f = denoising_slepian(fun, L, B, J_MIN, N_SIGMA, region)
+    f = denoising_slepian(fun, L, B, J_MIN, N_SIGMA, region, SNR_IN)
     resolution = calc_plot_resolution(L)
     name = f"{fun}_denoised_slepian_L{L}_res{resolution}"
     Plot(f, L, resolution, name).execute()
