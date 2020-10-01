@@ -10,6 +10,7 @@
 **/*.png
 **/__pycache__
 **/*.sh
+**/*.zarr/**
 
 # except
 !**/polar40_L32.npy
