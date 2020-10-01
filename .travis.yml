@@ -1,3 +1,6 @@
+git:
+    lfs_skip_smudge: true
+
 services:
     - docker
 
