@@ -51,12 +51,16 @@ class SlepianArbitrary(SlepianFunctions):
         super().__post_init__()
 
     def _create_annotations(self) -> None:
-        self.mask: np.ndarray
-        thetas, phis = ssht.sample_positions(self.resolution, Grid=True)
-        for i in range(len(self.mask)):
-            for j in range(self.mask.shape[1]):
-                if not self.mask[i, j] and thetas[i, j] <= np.pi / 3:
-                    self._add_to_annotation(thetas[i, j], phis[i, j])
+        outline = np.load(
+            _arbitrary_path / "outlines" / f"{self.mask_name}_outline.npy"
+        )
+        for o in outline:
+            self.annotations.append(
+                {
+                    **dict(x=o[0], y=o[1], z=o[2], arrowcolor=ANNOTATION_COLOUR),
+                    **ARROW_STYLE,
+                }
+            )
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian_{self.mask_name}"
@@ -101,15 +105,6 @@ class SlepianArbitrary(SlepianFunctions):
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.eigenvalues)
                 zarr.save(evec_loc, self.eigenvectors)
-
-    def _add_to_annotation(self, theta: float, phi: float) -> None:
-        """
-        add to annotation list for given theta
-        """
-        x, y, z = ssht.s2_to_cart(theta, phi)
-        self.annotations.append(
-            {**dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR), **ARROW_STYLE}
-        )
 
     def _create_D_matrix(self) -> np.ndarray:
         """
