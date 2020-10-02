@@ -14,5 +14,7 @@
 
 # except
 !**/polar40_L32.npy
+!**/polar40_outline.npy
 !**/theta30-60_phi30-60_L32.npy
+!**/theta30-60_phi30-60_outline.npy
 !**/trans_dd_L128_alpha3pi4_beta1pi8.npy
