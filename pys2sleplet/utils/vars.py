@@ -10,7 +10,7 @@ ARROW_STYLE: Dict = dict(
     arrowside="start",
     ax=4,
     ay=4,
-    opacity=0.4,
+    opacity=0.7,
     startarrowsize=1.5,
     startarrowhead=6,
 )
