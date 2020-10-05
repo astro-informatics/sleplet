@@ -52,8 +52,8 @@ class ElongatedGaussian(Functions):
         """
         return np.exp(
             -(
-                ((theta - {THETA_0}) / {self.t_sigma}) ** 2
-                + ((phi - {PHI_0}) / {self.p_sigma}) ** 2
+                ((theta - THETA_0) / self.t_sigma) ** 2
+                + ((phi - PHI_0) / self.p_sigma) ** 2
             )
             / 2
         )

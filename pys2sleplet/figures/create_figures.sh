@@ -1,46 +1,66 @@
 #!/bin/bash
 L=128
+kernels=(
+    dirac_delta
+    elongated_gaussian
+    gaussian
+    harmonic_gaussian
+    squashed_gaussian
+)
+maps=(
+    earth
+    wmap
+)
+routines=(
+    rotate
+    translate
+)
+types=(
+    abs
+    imag
+    real
+)
 
 echo "maps"
-for t in real imag abs; do
+for t in ${types[*]}; do
     echo 'earth', $t;
     plotting earth -L $L -t $t;
 done
-for t in real imag abs; do
+for t in ${types[*]}; do
     echo 'wmap', $t;
     plotting wmap -L $L -t $t;
 done
 
 echo "convolutions"
-for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaussian; do
-    for m in wmap earth; do
-        for t in real imag abs; do
-            echo $f, $m, $t;
-            plotting $f -L $L -c $m -t $t;
+for k in ${kernels[*]}; do
+    for m in ${maps[*]}; do
+        for t in ${types[*]}; do
+            echo $k, $m, $t;
+            plotting $k -L $L -c $m -t $t;
         done;
     done;
 done
 
 echo "north pole"
-for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaussian; do
-    for t in real imag abs; do
-        echo $f, $t;
-        plotting $f -L $L -t $t -m north;
+for k in ${kernels[*]}; do
+    for t in ${types[*]}; do
+        echo $k, $t;
+        plotting $k -L $L -t $t -m north;
     done;
 done
 
 echo "rotation/translation"
-for f in dirac_delta elongated_gaussian gaussian harmonic_gaussian squashed_gaussian; do
-    for r in rotate translate; do
-        for t in real imag abs; do
-            echo $f, $r, $t;
-            plotting $f -L $L -t $t -m $r;
+for k in ${kernels[*]}; do
+    for r in ${routines[*]}; do
+        for t in ${types[*]}; do
+            echo $k, $r, $t;
+            plotting $k -L $L -t $t -m $r;
         done;
     done;
 done
 
 echo "harmonic Gaussian larger kernel"
-for t in real imag abs; do
+for t in ${types[*]}; do
     plotting harmonic_gaussian -L $L -e 2 1 -t $t;
 done
 plotting harmonic_gaussian -c earth -L $L -e 2 1;

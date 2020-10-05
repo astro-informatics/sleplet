@@ -1,8 +1,13 @@
 #!/bin/bash
 L=128
+types=(
+    abs
+    imag
+    real
+)
 
 echo "figure 1"
-for t in real imag abs; do
+for t in ${types[*]}; do
     echo $t;
     plotting harmonic_gaussian -L $L -m translate -t $t;
     plotting harmonic_gaussian -L $L -e 2 1 -m translate -t $t;
