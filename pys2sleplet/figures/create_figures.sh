@@ -41,9 +41,9 @@ done
 
 echo "harmonic Gaussian larger kernel"
 for t in real imag abs; do
-    plotting harmonic_gaussian -L $L -e 3 1 -t $t;
+    plotting harmonic_gaussian -L $L -e 2 1 -t $t;
 done
-plotting harmonic_gaussian -c earth -L $L -e 3 1;
+plotting harmonic_gaussian -c earth -L $L -e 2 1;
 
 echo "presentation rotation demo"
 echo Y_{43}
