@@ -11,7 +11,7 @@ ARROW_STYLE: Dict = dict(
     ax=4,
     ay=4,
     opacity=0.7,
-    startarrowsize=1.5,
+    startarrowsize=0.5,
     startarrowhead=6,
 )
 EARTH_ALPHA: float = np.deg2rad(54)

@@ -29,7 +29,7 @@ def main() -> None:
     f = slepian_inverse(L, f_p, sw.slepian)
     resolution = calc_plot_resolution(L)
     name = f"south_america_wavelet_reconstruction_L{L}_res{resolution}"
-    Plot(f, L, resolution, name).execute()
+    Plot(f, L, resolution, name, annotations=sw.annotations).execute()
 
 
 if __name__ == "__main__":
