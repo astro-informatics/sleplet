@@ -113,6 +113,13 @@ def read_args() -> Namespace:
         help="flag which masks the function for a region (based on settings.toml)",
     )
     parser.add_argument(
+        "--smoothing",
+        "-s",
+        type=int,
+        default=0,
+        help="the sigma of the applied smoothing",
+    )
+    parser.add_argument(
         "--type",
         "-t",
         type=str,
@@ -138,7 +145,9 @@ def plot(
     """
     master plotting method
     """
-    filename = f"{f.name}{'_noised' if f.noise else ''}_L{f.L}_"
+    noised = "_noised" if f.noise else ""
+    smoothed = "_smoothed" if f.smoothing else ""
+    filename = f"{f.name}{noised}{smoothed}_L{f.L}_"
     multipole = f.multipole
 
     # turn off annotation if needed
@@ -217,7 +226,11 @@ def main() -> None:
     )
 
     f = FUNCTIONS[args.flm](
-        args.bandlimit, extra_args=args.extra_args, region=mask, noise=args.noise
+        args.bandlimit,
+        extra_args=args.extra_args,
+        region=mask,
+        noise=args.noise,
+        smoothing=args.smoothing,
     )
 
     g = FUNCTIONS[args.convolve](args.bandlimit) if args.convolve is not None else None

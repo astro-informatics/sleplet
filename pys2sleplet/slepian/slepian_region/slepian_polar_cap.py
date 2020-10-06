@@ -5,10 +5,10 @@ from typing import List, Optional, Tuple, Union
 import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
+import zarr
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 from numpy import linalg as LA
-import zarr
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap

@@ -1,6 +1,9 @@
+import numpy as np
+
 from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
 from pys2sleplet.flm.maps.south_america import SouthAmerica
 from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
@@ -8,8 +11,6 @@ from pys2sleplet.utils.wavelet_methods import (
     slepian_wavelet_forward,
     slepian_wavelet_inverse,
 )
-from pys2sleplet.utils.logger import logger
-import numpy as np
 
 L = 128
 

@@ -12,6 +12,7 @@ from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
 from pys2sleplet.utils.string_methods import filename_angle
 
 _file_location = Path(__file__).resolve()
@@ -22,7 +23,8 @@ class Functions:
     L: int
     extra_args: Optional[List[int]]
     region: Optional[Region]
-    noise: bool
+    noise: int
+    smoothing: int
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _L: int = field(init=False, repr=False)
@@ -32,6 +34,7 @@ class Functions:
     _region: Region = field(default=None, init=False, repr=False)
     _noise: int = field(default=0, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
+    _smoothing: int = field(default=0, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -44,6 +47,7 @@ class Functions:
         self._create_flm()
         self._add_region_to_name()
         self._add_noise_to_signal()
+        self._smooth_signal()
 
     def rotate(
         self,
@@ -130,6 +134,15 @@ class Functions:
             nlm = create_noise(self.L, self.multipole, self.noise)
             compute_snr(self.L, self.multipole, nlm)
             self.multipole += nlm
+
+    def _smooth_signal(self) -> None:
+        """
+        applies Gaussian smoothing to the signal
+        """
+        if self.smoothing:
+            self.multipole = apply_gaussian_smoothing(
+                self.multipole, self.L, self.smoothing
+            )
 
     @property
     def annotations(self) -> List[Dict]:
@@ -220,6 +233,18 @@ class Functions:
     @resolution.setter
     def resolution(self, resolution: int) -> None:
         self._resolution = resolution
+
+    @property  # type:ignore
+    def smoothing(self) -> int:
+        return self._smoothing
+
+    @smoothing.setter
+    def smoothing(self, smoothing: int) -> None:
+        if isinstance(smoothing, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            smoothing = Functions._smoothing
+        self._smoothing = smoothing
 
     @property  # type:ignore
     def spin(self) -> int:
