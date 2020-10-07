@@ -57,12 +57,12 @@ class Plot:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                cmax=1,
-                cmin=0,
+                cmax=1 if settings.NORMALISE else vmax,
+                cmin=0 if settings.NORMALISE else vmin,
                 colorbar=ColorBar(
                     x=0.84,
                     len=0.98,
-                    nticks=2,
+                    nticks=2 if settings.NORMALISE else 0,
                     tickfont=Tickfont(color="#666666", size=32),
                 ),
                 colorscale=convert_colourscale(cmocean.cm.ice),
@@ -212,7 +212,9 @@ class Plot:
         """
         normalise function between 0 and 1 for visualisation
         """
-        if (f == 0).all():
+        if not settings.NORMALISE:
+            f_scaled = f
+        elif (f == 0).all():
             # if all 0, set to 0
             f_scaled = f + 0.5
         elif (f == f.max()).all():
