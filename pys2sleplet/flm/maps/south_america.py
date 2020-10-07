@@ -11,10 +11,10 @@ from pys2sleplet.utils.vars import (
     EARTH_ALPHA,
     EARTH_BETA,
     EARTH_GAMMA,
-    SOUTH_AMERICA_RANGE,
 )
 
 _file_location = Path(__file__).resolve()
+_mask_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary" / "masks"
 
 
 @dataclass
@@ -54,5 +54,5 @@ class SouthAmerica(Functions):
             earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, self.L
         )
         earth_f = ssht.inverse(rot_flm, self.L, Reality=self.reality)
-        mask = (theta <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
+        mask = np.load(_mask_path / f"{self.name}_L{self.L}.npy")
         return np.where(mask, earth_f, 0)
