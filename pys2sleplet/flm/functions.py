@@ -10,7 +10,7 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.noise import compute_snr, create_noise
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point, calc_plot_resolution
+from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
 from pys2sleplet.utils.string_methods import filename_angle
@@ -49,45 +49,22 @@ class Functions:
         self._add_noise_to_signal()
         self._smooth_signal()
 
-    def rotate(
-        self,
-        alpha_pi_fraction: float,
-        beta_pi_fraction: float,
-        gamma_pi_fraction: float = 0,
-    ) -> np.ndarray:
+    def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         """
         rotates given flm on the sphere by alpha/beta/gamma
         """
-        # angles such that rotation and translation are equal
-        alpha, beta = calc_nearest_grid_point(
-            self.L, alpha_pi_fraction, beta_pi_fraction
-        )
-        gamma = gamma_pi_fraction * np.pi
+        return ssht.rotate_flms(self.multipole, alpha, beta, gamma, self.L)
 
-        # rotate flms
-        multipole = ssht.rotate_flms(self.multipole, alpha, beta, gamma, self.L)
-        return multipole
-
-    def translate(
-        self, alpha_pi_fraction: float, beta_pi_fraction: float
-    ) -> np.ndarray:
+    def translate(self, alpha: float, beta: float) -> np.ndarray:
         """
         translates given flm on the sphere by alpha/beta
         """
-        # angles such that rotation and translation are equal
-        alpha, beta = calc_nearest_grid_point(
-            self.L, alpha_pi_fraction, beta_pi_fraction
-        )
-
         # numpy binary filename
         filename = (
             _file_location.parents[1]
             / "data"
             / "trans_dirac"
-            / (
-                f"trans_dd_L{self.L}_"
-                f"{filename_angle(alpha_pi_fraction,beta_pi_fraction)}.npy"
-            )
+            / f"trans_dd_L{self.L}_{filename_angle(alpha/np.pi,beta/np.pi)}.npy"
         )
 
         # check if file of translated dirac delta already

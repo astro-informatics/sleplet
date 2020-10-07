@@ -85,4 +85,4 @@ def slepian_wavelet_covariance(
 
 if __name__ == "__main__":
     region = Region(mask_name="south_america")
-    slepian_wavelet_covariance(L=64, B=2, j_min=0, region=region)
+    slepian_wavelet_covariance(L=128, B=2, j_min=0, region=region)

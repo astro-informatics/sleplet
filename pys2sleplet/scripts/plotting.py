@@ -10,9 +10,16 @@ from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.string_methods import filename_angle
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
+from pys2sleplet.utils.vars import (
+    ANNOTATION_SECOND_COLOUR,
+    ARROW_STYLE,
+    EARTH_ALPHA,
+    EARTH_BETA,
+    EARTH_GAMMA,
+)
 
 
 def valid_maps(map_name: str) -> str:
@@ -154,6 +161,10 @@ def plot(
     logger.info(f"annotations on: {annotations}")
     annotation = f.annotations if annotations else []
 
+    # calculate angles
+    alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_fraction, beta_pi_fraction)
+    gamma = gamma_pi_fraction * np.pi
+
     logger.info(f"plotting method: '{method}'")
     if method == "rotate":
         logger.info(
@@ -166,7 +177,7 @@ def plot(
         )
 
         # rotate by alpha, beta, gamma
-        multipole = f.rotate(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)
+        multipole = f.rotate(alpha, beta, gamma)
     elif method == "translate":
         logger.info(
             f"angles: (alpha, beta) = ({alpha_pi_fraction}, {beta_pi_fraction})"
@@ -175,7 +186,13 @@ def plot(
         filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
 
         # translate by alpha, beta
-        multipole = f.translate(alpha_pi_fraction, beta_pi_fraction)
+        multipole = f.translate(alpha, beta)
+
+        # annotate translation point
+        x, y, z = ssht.s2_to_cart(beta, alpha)
+        annotation.append(
+            {**dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_SECOND_COLOUR), **ARROW_STYLE}
+        )
 
     if g is not None:
         # perform convolution

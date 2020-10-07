@@ -5,6 +5,7 @@ from numpy.testing import assert_allclose
 
 from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
 from pys2sleplet.test.constants import L_LARGE as L
+from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
@@ -31,6 +32,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     give the same result for the Dirac delta
     """
     dd = DiracDelta(L)
-    dd_rot = dd.rotate(alpha_pi_frac, beta_pi_frac)
-    dd_trans = dd.translate(alpha_pi_frac, beta_pi_frac)
+    alpha, beta = calc_nearest_grid_point(L, alpha_pi_frac, beta_pi_frac)
+    dd_rot = dd.rotate(alpha, beta)
+    dd_trans = dd.translate(alpha, beta)
     assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=1e-16)
