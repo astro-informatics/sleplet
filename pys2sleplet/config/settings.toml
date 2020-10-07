@@ -3,6 +3,7 @@ L = 16
 L_min = 0
 L_max = -1
 ncpu = 4
+normalise = true
 phi_min = 0
 phi_max = 360
 polar_gap = false
