@@ -6,13 +6,7 @@ ANNOTATION_COLOUR: str = "salmon"
 ANNOTATION_SECOND_COLOUR: str = "gold"
 ANNOTATION_DOTS: int = 12
 ARROW_STYLE: Dict = dict(
-    arrowhead=0,
-    arrowside="start",
-    ax=4,
-    ay=4,
-    opacity=0.7,
-    startarrowsize=0.5,
-    startarrowhead=6,
+    arrowhead=0, arrowside="start", ax=4, ay=4, startarrowsize=0.5, startarrowhead=6,
 )
 EARTH_ALPHA: float = np.deg2rad(54)
 EARTH_BETA: float = np.deg2rad(108)
