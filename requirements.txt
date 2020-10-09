@@ -1,5 +1,6 @@
 dynaconf
 gmpy2
+matplotlib
 multiprocess
 numba
 pys2let
