@@ -1,3 +1,4 @@
 dynaconf
 pys2let
 pyssht
+zarr
