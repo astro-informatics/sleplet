@@ -1,10 +1,2 @@
-cmocean
-dynaconf
-hypothesis
-matplotlib
-multiprocess
-numba
-plotly
-pytest
-scipy
-zarr
+pys2let
+pyssht
