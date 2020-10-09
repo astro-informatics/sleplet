@@ -1,2 +1,3 @@
+dynaconf
 pys2let
 pyssht
