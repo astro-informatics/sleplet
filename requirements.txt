@@ -1,4 +1,5 @@
 dynaconf
+multiprocess
 pys2let
 pyssht
 zarr
