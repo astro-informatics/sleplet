@@ -1,12 +1,12 @@
 from pathlib import Path
 
 import numpy as np
+import pys2let as s2let
 import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
 from pys2sleplet.utils.plot_methods import save_plot
-from pys2sleplet.utils.pys2let import s2let
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"

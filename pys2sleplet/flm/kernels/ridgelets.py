@@ -2,12 +2,12 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+import pys2let as s2let
 import pyssht as ssht
 from scipy.special import gammaln
 
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.pys2let import s2let
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 
