@@ -12,3 +12,4 @@ save_matrices = false
 slepian_mask = ""
 theta_min = 0
 theta_max = 180
+upsample = true

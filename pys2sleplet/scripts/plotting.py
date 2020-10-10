@@ -201,7 +201,8 @@ def plot(
         filename += f"convolved_{g.name}_L{f.L}_"
 
     # add resolution to filename
-    filename += f"res{f.resolution}_"
+    if settings.UPSAMPLE:
+        filename += f"res{f.resolution}_"
 
     # rotate plot of Earth to South America
     if f.__class__.__name__ == "Earth" or g.__class__.__name__ == "Earth":
@@ -217,8 +218,9 @@ def plot(
     Plot(
         field,
         f.L,
-        f.resolution,
+        f.resolution if settings.UPSAMPLE else f.L,
         filename,
+        method="MWSS" if settings.UPSAMPLE else "MW",
         plot_type=plot_type,
         annotations=annotation,
         reality=f.reality,

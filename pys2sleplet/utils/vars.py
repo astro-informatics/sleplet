@@ -6,7 +6,7 @@ ANNOTATION_COLOUR: str = "salmon"
 ANNOTATION_SECOND_COLOUR: str = "gold"
 ANNOTATION_DOTS: int = 12
 ARROW_STYLE: Dict = dict(
-    arrowhead=0, arrowside="start", ax=4, ay=4, startarrowsize=0.5, startarrowhead=6,
+    arrowhead=0, arrowside="start", ax=4, ay=4, startarrowsize=0.5, startarrowhead=6
 )
 EARTH_ALPHA: float = np.deg2rad(54)
 EARTH_BETA: float = np.deg2rad(108)
@@ -18,7 +18,6 @@ PHI_0: float = np.pi
 PHI_MIN_DEFAULT: float = 0.0
 PHI_MAX_DEFAULT: float = 2 * np.pi
 RANDOM_SEED: int = 30
-SAMPLING_SCHEME: str = "MWSS"
 SOUTH_AMERICA_RANGE: int = np.deg2rad(40)
 THETA_0: float = 0.0
 THETA_MIN_DEFAULT: float = 0

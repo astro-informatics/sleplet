@@ -18,7 +18,7 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import convert_colourscale
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
+from pys2sleplet.utils.vars import ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -30,6 +30,7 @@ class Plot:
     L: int
     resolution: int
     filename: str
+    method: str = field(default="MWSS", repr=False)
     plot_type: str = field(default="real", repr=False)
     annotations: List[Dict] = field(default_factory=list, repr=False)
     reality: bool = field(default=False, repr=False)
@@ -42,9 +43,7 @@ class Plot:
         f = self._prepare_field(self.f)
 
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            f, self.resolution, method=SAMPLING_SCHEME
-        )
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, self.resolution)
 
         # appropriate zoom in on north pole
         camera = Camera(
@@ -108,11 +107,10 @@ class Plot:
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
                 pio.write_image(fig, filename)
 
-    @staticmethod
     def _setup_plot(
+        self,
         f: np.ndarray,
         resolution: int,
-        method: str = "MW",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: List[float] = [0.0, 0.5],
@@ -121,13 +119,13 @@ class Plot:
         """
         function which creates the data for the matplotlib/plotly plot
         """
-        if method == "MW_pole":
+        if self.method == "MW_pole":
             if len(f) == 2:
                 f, f_sp = f
             else:
                 f, f_sp, phi_sp = f
 
-        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
+        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=self.method)
 
         if thetas.size != f.size:
             raise Exception("Bandlimit L deos not match that of f")
@@ -155,7 +153,7 @@ class Plot:
 
         # % Close plot.
         if close:
-            n_theta, n_phi = ssht.sample_shape(resolution, Method=method)
+            n_theta, n_phi = ssht.sample_shape(resolution, Method=self.method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
@@ -182,15 +180,18 @@ class Plot:
         """
         inverts and then boosts the field before plotting
         """
-        flm = ssht.forward(f, self.L, Reality=self.reality, Spin=self.spin)
-        return invert_flm_boosted(
-            flm,
-            self.L,
-            self.resolution,
-            method=SAMPLING_SCHEME,
-            reality=self.reality,
-            spin=self.spin,
-        )
+        if not settings.UPSAMPLE:
+            return f
+        else:
+            flm = ssht.forward(f, self.L, Reality=self.reality, Spin=self.spin)
+            return invert_flm_boosted(
+                flm,
+                self.L,
+                self.resolution,
+                method=self.method,
+                reality=self.reality,
+                spin=self.spin,
+            )
 
     def _create_plot_type(self, f: np.ndarray) -> np.ndarray:
         """
@@ -198,14 +199,13 @@ class Plot:
         """
         logger.info(f"plotting type: '{self.plot_type}'")
         if self.plot_type == "abs":
-            field = np.abs(f)
+            return np.abs(f)
         elif self.plot_type == "imag":
-            field = f.imag
+            return f.imag
         elif self.plot_type == "real":
-            field = f.real
+            return f.real
         elif self.plot_type == "sum":
-            field = f.real + f.imag
-        return field
+            return f.real + f.imag
 
     @staticmethod
     def _normalise_function(f: np.ndarray) -> np.ndarray:
@@ -213,14 +213,13 @@ class Plot:
         normalise function between 0 and 1 for visualisation
         """
         if not settings.NORMALISE:
-            f_scaled = f
+            return f
         elif (f == 0).all():
             # if all 0, set to 0
-            f_scaled = f + 0.5
+            return f + 0.5
         elif (f == f.max()).all():
             # if all non-zero, set to 1
-            f_scaled = f / f.max()
+            return f / f.max()
         else:
             # scale from [0, 1]
-            f_scaled = (f - f.min()) / f.ptp()
-        return f_scaled
+            return (f - f.min()) / f.ptp()
