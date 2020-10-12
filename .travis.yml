@@ -3,5 +3,5 @@ python: "3.8"
 before_install:
     - sudo apt-get update
     - sudo apt-get -y install libmpc-dev libmpfr-dev
-install: pip install -r requirements.txt
+install: pip install -r requirements_travis.txt
 script: pytest -v --runslow

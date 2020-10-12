@@ -1,0 +1,9 @@
+dynaconf
+gmpy2
+hypothesis
+matplotlib
+multiprocess
+numba
+pys2let
+pyssht
+zarr
