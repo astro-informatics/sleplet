@@ -7,11 +7,7 @@ import pyssht as ssht
 from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.flm.functions import Functions
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
-from pys2sleplet.utils.vars import (
-    EARTH_ALPHA,
-    EARTH_BETA,
-    EARTH_GAMMA,
-)
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 
 _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary" / "masks"

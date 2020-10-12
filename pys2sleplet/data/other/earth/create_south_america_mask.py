@@ -1,13 +1,15 @@
 from pathlib import Path
+
+import numpy as np
 import pyssht as ssht
+
+from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.utils.vars import (
-    SOUTH_AMERICA_RANGE,
     EARTH_ALPHA,
     EARTH_BETA,
     EARTH_GAMMA,
+    SOUTH_AMERICA_RANGE,
 )
-from pys2sleplet.data.other.earth.create_earth_flm import create_flm
-import numpy as np
 
 _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[3] / "data" / "slepian" / "arbitrary" / "masks"
@@ -26,4 +28,4 @@ def create_mask(L: int) -> None:
 
 
 if __name__ == "__main__":
-    create_mask(L := 2048)
+    create_mask(2048)

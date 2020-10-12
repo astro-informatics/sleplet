@@ -16,7 +16,6 @@ pre-commit
 pys2let
 pyssht
 pytest
-seed-isort-config
 scipy
 seaborn
 setuptools
