@@ -1,7 +1,7 @@
 import numpy as np
 
-from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
-from pys2sleplet.flm.maps.south_america import SouthAmerica
+from pys2sleplet.functions.flm.south_america import SouthAmerica
+from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
@@ -22,7 +22,7 @@ def main() -> None:
     region = Region(mask_name="south_america")
     south_america = SouthAmerica(L, region=region)
     sw = SlepianWavelets(L, region=region)
-    coefficients = slepian_forward(L, south_america.multipole, sw.slepian)
+    coefficients = slepian_forward(L, south_america.coefficients, sw.slepian)
     wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets)
 
     # plot

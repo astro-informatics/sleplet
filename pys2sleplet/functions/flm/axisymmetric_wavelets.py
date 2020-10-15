@@ -5,13 +5,13 @@ import numpy as np
 import pys2let as s2let
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 
 @dataclass
-class AxisymmetricWavelets(Functions):
+class AxisymmetricWavelets(F_LM):
     B: int
     j_min: int
     j: Optional[int]
@@ -31,7 +31,7 @@ class AxisymmetricWavelets(Functions):
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")
-        self.multipole = (
+        self.coefficients = (
             self.wavelets[0] if self.j is None else self.wavelets[self.j + 1]
         )
 

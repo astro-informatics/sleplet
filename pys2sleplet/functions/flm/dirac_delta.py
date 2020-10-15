@@ -1,14 +1,13 @@
 from dataclasses import dataclass
-from pathlib import Path
 
-from pys2sleplet.data.other.wmap.create_wmap_flm import create_flm
-from pys2sleplet.flm.functions import Functions
+import numpy as np
+import pyssht as ssht
 
-_file_location = Path(__file__).resolve()
+from pys2sleplet.functions.f_lm import F_LM
 
 
 @dataclass
-class Wmap(Functions):
+class DiracDelta(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
@@ -16,10 +15,14 @@ class Wmap(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.multipole = create_flm(self.L)
+        flm = np.zeros(self.L ** 2, dtype=np.complex128)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
+        self.coefficients = flm
 
     def _create_name(self) -> None:
-        self.name = "wmap"
+        self.name = "dirac_delta"
 
     def _set_reality(self) -> None:
         self.reality = True

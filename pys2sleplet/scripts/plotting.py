@@ -5,7 +5,7 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
@@ -140,8 +140,8 @@ def read_args() -> Namespace:
 
 
 def plot(
-    f: Functions,
-    g: Optional[Functions] = None,
+    f: Coefficients,
+    g: Optional[Coefficients] = None,
     method: str = "north",
     plot_type: str = "real",
     annotations: bool = True,
@@ -155,7 +155,7 @@ def plot(
     noised = "_noised" if f.noise else ""
     smoothed = "_smoothed" if f.smoothing else ""
     filename = f"{f.name}{noised}{smoothed}_L{f.L}_"
-    multipole = f.multipole
+    multipole = f.coefficients
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
@@ -196,7 +196,7 @@ def plot(
 
     if g is not None:
         # perform convolution
-        multipole = f.convolve(g.multipole, multipole)
+        multipole = f.convolve(g.coefficients, multipole)
         # adjust filename
         filename += f"convolved_{g.name}_L{f.L}_"
 

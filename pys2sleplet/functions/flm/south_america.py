@@ -5,7 +5,7 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.data.other.earth.create_earth_flm import create_flm
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
 from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 
@@ -14,7 +14,7 @@ _mask_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary" / "mas
 
 
 @dataclass
-class SouthAmerica(Functions):
+class SouthAmerica(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
@@ -22,7 +22,7 @@ class SouthAmerica(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.multipole = ensure_f_bandlimited(
+        self.coefficients = ensure_f_bandlimited(
             self._grid_fun, self.L, self.reality, self.spin
         )
 

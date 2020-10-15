@@ -3,7 +3,7 @@ from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose
 
-from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
+from pys2sleplet.functions.flm.dirac_delta import DiracDelta
 from pys2sleplet.test.constants import L_LARGE as L
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.vars import RANDOM_SEED

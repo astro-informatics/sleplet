@@ -2,14 +2,14 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
 from pys2sleplet.utils.string_methods import filename_args
 from pys2sleplet.utils.vars import THETA_0
 
 
 @dataclass
-class SquashedGaussian(Functions):
+class SquashedGaussian(F_LM):
     t_sigma: float
     freq: float
     _t_sigma: float = field(default=0.01, init=False, repr=False)
@@ -22,7 +22,7 @@ class SquashedGaussian(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.multipole = ensure_f_bandlimited(
+        self.coefficients = ensure_f_bandlimited(
             self._grid_fun, self.L, self.reality, self.spin
         )
 

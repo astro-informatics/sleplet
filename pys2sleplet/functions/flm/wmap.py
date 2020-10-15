@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from pys2sleplet.data.other.earth.create_earth_flm import create_flm
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.data.other.wmap.create_wmap_flm import create_flm
+from pys2sleplet.functions.f_lm import F_LM
 
 _file_location = Path(__file__).resolve()
 
 
 @dataclass
-class Earth(Functions):
+class Wmap(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
@@ -16,10 +16,10 @@ class Earth(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.multipole = create_flm(self.L)
+        self.coefficients = create_flm(self.L)
 
     def _create_name(self) -> None:
-        self.name = "earth"
+        self.name = "wmap"
 
     def _set_reality(self) -> None:
         self.reality = True

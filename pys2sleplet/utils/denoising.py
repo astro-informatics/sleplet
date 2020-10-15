@@ -3,8 +3,8 @@ from typing import Tuple
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.kernels.axisymmetric_wavelets import AxisymmetricWavelets
-from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
+from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.utils.function_dicts import MAPS
 from pys2sleplet.utils.noise import (
     compute_sigma_j,
@@ -36,10 +36,10 @@ def denoising_axisym(
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # compute wavelet coefficients
-    w = axisymmetric_wavelet_forward(L, fun_noised.multipole, aw.wavelets)
+    w = axisymmetric_wavelet_forward(L, fun_noised.coefficients, aw.wavelets)
 
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, fun.multipole, aw.wavelets[1:], snr_in)
+    sigma_j = compute_sigma_j(L, fun.coefficients, aw.wavelets[1:], snr_in)
 
     # hard thresholding
     w_denoised = harmonic_hard_thresholding(L, w, sigma_j, n_sigma)
@@ -49,8 +49,10 @@ def denoising_axisym(
     f = ssht.inverse(flm, L)
 
     # compute SNR
-    noised_snr = compute_snr(L, fun.multipole, fun_noised.multipole - fun.multipole)
-    denoised_snr = compute_snr(L, fun.multipole, flm - fun.multipole)
+    noised_snr = compute_snr(
+        L, fun.coefficients, fun_noised.coefficients - fun.coefficients
+    )
+    denoised_snr = compute_snr(L, fun.coefficients, flm - fun.coefficients)
     return f, noised_snr, denoised_snr
 
 
@@ -68,8 +70,8 @@ def denoising_slepian(
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
 
     # compute Slepian coefficients
-    fun_p = slepian_forward(L, fun.multipole, sw.slepian)
-    fun_noised_p = slepian_forward(L, fun_noised.multipole, sw.slepian)
+    fun_p = slepian_forward(L, fun.coefficients, sw.slepian)
+    fun_noised_p = slepian_forward(L, fun_noised.coefficients, sw.slepian)
 
     # compute wavelet noise
     sigma_j = compute_sigma_j(L, fun_p, sw.wavelets[1:], snr_in)

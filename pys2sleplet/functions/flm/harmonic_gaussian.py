@@ -3,12 +3,12 @@ from dataclasses import dataclass, field
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.string_methods import filename_args
 
 
 @dataclass
-class HarmonicGaussian(Functions):
+class HarmonicGaussian(F_LM):
     l_sigma: float
     m_sigma: float
     _l_sigma: float = field(default=10, init=False, repr=False)
@@ -27,7 +27,7 @@ class HarmonicGaussian(Functions):
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
-        self.multipole = flm
+        self.coefficients = flm
 
     def _create_name(self) -> None:
         self.name = (

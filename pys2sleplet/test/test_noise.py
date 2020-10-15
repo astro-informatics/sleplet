@@ -1,6 +1,6 @@
 from numpy.testing import assert_array_equal, assert_array_less, assert_raises
 
-from pys2sleplet.flm.maps.earth import Earth
+from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.test.constants import J_MIN
 from pys2sleplet.test.constants import L_LARGE as L
 from pys2sleplet.test.constants import N_SIGMA, SNR_IN, B
@@ -24,5 +24,8 @@ def test_adding_noise_changes_flm() -> None:
     earth = Earth(L)
     earth_noised = Earth(L, noise=SNR_IN)
     assert_raises(
-        AssertionError, assert_array_equal, earth.multipole, earth_noised.multipole
+        AssertionError,
+        assert_array_equal,
+        earth.coefficients,
+        earth_noised.coefficients,
     )

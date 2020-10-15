@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 
 import numpy as np
-import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_lm import F_LM
 
 
 @dataclass
-class DiracDelta(Functions):
+class Identity(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
@@ -15,14 +14,10 @@ class DiracDelta(Functions):
         pass
 
     def _create_flm(self) -> None:
-        flm = np.zeros(self.L ** 2, dtype=np.complex128)
-        for ell in range(self.L):
-            ind = ssht.elm2ind(ell, 0)
-            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
-        self.multipole = flm
+        self.coefficients = np.ones(self.L ** 2, dtype=np.complex128)
 
     def _create_name(self) -> None:
-        self.name = "dirac_delta"
+        self.name = "identity"
 
     def _set_reality(self) -> None:
         self.reality = True

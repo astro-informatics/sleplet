@@ -1,12 +1,14 @@
 from dataclasses import dataclass
+from pathlib import Path
 
-import numpy as np
+from pys2sleplet.data.other.earth.create_earth_flm import create_flm
+from pys2sleplet.functions.f_lm import F_LM
 
-from pys2sleplet.flm.functions import Functions
+_file_location = Path(__file__).resolve()
 
 
 @dataclass
-class Identity(Functions):
+class Earth(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
@@ -14,10 +16,10 @@ class Identity(Functions):
         pass
 
     def _create_flm(self) -> None:
-        self.multipole = np.ones(self.L ** 2, dtype=np.complex128)
+        self.coefficients = create_flm(self.L)
 
     def _create_name(self) -> None:
-        self.name = "identity"
+        self.name = "earth"
 
     def _set_reality(self) -> None:
         self.reality = True

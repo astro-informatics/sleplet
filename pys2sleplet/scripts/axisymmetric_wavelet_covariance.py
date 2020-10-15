@@ -2,7 +2,7 @@ import numpy as np
 import pyssht as ssht
 from numpy.random import default_rng
 
-from pys2sleplet.flm.kernels.axisymmetric_wavelets import AxisymmetricWavelets
+from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.utils.bool_methods import is_ergodic
 from pys2sleplet.utils.harmonic_methods import compute_random_signal
 from pys2sleplet.utils.logger import logger

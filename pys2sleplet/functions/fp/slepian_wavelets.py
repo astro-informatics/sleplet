@@ -5,7 +5,7 @@ import numpy as np
 import pys2let as s2let
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
@@ -14,7 +14,7 @@ from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 
 @dataclass
-class SlepianWavelets(Functions):
+class SlepianWavelets(F_P):
     B: int
     j_min: int
     j: Optional[int]
@@ -51,7 +51,7 @@ class SlepianWavelets(Functions):
         self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
-        self.multipole = ssht.forward(
+        self.coefficients = ssht.forward(
             slepian_inverse(self.L, self.wavelets[jth], self.slepian), self.L
         )
 

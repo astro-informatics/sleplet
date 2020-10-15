@@ -3,7 +3,7 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
@@ -12,7 +12,7 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method
 
 
 @dataclass
-class Slepian(Functions):
+class Slepian(F_P):
     rank: int
     region: Optional[Region]
     _rank: int = field(default=0, init=False, repr=False)
@@ -55,7 +55,7 @@ class Slepian(Functions):
         )
 
     def _create_flm(self) -> None:
-        self.multipole = self.slepian.eigenvectors[self.rank]
+        self.coefficients = self.slepian.eigenvectors[self.rank]
         logger.info(f"Shannon number: {self.slepian.N}")
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
 
