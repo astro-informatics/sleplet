@@ -7,7 +7,7 @@ from pys2sleplet.test.constants import SMOOTHING
 
 def test_adding_noise_changes_flm() -> None:
     """
-    tests the addition of Gaussian noise changes the multipole
+    tests the addition of Gaussian noise changes the coefficients
     """
     earth = Earth(L)
     earth_smoothed = Earth(L, smoothing=SMOOTHING)

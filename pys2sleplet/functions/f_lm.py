@@ -1,18 +1,12 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.functions.coefficients import Coefficients
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
-from pys2sleplet.utils.string_methods import filename_angle
-
-_file_location = Path(__file__).resolve()
 
 
 @dataclass  # type:ignore
@@ -20,42 +14,17 @@ class F_LM(Coefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
 
+    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
+        return ssht.inverse(coefficients, self.L, Reality=self.reality, Spin=self.spin)
+
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
     def translate(self, alpha: float, beta: float) -> np.ndarray:
-        # numpy binary filename
-        filename = (
-            _file_location.parents[1]
-            / "data"
-            / "trans_dirac"
-            / f"trans_dd_L{self.L}_{filename_angle(alpha/np.pi,beta/np.pi)}.npy"
+        glm = ssht.create_ylm(beta, alpha, self.L).conj().flatten()
+        return (
+            glm if self.name == "dirac_delta" else self.convolve(self.coefficients, glm)
         )
-
-        # check if file of translated dirac delta already
-        # exists otherwise calculate translated dirac delta
-        if filename.exists():
-            glm = np.load(filename)
-        else:
-            glm = ssht.create_ylm(beta, alpha, self.L).conj()
-            glm = glm.reshape(glm.size)
-
-            # save to speed up for future
-            if settings.SAVE_MATRICES:
-                np.save(filename, glm)
-
-        # convolve with flm
-        if self.name == "dirac_delta":
-            coefficients = glm
-        else:
-            coefficients = self.convolve(self.coefficients, glm)
-        return coefficients
-
-    def convolve(self, flm: np.ndarray, glm: np.ndarray) -> np.ndarray:
-        # translation/convolution are not real for general
-        # function so turn off reality except for Dirac delta
-        self.reality = False
-        return sifting_convolution(flm, glm)
 
     def _add_noise_to_signal(self) -> None:
         """
@@ -83,7 +52,7 @@ class F_LM(Coefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _create_flm(self) -> None:
+    def _create_coefficients(self) -> None:
         """
         creates the flm on the north pole
         """

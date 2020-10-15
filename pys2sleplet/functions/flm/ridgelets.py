@@ -29,7 +29,7 @@ class Ridgelets(F_LM):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> None:
+    def _create_coefficients(self) -> None:
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")

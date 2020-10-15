@@ -82,3 +82,15 @@ def slepian_forward(
     """
     sd = SlepianDecomposition(L, flm, slepian)
     return sd.decompose_all(method=method)
+
+
+def compute_s_p_omega_prime(
+    L: int, s_p_lm: complex, alpha: float, beta: float
+) -> complex:
+    """
+    computes Sp(omega') to be used in the translation
+    """
+    s_p = ssht.inverse(s_p_lm, L)
+    p = ssht.theta_to_index(beta, L)
+    q = ssht.phi_to_index(alpha, L)
+    return s_p[p, q]

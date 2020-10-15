@@ -22,7 +22,7 @@ def main() -> None:
 
     # plot
     for p, coeff in enumerate(wav_coeffs):
-        logger.info(f"plot coefficient: {p}")
+        logger.info(f"plot coefficients: {p}")
         f = slepian_inverse(L, coeff, sw.slepian)
         resolution = calc_plot_resolution(L)
         name = f"south_america_wavelet_coefficient_{p}_L{L}_res{resolution}"

@@ -17,7 +17,7 @@ class SphericalHarmonic(F_LM):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> None:
+    def _create_coefficients(self) -> None:
         ind = ssht.elm2ind(self.ell, self.m)
         self.coefficients = create_spherical_harmonic(self.L, ind)
 

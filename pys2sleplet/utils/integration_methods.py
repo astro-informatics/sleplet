@@ -42,7 +42,7 @@ def integrate_sphere(
       either the whole sphere or a region depended on the region variable
     * the function accepts arguments that control the reality of the inputs
       as well as the ability to have conjugates within the integral
-    * the multipole resolutions are boosted prior to integration
+    * the coefficients resolutions are boosted prior to integration
     """
     if mask_boosted is not None and mask_boosted.shape != ssht.sample_shape(resolution):
         raise AttributeError(

@@ -72,7 +72,7 @@ def ensure_masked_flm_bandlimited(
     flm: np.ndarray, L: int, region: Region, reality: bool, spin: int
 ) -> np.ndarray:
     """
-    ensures the multipole is bandlimited for a given region
+    ensures the coefficients is bandlimited for a given region
     """
     field = ssht.inverse(flm, L, Reality=reality, Spin=spin)
     mask = create_mask_region(L, region)

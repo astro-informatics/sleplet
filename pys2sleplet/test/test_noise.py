@@ -19,7 +19,7 @@ def test_denoising_earth_axisymmetric_wavelets() -> None:
 
 def test_adding_noise_changes_flm() -> None:
     """
-    tests the addition of Gaussian noise changes the multipole
+    tests the addition of Gaussian noise changes the coefficients
     """
     earth = Earth(L)
     earth_noised = Earth(L, noise=SNR_IN)

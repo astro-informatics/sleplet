@@ -77,7 +77,7 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
 
 def test_pass_rank_higher_than_available(slepian_polar_cap, earth_polar_cap) -> None:
     """
-    tests that asking for a Slepian coefficient above the limit fails
+    tests that asking for a Slepian coefficients above the limit fails
     """
     sd = SlepianDecomposition(L, earth_polar_cap.coefficients, slepian_polar_cap)
     assert_raises(ValueError, sd.decompose, L ** 2)

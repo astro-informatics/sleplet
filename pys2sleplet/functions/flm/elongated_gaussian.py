@@ -21,7 +21,7 @@ class ElongatedGaussian(F_LM):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> None:
+    def _create_coefficients(self) -> None:
         self.coefficients = ensure_f_bandlimited(
             self._grid_fun, self.L, self.reality, self.spin
         )

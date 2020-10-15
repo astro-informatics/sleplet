@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 
 import numpy as np
 
+from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
@@ -38,31 +39,17 @@ class Coefficients:
         self._create_annotations()
         self._set_spin()
         self._set_reality()
-        self._create_flm()
+        self._create_coefficients()
         self._add_region_to_name()
         self._add_noise_to_signal()
         self._smooth_signal()
 
-    @abstractmethod
-    def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
-        """
-        rotates given flm on the sphere by alpha/beta/gamma
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def translate(self, alpha: float, beta: float) -> np.ndarray:
-        """
-        translates given flm on the sphere by alpha/beta
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def convolve(self, flm: np.ndarray, glm: np.ndarray) -> np.ndarray:
-        """
-        computes the sifting convolution of two arrays
-        """
-        raise NotImplementedError
+    def convolve(
+        self, f_coefficient: np.ndarray, g_coefficient: np.ndarray
+    ) -> np.ndarray:
+        # translation/convolution are not real for general function
+        self.reality = False
+        return sifting_convolution(f_coefficient, g_coefficient)
 
     def _add_region_to_name(self) -> None:
         """
@@ -70,20 +57,6 @@ class Coefficients:
         """
         if self.region is not None and "slepian" not in self.name:
             self.name += f"_{self.region.name_ending}"
-
-    @abstractmethod
-    def _add_noise_to_signal(self) -> None:
-        """
-        adds Gaussian white noise to the signal
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _smooth_signal(self) -> None:
-        """
-        applies Gaussian smoothing to the signal
-        """
-        raise NotImplementedError
 
     @property
     def annotations(self) -> List[Dict]:
@@ -200,6 +173,41 @@ class Coefficients:
         self._spin = spin
 
     @abstractmethod
+    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
+        """
+        computes the inverse of the given coefficients
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
+        """
+        rotates given flm on the sphere by alpha/beta/gamma
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def translate(self, alpha: float, beta: float) -> np.ndarray:
+        """
+        translates given flm on the sphere by alpha/beta
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _add_noise_to_signal(self) -> None:
+        """
+        adds Gaussian white noise to the signal
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _smooth_signal(self) -> None:
+        """
+        applies Gaussian smoothing to the signal
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def _create_annotations(self) -> None:
         """
         creates the annotations for the plot
@@ -207,7 +215,7 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_flm(self) -> None:
+    def _create_coefficients(self) -> None:
         """
         creates the flm on the north pole
         """

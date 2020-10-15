@@ -20,7 +20,7 @@ sns.set(context="paper")
 
 def main() -> None:
     """
-    creates a plot of Slepian coefficient against rank
+    creates a plot of Slepian coefficients against rank
     """
     region = _helper_region(L, THETA_MAX)
     sphere = _helper_sphere(L, THETA_MAX)
@@ -34,7 +34,7 @@ def main() -> None:
     )
     ax.axvline(x=N - 1, color="k")
     ax.text(0.17, 0.93, f"N={N}", transform=ax.transAxes, bbox=TEXT_BOX)
-    ax.set_xlabel("coefficient")
+    ax.set_xlabel("coefficients")
     ax.set_ylabel("relative error")
     ax.set_yscale("log")
     save_plot(fig_path, f"fp_error_earth_polar{THETA_MAX}_L{L}")
