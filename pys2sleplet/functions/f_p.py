@@ -13,6 +13,7 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import (
     choose_slepian_method,
     compute_s_p_omega_prime,
+    slepian_forward,
     slepian_inverse,
 )
 
@@ -47,8 +48,10 @@ class F_P(Coefficients):
         return slepian_inverse(self.L, coefficients, self.slepian)
 
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
-        flm = self.inverse(self.coefficients)
-        return ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
+        f = self.inverse(self.coefficients)
+        flm = ssht.forward(f, self.L)
+        flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
+        return slepian_forward(self.L, flm_rot, self.slepian)
 
     def translate(self, alpha: float, beta: float) -> np.ndarray:
         gp = compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
