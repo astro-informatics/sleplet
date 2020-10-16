@@ -38,7 +38,6 @@ class SlepianPolarCap(SlepianFunctions):
     _order: Optional[Union[int, np.ndarray]] = field(
         default=None, init=False, repr=False
     )
-    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _theta_max: float = field(init=False, repr=False)
@@ -74,7 +73,7 @@ class SlepianPolarCap(SlepianFunctions):
             _file_location.parents[2]
             / "data"
             / "slepian"
-            / "polar"
+            / self.region.region_type
             / f"D_{self.region.name_ending}_L{self.L}"
         )
 
@@ -436,14 +435,6 @@ class SlepianPolarCap(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             gap = SlepianPolarCap._gap
         self._gap = gap
-
-    @property
-    def name_ending(self) -> str:
-        return self._name_ending
-
-    @name_ending.setter
-    def name_ending(self, name_ending: str) -> None:
-        self._name_ending = name_ending
 
     @property  # type:ignore
     def ncpu(self) -> int:

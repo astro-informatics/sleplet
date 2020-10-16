@@ -51,7 +51,7 @@ class F_P(Coefficients):
         return ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
 
     def translate(self, alpha: float, beta: float) -> np.ndarray:
-        gp = compute_s_p_omega_prime(self.L, self.coefficients, alpha, beta).conj()
+        gp = compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
         return self.convolve(self.coefficients, gp)
 
     def _add_noise_to_signal(self) -> None:

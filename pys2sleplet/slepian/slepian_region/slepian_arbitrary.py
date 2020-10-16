@@ -30,7 +30,7 @@ from pys2sleplet.utils.vars import (
 )
 
 _file_location = Path(__file__).resolve()
-_arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
+_slepian_path = _file_location.parents[2] / "data" / "slepian"
 
 
 @dataclass
@@ -52,7 +52,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_annotations(self) -> None:
         outline = np.load(
-            _arbitrary_path / "outlines" / f"{self.mask_name}_outline.npy"
+            _slepian_path
+            / self.region.region_type
+            / "outlines"
+            / f"{self.mask_name}_outline.npy"
         )
         for o in outline:
             self.annotations.append(
@@ -74,7 +77,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _arbitrary_path / "matrices" / f"D_{self.mask_name}_L{self.L}"
+            _slepian_path
+            / self.region.region_type
+            / "matrices"
+            / f"D_{self.mask_name}_L{self.L}"
         )
 
     def _solve_eigenproblem(self) -> None:

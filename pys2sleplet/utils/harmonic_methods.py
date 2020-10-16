@@ -14,11 +14,10 @@ def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
     return flm
 
 
-def _boost_flm_resolution(flm: np.ndarray, L: int, resolution: int) -> np.ndarray:
+def boost_coefficient_resolution(flm: np.ndarray, boost: int) -> np.ndarray:
     """
     calculates a boost in resolution for given flm
     """
-    boost = resolution ** 2 - L ** 2
     return np.pad(flm, (0, boost), "constant")
 
 
@@ -33,7 +32,8 @@ def invert_flm_boosted(
     """
     performs the inverse harmonic transform
     """
-    flm = _boost_flm_resolution(flm, L, resolution)
+    boost = resolution ** 2 - L ** 2
+    flm = boost_coefficient_resolution(flm, boost)
     return ssht.inverse(flm, resolution, Method=method, Reality=reality, Spin=spin)
 
 
