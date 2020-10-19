@@ -12,6 +12,7 @@ from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
 @dataclass  # type:ignore
 class F_LM(Coefficients):
     def __post_init__(self) -> None:
+        self.coefficients: np.ndarray
         super().__post_init__()
 
     def inverse(self, coefficients: np.ndarray) -> np.ndarray:
