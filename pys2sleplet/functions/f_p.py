@@ -44,11 +44,8 @@ class F_P(Coefficients):
         self.slepian = choose_slepian_method(self.L, self.region)
         super().__post_init__()
 
-    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
-        return slepian_inverse(self.L, coefficients, self.slepian)
-
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
-        f = self.inverse(self.coefficients)
+        f = slepian_inverse(self.L, self.coefficients, self.slepian)
         flm = ssht.forward(f, self.L)
         flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
         return slepian_forward(self.L, flm_rot, self.slepian)

@@ -4,6 +4,7 @@ from typing import Optional
 
 import numpy as np
 import pyssht as ssht
+from pys2sleplet.figures.f_lm import F_LM
 
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.plotting.create_plot import Plot
@@ -12,6 +13,7 @@ from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import (
     ANNOTATION_SECOND_COLOUR,
@@ -211,7 +213,11 @@ def plot(
         )
 
     # get field value
-    field = f.inverse(coefficients)
+    field = (
+        ssht.inverse(coefficients, f.L, Reality=f.reality, Spin=f.spin)
+        if isinstance(f, F_LM)
+        else slepian_inverse(f.L, coefficients, f.slepian)
+    )
 
     # do plot
     filename += plot_type

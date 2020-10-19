@@ -15,9 +15,6 @@ class F_LM(Coefficients):
         self.coefficients: np.ndarray
         super().__post_init__()
 
-    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
-        return ssht.inverse(coefficients, self.L, Reality=self.reality, Spin=self.spin)
-
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
