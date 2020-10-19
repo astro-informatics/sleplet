@@ -1,37 +1,41 @@
 from typing import Dict
 
-from pys2sleplet.flm.functions import Functions
-from pys2sleplet.flm.kernels.axisymmetric_wavelets import AxisymmetricWavelets
-from pys2sleplet.flm.kernels.dirac_delta import DiracDelta
-from pys2sleplet.flm.kernels.directional_spin_wavelets import DirectionalSpinWavelets
-from pys2sleplet.flm.kernels.elongated_gaussian import ElongatedGaussian
-from pys2sleplet.flm.kernels.gaussian import Gaussian
-from pys2sleplet.flm.kernels.harmonic_gaussian import HarmonicGaussian
-from pys2sleplet.flm.kernels.identity import Identity
-from pys2sleplet.flm.kernels.ridgelets import Ridgelets
-from pys2sleplet.flm.kernels.slepian import Slepian
-from pys2sleplet.flm.kernels.slepian_wavelets import SlepianWavelets
-from pys2sleplet.flm.kernels.spherical_harmonic import SphericalHarmonic
-from pys2sleplet.flm.kernels.squashed_gaussian import SquashedGaussian
-from pys2sleplet.flm.maps.earth import Earth
-from pys2sleplet.flm.maps.south_america import SouthAmerica
-from pys2sleplet.flm.maps.wmap import Wmap
+from pys2sleplet.functions.coefficients import Coefficients
+from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from pys2sleplet.functions.flm.dirac_delta import DiracDelta
+from pys2sleplet.functions.flm.directional_spin_wavelets import DirectionalSpinWavelets
+from pys2sleplet.functions.flm.earth import Earth
+from pys2sleplet.functions.flm.elongated_gaussian import ElongatedGaussian
+from pys2sleplet.functions.flm.gaussian import Gaussian
+from pys2sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
+from pys2sleplet.functions.flm.identity import Identity
+from pys2sleplet.functions.flm.ridgelets import Ridgelets
+from pys2sleplet.functions.flm.slepian import Slepian
+from pys2sleplet.functions.flm.south_america import SouthAmerica
+from pys2sleplet.functions.flm.spherical_harmonic import SphericalHarmonic
+from pys2sleplet.functions.flm.squashed_gaussian import SquashedGaussian
+from pys2sleplet.functions.flm.wmap import Wmap
+from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 
-KERNELS: Dict[str, Functions] = dict(
+FLM: Dict[str, Coefficients] = dict(
     axisymmetric_wavelets=AxisymmetricWavelets,
     dirac_delta=DiracDelta,
     directional_spin_wavelets=DirectionalSpinWavelets,
     elongated_gaussian=ElongatedGaussian,
+    earth=Earth,
     gaussian=Gaussian,
     harmonic_gaussian=HarmonicGaussian,
     identity=Identity,
     ridgelets=Ridgelets,
     slepian=Slepian,
-    slepian_wavelets=SlepianWavelets,
+    south_america=SouthAmerica,
     spherical_harmonic=SphericalHarmonic,
     squashed_gaussian=SquashedGaussian,
+    wmap=Wmap,
 )
 
-MAPS: Dict[str, Functions] = dict(earth=Earth, south_america=SouthAmerica, wmap=Wmap)
+FP: Dict[str, Coefficients] = dict(slepian_wavelets=SlepianWavelets)
 
-FUNCTIONS: Dict[str, Functions] = {**KERNELS, **MAPS}
+MAPS: Dict[str, Coefficients] = dict(earth=Earth, wmap=Wmap)
+
+FUNCTIONS: Dict[str, Coefficients] = {**FLM, **FP}

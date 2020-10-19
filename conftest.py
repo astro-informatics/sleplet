@@ -1,6 +1,6 @@
 import pytest
 
-from pys2sleplet.flm.maps.earth import Earth
+from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L

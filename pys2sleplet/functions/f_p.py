@@ -1,23 +1,32 @@
+from abc import abstractmethod
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
 import numpy as np
+import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import choose_slepian_method
+from pys2sleplet.utils.slepian_methods import (
+    choose_slepian_method,
+    compute_s_p_omega_prime,
+    slepian_forward,
+    slepian_inverse,
+)
+
+_file_location = Path(__file__).resolve()
 
 
-@dataclass
-class Slepian(Functions):
+@dataclass  # type:ignore
+class F_P(Coefficients):
     rank: int
     region: Optional[Region]
     _rank: int = field(default=0, init=False, repr=False)
     _region: Optional[Region] = field(default=None, init=False, repr=False)
-    _slepian: SlepianFunctions = field(init=False, repr=False)
+    _slepian: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.region = (
@@ -33,55 +42,26 @@ class Slepian(Functions):
             else self.region
         )
         self.slepian = choose_slepian_method(self.L, self.region)
-        self._validate_rank()
         super().__post_init__()
 
-    def _create_annotations(self) -> None:
-        self.annotations = self.slepian.annotations
+    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
+        return slepian_inverse(self.L, coefficients, self.slepian)
 
-    def _create_name(self) -> None:
-        order = (
-            f"_m{self.slepian.order[self.rank]}"
-            if hasattr(self.slepian, "order")
-            else ""
-        )
-        self.name = (
-            (
-                f"{self.slepian.name}{order}_rank{self.rank}"
-                f"_lam{self.slepian.eigenvalues[self.rank]:e}"
-            )
-            .replace(".", "-")
-            .replace("+", "")
-        )
+    def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
+        f = self.inverse(self.coefficients)
+        flm = ssht.forward(f, self.L)
+        flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
+        return slepian_forward(self.L, flm_rot, self.slepian)
 
-    def _create_flm(self) -> None:
-        self.multipole = self.slepian.eigenvectors[self.rank]
-        logger.info(f"Shannon number: {self.slepian.N}")
-        logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
+    def translate(self, alpha: float, beta: float) -> np.ndarray:
+        gp = compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
+        return self.convolve(self.coefficients, gp)
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _add_noise_to_signal(self) -> None:
+        pass
 
-    def _set_spin(self) -> None:
-        self.spin = 0
-
-    def _setup_args(self) -> None:
-        if isinstance(self.extra_args, list):
-            num_args = 1
-            if len(self.extra_args) != num_args:
-                raise ValueError(
-                    f"The number of extra arguments should be 1 or {num_args}"
-                )
-            self.rank = self.extra_args[0]
-
-    def _validate_rank(self) -> None:
-        """
-        checks the requested rank is valid
-        """
-        if isinstance(self.extra_args, list):
-            limit = len(self.slepian.eigenvectors)
-            if self.extra_args[0] >= limit:
-                raise ValueError(f"rank should be less than {limit}")
+    def _smooth_signal(self) -> None:
+        pass
 
     @property  # type:ignore
     def rank(self) -> int:
@@ -92,7 +72,7 @@ class Slepian(Functions):
         if isinstance(rank, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            rank = Slepian._rank
+            rank = F_P._rank
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:
@@ -108,7 +88,7 @@ class Slepian(Functions):
         if isinstance(region, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            region = Slepian._region
+            region = F_P._region
         self._region = region
 
     @property
@@ -118,3 +98,37 @@ class Slepian(Functions):
     @slepian.setter
     def slepian(self, slepian: SlepianFunctions) -> None:
         self._slepian = slepian
+
+    @abstractmethod
+    def _create_annotations(self) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_coefficients(self) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_name(self) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _set_reality(self) -> None:
+        """
+        sets the reality flag to speed up computations
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _set_spin(self) -> None:
+        """
+        sets the spin value in computations
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _setup_args(self) -> None:
+        """
+        initialises function specific args
+        either default value or user input
+        """
+        raise NotImplementedError

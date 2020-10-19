@@ -3,57 +3,35 @@ from typing import Optional
 
 import numpy as np
 import pys2let as s2let
-import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
-from pys2sleplet.utils.config import settings
+from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 
 @dataclass
-class SlepianWavelets(Functions):
+class SlepianWavelets(F_P):
     B: int
     j_min: int
     j: Optional[int]
-    region: Optional[Region]
     _B: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
     _j_min: int = field(default=0, init=False, repr=False)
-    _region: Optional[Region] = field(default=None, init=False, repr=False)
-    _slepian: np.ndarray = field(init=False, repr=False)
     _wavelets: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.region = (
-            Region(
-                gap=settings.POLAR_GAP,
-                mask_name=settings.SLEPIAN_MASK,
-                phi_max=np.deg2rad(settings.PHI_MAX),
-                phi_min=np.deg2rad(settings.PHI_MIN),
-                theta_max=np.deg2rad(settings.THETA_MAX),
-                theta_min=np.deg2rad(settings.THETA_MIN),
-            )
-            if self.region is None
-            else self.region
-        )
-        self.slepian = choose_slepian_method(self.L, self.region)
         super().__post_init__()
 
     def _create_annotations(self) -> None:
         self.annotations = self.slepian.annotations
 
-    def _create_flm(self) -> None:
+    def _create_coefficients(self) -> None:
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
-        self.multipole = ssht.forward(
-            slepian_inverse(self.L, self.wavelets[jth], self.slepian), self.L
-        )
+        self.coefficients = self.wavelets[jth]
 
     def _create_name(self) -> None:
         self.name = (
@@ -64,7 +42,7 @@ class SlepianWavelets(Functions):
         )
 
     def _set_reality(self) -> None:
-        self.reality = True
+        self.reality = False
 
     def _set_spin(self) -> None:
         self.spin = 0
@@ -133,26 +111,6 @@ class SlepianWavelets(Functions):
             # https://stackoverflow.com/a/61480946/7359333
             j_min = SlepianWavelets._j_min
         self._j_min = j_min
-
-    @property  # type:ignore
-    def region(self) -> Optional[Region]:
-        return self._region
-
-    @region.setter
-    def region(self, region: Optional[Region]) -> None:
-        if isinstance(region, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            region = SlepianWavelets._region
-        self._region = region
-
-    @property  # type:ignore
-    def slepian_coefficients(self) -> np.ndarray:
-        return self._slepian_coefficients
-
-    @slepian_coefficients.setter
-    def slepian_coefficients(self, slepian_coefficients: np.ndarray) -> None:
-        self._slepian_coefficients = slepian_coefficients
 
     @property  # type:ignore
     def wavelets(self) -> np.ndarray:

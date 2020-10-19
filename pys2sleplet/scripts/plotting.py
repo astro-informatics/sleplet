@@ -5,7 +5,7 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
@@ -50,10 +50,10 @@ def read_args() -> Namespace:
     """
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
-        "flm",
+        "function",
         type=valid_plotting,
         choices=list(FUNCTIONS.keys()),
-        help="flm to plot on the sphere",
+        help="function to plot on the sphere",
     )
     parser.add_argument(
         "--alpha",
@@ -140,8 +140,8 @@ def read_args() -> Namespace:
 
 
 def plot(
-    f: Functions,
-    g: Optional[Functions] = None,
+    f: Coefficients,
+    g: Optional[Coefficients] = None,
     method: str = "north",
     plot_type: str = "real",
     annotations: bool = True,
@@ -155,7 +155,7 @@ def plot(
     noised = "_noised" if f.noise else ""
     smoothed = "_smoothed" if f.smoothing else ""
     filename = f"{f.name}{noised}{smoothed}_L{f.L}_"
-    multipole = f.multipole
+    coefficients = f.coefficients
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
@@ -177,7 +177,7 @@ def plot(
         )
 
         # rotate by alpha, beta, gamma
-        multipole = f.rotate(alpha, beta, gamma)
+        coefficients = f.rotate(alpha, beta, gamma)
     elif method == "translate":
         logger.info(
             f"angles: (alpha, beta) = ({alpha_pi_fraction}, {beta_pi_fraction})"
@@ -186,7 +186,7 @@ def plot(
         filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
 
         # translate by alpha, beta
-        multipole = f.translate(alpha, beta)
+        coefficients = f.translate(alpha, beta)
 
         # annotate translation point
         x, y, z = ssht.s2_to_cart(beta, alpha)
@@ -196,7 +196,7 @@ def plot(
 
     if g is not None:
         # perform convolution
-        multipole = f.convolve(g.multipole, multipole)
+        coefficients = f.convolve(g.coefficients, coefficients)
         # adjust filename
         filename += f"convolved_{g.name}_L{f.L}_"
 
@@ -206,12 +206,12 @@ def plot(
 
     # rotate plot of Earth to South America
     if f.__class__.__name__ == "Earth" or g.__class__.__name__ == "Earth":
-        multipole = ssht.rotate_flms(
-            multipole, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, f.L
+        coefficients = ssht.rotate_flms(
+            coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, f.L
         )
 
     # get field value
-    field = ssht.inverse(multipole, f.L, Reality=f.reality, Spin=f.spin)
+    field = f.inverse(coefficients)
 
     # do plot
     filename += plot_type
@@ -244,7 +244,7 @@ def main() -> None:
         else None
     )
 
-    f = FUNCTIONS[args.flm](
+    f = FUNCTIONS[args.function](
         args.bandlimit,
         extra_args=args.extra_args,
         region=mask,

@@ -6,7 +6,7 @@ from pys2sleplet.utils.convolution_methods import sifting_convolution
 
 def slepian_wavelet_forward(f_p: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
     """
-    computes the coefficient of the given tiling function in Slepian space
+    computes the coefficients of the given tiling function in Slepian space
     """
     return sifting_convolution(wavelets, f_p)
 

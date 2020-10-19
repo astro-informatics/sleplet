@@ -4,13 +4,13 @@ from typing import Tuple
 
 import numpy as np
 import pyssht as ssht
-import zarr
 from numba import njit, prange
 from numpy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
@@ -32,7 +32,6 @@ class SlepianLimitLatLon(SlepianFunctions):
     phi_min: float
     phi_max: float
     _N: int = field(init=False, repr=False)
-    _name_ending: str = field(init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
@@ -46,7 +45,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_min=self.phi_min,
             phi_max=self.phi_max,
         )
-        self.name_ending = self.region.name_ending
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -78,7 +76,7 @@ class SlepianLimitLatLon(SlepianFunctions):
                     )
 
     def _create_fn_name(self) -> None:
-        self.name = f"slepian_{self.name_ending}"
+        self.name = f"slepian_{self.region.name_ending}"
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.resolution, self.region)
@@ -93,24 +91,25 @@ class SlepianLimitLatLon(SlepianFunctions):
             _file_location.parents[2]
             / "data"
             / "slepian"
-            / "lat_lon"
-            / f"D_{self.name_ending}_L{self.L}"
+            / self.region.region_type
+            / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = str(self.matrix_location / "eigenvectors.zarr")
-        if eval_loc.exists() and Path(evec_loc).exists():
+        evec_loc = self.matrix_location / "eigenvectors.npy"
+        if eval_loc.exists() and evec_loc.exists():
+            logger.info("binaries found - loading...")
             self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = zarr.load(evec_loc)
+            self.eigenvectors = np.load(evec_loc)
         else:
             K = self._create_K_matrix()
             self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
                 LA.eigh(K)
             )
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                zarr.save(evec_loc, self.eigenvectors)
+                np.save(eval_loc, self.eigenvalues[: self.N])
+                np.save(evec_loc, self.eigenvectors[: self.N])
 
     def _create_K_matrix(self) -> np.ndarray:
         """
@@ -255,14 +254,6 @@ class SlepianLimitLatLon(SlepianFunctions):
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
-
-    @property
-    def name_ending(self) -> str:
-        return self._name_ending
-
-    @name_ending.setter
-    def name_ending(self, name_ending: str) -> None:
-        self._name_ending = name_ending
 
     @property  # type:ignore
     def phi_max(self) -> float:

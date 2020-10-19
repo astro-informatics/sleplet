@@ -4,7 +4,6 @@ from typing import List
 
 import numpy as np
 import pyssht as ssht
-import zarr
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 from numpy import linalg as LA
@@ -30,7 +29,7 @@ from pys2sleplet.utils.vars import (
 )
 
 _file_location = Path(__file__).resolve()
-_arbitrary_path = _file_location.parents[2] / "data" / "slepian" / "arbitrary"
+_slepian_path = _file_location.parents[2] / "data" / "slepian"
 
 
 @dataclass
@@ -52,7 +51,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_annotations(self) -> None:
         outline = np.load(
-            _arbitrary_path / "outlines" / f"{self.mask_name}_outline.npy"
+            _slepian_path
+            / self.region.region_type
+            / "outlines"
+            / f"{self.mask_name}_outline.npy"
         )
         for o in outline:
             self.annotations.append(
@@ -74,15 +76,19 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _arbitrary_path / "matrices" / f"D_{self.mask_name}_L{self.L}"
+            _slepian_path
+            / self.region.region_type
+            / "matrices"
+            / f"D_{self.mask_name}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = str(self.matrix_location / "eigenvectors.zarr")
-        if eval_loc.exists() and Path(evec_loc).exists():
+        evec_loc = self.matrix_location / "eigenvectors.npy"
+        if eval_loc.exists() and evec_loc.exists():
+            logger.info("binaries found - loading...")
             self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = zarr.load(evec_loc)
+            self.eigenvectors = np.load(evec_loc)
         else:
             D = self._create_D_matrix()
 
@@ -103,8 +109,8 @@ class SlepianArbitrary(SlepianFunctions):
             # solve eigenproblem
             self.eigenvalues, self.eigenvectors = clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                zarr.save(evec_loc, self.eigenvectors)
+                np.save(eval_loc, self.eigenvalues[: self.N])
+                np.save(evec_loc, self.eigenvectors[: self.N])
 
     def _create_D_matrix(self) -> np.ndarray:
         """

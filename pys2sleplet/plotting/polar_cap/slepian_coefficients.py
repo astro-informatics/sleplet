@@ -20,7 +20,7 @@ sns.set(context="paper")
 
 def main() -> None:
     """
-    creates a plot of Slepian coefficient against rank
+    creates a plot of Slepian coefficients against rank
     """
     flm = earth_region_harmonic_coefficients(L, THETA_MAX)
     f_p = np.sort(earth_region_slepian_coefficients(L, THETA_MAX))[::-1]
@@ -31,7 +31,7 @@ def main() -> None:
     sns.scatterplot(
         x=range(L ** 2), y=flm, ax=ax, label="harmonic", linewidth=0, marker="."
     )
-    ax.set_xlabel("coefficient")
+    ax.set_xlabel("coefficients")
     ax.set_ylabel("magnitude")
     save_plot(fig_path, f"fp_earth_polar{THETA_MAX}_L{L}")
 

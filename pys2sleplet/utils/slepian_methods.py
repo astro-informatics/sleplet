@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Optional
 
 import numpy as np
@@ -9,12 +10,17 @@ from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrar
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
+from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.harmonic_methods import boost_coefficient_resolution
 from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_sphere,
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
+
+_file_location = Path(__file__).resolve()
+_slepian_data = _file_location.parents[1] / "data" / "slepian"
 
 
 def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
@@ -82,3 +88,44 @@ def slepian_forward(
     """
     sd = SlepianDecomposition(L, flm, slepian)
     return sd.decompose_all(method=method)
+
+
+def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
+    """
+    method to calculate Sp(omega) for a given region
+    """
+    filename = (
+        _slepian_data
+        / slepian.region.region_type
+        / "functions"
+        / f"sp_{slepian.region.name_ending}_L{L}_N{slepian.N}.npy"
+    )
+    if filename.exists():
+        sp = np.load(filename)
+    else:
+        n_theta, n_phi = ssht.sample_shape(L)
+        sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex128)
+        fp = np.zeros(L ** 2, dtype=np.complex128)
+        for p in range(slepian.N):
+            print(f"p={p}/{slepian.N-1}")
+            fp[p] = 1
+            sp[p] = slepian_inverse(L, fp, slepian)
+            fp[p] = 0
+        if settings.SAVE_MATRICES:
+            np.save(filename, sp)
+    return sp
+
+
+def compute_s_p_omega_prime(
+    L: int, alpha: float, beta: float, slepian: SlepianFunctions
+) -> complex:
+    """
+    method to pick out the desired angle from Sp(omega)
+    """
+    sp_omega = _compute_s_p_omega(L, slepian)
+    p = ssht.theta_to_index(beta, L)
+    q = ssht.phi_to_index(alpha, L)
+    sp_omega_prime = sp_omega[:, p, q]
+    # pad with zeros so it has the expected shape
+    boost = L ** 2 - slepian.N
+    return boost_coefficient_resolution(sp_omega_prime, boost)

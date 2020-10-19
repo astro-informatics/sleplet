@@ -1,4 +1,4 @@
-from pys2sleplet.flm.maps.south_america import SouthAmerica
+from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
@@ -20,7 +20,7 @@ def main() -> None:
     south_america = SouthAmerica(L, region=region)
 
     # perform reconstruction
-    f_p = slepian_forward(L, south_america.multipole, slepian)
+    f_p = slepian_forward(L, south_america.coefficients, slepian)
     f = slepian_inverse(L, f_p, slepian)
 
     # plot

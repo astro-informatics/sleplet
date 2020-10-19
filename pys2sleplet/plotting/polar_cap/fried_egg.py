@@ -1,6 +1,6 @@
 import numpy as np
 
-from pys2sleplet.flm.kernels.slepian import Slepian
+from pys2sleplet.functions.fp.slepian import Slepian
 from pys2sleplet.plotting.inputs import THETA_MAX
 from pys2sleplet.scripts.plotting import plot
 from pys2sleplet.utils.logger import logger

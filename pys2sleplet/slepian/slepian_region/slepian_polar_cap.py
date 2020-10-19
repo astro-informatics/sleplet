@@ -5,7 +5,6 @@ from typing import List, Optional, Tuple, Union
 import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
-import zarr
 from multiprocess import Pool
 from multiprocess.shared_memory import SharedMemory
 from numpy import linalg as LA
@@ -14,6 +13,7 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import create_emm_vector
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
 from pys2sleplet.utils.region import Region
@@ -31,14 +31,13 @@ _file_location = Path(__file__).resolve()
 @dataclass
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
-    order: Optional[int]
+    order: Optional[Union[int, np.ndarray]]
     gap: bool
     ncpu: int
     _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
     _order: Optional[Union[int, np.ndarray]] = field(
         default=None, init=False, repr=False
     )
-    _name_ending: str = field(init=False, repr=False)
     _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _theta_max: float = field(init=False, repr=False)
@@ -74,15 +73,16 @@ class SlepianPolarCap(SlepianFunctions):
             _file_location.parents[2]
             / "data"
             / "slepian"
-            / "polar"
-            / f"D_{self.region.name_ending}_L{self.L}"
+            / self.region.region_type
+            / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = str(self.matrix_location / "eigenvectors.zarr")
+        evec_loc = self.matrix_location / "eigenvectors.npy"
         order_loc = self.matrix_location / "orders.npy"
-        if eval_loc.exists() and Path(evec_loc).exists() and order_loc.exists():
+        if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
+            logger.info("binaries found - loading...")
             self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
         else:
             self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
@@ -94,10 +94,10 @@ class SlepianPolarCap(SlepianFunctions):
         solves eigenproblem with files already saved
         """
         eigenvalues = np.load(eval_loc)
-        eigenvectors = zarr.load(evec_loc)
+        eigenvectors = np.load(evec_loc)
         orders = np.load(order_loc)
 
-        if self.order is not None:
+        if isinstance(self.order, int):
             idx = np.where(orders == self.order)
             self.eigenvalues = eigenvalues[idx]
             self.eigenvectors = eigenvectors[idx]
@@ -112,7 +112,7 @@ class SlepianPolarCap(SlepianFunctions):
         """
         sovles eigenproblem from scratch and then saves the files
         """
-        if self.order is not None:
+        if isinstance(self.order, int):
             self.eigenvalues, self.eigenvectors = self._solve_eigenproblem_order(
                 self.order
             )
@@ -131,9 +131,9 @@ class SlepianPolarCap(SlepianFunctions):
                 self.order,
             ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                zarr.save(evec_loc, self.eigenvectors)
-                np.save(order_loc, self.order)
+                np.save(eval_loc, self.eigenvalues[: self.N])
+                np.save(evec_loc, self.eigenvectors[: self.N])
+                np.save(order_loc, self.order[: self.N])
 
     def _solve_eigenproblem_order(self, m: int) -> Tuple[np.ndarray, np.ndarray]:
         """
@@ -437,14 +437,6 @@ class SlepianPolarCap(SlepianFunctions):
             gap = SlepianPolarCap._gap
         self._gap = gap
 
-    @property
-    def name_ending(self) -> str:
-        return self._name_ending
-
-    @name_ending.setter
-    def name_ending(self, name_ending: str) -> None:
-        self._name_ending = name_ending
-
     @property  # type:ignore
     def ncpu(self) -> int:
         return self._ncpu
@@ -467,7 +459,7 @@ class SlepianPolarCap(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             order = SlepianPolarCap._order
-        if order is not None and (np.abs(order) >= self.L).any():
+        if isinstance(order, int) and (np.abs(order) >= self.L).any():
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
 

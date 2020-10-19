@@ -3,12 +3,12 @@ from dataclasses import dataclass, field
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.flm.functions import Functions
+from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.string_methods import filename_args
 
 
 @dataclass
-class Gaussian(Functions):
+class Gaussian(F_LM):
     sigma: float
     _sigma: float = field(default=1_000, init=False, repr=False)
 
@@ -18,12 +18,12 @@ class Gaussian(Functions):
     def _create_annotations(self) -> None:
         pass
 
-    def _create_flm(self) -> None:
+    def _create_coefficients(self) -> None:
         flm = np.zeros(self.L ** 2, dtype=np.complex128)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
             flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma ** 2))
-        self.multipole = flm
+        self.coefficients = flm
 
     def _create_name(self) -> None:
         self.name = f"gaussian{filename_args(self.sigma, 'sig')}"
