@@ -6,4 +6,3 @@ multiprocess
 numba
 pys2let
 pyssht
-zarr

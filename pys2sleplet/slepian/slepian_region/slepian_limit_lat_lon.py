@@ -4,13 +4,13 @@ from typing import Tuple
 
 import numpy as np
 import pyssht as ssht
-import zarr
 from numba import njit, prange
 from numpy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
@@ -92,23 +92,24 @@ class SlepianLimitLatLon(SlepianFunctions):
             / "data"
             / "slepian"
             / self.region.region_type
-            / f"D_{self.region.name_ending}_L{self.L}"
+            / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = str(self.matrix_location / "eigenvectors.zarr")
-        if eval_loc.exists() and Path(evec_loc).exists():
+        evec_loc = self.matrix_location / "eigenvectors.npy"
+        if eval_loc.exists() and evec_loc.exists():
+            logger.info("binaries found - loading...")
             self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = zarr.load(evec_loc)
+            self.eigenvectors = np.load(evec_loc)
         else:
             K = self._create_K_matrix()
             self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
                 LA.eigh(K)
             )
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                zarr.save(evec_loc, self.eigenvectors)
+                np.save(eval_loc, self.eigenvalues[: self.N])
+                np.save(evec_loc, self.eigenvectors[: self.N])
 
     def _create_K_matrix(self) -> np.ndarray:
         """

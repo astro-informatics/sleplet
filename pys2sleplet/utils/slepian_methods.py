@@ -98,7 +98,7 @@ def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
         _slepian_data
         / slepian.region.region_type
         / "functions"
-        / f"sp_{slepian.region.name_ending}_L{L}.npy"
+        / f"sp_{slepian.region.name_ending}_L{L}_N{slepian.N}.npy"
     )
     if filename.exists():
         sp = np.load(filename)
