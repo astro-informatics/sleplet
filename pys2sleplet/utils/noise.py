@@ -8,7 +8,7 @@ from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
-def _signal_power(L: int, signal: np.ndarray) -> np.ndarray:
+def _signal_power(L: int, signal: np.ndarray) -> float:
     """
     computes the power of the signal
     """
