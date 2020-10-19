@@ -4,9 +4,9 @@ from typing import Optional
 
 import numpy as np
 import pyssht as ssht
-from pys2sleplet.figures.f_lm import F_LM
 
 from pys2sleplet.functions.coefficients import Coefficients
+from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
