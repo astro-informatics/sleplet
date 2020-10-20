@@ -4,18 +4,27 @@ import pyssht as ssht
 from pys2sleplet.utils.convolution_methods import sifting_convolution
 
 
-def slepian_wavelet_forward(f_p: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
+def slepian_wavelet_forward(
+    f_p: np.ndarray, wavelets: np.ndarray, shannon: int
+) -> np.ndarray:
     """
     computes the coefficients of the given tiling function in Slepian space
     """
-    return sifting_convolution(wavelets, f_p)
+    return sifting_convolution(wavelets, f_p, shannon=shannon)
 
 
-def slepian_wavelet_inverse(wav_coeffs: np.ndarray, wavelets: np.ndarray) -> np.ndarray:
+def slepian_wavelet_inverse(
+    wav_coeffs: np.ndarray, wavelets: np.ndarray, shannon: int
+) -> np.ndarray:
     """
     computes the inverse wavelet transform in Slepian space
     """
-    return (wav_coeffs.conj() * wavelets).sum(axis=0)
+    coeffs_reshape = (
+        np.reshape(wav_coeffs, (1, -1))
+        if len(wav_coeffs.shape) != len(wavelets.shape)
+        else wav_coeffs
+    )
+    return (coeffs_reshape.conj().T[:shannon] * wavelets.T[:shannon]).sum(axis=1)
 
 
 def axisymmetric_wavelet_forward(

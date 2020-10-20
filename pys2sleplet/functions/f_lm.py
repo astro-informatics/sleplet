@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
+from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -18,10 +19,14 @@ class F_LM(Coefficients):
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
-    def translate(self, alpha: float, beta: float) -> np.ndarray:
+    def translate(
+        self, alpha: float, beta: float, shannon: Optional[int] = None
+    ) -> np.ndarray:
         glm = ssht.create_ylm(beta, alpha, self.L).conj().flatten()
         return (
-            glm if self.name == "dirac_delta" else self.convolve(self.coefficients, glm)
+            glm
+            if self.name == "dirac_delta"
+            else self.convolve(self.coefficients, glm, shannon=shannon)
         )
 
     def _add_noise_to_signal(self) -> None:

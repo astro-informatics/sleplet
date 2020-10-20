@@ -45,11 +45,14 @@ class Coefficients:
         self._smooth_signal()
 
     def convolve(
-        self, f_coefficient: np.ndarray, g_coefficient: np.ndarray
+        self,
+        f_coefficient: np.ndarray,
+        g_coefficient: np.ndarray,
+        shannon: Optional[int] = None,
     ) -> np.ndarray:
         # translation/convolution are not real for general function
         self.reality = False
-        return sifting_convolution(f_coefficient, g_coefficient)
+        return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
 
     def _add_region_to_name(self) -> None:
         """
@@ -187,7 +190,9 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def translate(self, alpha: float, beta: float) -> np.ndarray:
+    def translate(
+        self, alpha: float, beta: float, shannon: Optional[int] = None
+    ) -> np.ndarray:
         """
         translates given flm on the sphere by alpha/beta
         """

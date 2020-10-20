@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Tuple
 
 import numpy as np
 import seaborn as sns
@@ -20,20 +20,18 @@ fig_path = file_location.parents[2] / "figures"
 sns.set(context="paper")
 
 
-def main(zoom: bool = False):
+def main():
     """
     plots the error matrix of integrating all ranks of Slepian functions
     """
     x = len(RESOLUTION_RANGE) // 2
     _, ax = plt.subplots(x, x, sharex="col", sharey="row")
     for resolution, position in RESOLUTION_RANGE.items():
-        _create_plot(ax, position, resolution, zoom)
-    save_plot(fig_path, f"integration_error_sphere{'_zoom' if zoom else ''}")
+        _create_plot(ax, position, resolution)
+    save_plot(fig_path, "integration_error_sphere")
 
 
-def _create_plot(
-    ax: np.ndarray, position: Tuple[int, int], resolution: int, zoom: bool
-) -> None:
+def _create_plot(ax: np.ndarray, position: Tuple[int, int], resolution: int) -> None:
     """
     helper method which actually makes the plot
     """
@@ -45,24 +43,7 @@ def _create_plot(
         axs.set_ylabel("p")
     if position[0] == 1:
         axs.set_xlabel("p")
-
-    if not zoom:
-        axs.axvline(x=N, color="w")
-        axs.axhline(y=N, color="w")
-        region = L ** 2
-        ticks: Union[str, List] = _create_ticks(L, N)
-    else:
-        ticks = "auto"
-        region = N
-
-    sns.heatmap(
-        error[:region, :region],
-        ax=axs,
-        norm=LogNorm(),
-        square=True,
-        xticklabels=ticks,
-        yticklabels=ticks,
-    )
+    sns.heatmap(error[:N, :N], ax=axs, norm=LogNorm(), square=True)
 
 
 def _helper(
@@ -97,4 +78,3 @@ def _create_ticks(L: int, N: int) -> List[str]:
 
 if __name__ == "__main__":
     main()
-    main(zoom=True)

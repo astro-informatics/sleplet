@@ -23,19 +23,19 @@ def main() -> None:
     south_america = SouthAmerica(L, region=region)
     sw = SlepianWavelets(L, region=region)
     coefficients = slepian_forward(L, south_america.coefficients, sw.slepian)
-    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets)
+    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets, sw.slepian.N)
 
     # plot
-    f_p = np.zeros(L ** 2, dtype=np.complex128)
+    f_p = np.zeros(sw.slepian.N, dtype=np.complex128)
     for p, coeff in enumerate(wav_coeffs):
         logger.info(f"plot reconstruction: {p}")
-        f_p += slepian_wavelet_inverse(coeff, sw.wavelets)
+        f_p += slepian_wavelet_inverse(coeff, sw.wavelets, sw.slepian.N)
         f = slepian_inverse(L, f_p, sw.slepian)
         resolution = calc_plot_resolution(L)
         name = (
             f"south_america_wavelet_reconstruction_progressive_{p}_L{L}_res{resolution}"
         )
-        Plot(f, L, resolution, name).execute()
+        Plot(f, L, resolution, name, annotations=sw.annotations).execute()
 
 
 if __name__ == "__main__":

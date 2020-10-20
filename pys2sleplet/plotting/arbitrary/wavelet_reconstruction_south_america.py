@@ -22,8 +22,8 @@ def main() -> None:
     coefficients = slepian_forward(L, south_america.coefficients, sw.slepian)
 
     # perform reconstruction
-    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets)
-    f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets)
+    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets, sw.slepian.N)
+    f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets, sw.slepian.N)
 
     # plot
     f = slepian_inverse(L, f_p, sw.slepian)

@@ -18,7 +18,7 @@ def main() -> None:
     south_america = SouthAmerica(L, region=region)
     sw = SlepianWavelets(L, region=region)
     coefficients = slepian_forward(L, south_america.coefficients, sw.slepian)
-    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets)
+    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets, sw.slepian.N)
 
     # plot
     for p, coeff in enumerate(wav_coeffs):
@@ -26,7 +26,7 @@ def main() -> None:
         f = slepian_inverse(L, coeff, sw.slepian)
         resolution = calc_plot_resolution(L)
         name = f"south_america_wavelet_coefficient_{p}_L{L}_res{resolution}"
-        Plot(f, L, resolution, name).execute()
+        Plot(f, L, resolution, name, annotations=sw.annotations).execute()
 
 
 if __name__ == "__main__":

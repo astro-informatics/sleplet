@@ -50,9 +50,11 @@ class F_P(Coefficients):
         flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
         return slepian_forward(self.L, flm_rot, self.slepian)
 
-    def translate(self, alpha: float, beta: float) -> np.ndarray:
+    def translate(
+        self, alpha: float, beta: float, shannon: Optional[int] = None
+    ) -> np.ndarray:
         gp = compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
-        return self.convolve(self.coefficients, gp)
+        return self.convolve(self.coefficients, gp, shannon=shannon)
 
     def _add_noise_to_signal(self) -> None:
         pass

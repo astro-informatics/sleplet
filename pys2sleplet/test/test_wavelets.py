@@ -20,8 +20,8 @@ def test_synthesis_polar(slepian_polar_cap, earth_polar_cap) -> None:
     """
     sw = SlepianWavelets(L, region=slepian_polar_cap.region)
     coefficients = slepian_forward(L, earth_polar_cap.coefficients, slepian_polar_cap)
-    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets)
-    f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets)
+    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets, slepian_polar_cap.N)
+    f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets, slepian_polar_cap.N)
     f_wavelets = slepian_inverse(L, f_p, slepian_polar_cap)
     f_harmonic = ssht.inverse(earth_polar_cap.coefficients, L)
     mask = create_mask_region(L, slepian_polar_cap.region)
@@ -36,8 +36,10 @@ def test_synthesis_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
     coefficients = slepian_forward(
         L, earth_lim_lat_lon.coefficients, slepian_lim_lat_lon
     )
-    wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets)
-    f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets)
+    wav_coeffs = slepian_wavelet_forward(
+        coefficients, sw.wavelets, slepian_lim_lat_lon.N
+    )
+    f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets, slepian_lim_lat_lon.N)
     f_wavelets = slepian_inverse(L, f_p, slepian_lim_lat_lon)
     f_harmonic = ssht.inverse(earth_lim_lat_lon.coefficients, L)
     mask = create_mask_region(L, slepian_lim_lat_lon.region)

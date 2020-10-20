@@ -54,8 +54,8 @@ class SlepianDecomposition:
         """
         decompose all ranks of the Slepian coefficients for a given method
         """
-        coefficients = np.zeros(len(self.s_p_lms), dtype=np.complex128)
-        for rank in range(len(self.s_p_lms)):
+        coefficients = np.zeros(self.slepian.N, dtype=np.complex128)
+        for rank in range(self.slepian.N):
             coefficients[rank] = self.decompose(rank, method=method)
         return coefficients
 

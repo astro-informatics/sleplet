@@ -51,7 +51,7 @@ def slepian_wavelet_covariance(
         f_p = compute_random_signal(L, rng, var_fp)
 
         # compute wavelet coefficients
-        w_p = slepian_wavelet_forward(f_p, sw.wavelets)
+        w_p = slepian_wavelet_forward(f_p, sw.wavelets, sw.slepian.N)
 
         # compute covariance from data
         for j in range(sw.wavelets.shape[0]):
