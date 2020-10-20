@@ -16,8 +16,10 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import (
+    ALPHA_DEFAULT,
     ANNOTATION_SECOND_COLOUR,
     ARROW_STYLE,
+    BETA_DEFAULT,
     EARTH_ALPHA,
     EARTH_BETA,
     EARTH_GAMMA,
@@ -61,7 +63,7 @@ def read_args() -> Namespace:
         "--alpha",
         "-a",
         type=float,
-        default=0.75,
+        default=ALPHA_DEFAULT,
         help="alpha/phi pi fraction - defaults to 0",
     )
     parser.add_argument(
@@ -74,7 +76,7 @@ def read_args() -> Namespace:
         "--beta",
         "-b",
         type=float,
-        default=0.125,
+        default=BETA_DEFAULT,
         help="beta/theta pi fraction - defaults to 0",
     )
     parser.add_argument(
