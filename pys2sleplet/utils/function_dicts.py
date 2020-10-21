@@ -15,6 +15,9 @@ from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.flm.spherical_harmonic import SphericalHarmonic
 from pys2sleplet.functions.flm.squashed_gaussian import SquashedGaussian
 from pys2sleplet.functions.flm.wmap import Wmap
+from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
+    SlepianWaveletCoefficientsSouthAmerica,
+)
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 
 FLM: Dict[str, Coefficients] = dict(
@@ -34,7 +37,10 @@ FLM: Dict[str, Coefficients] = dict(
     wmap=Wmap,
 )
 
-FP: Dict[str, Coefficients] = dict(slepian_wavelets=SlepianWavelets)
+FP: Dict[str, Coefficients] = dict(
+    slepian_wavelets=SlepianWavelets,
+    slepian_wavelet_coefficients_south_america=SlepianWaveletCoefficientsSouthAmerica,
+)
 
 MAPS: Dict[str, Coefficients] = dict(earth=Earth, south_america=SouthAmerica, wmap=Wmap)
 
