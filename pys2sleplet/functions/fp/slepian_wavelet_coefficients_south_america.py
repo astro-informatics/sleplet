@@ -21,6 +21,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
     _j_min: int = field(default=0, init=False, repr=False)
+    _wavelets: np.ndarray = field(init=False, repr=False)
     _wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -59,16 +60,22 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args[:num_args]
 
+    def _create_wavelets(self) -> None:
+        """
+        computes wavelets in Slepian space
+        """
+        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
+        self.wavelets = np.concatenate((kappa0[np.newaxis], kappa.T))
+
     def _create_wavelet_coefficients(self) -> None:
         """
         computes wavelet coefficients in Slepian space
         """
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
-        wavelets = np.concatenate((kappa0[np.newaxis], kappa.T))
-        sa = SouthAmerica(self.L)
+        self._create_wavelets()
+        sa = SouthAmerica(self.L, region=self.region)
         sa_p = slepian_forward(self.L, sa.coefficients, self.slepian)
         self.wavelet_coefficients = slepian_wavelet_forward(
-            sa_p, wavelets, self.slepian.N
+            sa_p, self.wavelets, self.slepian.N
         )
 
     @property  # type:ignore
@@ -121,6 +128,14 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
             # https://stackoverflow.com/a/61480946/7359333
             j_min = SlepianWaveletCoefficientsSouthAmerica._j_min
         self._j_min = j_min
+
+    @property
+    def wavelets(self) -> np.ndarray:
+        return self._wavelets
+
+    @wavelets.setter
+    def wavelets(self, wavelets: np.ndarray) -> None:
+        self._wavelets = wavelets
 
     @property
     def wavelet_coefficients(self) -> np.ndarray:
