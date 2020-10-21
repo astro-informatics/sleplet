@@ -10,7 +10,6 @@ from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrar
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import boost_coefficient_resolution
 from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
@@ -94,25 +93,12 @@ def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
-    filename = (
-        _slepian_data
-        / slepian.region.region_type
-        / "functions"
-        / f"sp_{slepian.region.name_ending}_L{L}_N{slepian.N}.npy"
-    )
-    if filename.exists():
-        sp = np.load(filename)
-    else:
-        n_theta, n_phi = ssht.sample_shape(L)
-        sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex128)
-        fp = np.zeros(L ** 2, dtype=np.complex128)
-        for p in range(slepian.N):
-            print(f"p={p}/{slepian.N-1}")
-            fp[p] = 1
-            sp[p] = slepian_inverse(L, fp, slepian)
-            fp[p] = 0
-        if settings.SAVE_MATRICES:
-            np.save(filename, sp)
+    n_theta, n_phi = ssht.sample_shape(L)
+    sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex128)
+    for p in range(slepian.N):
+        if p % 100 == 0:
+            logger.info(f"compute Sp(omega) p={p}/{slepian.N-1}")
+        sp[p] = ssht.inverse(slepian.eigenvectors[p], L)
     return sp
 
 
