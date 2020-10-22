@@ -50,8 +50,9 @@ class SlepianDiracDelta(F_P):
         self.alpha = phis[idx]
         self.beta = thetas[idx]
         logger.info(
-            f"{self.name} grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})"
+            f"fraction: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})"
         )
+        logger.info(f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})")
 
     @property
     def alpha(self) -> float:
