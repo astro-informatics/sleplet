@@ -54,7 +54,11 @@ class F_P(Coefficients):
         self, alpha: float, beta: float, shannon: Optional[int] = None
     ) -> np.ndarray:
         gp = compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
-        return self.convolve(self.coefficients, gp, shannon=shannon)
+        return (
+            gp
+            if "dirac_delta" in self.name
+            else self.convolve(self.coefficients, gp, shannon=shannon)
+        )
 
     def _add_noise_to_signal(self) -> None:
         pass

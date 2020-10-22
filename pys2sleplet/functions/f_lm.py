@@ -25,7 +25,7 @@ class F_LM(Coefficients):
         glm = ssht.create_ylm(beta, alpha, self.L).conj().flatten()
         return (
             glm
-            if self.name == "dirac_delta"
+            if "dirac_delta" in self.name
             else self.convolve(self.coefficients, glm, shannon=shannon)
         )
 
