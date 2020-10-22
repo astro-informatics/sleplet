@@ -44,6 +44,16 @@ class Coefficients:
         self._add_noise_to_signal()
         self._smooth_signal()
 
+    def translate(
+        self, alpha: float, beta: float, shannon: Optional[int] = None
+    ) -> np.ndarray:
+        g_coefficients = self._translation_helper(alpha, beta)
+        return (
+            g_coefficients
+            if "dirac_delta" in self.name
+            else self.convolve(self.coefficients, g_coefficients, shannon=shannon)
+        )
+
     def convolve(
         self,
         f_coefficient: np.ndarray,
@@ -176,13 +186,6 @@ class Coefficients:
         self._spin = spin
 
     @abstractmethod
-    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
-        """
-        computes the inverse of the given coefficients
-        """
-        raise NotImplementedError
-
-    @abstractmethod
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         """
         rotates given flm on the sphere by alpha/beta/gamma
@@ -190,11 +193,9 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def translate(
-        self, alpha: float, beta: float, shannon: Optional[int] = None
-    ) -> np.ndarray:
+    def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         """
-        translates given flm on the sphere by alpha/beta
+        compute the basis function at omega' for translation
         """
         raise NotImplementedError
 
