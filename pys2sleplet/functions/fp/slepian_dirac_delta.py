@@ -1,17 +1,20 @@
 from dataclasses import dataclass, field
+from typing import Optional
+
+import numpy as np
+import pyssht as ssht
 
 from pys2sleplet.functions.f_p import F_P
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import compute_s_p_omega_prime
-from pys2sleplet.utils.vars import ALPHA_DEFAULT, BETA_DEFAULT
 
 
 @dataclass
 class SlepianDiracDelta(F_P):
-    alpha: float
-    beta: float
-    _alpha: float = field(default=ALPHA_DEFAULT, init=False, repr=False)
-    _beta: float = field(default=BETA_DEFAULT, init=False, repr=False)
+    alpha: Optional[float]
+    beta: Optional[float]
+    _alpha: Optional[float] = field(default=None, init=False, repr=False)
+    _beta: Optional[float] = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -20,9 +23,9 @@ class SlepianDiracDelta(F_P):
         self.annotations = self.slepian.annotations
 
     def _create_coefficients(self) -> None:
-        alpha_point, beta_point = calc_nearest_grid_point(self.L, self.alpha, self.beta)
+        self._compute_angles()
         self.coefficients = compute_s_p_omega_prime(
-            self.L, alpha_point, beta_point, self.slepian
+            self.L, self.alpha, self.beta, self.slepian
         ).conj()
 
     def _create_name(self) -> None:
@@ -40,12 +43,27 @@ class SlepianDiracDelta(F_P):
                 f"{self.__class__.__name__} does not support extra arguments"
             )
 
+    def _compute_angles(self) -> None:
+        """
+        computes alpha/beta if not provided
+        """
+        thetas, phis = ssht.sample_positions(self.L, Grid=True)
+        sp = ssht.inverse(self.slepian.eigenvectors[self.rank], self.L)
+        idx = tuple(np.argwhere(sp == sp.max())[0])
+        if not isinstance(self.alpha, float):
+            self.alpha = phis[idx]
+            self.beta = thetas[idx]
+            logger.info(
+                f"{self.name} grid point: "
+                f"(alpha, beta) = ({self.alpha:e},{self.beta:e})"
+            )
+
     @property  # type: ignore
-    def alpha(self) -> float:
+    def alpha(self) -> Optional[float]:
         return self._alpha
 
     @alpha.setter
-    def alpha(self, alpha: float) -> None:
+    def alpha(self, alpha: Optional[float]) -> None:
         if isinstance(alpha, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
@@ -53,11 +71,11 @@ class SlepianDiracDelta(F_P):
         self._alpha = alpha
 
     @property  # type: ignore
-    def beta(self) -> float:
+    def beta(self) -> Optional[float]:
         return self._beta
 
     @beta.setter
-    def beta(self, beta: float) -> None:
+    def beta(self, beta: Optional[float]) -> None:
         if isinstance(beta, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333

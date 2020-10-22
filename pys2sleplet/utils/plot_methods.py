@@ -51,7 +51,7 @@ def calc_nearest_grid_point(
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
-    logger.info(f"grid point: (alpha, beta)=({alpha}, {beta})")
+    logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
     return alpha, beta
 
 
