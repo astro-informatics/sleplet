@@ -107,7 +107,7 @@ class DirectionalSpinWavelets(F_LM):
             )
         self._j = j
 
-    @property  # type:ignore
+    @property
     def j_max(self) -> int:
         return self._j_max
 
@@ -151,7 +151,7 @@ class DirectionalSpinWavelets(F_LM):
             spin = DirectionalSpinWavelets._spin
         self._spin = spin
 
-    @property  # type:ignore
+    @property
     def wavelets(self) -> np.ndarray:
         return self._wavelets
 

@@ -173,7 +173,7 @@ class Coefficients:
             smoothing = Coefficients._smoothing
         self._smoothing = smoothing
 
-    @property  # type:ignore
+    @property
     def spin(self) -> int:
         return self._spin
 

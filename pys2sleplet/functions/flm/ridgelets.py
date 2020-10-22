@@ -151,7 +151,7 @@ class Ridgelets(F_LM):
             spin = Ridgelets._spin
         self._spin = spin
 
-    @property  # type:ignore
+    @property
     def wavelets(self) -> np.ndarray:
         return self._wavelets
 

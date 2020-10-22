@@ -111,7 +111,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
             )
         self._j = j
 
-    @property  # type:ignore
+    @property
     def j_max(self) -> int:
         return self._j_max
 
@@ -131,7 +131,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
             j_min = AxisymmetricWaveletCoefficientsEarth._j_min
         self._j_min = j_min
 
-    @property  # type:ignore
+    @property
     def wavelets(self) -> np.ndarray:
         return self._wavelets
 

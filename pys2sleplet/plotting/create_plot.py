@@ -145,13 +145,13 @@ class Plot:
             f_plot[f_plot > color_range[1]] = color_range[1]
             f_plot[f_plot == -1.56e30] = np.nan
 
-        # % Compute position scaling for parametric plot.
+        # Compute position scaling for parametric plot.
         if parametric:
             f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[
                 1
             ] + parametric_scaling[0]
 
-        # % Close plot.
+        # Close plot.
         if close:
             n_theta, n_phi = ssht.sample_shape(resolution, Method=self.method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
@@ -162,7 +162,7 @@ class Plot:
             thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
             phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
 
-        # % Compute location of vertices.
+        # Compute location of vertices.
         if parametric:
             x, y, z = ssht.spherical_to_cart(f_normalised, thetas, phis)
         else:

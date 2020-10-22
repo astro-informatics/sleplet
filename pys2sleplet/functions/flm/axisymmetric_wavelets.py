@@ -98,7 +98,7 @@ class AxisymmetricWavelets(F_LM):
             )
         self._j = j
 
-    @property  # type:ignore
+    @property
     def j_max(self) -> int:
         return self._j_max
 
@@ -118,7 +118,7 @@ class AxisymmetricWavelets(F_LM):
             j_min = AxisymmetricWavelets._j_min
         self._j_min = j_min
 
-    @property  # type:ignore
+    @property
     def wavelets(self) -> np.ndarray:
         return self._wavelets
 
