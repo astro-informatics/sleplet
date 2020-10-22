@@ -1,6 +1,9 @@
 from typing import Dict
 
 from pys2sleplet.functions.coefficients import Coefficients
+from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
+    AxisymmetricWaveletCoefficientsEarth,
+)
 from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.flm.dirac_delta import DiracDelta
 from pys2sleplet.functions.flm.directional_spin_wavelets import DirectionalSpinWavelets
@@ -22,6 +25,7 @@ from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import 
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 
 FLM: Dict[str, Coefficients] = dict(
+    axisymmetric_wavelet_coefficients_earth=AxisymmetricWaveletCoefficientsEarth,
     axisymmetric_wavelets=AxisymmetricWavelets,
     dirac_delta=DiracDelta,
     directional_spin_wavelets=DirectionalSpinWavelets,
@@ -31,7 +35,6 @@ FLM: Dict[str, Coefficients] = dict(
     harmonic_gaussian=HarmonicGaussian,
     identity=Identity,
     ridgelets=Ridgelets,
-    slepian=Slepian,
     south_america=SouthAmerica,
     spherical_harmonic=SphericalHarmonic,
     squashed_gaussian=SquashedGaussian,
@@ -39,9 +42,10 @@ FLM: Dict[str, Coefficients] = dict(
 )
 
 FP: Dict[str, Coefficients] = dict(
+    slepian=Slepian,
     slepian_dirac_delta=SlepianDiracDelta,
-    slepian_wavelets=SlepianWavelets,
     slepian_wavelet_coefficients_south_america=SlepianWaveletCoefficientsSouthAmerica,
+    slepian_wavelets=SlepianWavelets,
 )
 
 MAPS: Dict[str, Coefficients] = dict(earth=Earth, south_america=SouthAmerica, wmap=Wmap)
