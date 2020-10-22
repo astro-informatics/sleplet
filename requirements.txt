@@ -13,6 +13,7 @@ numpy
 pandas
 plotly
 pre-commit
+psutil
 pys2let
 pyssht
 pytest
