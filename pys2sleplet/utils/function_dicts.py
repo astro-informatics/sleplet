@@ -10,11 +10,11 @@ from pys2sleplet.functions.flm.gaussian import Gaussian
 from pys2sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.functions.flm.identity import Identity
 from pys2sleplet.functions.flm.ridgelets import Ridgelets
-from pys2sleplet.functions.flm.slepian import Slepian
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.flm.spherical_harmonic import SphericalHarmonic
 from pys2sleplet.functions.flm.squashed_gaussian import SquashedGaussian
 from pys2sleplet.functions.flm.wmap import Wmap
+from pys2sleplet.functions.fp.slepian import Slepian
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,

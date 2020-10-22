@@ -1,38 +1,16 @@
 from dataclasses import dataclass, field
-from typing import Optional
 
-import numpy as np
-
-from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.config import settings
+from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import choose_slepian_method
+from pys2sleplet.utils.slepian_methods import slepian_forward
 
 
 @dataclass
-class Slepian(F_LM):
+class Slepian(F_P):
     rank: int
-    region: Optional[Region]
     _rank: int = field(default=0, init=False, repr=False)
-    _region: Optional[Region] = field(default=None, init=False, repr=False)
-    _slepian: SlepianFunctions = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.region = (
-            Region(
-                gap=settings.POLAR_GAP,
-                mask_name=settings.SLEPIAN_MASK,
-                phi_max=np.deg2rad(settings.PHI_MAX),
-                phi_min=np.deg2rad(settings.PHI_MIN),
-                theta_max=np.deg2rad(settings.THETA_MAX),
-                theta_min=np.deg2rad(settings.THETA_MIN),
-            )
-            if self.region is None
-            else self.region
-        )
-        self.slepian = choose_slepian_method(self.L, self.region)
         self._validate_rank()
         super().__post_init__()
 
@@ -55,7 +33,9 @@ class Slepian(F_LM):
         )
 
     def _create_coefficients(self) -> None:
-        self.coefficients = self.slepian.eigenvectors[self.rank]
+        self.coefficients = slepian_forward(
+            self.L, self.slepian.eigenvectors[self.rank], self.slepian
+        )
         logger.info(f"Shannon number: {self.slepian.N}")
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
 
@@ -79,7 +59,7 @@ class Slepian(F_LM):
         checks the requested rank is valid
         """
         if isinstance(self.extra_args, list):
-            limit = len(self.slepian.eigenvectors)
+            limit = self.L ** 2
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 
@@ -98,23 +78,3 @@ class Slepian(F_LM):
         if rank < 0:
             raise ValueError("rank cannot be negative")
         self._rank = rank
-
-    @property  # type:ignore
-    def region(self) -> Optional[Region]:
-        return self._region
-
-    @region.setter
-    def region(self, region: Optional[Region]) -> None:
-        if isinstance(region, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            region = Slepian._region
-        self._region = region
-
-    @property
-    def slepian(self) -> SlepianFunctions:
-        return self._slepian
-
-    @slepian.setter
-    def slepian(self, slepian: SlepianFunctions) -> None:
-        self._slepian = slepian
