@@ -48,7 +48,7 @@ class SlepianDiracDelta(F_P):
         computes alpha/beta if not provided
         """
         thetas, phis = ssht.sample_positions(self.L, Grid=True)
-        sp = ssht.inverse(self.slepian.eigenvectors[self.rank], self.L)
+        sp = ssht.inverse(self.slepian.eigenvectors[0], self.L)
         idx = tuple(np.argwhere(sp == sp.max())[0])
         if not isinstance(self.alpha, float):
             self.alpha = phis[idx]
