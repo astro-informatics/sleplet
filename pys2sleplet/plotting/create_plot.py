@@ -56,8 +56,7 @@ class Plot:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                cmax=1 if settings.NORMALISE else vmax,
-                cmin=0 if settings.NORMALISE else vmin,
+                cmid=0.5 if settings.NORMALISE else 0,
                 colorbar=ColorBar(
                     x=0.84,
                     len=0.98,
