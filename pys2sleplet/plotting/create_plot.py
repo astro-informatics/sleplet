@@ -43,7 +43,7 @@ class Plot:
         f = self._prepare_field(self.f)
 
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, self.resolution)
+        x, y, z, f_plot, _, _ = self._setup_plot(f, self.resolution)
 
         # appropriate zoom in on north pole
         camera = Camera(
