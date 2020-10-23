@@ -2,12 +2,14 @@ from typing import Dict
 
 import numpy as np
 
+ALPHA_DEFAULT: float = 0.75
 ANNOTATION_COLOUR: str = "salmon"
 ANNOTATION_SECOND_COLOUR: str = "gold"
 ANNOTATION_DOTS: int = 12
 ARROW_STYLE: Dict = dict(
     arrowhead=0, arrowside="start", ax=4, ay=4, startarrowsize=0.5, startarrowhead=6
 )
+BETA_DEFAULT: float = 0.125
 EARTH_ALPHA: float = np.deg2rad(54)
 EARTH_BETA: float = np.deg2rad(108)
 EARTH_GAMMA: float = np.deg2rad(63)

@@ -7,6 +7,7 @@ from matplotlib import colors
 from matplotlib import pyplot as plt
 
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.logger import logger
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -50,6 +51,7 @@ def calc_nearest_grid_point(
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
+    logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
     return alpha, beta
 
 

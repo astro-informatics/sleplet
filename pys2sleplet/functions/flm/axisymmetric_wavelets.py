@@ -31,9 +31,8 @@ class AxisymmetricWavelets(F_LM):
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")
-        self.coefficients = (
-            self.wavelets[0] if self.j is None else self.wavelets[self.j + 1]
-        )
+        jth = 0 if self.j is None else self.j + 1
+        self.coefficients = self.wavelets[jth]
 
     def _create_name(self) -> None:
         self.name = (
@@ -99,7 +98,7 @@ class AxisymmetricWavelets(F_LM):
             )
         self._j = j
 
-    @property  # type:ignore
+    @property
     def j_max(self) -> int:
         return self._j_max
 
@@ -119,7 +118,7 @@ class AxisymmetricWavelets(F_LM):
             j_min = AxisymmetricWavelets._j_min
         self._j_min = j_min
 
-    @property  # type:ignore
+    @property
     def wavelets(self) -> np.ndarray:
         return self._wavelets
 

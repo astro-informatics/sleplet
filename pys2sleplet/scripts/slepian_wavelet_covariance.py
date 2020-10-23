@@ -51,7 +51,7 @@ def slepian_wavelet_covariance(
         f_p = compute_random_signal(L, rng, var_fp)
 
         # compute wavelet coefficients
-        w_p = slepian_wavelet_forward(f_p, sw.wavelets)
+        w_p = slepian_wavelet_forward(f_p, sw.wavelets, sw.slepian.N)
 
         # compute covariance from data
         for j in range(sw.wavelets.shape[0]):
@@ -70,13 +70,13 @@ def slepian_wavelet_covariance(
 
     # compute errors
     w_error_absolute = np.abs(mean_covar_w_data - covar_w_theory)
+    std_covar_w_data = np.where(std_covar_w_data != 0, std_covar_w_data, np.nan)
     w_error_in_std = w_error_absolute / std_covar_w_data
-    error_to_report = np.where(np.isinf(w_error_in_std), np.nan, w_error_in_std)
 
     # report errors
     for j in range(sw.wavelets.shape[0]):
         message = (
-            f"error in std: {error_to_report[j]:e}"
+            f"error in std: {w_error_in_std[j]:e}"
             if is_ergodic(j_min, j)
             else f"absolute error: {w_error_absolute[j]:e}"
         )

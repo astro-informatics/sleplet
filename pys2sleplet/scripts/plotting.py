@@ -6,16 +6,20 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.functions.coefficients import Coefficients
+from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import (
+    ALPHA_DEFAULT,
     ANNOTATION_SECOND_COLOUR,
     ARROW_STYLE,
+    BETA_DEFAULT,
     EARTH_ALPHA,
     EARTH_BETA,
     EARTH_GAMMA,
@@ -59,7 +63,7 @@ def read_args() -> Namespace:
         "--alpha",
         "-a",
         type=float,
-        default=0.75,
+        default=ALPHA_DEFAULT,
         help="alpha/phi pi fraction - defaults to 0",
     )
     parser.add_argument(
@@ -72,7 +76,7 @@ def read_args() -> Namespace:
         "--beta",
         "-b",
         type=float,
-        default=0.125,
+        default=BETA_DEFAULT,
         help="beta/theta pi fraction - defaults to 0",
     )
     parser.add_argument(
@@ -161,9 +165,8 @@ def plot(
     logger.info(f"annotations on: {annotations}")
     annotation = f.annotations if annotations else []
 
-    # calculate angles
-    alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_fraction, beta_pi_fraction)
-    gamma = gamma_pi_fraction * np.pi
+    # Shannon number for Slepian coefficients
+    shannon = f.slepian.N if not isinstance(f, F_LM) else None
 
     logger.info(f"plotting method: '{method}'")
     if method == "rotate":
@@ -176,6 +179,10 @@ def plot(
             f"{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
         )
 
+        # calculate angles
+        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_fraction, beta_pi_fraction)
+        gamma = gamma_pi_fraction * np.pi
+
         # rotate by alpha, beta, gamma
         coefficients = f.rotate(alpha, beta, gamma)
     elif method == "translate":
@@ -185,8 +192,11 @@ def plot(
         # don't add gamma if translation
         filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
 
+        # calculate angles
+        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_fraction, beta_pi_fraction)
+
         # translate by alpha, beta
-        coefficients = f.translate(alpha, beta)
+        coefficients = f.translate(alpha, beta, shannon=shannon)
 
         # annotate translation point
         x, y, z = ssht.s2_to_cart(beta, alpha)
@@ -196,7 +206,12 @@ def plot(
 
     if g is not None:
         # perform convolution
-        coefficients = f.convolve(g.coefficients, coefficients)
+        g_coefficients = (
+            g.coefficients
+            if isinstance(f, F_LM)
+            else slepian_forward(f.L, g.coefficients, f.slepian)
+        )
+        coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
         # adjust filename
         filename += f"convolved_{g.name}_L{f.L}_"
 
@@ -211,7 +226,11 @@ def plot(
         )
 
     # get field value
-    field = f.inverse(coefficients)
+    field = (
+        ssht.inverse(coefficients, f.L, Reality=f.reality, Spin=f.spin)
+        if isinstance(f, F_LM)
+        else slepian_inverse(f.L, coefficients, f.slepian)
+    )
 
     # do plot
     filename += plot_type

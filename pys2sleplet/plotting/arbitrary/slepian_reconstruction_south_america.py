@@ -26,7 +26,7 @@ def main() -> None:
     # plot
     resolution = calc_plot_resolution(L)
     name = f"south_america_slepian_reconstruction_L{L}_res{resolution}"
-    Plot(f, L, resolution, name).execute()
+    Plot(f, L, resolution, name, annotations=slepian.annotations).execute()
 
 
 if __name__ == "__main__":

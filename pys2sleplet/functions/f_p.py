@@ -22,9 +22,7 @@ _file_location = Path(__file__).resolve()
 
 @dataclass  # type:ignore
 class F_P(Coefficients):
-    rank: int
     region: Optional[Region]
-    _rank: int = field(default=0, init=False, repr=False)
     _region: Optional[Region] = field(default=None, init=False, repr=False)
     _slepian: np.ndarray = field(init=False, repr=False)
 
@@ -44,40 +42,20 @@ class F_P(Coefficients):
         self.slepian = choose_slepian_method(self.L, self.region)
         super().__post_init__()
 
-    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
-        return slepian_inverse(self.L, coefficients, self.slepian)
-
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
-        f = self.inverse(self.coefficients)
+        f = slepian_inverse(self.L, self.coefficients, self.slepian)
         flm = ssht.forward(f, self.L)
         flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
         return slepian_forward(self.L, flm_rot, self.slepian)
 
-    def translate(self, alpha: float, beta: float) -> np.ndarray:
-        gp = compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
-        return self.convolve(self.coefficients, gp)
+    def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
+        return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
     def _add_noise_to_signal(self) -> None:
         pass
 
     def _smooth_signal(self) -> None:
         pass
-
-    @property  # type:ignore
-    def rank(self) -> int:
-        return self._rank
-
-    @rank.setter
-    def rank(self, rank: int) -> None:
-        if isinstance(rank, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            rank = F_P._rank
-        if not isinstance(rank, int):
-            raise TypeError("rank should be an integer")
-        if rank < 0:
-            raise ValueError("rank cannot be negative")
-        self._rank = rank
 
     @property  # type:ignore
     def region(self) -> Optional[Region]:

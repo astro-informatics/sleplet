@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -58,7 +58,7 @@ def denoising_axisym(
 
 def denoising_slepian(
     name: str, L: int, B: int, j_min: int, n_sigma: int, region: Region, snr_in: int
-) -> np.ndarray:
+) -> Tuple[np.ndarray, List[Dict]]:
     """
     denoising demo using Slepian wavelets
     """
@@ -77,16 +77,16 @@ def denoising_slepian(
     sigma_j = compute_sigma_j(L, fun_p, sw.wavelets[1:], snr_in)
 
     # compute wavelet coefficients
-    w = slepian_wavelet_forward(fun_noised_p, sw.wavelets)
+    w = slepian_wavelet_forward(fun_noised_p, sw.wavelets, sw.slepian.N)
 
     # hard thresholding
     w_denoised = slepian_hard_thresholding(L, w, sigma_j, n_sigma, sw.slepian)
 
     # wavelet synthesis
-    f_p = slepian_wavelet_inverse(w_denoised, sw.wavelets)
+    f_p = slepian_wavelet_inverse(w_denoised, sw.wavelets, sw.slepian.N)
     f = slepian_inverse(L, f_p, sw.slepian)
 
     # compute SNR
     compute_snr(L, fun_p, fun_noised_p - fun_p)
     compute_snr(L, fun_p, f_p - fun_p)
-    return f
+    return f, sw.annotations

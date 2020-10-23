@@ -35,9 +35,8 @@ class DirectionalSpinWavelets(F_LM):
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")
-        self.coefficients = (
-            self.wavelets[0] if self.j is None else self.wavelets[self.j + 1]
-        )
+        jth = 0 if self.j is None else self.j + 1
+        self.coefficients = self.wavelet_coefficients[jth]
 
     def _create_name(self) -> None:
         self.name = (
@@ -108,7 +107,7 @@ class DirectionalSpinWavelets(F_LM):
             )
         self._j = j
 
-    @property  # type:ignore
+    @property
     def j_max(self) -> int:
         return self._j_max
 
@@ -152,7 +151,7 @@ class DirectionalSpinWavelets(F_LM):
             spin = DirectionalSpinWavelets._spin
         self._spin = spin
 
-    @property  # type:ignore
+    @property
     def wavelets(self) -> np.ndarray:
         return self._wavelets
 

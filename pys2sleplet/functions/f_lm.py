@@ -12,19 +12,14 @@ from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
 @dataclass  # type:ignore
 class F_LM(Coefficients):
     def __post_init__(self) -> None:
+        self.coefficients: np.ndarray
         super().__post_init__()
-
-    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
-        return ssht.inverse(coefficients, self.L, Reality=self.reality, Spin=self.spin)
 
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
-    def translate(self, alpha: float, beta: float) -> np.ndarray:
-        glm = ssht.create_ylm(beta, alpha, self.L).conj().flatten()
-        return (
-            glm if self.name == "dirac_delta" else self.convolve(self.coefficients, glm)
-        )
+    def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
+        return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
 
     def _add_noise_to_signal(self) -> None:
         """

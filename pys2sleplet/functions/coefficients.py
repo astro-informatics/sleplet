@@ -44,12 +44,25 @@ class Coefficients:
         self._add_noise_to_signal()
         self._smooth_signal()
 
+    def translate(
+        self, alpha: float, beta: float, shannon: Optional[int] = None
+    ) -> np.ndarray:
+        g_coefficients = self._translation_helper(alpha, beta)
+        return (
+            g_coefficients
+            if "dirac_delta" in self.name
+            else self.convolve(self.coefficients, g_coefficients, shannon=shannon)
+        )
+
     def convolve(
-        self, f_coefficient: np.ndarray, g_coefficient: np.ndarray
+        self,
+        f_coefficient: np.ndarray,
+        g_coefficient: np.ndarray,
+        shannon: Optional[int] = None,
     ) -> np.ndarray:
         # translation/convolution are not real for general function
         self.reality = False
-        return sifting_convolution(f_coefficient, g_coefficient)
+        return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
 
     def _add_region_to_name(self) -> None:
         """
@@ -160,7 +173,7 @@ class Coefficients:
             smoothing = Coefficients._smoothing
         self._smoothing = smoothing
 
-    @property  # type:ignore
+    @property
     def spin(self) -> int:
         return self._spin
 
@@ -173,13 +186,6 @@ class Coefficients:
         self._spin = spin
 
     @abstractmethod
-    def inverse(self, coefficients: np.ndarray) -> np.ndarray:
-        """
-        computes the inverse of the given coefficients
-        """
-        raise NotImplementedError
-
-    @abstractmethod
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         """
         rotates given flm on the sphere by alpha/beta/gamma
@@ -187,9 +193,9 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def translate(self, alpha: float, beta: float) -> np.ndarray:
+    def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         """
-        translates given flm on the sphere by alpha/beta
+        compute the basis function at omega' for translation
         """
         raise NotImplementedError
 
