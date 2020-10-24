@@ -43,12 +43,15 @@ class Plot:
         f = self._prepare_field(self.f)
 
         # get values from the setup
-        x, y, z, f_plot, _, _ = self._setup_plot(f, self.resolution)
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, self.resolution)
 
         # appropriate zoom in on north pole
         camera = Camera(
             eye=Eye(x=-0.1 / ZOOM_DEFAULT, y=-0.1 / ZOOM_DEFAULT, z=10 / ZOOM_DEFAULT)
         )
+
+        # pick largest tick max value
+        tick_mark = abs(vmax) if abs(vmax) >= abs(vmin) else abs(vmin)
 
         data = [
             Surface(
@@ -58,10 +61,13 @@ class Plot:
                 surfacecolor=f_plot,
                 cmid=0.5 if settings.NORMALISE else 0,
                 colorbar=ColorBar(
-                    x=0.84,
+                    x=0.93,
                     len=0.98,
-                    nticks=2 if settings.NORMALISE else 0,
+                    nticks=2 if settings.NORMALISE else None,
                     tickfont=Tickfont(color="#666666", size=32),
+                    tickformat=None if settings.NORMALISE else "+.1e",
+                    tick0=None if settings.NORMALISE else -tick_mark,
+                    dtick=None if settings.NORMALISE else tick_mark,
                 ),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
