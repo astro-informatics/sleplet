@@ -199,10 +199,14 @@ def plot(
         coefficients = f.translate(alpha, beta, shannon=shannon)
 
         # annotate translation point
-        x, y, z = ssht.s2_to_cart(beta, alpha)
-        annotation.append(
-            {**dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_SECOND_COLOUR), **ARROW_STYLE}
-        )
+        if annotations:
+            x, y, z = ssht.s2_to_cart(beta, alpha)
+            annotation.append(
+                {
+                    **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_SECOND_COLOUR),
+                    **ARROW_STYLE,
+                }
+            )
 
     if g is not None:
         # perform convolution

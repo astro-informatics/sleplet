@@ -60,7 +60,7 @@ for k in ${kernels[*]}; do
 done
 
 echo "harmonic Gaussian larger kernel"
-plotting harmonic_gaussian -L $L -e 2 1;
+plotting harmonic_gaussian -L $L -e 2 1 -m translate -o;
 plotting harmonic_gaussian -c earth -L $L -e 2 1;
 
 echo "presentation rotation demo"
