@@ -2,8 +2,8 @@
 L=128
 
 echo "figure 1"
-plotting harmonic_gaussian -L $L -m translate;
-plotting harmonic_gaussian -L $L -e 2 1 -m translate;
+plotting harmonic_gaussian -L $L -m translate -o;
+plotting harmonic_gaussian -L $L -e 2 1 -m translate - o;
 
 echo "figure 2"
 plotting earth -L $L -t real

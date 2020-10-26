@@ -54,7 +54,7 @@ for k in ${kernels[*]}; do
     for r in ${routines[*]}; do
         for t in ${types[*]}; do
             echo $k, $r, $t;
-            plotting $k -L $L -t $t -m $r;
+            plotting $k -L $L -t $t -m $r -o;
         done;
     done;
 done
