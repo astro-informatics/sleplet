@@ -20,7 +20,7 @@ def test_synthesis_polar(slepian_polar_cap, earth_polar_cap) -> None:
     coefficients = slepian_forward(L, earth_polar_cap.coefficients, slepian_polar_cap)
     wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets, slepian_polar_cap.N)
     f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets, slepian_polar_cap.N)
-    assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-15)
+    assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-14)
 
 
 def test_synthesis_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
