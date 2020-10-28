@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Optional
+from typing import Dict, Optional, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -143,6 +143,81 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
+def rotation_helper(
+    f: Coefficients,
+    filename: str,
+    alpha_pi_frac: Optional[float],
+    beta_pi_frac: Optional[float],
+    gamma_pi_frac: Optional[float],
+) -> Tuple[np.ndarray, str]:
+    """
+    performs the rotation specific steps
+    """
+    logger.info(
+        "angles: (alpha, beta, gamma) = "
+        f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
+    )
+    filename += f"rotate_{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}_"
+
+    # calculate angles
+    alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
+    gamma = gamma_pi_frac * np.pi
+
+    # rotate by alpha, beta, gamma
+    coefficients = f.rotate(alpha, beta, gamma)
+    return coefficients, filename
+
+
+def translation_helper(
+    f: Coefficients,
+    filename: str,
+    alpha_pi_frac: Optional[float],
+    beta_pi_frac: Optional[float],
+    shannon: int,
+) -> Tuple[np.ndarray, str, Dict]:
+    """
+    performs the translation specific steps
+    """
+    logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
+    # don't add gamma if translation
+    filename += f"translate_{filename_angle(alpha_pi_frac, beta_pi_frac)}_"
+
+    # calculate angles
+    alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
+
+    # translate by alpha, beta
+    coefficients = f.translate(alpha, beta, shannon=shannon)
+
+    # annotate translation point
+    x, y, z = ssht.s2_to_cart(beta, alpha)
+    annotation = {
+        **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_SECOND_COLOUR),
+        **ARROW_STYLE,
+    }
+    return coefficients, filename, annotation
+
+
+def convolution_helper(
+    f: Coefficients,
+    g: Coefficients,
+    coefficients: np.ndarray,
+    shannon: int,
+    filename: str,
+) -> Tuple[np.ndarray, str]:
+    """
+    performs the convolution specific steps
+    """
+    g_coefficients = (
+        g.coefficients
+        if isinstance(f, F_LM)
+        else slepian_forward(f.L, g.coefficients, f.slepian)
+    )
+    coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
+
+    filename += f"convolved_{g.name}_L{f.L}_"
+    return coefficients, filename
+
+
 def plot(
     f: Coefficients,
     g: Optional[Coefficients] = None,
@@ -170,52 +245,22 @@ def plot(
 
     logger.info(f"plotting method: '{method}'")
     if method == "rotate":
-        logger.info(
-            "angles: (alpha, beta, gamma) = "
-            f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
+        coefficients, filename = rotation_helper(
+            f, filename, alpha_pi_frac, beta_pi_frac, gamma_pi_frac
         )
-        filename += (
-            f"{method}_"
-            f"{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}_"
-        )
-
-        # calculate angles
-        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
-        gamma = gamma_pi_frac * np.pi
-
-        # rotate by alpha, beta, gamma
-        coefficients = f.rotate(alpha, beta, gamma)
     elif method == "translate":
-        logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
-        # don't add gamma if translation
-        filename += f"{method}_{filename_angle(alpha_pi_frac, beta_pi_frac)}_"
-
-        # calculate angles
-        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
-
-        # translate by alpha, beta
-        coefficients = f.translate(alpha, beta, shannon=shannon)
+        coefficients, filename, trans_annotation = translation_helper(
+            f, filename, alpha_pi_frac, beta_pi_frac, shannon
+        )
 
         # annotate translation point
         if annotations:
-            x, y, z = ssht.s2_to_cart(beta, alpha)
-            annotation.append(
-                {
-                    **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_SECOND_COLOUR),
-                    **ARROW_STYLE,
-                }
-            )
+            annotation.append(trans_annotation)
 
     if isinstance(g, Coefficients):
-        # perform convolution
-        g_coefficients = (
-            g.coefficients
-            if isinstance(f, F_LM)
-            else slepian_forward(f.L, g.coefficients, f.slepian)
+        coefficients, filename = convolution_helper(
+            f, g, coefficients, shannon, filename
         )
-        coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
-        # adjust filename
-        filename += f"convolved_{g.name}_L{f.L}_"
 
     # add resolution to filename
     if settings.UPSAMPLE:
