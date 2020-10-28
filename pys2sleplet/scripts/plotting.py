@@ -243,7 +243,6 @@ def plot(
         f.L,
         f.resolution if settings.UPSAMPLE else f.L,
         filename,
-        method="MWSS" if settings.UPSAMPLE else "MW",
         plot_type=plot_type,
         annotations=annotation,
         reality=f.reality,

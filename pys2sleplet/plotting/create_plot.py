@@ -30,7 +30,6 @@ class Plot:
     L: int
     resolution: int
     filename: str
-    method: str = field(default="MWSS", repr=False)
     plot_type: str = field(default="real", repr=False)
     annotations: List[Dict] = field(default_factory=list, repr=False)
     reality: bool = field(default=False, repr=False)
@@ -40,10 +39,13 @@ class Plot:
         """
         creates basic plotly plot rather than matplotlib
         """
-        f = self._prepare_field(self.f)
+        upsampled = self.resolution != self.L
+        f = self._prepare_field(self.f, upsampled)
 
         # get values from the setup
-        x, y, z, f_plot, vmin, vmax = self._setup_plot(f, self.resolution)
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(
+            f, self.resolution, method="MWSS" if upsampled else "MW"
+        )
 
         # appropriate zoom in on north pole
         camera = Camera(
@@ -112,10 +114,11 @@ class Plot:
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
                 pio.write_image(fig, filename)
 
+    @staticmethod
     def _setup_plot(
-        self,
         f: np.ndarray,
         resolution: int,
+        method: str = "MW",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: List[float] = [0.0, 0.5],
@@ -124,13 +127,13 @@ class Plot:
         """
         function which creates the data for the matplotlib/plotly plot
         """
-        if self.method == "MW_pole":
+        if method == "MW_pole":
             if len(f) == 2:
                 f, f_sp = f
             else:
                 f, f_sp, phi_sp = f
 
-        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=self.method)
+        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
             raise Exception("Bandlimit L deos not match that of f")
@@ -158,7 +161,7 @@ class Plot:
 
         # Close plot.
         if close:
-            n_theta, n_phi = ssht.sample_shape(resolution, Method=self.method)
+            n_theta, n_phi = ssht.sample_shape(resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
@@ -175,17 +178,19 @@ class Plot:
 
         return x, y, z, f_plot, vmin, vmax
 
-    def _prepare_field(self, f: np.ndarray) -> np.ndarray:
+    def _prepare_field(self, f: np.ndarray, upsampled: bool) -> np.ndarray:
         """
         boosts, forces plot type and then scales the field before plotting
         """
-        return self._normalise_function(self._create_plot_type(self._boost_field(f)))
+        return self._normalise_function(
+            self._create_plot_type(self._boost_field(f, upsampled))
+        )
 
-    def _boost_field(self, f: np.ndarray) -> np.ndarray:
+    def _boost_field(self, f: np.ndarray, upsampled: bool) -> np.ndarray:
         """
         inverts and then boosts the field before plotting
         """
-        if not settings.UPSAMPLE:
+        if not upsampled:
             return f
         else:
             flm = ssht.forward(f, self.L, Reality=self.reality, Spin=self.spin)
@@ -193,7 +198,7 @@ class Plot:
                 flm,
                 self.L,
                 self.resolution,
-                method=self.method,
+                method="MWSS",
                 reality=self.reality,
                 spin=self.spin,
             )
