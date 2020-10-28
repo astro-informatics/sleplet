@@ -2,8 +2,8 @@ from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.denoising import denoising_axisym
 from pys2sleplet.utils.plot_methods import calc_plot_resolution
 
-B = 2
-J_MIN = 0
+B = 3
+J_MIN = 2
 L = 128
 N_SIGMA = 3
 SNR_IN = 1

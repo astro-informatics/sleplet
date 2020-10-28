@@ -82,4 +82,4 @@ def axisymmetric_wavelet_covariance(
 
 
 if __name__ == "__main__":
-    axisymmetric_wavelet_covariance(L=128, B=2, j_min=0)
+    axisymmetric_wavelet_covariance(L=128, B=3, j_min=2)
