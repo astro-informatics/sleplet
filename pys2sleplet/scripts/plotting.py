@@ -149,9 +149,9 @@ def plot(
     method: str = "north",
     plot_type: str = "real",
     annotations: bool = True,
-    alpha_pi_fraction: Optional[float] = None,
-    beta_pi_fraction: Optional[float] = None,
-    gamma_pi_fraction: Optional[float] = None,
+    alpha_pi_frac: Optional[float] = None,
+    beta_pi_frac: Optional[float] = None,
+    gamma_pi_frac: Optional[float] = None,
 ) -> None:
     """
     master plotting method
@@ -172,28 +172,26 @@ def plot(
     if method == "rotate":
         logger.info(
             "angles: (alpha, beta, gamma) = "
-            f"({alpha_pi_fraction}, {beta_pi_fraction}, {gamma_pi_fraction})"
+            f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
         )
         filename += (
             f"{method}_"
-            f"{filename_angle(alpha_pi_fraction, beta_pi_fraction, gamma_pi_fraction)}_"
+            f"{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}_"
         )
 
         # calculate angles
-        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_fraction, beta_pi_fraction)
-        gamma = gamma_pi_fraction * np.pi
+        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
+        gamma = gamma_pi_frac * np.pi
 
         # rotate by alpha, beta, gamma
         coefficients = f.rotate(alpha, beta, gamma)
     elif method == "translate":
-        logger.info(
-            f"angles: (alpha, beta) = ({alpha_pi_fraction}, {beta_pi_fraction})"
-        )
+        logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
         # don't add gamma if translation
-        filename += f"{method}_{filename_angle(alpha_pi_fraction, beta_pi_fraction)}_"
+        filename += f"{method}_{filename_angle(alpha_pi_frac, beta_pi_frac)}_"
 
         # calculate angles
-        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_fraction, beta_pi_fraction)
+        alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
 
         # translate by alpha, beta
         coefficients = f.translate(alpha, beta, shannon=shannon)
@@ -275,9 +273,9 @@ def main() -> None:
         method=args.method,
         plot_type=args.type,
         annotations=args.outline,
-        alpha_pi_fraction=args.alpha,
-        beta_pi_fraction=args.beta,
-        gamma_pi_fraction=args.gamma,
+        alpha_pi_frac=args.alpha,
+        beta_pi_frac=args.beta,
+        gamma_pi_frac=args.gamma,
     )
 
 
