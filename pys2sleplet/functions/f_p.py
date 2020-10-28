@@ -9,6 +9,7 @@ import pyssht as ssht
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.mask_methods import create_default_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import (
     choose_slepian_method,
@@ -28,15 +29,8 @@ class F_P(Coefficients):
 
     def __post_init__(self) -> None:
         self.region = (
-            Region(
-                gap=settings.POLAR_GAP,
-                mask_name=settings.SLEPIAN_MASK,
-                phi_max=np.deg2rad(settings.PHI_MAX),
-                phi_min=np.deg2rad(settings.PHI_MIN),
-                theta_max=np.deg2rad(settings.THETA_MAX),
-                theta_min=np.deg2rad(settings.THETA_MIN),
-            )
-            if self.region is None
+            create_default_region(settings)
+            if not isinstance(self.region, Region)
             else self.region
         )
         self.slepian = choose_slepian_method(self.L, self.region)

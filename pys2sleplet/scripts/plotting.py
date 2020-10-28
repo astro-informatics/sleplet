@@ -11,8 +11,8 @@ from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mask_methods import create_default_region
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
-from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import (
@@ -254,18 +254,7 @@ def plot(
 def main() -> None:
     args = read_args()
 
-    mask = (
-        Region(
-            gap=settings.POLAR_GAP,
-            mask_name=settings.SLEPIAN_MASK,
-            phi_max=np.deg2rad(settings.PHI_MAX),
-            phi_min=np.deg2rad(settings.PHI_MIN),
-            theta_max=np.deg2rad(settings.THETA_MAX),
-            theta_min=np.deg2rad(settings.THETA_MIN),
-        )
-        if args.region
-        else None
-    )
+    mask = create_default_region(settings) if args.region else None
 
     f = FUNCTIONS[args.function](
         args.bandlimit,

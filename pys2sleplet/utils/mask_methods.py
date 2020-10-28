@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+from dynaconf import LazySettings
 
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
@@ -78,3 +79,17 @@ def ensure_masked_flm_bandlimited(
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
     return ssht.forward(field, L, Reality=reality, Spin=spin)
+
+
+def create_default_region(settings: LazySettings) -> Region:
+    """
+    creates default region from settings object
+    """
+    return Region(
+        gap=settings.POLAR_GAP,
+        mask_name=settings.SLEPIAN_MASK,
+        phi_max=np.deg2rad(settings.PHI_MAX),
+        phi_min=np.deg2rad(settings.PHI_MIN),
+        theta_max=np.deg2rad(settings.THETA_MAX),
+        theta_min=np.deg2rad(settings.THETA_MIN),
+    )
