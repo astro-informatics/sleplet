@@ -68,7 +68,7 @@ class Coefficients:
         """
         adds region to the name if present if not a Slepian function
         """
-        if self.region is not None and "slepian" not in self.name:
+        if isinstance(self.region, Region) and "slepian" not in self.name:
             self.name += f"_{self.region.name_ending}"
 
     @property
@@ -85,7 +85,7 @@ class Coefficients:
 
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
-        if self.region is not None and all(
+        if isinstance(self.region, Region) and all(
             x not in self.name for x in {"slepian", "south_america"}
         ):
             coefficients = ensure_masked_flm_bandlimited(

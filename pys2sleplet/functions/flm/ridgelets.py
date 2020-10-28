@@ -33,7 +33,7 @@ class Ridgelets(F_LM):
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")
-        jth = 0 if self.j is None else self.j + 1
+        jth = 0 if not isinstance(self.j, int) else self.j + 1
         self.coefficients = self.wavelet_coefficients[jth]
 
     def _create_name(self) -> None:
@@ -119,9 +119,9 @@ class Ridgelets(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             j = Ridgelets._j
         j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
-        if j is not None and j < 0:
+        if isinstance(j, int) and j < 0:
             raise ValueError("j should be positive")
-        if j is not None and j > j_max - self.j_min:
+        if isinstance(j, int) and j > j_max - self.j_min:
             raise ValueError(
                 f"j should be less than j_max - j_min: {j_max - self.j_min + 1}"
             )

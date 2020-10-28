@@ -208,7 +208,7 @@ def plot(
                 }
             )
 
-    if g is not None:
+    if isinstance(g, Coefficients):
         # perform convolution
         g_coefficients = (
             g.coefficients
@@ -275,7 +275,11 @@ def main() -> None:
         smoothing=args.smoothing,
     )
 
-    g = FUNCTIONS[args.convolve](args.bandlimit) if args.convolve is not None else None
+    g = (
+        FUNCTIONS[args.convolve](args.bandlimit)
+        if isinstance(args.convolve, str)
+        else None
+    )
 
     plot(
         f,

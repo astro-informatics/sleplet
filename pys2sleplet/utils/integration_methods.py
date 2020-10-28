@@ -44,7 +44,9 @@ def integrate_sphere(
       as well as the ability to have conjugates within the integral
     * the coefficients resolutions are boosted prior to integration
     """
-    if mask_boosted is not None and mask_boosted.shape != ssht.sample_shape(resolution):
+    if isinstance(mask_boosted, np.ndarray) and mask_boosted.shape != ssht.sample_shape(
+        resolution
+    ):
         raise AttributeError(
             f"mismatch in mask shape {mask_boosted.shape} & resolution {resolution}"
         )
@@ -59,7 +61,7 @@ def integrate_sphere(
 
     integrand = f * g * weight
 
-    if mask_boosted is not None:
+    if isinstance(mask_boosted, np.ndarray):
         integrand = np.where(mask_boosted, integrand, 0)
 
     return integrand.sum()

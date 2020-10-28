@@ -140,7 +140,7 @@ class Plot:
         f_max = f_plot.max()
         f_min = f_plot.min()
 
-        if color_range is None:
+        if not isinstance(color_range, list):
             vmin = f_min
             vmax = f_max
         else:
