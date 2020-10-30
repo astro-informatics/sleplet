@@ -19,12 +19,7 @@ def slepian_wavelet_inverse(
     """
     computes the inverse wavelet transform in Slepian space
     """
-    coeffs_reshape = (
-        np.reshape(wav_coeffs, (1, -1))
-        if len(wav_coeffs.shape) != len(wavelets.shape)
-        else wav_coeffs
-    )
-    return (coeffs_reshape.conj().T[:shannon] * wavelets.T[:shannon]).sum(axis=1)
+    return sifting_convolution(wavelets, wav_coeffs.T, shannon=shannon).sum(axis=0)
 
 
 def axisymmetric_wavelet_forward(
