@@ -31,7 +31,7 @@ def main() -> None:
     plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
     for j, k in enumerate(kappa.T):
         yi = pchip(x, k)
-        plt.semilogx(xi, yi(xi))
+        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{j+J_MIN}_p$")
     slepian = SlepianArbitrary(L, "south_america")
     plt.axvline(slepian.N, color="k", linestyle="dashed")
     plt.annotate(
@@ -46,7 +46,8 @@ def main() -> None:
     ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
-    save_plot(fig_path, f"slepian_tiling_L{L}")
+    plt.legend()
+    save_plot(fig_path, f"south_america_slepian_tiling_L{L}")
 
 
 if __name__ == "__main__":
