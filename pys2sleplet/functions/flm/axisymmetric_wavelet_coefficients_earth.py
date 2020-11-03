@@ -75,9 +75,9 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
         computes wavelet coefficients of the Earth
         """
         self._create_wavelets()
-        e = Earth(self.L)
+        self.earth = Earth(self.L)
         self.wavelet_coefficients = axisymmetric_wavelet_forward(
-            self.L, e.coefficients, self.wavelets
+            self.L, self.earth.coefficients, self.wavelets
         )
 
     @property  # type:ignore
