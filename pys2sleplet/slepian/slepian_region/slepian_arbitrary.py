@@ -129,7 +129,7 @@ class SlepianArbitrary(SlepianFunctions):
         for i in range(self.L_max ** 2 - self.L_min ** 2):
             logger.info(f"start ell: {i}")
             self._matrix_helper(D_r, D_i, i)
-            logger.info(f"start ell: {i}")
+            logger.info(f"finish ell: {i}")
 
         # combine real and imaginary parts
         return D_r + 1j * D_i

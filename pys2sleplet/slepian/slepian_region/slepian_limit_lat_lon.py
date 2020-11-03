@@ -205,6 +205,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         K = np.zeros((L ** 2, L ** 2), dtype=np.complex128)
 
         for l in prange(L):
+            logger.info(f"start ell: {l}")
             for p in range(l + 1):
                 C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
 
@@ -230,6 +231,7 @@ class SlepianLimitLatLon(SlepianFunctions):
                             K[ind_lm, ind_pq] += C3 * S1
 
                         K[ind_lm, ind_pq] *= C1 * C2
+            logger.info(f"finish ell: {l}")
         return K
 
     @staticmethod

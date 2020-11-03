@@ -211,7 +211,9 @@ class SlepianPolarCap(SlepianFunctions):
         lvec = np.arange(m, self.L)
 
         for i in range(self.L - m):
+            logger.info(f"start ell: {i}")
             self._dm_matrix_helper(Dm, i, m, lvec, Pl, ell)
+            logger.info(f"finish ell: {i}")
 
         Dm *= (-1) ** m / 2
 
@@ -254,7 +256,9 @@ class SlepianPolarCap(SlepianFunctions):
 
             # deal with chunk
             for i in chunk:
+                logger.info(f"start ell: {i}")
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
+                logger.info(f"finish ell: {i}")
 
             # clean up shared memory
             ex_shm.close()
