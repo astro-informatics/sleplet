@@ -1,6 +1,7 @@
 import numpy as np
 
 B: int = 2
+J: int = 2
 J_MIN: int = 0
 L_SMALL: int = 16
 L_LARGE: int = 128
