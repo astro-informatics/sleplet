@@ -1,10 +1,14 @@
+import numpy as np
 import pytest
+from numpy.random import default_rng
 
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_SMALL as L
 from pys2sleplet.test.constants import PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
+from pys2sleplet.utils.harmonic_methods import compute_random_signal
+from pys2sleplet.utils.vars import RANDOM_SEED
 
 
 def pytest_addoption(parser):
@@ -53,3 +57,9 @@ def earth_polar_cap(slepian_polar_cap) -> Earth:
 @pytest.fixture(scope="session")
 def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
     return Earth(L, region=slepian_lim_lat_lon.region)
+
+
+@pytest.fixture(scope="session")
+def random_flm() -> np.ndarray:
+    rng = default_rng(RANDOM_SEED)
+    return compute_random_signal(L, rng, 1)
