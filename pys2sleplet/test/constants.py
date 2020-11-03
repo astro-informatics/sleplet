@@ -5,6 +5,7 @@ J: int = 2
 J_MIN: int = 0
 L_SMALL: int = 16
 L_LARGE: int = 128
+NCPU: int = 4
 N_SIGMA: int = 3
 ORDER: int = 0
 PHI_0: float = np.pi / 6
