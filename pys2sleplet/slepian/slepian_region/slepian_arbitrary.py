@@ -94,7 +94,7 @@ class SlepianArbitrary(SlepianFunctions):
 
             # check whether the large job has been split up
             if (
-                self.L_min != L_MIN_DEFAULT or self.L_max != L_MAX_DEFAULT
+                self.L_min != L_MIN_DEFAULT or self.L_max != self.L
             ) and settings.SAVE_MATRICES:
                 logger.info("large job has been used, saving intermediate matrix")
                 inter_loc = (
