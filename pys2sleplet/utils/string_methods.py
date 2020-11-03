@@ -1,5 +1,5 @@
 from fractions import Fraction
-from typing import Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 
@@ -23,14 +23,14 @@ def _pi_in_filename(numerator: int, denominator: int) -> str:
     return filename
 
 
-def filename_args(angle: float, arg_name: str) -> str:
+def filename_args(value: float, arg_name: str) -> str:
     """
-    used to denote angles for rotation/translation
+    used to add an extra argument to filename
     """
     filename = "_"
-    num, dem = _get_angle_num_dem(angle)
+    num, dem = _get_angle_num_dem(value)
     filename += f"{num}{arg_name}"
-    if angle < 1 and angle != 0:
+    if value < 1 and value != 0:
         filename += f"{dem}"
     return filename
 
@@ -84,7 +84,7 @@ def angle_as_degree(radian: float) -> int:
     return int(round(np.rad2deg(radian)))
 
 
-def wavelet_ending(j_min: int, j: int) -> str:
+def wavelet_ending(j_min: int, j: Optional[int]) -> str:
     """
     the ending name of the given wavelet
     """
