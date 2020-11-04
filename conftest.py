@@ -3,11 +3,14 @@ import pytest
 from numpy.random import default_rng
 
 from pys2sleplet.functions.flm.earth import Earth
+from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
+from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import (
     L_SMALL,
+    MASK,
     PHI_0,
     PHI_1,
     THETA_0,
@@ -57,6 +60,14 @@ def slepian_lim_lat_lon() -> SlepianLimitLatLon:
 
 
 @pytest.fixture(scope="session")
+def slepian_arbitrary() -> SlepianArbitrary:
+    """
+    create a Slepian arbitrary class
+    """
+    return SlepianArbitrary(L_SMALL, MASK)
+
+
+@pytest.fixture(scope="session")
 def earth_polar_cap(slepian_polar_cap) -> Earth:
     """
     Earth with polar cap region
@@ -70,6 +81,14 @@ def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
     Earth with limited latitude longitude region
     """
     return Earth(L_SMALL, region=slepian_lim_lat_lon.region)
+
+
+@pytest.fixture(scope="session")
+def south_america_arbitrary(slepian_arbitrary) -> SouthAmerica:
+    """
+    South America with arbitrary region
+    """
+    return SouthAmerica(L_SMALL, region=slepian_arbitrary.region)
 
 
 @pytest.fixture(scope="session")
