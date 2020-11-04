@@ -3,6 +3,7 @@ import pytest
 from numpy.random import default_rng
 
 from pys2sleplet.functions.flm.earth import Earth
+from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import (
@@ -69,6 +70,22 @@ def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
     Earth with limited latitude longitude region
     """
     return Earth(L_SMALL, region=slepian_lim_lat_lon.region)
+
+
+@pytest.fixture(scope="session")
+def slepian_dirac_delta_polar_cap(slepian_polar_cap) -> SlepianDiracDelta:
+    """
+    Creates a polar cap Slepian Dirac delta
+    """
+    return SlepianDiracDelta(L_SMALL, region=slepian_polar_cap.region)
+
+
+@pytest.fixture(scope="session")
+def slepian_dirac_delta_lim_lat_lon(slepian_lim_lat_lon) -> SlepianDiracDelta:
+    """
+    Creates a limited latitude longitude Slepian Dirac delta
+    """
+    return SlepianDiracDelta(L_SMALL, region=slepian_lim_lat_lon.region)
 
 
 @pytest.fixture(scope="session")
