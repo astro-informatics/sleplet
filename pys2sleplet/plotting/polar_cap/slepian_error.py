@@ -5,10 +5,8 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 
 from pys2sleplet.plotting.inputs import THETA_MAX
-from pys2sleplet.plotting.plotting_utils import (
-    earth_region_slepian_coefficients,
-    get_shannon,
-)
+from pys2sleplet.plotting.plotting_utils import earth_region_slepian_coefficients
+from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.plot_methods import save_plot
 
 L = 19
@@ -24,7 +22,7 @@ def main() -> None:
     """
     region = _helper_region(L, THETA_MAX)
     sphere = _helper_sphere(L, THETA_MAX)
-    N = get_shannon(L, THETA_MAX)
+    N = SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     ax = plt.gca()
     sns.scatterplot(
         x=range(N), y=region, ax=ax, label="region", linewidth=0, marker="."

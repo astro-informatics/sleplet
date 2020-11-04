@@ -1,17 +1,8 @@
 import numpy as np
 
 from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
-
-
-def get_shannon(L: int, theta_max: int) -> int:
-    """
-    computes the Shannon number
-    """
-    slepian = SlepianPolarCap(L, np.deg2rad(theta_max))
-    return slepian.N
 
 
 def earth_region_harmonic_coefficients(L: int, theta_max: int) -> np.ndarray:

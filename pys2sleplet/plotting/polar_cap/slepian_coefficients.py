@@ -8,8 +8,8 @@ from pys2sleplet.plotting.inputs import THETA_MAX
 from pys2sleplet.plotting.plotting_utils import (
     earth_region_harmonic_coefficients,
     earth_region_slepian_coefficients,
-    get_shannon,
 )
+from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.plot_methods import save_plot
 
 L = 19
@@ -23,7 +23,7 @@ def main() -> None:
     """
     creates a plot of Slepian coefficients against rank
     """
-    N = get_shannon(L, THETA_MAX)
+    N = SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     flm = earth_region_harmonic_coefficients(L, THETA_MAX)[:N]
     fp = np.sort(earth_region_slepian_coefficients(L, THETA_MAX))[::-1]
     ax = plt.gca()
