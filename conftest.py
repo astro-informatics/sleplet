@@ -51,15 +51,24 @@ def slepian_lim_lat_lon() -> SlepianLimitLatLon:
 
 @pytest.fixture(scope="session")
 def earth_polar_cap(slepian_polar_cap) -> Earth:
+    """
+    Earth with polar cap region
+    """
     return Earth(L, region=slepian_polar_cap.region)
 
 
 @pytest.fixture(scope="session")
 def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
+    """
+    Earth with limited latitude longitude region
+    """
     return Earth(L, region=slepian_lim_lat_lon.region)
 
 
 @pytest.fixture(scope="session")
 def random_flm() -> np.ndarray:
+    """
+    creates random flm
+    """
     rng = default_rng(RANDOM_SEED)
     return compute_random_signal(L, rng, 1)
