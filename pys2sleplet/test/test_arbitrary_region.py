@@ -3,7 +3,7 @@ import pytest
 from numpy.testing import assert_allclose
 
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from pys2sleplet.test.constants import L_SMALL as L
+from pys2sleplet.test.constants import L_SMALL
 
 
 @pytest.mark.slow
@@ -13,7 +13,7 @@ def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
     in comparison to the smarter Slepian polar cap method
     """
     mask_name = slepian_polar_cap.region.name_ending
-    slepian = SlepianArbitrary(L, mask_name)
+    slepian = SlepianArbitrary(L_SMALL, mask_name)
     assert_allclose(np.abs(slepian_polar_cap.N - slepian.N), 0, atol=0)
     assert_allclose(
         np.abs(slepian.eigenvalues - slepian_polar_cap.eigenvalues)[
@@ -38,7 +38,7 @@ def test_equality_to_lim_lat_lon_method(slepian_lim_lat_lon) -> None:
     in comparison to the smarter Slepian lim lat lon method
     """
     mask_name = slepian_lim_lat_lon.region.name_ending
-    slepian = SlepianArbitrary(L, mask_name)
+    slepian = SlepianArbitrary(L_SMALL, mask_name)
     assert_allclose(np.abs(slepian_lim_lat_lon.N - slepian.N), 0, atol=1)
     assert_allclose(
         np.abs(slepian.eigenvalues - slepian_lim_lat_lon.eigenvalues)[

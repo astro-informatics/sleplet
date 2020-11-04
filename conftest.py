@@ -5,8 +5,14 @@ from numpy.random import default_rng
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.test.constants import L_SMALL as L
-from pys2sleplet.test.constants import PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
+from pys2sleplet.test.constants import (
+    L_SMALL,
+    PHI_0,
+    PHI_1,
+    THETA_0,
+    THETA_1,
+    THETA_MAX,
+)
 from pys2sleplet.utils.harmonic_methods import compute_random_signal
 from pys2sleplet.utils.vars import RANDOM_SEED
 
@@ -36,7 +42,7 @@ def slepian_polar_cap() -> SlepianPolarCap:
     """
     create a Slepian polar cap class
     """
-    return SlepianPolarCap(L, THETA_MAX)
+    return SlepianPolarCap(L_SMALL, THETA_MAX)
 
 
 @pytest.fixture(scope="session")
@@ -45,7 +51,7 @@ def slepian_lim_lat_lon() -> SlepianLimitLatLon:
     create a Slepian limited latitude longitude class
     """
     return SlepianLimitLatLon(
-        L, theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1
+        L_SMALL, theta_min=THETA_0, theta_max=THETA_1, phi_min=PHI_0, phi_max=PHI_1
     )
 
 
@@ -54,7 +60,7 @@ def earth_polar_cap(slepian_polar_cap) -> Earth:
     """
     Earth with polar cap region
     """
-    return Earth(L, region=slepian_polar_cap.region)
+    return Earth(L_SMALL, region=slepian_polar_cap.region)
 
 
 @pytest.fixture(scope="session")
@@ -62,7 +68,7 @@ def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
     """
     Earth with limited latitude longitude region
     """
-    return Earth(L, region=slepian_lim_lat_lon.region)
+    return Earth(L_SMALL, region=slepian_lim_lat_lon.region)
 
 
 @pytest.fixture(scope="session")
@@ -71,4 +77,4 @@ def random_flm() -> np.ndarray:
     creates random flm
     """
     rng = default_rng(RANDOM_SEED)
-    return compute_random_signal(L, rng, 1)
+    return compute_random_signal(L_SMALL, rng, 1)

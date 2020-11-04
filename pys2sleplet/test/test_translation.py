@@ -4,7 +4,7 @@ from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose
 
 from pys2sleplet.functions.flm.dirac_delta import DiracDelta
-from pys2sleplet.test.constants import L_LARGE as L
+from pys2sleplet.test.constants import L_LARGE
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.vars import RANDOM_SEED
 
@@ -31,8 +31,8 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     test to ensure that rotation and translation
     give the same result for the Dirac delta
     """
-    dd = DiracDelta(L)
-    alpha, beta = calc_nearest_grid_point(L, alpha_pi_frac, beta_pi_frac)
+    dd = DiracDelta(L_LARGE)
+    alpha, beta = calc_nearest_grid_point(L_LARGE, alpha_pi_frac, beta_pi_frac)
     dd_rot = dd.rotate(alpha, beta)
     dd_trans = dd.translate(alpha, beta)
     assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=1e-16)
