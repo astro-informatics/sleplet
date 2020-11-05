@@ -20,3 +20,4 @@ pytest
 scipy
 seaborn
 setuptools
+tbb
