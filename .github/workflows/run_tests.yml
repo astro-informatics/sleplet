@@ -5,18 +5,14 @@ on: [push, pull_request]
 jobs:
     build:
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                python-version: [3.8]
-
         steps:
             - name: checkout source
               uses: actions/checkout@v2
 
-            - name: Set up Python ${{ matrix.python-version }}
+            - name: Set up Python
               uses: actions/setup-python@v2
               with:
-                  python-version: ${{ matrix.python-version }}
+                  python-version: 3.8
 
             - name: restore python cache
               uses: actions/cache@v2
