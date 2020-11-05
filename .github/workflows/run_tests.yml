@@ -28,12 +28,14 @@ jobs:
 
             - name: pull LFS files
               run: |
-                  git lfs pull -I \
+                  git lfs ls-files -I \
                   EGM2008_Topography_flms_L2190.mat,\
                   polar40_L32.npy,\
                   polar40_outline.npy,\
                   theta30-60_phi30-60_L32.npy,\
-                  theta30-60_phi30-60_outline.npy
+                  theta30-60_phi30-60_outline.npy \
+                  -l | cut -d' ' -f1 | sort > .lfs-assets-id
+                  git lfs pull
 
             - name: Test with pytest
               run: |
