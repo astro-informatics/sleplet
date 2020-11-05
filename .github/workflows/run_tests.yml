@@ -22,7 +22,9 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ${{ env.pythonLocation }}
-                  key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
+                  key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-python-
 
             - name: Install dependencies
               run: |
