@@ -1,4 +1,4 @@
-name: Python package
+name: Run Tests
 
 on: [push, pull_request]
 
@@ -13,6 +13,10 @@ jobs:
             - name: checkout source
               uses: actions/checkout@v2
 
+            - name: Install dependencies for gmpy2
+              run: |
+                  sudo apt-get install libmpfr-dev
+
             - name: generate LFS file list
               run: |
                   git lfs ls-files -I \
@@ -22,12 +26,6 @@ jobs:
                   theta30-60_phi30-60_L32.npy,\
                   theta30-60_phi30-60_outline.npy \
                   -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-            - name: restore LFS cache
-              uses: actions/cache@v2
-              with:
-                  path: .git/lfs
-                  key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
 
             - name: pull lfs files
               run: git lfs pull
