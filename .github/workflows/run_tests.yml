@@ -18,10 +18,6 @@ jobs:
               with:
                   python-version: ${{ matrix.python-version }}
 
-            - name: Install dependencies for gmpy2
-              run: |
-                  sudo apt-get -y install libmpc-dev libmpfr-dev
-
             - name: restore python cache
               uses: actions/cache@v2
               with:
@@ -30,6 +26,7 @@ jobs:
 
             - name: Install dependencies
               run: |
+                  sudo apt-get -y install libmpc-dev libmpfr-dev
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
 
