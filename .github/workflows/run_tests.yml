@@ -13,9 +13,10 @@ jobs:
             - name: checkout source
               uses: actions/checkout@v2
 
-            - name: Install dependencies for gmpy2
-              run: |
-                  sudo apt-get install libmpfr-dev
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v2
+              with:
+                  python-version: ${{ matrix.python-version }}
 
             - name: generate LFS file list
               run: |
@@ -30,10 +31,9 @@ jobs:
             - name: pull lfs files
               run: git lfs pull
 
-            - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v2
-              with:
-                  python-version: ${{ matrix.python-version }}
+            - name: Install dependencies for gmpy2
+              run: |
+                  sudo apt-get install libmpc-dev libmpfr-dev
 
             - name: restore pip cache
               uses: actions/cache@v2
