@@ -20,16 +20,13 @@ jobs:
 
             - name: Install dependencies for gmpy2
               run: |
-                  sudo apt-get update
                   sudo apt-get -y install libmpc-dev libmpfr-dev
 
-            - name: restore pip cache
+            - name: restore python cache
               uses: actions/cache@v2
               with:
-                  path: ~/.cache/pip
-                  key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-                  restore-keys: |
-                      ${{ runner.os }}-pip-
+                  path: ${{ env.pythonLocation }}
+                  key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
 
             - name: Install dependencies
               run: |
