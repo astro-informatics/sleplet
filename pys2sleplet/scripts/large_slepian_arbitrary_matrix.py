@@ -16,12 +16,14 @@ _matrices_path = (
 )
 
 
-def compute_large_D_matrix(mask_name: str, L: int, L_ranges: List[int]) -> None:
+def compute_large_D_matrix(
+    mask_name: str, L: int, L_ranges: List[int], shannon: int
+) -> None:
     """
     checks that the split up D matrix has the same eigenvalues
     & eigenvectors as the computation of the whole D matrix in one step
     """
-    slepian_loc = _matrices_path / f"D_{mask_name}_L{L}"
+    slepian_loc = _matrices_path / f"D_{mask_name}_L{L}_N{shannon}"
     D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 
@@ -33,9 +35,11 @@ def compute_large_D_matrix(mask_name: str, L: int, L_ranges: List[int]) -> None:
         assert_equal(eigenvalues_split, eigenvalues)
         assert_equal(eigenvectors_split, eigenvectors)
     else:
-        np.save(eval_loc, eigenvalues_split)
-        np.save(evec_loc, eigenvectors_split)
+        np.save(eval_loc, eigenvalues_split[:shannon])
+        np.save(evec_loc, eigenvectors_split[:shannon])
 
 
 if __name__ == "__main__":
-    compute_large_D_matrix(mask_name="south_america", L=16, L_ranges=[0, 8, 11, 14, 16])
+    compute_large_D_matrix(
+        mask_name="south_america", L=128, L_ranges=[0, 25, 50, 128], shannon=690
+    )
