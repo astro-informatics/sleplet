@@ -11,6 +11,7 @@ N_SIGMA: int = 3
 ORDER: int = 0
 PHI_0: float = np.pi / 6
 PHI_1: float = np.pi / 3
+PL_ENTRIES: int = 255
 SAMPLING_SCHEME: str = "MWSS"
 SMOOTHING: int = 100
 SNR_IN: int = 10
