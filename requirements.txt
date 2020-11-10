@@ -17,6 +17,7 @@ psutil
 pys2let
 pyssht
 pytest
+requests
 scipy
 seaborn
 setuptools
