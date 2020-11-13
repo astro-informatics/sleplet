@@ -192,16 +192,15 @@ class Plot:
         """
         if not upsampled:
             return f
-        else:
-            flm = ssht.forward(f, self.L, Reality=self.reality, Spin=self.spin)
-            return invert_flm_boosted(
-                flm,
-                self.L,
-                self.resolution,
-                method="MWSS",
-                reality=self.reality,
-                spin=self.spin,
-            )
+        flm = ssht.forward(f, self.L, Reality=self.reality, Spin=self.spin)
+        return invert_flm_boosted(
+            flm,
+            self.L,
+            self.resolution,
+            method="MWSS",
+            reality=self.reality,
+            spin=self.spin,
+        )
 
     def _create_plot_type(self, f: np.ndarray) -> np.ndarray:
         """

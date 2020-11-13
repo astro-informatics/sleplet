@@ -6,6 +6,7 @@ import pyssht as ssht
 from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.utils.function_dicts import MAPS
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.noise import (
     compute_sigma_j,
     compute_snr,
@@ -14,6 +15,7 @@ from pys2sleplet.utils.noise import (
 )
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,
@@ -28,18 +30,33 @@ def denoising_axisym(
     """
     reproduce the denoising demo from s2let paper
     """
+    logger.info(f"L={L}, B={B}, J_min={j_min}, n_sigma={n_sigma}, SNR_in={snr_in}")
     # create map & noised map
     fun = MAPS[name](L)
     fun_noised = MAPS[name](L, noise=snr_in)
+
+    # rotate to South America
+    fun_rot = (
+        ssht.rotate_flms(fun.coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)
+        if "earth" in name
+        else fun.coefficients
+    )
+    fun_noised_rot = (
+        ssht.rotate_flms(
+            fun_noised.coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L
+        )
+        if "earth" in name
+        else fun_noised.coefficients
+    )
 
     # create wavelets
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # compute wavelet coefficients
-    w = axisymmetric_wavelet_forward(L, fun_noised.coefficients, aw.wavelets)
+    w = axisymmetric_wavelet_forward(L, fun_noised_rot, aw.wavelets)
 
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, fun.coefficients, aw.wavelets[1:], snr_in)
+    sigma_j = compute_sigma_j(L, fun_rot, aw.wavelets[1:], snr_in)
 
     # hard thresholding
     w_denoised = harmonic_hard_thresholding(L, w, sigma_j, n_sigma)
@@ -49,10 +66,8 @@ def denoising_axisym(
     f = ssht.inverse(flm, L)
 
     # compute SNR
-    noised_snr = compute_snr(
-        L, fun.coefficients, fun_noised.coefficients - fun.coefficients
-    )
-    denoised_snr = compute_snr(L, fun.coefficients, flm - fun.coefficients)
+    noised_snr = compute_snr(L, fun_rot, fun_noised_rot - fun_rot)
+    denoised_snr = compute_snr(L, fun_rot, flm - fun_rot)
     return f, noised_snr, denoised_snr
 
 
