@@ -12,7 +12,7 @@ from pys2sleplet.functions.flm.elongated_gaussian import ElongatedGaussian
 from pys2sleplet.functions.flm.gaussian import Gaussian
 from pys2sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.functions.flm.identity import Identity
-from pys2sleplet.functions.flm.noise_gaussian_earth import NoiseGaussianEarth
+from pys2sleplet.functions.flm.noise_earth import NoiseEarth
 from pys2sleplet.functions.flm.ridgelets import Ridgelets
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.flm.spherical_harmonic import SphericalHarmonic
@@ -21,8 +21,8 @@ from pys2sleplet.functions.flm.wmap import Wmap
 from pys2sleplet.functions.fp.slepian import Slepian
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_identity import SlepianIdentity
-from pys2sleplet.functions.fp.slepian_noise_gaussian_south_america import (
-    SlepianNoiseGaussianSouthAmerica,
+from pys2sleplet.functions.fp.slepian_noise_south_america import (
+    SlepianNoiseSouthAmerica,
 )
 from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
@@ -39,7 +39,7 @@ FLM: Dict[str, Coefficients] = dict(
     gaussian=Gaussian,
     harmonic_gaussian=HarmonicGaussian,
     identity=Identity,
-    noise_gaussian_earth=NoiseGaussianEarth,
+    noise_earth=NoiseEarth,
     ridgelets=Ridgelets,
     south_america=SouthAmerica,
     spherical_harmonic=SphericalHarmonic,
@@ -51,7 +51,7 @@ FP: Dict[str, Coefficients] = dict(
     slepian=Slepian,
     slepian_dirac_delta=SlepianDiracDelta,
     slepian_identity=SlepianIdentity,
-    slepian_noise_gaussian_south_america=SlepianNoiseGaussianSouthAmerica,
+    slepian_noise_south_america=SlepianNoiseSouthAmerica,
     slepian_wavelet_coefficients_south_america=SlepianWaveletCoefficientsSouthAmerica,
     slepian_wavelets=SlepianWavelets,
 )

@@ -8,7 +8,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 @dataclass
-class SlepianNoiseGaussianSouthAmerica(F_P):
+class SlepianNoiseSouthAmerica(F_P):
     SNR: float
     _SNR: float = field(default=10, init=False, repr=False)
 
@@ -26,9 +26,7 @@ class SlepianNoiseGaussianSouthAmerica(F_P):
         self.coefficients = slepian_forward(self.L, harmonic_noise, self.slepian)
 
     def _create_name(self) -> None:
-        self.name = (
-            f"slepian_gaussian_noise_south_america{filename_args(self.SNR, 'snr')}"
-        )
+        self.name = f"slepian_noise_south_america{filename_args(self.SNR, 'snr')}"
 
     def _set_reality(self) -> None:
         self.reality = False
@@ -52,5 +50,5 @@ class SlepianNoiseGaussianSouthAmerica(F_P):
         if isinstance(SNR, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            SNR = SlepianNoiseGaussianSouthAmerica._SNR
+            SNR = SlepianNoiseSouthAmerica._SNR
         self._SNR = SNR

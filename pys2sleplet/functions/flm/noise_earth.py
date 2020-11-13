@@ -7,7 +7,7 @@ from pys2sleplet.utils.string_methods import filename_args
 
 
 @dataclass
-class NoiseGaussianEarth(F_LM):
+class NoiseEarth(F_LM):
     SNR: float
     _SNR: float = field(default=10, init=False, repr=False)
 
@@ -22,7 +22,7 @@ class NoiseGaussianEarth(F_LM):
         self.coefficients = create_noise(self.L, earth.coefficients, self.SNR)
 
     def _create_name(self) -> None:
-        self.name = f"gaussian_noise_earth{filename_args(self.SNR, 'snr')}"
+        self.name = f"noise_earth{filename_args(self.SNR, 'snr')}"
 
     def _set_reality(self) -> None:
         self.reality = True
@@ -46,5 +46,5 @@ class NoiseGaussianEarth(F_LM):
         if isinstance(SNR, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            SNR = NoiseGaussianEarth._SNR
+            SNR = NoiseEarth._SNR
         self._SNR = SNR
