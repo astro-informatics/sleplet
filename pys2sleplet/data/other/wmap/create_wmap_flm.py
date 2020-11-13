@@ -23,17 +23,18 @@ def create_flm(L: int) -> np.ndarray:
     # Simulate CMB in harmonic space.
     flm = np.zeros(L ** 2, dtype=np.complex128)
     for ell in range(2, L):
-        cl_val = cl[ell - 1]
-        cl_val *= 2 * np.pi / (ell * (ell + 1))
-        for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
-            if m == 0:
-                flm[ind] = np.sqrt(cl_val) * rng.standard_normal()
-            else:
-                flm[ind] = (
-                    np.sqrt(cl_val / 2) * rng.standard_normal()
-                    + 1j * np.sqrt(cl_val / 2) * rng.standard_normal()
-                )
+        sigma = np.sqrt(2 * np.pi / (ell * (ell + 1)) * cl[ell - 2])
+        ind = ssht.elm2ind(ell, 0)
+        flm[ind] = sigma * rng.standard_normal()
+        for m in range(1, ell + 1):
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            flm[ind_pm] = (
+                sigma
+                / np.sqrt(2)
+                * (rng.standard_normal() + 1j * rng.standard_normal())
+            )
+            flm[ind_nm] = (-1) ** m * flm[ind_pm].conj()
     return flm
 
 
