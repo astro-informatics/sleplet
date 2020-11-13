@@ -24,6 +24,7 @@ from pys2sleplet.functions.fp.slepian_identity import SlepianIdentity
 from pys2sleplet.functions.fp.slepian_noise_south_america import (
     SlepianNoiseSouthAmerica,
 )
+from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
 )
@@ -52,6 +53,7 @@ FP: Dict[str, Coefficients] = dict(
     slepian_dirac_delta=SlepianDiracDelta,
     slepian_identity=SlepianIdentity,
     slepian_noise_south_america=SlepianNoiseSouthAmerica,
+    slepian_south_america=SlepianSouthAmerica,
     slepian_wavelet_coefficients_south_america=SlepianWaveletCoefficientsSouthAmerica,
     slepian_wavelets=SlepianWavelets,
 )
