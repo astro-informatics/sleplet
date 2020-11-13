@@ -12,6 +12,7 @@ from pys2sleplet.functions.flm.elongated_gaussian import ElongatedGaussian
 from pys2sleplet.functions.flm.gaussian import Gaussian
 from pys2sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.functions.flm.identity import Identity
+from pys2sleplet.functions.flm.noise_gaussian_earth import NoiseGaussianEarth
 from pys2sleplet.functions.flm.ridgelets import Ridgelets
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.flm.spherical_harmonic import SphericalHarmonic
@@ -35,6 +36,7 @@ FLM: Dict[str, Coefficients] = dict(
     gaussian=Gaussian,
     harmonic_gaussian=HarmonicGaussian,
     identity=Identity,
+    noise_gaussian_earth=NoiseGaussianEarth,
     ridgelets=Ridgelets,
     south_america=SouthAmerica,
     spherical_harmonic=SphericalHarmonic,

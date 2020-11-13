@@ -267,7 +267,7 @@ def plot(
         filename += f"res{f.resolution}_"
 
     # rotate plot of Earth to South America
-    if f.__class__.__name__ == "Earth" or g.__class__.__name__ == "Earth":
+    if "earth" in filename:
         coefficients = ssht.rotate_flms(
             coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, f.L
         )
