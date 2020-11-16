@@ -150,11 +150,9 @@ def plot(
     """
     master plotting method
     """
-    noised = f"{filename_args(f.noise, 'noise')}" if isinstance(f.noise, float) else ""
+    noised = f"{filename_args(f.noise, 'noise')}" if f.noise is not None else ""
     smoothed = (
-        f"{filename_args(f.smoothing, 'smooth')}"
-        if isinstance(f.smoothing, float)
-        else ""
+        f"{filename_args(f.smoothing, 'smooth')}" if f.smoothing is not None else ""
     )
     filename = f"{f.name}{noised}{smoothed}_L{f.L}_"
     coefficients = f.coefficients
@@ -225,9 +223,9 @@ def main() -> None:
         args.bandlimit,
         extra_args=args.extra_args,
         region=mask,
-        noise=np.float_power(10, args.noise) if isinstance(args.noise, int) else None,
+        noise=np.float_power(10, args.noise) if args.noise is not None else None,
         smoothing=np.float_power(10, args.smoothing)
-        if isinstance(args.smoothing, int)
+        if args.smoothing is not None
         else None,
     )
 

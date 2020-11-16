@@ -88,4 +88,4 @@ def wavelet_ending(j_min: int, j: Optional[int]) -> str:
     """
     the ending name of the given wavelet
     """
-    return "_scaling" if not isinstance(j, int) else f"{filename_args(j + j_min, 'j')}"
+    return "_scaling" if j is None else f"{filename_args(j + j_min, 'j')}"

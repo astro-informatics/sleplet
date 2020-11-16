@@ -9,7 +9,7 @@ def sifting_convolution(
     """
     computes the sifting convolution between two multipoles
     """
-    n = shannon if isinstance(shannon, int) else np.newaxis
+    n = shannon if shannon is not None else np.newaxis
     # change shape if the sizes don't match
     g_reshape = (
         np.reshape(g_coefficient, (-1, 1))

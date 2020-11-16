@@ -97,7 +97,7 @@ class SlepianPolarCap(SlepianFunctions):
         eigenvectors = np.load(evec_loc)
         orders = np.load(order_loc)
 
-        if isinstance(self.order, int):
+        if self.order is not None:
             idx = np.where(orders == self.order)
             self.eigenvalues = eigenvalues[idx]
             self.eigenvectors = eigenvectors[idx]
@@ -463,7 +463,7 @@ class SlepianPolarCap(SlepianFunctions):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             order = SlepianPolarCap._order
-        if isinstance(order, int) and (np.abs(order) >= self.L).any():
+        if order is not None and (np.abs(order) >= self.L).any():
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
 
