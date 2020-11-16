@@ -231,8 +231,8 @@ def plot(
     """
     master plotting method
     """
-    noised = "_noised" if f.noise else ""
-    smoothed = "_smoothed" if f.smoothing else ""
+    noised = f"_noised{f.noise}" if f.noise else ""
+    smoothed = f"_smoothed{f.smoothing}" if f.smoothing else ""
     filename = f"{f.name}{noised}{smoothed}_L{f.L}_"
     coefficients = f.coefficients
 
