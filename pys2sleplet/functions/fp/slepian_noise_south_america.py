@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 
+import numpy as np
+
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.utils.noise import create_noise
@@ -39,7 +41,7 @@ class SlepianNoiseSouthAmerica(F_P):
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.SNR = 10 ** self.extra_args[0]
+            self.SNR = np.float_power(10, self.extra_args[0])
 
     @property  # type:ignore
     def SNR(self) -> float:

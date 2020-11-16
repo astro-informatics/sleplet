@@ -47,7 +47,9 @@ class HarmonicGaussian(F_LM):
             num_args = 2
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.l_sigma, self.m_sigma = [10 ** x for x in self.extra_args]
+            self.l_sigma, self.m_sigma = [
+                np.float_power(10, x) for x in self.extra_args
+            ]
 
     @property  # type:ignore
     def l_sigma(self) -> float:

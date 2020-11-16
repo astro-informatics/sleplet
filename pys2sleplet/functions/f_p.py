@@ -50,7 +50,7 @@ class F_P(Coefficients):
         """
         adds Gaussian white noise converted to Slepian space
         """
-        if isinstance(self.noise, int):
+        if isinstance(self.noise, float):
             nlm = create_noise(self.L, self.coefficients, self.noise)
             np = slepian_forward(self.L, nlm, self.slepian)
             compute_snr(self.L, self.coefficients, np)

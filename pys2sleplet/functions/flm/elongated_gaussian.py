@@ -44,7 +44,9 @@ class ElongatedGaussian(F_LM):
             num_args = 2
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.t_sigma, self.p_sigma = [10 ** x for x in self.extra_args]
+            self.t_sigma, self.p_sigma = [
+                np.float_power(10, x) for x in self.extra_args
+            ]
 
     def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
         """

@@ -25,7 +25,7 @@ class F_LM(Coefficients):
         """
         adds Gaussian white noise to the signal
         """
-        if isinstance(self.noise, int):
+        if isinstance(self.noise, float):
             nlm = create_noise(self.L, self.coefficients, self.noise)
             compute_snr(self.L, self.coefficients, nlm)
             self.coefficients += nlm
@@ -34,7 +34,7 @@ class F_LM(Coefficients):
         """
         applies Gaussian smoothing to the signal
         """
-        if isinstance(self.smoothing, int):
+        if isinstance(self.smoothing, float):
             self.coefficients = apply_gaussian_smoothing(
                 self.coefficients, self.L, self.smoothing
             )
