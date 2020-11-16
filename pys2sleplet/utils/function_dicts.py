@@ -40,7 +40,7 @@ FLM: Dict[str, Coefficients] = dict(
     gaussian=Gaussian,
     harmonic_gaussian=HarmonicGaussian,
     identity=Identity,
-    noise_earth=NoiseEarth,
+    noise=NoiseEarth,
     ridgelets=Ridgelets,
     south_america=SouthAmerica,
     spherical_harmonic=SphericalHarmonic,
@@ -52,9 +52,9 @@ FP: Dict[str, Coefficients] = dict(
     slepian=Slepian,
     slepian_dirac_delta=SlepianDiracDelta,
     slepian_identity=SlepianIdentity,
-    slepian_noise_south_america=SlepianNoiseSouthAmerica,
+    slepian_noise=SlepianNoiseSouthAmerica,
     slepian_south_america=SlepianSouthAmerica,
-    slepian_wavelet_coefficients_south_america=SlepianWaveletCoefficientsSouthAmerica,
+    slepian_wavelet_coefficients=SlepianWaveletCoefficientsSouthAmerica,
     slepian_wavelets=SlepianWavelets,
 )
 
