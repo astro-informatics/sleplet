@@ -10,7 +10,7 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class SlepianNoiseSouthAmerica(F_P):
     SNR: float
-    _SNR: float = field(default=10, init=False, repr=False)
+    _SNR: float = field(default=1, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -39,7 +39,7 @@ class SlepianNoiseSouthAmerica(F_P):
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.SNR = self.extra_args[0]
+            self.SNR = 10 ** self.extra_args[0]
 
     @property  # type:ignore
     def SNR(self) -> float:

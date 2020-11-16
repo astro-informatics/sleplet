@@ -18,8 +18,8 @@ class Coefficients:
     L: int
     extra_args: Optional[List[int]]
     region: Optional[Region]
-    noise: int
-    smoothing: int
+    noise: Optional[int]
+    smoothing: Optional[int]
     _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _coefficients: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
@@ -27,9 +27,9 @@ class Coefficients:
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
     _region: Region = field(default=None, init=False, repr=False)
-    _noise: int = field(default=0, init=False, repr=False)
+    _noise: Optional[int] = field(default=None, init=False, repr=False)
     _resolution: int = field(init=False, repr=False)
-    _smoothing: int = field(default=0, init=False, repr=False)
+    _smoothing: Optional[int] = field(default=None, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -122,11 +122,11 @@ class Coefficients:
         self._name = name
 
     @property  # type:ignore
-    def noise(self) -> int:
+    def noise(self) -> Optional[int]:
         return self._noise
 
     @noise.setter
-    def noise(self, noise: int) -> None:
+    def noise(self, noise: Optional[int]) -> None:
         if isinstance(noise, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
@@ -162,11 +162,11 @@ class Coefficients:
         self._resolution = resolution
 
     @property  # type:ignore
-    def smoothing(self) -> int:
+    def smoothing(self) -> Optional[int]:
         return self._smoothing
 
     @smoothing.setter
-    def smoothing(self, smoothing: int) -> None:
+    def smoothing(self, smoothing: Optional[int]) -> None:
         if isinstance(smoothing, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333

@@ -10,6 +10,7 @@ from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mask_methods import create_default_region
+from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import (
     choose_slepian_method,
@@ -46,7 +47,14 @@ class F_P(Coefficients):
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
     def _add_noise_to_signal(self) -> None:
-        pass
+        """
+        adds Gaussian white noise converted to Slepian space
+        """
+        if isinstance(self.noise, int):
+            nlm = create_noise(self.L, self.coefficients, self.noise)
+            np = slepian_forward(self.L, nlm, self.slepian)
+            compute_snr(self.L, self.coefficients, np)
+            self.coefficients += np
 
     def _smooth_signal(self) -> None:
         pass
