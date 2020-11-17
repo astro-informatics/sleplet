@@ -4,7 +4,7 @@ import numpy as np
 
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.functions.flm.south_america import SouthAmerica
-from pys2sleplet.utils.noise import create_noise
+from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.slepian_methods import slepian_forward
 from pys2sleplet.utils.string_methods import filename_args
 
@@ -25,7 +25,10 @@ class SlepianNoiseSouthAmerica(F_P):
     def _create_coefficients(self) -> None:
         sa = SouthAmerica(self.L, region=self.region)
         harmonic_noise = create_noise(self.L, sa.coefficients, self.SNR)
-        self.coefficients = slepian_forward(self.L, harmonic_noise, self.slepian)
+        sa_p = slepian_forward(self.L, sa.coefficients, self.slepian)
+        slepian_noise = slepian_forward(self.L, harmonic_noise, self.slepian)
+        compute_snr(self.L, sa_p, slepian_noise)
+        self.coefficients = slepian_noise
 
     def _create_name(self) -> None:
         self.name = f"slepian_noise_south_america{filename_args(self.SNR, 'snr')}"

@@ -4,7 +4,7 @@ import numpy as np
 
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.utils.noise import create_noise
+from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.string_methods import filename_args
 
 
@@ -21,7 +21,9 @@ class NoiseEarth(F_LM):
 
     def _create_coefficients(self) -> None:
         earth = Earth(self.L)
-        self.coefficients = create_noise(self.L, earth.coefficients, self.SNR)
+        noise = create_noise(self.L, earth.coefficients, self.SNR)
+        compute_snr(self.L, earth.coefficients, noise)
+        self.coefficients = noise
 
     def _create_name(self) -> None:
         self.name = f"noise_earth{filename_args(self.SNR, 'snr')}"
