@@ -1,6 +1,5 @@
 black
 cmocean
-dynaconf
 flake8
 gmpy2
 hypothesis
@@ -17,6 +16,7 @@ psutil
 pys2let
 pyssht
 pytest
+python-box[toml]
 requests
 scipy
 seaborn
