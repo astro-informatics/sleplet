@@ -66,9 +66,8 @@ def denoising_axisym(
     f = ssht.inverse(flm, L)
 
     # compute SNR
-    noised_snr = compute_snr(L, fun_rot, fun_noised_rot - fun_rot)
     denoised_snr = compute_snr(L, fun_rot, flm - fun_rot)
-    return f, noised_snr, denoised_snr
+    return f, fun_noised.snr, denoised_snr
 
 
 def denoising_slepian(
@@ -98,6 +97,5 @@ def denoising_slepian(
     f = slepian_inverse(L, f_p, sw.slepian)
 
     # compute SNR
-    compute_snr(L, fun.coefficients, fun_noised.coefficients - fun.coefficients)
     compute_snr(L, fun.coefficients, f_p - fun.coefficients)
     return f, sw.annotations

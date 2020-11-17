@@ -27,7 +27,7 @@ class F_LM(Coefficients):
         """
         if self.noise is not None:
             nlm = create_noise(self.L, self.coefficients, self.noise)
-            compute_snr(self.L, self.coefficients, nlm)
+            self.snr = compute_snr(self.L, self.coefficients, nlm)
             self.coefficients += nlm
 
     def _smooth_signal(self) -> None:

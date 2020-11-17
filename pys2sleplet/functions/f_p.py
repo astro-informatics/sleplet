@@ -53,7 +53,7 @@ class F_P(Coefficients):
         if self.noise is not None:
             nlm = create_noise(self.L, self.coefficients, self.noise)
             np = slepian_forward(self.L, nlm, self.slepian)
-            compute_snr(self.L, self.coefficients, np)
+            self.snr = compute_snr(self.L, self.coefficients, np)
             self.coefficients += np
 
     def _smooth_signal(self) -> None:
