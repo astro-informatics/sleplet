@@ -5,7 +5,7 @@ import pyssht as ssht
 
 from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.utils.function_dicts import MAPS
+from pys2sleplet.utils.function_dicts import MAPS_LM, MAPS_P
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.noise import (
     compute_sigma_j,
@@ -14,7 +14,7 @@ from pys2sleplet.utils.noise import (
     slepian_hard_thresholding,
 )
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
+from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
@@ -32,8 +32,8 @@ def denoising_axisym(
     """
     logger.info(f"L={L}, B={B}, J_min={j_min}, n_sigma={n_sigma}, SNR_in={snr_in}")
     # create map & noised map
-    fun = MAPS[name](L)
-    fun_noised = MAPS[name](L, noise=snr_in)
+    fun = MAPS_LM[name](L)
+    fun_noised = MAPS_LM[name](L, noise=snr_in)
 
     # rotate to South America
     fun_rot = (
@@ -78,21 +78,17 @@ def denoising_slepian(
     denoising demo using Slepian wavelets
     """
     # create map & noised map
-    fun = MAPS[name](L)
-    fun_noised = MAPS[name](L, noise=snr_in)
+    fun = MAPS_P[name](L)
+    fun_noised = MAPS_P[name](L, noise=snr_in)
 
     # create wavelets
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
 
-    # compute Slepian coefficients
-    fun_p = slepian_forward(L, fun.coefficients, sw.slepian)
-    fun_noised_p = slepian_forward(L, fun_noised.coefficients, sw.slepian)
-
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, fun_p, sw.wavelets[1:], snr_in)
+    sigma_j = compute_sigma_j(L, fun.coefficients, sw.wavelets[1:], snr_in)
 
     # compute wavelet coefficients
-    w = slepian_wavelet_forward(fun_noised_p, sw.wavelets, sw.slepian.N)
+    w = slepian_wavelet_forward(fun_noised.coefficients, sw.wavelets, sw.slepian.N)
 
     # hard thresholding
     w_denoised = slepian_hard_thresholding(L, w, sigma_j, n_sigma, sw.slepian)
@@ -102,6 +98,6 @@ def denoising_slepian(
     f = slepian_inverse(L, f_p, sw.slepian)
 
     # compute SNR
-    compute_snr(L, fun_p, fun_noised_p - fun_p)
-    compute_snr(L, fun_p, f_p - fun_p)
+    compute_snr(L, fun.coefficients, fun_noised.coefficients - fun.coefficients)
+    compute_snr(L, fun.coefficients, f_p - fun.coefficients)
     return f, sw.annotations

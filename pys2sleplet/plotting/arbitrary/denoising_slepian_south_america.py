@@ -16,7 +16,9 @@ def main() -> None:
     """
     fun = "south_america"
     region = Region(mask_name=fun)
-    f, annotations = denoising_slepian(fun, L, B, J_MIN, N_SIGMA, region, SNR_IN)
+    f, annotations = denoising_slepian(
+        f"slepian_{fun}", L, B, J_MIN, N_SIGMA, region, SNR_IN
+    )
     resolution = calc_plot_resolution(L)
     name = f"{fun}_denoised_slepian_L{L}_res{resolution}"
     Plot(f, L, resolution, name, annotations=annotations).execute()

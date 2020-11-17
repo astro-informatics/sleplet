@@ -58,6 +58,10 @@ FP: Dict[str, Coefficients] = dict(
     slepian_wavelets=SlepianWavelets,
 )
 
-MAPS: Dict[str, Coefficients] = dict(earth=Earth, south_america=SouthAmerica, wmap=Wmap)
+MAPS_LM: Dict[str, Coefficients] = dict(
+    earth=Earth, south_america=SouthAmerica, wmap=Wmap
+)
+
+MAPS_P: Dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica)
 
 FUNCTIONS: Dict[str, Coefficients] = {**FLM, **FP}
