@@ -35,38 +35,33 @@ def denoising_axisym(
     fun = MAPS_LM[name](L)
     fun_noised = MAPS_LM[name](L, noise=snr_in)
 
-    # rotate to South America
-    fun_rot = (
-        ssht.rotate_flms(fun.coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)
-        if "earth" in name
-        else fun.coefficients
-    )
-    fun_noised_rot = (
-        ssht.rotate_flms(
-            fun_noised.coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L
-        )
-        if "earth" in name
-        else fun_noised.coefficients
-    )
-
     # create wavelets
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # compute wavelet coefficients
-    w = axisymmetric_wavelet_forward(L, fun_noised_rot, aw.wavelets)
+    w = axisymmetric_wavelet_forward(L, fun_noised.coefficients, aw.wavelets)
 
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, fun_rot, aw.wavelets[1:], snr_in)
+    sigma_j = compute_sigma_j(L, fun.coefficients, aw.wavelets[1:], snr_in)
 
     # hard thresholding
     w_denoised = harmonic_hard_thresholding(L, w, sigma_j, n_sigma)
 
     # wavelet synthesis
     flm = axisymmetric_wavelet_inverse(L, w_denoised, aw.wavelets)
-    f = ssht.inverse(flm, L)
+
+    # rotate to South America
+    flm_rot = (
+        ssht.rotate_flms(flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)
+        if "earth" in name
+        else flm
+    )
+
+    # real space
+    f = ssht.inverse(flm_rot, L)
 
     # compute SNR
-    denoised_snr = compute_snr(L, fun_rot, flm - fun_rot)
+    denoised_snr = compute_snr(L, fun.coefficients, flm - fun.coefficients)
     return f, fun_noised.snr, denoised_snr
 
 
