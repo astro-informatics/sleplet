@@ -6,6 +6,7 @@ import pyssht as ssht
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import compute_s_p_omega_prime
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 @dataclass
@@ -44,8 +45,8 @@ class SlepianDiracDelta(F_P):
         """
         computes alpha/beta if not provided
         """
-        thetas, phis = ssht.sample_positions(self.L, Grid=True)
-        sp = ssht.inverse(self.slepian.eigenvectors[0], self.L)
+        thetas, phis = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
+        sp = ssht.inverse(self.slepian.eigenvectors[0], self.L, Method=SAMPLING_SCHEME)
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]

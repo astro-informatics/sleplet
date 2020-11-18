@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from pys2sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import save_plot
-from pys2sleplet.utils.vars import ALPHA_DEFAULT
+from pys2sleplet.utils.vars import ALPHA_DEFAULT, SAMPLING_SCHEME
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -22,7 +22,7 @@ def compute_translation_normalisation_theta() -> None:
     analysis of the translation norm for referee
     """
     hg = HarmonicGaussian(L)
-    thetas, _ = ssht.sample_positions(L)
+    thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
     norm = np.zeros(len(thetas))
     for i, theta in enumerate(thetas):
         logger.info(f"compute norm {i+1}/{len(thetas)}")

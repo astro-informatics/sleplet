@@ -33,5 +33,5 @@ def test_find_nearest_grid_point() -> None:
     test to find nearest grid point to provided angles
     """
     alpha, beta = calc_nearest_grid_point(L_LARGE, PHI_0 / np.pi, THETA_1 / np.pi)
-    assert_equal(alpha, 0.5174387900030247)
-    assert_equal(beta, 1.0471975511965976)
+    assert_equal(alpha, 0.5154175447295755)
+    assert_equal(beta, 1.055378782065321)

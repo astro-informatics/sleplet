@@ -8,7 +8,7 @@ from pys2sleplet.functions.flm.dirac_delta import DiracDelta
 from pys2sleplet.test.constants import L_LARGE, L_SMALL, THETA_1
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import RANDOM_SEED
+from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 
 
 def valid_alphas() -> SearchStrategy[float]:
@@ -52,7 +52,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     )
     field = slepian_inverse(L_SMALL, sdd_trans, slepian_dirac_delta_polar_cap.slepian)
     new_max = tuple(np.argwhere(field == field.max())[0])
-    thetas, _ = ssht.sample_positions(L_SMALL, Grid=True)
+    thetas, _ = ssht.sample_positions(L_SMALL, Grid=True, Method=SAMPLING_SCHEME)
     assert_raises(
         AssertionError,
         assert_equal,
@@ -75,7 +75,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     )
     field = slepian_inverse(L_SMALL, sdd_trans, slepian_dirac_delta_lim_lat_lon.slepian)
     new_max = tuple(np.argwhere(field == field.max())[0])
-    thetas, _ = ssht.sample_positions(L_SMALL, Grid=True)
+    thetas, _ = ssht.sample_positions(L_SMALL, Grid=True, Method=SAMPLING_SCHEME)
     assert_raises(
         AssertionError,
         assert_equal,

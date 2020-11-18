@@ -15,7 +15,7 @@ from pys2sleplet.utils.noise import (
 )
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLING_SCHEME
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,
@@ -58,7 +58,7 @@ def denoising_axisym(
     )
 
     # real space
-    f = ssht.inverse(flm_rot, L)
+    f = ssht.inverse(flm_rot, L, Method=SAMPLING_SCHEME)
 
     # compute SNR
     denoised_snr = compute_snr(L, fun.coefficients, flm - fun.coefficients)

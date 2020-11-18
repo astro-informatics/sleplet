@@ -8,6 +8,7 @@ from pys2sleplet.utils.vars import (
     EARTH_ALPHA,
     EARTH_BETA,
     EARTH_GAMMA,
+    SAMPLING_SCHEME,
     SOUTH_AMERICA_RANGE,
 )
 
@@ -21,8 +22,8 @@ def create_mask(L: int) -> None:
     """
     earth_flm = create_flm(L)
     rot_flm = ssht.rotate_flms(earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)
-    earth_f = ssht.inverse(rot_flm, L, Reality=True)
-    thetas, _ = ssht.sample_positions(L, Grid=True)
+    earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     mask = (thetas <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
     np.save(_mask_path / f"south_america_L{L}.npy", mask)
 

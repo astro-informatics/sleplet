@@ -6,6 +6,7 @@ from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.test.constants import L_SMALL
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
@@ -27,8 +28,8 @@ def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
     h_p = slepian_forward(
         L_SMALL, earth_polar_cap.coefficients, slepian_polar_cap, method="harmonic_sum"
     )
-    assert_allclose(np.abs(f_p - h_p)[: slepian_polar_cap.N].mean(), 0, atol=1.1)
-    assert_allclose(np.abs(g_p - h_p)[: slepian_polar_cap.N].mean(), 0, atol=0.8)
+    assert_allclose(np.abs(f_p - h_p)[: slepian_polar_cap.N].mean(), 0, atol=17)
+    assert_allclose(np.abs(g_p - h_p)[: slepian_polar_cap.N].mean(), 0, atol=12)
 
 
 def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
@@ -54,8 +55,8 @@ def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> No
         slepian_lim_lat_lon,
         method="harmonic_sum",
     )
-    assert_allclose(np.abs(f_p - h_p)[: slepian_lim_lat_lon.N].mean(), 0, atol=36)
-    assert_allclose(np.abs(g_p - h_p)[: slepian_lim_lat_lon.N].mean(), 0, atol=1e-2)
+    assert_allclose(np.abs(f_p - h_p)[: slepian_lim_lat_lon.N].mean(), 0, atol=72)
+    assert_allclose(np.abs(g_p - h_p)[: slepian_lim_lat_lon.N].mean(), 0, atol=0.8)
 
 
 def test_equality_to_harmonic_transform_polar(
@@ -66,9 +67,11 @@ def test_equality_to_harmonic_transform_polar(
     """
     f_p = slepian_forward(L_SMALL, earth_polar_cap.coefficients, slepian_polar_cap)
     f_slepian = slepian_inverse(L_SMALL, f_p, slepian_polar_cap)
-    f_harmonic = ssht.inverse(earth_polar_cap.coefficients, L_SMALL)
+    f_harmonic = ssht.inverse(
+        earth_polar_cap.coefficients, L_SMALL, Method=SAMPLING_SCHEME
+    )
     mask = create_mask_region(L_SMALL, slepian_polar_cap.region)
-    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=15)
+    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=14)
 
 
 def test_equality_to_harmonic_transform_lim_lat_lon(
@@ -79,9 +82,11 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
     """
     f_p = slepian_forward(L_SMALL, earth_lim_lat_lon.coefficients, slepian_lim_lat_lon)
     f_slepian = slepian_inverse(L_SMALL, f_p, slepian_lim_lat_lon)
-    f_harmonic = ssht.inverse(earth_lim_lat_lon.coefficients, L_SMALL)
+    f_harmonic = ssht.inverse(
+        earth_lim_lat_lon.coefficients, L_SMALL, Method=SAMPLING_SCHEME
+    )
     mask = create_mask_region(L_SMALL, slepian_lim_lat_lon.region)
-    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=95)
+    assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=123)
 
 
 def test_pass_rank_higher_than_available(slepian_polar_cap, earth_polar_cap) -> None:

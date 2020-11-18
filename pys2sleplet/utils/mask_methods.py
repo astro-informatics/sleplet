@@ -6,6 +6,7 @@ from box import Box
 
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -19,7 +20,7 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
                                    phi_min or phi_max is provided
     * arbitrary - just checks the shape of the input mask
     """
-    thetas, phis = ssht.sample_positions(L, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
 
     if region.region_type == "arbitrary":
         logger.info("loading and checking shape of provided mask")
@@ -75,10 +76,10 @@ def ensure_masked_flm_bandlimited(
     """
     ensures the coefficients is bandlimited for a given region
     """
-    field = ssht.inverse(flm, L, Reality=reality, Spin=spin)
+    field = ssht.inverse(flm, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
-    return ssht.forward(field, L, Reality=reality, Spin=spin)
+    return ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
 def create_default_region(settings: Box) -> Region:

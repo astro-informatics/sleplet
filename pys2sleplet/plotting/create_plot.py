@@ -18,7 +18,7 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import convert_colourscale
-from pys2sleplet.utils.vars import ZOOM_DEFAULT
+from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -44,7 +44,7 @@ class Plot:
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            f, self.resolution, method="MWSS" if upsampled else "MW"
+            f, self.resolution, method=SAMPLING_SCHEME
         )
 
         # appropriate zoom in on north pole
@@ -192,14 +192,11 @@ class Plot:
         """
         if not upsampled:
             return f
-        flm = ssht.forward(f, self.L, Reality=self.reality, Spin=self.spin)
+        flm = ssht.forward(
+            f, self.L, Reality=self.reality, Spin=self.spin, Method=SAMPLING_SCHEME
+        )
         return invert_flm_boosted(
-            flm,
-            self.L,
-            self.resolution,
-            method="MWSS",
-            reality=self.reality,
-            spin=self.spin,
+            flm, self.L, self.resolution, reality=self.reality, spin=self.spin
         )
 
     def _create_plot_type(self, f: np.ndarray) -> np.ndarray:

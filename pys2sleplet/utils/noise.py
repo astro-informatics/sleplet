@@ -5,7 +5,7 @@ from numpy.random import default_rng
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
-from pys2sleplet.utils.vars import RANDOM_SEED
+from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 
 
 def _signal_power(L: int, signal: np.ndarray) -> float:
@@ -67,7 +67,9 @@ def create_slepian_noise(
     """
     computes Gaussian white noise in Slepian space
     """
-    flm = ssht.forward(slepian_inverse(L, slepian_signal, slepian), L)
+    flm = ssht.forward(
+        slepian_inverse(L, slepian_signal, slepian), L, Method=SAMPLING_SCHEME
+    )
     nlm = create_noise(L, flm, snr_in)
     return slepian_forward(L, nlm, slepian)
 
@@ -91,9 +93,9 @@ def harmonic_hard_thresholding(
     logger.info("begin harmonic hard thresholding")
     for j in range(1, len(wav_coeffs)):
         logger.info(f"start Psi^{j}/{len(wav_coeffs)-1}")
-        f = ssht.inverse(wav_coeffs[j], L)
+        f = ssht.inverse(wav_coeffs[j], L, Method=SAMPLING_SCHEME)
         f_thresholded = _perform_thresholding(f, sigma_j, n_sigma, j)
-        wav_coeffs[j] = ssht.forward(f_thresholded, L)
+        wav_coeffs[j] = ssht.forward(f_thresholded, L, Method=SAMPLING_SCHEME)
     return wav_coeffs
 
 
@@ -112,7 +114,7 @@ def slepian_hard_thresholding(
         logger.info(f"start Psi^{j}/{len(wav_coeffs)-1}")
         f = slepian_inverse(L, wav_coeffs[j], slepian)
         f_thresholded = _perform_thresholding(f, sigma_j, n_sigma, j)
-        flm = ssht.forward(f_thresholded, L)
+        flm = ssht.forward(f_thresholded, L, Method=SAMPLING_SCHEME)
         wav_coeffs[j] = slepian_forward(L, flm, slepian)
     return wav_coeffs
 

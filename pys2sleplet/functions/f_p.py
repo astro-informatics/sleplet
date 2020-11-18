@@ -18,6 +18,7 @@ from pys2sleplet.utils.slepian_methods import (
     slepian_forward,
     slepian_inverse,
 )
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 
@@ -39,7 +40,7 @@ class F_P(Coefficients):
 
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
         f = slepian_inverse(self.L, self.coefficients, self.slepian)
-        flm = ssht.forward(f, self.L)
+        flm = ssht.forward(f, self.L, Method=SAMPLING_SCHEME)
         flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
         return slepian_forward(self.L, flm_rot, self.slepian)
 

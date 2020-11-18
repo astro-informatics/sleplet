@@ -6,7 +6,7 @@ import seaborn as sns
 
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.plotting.create_plot import Plot
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA
+from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLING_SCHEME
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -25,7 +25,9 @@ def plot_mask() -> None:
     rot_flm = ssht.rotate_flms(
         earth_smoothed.coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L
     )
-    field = ssht.inverse(rot_flm, L, Reality=earth_smoothed.reality)
+    field = ssht.inverse(
+        rot_flm, L, Reality=earth_smoothed.reality, Method=SAMPLING_SCHEME
+    )
     mask = np.load(mask_path / f"south_america_L{L}.npy").astype(np.complex128)
     south_america_smoothed = np.where(mask, field, 0)
     Plot(south_america_smoothed, L, L, f"south_america_smoothed_L{L}").execute()

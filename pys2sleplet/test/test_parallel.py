@@ -40,7 +40,7 @@ def test_split_L_into_chunks() -> None:
     assert_equal(len(chunks), NCPU)
     chunk_length = L_SMALL // NCPU
     for chunk in chunks:
-        assert_allclose(len(chunk), chunk_length, atol=1)
+        assert_allclose(len(chunk), chunk_length, atol=0)
 
 
 def test_split_L_into_chunks_Lmin_Lmax() -> None:

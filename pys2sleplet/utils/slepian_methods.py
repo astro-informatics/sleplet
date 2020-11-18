@@ -17,6 +17,7 @@ from pys2sleplet.utils.integration_methods import (
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 _slepian_data = _file_location.parents[1] / "data" / "slepian"
@@ -48,12 +49,12 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
 
 
 def integrate_whole_matrix_slepian_functions(
-    eigenvectors: np.ndarray, L: int, resolution: int, mask: Optional[np.ndarray] = None
+    eigenvectors: np.ndarray, L: int, mask: Optional[np.ndarray] = None
 ) -> np.ndarray:
     """
     helper function which integrates all of the slepian functionss
     """
-    weight = calc_integration_weight(resolution)
+    weight = calc_integration_weight(L)
     N = len(eigenvectors)
     output = np.zeros((N, N), dtype=np.complex128)
     for i, flm in enumerate(eigenvectors):
@@ -61,7 +62,7 @@ def integrate_whole_matrix_slepian_functions(
             # Hermitian matrix so can use symmetry
             if i <= j:
                 output[j][i] = integrate_sphere(
-                    L, resolution, flm, glm, weight, glm_conj=True, mask_boosted=mask
+                    L, flm, glm, weight, glm_conj=True, mask=mask
                 ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output
@@ -71,10 +72,10 @@ def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.nd
     """
     computes the Slepian inverse transform up to the Shannon number
     """
-    n_theta, n_phi = ssht.sample_shape(L)
+    n_theta, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
     f = np.zeros((n_theta, n_phi), dtype=np.complex128)
     for p in range(slepian.N):
-        s_p = ssht.inverse(slepian.eigenvectors[p], L)
+        s_p = ssht.inverse(slepian.eigenvectors[p], L, Method=SAMPLING_SCHEME)
         f += f_p[p] * s_p
     return f
 
@@ -93,12 +94,12 @@ def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
-    n_theta, n_phi = ssht.sample_shape(L)
+    n_theta, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex128)
     for p in range(slepian.N):
         if p % L == 0:
             logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
-        sp[p] = ssht.inverse(slepian.eigenvectors[p], L)
+        sp[p] = ssht.inverse(slepian.eigenvectors[p], L, Method=SAMPLING_SCHEME)
     return sp
 
 
@@ -109,8 +110,8 @@ def compute_s_p_omega_prime(
     method to pick out the desired angle from Sp(omega)
     """
     sp_omega = _compute_s_p_omega(L, slepian)
-    p = ssht.theta_to_index(beta, L)
-    q = ssht.phi_to_index(alpha, L)
+    p = ssht.theta_to_index(beta, L, Method=SAMPLING_SCHEME)
+    q = ssht.phi_to_index(alpha, L, Method=SAMPLING_SCHEME)
     sp_omega_prime = sp_omega[:, p, q]
     # pad with zeros so it has the expected shape
     boost = L ** 2 - slepian.N

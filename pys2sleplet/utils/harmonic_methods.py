@@ -4,6 +4,8 @@ import numpy as np
 import pyssht as ssht
 from numpy.random import Generator
 
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
+
 
 def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
     """
@@ -22,19 +24,16 @@ def boost_coefficient_resolution(flm: np.ndarray, boost: int) -> np.ndarray:
 
 
 def invert_flm_boosted(
-    flm: np.ndarray,
-    L: int,
-    resolution: int,
-    method: str = "MW",
-    reality: bool = False,
-    spin: int = 0,
+    flm: np.ndarray, L: int, resolution: int, reality: bool = False, spin: int = 0
 ) -> np.ndarray:
     """
     performs the inverse harmonic transform
     """
     boost = resolution ** 2 - L ** 2
     flm = boost_coefficient_resolution(flm, boost)
-    return ssht.inverse(flm, resolution, Method=method, Reality=reality, Spin=spin)
+    return ssht.inverse(
+        flm, resolution, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME
+    )
 
 
 def ensure_f_bandlimited(
@@ -47,9 +46,9 @@ def ensure_f_bandlimited(
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it
     """
-    thetas, phis = ssht.sample_positions(L, Grid=True)
+    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     f = grid_fun(thetas, phis)
-    return ssht.forward(f, L, Reality=reality, Spin=spin)
+    return ssht.forward(f, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
 def create_emm_vector(L: int) -> np.ndarray:

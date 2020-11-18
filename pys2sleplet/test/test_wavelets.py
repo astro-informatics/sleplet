@@ -39,7 +39,7 @@ def test_synthesis_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
         coefficients, sw.wavelets, slepian_lim_lat_lon.N
     )
     f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets, slepian_lim_lat_lon.N)
-    assert_allclose(np.abs(f_p - coefficients).mean(), 0)
+    assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=0)
 
 
 def test_axisymmetric_synthesis() -> None:

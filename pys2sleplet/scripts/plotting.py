@@ -23,6 +23,7 @@ from pys2sleplet.utils.vars import (
     EARTH_ALPHA,
     EARTH_BETA,
     EARTH_GAMMA,
+    SAMPLING_SCHEME,
 )
 
 
@@ -195,7 +196,9 @@ def plot(
 
     # get field value
     field = (
-        ssht.inverse(coefficients, f.L, Reality=f.reality, Spin=f.spin)
+        ssht.inverse(
+            coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
+        )
         if isinstance(f, F_LM)
         else slepian_inverse(f.L, coefficients, f.slepian)
     )

@@ -6,7 +6,7 @@ from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.utils.bool_methods import is_ergodic
 from pys2sleplet.utils.harmonic_methods import compute_random_signal
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.vars import RANDOM_SEED
+from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     compute_wavelet_covariance,
@@ -54,7 +54,7 @@ def axisymmetric_wavelet_covariance(
 
         # compute covariance from data
         for j in range(aw.wavelets.shape[0]):
-            f_wav_j = ssht.inverse(wlm[j], L)
+            f_wav_j = ssht.inverse(wlm[j], L, Method=SAMPLING_SCHEME)
             covar_w_data[j, i] = (
                 f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
             )
