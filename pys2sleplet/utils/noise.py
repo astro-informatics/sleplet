@@ -20,7 +20,8 @@ def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:
     computes the signal to noise ratio
     """
     snr = 10 * np.log10(_signal_power(L, signal) / _signal_power(L, noise))
-    logger.info(f"Noise SNR: {snr:.2f}")
+    signal_type = "Harmonic" if len(signal) == L ** 2 else "Slepian"
+    logger.info(f"{signal_type} SNR: {snr:.2f}")
     return snr
 
 
