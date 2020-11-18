@@ -1,11 +1,12 @@
 from dataclasses import dataclass, field
 
 import numpy as np
+import pyssht as ssht
 
 from pys2sleplet.functions.f_p import F_P
-from pys2sleplet.functions.flm.south_america import SouthAmerica
+from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.utils.noise import compute_snr, create_noise
-from pys2sleplet.utils.slepian_methods import slepian_forward
+from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_args
 
 
@@ -23,12 +24,14 @@ class SlepianNoiseSouthAmerica(F_P):
         self.annotations = self.slepian.annotations
 
     def _create_coefficients(self) -> None:
-        sa = SouthAmerica(self.L, region=self.region)
-        harmonic_noise = create_noise(self.L, sa.coefficients, self.SNR)
-        sa_p = slepian_forward(self.L, sa.coefficients, self.slepian)
-        slepian_noise = slepian_forward(self.L, harmonic_noise, self.slepian)
-        compute_snr(self.L, sa_p, slepian_noise)
-        self.coefficients = slepian_noise
+        sa = SlepianSouthAmerica(self.L, region=self.region)
+        flm = ssht.forward(
+            slepian_inverse(self.L, sa.coefficients, self.slepian), self.L
+        )
+        nlm = create_noise(self.L, flm, self.SNR)
+        np = slepian_forward(self.L, nlm, self.slepian)
+        compute_snr(self.L, sa.coefficients, np)
+        self.coefficients = np
 
     def _create_name(self) -> None:
         self.name = f"slepian_noise_south_america{filename_args(self.SNR, 'snr')}"
