@@ -9,7 +9,7 @@ from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS
+from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS_LM
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_default_region
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
@@ -30,7 +30,7 @@ def valid_maps(map_name: str) -> str:
     """
     check if valid map
     """
-    if map_name in MAPS:
+    if map_name in MAPS_LM:
         function = map_name
     else:
         raise ValueError("Not a valid map name to convolve")
@@ -84,7 +84,7 @@ def read_args() -> Namespace:
         "-c",
         type=valid_maps,
         default=None,
-        choices=list(MAPS.keys()),
+        choices=list(MAPS_LM.keys()),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
