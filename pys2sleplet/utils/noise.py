@@ -60,6 +60,17 @@ def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
     return nlm
 
 
+def create_slepian_noise(
+    L: int, slepian_signal: np.ndarray, slepian: SlepianFunctions, snr_in: int
+) -> np.ndarray:
+    """
+    computes Gaussian white noise in Slepian space
+    """
+    flm = ssht.forward(slepian_inverse(L, slepian_signal, slepian), L)
+    nlm = create_noise(L, flm, snr_in)
+    return slepian_forward(L, nlm, slepian)
+
+
 def _perform_thresholding(
     f: np.ndarray, sigma_j: np.ndarray, n_sigma: int, j: int
 ) -> np.ndarray:

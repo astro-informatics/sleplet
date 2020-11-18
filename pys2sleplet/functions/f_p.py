@@ -10,7 +10,7 @@ from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mask_methods import create_default_region
-from pys2sleplet.utils.noise import compute_snr, create_noise
+from pys2sleplet.utils.noise import compute_snr, create_slepian_noise
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import (
     choose_slepian_method,
@@ -51,11 +51,9 @@ class F_P(Coefficients):
         adds Gaussian white noise converted to Slepian space
         """
         if self.noise is not None:
-            flm = ssht.forward(
-                slepian_inverse(self.L, self.coefficients, self.slepian), self.L
+            np = create_slepian_noise(
+                self.L, self.coefficients, self.slepian, self.noise
             )
-            nlm = create_noise(self.L, flm, self.noise)
-            np = slepian_forward(self.L, nlm, self.slepian)
             self.snr = compute_snr(self.L, self.coefficients, np)
             self.coefficients += np
 
