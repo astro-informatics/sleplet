@@ -6,8 +6,8 @@ from pys2sleplet.utils.region import Region
 B = 3
 J_MIN = 2
 L = 128
-N_SIGMA = 3
-SNR_IN = 10
+N_SIGMA = 2
+SNR_IN = 1
 
 
 def main() -> None:
