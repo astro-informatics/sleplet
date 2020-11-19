@@ -42,7 +42,7 @@ class F_P(Coefficients):
         f = slepian_inverse(self.L, self.coefficients, self.slepian)
         flm = ssht.forward(f, self.L, Method=SAMPLING_SCHEME)
         flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
-        return slepian_forward(self.L, flm_rot, self.slepian)
+        return slepian_forward(self.L, self.slepian, flm=flm_rot)
 
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()

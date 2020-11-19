@@ -17,7 +17,7 @@ class SlepianSouthAmerica(F_P):
 
     def _create_coefficients(self) -> None:
         sa = SouthAmerica(self.L, region=self.region)
-        self.coefficients = slepian_forward(self.L, sa.coefficients, self.slepian)
+        self.coefficients = slepian_forward(self.L, self.slepian, flm=sa.coefficients)
 
     def _create_name(self) -> None:
         self.name = f"slepian_{self.slepian.region.name_ending}"

@@ -20,7 +20,7 @@ def test_synthesis_polar(slepian_polar_cap, earth_polar_cap) -> None:
     """
     sw = SlepianWavelets(L_SMALL, region=slepian_polar_cap.region)
     coefficients = slepian_forward(
-        L_SMALL, earth_polar_cap.coefficients, slepian_polar_cap
+        L_SMALL, slepian_polar_cap, flm=earth_polar_cap.coefficients
     )
     wav_coeffs = slepian_wavelet_forward(coefficients, sw.wavelets, slepian_polar_cap.N)
     f_p = slepian_wavelet_inverse(wav_coeffs, sw.wavelets, slepian_polar_cap.N)
@@ -33,7 +33,7 @@ def test_synthesis_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
     """
     sw = SlepianWavelets(L_SMALL, region=slepian_lim_lat_lon.region)
     coefficients = slepian_forward(
-        L_SMALL, earth_lim_lat_lon.coefficients, slepian_lim_lat_lon
+        L_SMALL, slepian_lim_lat_lon, flm=earth_lim_lat_lon.coefficients
     )
     wav_coeffs = slepian_wavelet_forward(
         coefficients, sw.wavelets, slepian_lim_lat_lon.N

@@ -71,7 +71,7 @@ def create_slepian_noise(
         slepian_inverse(L, slepian_signal, slepian), L, Method=SAMPLING_SCHEME
     )
     nlm = create_noise(L, flm, snr_in)
-    return slepian_forward(L, nlm, slepian)
+    return slepian_forward(L, slepian, flm=nlm)
 
 
 def _perform_thresholding(
@@ -114,8 +114,7 @@ def slepian_hard_thresholding(
         logger.info(f"start Psi^{j}/{len(wav_coeffs)-1}")
         f = slepian_inverse(L, wav_coeffs[j], slepian)
         f_thresholded = _perform_thresholding(f, sigma_j, n_sigma, j)
-        flm = ssht.forward(f_thresholded, L, Method=SAMPLING_SCHEME)
-        wav_coeffs[j] = slepian_forward(L, flm, slepian)
+        wav_coeffs[j] = slepian_forward(L, slepian, f=f_thresholded)
     return wav_coeffs
 
 

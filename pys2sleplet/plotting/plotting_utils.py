@@ -16,13 +16,11 @@ def earth_region_harmonic_coefficients(L: int, theta_max: int) -> np.ndarray:
     return coefficients
 
 
-def earth_region_slepian_coefficients(
-    L: int, theta_max: int, method: str = "harmonic_sum"
-) -> np.ndarray:
+def earth_region_slepian_coefficients(L: int, theta_max: int) -> np.ndarray:
     """
     computes the Slepian coefficients
     """
     region = Region(theta_max=np.deg2rad(theta_max))
     earth = Earth(L, region=region)
     slepian = choose_slepian_method(L, region)
-    return np.abs(slepian_forward(L, earth.coefficients, slepian, method=method))
+    return np.abs(slepian_forward(L, slepian, flm=earth.coefficients))

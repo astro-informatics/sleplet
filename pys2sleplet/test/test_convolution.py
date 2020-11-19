@@ -41,7 +41,7 @@ def test_south_america_slepian_identity_convolution(
     identity function doesn't change the map in Slepian space
     """
     fp = slepian_forward(
-        L_SMALL, south_america_arbitrary.coefficients, slepian_arbitrary
+        L_SMALL, slepian_arbitrary, flm=south_america_arbitrary.coefficients
     )
     g = SlepianIdentity(L_SMALL, region=slepian_arbitrary.region)
     fp_conv = south_america_arbitrary.convolve(

@@ -1,13 +1,18 @@
 from pathlib import Path
 
 import numpy as np
+import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
 
+from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.plotting.inputs import THETA_MAX
-from pys2sleplet.plotting.plotting_utils import earth_region_slepian_coefficients
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.plot_methods import save_plot
+from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 L = 19
 
@@ -20,15 +25,21 @@ def main() -> None:
     """
     creates a plot of Slepian coefficients against rank
     """
-    region = _helper_region(L, THETA_MAX)
-    sphere = _helper_sphere(L, THETA_MAX)
+    region = Region(theta_max=np.deg2rad(THETA_MAX))
+    earth = Earth(L, region=region)
+    slepian = choose_slepian_method(L, region)
+    field = ssht.inverse(earth.coefficients, L, Method=SAMPLING_SCHEME)
+    integrate_region = _helper_region(
+        L, slepian, field, earth.coefficients, slepian.mask
+    )
+    integrate_sphere = _helper_sphere(L, slepian, field, earth.coefficients)
     N = SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     ax = plt.gca()
     sns.scatterplot(
-        x=range(N), y=region, ax=ax, label="region", linewidth=0, marker="."
+        x=range(N), y=integrate_region, ax=ax, label="region", linewidth=0, marker="."
     )
     sns.scatterplot(
-        x=range(N), y=sphere, ax=ax, label="sphere", linewidth=0, marker="*"
+        x=range(N), y=integrate_sphere, ax=ax, label="sphere", linewidth=0, marker="*"
     )
     ax.set_xlabel("coefficients")
     ax.set_ylabel("relative error")
@@ -36,21 +47,25 @@ def main() -> None:
     save_plot(fig_path, f"fp_error_earth_polar{THETA_MAX}_L{L}")
 
 
-def _helper_sphere(L: int, theta_max: int) -> np.ndarray:
+def _helper_sphere(
+    L: int, slepian: SlepianFunctions, f: np.ndarray, flm: np.ndarray
+) -> np.ndarray:
     """
     the difference in Slepian coefficients by integration of whole sphere
     """
-    output = earth_region_slepian_coefficients(L, theta_max, method="integrate_sphere")
-    desired = earth_region_slepian_coefficients(L, theta_max)
+    output = np.abs(slepian_forward(L, slepian, f=f))
+    desired = np.abs(slepian_forward(L, slepian, flm=flm))
     return np.abs(output - desired) / desired
 
 
-def _helper_region(L: int, theta_max: int) -> np.ndarray:
+def _helper_region(
+    L: int, slepian: SlepianFunctions, f: np.ndarray, flm: np.ndarray, mask: np.ndarray
+) -> np.ndarray:
     """
     the difference in Slepian coefficients by integration of region on the sphere
     """
-    output = earth_region_slepian_coefficients(L, theta_max, method="integrate_region")
-    desired = earth_region_slepian_coefficients(L, theta_max)
+    output = np.abs(slepian_forward(L, slepian, f=f, mask=mask))
+    desired = np.abs(slepian_forward(L, slepian, flm=flm))
     return np.abs(output - desired) / desired
 
 

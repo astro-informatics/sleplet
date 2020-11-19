@@ -13,23 +13,24 @@ def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
     """
     tests that all three methods produce the same coefficients for polar cap
     """
-    f_p = slepian_forward(
-        L_SMALL,
-        earth_polar_cap.coefficients,
-        slepian_polar_cap,
-        method="integrate_region",
+    field = ssht.inverse(earth_polar_cap.coefficients, L_SMALL, Method=SAMPLING_SCHEME)
+    harmonic_sum_p = slepian_forward(
+        L_SMALL, slepian_polar_cap, flm=earth_polar_cap.coefficients
     )
-    g_p = slepian_forward(
-        L_SMALL,
-        earth_polar_cap.coefficients,
-        slepian_polar_cap,
-        method="integrate_sphere",
+    integrate_sphere_p = slepian_forward(L_SMALL, slepian_polar_cap, f=field)
+    integrate_region_p = slepian_forward(
+        L_SMALL, slepian_polar_cap, f=field, mask=slepian_polar_cap.mask
     )
-    h_p = slepian_forward(
-        L_SMALL, earth_polar_cap.coefficients, slepian_polar_cap, method="harmonic_sum"
+    assert_allclose(
+        np.abs(integrate_sphere_p - harmonic_sum_p)[: slepian_polar_cap.N].mean(),
+        0,
+        atol=12,
     )
-    assert_allclose(np.abs(f_p - h_p)[: slepian_polar_cap.N].mean(), 0, atol=17)
-    assert_allclose(np.abs(g_p - h_p)[: slepian_polar_cap.N].mean(), 0, atol=12)
+    assert_allclose(
+        np.abs(integrate_region_p - harmonic_sum_p)[: slepian_polar_cap.N].mean(),
+        0,
+        atol=17,
+    )
 
 
 def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
@@ -37,26 +38,26 @@ def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> No
     tests that all three methods produce the same coefficients for
     limited latitude longitude region
     """
-    f_p = slepian_forward(
-        L_SMALL,
-        earth_lim_lat_lon.coefficients,
-        slepian_lim_lat_lon,
-        method="integrate_region",
+    field = ssht.inverse(
+        earth_lim_lat_lon.coefficients, L_SMALL, Method=SAMPLING_SCHEME
     )
-    g_p = slepian_forward(
-        L_SMALL,
-        earth_lim_lat_lon.coefficients,
-        slepian_lim_lat_lon,
-        method="integrate_sphere",
+    harmonic_sum_p = slepian_forward(
+        L_SMALL, slepian_lim_lat_lon, flm=earth_lim_lat_lon.coefficients
     )
-    h_p = slepian_forward(
-        L_SMALL,
-        earth_lim_lat_lon.coefficients,
-        slepian_lim_lat_lon,
-        method="harmonic_sum",
+    integrate_sphere_p = slepian_forward(L_SMALL, slepian_lim_lat_lon, f=field)
+    integrate_region_p = slepian_forward(
+        L_SMALL, slepian_lim_lat_lon, f=field, mask=slepian_lim_lat_lon.mask
     )
-    assert_allclose(np.abs(f_p - h_p)[: slepian_lim_lat_lon.N].mean(), 0, atol=72)
-    assert_allclose(np.abs(g_p - h_p)[: slepian_lim_lat_lon.N].mean(), 0, atol=0.8)
+    assert_allclose(
+        np.abs(integrate_sphere_p - harmonic_sum_p)[: slepian_lim_lat_lon.N].mean(),
+        0,
+        atol=0.8,
+    )
+    assert_allclose(
+        np.abs(integrate_region_p - harmonic_sum_p)[: slepian_lim_lat_lon.N].mean(),
+        0,
+        atol=72,
+    )
 
 
 def test_equality_to_harmonic_transform_polar(
@@ -65,7 +66,7 @@ def test_equality_to_harmonic_transform_polar(
     """
     tests that fp*Sp up to N is roughly equal to flm*Ylm
     """
-    f_p = slepian_forward(L_SMALL, earth_polar_cap.coefficients, slepian_polar_cap)
+    f_p = slepian_forward(L_SMALL, slepian_polar_cap, flm=earth_polar_cap.coefficients)
     f_slepian = slepian_inverse(L_SMALL, f_p, slepian_polar_cap)
     f_harmonic = ssht.inverse(
         earth_polar_cap.coefficients, L_SMALL, Method=SAMPLING_SCHEME
@@ -80,7 +81,9 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
     """
     tests that fp*Sp up to N is roughly equal to flm*Ylm
     """
-    f_p = slepian_forward(L_SMALL, earth_lim_lat_lon.coefficients, slepian_lim_lat_lon)
+    f_p = slepian_forward(
+        L_SMALL, slepian_lim_lat_lon, flm=earth_lim_lat_lon.coefficients
+    )
     f_slepian = slepian_inverse(L_SMALL, f_p, slepian_lim_lat_lon)
     f_harmonic = ssht.inverse(
         earth_lim_lat_lon.coefficients, L_SMALL, Method=SAMPLING_SCHEME
@@ -93,5 +96,7 @@ def test_pass_rank_higher_than_available(slepian_polar_cap, earth_polar_cap) -> 
     """
     tests that asking for a Slepian coefficients above the limit fails
     """
-    sd = SlepianDecomposition(L_SMALL, earth_polar_cap.coefficients, slepian_polar_cap)
-    assert_raises(ValueError, sd.decompose, L_SMALL ** 2)
+    sd = SlepianDecomposition(
+        L_SMALL, slepian_polar_cap, flm=earth_polar_cap.coefficients
+    )
+    assert_raises(ValueError, sd.decompose, slepian_polar_cap.N)

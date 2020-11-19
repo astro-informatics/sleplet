@@ -83,13 +83,17 @@ def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.nd
 
 
 def slepian_forward(
-    L: int, flm: np.ndarray, slepian: SlepianFunctions, method: str = "harmonic_sum"
+    L: int,
+    slepian: SlepianFunctions,
+    f: Optional[np.ndarray] = None,
+    flm: Optional[np.ndarray] = None,
+    mask: Optional[np.ndarray] = None,
 ) -> np.ndarray:
     """
     computes the Slepian forward transform for all coefficients
     """
-    sd = SlepianDecomposition(L, flm, slepian)
-    return sd.decompose_all(method=method)
+    sd = SlepianDecomposition(L, slepian, f=f, flm=flm, mask=mask)
+    return sd.decompose_all()
 
 
 def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:

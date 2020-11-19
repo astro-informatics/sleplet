@@ -317,7 +317,7 @@ def convolution_helper(
     g_coefficients = (
         g.coefficients
         if isinstance(f, F_LM)
-        else slepian_forward(f.L, g.coefficients, f.slepian)
+        else slepian_forward(f.L, f.slepian, flm=g.coefficients)
     )
     coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
 
