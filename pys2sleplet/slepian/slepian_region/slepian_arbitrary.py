@@ -225,7 +225,7 @@ class SlepianArbitrary(SlepianFunctions):
         ylm_j = create_spherical_harmonic(self.L, j)
         f = ssht.inverse(ylm_i, self.L, Method=SAMPLING_SCHEME)
         g = ssht.inverse(ylm_j, self.L, Method=SAMPLING_SCHEME)
-        return integrate_sphere(self.L, f, g, self.weight, g_conj=True, mask=self.mask)
+        return integrate_sphere(self.L, f, g.conj(), self.weight, mask=self.mask)
 
     @property  # type:ignore
     def mask_name(self) -> str:

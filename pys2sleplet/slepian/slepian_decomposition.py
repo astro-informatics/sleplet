@@ -64,7 +64,7 @@ class SlepianDecomposition:
         )
         weight = calc_integration_weight(self.L)
         integration = integrate_sphere(
-            self.L, self.f, s_p, weight, g_conj=True, mask=self.mask
+            self.L, self.f, s_p.conj(), weight, mask=self.mask
         )
         return integration / self.slepian.eigenvalues[rank]
 
@@ -78,7 +78,7 @@ class SlepianDecomposition:
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
         weight = calc_integration_weight(self.L)
-        return integrate_sphere(self.L, self.f, s_p, weight, g_conj=True)
+        return integrate_sphere(self.L, self.f, s_p.conj(), weight)
 
     def _harmonic_sum(self, rank: int) -> complex:
         r"""

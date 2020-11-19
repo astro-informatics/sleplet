@@ -64,7 +64,7 @@ def integrate_whole_matrix_slepian_functions(
                 f = ssht.inverse(flm, L, Method=SAMPLING_SCHEME)
                 g = ssht.inverse(glm, L, Method=SAMPLING_SCHEME)
                 output[j][i] = integrate_sphere(
-                    L, f, g, weight, g_conj=True, mask=mask
+                    L, f, g.conj(), weight, mask=mask
                 ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output
