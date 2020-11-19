@@ -100,3 +100,10 @@ def test_pass_rank_higher_than_available(slepian_polar_cap, earth_polar_cap) -> 
         L_SMALL, slepian_polar_cap, flm=earth_polar_cap.coefficients
     )
     assert_raises(ValueError, sd.decompose, slepian_polar_cap.N)
+
+
+def test_no_method_found_for_decomposition(slepian_polar_cap) -> None:
+    """
+    checks that no method has been found when inputs haven't been set
+    """
+    assert_raises(RuntimeError, SlepianDecomposition, L_SMALL, slepian_polar_cap)
