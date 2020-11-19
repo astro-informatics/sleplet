@@ -26,6 +26,7 @@ from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     L_MAX_DEFAULT,
     L_MIN_DEFAULT,
+    SAMPLING_SCHEME,
 )
 
 _file_location = Path(__file__).resolve()
@@ -220,11 +221,11 @@ class SlepianArbitrary(SlepianFunctions):
         """
         calculates the D integral between two spherical harmonics
         """
-        flm = create_spherical_harmonic(self.L, i)
-        glm = create_spherical_harmonic(self.L, j)
-        return integrate_sphere(
-            self.L, flm, glm, self.weight, glm_conj=True, mask=self.mask
-        )
+        ylm_i = create_spherical_harmonic(self.L, i)
+        ylm_j = create_spherical_harmonic(self.L, j)
+        f = ssht.inverse(ylm_i, self.L, Method=SAMPLING_SCHEME)
+        g = ssht.inverse(ylm_j, self.L, Method=SAMPLING_SCHEME)
+        return integrate_sphere(self.L, f, g, self.weight, g_conj=True, mask=self.mask)
 
     @property  # type:ignore
     def mask_name(self) -> str:

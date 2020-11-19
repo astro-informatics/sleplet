@@ -61,8 +61,10 @@ def integrate_whole_matrix_slepian_functions(
         for j, glm in enumerate(eigenvectors):
             # Hermitian matrix so can use symmetry
             if i <= j:
+                f = ssht.inverse(flm, L, Method=SAMPLING_SCHEME)
+                g = ssht.inverse(glm, L, Method=SAMPLING_SCHEME)
                 output[j][i] = integrate_sphere(
-                    L, flm, glm, weight, glm_conj=True, mask=mask
+                    L, f, g, weight, g_conj=True, mask=mask
                 ).conj()
     fill_upper_triangle_of_hermitian_matrix(output)
     return output

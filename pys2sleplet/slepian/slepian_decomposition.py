@@ -1,12 +1,14 @@
 from dataclasses import dataclass, field
 
 import numpy as np
+import pyssht as ssht
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_sphere,
 )
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 @dataclass
@@ -64,13 +66,10 @@ class SlepianDecomposition:
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
+        f = ssht.inverse(self.flm, self.L, Method=SAMPLING_SCHEME)
+        s_p = ssht.inverse(self.s_p_lms[rank], self.L, Method=SAMPLING_SCHEME)
         integration = integrate_sphere(
-            self.L,
-            self.flm,
-            self.s_p_lms[rank],
-            self.weight,
-            glm_conj=True,
-            mask=self.mask,
+            self.L, f, s_p, self.weight, g_conj=True, mask=self.mask
         )
         return integration / self.lambdas[rank]
 
@@ -80,9 +79,9 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        return integrate_sphere(
-            self.L, self.flm, self.s_p_lms[rank], self.weight, glm_conj=True
-        )
+        f = ssht.inverse(self.flm, self.L, Method=SAMPLING_SCHEME)
+        s_p = ssht.inverse(self.s_p_lms[rank], self.L, Method=SAMPLING_SCHEME)
+        return integrate_sphere(self.L, f, s_p, self.weight, g_conj=True)
 
     def _harmonic_sum(self, rank: int) -> complex:
         r"""
