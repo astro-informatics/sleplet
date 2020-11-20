@@ -11,7 +11,10 @@ from numpy import linalg as LA
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.harmonic_methods import create_spherical_harmonic
+from pys2sleplet.utils.harmonic_methods import (
+    create_spherical_harmonic,
+    invert_flm_boosted,
+)
 from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_sphere,
@@ -26,7 +29,6 @@ from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     L_MAX_DEFAULT,
     L_MIN_DEFAULT,
-    SAMPLING_SCHEME,
 )
 
 _file_location = Path(__file__).resolve()
@@ -48,6 +50,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def __post_init__(self) -> None:
         self.region = Region(mask_name=self.mask_name)
+        self.resolution = settings.SAMPLES * self.L
         super().__post_init__()
 
     def _create_annotations(self) -> None:
@@ -69,10 +72,10 @@ class SlepianArbitrary(SlepianFunctions):
         self.name = f"slepian_{self.mask_name}"
 
     def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self.region)
+        self.mask = create_mask_region(self.resolution, self.region)
 
     def _calculate_area(self) -> None:
-        self.weight = calc_integration_weight(self.L)
+        self.weight = calc_integration_weight(self.resolution)
         self.area = np.where(self.mask, self.weight, 0).sum()
 
     def _create_matrix_location(self) -> None:
@@ -223,9 +226,11 @@ class SlepianArbitrary(SlepianFunctions):
         """
         ylm_i = create_spherical_harmonic(self.L, i)
         ylm_j = create_spherical_harmonic(self.L, j)
-        f = ssht.inverse(ylm_i, self.L, Method=SAMPLING_SCHEME)
-        g = ssht.inverse(ylm_j, self.L, Method=SAMPLING_SCHEME)
-        return integrate_sphere(self.L, f, g.conj(), self.weight, mask=self.mask)
+        f = invert_flm_boosted(ylm_i, self.L, self.resolution)
+        g = invert_flm_boosted(ylm_j, self.L, self.resolution)
+        return integrate_sphere(
+            self.resolution, f, g.conj(), self.weight, mask=self.mask
+        )
 
     @property  # type:ignore
     def mask_name(self) -> str:
