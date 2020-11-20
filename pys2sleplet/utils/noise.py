@@ -110,8 +110,9 @@ def slepian_hard_thresholding(
     perform thresholding in Slepian space
     """
     logger.info("begin Slepian hard thresholding")
-    for j in range(1, len(wav_coeffs)):
-        logger.info(f"start Psi^{j}/{len(wav_coeffs)-1}")
+    within_shannon_coeffs = wav_coeffs[wav_coeffs.any(axis=1)]
+    for j in range(1, len(within_shannon_coeffs)):
+        logger.info(f"start Psi^{j}/{len(within_shannon_coeffs)-1}")
         f = slepian_inverse(L, wav_coeffs[j], slepian)
         f_thresholded = _perform_thresholding(f, sigma_j, n_sigma, j)
         wav_coeffs[j] = slepian_forward(L, slepian, f=f_thresholded)
