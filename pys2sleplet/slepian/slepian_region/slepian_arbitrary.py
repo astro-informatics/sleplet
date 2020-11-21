@@ -16,7 +16,7 @@ from pys2sleplet.utils.harmonic_methods import (
 )
 from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
-    integrate_sphere,
+    integrate_region_sphere,
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
@@ -287,8 +287,8 @@ class SlepianArbitrary(SlepianFunctions):
         """
         calculates the D integral between two spherical harmonics
         """
-        return integrate_sphere(
-            self.resolution, fields[i], fields[j].conj(), self.weight, mask=self.mask
+        return integrate_region_sphere(
+            self.resolution, fields[i], fields[j].conj(), self.weight, self.mask
         )
 
     @property  # type:ignore

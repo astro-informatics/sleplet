@@ -9,12 +9,7 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.harmonic_methods import boost_coefficient_resolution
-from pys2sleplet.utils.integration_methods import (
-    calc_integration_weight,
-    integrate_sphere,
-)
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
@@ -46,28 +41,6 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
         slepian = SlepianArbitrary(L, region.mask_name)
 
     return slepian
-
-
-def integrate_whole_matrix_slepian_functions(
-    eigenvectors: np.ndarray, L: int, mask: Optional[np.ndarray] = None
-) -> np.ndarray:
-    """
-    helper function which integrates all of the slepian functionss
-    """
-    weight = calc_integration_weight(L)
-    N = len(eigenvectors)
-    output = np.zeros((N, N), dtype=np.complex128)
-    for i, flm in enumerate(eigenvectors):
-        for j, glm in enumerate(eigenvectors):
-            # Hermitian matrix so can use symmetry
-            if i <= j:
-                f = ssht.inverse(flm, L, Method=SAMPLING_SCHEME)
-                g = ssht.inverse(glm, L, Method=SAMPLING_SCHEME)
-                output[j][i] = integrate_sphere(
-                    L, f, g.conj(), weight, mask=mask
-                ).conj()
-    fill_upper_triangle_of_hermitian_matrix(output)
-    return output
 
 
 def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.ndarray:

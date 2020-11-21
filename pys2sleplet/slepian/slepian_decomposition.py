@@ -7,7 +7,8 @@ import pyssht as ssht
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.integration_methods import (
     calc_integration_weight,
-    integrate_sphere,
+    integrate_region_sphere,
+    integrate_whole_sphere,
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
@@ -63,8 +64,8 @@ class SlepianDecomposition:
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
         weight = calc_integration_weight(self.L)
-        integration = integrate_sphere(
-            self.L, self.f, s_p.conj(), weight, mask=self.mask
+        integration = integrate_region_sphere(
+            self.L, self.f, s_p.conj(), weight, self.mask
         )
         return integration / self.slepian.eigenvalues[rank]
 
@@ -78,7 +79,7 @@ class SlepianDecomposition:
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
         weight = calc_integration_weight(self.L)
-        return integrate_sphere(self.L, self.f, s_p.conj(), weight)
+        return integrate_whole_sphere(self.L, self.f, s_p.conj(), weight)
 
     def _harmonic_sum(self, rank: int) -> complex:
         r"""
