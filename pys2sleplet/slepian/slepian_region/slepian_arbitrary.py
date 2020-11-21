@@ -34,6 +34,7 @@ from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     L_MAX_DEFAULT,
     L_MIN_DEFAULT,
+    SAMPLING_SCHEME,
 )
 
 _file_location = Path(__file__).resolve()
@@ -125,9 +126,76 @@ class SlepianArbitrary(SlepianFunctions):
         """
         computes the D matrix either in parallel or serially
         """
-        return self._matrix_serial() if self.ncpu == 1 else self._matrix_parallel()
+        fields = (
+            self._inverse_transforms_serial()
+            if self.ncpu == 1
+            else self._inverse_transforms_parallel()
+        )
+        return (
+            self._matrix_serial(fields)
+            if self.ncpu == 1
+            else self._matrix_parallel(fields)
+        )
 
-    def _matrix_serial(self) -> np.ndarray:
+    def _inverse_transforms_serial(self) -> np.ndarray:
+        """
+        computes all the inverse transforms once serially
+        """
+        shape = (self.L ** 2,) + ssht.sample_shape(self.L, Method=SAMPLING_SCHEME)
+        fields = np.zeros(shape, dtype=np.complex128)
+        for p in range(self.L ** 2):
+            logger.info(f"compute field: {p}")
+            fields[p] = invert_flm_boosted(
+                create_spherical_harmonic(self.L, p), self.L, self.resolution
+            )
+        return fields
+
+    def _inverse_transforms_parallel(self) -> np.ndarray:
+        """
+        computes all the inverse transforms once in parallel
+        """
+        shape = (self.L ** 2,) + ssht.sample_shape(self.L, Method=SAMPLING_SCHEME)
+
+        # initialise real and imaginary matrices
+        fields_r = np.zeros(shape, dtype=np.complex128)
+        fields_i = np.zeros(shape, dtype=np.complex128)
+
+        fields_r_ext, shm_r_ext = create_shared_memory_array(fields_r)
+        fields_i_ext, shm_i_ext = create_shared_memory_array(fields_i)
+
+        def func(chunk: List[int]) -> None:
+            """
+            compute inverse transforms for each chunk
+            """
+            fields_r_int, shm_r_int = attach_to_shared_memory_block(fields_r, shm_r_ext)
+            fields_i_int, shm_i_int = attach_to_shared_memory_block(fields_i, shm_i_ext)
+
+            for p in chunk:
+                logger.info(f"compute field: {p}")
+                transformed = invert_flm_boosted(
+                    create_spherical_harmonic(self.L, p), self.L, self.resolution
+                )
+                fields_r_int[p] = transformed.real
+                fields_i_int[p] = transformed.imag
+
+            free_shared_memory(shm_r_int, shm_i_int)
+
+        # split up L range to maximise effiency
+        chunks = split_L_into_chunks(self.L_max ** 2, self.ncpu, L_min=self.L_min ** 2)
+
+        # initialise pool and apply function
+        with Pool(processes=self.ncpu) as p:
+            p.map(func, chunks)
+
+        # retrieve from parallel function
+        fields = fields_r_ext + 1j * fields_i_ext
+
+        # Free and release the shared memory block at the very end
+        free_shared_memory(shm_r_ext, shm_i_ext)
+        release_shared_memory(shm_r_ext, shm_i_ext)
+        return fields
+
+    def _matrix_serial(self, fields: np.ndarray) -> np.ndarray:
         """
         computes the D matrix in serial
         """
@@ -137,13 +205,13 @@ class SlepianArbitrary(SlepianFunctions):
 
         for i in range(self.L_max ** 2 - self.L_min ** 2):
             logger.info(f"start ell: {i}")
-            self._matrix_helper(D_r, D_i, i)
+            self._matrix_helper(D_r, D_i, fields, i)
             logger.info(f"finish ell: {i}")
 
         # combine real and imaginary parts
         return D_r + 1j * D_i
 
-    def _matrix_parallel(self) -> np.ndarray:
+    def _matrix_parallel(self, fields: np.ndarray) -> np.ndarray:
         """
         computes the D matrix in parallel
         """
@@ -163,7 +231,7 @@ class SlepianArbitrary(SlepianFunctions):
 
             for i in chunk:
                 logger.info(f"start ell: {i}")
-                self._matrix_helper(D_r_int, D_i_int, i)
+                self._matrix_helper(D_r_int, D_i_int, fields, i)
                 logger.info(f"finish ell: {i}")
 
             free_shared_memory(shm_r_int, shm_i_int)
@@ -183,7 +251,9 @@ class SlepianArbitrary(SlepianFunctions):
         release_shared_memory(shm_r_ext, shm_i_ext)
         return D
 
-    def _matrix_helper(self, D_r: np.ndarray, D_i: np.ndarray, i: int) -> None:
+    def _matrix_helper(
+        self, D_r: np.ndarray, D_i: np.ndarray, fields: np.ndarray, i: int
+    ) -> None:
         """
         used in both serial and parallel calculations
 
@@ -191,7 +261,7 @@ class SlepianArbitrary(SlepianFunctions):
         is not required for the serial case but here for ease
         """
         # fill in diagonal components
-        integral = self._integral(i, i)
+        integral = self._integral(fields, i, i)
         D_r[i][i] = integral.real
         D_i[i][i] = integral.imag
         _, m_i = ssht.ind2elm(i)
@@ -202,27 +272,23 @@ class SlepianArbitrary(SlepianFunctions):
             if m_i == 0 and m_j != 0 and ell_j < self.L:
                 # if positive m then use conjugate relation
                 if m_j > 0:
-                    integral = self._integral(j, i)
+                    integral = self._integral(fields, j, i)
                     D_r[j][i] = integral.real
                     D_i[j][i] = integral.imag
                     k = ssht.elm2ind(ell_j, -m_j)
                     D_r[k][i] = (-1) ** m_j * D_r[j][i]
                     D_i[k][i] = (-1) ** (m_j + 1) * D_i[j][i]
             else:
-                integral = self._integral(j, i)
+                integral = self._integral(fields, j, i)
                 D_r[j][i] = integral.real
                 D_i[j][i] = integral.imag
 
-    def _integral(self, i: int, j: int) -> complex:
+    def _integral(self, fields: np.ndarray, i: int, j: int) -> complex:
         """
         calculates the D integral between two spherical harmonics
         """
-        ylm_i = create_spherical_harmonic(self.L, i)
-        ylm_j = create_spherical_harmonic(self.L, j)
-        f = invert_flm_boosted(ylm_i, self.L, self.resolution)
-        g = invert_flm_boosted(ylm_j, self.L, self.resolution)
         return integrate_sphere(
-            self.resolution, f, g.conj(), self.weight, mask=self.mask
+            self.resolution, fields[i], fields[j].conj(), self.weight, mask=self.mask
         )
 
     @property  # type:ignore
