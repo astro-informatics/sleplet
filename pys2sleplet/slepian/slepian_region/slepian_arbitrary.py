@@ -141,7 +141,9 @@ class SlepianArbitrary(SlepianFunctions):
         """
         computes all the inverse transforms once serially
         """
-        shape = (self.L ** 2,) + ssht.sample_shape(self.L, Method=SAMPLING_SCHEME)
+        shape = (self.L ** 2,) + ssht.sample_shape(
+            self.resolution, Method=SAMPLING_SCHEME
+        )
         fields = np.zeros(shape, dtype=np.complex128)
         for p in range(self.L ** 2):
             logger.info(f"compute field: {p}")
@@ -154,7 +156,9 @@ class SlepianArbitrary(SlepianFunctions):
         """
         computes all the inverse transforms once in parallel
         """
-        shape = (self.L ** 2,) + ssht.sample_shape(self.L, Method=SAMPLING_SCHEME)
+        shape = (self.L ** 2,) + ssht.sample_shape(
+            self.resolution, Method=SAMPLING_SCHEME
+        )
 
         # initialise real and imaginary matrices
         fields_r = np.zeros(shape, dtype=np.complex128)
