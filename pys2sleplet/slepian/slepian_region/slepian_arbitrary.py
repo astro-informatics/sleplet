@@ -5,7 +5,6 @@ from typing import List
 import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
-from multiprocess.shared_memory import SharedMemory
 from numpy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -21,7 +20,13 @@ from pys2sleplet.utils.integration_methods import (
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.parallel_methods import (
+    attach_to_shared_memory_block,
+    create_shared_memory_array,
+    free_shared_memory,
+    release_shared_memory,
+    split_L_into_chunks,
+)
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
 from pys2sleplet.utils.vars import (
@@ -146,32 +151,22 @@ class SlepianArbitrary(SlepianFunctions):
         D_r = np.zeros((self.L ** 2, self.L ** 2))
         D_i = np.zeros((self.L ** 2, self.L ** 2))
 
-        # create shared memory block
-        shm_r = SharedMemory(create=True, size=D_r.nbytes)
-        shm_i = SharedMemory(create=True, size=D_i.nbytes)
-        # create a array backed by shared memory
-        D_r_ext = np.ndarray(D_r.shape, dtype=D_r.dtype, buffer=shm_r.buf)
-        D_i_ext = np.ndarray(D_i.shape, dtype=D_i.dtype, buffer=shm_i.buf)
+        D_r_ext, shm_r_ext = create_shared_memory_array(D_r)
+        D_i_ext, shm_i_ext = create_shared_memory_array(D_i)
 
         def func(chunk: List[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
-            # attach to the existing shared memory block
-            ex_shm_r = SharedMemory(name=shm_r.name)
-            ex_shm_i = SharedMemory(name=shm_i.name)
-            D_r_int = np.ndarray(D_r.shape, dtype=D_r.dtype, buffer=ex_shm_r.buf)
-            D_i_int = np.ndarray(D_i.shape, dtype=D_i.dtype, buffer=ex_shm_i.buf)
+            D_r_int, shm_r_int = attach_to_shared_memory_block(D_r, shm_r_ext)
+            D_i_int, shm_i_int = attach_to_shared_memory_block(D_i, shm_i_ext)
 
-            # deal with chunk
             for i in chunk:
                 logger.info(f"start ell: {i}")
                 self._matrix_helper(D_r_int, D_i_int, i)
                 logger.info(f"finish ell: {i}")
 
-            # clean up shared memory
-            ex_shm_r.close()
-            ex_shm_i.close()
+            free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
         chunks = split_L_into_chunks(self.L_max ** 2, self.ncpu, L_min=self.L_min ** 2)
@@ -184,10 +179,8 @@ class SlepianArbitrary(SlepianFunctions):
         D = D_r_ext + 1j * D_i_ext
 
         # Free and release the shared memory block at the very end
-        shm_r.close()
-        shm_r.unlink()
-        shm_i.close()
-        shm_i.unlink()
+        free_shared_memory(shm_r_ext, shm_i_ext)
+        release_shared_memory(shm_r_ext, shm_i_ext)
         return D
 
     def _matrix_helper(self, D_r: np.ndarray, D_i: np.ndarray, i: int) -> None:

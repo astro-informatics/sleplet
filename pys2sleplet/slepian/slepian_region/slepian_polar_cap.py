@@ -6,7 +6,6 @@ import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
-from multiprocess.shared_memory import SharedMemory
 from numpy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -15,7 +14,13 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import create_emm_vector
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.parallel_methods import (
+    attach_to_shared_memory_block,
+    create_shared_memory_array,
+    free_shared_memory,
+    release_shared_memory,
+    split_L_into_chunks,
+)
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
     ANNOTATION_COLOUR,
@@ -241,18 +246,13 @@ class SlepianPolarCap(SlepianFunctions):
         Pl, ell = P
         lvec = np.arange(m, self.L)
 
-        # create shared memory block
-        shm = SharedMemory(create=True, size=Dm.nbytes)
-        # create a array backed by shared memory
-        Dm_ext = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=shm.buf)
+        Dm_ext, shm_ext = create_shared_memory_array(Dm)
 
         def func(chunk: List[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
-            # attach to the existing shared memory block
-            ex_shm = SharedMemory(name=shm.name)
-            Dm_int = np.ndarray(Dm.shape, dtype=Dm.dtype, buffer=ex_shm.buf)
+            Dm_int, shm_int = attach_to_shared_memory_block(Dm, shm_ext)
 
             # deal with chunk
             for i in chunk:
@@ -260,8 +260,7 @@ class SlepianPolarCap(SlepianFunctions):
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
                 logger.info(f"finish ell: {i}")
 
-            # clean up shared memory
-            ex_shm.close()
+            free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
         chunks = split_L_into_chunks(self.L - m, self.ncpu)
@@ -274,9 +273,8 @@ class SlepianPolarCap(SlepianFunctions):
         Dm = Dm_ext * (-1) ** m / 2
 
         # Free and release the shared memory block at the very end
-        shm.close()
-        shm.unlink()
-
+        free_shared_memory(shm_ext)
+        release_shared_memory(shm_ext)
         return Dm
 
     def _dm_matrix_helper(
