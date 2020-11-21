@@ -138,8 +138,7 @@ class SlepianArbitrary(SlepianFunctions):
         )
         self.fields = np.zeros(shape, dtype=np.complex128)
         for p in range(self.L ** 2):
-            if p % self.L == 0:
-                logger.info(f"compute field: {p+1}/{self.L**2}")
+            logger.info(f"compute field: {p+1}/{self.L**2}")
             self.fields[p] = invert_flm_boosted(
                 create_spherical_harmonic(self.L, p), self.L, self.resolution
             )
