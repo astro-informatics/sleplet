@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -34,7 +34,6 @@ from pys2sleplet.utils.vars import (
     ARROW_STYLE,
     L_MAX_DEFAULT,
     L_MIN_DEFAULT,
-    SAMPLING_SCHEME,
 )
 
 _file_location = Path(__file__).resolve()
@@ -126,22 +125,8 @@ class SlepianArbitrary(SlepianFunctions):
         """
         computes the D matrix either in parallel or serially
         """
-        self._compute_inverse_transforms()
+        self._fields: Dict[int, np.ndarray] = {}
         return self._matrix_serial() if self.ncpu == 1 else self._matrix_parallel()
-
-    def _compute_inverse_transforms(self) -> np.ndarray:
-        """
-        computes all the inverse transforms once
-        """
-        shape = (self.L ** 2,) + ssht.sample_shape(
-            self.resolution, Method=SAMPLING_SCHEME
-        )
-        self.fields = np.zeros(shape, dtype=np.complex128)
-        for p in range(self.L ** 2):
-            logger.info(f"compute field: {p+1}/{self.L**2}")
-            self.fields[p] = invert_flm_boosted(
-                create_spherical_harmonic(self.L, p), self.L, self.resolution
-            )
 
     def _matrix_serial(self) -> np.ndarray:
         """
@@ -233,10 +218,18 @@ class SlepianArbitrary(SlepianFunctions):
         """
         calculates the D integral between two spherical harmonics
         """
+        if i not in self._fields:
+            self._fields[i] = invert_flm_boosted(
+                create_spherical_harmonic(self.L, i), self.L, self.resolution
+            )
+        if j not in self._fields:
+            self._fields[j] = invert_flm_boosted(
+                create_spherical_harmonic(self.L, j), self.L, self.resolution
+            )
         return integrate_region_sphere(
             self.resolution,
-            self.fields[i],
-            self.fields[j].conj(),
+            self._fields[i],
+            self._fields[j].conj(),
             self.weight,
             self.mask,
         )
