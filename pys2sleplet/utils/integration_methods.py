@@ -14,9 +14,7 @@ def calc_integration_weight(L: int) -> np.ndarray:
     return np.sin(thetas) * delta_theta * delta_phi
 
 
-def integrate_whole_sphere(
-    L: int, f: np.ndarray, g: np.ndarray, weight: np.ndarray
-) -> complex:
+def integrate_whole_sphere(f: np.ndarray, g: np.ndarray, weight: np.ndarray) -> complex:
     """
     computes the integration for the whole sphere
     """
@@ -24,7 +22,7 @@ def integrate_whole_sphere(
 
 
 def integrate_region_sphere(
-    L: int, f: np.ndarray, g: np.ndarray, weight: np.ndarray, mask: np.ndarray
+    f: np.ndarray, g: np.ndarray, weight: np.ndarray, mask: np.ndarray
 ) -> complex:
     """
     computes the integration for a region of the sphere

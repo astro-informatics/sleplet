@@ -227,11 +227,7 @@ class SlepianArbitrary(SlepianFunctions):
                 create_spherical_harmonic(self.L, j), self.L, self.resolution
             )
         return integrate_region_sphere(
-            self.resolution,
-            self._fields[i],
-            self._fields[j].conj(),
-            self.weight,
-            self.mask,
+            self._fields[i], self._fields[j].conj(), self.weight, self.mask
         )
 
     @property  # type:ignore
