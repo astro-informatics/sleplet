@@ -1,9 +1,23 @@
-import os
-
-from Cython.Build import cythonize
 from setuptools import Extension, find_namespace_packages, setup
 
-os.environ["CC"] = "gcc-10"
+try:
+    from Cython.Build import cythonize
+except ImportError:
+
+    USE_CYTHON = False
+else:
+    USE_CYTHON = True
+
+ext = ".pyx" if USE_CYTHON else ".c"
+extensions = [Extension("slepian_computations", ["pys2sleplet/cython/*" + ext])]
+
+if USE_CYTHON:
+    extensions = cythonize(
+        extensions,
+        annotate=True,
+        language_level=3,
+        compiler_directives=dict(boundscheck=False, embedsignature=True),
+    )
 
 setup(
     name="pys2sleplet",
@@ -13,16 +27,5 @@ setup(
     packages=find_namespace_packages(),
     include_package_data=True,
     entry_points=dict(console_scripts=["plotting=pys2sleplet.scripts.plotting:main"]),
-    ext_modules=cythonize(
-        Extension(
-            "slepian_computations",
-            ["pys2sleplet/cython/*.pyx"],
-            extra_compile_args=["-fopenmp"],
-            extra_link_args=["-fopenmp"],
-            include_dirs=["/usr/local/include"],
-        ),
-        annotate=True,
-        language_level=3,
-        compiler_directives=dict(boundscheck=False, embedsignature=True),
-    ),
+    ext_modules=extensions,
 )

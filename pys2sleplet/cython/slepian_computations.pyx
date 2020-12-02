@@ -3,10 +3,6 @@ import numpy as np
 from libc.stdio cimport printf
 from libc.stdlib cimport calloc, malloc
 
-from cython.parallel import parallel, prange
-
-from openmp cimport omp_get_thread_num
-
 
 cdef extern from "ssht/ssht.h" nogil:
     ctypedef enum ssht_dl_method_t:
@@ -27,38 +23,27 @@ def create_arbitrary_D_matrix(
     int resolution,
     double[:,::1] weight,
     unsigned char[:,::1] mask,
-    int threads
 ):
     """
     solves the eigenproblem for a given L, resolution & arbitrary region
     """
-    cdef int ell, tid
+    cdef int ell
     cdef double complex[:,::1] D
-    cdef double complex[:,:,::1] D_local
     D = np.zeros((L * L, L * L), dtype=np.complex_)
-    D_local = np.zeros((threads, L * L, L * L), dtype=np.complex_)
 
-    with nogil, parallel(num_threads=threads):
-        tid = omp_get_thread_num()
-        for ell in prange(L * L, schedule="guided"):
-            printf("ell: %i\n", ell)
-            _fill_D_matrix(D_local, L, resolution, weight, mask, ell, tid)
+    for ell in range(L * L):
+        print(f"ell: {ell}")
+        _fill_D_matrix(D, L, resolution, weight, mask, ell)
 
-    # combine local thread copies into final matrix
-    for tid in range(threads):
-        for i in range(L * L):
-            for j in range(L * L):
-                D[i][j] += D_local[tid][i][j]
     return D.base
 
 cdef void _fill_D_matrix(
-     double complex[:,:,::1] D,
+     double complex[:,::1] D,
      int L,
      int resolution,
      double[:,::1] weight,
      unsigned char[:,::1] mask,
-     int i,
-     int thread
+     int i
 ) nogil:
     """
     fills all the indices for the given ell
@@ -66,7 +51,7 @@ cdef void _fill_D_matrix(
     cdef int m_i, j, ell_j, m_j, k
 
     # fill in diagonal components
-    D[thread][i][i] = _compute_integral(L, resolution, weight, mask, i, i)
+    D[i][i] = _compute_integral(L, resolution, weight, mask, i, i)
     _, m_i = _ssht_ind2elm(i)
 
     for j in range(i + 1, L * L):
@@ -75,11 +60,11 @@ cdef void _fill_D_matrix(
         if m_i == 0 and m_j != 0 and ell_j < L:
             # if positive m then use conjugate relation
             if m_j > 0:
-                D[thread][j][i] = _compute_integral(L, resolution, weight, mask, j, i)
+                D[j][i] = _compute_integral(L, resolution, weight, mask, j, i)
                 k = _ssht_elm2ind(ell_j, -m_j)
-                D[thread][k][i] = (-1) ** m_j * D[thread][j][i]
+                D[k][i] = (-1) ** m_j * D[j][i]
         else:
-            D[thread][j][i] = _compute_integral(L, resolution, weight, mask, j, i)
+            D[j][i] = _compute_integral(L, resolution, weight, mask, j, i)
 
 
 cdef double complex _compute_integral(

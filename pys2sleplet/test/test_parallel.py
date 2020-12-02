@@ -1,8 +1,11 @@
+import pytest
 from numpy.testing import assert_allclose, assert_array_equal, assert_equal
 
+from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import L_LARGE, L_SMALL, NCPU, ORDER, THETA_MAX
 from pys2sleplet.utils.parallel_methods import split_L_into_chunks
+from pys2sleplet.utils.string_methods import angle_as_degree
 
 
 def test_slepian_polar_cap_serial_equal_to_parallel() -> None:
@@ -14,6 +17,19 @@ def test_slepian_polar_cap_serial_equal_to_parallel() -> None:
     parallel = SlepianPolarCap(L_SMALL, THETA_MAX, order=ORDER)
     assert_array_equal(serial.eigenvalues, parallel.eigenvalues)
     assert_array_equal(serial.eigenvectors, parallel.eigenvectors)
+
+
+@pytest.mark.slow
+def test_slepian_arbitrary_serial_equal_to_parallel() -> None:
+    """
+    ensures that the serial and parallel calculation of a given
+    Slepian arbitrary region give the same result
+    """
+    mask_name = f"polar{angle_as_degree(THETA_MAX)}"
+    serial = SlepianArbitrary(L_SMALL, mask_name, ncpu=1)
+    parallel = SlepianArbitrary(L_SMALL, mask_name)
+    assert_allclose(serial.eigenvalues, parallel.eigenvalues, atol=1e-14)
+    assert_allclose(serial.eigenvectors, parallel.eigenvectors, atol=1.5)
 
 
 def test_split_L_into_chunks() -> None:

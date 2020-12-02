@@ -128,9 +128,7 @@ class SlepianArbitrary(SlepianFunctions):
         """
         self._fields: Dict[int, np.ndarray] = {}
         return (
-            create_arbitrary_D_matrix(
-                self.L, self.resolution, self.weight, self.mask, self.ncpu
-            )
+            create_arbitrary_D_matrix(self.L, self.resolution, self.weight, self.mask)
             if self.ncpu == 1
             else self._matrix_parallel()
         )
