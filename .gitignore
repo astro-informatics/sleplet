@@ -1,3 +1,4 @@
+*.c
 *.egg-info
 *.html
 *.pdf
@@ -8,6 +9,7 @@
 .hypothesis
 .mypy_cache
 .pytest_cache
+*.so
 .vscode
 Coeff_Height_and_Depth_to2190_DTM2006.0
 __pycache__
