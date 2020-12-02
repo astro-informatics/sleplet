@@ -25,7 +25,6 @@ jobs:
                   sudo apt-get install libmpc-dev libmpfr-dev
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
-                  python setup.py build_ext --inplace
 
             - name: pull LFS files
               run: |
