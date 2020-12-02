@@ -1,5 +1,6 @@
 black
 cmocean
+Cython
 flake8
 gmpy2
 hypothesis

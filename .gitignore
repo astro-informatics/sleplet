@@ -1,3 +1,4 @@
+*.c
 *.egg-info
 *.html
 *.pdf

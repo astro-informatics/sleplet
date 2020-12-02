@@ -145,7 +145,7 @@ class SlepianPolarCap(SlepianFunctions):
         solves the eigenproblem for a given order 'm;
         """
         emm = create_emm_vector(self.L)
-        Dm = self._create_Dm_matrix(emm, m)
+        Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)
         return eigenvalues, eigenvectors
@@ -172,31 +172,10 @@ class SlepianPolarCap(SlepianFunctions):
             {**dict(x=x[0], y=y[0], z=z[0], arrowcolor=colour), **ARROW_STYLE}
         )
 
-    def _create_Dm_matrix(self, emm: np.ndarray, m: int) -> np.ndarray:
-        """
-        calculates the given D matrix for an order m
-        """
-        P = self._create_legendre_polynomials_table(emm)
-        return (
-            self._dm_matrix_serial(abs(m), P)
-            if self.ncpu == 1
-            else self._dm_matrix_parallel(abs(m), P)
-        )
-
-    def _create_legendre_polynomials_table(self, emm: np.ndarray) -> np.ndarray:
-        """
-        create Legendre polynomials table for matrix calculation
-        """
-        Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
-        ind = emm == 0
-        l = np.arange(2 * self.L).reshape(1, -1)
-        Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-        return np.concatenate((Pl, l))
-
-    def _dm_matrix_serial(self, m: int, P: np.ndarray) -> np.ndarray:
+    def _create_Dm_matrix(self, m: int, emm: np.ndarray) -> np.ndarray:
         """
         Syntax:
-        Dm = _dm_matrix_serial(m, P)
+        Dm = _create_Dm_matrix(m, P)
 
         Input:
         m  =  order
@@ -211,39 +190,8 @@ class SlepianPolarCap(SlepianFunctions):
         degrees, using the formulation given in "Spatiospectral Concentration on
         a Sphere" by F.J. Simons, F.A. Dahlen and M.A. Wieczorek.
         """
+        Pl, ell = self._create_legendre_polynomials_table(emm)
         Dm = np.zeros((self.L - m, self.L - m))
-        Pl, ell = P
-        lvec = np.arange(m, self.L)
-
-        for i in range(self.L - m):
-            logger.info(f"start ell: {i}")
-            self._dm_matrix_helper(Dm, i, m, lvec, Pl, ell)
-            logger.info(f"finish ell: {i}")
-
-        Dm *= (-1) ** m / 2
-
-        return Dm
-
-    def _dm_matrix_parallel(self, m: int, P: np.ndarray) -> np.ndarray:
-        """
-        Syntax:
-        Dm = _dm_matrix_parallel(m, P)
-
-        Input:
-        m  =  order
-        P(:,1)  =  Pl = Legendre Polynomials column vector for l = 0 : L-1
-        P(:,2)  =  ell values vector
-
-        Output:
-        Dm = (L - m) square Slepian matrix for order m
-
-        Description:
-        This piece of code computes the Slepian matrix, Dm, for order m and all
-        degrees, using the formulation given in "Spatiospectral Concentration on
-        a Sphere" by F.J. Simons, F.A. Dahlen and M.A. Wieczorek.
-        """
-        Dm = np.zeros((self.L - m, self.L - m))
-        Pl, ell = P
         lvec = np.arange(m, self.L)
 
         Dm_ext, shm_ext = create_shared_memory_array(Dm)
@@ -276,6 +224,18 @@ class SlepianPolarCap(SlepianFunctions):
         free_shared_memory(shm_ext)
         release_shared_memory(shm_ext)
         return Dm
+
+    def _create_legendre_polynomials_table(
+        self, emm: np.ndarray
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        create Legendre polynomials table for matrix calculation
+        """
+        Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
+        ind = emm == 0
+        l = np.arange(2 * self.L).reshape(1, -1)
+        Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
+        return Pl, l
 
     def _dm_matrix_helper(
         self,
