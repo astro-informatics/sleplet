@@ -14,11 +14,11 @@ jobs:
               with:
                   python-version: 3.8
 
-            - name: restore python cache
-              uses: actions/cache@v2
-              with:
-                  path: ${{ env.pythonLocation }}
-                  key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
+            # - name: restore python cache
+            #   uses: actions/cache@v2
+            #   with:
+            #       path: ${{ env.pythonLocation }}
+            #       key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
 
             - name: Install dependencies
               run: |
