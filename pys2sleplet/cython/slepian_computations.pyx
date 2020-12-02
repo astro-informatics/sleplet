@@ -22,12 +22,11 @@ cdef extern from "ssht/ssht.h" nogil:
     )
 
 
-def solve_arbitrary_eigenproblem(
+def create_arbitrary_D_matrix(
     int L,
     int resolution,
     double[:,::1] weight,
     unsigned char[:,::1] mask,
-    int shannon,
     int threads
 ):
     """
@@ -50,8 +49,7 @@ def solve_arbitrary_eigenproblem(
         for i in range(L * L):
             for j in range(L * L):
                 D[i][j] += D_local[tid][i][j]
-
-    return _solve_and_clean_evals_and_evecs(D, shannon)
+    return D.base
 
 cdef void _fill_D_matrix(
      double complex[:,:,::1] D,
@@ -186,30 +184,3 @@ cdef inline int _sqrt(
         square += delta
         delta  += 2
     return delta // 2 - 1
-
-def _solve_and_clean_evals_and_evecs(
-    double complex[:,::1] D,
-    int shannon
-):
-    """
-    need eigenvalues and eigenvectors to be in a certain format
-    """
-    # solve eigenproblem
-    eigenvalues, eigenvectors = np.linalg.eigh(D)
-
-    # eigenvalues should be real
-    eigenvalues = eigenvalues.real
-
-    # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-    idx = eigenvalues.argsort()[::-1]
-    eigenvalues = eigenvalues[idx]
-    eigenvectors = eigenvectors[:, idx].conj().T
-
-    # ensure first element of each eigenvector is positive
-    eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
-
-    # find repeating eigenvalues and ensure orthorgonality
-    pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
-    eigenvectors[pairs] *= 1j
-
-    return eigenvalues[:shannon], eigenvectors[:shannon]

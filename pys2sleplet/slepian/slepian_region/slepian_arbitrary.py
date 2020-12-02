@@ -35,6 +35,7 @@ from pys2sleplet.utils.vars import (
     L_MAX_DEFAULT,
     L_MIN_DEFAULT,
 )
+from slepian_computations import create_arbitrary_D_matrix
 
 _file_location = Path(__file__).resolve()
 _slepian_path = _file_location.parents[2] / "data" / "slepian"
@@ -126,23 +127,13 @@ class SlepianArbitrary(SlepianFunctions):
         computes the D matrix either in parallel or serially
         """
         self._fields: Dict[int, np.ndarray] = {}
-        return self._matrix_serial() if self.ncpu == 1 else self._matrix_parallel()
-
-    def _matrix_serial(self) -> np.ndarray:
-        """
-        computes the D matrix in serial
-        """
-        # initialise real and imaginary matrices
-        D_r = np.zeros((self.L ** 2, self.L ** 2))
-        D_i = np.zeros((self.L ** 2, self.L ** 2))
-
-        for i in range(self.L_max ** 2 - self.L_min ** 2):
-            logger.info(f"start ell: {i}")
-            self._matrix_helper(D_r, D_i, i)
-            logger.info(f"finish ell: {i}")
-
-        # combine real and imaginary parts
-        return D_r + 1j * D_i
+        return (
+            create_arbitrary_D_matrix(
+                self.L, self.resolution, self.weight, self.mask, self.ncpu
+            )
+            if self.ncpu == 1
+            else self._matrix_parallel()
+        )
 
     def _matrix_parallel(self) -> np.ndarray:
         """
