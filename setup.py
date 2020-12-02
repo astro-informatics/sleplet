@@ -9,7 +9,9 @@ else:
     USE_CYTHON = True
 
 ext = ".pyx" if USE_CYTHON else ".c"
-extensions = Extension("slepian_computations", ["pys2sleplet/cython/*" + ext])
+extensions = [
+    Extension("slepian_computations", ["pys2sleplet/cython/slepian_computations" + ext])
+]
 
 if USE_CYTHON:
     extensions = cythonize(

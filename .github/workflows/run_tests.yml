@@ -14,17 +14,18 @@ jobs:
               with:
                   python-version: 3.8
 
-            # - name: restore python cache
-            #   uses: actions/cache@v2
-            #   with:
-            #       path: ${{ env.pythonLocation }}
-            #       key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
+            - name: restore python cache
+              uses: actions/cache@v2
+              with:
+                  path: ${{ env.pythonLocation }}
+                  key: ${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
 
             - name: Install dependencies
               run: |
                   sudo apt-get install libmpc-dev libmpfr-dev
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
+                  python setup.py build_ext --inplace
 
             - name: pull LFS files
               run: |
