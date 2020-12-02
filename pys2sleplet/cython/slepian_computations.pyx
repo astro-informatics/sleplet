@@ -1,6 +1,5 @@
 import numpy as np
 
-from libc.stdio cimport printf
 from libc.stdlib cimport calloc, malloc
 
 from cython.parallel import parallel, prange
@@ -41,7 +40,6 @@ def create_arbitrary_D_matrix(
     with nogil, parallel(num_threads=threads):
         tid = omp_get_thread_num()
         for ell in prange(L * L, schedule="guided"):
-            printf("ell: %i\n", ell)
             _fill_D_matrix(D_local, L, resolution, weight, mask, ell, tid)
 
     # combine local thread copies into final matrix

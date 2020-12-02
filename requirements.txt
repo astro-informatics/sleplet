@@ -1,5 +1,7 @@
 black
 cmocean
+cmake
+conan
 Cython
 flake8
 gmpy2

@@ -26,6 +26,18 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
 
+            - name: Install SSHT C package
+              run: |
+                  git clone https://github.com/astro-informatics/ssht.git
+                  mkdir ssht/build && cd ssht/build
+                  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -Dconan_deps=True ..
+                  make
+                  make install
+
+            - name: Install cython package
+              run: |
+                  python setup.py build_ext --inplace
+
             - name: pull LFS files
               run: |
                   git lfs ls-files -I \
