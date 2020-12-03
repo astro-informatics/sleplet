@@ -227,9 +227,7 @@ def main() -> None:
         extra_args=args.extra_args,
         region=mask,
         noise=np.float_power(10, args.noise) if args.noise is not None else None,
-        smoothing=np.float_power(10, args.smoothing)
-        if args.smoothing is not None
-        else None,
+        smoothing=args.smoothing if args.smoothing is not None else None,
     )
 
     g = (
