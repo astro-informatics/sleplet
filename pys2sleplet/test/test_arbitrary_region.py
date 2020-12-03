@@ -14,14 +14,14 @@ def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
     """
     mask_name = slepian_polar_cap.region.name_ending
     slepian = SlepianArbitrary(L_SMALL, mask_name)
-    assert_allclose(np.abs(slepian_polar_cap.N - slepian.N), 0, atol=2)
+    assert_allclose(np.abs(slepian_polar_cap.N - slepian.N), 0, atol=3)
     assert_allclose(
         np.abs(
             slepian.eigenvalues[: slepian_polar_cap.N]
             - slepian_polar_cap.eigenvalues[: slepian_polar_cap.N]
         ).mean(),
         0,
-        atol=0.06,
+        atol=0.05,
     )
     assert_allclose(
         np.abs(slepian.eigenvectors - slepian_polar_cap.eigenvectors)[
@@ -47,12 +47,12 @@ def test_equality_to_lim_lat_lon_method(slepian_lim_lat_lon) -> None:
             - slepian_lim_lat_lon.eigenvalues[: slepian_lim_lat_lon.N]
         ).mean(),
         0,
-        atol=0.2,
+        atol=0.05,
     )
     assert_allclose(
         np.abs(slepian.eigenvectors - slepian_lim_lat_lon.eigenvectors)[
             : slepian_lim_lat_lon.N
         ].mean(),
         0,
-        atol=0.03,
+        atol=1e-2,
     )
