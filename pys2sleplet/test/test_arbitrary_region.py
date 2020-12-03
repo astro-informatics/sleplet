@@ -54,5 +54,5 @@ def test_equality_to_lim_lat_lon_method(slepian_lim_lat_lon) -> None:
             : slepian_lim_lat_lon.N
         ].mean(),
         0,
-        atol=1e-2,
+        atol=0.03,
     )
