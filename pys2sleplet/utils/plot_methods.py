@@ -12,6 +12,8 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
+_file_location = Path(__file__).resolve()
+
 
 def calc_plot_resolution(L: int) -> int:
     """

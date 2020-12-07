@@ -31,6 +31,7 @@ from pys2sleplet.utils.vars import (
 )
 
 _file_location = Path(__file__).resolve()
+_eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 
 
 @dataclass
@@ -75,11 +76,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _file_location.parents[2]
-            / "data"
-            / "slepian"
-            / "eigensolutions"
-            / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
+            _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(self) -> None:

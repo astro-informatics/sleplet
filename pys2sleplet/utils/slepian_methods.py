@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Optional
 
 import numpy as np
@@ -13,9 +12,6 @@ from pys2sleplet.utils.harmonic_methods import boost_coefficient_resolution
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
-
-_file_location = Path(__file__).resolve()
-_slepian_data = _file_location.parents[1] / "data" / "slepian"
 
 
 def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:

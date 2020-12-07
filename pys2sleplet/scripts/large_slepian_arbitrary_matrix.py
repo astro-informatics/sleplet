@@ -11,7 +11,7 @@ from pys2sleplet.utils.slepian_arbitrary_methods import (
 )
 
 _file_location = Path(__file__).resolve()
-_matrices_path = _file_location.parents[1] / "data" / "slepian" / "eigensolutions"
+_eigen_path = _file_location.parents[1] / "data" / "slepian" / "eigensolutions"
 
 
 def compute_large_D_matrix(
@@ -21,7 +21,7 @@ def compute_large_D_matrix(
     checks that the split up D matrix has the same eigenvalues
     & eigenvectors as the computation of the whole D matrix in one step
     """
-    slepian_loc = _matrices_path / f"D_{mask_name}_L{L}_N{shannon}"
+    slepian_loc = _eigen_path / f"D_{mask_name}_L{L}_N{shannon}"
     D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 

@@ -1,10 +1,7 @@
 from dataclasses import dataclass
-from pathlib import Path
 
 from pys2sleplet.data.other.wmap.create_wmap_flm import create_flm
 from pys2sleplet.functions.f_lm import F_LM
-
-_file_location = Path(__file__).resolve()
 
 
 @dataclass

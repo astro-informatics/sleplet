@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Optional
 
 import numpy as np
@@ -19,8 +18,6 @@ from pys2sleplet.utils.slepian_methods import (
     slepian_inverse,
 )
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
-
-_file_location = Path(__file__).resolve()
 
 
 @dataclass  # type:ignore

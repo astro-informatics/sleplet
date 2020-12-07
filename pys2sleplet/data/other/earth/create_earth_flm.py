@@ -5,6 +5,7 @@ import pyssht as ssht
 from scipy import io as sio
 
 _file_location = Path(__file__).resolve()
+_matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
 
 
 def create_flm(L: int) -> np.ndarray:
@@ -33,6 +34,5 @@ def _load_flm() -> np.ndarray:
     """
     load coefficients from file
     """
-    matfile = str(_file_location.parent / "EGM2008_Topography_flms_L2190.mat")
-    mat_contents = sio.loadmat(matfile)
+    mat_contents = sio.loadmat(str(_matfile))
     return np.ascontiguousarray(mat_contents["flm"][:, 0])
