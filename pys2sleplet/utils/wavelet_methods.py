@@ -1,4 +1,5 @@
 import numpy as np
+import pys2let as s2let
 import pyssht as ssht
 
 from pys2sleplet.utils.convolution_methods import sifting_convolution
@@ -62,3 +63,25 @@ def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.nd
     for j in range(wavelets.shape[0]):
         covar_w_theory[j] = wavelets[j, np.newaxis] @ wavelets[j, np.newaxis].T
     return covar_w_theory * var_signal
+
+
+def create_axisymmetric_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
+    """
+    computes the axisymmetric wavelets
+    """
+    kappa0, kappa = s2let.axisym_wav_l(B, L, j_min)
+    wavelets = np.zeros((kappa.shape[1] + 1, L ** 2), dtype=np.complex128)
+    for ell in range(L):
+        factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
+        ind = ssht.elm2ind(ell, 0)
+        wavelets[0, ind] = factor * kappa0[ell]
+        wavelets[1:, ind] = factor * kappa[ell]
+    return wavelets
+
+
+def create_slepian_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
+    """
+    computes the Slepian wavelets
+    """
+    kappa0, kappa = s2let.axisym_wav_l(B, L ** 2, j_min)
+    return np.concatenate((kappa0[np.newaxis], kappa.T))

@@ -30,6 +30,7 @@ class Plot:
     L: int
     resolution: int
     filename: str
+    amplitude: Optional[float] = field(default=None, repr=False)
     plot_type: str = field(default="real", repr=False)
     annotations: List[Dict] = field(default_factory=list, repr=False)
     reality: bool = field(default=False, repr=False)
@@ -53,7 +54,11 @@ class Plot:
         )
 
         # pick largest tick max value
-        tick_mark = abs(vmax) if abs(vmax) >= abs(vmin) else abs(vmin)
+        tick_mark = (
+            abs(self.amplitude)
+            if self.amplitude is not None
+            else max(abs(vmin), abs(vmax))
+        )
 
         data = [
             Surface(
@@ -61,7 +66,9 @@ class Plot:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
+                cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
+                cmin=0 if settings.NORMALISE else -tick_mark,
                 colorbar=ColorBar(
                     x=0.93,
                     len=0.98,

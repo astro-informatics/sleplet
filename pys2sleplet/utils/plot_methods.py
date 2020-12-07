@@ -1,13 +1,15 @@
 from pathlib import Path
-from typing import List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pyssht as ssht
 from matplotlib import colors
 from matplotlib import pyplot as plt
 
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -67,3 +69,31 @@ def save_plot(path: Path, name: str) -> None:
             plt.savefig(filename, bbox_inches="tight")
     if settings.AUTO_OPEN:
         plt.show()
+
+
+def find_max_amplitude(
+    L: int, coefficients: np.ndarray, slepian: Optional[SlepianFunctions] = None
+) -> Dict[str, float]:
+    """
+    computes the maximum value for the given array in
+    pixel space, for the real, imaginary & complex parts
+    """
+    if settings.NORMALISE:
+        return dict()
+    logger.info("starting: find maximum amplitude values")
+    if isinstance(slepian, SlepianFunctions):
+        within_shannon_coefficients = coefficients[coefficients.any(axis=1)]
+        field_values = np.apply_along_axis(
+            lambda c: slepian_inverse(L, c, slepian), 1, within_shannon_coefficients
+        )
+    else:
+        field_values = np.apply_along_axis(
+            lambda c: ssht.inverse(c, L), 1, coefficients
+        )
+    logger.info("finished: find maximum amplitude values")
+    return dict(
+        abs=np.abs(field_values).max(),
+        imag=field_values.imag.max(),
+        real=field_values.real.max(),
+        sum=(field_values.real + field_values.imag).max(),
+    )

@@ -1,15 +1,18 @@
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Dict, Optional
 
 import numpy as np
 import pys2let as s2let
-import pyssht as ssht
 
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.plot_methods import find_max_amplitude
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
-from pys2sleplet.utils.wavelet_methods import axisymmetric_wavelet_forward
+from pys2sleplet.utils.wavelet_methods import (
+    axisymmetric_wavelet_forward,
+    create_axisymmetric_wavelets,
+)
 
 
 @dataclass
@@ -21,6 +24,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
     _j_min: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
+    _max_amplitude: Dict[str, float] = field(init=False, repr=False)
     _wavelets: np.ndarray = field(init=False, repr=False)
     _wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
@@ -58,27 +62,16 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self) -> None:
-        """
-        compute all wavelets
-        """
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
-        self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex128)
-        for ell in range(self.L):
-            factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
-            ind = ssht.elm2ind(ell, 0)
-            self.wavelets[0, ind] = factor * kappa0[ell]
-            self.wavelets[1:, ind] = factor * kappa[ell]
-
     def _create_wavelet_coefficients(self) -> None:
         """
         computes wavelet coefficients of the Earth
         """
-        self._create_wavelets()
+        self.wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
         self.earth = Earth(self.L)
         self.wavelet_coefficients = axisymmetric_wavelet_forward(
             self.L, self.earth.coefficients, self.wavelets
         )
+        self.max_amplitude = find_max_amplitude(self.L, self.wavelet_coefficients)
 
     @property  # type:ignore
     def B(self) -> int:
@@ -130,6 +123,14 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             j_min = AxisymmetricWaveletCoefficientsEarth._j_min
         self._j_min = j_min
+
+    @property
+    def max_amplitude(self) -> Dict[str, float]:
+        return self._max_amplitude
+
+    @max_amplitude.setter
+    def max_amplitude(self, max_amplitude: Dict[str, float]) -> None:
+        self._max_amplitude = max_amplitude
 
     @property
     def wavelets(self) -> np.ndarray:

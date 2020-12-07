@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Dict, Optional
 
 import numpy as np
 import pys2let as s2let
@@ -7,8 +7,12 @@ import pys2let as s2let
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.plot_methods import find_max_amplitude
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
-from pys2sleplet.utils.wavelet_methods import slepian_wavelet_forward
+from pys2sleplet.utils.wavelet_methods import (
+    create_slepian_wavelets,
+    slepian_wavelet_forward,
+)
 
 
 @dataclass
@@ -20,6 +24,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
+    _max_amplitude: Dict[str, float] = field(init=False, repr=False)
     _wavelets: np.ndarray = field(init=False, repr=False)
     _wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
@@ -59,21 +64,17 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args[:num_args]
 
-    def _create_wavelets(self) -> None:
-        """
-        computes wavelets in Slepian space
-        """
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L ** 2, self.j_min)
-        self.wavelets = np.concatenate((kappa0[np.newaxis], kappa.T))
-
     def _create_wavelet_coefficients(self) -> None:
         """
         computes wavelet coefficients in Slepian space
         """
-        self._create_wavelets()
+        self.wavelets = create_slepian_wavelets(self.L, self.B, self.j_min)
         sa = SlepianSouthAmerica(self.L, region=self.region)
         self.wavelet_coefficients = slepian_wavelet_forward(
             sa.coefficients, self.wavelets, self.slepian.N
+        )
+        self.max_amplitude = find_max_amplitude(
+            self.L, self.wavelet_coefficients, slepian=self.slepian
         )
 
     @property  # type:ignore
@@ -126,6 +127,14 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
             # https://stackoverflow.com/a/61480946/7359333
             j_min = SlepianWaveletCoefficientsSouthAmerica._j_min
         self._j_min = j_min
+
+    @property
+    def max_amplitude(self) -> Dict[str, float]:
+        return self._max_amplitude
+
+    @max_amplitude.setter
+    def max_amplitude(self, max_amplitude: Dict[str, float]) -> None:
+        self._max_amplitude = max_amplitude
 
     @property
     def wavelets(self) -> np.ndarray:
