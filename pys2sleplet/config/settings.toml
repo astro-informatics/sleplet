@@ -13,4 +13,4 @@ SAVE_MATRICES = false
 SLEPIAN_MASK = "south_america"
 THETA_MIN = 0
 THETA_MAX = 180
-UPSAMPLE = false
+UPSAMPLE = true
