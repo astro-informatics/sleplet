@@ -10,7 +10,7 @@ from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLIN
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-mask_path = file_location.parents[2] / "data" / "slepian" / "arbitrary" / "masks"
+mask_path = file_location.parents[2] / "data" / "slepian" / "masks"
 sns.set(context="paper")
 
 L = 128

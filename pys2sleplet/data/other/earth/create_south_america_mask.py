@@ -13,7 +13,7 @@ from pys2sleplet.utils.vars import (
 )
 
 _file_location = Path(__file__).resolve()
-_mask_path = _file_location.parents[3] / "data" / "slepian" / "arbitrary" / "masks"
+_mask_path = _file_location.parents[3] / "data" / "slepian" / "masks"
 
 
 def create_mask(L: int) -> None:
