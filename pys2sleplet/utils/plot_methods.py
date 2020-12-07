@@ -13,6 +13,7 @@ from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
+_amplitude_path = _file_location.parents[1] / "data" / "slepian" / "amplitudes"
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -74,28 +75,50 @@ def save_plot(path: Path, name: str) -> None:
 
 
 def find_max_amplitude(
-    L: int, coefficients: np.ndarray, slepian: Optional[SlepianFunctions] = None
+    L: int,
+    coefficients: np.ndarray,
+    slepian: Optional[SlepianFunctions] = None,
+    coefficient_type: str = "",
 ) -> Dict[str, float]:
     """
     computes the maximum value for the given array in
     pixel space, for the real, imaginary & complex parts
     """
-    if settings.NORMALISE:
-        return dict()
     logger.info("starting: find maximum amplitude values")
     if isinstance(slepian, SlepianFunctions):
-        within_shannon_coefficients = coefficients[coefficients.any(axis=1)]
-        field_values = np.apply_along_axis(
-            lambda c: slepian_inverse(L, c, slepian), 1, within_shannon_coefficients
+        amplitude_loc = (
+            _amplitude_path
+            / f"{slepian.region.name_ending}_L{L}_N{slepian.N}_{coefficient_type}.npy"
         )
+        if amplitude_loc.exists():
+            logger.info("amplitude binaries found")
+            amplitudes = np.load(amplitude_loc, allow_pickle=True).item()
+        else:
+            within_shannon_coefficients = coefficients[coefficients.any(axis=1)]
+            amplitudes = _create_max_amplitues_dict(
+                np.apply_along_axis(
+                    lambda c: slepian_inverse(L, c, slepian),
+                    1,
+                    within_shannon_coefficients,
+                )
+            )
+            if settings.SAVE_MATRICES:
+                np.save(amplitude_loc, amplitudes)
     else:
-        field_values = np.apply_along_axis(
-            lambda c: ssht.inverse(c, L), 1, coefficients
+        amplitudes = _create_max_amplitues_dict(
+            np.apply_along_axis(lambda c: ssht.inverse(c, L), 1, coefficients)
         )
     logger.info("finished: find maximum amplitude values")
+    return amplitudes
+
+
+def _create_max_amplitues_dict(fields: np.ndarray) -> Dict[str, float]:
+    """
+    creates the dictionary of the max value for each plot type
+    """
     return dict(
-        abs=np.abs(field_values).max(),
-        imag=field_values.imag.max(),
-        real=field_values.real.max(),
-        sum=(field_values.real + field_values.imag).max(),
+        abs=np.abs(fields).max(),
+        imag=fields.imag.max(),
+        real=fields.real.max(),
+        sum=(fields.real + fields.imag).max(),
     )

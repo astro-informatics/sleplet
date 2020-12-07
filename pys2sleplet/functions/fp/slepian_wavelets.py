@@ -63,7 +63,7 @@ class SlepianWavelets(F_P):
         """
         self.wavelets = create_slepian_wavelets(self.L, self.B, self.j_min)
         self.max_amplitude = find_max_amplitude(
-            self.L, self.wavelets, slepian=self.slepian
+            self.L, self.wavelets, slepian=self.slepian, coefficient_type="wavelets"
         )
 
     @property  # type:ignore

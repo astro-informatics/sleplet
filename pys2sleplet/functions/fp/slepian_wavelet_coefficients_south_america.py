@@ -74,7 +74,10 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
             sa.coefficients, self.wavelets, self.slepian.N
         )
         self.max_amplitude = find_max_amplitude(
-            self.L, self.wavelet_coefficients, slepian=self.slepian
+            self.L,
+            self.wavelet_coefficients,
+            slepian=self.slepian,
+            coefficient_type="wavelet_coefficients",
         )
 
     @property  # type:ignore
