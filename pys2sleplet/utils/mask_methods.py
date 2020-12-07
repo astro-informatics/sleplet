@@ -54,14 +54,7 @@ def _load_mask(mask_name: str) -> np.ndarray:
     """
     attempts to read the mask from the config file
     """
-    location = (
-        _file_location.parents[1]
-        / "data"
-        / "slepian"
-        / "arbitrary"
-        / "masks"
-        / mask_name
-    )
+    location = _file_location.parents[1] / "data" / "slepian" / "masks" / mask_name
     try:
         mask = np.load(location)
     except FileNotFoundError:

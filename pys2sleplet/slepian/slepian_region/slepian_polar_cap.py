@@ -78,7 +78,7 @@ class SlepianPolarCap(SlepianFunctions):
             _file_location.parents[2]
             / "data"
             / "slepian"
-            / self.region.region_type
+            / "eigensolutions"
             / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
         )
 
@@ -93,7 +93,7 @@ class SlepianPolarCap(SlepianFunctions):
             self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
 
     def _solve_eigenproblem_from_files(
-        self, eval_loc: Path, evec_loc: str, order_loc: Path
+        self, eval_loc: Path, evec_loc: Path, order_loc: Path
     ) -> None:
         """
         solves eigenproblem with files already saved
@@ -112,7 +112,7 @@ class SlepianPolarCap(SlepianFunctions):
             self.order = orders
 
     def _solve_eigenproblem_from_scratch(
-        self, eval_loc: Path, evec_loc: str, order_loc: Path
+        self, eval_loc: Path, evec_loc: Path, order_loc: Path
     ) -> None:
         """
         sovles eigenproblem from scratch and then saves the files

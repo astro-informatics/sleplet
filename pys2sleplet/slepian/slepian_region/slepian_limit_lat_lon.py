@@ -91,7 +91,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             _file_location.parents[2]
             / "data"
             / "slepian"
-            / self.region.region_type
+            / "eigensolutions"
             / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
         )
 

@@ -59,12 +59,7 @@ class SlepianArbitrary(SlepianFunctions):
         super().__post_init__()
 
     def _create_annotations(self) -> None:
-        outline = np.load(
-            _slepian_path
-            / self.region.region_type
-            / "outlines"
-            / f"{self.mask_name}_outline.npy"
-        )
+        outline = np.load(_slepian_path / "outlines" / f"{self.mask_name}_outline.npy")
         for o in outline:
             self.annotations.append(
                 {
@@ -85,10 +80,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
-            _slepian_path
-            / self.region.region_type
-            / "matrices"
-            / f"D_{self.mask_name}_L{self.L}_N{self.N}"
+            _slepian_path / "eigensolutions" / f"D_{self.mask_name}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(self) -> None:
