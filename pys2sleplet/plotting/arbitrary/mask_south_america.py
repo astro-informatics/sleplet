@@ -18,7 +18,7 @@ def plot_mask() -> None:
     plots masks on the sphere without any harmonic transforms
     """
     f = np.load(mask_path / f"south_america_L{L}.npy").astype(np.complex128)
-    Plot(f, L, L, f"mask_south_america_L{L}").execute()
+    Plot(f, L, f"mask_south_america_L{L}").execute()
 
 
 if __name__ == "__main__":

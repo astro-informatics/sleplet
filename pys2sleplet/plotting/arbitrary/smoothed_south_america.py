@@ -30,7 +30,7 @@ def plot_mask() -> None:
     )
     mask = np.load(mask_path / f"south_america_L{L}.npy").astype(np.complex128)
     south_america_smoothed = np.where(mask, field, 0)
-    Plot(south_america_smoothed, L, L, f"south_america_smoothed_L{L}").execute()
+    Plot(south_america_smoothed, L, f"south_america_smoothed_L{L}").execute()
 
 
 if __name__ == "__main__":

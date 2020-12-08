@@ -157,7 +157,7 @@ def plot(
     smoothed = (
         f"{filename_args(f.smoothing, 'smooth')}" if f.smoothing is not None else ""
     )
-    filename = f"{f.name}{noised}{smoothed}_L{f.L}_"
+    filename = f"{f.name}{noised}{smoothed}_L{f.L}"
     coefficients = f.coefficients
 
     # turn off annotation if needed
@@ -186,10 +186,6 @@ def plot(
             f, g, coefficients, shannon, filename
         )
 
-    # add resolution to filename
-    if settings.UPSAMPLE:
-        filename += f"res{f.resolution}_"
-
     # rotate plot of Earth to South America
     if "earth" in filename:
         coefficients = ssht.rotate_flms(
@@ -206,11 +202,9 @@ def plot(
     )
 
     # do plot
-    filename += plot_type
     Plot(
         field,
         f.L,
-        f.resolution if settings.UPSAMPLE else f.L,
         filename,
         amplitude=f.max_amplitude[plot_type]
         if not settings.NORMALISE and hasattr(f, "max_amplitude")
@@ -267,7 +261,7 @@ def rotation_helper(
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
     )
-    filename += f"rotate_{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}_"
+    filename += f"_rotate_{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
 
     # calculate angles
     alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
@@ -290,7 +284,7 @@ def translation_helper(
     """
     logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
-    filename += f"translate_{filename_angle(alpha_pi_frac, beta_pi_frac)}_"
+    filename += f"_translate_{filename_angle(alpha_pi_frac, beta_pi_frac)}"
 
     # calculate angles
     alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
@@ -324,7 +318,7 @@ def convolution_helper(
     )
     coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
 
-    filename += f"convolved_{g.name}_L{f.L}_"
+    filename += f"_convolved_{g.name}_L{f.L}"
     return coefficients, filename
 
 

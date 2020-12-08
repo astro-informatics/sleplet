@@ -1,6 +1,5 @@
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.denoising import denoising_axisym
-from pys2sleplet.utils.plot_methods import calc_plot_resolution
 
 B = 3
 J_MIN = 2
@@ -15,9 +14,8 @@ def main() -> None:
     """
     fun = "south_america"
     f, _, _ = denoising_axisym(fun, L, B, J_MIN, N_SIGMA, SNR_IN)
-    resolution = calc_plot_resolution(L)
-    name = f"{fun}_denoised_axisym_L{L}_res{resolution}"
-    Plot(f, L, resolution, name).execute()
+    name = f"{fun}_denoised_axisym_L{L}"
+    Plot(f, L, name).execute()
 
 
 if __name__ == "__main__":

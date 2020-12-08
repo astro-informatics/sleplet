@@ -6,7 +6,6 @@ import numpy as np
 
 from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
-from pys2sleplet.utils.plot_methods import calc_plot_resolution
 from pys2sleplet.utils.region import Region
 
 
@@ -25,12 +24,10 @@ class Coefficients:
     _reality: bool = field(default=False, init=False, repr=False)
     _region: Region = field(default=None, init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
-    _resolution: int = field(init=False, repr=False)
     _smoothing: Optional[float] = field(default=None, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.resolution = calc_plot_resolution(self.L)
         self._setup_args()
         self._create_name()
         self._create_annotations()
@@ -149,14 +146,6 @@ class Coefficients:
             # https://stackoverflow.com/a/61480946/7359333
             region = Coefficients._region
         self._region = region
-
-    @property
-    def resolution(self) -> int:
-        return self._resolution
-
-    @resolution.setter
-    def resolution(self, resolution: int) -> None:
-        self._resolution = resolution
 
     @property  # type:ignore
     def smoothing(self) -> Optional[float]:

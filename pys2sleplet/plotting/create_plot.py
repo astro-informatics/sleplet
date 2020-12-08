@@ -17,7 +17,7 @@ from plotly.graph_objs.surface.colorbar import Tickfont
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import convert_colourscale
+from pys2sleplet.utils.plot_methods import calc_plot_resolution, convert_colourscale
 from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
@@ -28,7 +28,6 @@ _fig_path = _file_location.parents[1] / "figures"
 class Plot:
     f: np.ndarray = field(repr=False)
     L: int
-    resolution: int
     filename: str
     amplitude: Optional[float] = field(default=None, repr=False)
     plot_type: str = field(default="real", repr=False)
@@ -36,12 +35,17 @@ class Plot:
     reality: bool = field(default=False, repr=False)
     spin: int = field(default=0, repr=False)
 
+    def __post_init__(self) -> None:
+        self.resolution = calc_plot_resolution(self.L) if settings.UPSAMPLE else self.L
+        if settings.UPSAMPLE:
+            self.filename += f"_res{self.resolution}"
+        self.filename += f"_{self.plot_type}"
+
     def execute(self) -> None:
         """
         creates basic plotly plot rather than matplotlib
         """
-        upsampled = self.resolution != self.L
-        f = self._prepare_field(self.f, upsampled)
+        f = self._prepare_field(self.f)
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
@@ -185,19 +189,17 @@ class Plot:
 
         return x, y, z, f_plot, vmin, vmax
 
-    def _prepare_field(self, f: np.ndarray, upsampled: bool) -> np.ndarray:
+    def _prepare_field(self, f: np.ndarray) -> np.ndarray:
         """
         boosts, forces plot type and then scales the field before plotting
         """
-        return self._normalise_function(
-            self._create_plot_type(self._boost_field(f, upsampled))
-        )
+        return self._normalise_function(self._create_plot_type(self._boost_field(f)))
 
-    def _boost_field(self, f: np.ndarray, upsampled: bool) -> np.ndarray:
+    def _boost_field(self, f: np.ndarray) -> np.ndarray:
         """
         inverts and then boosts the field before plotting
         """
-        if not upsampled:
+        if not settings.UPSAMPLE:
             return f
         flm = ssht.forward(
             f, self.L, Reality=self.reality, Spin=self.spin, Method=SAMPLING_SCHEME
