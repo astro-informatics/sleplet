@@ -85,3 +85,10 @@ def create_slepian_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
     """
     kappa0, kappa = s2let.axisym_wav_l(B, L ** 2, j_min)
     return np.concatenate((kappa0[np.newaxis], kappa.T))
+
+
+def find_non_zero_wavelet_coefficients(wav_coeffs: np.ndarray) -> np.ndarray:
+    """
+    finds the coefficients within the shannon number to speed up computations
+    """
+    return wav_coeffs[wav_coeffs.any(axis=1)]

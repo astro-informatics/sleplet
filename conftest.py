@@ -5,6 +5,9 @@ from numpy.random import default_rng
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
+from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
+    SlepianWaveletCoefficientsSouthAmerica,
+)
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
@@ -123,6 +126,18 @@ def slepian_wavelets_lim_lat_lon(slepian_lim_lat_lon) -> SlepianWavelets:
     computes the Slepian wavelets for the lim_lat_lon region
     """
     return SlepianWavelets(slepian_lim_lat_lon.L, region=slepian_lim_lat_lon.region)
+
+
+@pytest.fixture(scope="session")
+def slepian_wavelet_coefficients_south_america(
+    slepian_arbitrary,
+) -> SlepianWaveletCoefficientsSouthAmerica:
+    """
+    computes the Slepian wavelt coefficients for the South America region
+    """
+    return SlepianWaveletCoefficientsSouthAmerica(
+        slepian_arbitrary.L, region=slepian_arbitrary.region
+    )
 
 
 @pytest.fixture(scope="session")

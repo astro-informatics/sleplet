@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.testing import assert_allclose
+from numpy.testing import assert_allclose, assert_array_less
 
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
@@ -8,6 +8,7 @@ from pys2sleplet.test.constants import L_SMALL
 from pys2sleplet.utils.slepian_methods import slepian_forward
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_inverse,
+    find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,
     slepian_wavelet_inverse,
 )
@@ -64,3 +65,18 @@ def test_axisymmetric_synthesis() -> None:
     awc = AxisymmetricWaveletCoefficientsEarth(L_SMALL)
     flm = axisymmetric_wavelet_inverse(L_SMALL, awc.wavelet_coefficients, awc.wavelets)
     assert_allclose(np.abs(flm - awc.earth.coefficients).mean(), 0, atol=1e-13)
+
+
+def test_only_wavelet_coefficients_within_shannon_returned(
+    slepian_wavelet_coefficients_south_america,
+) -> None:
+    """
+    verifies that only the non-zero wavelet coefficients are returned
+    """
+    within_shannon_wavelets = find_non_zero_wavelet_coefficients(
+        slepian_wavelet_coefficients_south_america.wavelet_coefficients
+    )
+    assert_array_less(
+        within_shannon_wavelets.shape[0],
+        slepian_wavelet_coefficients_south_america.wavelet_coefficients.shape[0],
+    )

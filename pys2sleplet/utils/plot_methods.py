@@ -11,6 +11,7 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from pys2sleplet.utils.wavelet_methods import find_non_zero_wavelet_coefficients
 
 _file_location = Path(__file__).resolve()
 _amplitude_path = _file_location.parents[1] / "data" / "slepian" / "amplitudes"
@@ -94,7 +95,9 @@ def find_max_amplitude(
             logger.info("amplitude binaries found")
             amplitudes = np.load(amplitude_loc, allow_pickle=True).item()
         else:
-            within_shannon_coefficients = coefficients[coefficients.any(axis=1)]
+            within_shannon_coefficients = find_non_zero_wavelet_coefficients(
+                coefficients
+            )
             amplitudes = _create_max_amplitues_dict(
                 np.apply_along_axis(
                     lambda c: slepian_inverse(L, c, slepian),
