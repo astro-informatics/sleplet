@@ -27,4 +27,4 @@ def integrate_region_sphere(
     """
     computes the integration for a region of the sphere
     """
-    return np.where(mask, f * g * weight, 0).sum()
+    return (f * g * weight * mask).sum()
