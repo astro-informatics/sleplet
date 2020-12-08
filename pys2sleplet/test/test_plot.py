@@ -71,6 +71,8 @@ def test_find_max_amplitude_slepian(random_nd_flm, slepian_polar_cap) -> None:
     """
     ampltiude max method for a slepian example
     """
-    amplitudes = find_max_amplitude(L_SMALL, random_nd_flm, slepian=slepian_polar_cap)
+    amplitudes = find_max_amplitude(
+        slepian_polar_cap.L, random_nd_flm, slepian=slepian_polar_cap
+    )
     assert_equal(amplitudes.keys(), {"abs", "imag", "real", "sum"})
     assert all(v >= 0 for v in amplitudes.values())

@@ -5,7 +5,7 @@ from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
 from pys2sleplet.functions.flm.dirac_delta import DiracDelta
-from pys2sleplet.test.constants import L_LARGE, L_SMALL, THETA_1
+from pys2sleplet.test.constants import L_LARGE, THETA_1
 from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
@@ -44,15 +44,23 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     """
     test to ensure the location of the maximum of a field moves when translated
     """
-    _, beta = calc_nearest_grid_point(L_SMALL, 0, THETA_1 / np.pi)
+    _, beta = calc_nearest_grid_point(
+        slepian_dirac_delta_polar_cap.L, 0, THETA_1 / np.pi
+    )
     sdd_trans = slepian_dirac_delta_polar_cap.translate(
         slepian_dirac_delta_polar_cap.alpha,
         beta,
         shannon=slepian_dirac_delta_polar_cap.slepian.N,
     )
-    field = slepian_inverse(L_SMALL, sdd_trans, slepian_dirac_delta_polar_cap.slepian)
+    field = slepian_inverse(
+        slepian_dirac_delta_polar_cap.L,
+        sdd_trans,
+        slepian_dirac_delta_polar_cap.slepian,
+    )
     new_max = tuple(np.argwhere(field == field.max())[0])
-    thetas, _ = ssht.sample_positions(L_SMALL, Grid=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(
+        slepian_dirac_delta_polar_cap.L, Grid=True, Method=SAMPLING_SCHEME
+    )
     assert_raises(
         AssertionError,
         assert_equal,
@@ -67,15 +75,23 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     """
     test to ensure the location of the maximum of a field moves when translated
     """
-    _, beta = calc_nearest_grid_point(L_SMALL, 0, THETA_1 / np.pi)
+    _, beta = calc_nearest_grid_point(
+        slepian_dirac_delta_lim_lat_lon.L, 0, THETA_1 / np.pi
+    )
     sdd_trans = slepian_dirac_delta_lim_lat_lon.translate(
         slepian_dirac_delta_lim_lat_lon.alpha,
         beta,
         shannon=slepian_dirac_delta_lim_lat_lon.slepian.N,
     )
-    field = slepian_inverse(L_SMALL, sdd_trans, slepian_dirac_delta_lim_lat_lon.slepian)
+    field = slepian_inverse(
+        slepian_dirac_delta_lim_lat_lon.L,
+        sdd_trans,
+        slepian_dirac_delta_lim_lat_lon.slepian,
+    )
     new_max = tuple(np.argwhere(field == field.max())[0])
-    thetas, _ = ssht.sample_positions(L_SMALL, Grid=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(
+        slepian_dirac_delta_lim_lat_lon.L, Grid=True, Method=SAMPLING_SCHEME
+    )
     assert_raises(
         AssertionError,
         assert_equal,

@@ -5,6 +5,7 @@ from numpy.random import default_rng
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
+from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -73,7 +74,7 @@ def earth_polar_cap(slepian_polar_cap) -> Earth:
     """
     Earth with polar cap region
     """
-    return Earth(L_SMALL, region=slepian_polar_cap.region)
+    return Earth(slepian_polar_cap.L, region=slepian_polar_cap.region)
 
 
 @pytest.fixture(scope="session")
@@ -81,7 +82,7 @@ def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
     """
     Earth with limited latitude longitude region
     """
-    return Earth(L_SMALL, region=slepian_lim_lat_lon.region)
+    return Earth(slepian_lim_lat_lon.L, region=slepian_lim_lat_lon.region)
 
 
 @pytest.fixture(scope="session")
@@ -89,7 +90,7 @@ def south_america_arbitrary(slepian_arbitrary) -> SouthAmerica:
     """
     South America with arbitrary region
     """
-    return SouthAmerica(L_SMALL, region=slepian_arbitrary.region)
+    return SouthAmerica(slepian_arbitrary.L, region=slepian_arbitrary.region)
 
 
 @pytest.fixture(scope="session")
@@ -97,7 +98,7 @@ def slepian_dirac_delta_polar_cap(slepian_polar_cap) -> SlepianDiracDelta:
     """
     Creates a polar cap Slepian Dirac delta
     """
-    return SlepianDiracDelta(L_SMALL, region=slepian_polar_cap.region)
+    return SlepianDiracDelta(slepian_polar_cap.L, region=slepian_polar_cap.region)
 
 
 @pytest.fixture(scope="session")
@@ -105,7 +106,23 @@ def slepian_dirac_delta_lim_lat_lon(slepian_lim_lat_lon) -> SlepianDiracDelta:
     """
     Creates a limited latitude longitude Slepian Dirac delta
     """
-    return SlepianDiracDelta(L_SMALL, region=slepian_lim_lat_lon.region)
+    return SlepianDiracDelta(slepian_lim_lat_lon.L, region=slepian_lim_lat_lon.region)
+
+
+@pytest.fixture(scope="session")
+def slepian_wavelets_polar_cap(slepian_polar_cap) -> SlepianWavelets:
+    """
+    computes the Slepian wavelets for the polar cap region
+    """
+    return SlepianWavelets(slepian_polar_cap.L, region=slepian_polar_cap.region)
+
+
+@pytest.fixture(scope="session")
+def slepian_wavelets_lim_lat_lon(slepian_lim_lat_lon) -> SlepianWavelets:
+    """
+    computes the Slepian wavelets for the lim_lat_lon region
+    """
+    return SlepianWavelets(slepian_lim_lat_lon.L, region=slepian_lim_lat_lon.region)
 
 
 @pytest.fixture(scope="session")
