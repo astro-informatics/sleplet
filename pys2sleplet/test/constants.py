@@ -1,5 +1,6 @@
 import numpy as np
 
+ARRAY_DIM: int = 10
 B: int = 2
 J: int = 2
 J_MIN: int = 0

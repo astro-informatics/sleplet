@@ -9,6 +9,7 @@ from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrar
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.test.constants import (
+    ARRAY_DIM,
     L_SMALL,
     MASK,
     PHI_0,
@@ -114,3 +115,12 @@ def random_flm() -> np.ndarray:
     """
     rng = default_rng(RANDOM_SEED)
     return compute_random_signal(L_SMALL, rng, 1)
+
+
+@pytest.fixture(scope="session")
+def random_nd_flm() -> np.ndarray:
+    """
+    creates multiple random flm
+    """
+    rng = default_rng(RANDOM_SEED)
+    return np.array([compute_random_signal(L_SMALL, rng, 1) for _ in range(ARRAY_DIM)])

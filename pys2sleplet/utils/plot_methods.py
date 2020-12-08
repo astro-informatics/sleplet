@@ -106,7 +106,9 @@ def find_max_amplitude(
                 np.save(amplitude_loc, amplitudes)
     else:
         amplitudes = _create_max_amplitues_dict(
-            np.apply_along_axis(lambda c: ssht.inverse(c, L), 1, coefficients)
+            np.apply_along_axis(
+                lambda c: ssht.inverse(c, L, Method=SAMPLING_SCHEME), 1, coefficients
+            )
         )
     logger.info("finished: find maximum amplitude values")
     return amplitudes
