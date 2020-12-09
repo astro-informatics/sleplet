@@ -11,7 +11,9 @@ def slepian_wavelet_forward(
     """
     computes the coefficients of the given tiling function in Slepian space
     """
-    return sifting_convolution(wavelets, f_p, shannon=shannon)
+    return find_non_zero_wavelet_coefficients(
+        sifting_convolution(wavelets, f_p, shannon=shannon)
+    )
 
 
 def slepian_wavelet_inverse(
@@ -20,7 +22,11 @@ def slepian_wavelet_inverse(
     """
     computes the inverse wavelet transform in Slepian space
     """
-    return sifting_convolution(wavelets, wav_coeffs.T, shannon=shannon).sum(axis=0)
+    # ensure wavelets are the same shape as the coefficients
+    wavelets_shannon = wavelets[: wav_coeffs.shape[0]]
+    return sifting_convolution(wavelets_shannon, wav_coeffs.T, shannon=shannon).sum(
+        axis=0
+    )
 
 
 def axisymmetric_wavelet_forward(

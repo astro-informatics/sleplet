@@ -72,8 +72,8 @@ def denoising_slepian(
     denoising demo using Slepian wavelets
     """
     # create map & noised map
-    fun = MAPS_P[name](L)
-    fun_noised = MAPS_P[name](L, noise=snr_in)
+    fun = MAPS_P[name](L, region=region)
+    fun_noised = MAPS_P[name](L, region=region, noise=snr_in)
 
     # create wavelets
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)

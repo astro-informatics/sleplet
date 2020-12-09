@@ -6,7 +6,6 @@ from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
-from pys2sleplet.utils.wavelet_methods import find_non_zero_wavelet_coefficients
 
 
 def _signal_power(L: int, signal: np.ndarray) -> float:
@@ -111,9 +110,8 @@ def slepian_hard_thresholding(
     perform thresholding in Slepian space
     """
     logger.info("begin Slepian hard thresholding")
-    within_shannon_coeffs = find_non_zero_wavelet_coefficients(wav_coeffs)
-    for j in range(1, len(within_shannon_coeffs)):
-        logger.info(f"start Psi^{j}/{len(within_shannon_coeffs)-1}")
+    for j in range(1, len(wav_coeffs)):
+        logger.info(f"start Psi^{j}/{len(wav_coeffs)-1}")
         f = slepian_inverse(L, wav_coeffs[j], slepian)
         f_thresholded = _perform_thresholding(f, sigma_j, n_sigma, j)
         wav_coeffs[j] = slepian_forward(L, slepian, f=f_thresholded)
