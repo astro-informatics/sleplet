@@ -228,7 +228,7 @@ class SlepianPolarCap(SlepianFunctions):
         """
         Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
         ind = emm == 0
-        l = np.arange(2 * self.L).reshape(1, -1)
+        l = np.arange(2 * self.L)[np.newaxis]
         Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
         return Pl, l
 

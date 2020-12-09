@@ -45,8 +45,6 @@ def slepian_wavelet_covariance(
     rng = default_rng(RANDOM_SEED)
 
     for i in range(runs):
-        logger.info(f"start run: {i}")
-
         # Generate normally distributed random complex signal
         f_p = compute_random_signal(L, rng, var_fp)
 
@@ -55,7 +53,7 @@ def slepian_wavelet_covariance(
 
         # compute covariance from data
         for j in range(w_p.shape[0]):
-            logger.info(f"compute covariance: {j}")
+            logger.info(f"compute covariance: {j+1}/{w_p.shape[0]}, run: {i+1}/{runs}")
             f_wav_j = slepian_inverse(L, w_p[j], sw.slepian)
             covar_w_data[j, i] = (
                 f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
