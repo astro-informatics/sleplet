@@ -43,13 +43,11 @@ _slepian_path = _file_location.parents[2] / "data" / "slepian"
 @dataclass
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
-    ncpu: int
     L_min: int
     L_max: int
     _mask_name: str = field(init=False, repr=False)
     _L_max: int = field(default=settings.L_MAX, init=False, repr=False)
     _L_min: int = field(default=settings.L_MIN, init=False, repr=False)
-    _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _weight: np.ndarray = field(init=False, repr=False)
 
@@ -142,10 +140,12 @@ class SlepianArbitrary(SlepianFunctions):
             free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L_max ** 2, self.ncpu, L_min=self.L_min ** 2)
+        chunks = split_L_into_chunks(
+            self.L_max ** 2, settings.NCPU, L_min=self.L_min ** 2
+        )
 
         # initialise pool and apply function
-        with Pool(processes=self.ncpu) as p:
+        with Pool(processes=settings.NCPU) as p:
             p.map(func, chunks)
 
         # retrieve from parallel function
@@ -241,18 +241,6 @@ class SlepianArbitrary(SlepianFunctions):
         if not isinstance(L_min, int):
             raise TypeError("L_min must be an integer")
         self._L_min = L_min
-
-    @property  # type:ignore
-    def ncpu(self) -> int:
-        return self._ncpu
-
-    @ncpu.setter
-    def ncpu(self, ncpu: int) -> None:
-        if isinstance(ncpu, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            ncpu = SlepianArbitrary._ncpu
-        self._ncpu = ncpu
 
     @property
     def region(self) -> Region:

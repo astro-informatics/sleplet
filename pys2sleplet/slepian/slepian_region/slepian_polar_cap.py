@@ -39,12 +39,10 @@ class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     order: Optional[Union[int, np.ndarray]]
     gap: bool
-    ncpu: int
     _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
     _order: Optional[Union[int, np.ndarray]] = field(
         default=None, init=False, repr=False
     )
-    _ncpu: int = field(default=settings.NCPU, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _theta_max: float = field(init=False, repr=False)
 
@@ -208,10 +206,10 @@ class SlepianPolarCap(SlepianFunctions):
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L - m, self.ncpu)
+        chunks = split_L_into_chunks(self.L - m, settings.NCPU)
 
         # initialise pool and apply function
-        with Pool(processes=self.ncpu) as p:
+        with Pool(processes=settings.NCPU) as p:
             p.map(func, chunks)
 
         # retrieve from parallel function
@@ -395,18 +393,6 @@ class SlepianPolarCap(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             gap = SlepianPolarCap._gap
         self._gap = gap
-
-    @property  # type:ignore
-    def ncpu(self) -> int:
-        return self._ncpu
-
-    @ncpu.setter
-    def ncpu(self, ncpu: int) -> None:
-        if isinstance(ncpu, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            ncpu = SlepianPolarCap._ncpu
-        self._ncpu = ncpu
 
     @property  # type:ignore
     def order(self) -> Optional[Union[int, np.ndarray]]:
