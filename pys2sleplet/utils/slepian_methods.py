@@ -43,7 +43,7 @@ def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.nd
     """
     computes the Slepian inverse transform up to the Shannon number
     """
-    s_p = _compute_s_p_omega(L, slepian)
+    s_p = compute_s_p_omega(L, slepian)
     return (f_p[: slepian.N, np.newaxis, np.newaxis] * s_p).sum(axis=0)
 
 
@@ -61,7 +61,7 @@ def slepian_forward(
     return sd.decompose_all()
 
 
-def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
+def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
@@ -80,7 +80,7 @@ def compute_s_p_omega_prime(
     """
     method to pick out the desired angle from Sp(omega)
     """
-    sp_omega = _compute_s_p_omega(L, slepian)
+    sp_omega = compute_s_p_omega(L, slepian)
     p = ssht.theta_to_index(beta, L, Method=SAMPLING_SCHEME)
     q = ssht.phi_to_index(alpha, L, Method=SAMPLING_SCHEME)
     sp_omega_prime = sp_omega[:, p, q]
