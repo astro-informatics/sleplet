@@ -53,8 +53,8 @@ def axisymmetric_wavelet_covariance(
         wlm = axisymmetric_wavelet_forward(L, flm, aw.wavelets)
 
         # compute covariance from data
-        for j in range(aw.wavelets.shape[0]):
-            f_wav_j = ssht.inverse(wlm[j], L, Method=SAMPLING_SCHEME)
+        for j, coefficient in enumerate(wlm):
+            f_wav_j = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME)
             covar_w_data[j, i] = (
                 f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
             )

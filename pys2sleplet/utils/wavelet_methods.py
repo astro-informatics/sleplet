@@ -66,8 +66,8 @@ def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.nd
     computes the theoretical covariance of the wavelet coefficients
     """
     covar_w_theory = np.zeros(wavelets.shape[0], dtype=np.complex128)
-    for j in range(wavelets.shape[0]):
-        covar_w_theory[j] = wavelets[j, np.newaxis] @ wavelets[j, np.newaxis].T
+    for j, wavelet in enumerate(wavelets):
+        covar_w_theory[j] = wavelet @ wavelet.T
     return covar_w_theory * var_signal
 
 
