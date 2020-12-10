@@ -43,12 +43,8 @@ def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.nd
     """
     computes the Slepian inverse transform up to the Shannon number
     """
-    n_theta, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
-    f = np.zeros((n_theta, n_phi), dtype=np.complex128)
-    for p in range(slepian.N):
-        s_p = ssht.inverse(slepian.eigenvectors[p], L, Method=SAMPLING_SCHEME)
-        f += f_p[p] * s_p
-    return f
+    s_p = _compute_s_p_omega(L, slepian)
+    return (f_p[: slepian.N, np.newaxis, np.newaxis] * s_p).sum(axis=0)
 
 
 def slepian_forward(
