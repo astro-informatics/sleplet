@@ -118,7 +118,7 @@ class SlepianPolarCap(SlepianFunctions):
             )
         else:
             evals_all = np.empty(0)
-            evecs_all = np.empty((0, self.L ** 2), dtype=np.complex128)
+            evecs_all = np.empty((0, self.L ** 2), dtype=np.complex_)
             emm = np.empty(0, dtype=int)
             for m in range(-(self.L - 1), self.L):
                 evals_m, evecs_m = self._solve_eigenproblem_order(m)
@@ -370,7 +370,7 @@ class SlepianPolarCap(SlepianFunctions):
         # put back in full D space for harmonic transform
         emm = emm[: self.L ** 2]
         ind = np.tile(emm == m, (self.L - abs(m), 1))
-        eigenvectors = np.zeros((self.L - abs(m), self.L ** 2), dtype=np.complex128)
+        eigenvectors = np.zeros((self.L - abs(m), self.L ** 2), dtype=np.complex_)
         eigenvectors[ind] = gl.T.flatten()
 
         # ensure first element of each eigenvector is positive

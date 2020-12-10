@@ -35,7 +35,7 @@ def axisymmetric_wavelet_forward(
     """
     computes the coefficients of the axisymmetric wavelets
     """
-    w = np.zeros(wavelets.shape, dtype=np.complex128)
+    w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
         ind_m0 = ssht.elm2ind(ell, 0)
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0].conj()
@@ -51,7 +51,7 @@ def axisymmetric_wavelet_inverse(
     """
     computes the inverse axisymmetric wavelet transform
     """
-    flm = np.zeros(L ** 2, dtype=np.complex128)
+    flm = np.zeros(L ** 2, dtype=np.complex_)
     for ell in range(L):
         ind_m0 = ssht.elm2ind(ell, 0)
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0]
@@ -76,7 +76,7 @@ def create_axisymmetric_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
     computes the axisymmetric wavelets
     """
     kappa0, kappa = s2let.axisym_wav_l(B, L, j_min)
-    wavelets = np.zeros((kappa.shape[1] + 1, L ** 2), dtype=np.complex128)
+    wavelets = np.zeros((kappa.shape[1] + 1, L ** 2), dtype=np.complex_)
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
         ind = ssht.elm2ind(ell, 0)

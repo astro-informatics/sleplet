@@ -19,7 +19,7 @@ class Gaussian(F_LM):
         pass
 
     def _create_coefficients(self) -> None:
-        flm = np.zeros(self.L ** 2, dtype=np.complex128)
+        flm = np.zeros(self.L ** 2, dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
             flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma ** 2))

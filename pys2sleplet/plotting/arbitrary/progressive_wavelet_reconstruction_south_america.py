@@ -20,7 +20,7 @@ def main() -> None:
     swc = SlepianWaveletCoefficientsSouthAmerica(L, region=region)
 
     # plot
-    f_p = np.zeros(swc.slepian.N, dtype=np.complex128)
+    f_p = np.zeros(swc.slepian.N, dtype=np.complex_)
     for p, coeff in enumerate(swc.wavelet_coefficients):
         logger.info(f"plot reconstruction: {p}")
         f_p += slepian_wavelet_inverse(coeff, swc.wavelets, swc.slepian.N)

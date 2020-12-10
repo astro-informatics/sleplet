@@ -11,7 +11,7 @@ def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
     """
     create a spherical harmonic in harmonic space for the given index
     """
-    flm = np.zeros(L ** 2, dtype=np.complex128)
+    flm = np.zeros(L ** 2, dtype=np.complex_)
     flm[ind] = 1
     return flm
 

@@ -14,7 +14,7 @@ class SlepianIdentity(F_P):
         self.annotations = self.slepian.annotations
 
     def _create_coefficients(self) -> None:
-        self.coefficients = np.ones(self.L ** 2, dtype=np.complex128)
+        self.coefficients = np.ones(self.L ** 2, dtype=np.complex_)
 
     def _create_name(self) -> None:
         self.name = f"slepian_identity_{self.slepian.region.name_ending}"

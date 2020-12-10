@@ -48,7 +48,7 @@ class SlepianDecomposition:
         """
         decompose all ranks of the Slepian coefficients
         """
-        coefficients = np.zeros(self.slepian.N, dtype=np.complex128)
+        coefficients = np.zeros(self.slepian.N, dtype=np.complex_)
         for rank in range(self.slepian.N):
             coefficients[rank] = self.decompose(rank)
         return coefficients

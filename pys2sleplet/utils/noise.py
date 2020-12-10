@@ -40,7 +40,7 @@ def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
     rng = default_rng(RANDOM_SEED)
 
     # initialise
-    nlm = np.zeros(L ** 2, dtype=np.complex128)
+    nlm = np.zeros(L ** 2, dtype=np.complex_)
 
     # std dev of the noise
     sigma_noise = _compute_sigma_noise(L, signal, snr_in)

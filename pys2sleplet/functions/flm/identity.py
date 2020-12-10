@@ -14,7 +14,7 @@ class Identity(F_LM):
         pass
 
     def _create_coefficients(self) -> None:
-        self.coefficients = np.ones(self.L ** 2, dtype=np.complex128)
+        self.coefficients = np.ones(self.L ** 2, dtype=np.complex_)
 
     def _create_name(self) -> None:
         self.name = "identity"

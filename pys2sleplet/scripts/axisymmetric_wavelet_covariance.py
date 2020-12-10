@@ -38,13 +38,14 @@ def axisymmetric_wavelet_covariance(
     covar_w_theory = compute_wavelet_covariance(aw.wavelets, var_flm)
 
     # initialise matrix
-    covar_w_data = np.zeros((aw.wavelets.shape[0], runs), dtype=np.complex128)
+    covar_runs_shape = covar_w_theory.shape + (runs,)
+    covar_w_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
     rng = default_rng(RANDOM_SEED)
 
     for i in range(runs):
-        logger.info(f"start run: {i}")
+        logger.info(f"start run: {i+1}/{runs}")
 
         # Generate normally distributed random complex signal
         flm = compute_random_signal(L, rng, var_flm)

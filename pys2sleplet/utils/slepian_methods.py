@@ -66,7 +66,7 @@ def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
     method to calculate Sp(omega) for a given region
     """
     n_theta, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
-    sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex128)
+    sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
     for p in range(slepian.N):
         if p % L == 0:
             logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")

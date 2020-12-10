@@ -139,7 +139,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         colatitude-longitude spatial region" by A. P. Bates, Z. Khalid and R. A.
         Kennedy.
         """
-        G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex128)
+        G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex_)
 
         def helper(row: int, col: int, S: float) -> None:
             """
@@ -199,7 +199,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         Analytical formulation for limited colatitude-longitude spatial region"
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
-        K = np.zeros((L ** 2, L ** 2), dtype=np.complex128)
+        K = np.zeros((L ** 2, L ** 2), dtype=np.complex_)
 
         for l in prange(L):
             for p in range(l + 1):

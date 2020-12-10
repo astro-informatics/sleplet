@@ -28,7 +28,7 @@ def plot_mask() -> None:
     field = ssht.inverse(
         rot_flm, L, Reality=earth_smoothed.reality, Method=SAMPLING_SCHEME
     )
-    mask = np.load(mask_path / f"south_america_L{L}.npy").astype(np.complex128)
+    mask = np.load(mask_path / f"south_america_L{L}.npy").astype(np.complex_)
     south_america_smoothed = np.where(mask, field, 0)
     Plot(south_america_smoothed, L, f"south_america_smoothed_L{L}").execute()
 

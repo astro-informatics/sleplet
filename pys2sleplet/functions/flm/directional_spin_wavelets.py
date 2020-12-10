@@ -70,9 +70,7 @@ class DirectionalSpinWavelets(F_LM):
         phi_l, psi_lm = s2let.wavelet_tiling(
             self.B, self.L, self.N, self.j_min, self.spin
         )
-        self.wavelets = np.zeros(
-            (psi_lm.shape[1] + 1, self.L ** 2), dtype=np.complex128
-        )
+        self.wavelets = np.zeros((psi_lm.shape[1] + 1, self.L ** 2), dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
             self.wavelets[0, ind] = phi_l[ell]
