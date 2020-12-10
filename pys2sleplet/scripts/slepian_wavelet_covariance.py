@@ -9,7 +9,7 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import RANDOM_SEED
 from pys2sleplet.utils.wavelet_methods import (
-    compute_wavelet_covariance,
+    compute_slepian_wavelet_covariance,
     slepian_wavelet_forward,
 )
 
@@ -36,10 +36,13 @@ def slepian_wavelet_covariance(
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
 
     # theoretical covariance
-    covar_w_theory = compute_wavelet_covariance(sw.wavelets, var_fp)
+    covar_w_theory = compute_slepian_wavelet_covariance(
+        sw.wavelets, var_fp, L, sw.slepian
+    )
 
     # initialise matrix
-    covar_w_data = np.zeros((sw.wavelets.shape[0], runs), dtype=np.complex128)
+    covar_runs_shape = covar_w_theory.shape + (runs,)
+    covar_w_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
     rng = default_rng(RANDOM_SEED)

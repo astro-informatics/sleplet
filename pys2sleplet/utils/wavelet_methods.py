@@ -2,7 +2,9 @@ import numpy as np
 import pys2let as s2let
 import pyssht as ssht
 
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.convolution_methods import sifting_convolution
+from pys2sleplet.utils.slepian_methods import compute_s_p_omega
 
 
 def slepian_wavelet_forward(
@@ -65,9 +67,22 @@ def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.nd
     """
     computes the theoretical covariance of the wavelet coefficients
     """
-    covar_w_theory = np.zeros(wavelets.shape[0], dtype=np.complex128)
+    covar_w_theory = (wavelets ** 2).sum(axis=1)
+    return covar_w_theory * var_signal
+
+
+def compute_slepian_wavelet_covariance(
+    wavelets: np.ndarray, var_signal: float, L: int, slepian: SlepianFunctions
+) -> np.ndarray:
+    """
+    computes the theoretical covariance of the wavelet coefficients
+    """
+    s_p = compute_s_p_omega(L, slepian)
+    covar_shape = (wavelets.shape[0],) + s_p.shape[1:]
+    covar_w_theory = np.zeros(covar_shape, dtype=np.complex_)
     for j, wavelet in enumerate(wavelets):
-        covar_w_theory[j] = wavelet @ wavelet.T
+        wavelet_reshape = wavelet[: slepian.N, np.newaxis, np.newaxis]
+        covar_w_theory[j] = ((wavelet_reshape * s_p) ** 2).sum(axis=0)
     return covar_w_theory * var_signal
 
 

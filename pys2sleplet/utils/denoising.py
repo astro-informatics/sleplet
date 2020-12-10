@@ -9,6 +9,7 @@ from pys2sleplet.utils.function_dicts import MAPS_LM, MAPS_P
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.noise import (
     compute_sigma_j,
+    compute_slepian_sigma_j,
     compute_snr,
     harmonic_hard_thresholding,
     slepian_hard_thresholding,
@@ -79,7 +80,9 @@ def denoising_slepian(
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
 
     # compute wavelet noise
-    sigma_j = compute_sigma_j(L, fun.coefficients, sw.wavelets[1:], snr_in)
+    sigma_j = compute_slepian_sigma_j(
+        L, fun.coefficients, sw.wavelets, snr_in, sw.slepian
+    )
 
     # compute wavelet coefficients
     w = slepian_wavelet_forward(fun_noised.coefficients, sw.wavelets, sw.slepian.N)
