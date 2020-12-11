@@ -58,26 +58,21 @@ def slepian_wavelet_covariance(
             logger.info(f"run: {i+1}/{runs}, compute covariance: {j+1}/{len(w_p)}")
             covar_w_data_runs[i, j] = slepian_inverse(L, coefficient, sw.slepian)
 
+    # define axes
+    runs_axis, theta_axis, phi_axis = 0, 1, 2
+
     # compute covariance
-    runs_axis = 0
     covar_w_data = covar_w_data_runs.var(axis=runs_axis)
 
-    # compute mean and variance
-    theta_axis, phi_axis = 1, 2
-    mean_covar_w_data = covar_w_data.mean(axis=(theta_axis, phi_axis))
-    std_covar_w_data = covar_w_data.std(axis=(theta_axis, phi_axis))
-
-    # compute mean of the theoretical matrix
-    mean_covar_w_theory = np.abs(covar_w_theory).mean(axis=(theta_axis, phi_axis))
-
     # compute errors
-    w_error_absolute = np.abs(mean_covar_w_data - mean_covar_w_theory)
-    w_error_in_std = w_error_absolute[: len(w_p)] / std_covar_w_data[: len(w_p)]
+    w_error_absolute = np.abs(covar_w_data - covar_w_theory).mean(
+        axis=(theta_axis, phi_axis)
+    )
 
     # report errors
     for j in range(len(w_p)):
         logger.info(
-            f"slepian wavelet covariance {j}: error in std: {w_error_in_std[j]:e}"
+            f"slepian wavelet covariance {j}: absolute error: {w_error_absolute[j]:e}"
         )
 
 
