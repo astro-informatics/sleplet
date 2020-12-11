@@ -70,10 +70,8 @@ def slepian_wavelet_covariance(
     )
 
     # report errors
-    for j in range(len(w_p)):
-        logger.info(
-            f"slepian wavelet covariance {j}: absolute error: {w_error_absolute[j]:e}"
-        )
+    for j, error in enumerate(w_error_absolute[: len(w_p)]):
+        logger.info(f"slepian wavelet covariance {j}: absolute error: {error:e}")
 
 
 if __name__ == "__main__":
