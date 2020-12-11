@@ -35,11 +35,11 @@ def axisymmetric_wavelet_covariance(
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # theoretical covariance
-    covar_w_theory = compute_wavelet_covariance(aw.wavelets, var_flm)
+    covar_theory = compute_wavelet_covariance(aw.wavelets, var_flm)
 
     # initialise matrix
-    covar_runs_shape = (runs,) + covar_w_theory.shape
-    covar_w_data = np.zeros(covar_runs_shape, dtype=np.complex_)
+    covar_runs_shape = (runs,) + covar_theory.shape
+    covar_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
     rng = default_rng(RANDOM_SEED)
@@ -56,29 +56,27 @@ def axisymmetric_wavelet_covariance(
         # compute covariance from data
         for j, coefficient in enumerate(wlm):
             f_wav_j = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME)
-            covar_w_data[i, j] = (
-                f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
-            )
+            covar_data[i, j] = f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
 
     # compute mean and variance
     runs_axis = 0
-    mean_covar_w_data = covar_w_data.mean(axis=runs_axis)
-    std_covar_w_data = covar_w_data.std(axis=runs_axis)
+    mean_covar_data = covar_data.mean(axis=runs_axis)
+    std_covar_data = covar_data.std(axis=runs_axis)
 
     # override for scaling function
     if not is_ergodic(j_min):
-        mean_covar_w_data[0] = covar_w_data[0].var()
+        mean_covar_data[0] = covar_data[0].var()
 
     # compute errors
-    w_error_absolute = np.abs(mean_covar_w_data - covar_w_theory)
-    w_error_in_std = w_error_absolute / std_covar_w_data
+    error_absolute = np.abs(mean_covar_data - covar_theory)
+    error_in_std = error_absolute / std_covar_data
 
     # report errors
     for j in range(len(aw.wavelets)):
         message = (
-            f"error in std: {w_error_in_std[j]:e}"
+            f"error in std: {error_in_std[j]:e}"
             if is_ergodic(j_min, j)
-            else f"absolute error: {w_error_absolute[j]:e}"
+            else f"absolute error: {error_absolute[j]:e}"
         )
         logger.info(f"axisymmetric wavelet covariance {j}: '{message}'")
 
