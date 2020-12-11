@@ -61,8 +61,9 @@ def axisymmetric_wavelet_covariance(
             )
 
     # compute mean and variance
-    mean_covar_w_data = covar_w_data.mean(axis=0)
-    std_covar_w_data = covar_w_data.std(axis=0)
+    runs_axis = 0
+    mean_covar_w_data = covar_w_data.mean(axis=runs_axis)
+    std_covar_w_data = covar_w_data.std(axis=runs_axis)
 
     # override for scaling function
     if not is_ergodic(j_min):

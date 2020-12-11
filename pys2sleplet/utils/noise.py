@@ -18,7 +18,8 @@ def _signal_power(L: int, signal: np.ndarray) -> float:
     """
     computes the power of the signal
     """
-    return (np.abs(signal) ** 2).sum(axis=0) / L ** 2
+    lm_or_p_idx = 0
+    return (np.abs(signal) ** 2).sum(axis=lm_or_p_idx) / L ** 2
 
 
 def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:

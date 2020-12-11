@@ -43,9 +43,10 @@ def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.nd
     """
     computes the Slepian inverse transform up to the Shannon number
     """
+    p_idx = 0
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
     s_p = compute_s_p_omega(L, slepian)
-    return (f_p_reshape * s_p).sum(axis=0)
+    return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
 def slepian_forward(

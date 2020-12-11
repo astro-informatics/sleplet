@@ -24,11 +24,13 @@ def slepian_wavelet_inverse(
     """
     computes the inverse wavelet transform in Slepian space
     """
+    p_idx = 0
     # ensure wavelets are the same shape as the coefficients
     wavelets_shannon = wavelets[: len(wav_coeffs)]
-    return sifting_convolution(wavelets_shannon, wav_coeffs.T, shannon=shannon).sum(
-        axis=0
+    wavelet_reconstruction = sifting_convolution(
+        wavelets_shannon, wav_coeffs.T, shannon=shannon
     )
+    return wavelet_reconstruction.sum(axis=p_idx)
 
 
 def axisymmetric_wavelet_forward(
@@ -67,7 +69,8 @@ def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.nd
     """
     computes the theoretical covariance of the wavelet coefficients
     """
-    covar_w_theory = (wavelets ** 2).sum(axis=1)
+    lm_idx = 1
+    covar_w_theory = (wavelets ** 2).sum(axis=lm_idx)
     return covar_w_theory * var_signal
 
 
@@ -77,12 +80,13 @@ def compute_slepian_wavelet_covariance(
     """
     computes the theoretical covariance of the wavelet coefficients
     """
+    p_idx = 0
     s_p = compute_s_p_omega(L, slepian)
     covar_shape = (len(wavelets),) + s_p.shape[1:]
     covar_w_theory = np.zeros(covar_shape, dtype=np.complex_)
     for j, wavelet in enumerate(wavelets):
         wavelet_reshape = wavelet[: slepian.N, np.newaxis, np.newaxis]
-        covar_w_theory[j] = ((wavelet_reshape * s_p) ** 2).sum(axis=0)
+        covar_w_theory[j] = ((wavelet_reshape * s_p) ** 2).sum(axis=p_idx)
     return covar_w_theory * var_signal
 
 
@@ -112,4 +116,5 @@ def find_non_zero_wavelet_coefficients(wav_coeffs: np.ndarray) -> np.ndarray:
     """
     finds the coefficients within the shannon number to speed up computations
     """
-    return wav_coeffs[wav_coeffs.any(axis=1)]
+    p_idx = 1
+    return wav_coeffs[wav_coeffs.any(axis=p_idx)]

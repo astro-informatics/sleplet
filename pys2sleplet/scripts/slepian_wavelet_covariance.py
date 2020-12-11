@@ -41,7 +41,7 @@ def slepian_wavelet_covariance(
 
     # initialise matrix
     covar_runs_shape = (runs,) + covar_w_theory.shape
-    covar_w_data = np.zeros(covar_runs_shape, dtype=np.complex_)
+    covar_w_data_runs = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
     rng = default_rng(RANDOM_SEED)
@@ -56,17 +56,19 @@ def slepian_wavelet_covariance(
         # compute field values
         for j, coefficient in enumerate(w_p):
             logger.info(f"run: {i+1}/{runs}, compute covariance: {j+1}/{len(w_p)}")
-            covar_w_data[i, j] = slepian_inverse(L, coefficient, sw.slepian)
+            covar_w_data_runs[i, j] = slepian_inverse(L, coefficient, sw.slepian)
 
     # compute covariance
-    covar_w_data = covar_w_data.var(axis=0)
+    runs_axis = 0
+    covar_w_data = covar_w_data_runs.var(axis=runs_axis)
 
     # compute mean and variance
-    mean_covar_w_data = covar_w_data.mean(axis=(1, 2))
-    std_covar_w_data = covar_w_data.std(axis=(1, 2))
+    theta_axis, phi_axis = 1, 2
+    mean_covar_w_data = covar_w_data.mean(axis=(theta_axis, phi_axis))
+    std_covar_w_data = covar_w_data.std(axis=(theta_axis, phi_axis))
 
     # compute mean of the theoretical matrix
-    mean_covar_w_theory = np.abs(covar_w_theory).mean(axis=(1, 2))
+    mean_covar_w_theory = np.abs(covar_w_theory).mean(axis=(theta_axis, phi_axis))
 
     # compute errors
     w_error_absolute = np.abs(mean_covar_w_data - mean_covar_w_theory)

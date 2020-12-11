@@ -172,14 +172,15 @@ class Plot:
 
         # Close plot.
         if close:
+            first_row, phi_index = 0, 1
             n_theta, n_phi = ssht.sample_shape(resolution, Method=method)
-            f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
+            f_plot = np.insert(f_plot, n_phi, f[:, first_row], axis=phi_index)
             if parametric:
                 f_normalised = np.insert(
-                    f_normalised, n_phi, f_normalised[:, 0], axis=1
+                    f_normalised, n_phi, f_normalised[:, first_row], axis=phi_index
                 )
-            thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
-            phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
+            thetas = np.insert(thetas, n_phi, thetas[:, first_row], axis=phi_index)
+            phis = np.insert(phis, n_phi, phis[:, first_row], axis=phi_index)
 
         # Compute location of vertices.
         if parametric:
