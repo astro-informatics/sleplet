@@ -38,7 +38,7 @@ def axisymmetric_wavelet_covariance(
     covar_w_theory = compute_wavelet_covariance(aw.wavelets, var_flm)
 
     # initialise matrix
-    covar_runs_shape = covar_w_theory.shape + (runs,)
+    covar_runs_shape = (runs,) + covar_w_theory.shape
     covar_w_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
@@ -56,13 +56,13 @@ def axisymmetric_wavelet_covariance(
         # compute covariance from data
         for j, coefficient in enumerate(wlm):
             f_wav_j = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME)
-            covar_w_data[j, i] = (
+            covar_w_data[i, j] = (
                 f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
             )
 
     # compute mean and variance
-    mean_covar_w_data = covar_w_data.mean(axis=1)
-    std_covar_w_data = covar_w_data.std(axis=1)
+    mean_covar_w_data = covar_w_data.mean(axis=0)
+    std_covar_w_data = covar_w_data.std(axis=0)
 
     # override for scaling function
     if not is_ergodic(j_min):
