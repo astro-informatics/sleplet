@@ -73,7 +73,7 @@ def axisymmetric_wavelet_covariance(
     w_error_in_std = w_error_absolute / std_covar_w_data
 
     # report errors
-    for j in range(aw.wavelets.shape[0]):
+    for j in range(len(aw.wavelets)):
         message = (
             f"error in std: {w_error_in_std[j]:e}"
             if is_ergodic(j_min, j)

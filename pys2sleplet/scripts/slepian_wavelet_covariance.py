@@ -2,7 +2,6 @@ import numpy as np
 from numpy.random import default_rng
 
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.utils.bool_methods import is_ergodic
 from pys2sleplet.utils.harmonic_methods import compute_random_signal
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
@@ -41,7 +40,7 @@ def slepian_wavelet_covariance(
     )
 
     # initialise matrix
-    covar_runs_shape = covar_w_theory.shape + (runs,)
+    covar_runs_shape = (runs,) + covar_w_theory.shape
     covar_w_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
@@ -54,35 +53,30 @@ def slepian_wavelet_covariance(
         # compute wavelet coefficients
         w_p = slepian_wavelet_forward(f_p, sw.wavelets, sw.slepian.N)
 
-        # compute covariance from data
+        # compute field values
         for j, coefficient in enumerate(w_p):
-            logger.info(f"compute covariance: {j+1}/{w_p.shape[0]}, run: {i+1}/{runs}")
-            f_wav_j = slepian_inverse(L, coefficient, sw.slepian)
-            covar_w_data[j, i] = (
-                f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
-            )
+            logger.info(f"run: {i+1}/{runs}, compute covariance: {j+1}/{len(w_p)}")
+            covar_w_data[i, j] = slepian_inverse(L, coefficient, sw.slepian)
+
+    # compute covariance
+    covar_w_data = covar_w_data.var(axis=0)
 
     # compute mean and variance
-    mean_covar_w_data = covar_w_data.mean(axis=1)
-    std_covar_w_data = covar_w_data.std(axis=1)
+    mean_covar_w_data = covar_w_data.mean(axis=(1, 2))
+    std_covar_w_data = covar_w_data.std(axis=(1, 2))
 
-    # override for scaling function
-    if not is_ergodic(j_min):
-        mean_covar_w_data[0] = covar_w_data[0].var()
+    # compute mean of the theoretical matrix
+    mean_covar_w_theory = np.abs(covar_w_theory).mean(axis=(1, 2))
 
     # compute errors
-    w_error_absolute = np.abs(mean_covar_w_data - covar_w_theory)
-    std_covar_w_data = np.where(std_covar_w_data != 0, std_covar_w_data, np.nan)
-    w_error_in_std = w_error_absolute / std_covar_w_data
+    w_error_absolute = np.abs(mean_covar_w_data - mean_covar_w_theory)
+    w_error_in_std = w_error_absolute[: len(w_p)] / std_covar_w_data[: len(w_p)]
 
     # report errors
-    for j in range(sw.wavelets.shape[0]):
-        message = (
-            f"error in std: {w_error_in_std[j]:e}"
-            if is_ergodic(j_min, j)
-            else f"absolute error: {w_error_absolute[j]:e}"
+    for j in range(len(w_p)):
+        logger.info(
+            f"slepian wavelet covariance {j}: error in std: {w_error_in_std[j]:e}"
         )
-        logger.info(f"slepian wavelet covariance {j}: '{message}'")
 
 
 if __name__ == "__main__":

@@ -25,7 +25,7 @@ def slepian_wavelet_inverse(
     computes the inverse wavelet transform in Slepian space
     """
     # ensure wavelets are the same shape as the coefficients
-    wavelets_shannon = wavelets[: wav_coeffs.shape[0]]
+    wavelets_shannon = wavelets[: len(wav_coeffs)]
     return sifting_convolution(wavelets_shannon, wav_coeffs.T, shannon=shannon).sum(
         axis=0
     )
@@ -78,7 +78,7 @@ def compute_slepian_wavelet_covariance(
     computes the theoretical covariance of the wavelet coefficients
     """
     s_p = compute_s_p_omega(L, slepian)
-    covar_shape = (wavelets.shape[0],) + s_p.shape[1:]
+    covar_shape = (len(wavelets),) + s_p.shape[1:]
     covar_w_theory = np.zeros(covar_shape, dtype=np.complex_)
     for j, wavelet in enumerate(wavelets):
         wavelet_reshape = wavelet[: slepian.N, np.newaxis, np.newaxis]
