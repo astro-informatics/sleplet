@@ -18,3 +18,4 @@ SNR_IN: int = 10
 THETA_MAX: float = 2 * np.pi / 9
 THETA_0: float = np.pi / 6
 THETA_1: float = np.pi / 3
+VAR_SIGNAL: int = 1

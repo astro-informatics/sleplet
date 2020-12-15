@@ -1,13 +1,19 @@
 import numpy as np
-from numpy.testing import assert_allclose, assert_array_equal
+import pys2let as s2let
+import pyssht as ssht
+from numpy.testing import assert_allclose, assert_array_equal, assert_equal
 
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
 )
-from pys2sleplet.test.constants import L_SMALL
+from pys2sleplet.test.constants import J_MIN, L_LARGE, L_SMALL, VAR_SIGNAL, B
 from pys2sleplet.utils.slepian_methods import slepian_forward
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_inverse,
+    compute_slepian_wavelet_covariance,
+    compute_wavelet_covariance,
+    create_slepian_wavelets,
     find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,
     slepian_wavelet_inverse,
@@ -75,3 +81,38 @@ def test_only_wavelet_coefficients_within_shannon_returned() -> None:
     coeffs_out = np.array([[3], [2], [1]])
     shannon_coeffs = find_non_zero_wavelet_coefficients(coeffs_in)
     assert_array_equal(shannon_coeffs, coeffs_out)
+
+
+def test_create_slepian_wavelets() -> None:
+    """
+    checks that the method creates the scaling function and wavelets
+    """
+    wavelets = create_slepian_wavelets(L_LARGE, B, J_MIN)
+    j_max = s2let.pys2let_j_max(B, L_LARGE ** 2, J_MIN)
+    assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
+    assert_equal(L_LARGE ** 2, wavelets.shape[1])
+
+
+def test_wavelet_covariance(random_nd_flm) -> None:
+    """
+    checks that sigma^j is computed for the axisymmetric case
+    """
+    covariance = compute_wavelet_covariance(random_nd_flm, VAR_SIGNAL)
+    assert_equal(random_nd_flm.shape[0], covariance.shape[0])
+
+
+def test_slepian_wavelet_covariance(slepian_wavelets_polar_cap) -> None:
+    """
+    checks that sigma^j is computed for the Slepian case
+    """
+    covariance = compute_slepian_wavelet_covariance(
+        slepian_wavelets_polar_cap.wavelets,
+        VAR_SIGNAL,
+        slepian_wavelets_polar_cap.L,
+        slepian_wavelets_polar_cap.slepian,
+    )
+    assert_equal(slepian_wavelets_polar_cap.wavelets.shape[0], covariance.shape[0])
+    assert_equal(
+        ssht.sample_shape(slepian_wavelets_polar_cap.L, Method=SAMPLING_SCHEME),
+        covariance.shape[1:],
+    )
