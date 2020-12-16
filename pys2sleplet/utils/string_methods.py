@@ -30,7 +30,7 @@ def filename_args(value: float, arg_name: str) -> str:
     filename = "_"
     num, dem = _get_angle_num_dem(value)
     filename += f"{num}{arg_name}"
-    if value < 1 and value != 0:
+    if abs(value) < 1 and value != 0:
         filename += f"{dem}"
     return filename
 
