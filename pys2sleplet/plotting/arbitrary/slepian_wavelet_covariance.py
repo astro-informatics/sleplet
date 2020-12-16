@@ -10,6 +10,7 @@ from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import RANDOM_SEED
 from pys2sleplet.utils.wavelet_methods import (
     compute_slepian_wavelet_covariance,
+    find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,
 )
 
@@ -61,7 +62,8 @@ def main() -> None:
     differences = covar_data - covar_theory
 
     # report errors
-    for j, diff in enumerate(differences[: len(w_p)]):
+    axis = (1, 2)
+    for j, diff in enumerate(find_non_zero_wavelet_coefficients(differences, axis)):
         name = f"slepian_covariance_diff_{j}"
         logger.info(name)
         Plot(diff, L, name, annotations=sw.annotations).execute()

@@ -37,12 +37,13 @@ class SlepianDecomposition:
         self._validate_rank(rank)
 
         if self.method == "harmonic_sum":
-            f_p = self._harmonic_sum(rank)
+            return self._harmonic_sum(rank)
         elif self.method == "integrate_sphere":
-            f_p = self._integrate_sphere(rank)
+            return self._integrate_sphere(rank)
         elif self.method == "integrate_region":
-            f_p = self._integrate_region(rank)
-        return f_p
+            return self._integrate_region(rank)
+        else:
+            raise ValueError(f"'{self.method}' is not a valid method")
 
     def decompose_all(self) -> np.ndarray:
         """

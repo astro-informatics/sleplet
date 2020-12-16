@@ -1,3 +1,5 @@
+from typing import Tuple, Union
+
 import numpy as np
 import pys2let as s2let
 import pyssht as ssht
@@ -13,8 +15,9 @@ def slepian_wavelet_forward(
     """
     computes the coefficients of the given tiling function in Slepian space
     """
+    p_axis = 1
     return find_non_zero_wavelet_coefficients(
-        sifting_convolution(wavelets, f_p, shannon=shannon)
+        sifting_convolution(wavelets, f_p, shannon=shannon), p_axis
     )
 
 
@@ -112,9 +115,10 @@ def create_slepian_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
     return np.concatenate((kappa0[np.newaxis], kappa.T))
 
 
-def find_non_zero_wavelet_coefficients(wav_coeffs: np.ndarray) -> np.ndarray:
+def find_non_zero_wavelet_coefficients(
+    wav_coeffs: np.ndarray, axis: Union[int, Tuple[int, ...]]
+) -> np.ndarray:
     """
     finds the coefficients within the shannon number to speed up computations
     """
-    p_idx = 1
-    return wav_coeffs[wav_coeffs.any(axis=p_idx)]
+    return wav_coeffs[wav_coeffs.any(axis=axis)]

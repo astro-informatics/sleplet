@@ -140,9 +140,9 @@ class Plot:
         """
         if method == "MW_pole":
             if len(f) == 2:
-                f, f_sp = f
+                f, _ = f
             else:
-                f, f_sp, phi_sp = f
+                f, _, _ = f
 
         thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
@@ -165,10 +165,12 @@ class Plot:
             f_plot[f_plot == -1.56e30] = np.nan
 
         # Compute position scaling for parametric plot.
-        if parametric:
-            f_normalised = (f_plot - vmin / (vmax - vmin)) * parametric_scaling[
-                1
-            ] + parametric_scaling[0]
+        f_normalised = (
+            (f_plot - vmin / (vmax - vmin)) * parametric_scaling[1]
+            + parametric_scaling[0]
+            if parametric
+            else np.zeros(f_plot.shape)
+        )
 
         # Close plot.
         if close:
@@ -183,10 +185,11 @@ class Plot:
             phis = np.insert(phis, n_phi, phis[:, first_row], axis=phi_index)
 
         # Compute location of vertices.
-        if parametric:
-            x, y, z = ssht.spherical_to_cart(f_normalised, thetas, phis)
-        else:
-            x, y, z = ssht.s2_to_cart(thetas, phis)
+        x, y, z = (
+            ssht.spherical_to_cart(f_normalised, thetas, phis)
+            if parametric
+            else ssht.s2_to_cart(thetas, phis)
+        )
 
         return x, y, z, f_plot, vmin, vmax
 

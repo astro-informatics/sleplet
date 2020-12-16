@@ -31,10 +31,11 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
             f"mask {name} has shape {mask.shape} which does not match "
             f"the provided L={L}, the shape should be {thetas.shape}"
         )
+        return mask
 
     elif region.region_type == "lim_lat_lon":
         logger.info("creating limited latitude longitude mask")
-        mask = (
+        return (
             (thetas >= region.theta_min)
             & (thetas <= region.theta_max)
             & (phis >= region.phi_min)
@@ -47,8 +48,7 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
         if region.gap:
             logger.info("creating polar gap mask")
             mask |= thetas >= np.pi - region.theta_max
-
-    return mask
+        return mask
 
 
 def _load_mask(mask_name: str) -> np.ndarray:
