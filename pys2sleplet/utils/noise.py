@@ -80,14 +80,24 @@ def create_slepian_noise(
     return slepian_forward(L, slepian, flm=nlm)
 
 
-def _perform_thresholding(
+def _perform_hard_thresholding(
     f: np.ndarray, sigma_j: Union[float, np.ndarray], n_sigma: int
 ) -> np.ndarray:
     """
     set pixels in real space to zero if the magnitude is less than the threshold
     """
-    cond = np.abs(f) < n_sigma * sigma_j
-    return np.where(cond, 0, f)
+    threshold = n_sigma * sigma_j
+    return np.where(np.abs(f) < threshold, 0, f)
+
+
+def _perform_soft_thresholding(
+    f: np.ndarray, sigma_j: Union[float, np.ndarray], n_sigma: int
+) -> np.ndarray:
+    """
+    wavelet soft thresholding
+    """
+    threshold = n_sigma * sigma_j
+    return np.maximum(0, 1 - (threshold / np.abs(f))) * f
 
 
 def harmonic_hard_thresholding(
@@ -100,7 +110,7 @@ def harmonic_hard_thresholding(
     for j, coefficient in enumerate(wav_coeffs[1:]):
         logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
         f = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME)
-        f_thresholded = _perform_thresholding(f, sigma_j[j], n_sigma)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = ssht.forward(f_thresholded, L, Method=SAMPLING_SCHEME)
     return wav_coeffs
 
@@ -119,7 +129,7 @@ def slepian_hard_thresholding(
     for j, coefficient in enumerate(wav_coeffs):
         logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
         f = slepian_inverse(L, coefficient, slepian)
-        f_thresholded = _perform_thresholding(f, sigma_j[j], n_sigma)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j] = slepian_forward(L, slepian, f=f_thresholded)
     return wav_coeffs
 
