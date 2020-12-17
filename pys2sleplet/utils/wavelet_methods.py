@@ -73,8 +73,8 @@ def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.nd
     computes the theoretical covariance of the wavelet coefficients
     """
     lm_idx = 1
-    covar_w_theory = (wavelets ** 2).sum(axis=lm_idx)
-    return covar_w_theory * var_signal
+    covar_theory = (np.abs(wavelets) ** 2).sum(axis=lm_idx)
+    return covar_theory * var_signal
 
 
 def compute_slepian_wavelet_covariance(
@@ -83,14 +83,11 @@ def compute_slepian_wavelet_covariance(
     """
     computes the theoretical covariance of the wavelet coefficients
     """
-    p_idx = 0
+    p_idx = 1
     s_p = compute_s_p_omega(L, slepian)
-    covar_shape = (len(wavelets),) + s_p.shape[1:]
-    covar_w_theory = np.zeros(covar_shape, dtype=np.complex_)
-    for j, wavelet in enumerate(wavelets):
-        wavelet_reshape = wavelet[: slepian.N, np.newaxis, np.newaxis]
-        covar_w_theory[j] = ((wavelet_reshape * s_p) ** 2).sum(axis=p_idx)
-    return covar_w_theory * var_signal
+    wavelets_reshape = wavelets[:, : slepian.N, np.newaxis, np.newaxis]
+    covar_theory = (np.abs(wavelets_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_idx)
+    return covar_theory * var_signal
 
 
 def create_axisymmetric_wavelets(L: int, B: int, j_min: int) -> np.ndarray:

@@ -67,6 +67,9 @@ def axisymmetric_wavelet_covariance(
     if not is_ergodic(j_min):
         mean_covar_data[0] = covar_data[0].var()
 
+    # ensure reality
+    mean_covar_data = np.abs(mean_covar_data)
+
     # compute errors
     error_absolute = np.abs(mean_covar_data - covar_theory)
     error_in_std = error_absolute / std_covar_data
