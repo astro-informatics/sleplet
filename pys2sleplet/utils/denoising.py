@@ -79,13 +79,13 @@ def denoising_slepian(
     # create wavelets
     sw = SlepianWavelets(L, B=B, j_min=j_min, region=region)
 
+    # compute wavelet coefficients
+    w = slepian_wavelet_forward(fun_noised.coefficients, sw.wavelets, sw.slepian.N)
+
     # compute wavelet noise
     sigma_j = compute_slepian_sigma_j(
         L, fun.coefficients, sw.wavelets, snr_in, sw.slepian
     )
-
-    # compute wavelet coefficients
-    w = slepian_wavelet_forward(fun_noised.coefficients, sw.wavelets, sw.slepian.N)
 
     # hard thresholding
     w_denoised = slepian_hard_thresholding(L, w, sigma_j, n_sigma, sw.slepian)
