@@ -59,11 +59,13 @@ def main() -> None:
     covar_data = covar_data_runs.var(axis=runs_axis)
 
     # compute differences
-    differences = covar_data - covar_theory
+    omega_axis = (1, 2)
+    non_zero_theory = find_non_zero_wavelet_coefficients(covar_theory, omega_axis)
+    non_zero_data = find_non_zero_wavelet_coefficients(covar_data, omega_axis)
+    differences = np.abs(non_zero_data - non_zero_theory) / non_zero_theory
 
     # report errors
-    axis = (1, 2)
-    for j, diff in enumerate(find_non_zero_wavelet_coefficients(differences, axis)):
+    for j, diff in enumerate(differences):
         name = f"slepian_covariance_diff_{j}"
         logger.info(name)
         Plot(diff, L, name, annotations=sw.annotations).execute()
