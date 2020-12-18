@@ -20,7 +20,7 @@ def main(snr: int, sigma: float) -> None:
     f, annotations = denoising_slepian(
         f"slepian_{fun}", L, B, J_MIN, sigma, region, snr
     )
-    name = f"{fun}_denoised_slepian_L{L}"
+    name = f"{fun}_snr{snr}_n{sigma}_denoised_slepian_L{L}"
     Plot(f, L, name, annotations=annotations).execute()
 
 
