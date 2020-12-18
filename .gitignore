@@ -4,14 +4,16 @@
 *.pdf
 *.png
 *.pyc
+*.so
 .DS_Store
 .coverage
 .hypothesis
 .mypy_cache
 .pytest_cache
-*.so
 .vscode
 Coeff_Height_and_Depth_to2190_DTM2006.0
+EGM2008_to2190_TideFree
+EGM2008_to2190_ZeroTide
 __pycache__
 build
 default.profraw
