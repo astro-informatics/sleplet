@@ -40,8 +40,8 @@ class Plot:
         if settings.UPSAMPLE:
             self.filename += f"_res{self.resolution}"
         self.filename += f"_{self.plot_type}"
-        if not settings.NORMALISE:
-            self.filename += "_unnorm"
+        if settings.NORMALISE:
+            self.filename += "_norm"
 
     def execute(self) -> None:
         """
