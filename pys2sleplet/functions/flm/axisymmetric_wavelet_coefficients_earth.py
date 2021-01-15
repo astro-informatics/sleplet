@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, Optional
+from typing import Optional
 
 import numpy as np
 import pys2let as s2let
@@ -7,7 +7,6 @@ import pys2let as s2let
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import find_max_amplitude
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
@@ -24,7 +23,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
     _j_min: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
-    _max_amplitude: Dict[str, float] = field(init=False, repr=False)
+
     _wavelets: np.ndarray = field(init=False, repr=False)
     _wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
@@ -71,7 +70,6 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
         self.wavelet_coefficients = axisymmetric_wavelet_forward(
             self.L, self.earth.coefficients, self.wavelets
         )
-        self.max_amplitude = find_max_amplitude(self.L, self.wavelet_coefficients)
 
     @property  # type:ignore
     def B(self) -> int:
@@ -123,14 +121,6 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             j_min = AxisymmetricWaveletCoefficientsEarth._j_min
         self._j_min = j_min
-
-    @property
-    def max_amplitude(self) -> Dict[str, float]:
-        return self._max_amplitude
-
-    @max_amplitude.setter
-    def max_amplitude(self, max_amplitude: Dict[str, float]) -> None:
-        self._max_amplitude = max_amplitude
 
     @property
     def wavelets(self) -> np.ndarray:

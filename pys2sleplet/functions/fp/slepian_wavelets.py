@@ -1,12 +1,11 @@
 from dataclasses import dataclass, field
-from typing import Dict, Optional
+from typing import Optional
 
 import numpy as np
 import pys2let as s2let
 
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import find_max_amplitude
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 from pys2sleplet.utils.wavelet_methods import create_slepian_wavelets
 
@@ -20,7 +19,7 @@ class SlepianWavelets(F_P):
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
-    _max_amplitude: Dict[str, float] = field(init=False, repr=False)
+
     _wavelets: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -62,9 +61,6 @@ class SlepianWavelets(F_P):
         computes wavelets in Slepian space
         """
         self.wavelets = create_slepian_wavelets(self.L, self.B, self.j_min)
-        self.max_amplitude = find_max_amplitude(
-            self.L, self.wavelets, slepian=self.slepian, coefficient_type="wavelets"
-        )
 
     @property  # type:ignore
     def B(self) -> int:
@@ -116,14 +112,6 @@ class SlepianWavelets(F_P):
             # https://stackoverflow.com/a/61480946/7359333
             j_min = SlepianWavelets._j_min
         self._j_min = j_min
-
-    @property
-    def max_amplitude(self) -> Dict[str, float]:
-        return self._max_amplitude
-
-    @max_amplitude.setter
-    def max_amplitude(self, max_amplitude: Dict[str, float]) -> None:
-        self._max_amplitude = max_amplitude
 
     @property
     def wavelets(self) -> np.ndarray:

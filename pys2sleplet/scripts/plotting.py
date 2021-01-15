@@ -206,9 +206,6 @@ def plot(
         field,
         f.L,
         filename,
-        amplitude=f.max_amplitude[plot_type]
-        if not settings.NORMALISE and hasattr(f, "max_amplitude")
-        else None,
         plot_type=plot_type,
         annotations=annotation,
         reality=f.reality,
