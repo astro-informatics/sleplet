@@ -1,3 +1,5 @@
+from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.denoising import denoising_axisym
 
@@ -12,9 +14,15 @@ def main() -> None:
     """
     denoising demo of South America to compare to Slepian wavelet case
     """
-    fun = "south_america"
-    f, _, _ = denoising_axisym(fun, L, B, J_MIN, N_SIGMA, SNR_IN)
-    name = f"{fun}_denoised_axisym_L{L}"
+    # create map & noised map
+    fun = SouthAmerica(L)
+    fun_noised = SouthAmerica(L, noise=SNR_IN)
+
+    # create wavelets
+    aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
+
+    f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
+    name = f"{fun.name}_denoised_axisym_L{L}"
     Plot(f, L, name).execute()
 
 
