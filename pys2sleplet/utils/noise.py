@@ -140,9 +140,9 @@ def compute_sigma_j(
     """
     compute sigma_j for wavelets used in denoising the signal
     """
-    p_axis = 1
+    lm_axis = 1
     sigma_noise = _compute_sigma_noise(L, signal, snr_in)
-    wavelet_power = (np.abs(psi_j) ** 2).sum(axis=p_axis)
+    wavelet_power = (np.abs(psi_j) ** 2).sum(axis=lm_axis)
     return sigma_noise * np.sqrt(wavelet_power)
 
 
