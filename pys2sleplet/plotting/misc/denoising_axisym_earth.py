@@ -2,11 +2,13 @@ from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.denoising import denoising_axisym
+from pys2sleplet.utils.plot_methods import find_max_amplitude
 
 B = 2
 J_MIN = 0
 L = 128
 N_SIGMA = 3
+PLOT_TYPE = "real"
 SNR_IN = 10
 
 
@@ -21,9 +23,12 @@ def main() -> None:
     # create wavelets
     aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
 
+    # fix amplitude
+    amplitude = find_max_amplitude(L, fun_noised.coefficients, PLOT_TYPE)
+
     f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
     name = f"{fun.name}_denoised_axisym_L{L}"
-    Plot(f, L, name).execute()
+    Plot(f, L, name, amplitude=amplitude, plot_type=PLOT_TYPE).execute()
 
 
 if __name__ == "__main__":

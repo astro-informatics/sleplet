@@ -1,13 +1,15 @@
 from pathlib import Path
-from typing import List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pyssht as ssht
 from matplotlib import colors
 from matplotlib import pyplot as plt
 
+from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -67,3 +69,35 @@ def save_plot(path: Path, name: str) -> None:
             plt.savefig(filename, bbox_inches="tight")
     if settings.AUTO_OPEN:
         plt.show()
+
+
+def find_max_amplitude(
+    L: int,
+    coefficients: np.ndarray,
+    plot_type: str,
+    slepian: Optional[SlepianFunctions] = None,
+) -> Dict[str, float]:
+    """
+    for a given set of coefficients it finds the largest absolute value for a
+    given plot type such that plots can have the same scale as the input
+    """
+    if isinstance(slepian, SlepianFunctions):
+        field = slepian_inverse(L, coefficients, slepian)
+    else:
+        field = ssht.inverse(coefficients, L, Method=SAMPLING_SCHEME)
+    return np.abs(create_plot_type(field, plot_type)).max()
+
+
+def create_plot_type(field: np.ndarray, plot_type: str) -> np.ndarray:
+    """
+    gets the given plot type of the field
+    """
+    logger.info(f"plotting type: '{plot_type}'")
+    if plot_type == "abs":
+        return np.abs(field)
+    elif plot_type == "imag":
+        return field.imag
+    elif plot_type == "real":
+        return field.real
+    elif plot_type == "sum":
+        return field.real + field.imag

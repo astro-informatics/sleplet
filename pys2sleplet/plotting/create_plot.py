@@ -17,7 +17,11 @@ from plotly.graph_objs.surface.colorbar import Tickfont
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import calc_plot_resolution, convert_colourscale
+from pys2sleplet.utils.plot_methods import (
+    calc_plot_resolution,
+    convert_colourscale,
+    create_plot_type,
+)
 from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
@@ -61,9 +65,7 @@ class Plot:
 
         # pick largest tick max value
         tick_mark = (
-            abs(self.amplitude)
-            if self.amplitude is not None
-            else max(abs(vmin), abs(vmax))
+            self.amplitude if self.amplitude is not None else max(abs(vmin), abs(vmax))
         )
 
         data = [
@@ -199,7 +201,9 @@ class Plot:
         """
         boosts, forces plot type and then scales the field before plotting
         """
-        return self._normalise_function(self._create_plot_type(self._boost_field(f)))
+        return self._normalise_function(
+            create_plot_type(self._boost_field(f), self.plot_type)
+        )
 
     def _boost_field(self, f: np.ndarray) -> np.ndarray:
         """
@@ -213,20 +217,6 @@ class Plot:
         return invert_flm_boosted(
             flm, self.L, self.resolution, reality=self.reality, spin=self.spin
         )
-
-    def _create_plot_type(self, f: np.ndarray) -> np.ndarray:
-        """
-        gets the given plot type of the field
-        """
-        logger.info(f"plotting type: '{self.plot_type}'")
-        if self.plot_type == "abs":
-            return np.abs(f)
-        elif self.plot_type == "imag":
-            return f.imag
-        elif self.plot_type == "real":
-            return f.real
-        elif self.plot_type == "sum":
-            return f.real + f.imag
 
     @staticmethod
     def _normalise_function(f: np.ndarray) -> np.ndarray:
