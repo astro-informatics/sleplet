@@ -1,5 +1,7 @@
 from argparse import ArgumentParser
 
+from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
+from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.denoising import denoising_slepian
 from pys2sleplet.utils.region import Region
@@ -15,13 +17,19 @@ def main(snr: int, sigma: float) -> None:
     """
     denoising demo using Slepian wavelets
     """
-    fun = "south_america"
-    region = Region(mask_name=fun)
-    f, annotations = denoising_slepian(
-        f"slepian_{fun}", L, B, J_MIN, sigma, region, snr
-    )
-    name = f"{fun}_snr{snr}_n{sigma}_denoised_slepian_L{L}"
-    Plot(f, L, name, annotations=annotations).execute()
+    # setup
+    region = Region(mask_name="south_america")
+
+    # create map & noised map
+    fun = SlepianSouthAmerica(L, region=region)
+    fun_noised = SlepianSouthAmerica(L, region=region, noise=snr)
+
+    # create wavelets
+    sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
+
+    f = denoising_slepian(fun, fun_noised, sw, snr, sigma)
+    name = f"{fun.name}_snr{snr}_n{sigma}_denoised_L{L}"
+    Plot(f, L, name, annotations=sw.annotations).execute()
 
 
 if __name__ == "__main__":
