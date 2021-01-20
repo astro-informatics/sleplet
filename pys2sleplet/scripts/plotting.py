@@ -115,9 +115,7 @@ def read_args() -> Namespace:
         choices=["north", "rotate", "translate"],
         help="plotting routine: defaults to north",
     )
-    parser.add_argument(
-        "--noise", "-n", type=float, help="the SNR_IN of the noise level"
-    )
+    parser.add_argument("--noise", "-n", type=int, help="the SNR_IN of the noise level")
     parser.add_argument(
         "--region",
         "-r",
@@ -125,7 +123,7 @@ def read_args() -> Namespace:
         help="flag which masks the function for a region (based on settings.toml)",
     )
     parser.add_argument(
-        "--smoothing", "-s", type=float, help="the sigma of the applied smoothing"
+        "--smoothing", "-s", type=int, help="the sigma of the applied smoothing"
     )
     parser.add_argument(
         "--type",

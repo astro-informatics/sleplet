@@ -27,6 +27,7 @@ class F_P(Coefficients):
     _slepian: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.coefficients: np.ndarray  # mypy
         self.region = (
             create_default_region(settings)
             if not isinstance(self.region, Region)

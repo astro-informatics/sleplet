@@ -12,7 +12,7 @@ from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
 @dataclass  # type:ignore
 class F_LM(Coefficients):
     def __post_init__(self) -> None:
-        self.coefficients: np.ndarray
+        self.coefficients: np.ndarray  # mypy
         super().__post_init__()
 
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
