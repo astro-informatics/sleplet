@@ -12,9 +12,6 @@ class SlepianSouthAmerica(F_P):
         if self.region.name_ending != "south_america":
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_annotations(self) -> None:
-        self.annotations = self.slepian.annotations
-
     def _create_coefficients(self) -> None:
         sa = SouthAmerica(self.L, region=self.region)
         self.coefficients = slepian_forward(self.L, self.slepian, flm=sa.coefficients)

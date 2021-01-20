@@ -17,9 +17,6 @@ class SlepianDiracDelta(F_P):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> None:
-        self.annotations = self.slepian.annotations
-
     def _create_coefficients(self) -> None:
         self._compute_angles()
         self.coefficients = compute_s_p_omega_prime(

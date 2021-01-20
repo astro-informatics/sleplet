@@ -17,7 +17,7 @@ from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_angle, filename_args
 from pys2sleplet.utils.vars import (
     ALPHA_DEFAULT,
-    ANNOTATION_SECOND_COLOUR,
+    ANNOTATION_COLOUR,
     ARROW_STYLE,
     BETA_DEFAULT,
     EARTH_ALPHA,
@@ -162,7 +162,7 @@ def plot(
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
-    annotation = f.annotations if annotations else []
+    annotation = []
 
     # Shannon number for Slepian coefficients
     shannon = f.slepian.N if not isinstance(f, F_LM) else None
@@ -293,7 +293,7 @@ def translation_helper(
     # annotate translation point
     x, y, z = ssht.s2_to_cart(beta, alpha)
     annotation = {
-        **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_SECOND_COLOUR),
+        **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR),
         **ARROW_STYLE,
     }
     return coefficients, filename, annotation

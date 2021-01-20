@@ -15,9 +15,6 @@ class Gaussian(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> None:
-        pass
-
     def _create_coefficients(self) -> None:
         flm = np.zeros(self.L ** 2, dtype=np.complex_)
         for ell in range(self.L):

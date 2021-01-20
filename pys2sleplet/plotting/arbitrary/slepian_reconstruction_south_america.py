@@ -19,7 +19,7 @@ def main() -> None:
 
     # plot
     name = f"south_america_slepian_reconstruction_L{L}"
-    Plot(f, L, name, annotations=slepian.annotations).execute()
+    Plot(f, L, name, region=slepian.region).execute()
 
 
 if __name__ == "__main__":

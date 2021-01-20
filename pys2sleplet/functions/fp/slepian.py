@@ -14,9 +14,6 @@ class Slepian(F_P):
         self._validate_rank()
         super().__post_init__()
 
-    def _create_annotations(self) -> None:
-        self.annotations = self.slepian.annotations
-
     def _create_name(self) -> None:
         order = (
             f"_m{self.slepian.order[self.rank]}"

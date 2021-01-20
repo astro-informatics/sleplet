@@ -32,9 +32,6 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         if self.region.name_ending != "south_america":
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_annotations(self) -> None:
-        self.annotations = self.slepian.annotations
-
     def _create_coefficients(self) -> None:
         logger.info("start computing wavelet coefficients")
         self._create_wavelet_coefficients()

@@ -9,9 +9,6 @@ class Earth(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> None:
-        pass
-
     def _create_coefficients(self) -> None:
         self.coefficients = create_flm(self.L)
 

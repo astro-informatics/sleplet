@@ -9,7 +9,6 @@ from multiprocess import Pool
 from numpy import linalg as LA
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.bool_methods import is_small_polar_cap
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.harmonic_methods import create_emm_vector
 from pys2sleplet.utils.logger import logger
@@ -22,13 +21,7 @@ from pys2sleplet.utils.parallel_methods import (
     split_L_into_chunks,
 )
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import (
-    ANNOTATION_COLOUR,
-    ANNOTATION_DOTS,
-    ANNOTATION_SECOND_COLOUR,
-    ARROW_STYLE,
-    GAP_DEFAULT,
-)
+from pys2sleplet.utils.vars import GAP_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
@@ -49,19 +42,6 @@ class SlepianPolarCap(SlepianFunctions):
     def __post_init__(self) -> None:
         self.region = Region(gap=self.gap, theta_max=self.theta_max)
         super().__post_init__()
-
-    def _create_annotations(self) -> None:
-        if is_small_polar_cap(self.theta_max):
-            theta_top = np.array([self.theta_max])
-            theta_bottom = np.array([np.pi - self.theta_max])
-            for i in range(ANNOTATION_DOTS):
-                self._add_to_annotation(theta_top, i, ANNOTATION_COLOUR)
-
-                if self.gap:
-                    for j in range(ANNOTATION_DOTS):
-                        self._add_to_annotation(
-                            theta_bottom, j, ANNOTATION_SECOND_COLOUR
-                        )
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian_{self.region.name_ending}"
@@ -156,16 +136,6 @@ class SlepianPolarCap(SlepianFunctions):
         eigenvectors = eigenvectors[idx]
         orders = orders[idx]
         return eigenvalues, eigenvectors, orders
-
-    def _add_to_annotation(self, theta: np.ndarray, i: int, colour: str) -> None:
-        """
-        add to annotation list for given theta
-        """
-        phi = np.array([2 * np.pi / ANNOTATION_DOTS * (i + 1)])
-        x, y, z = ssht.s2_to_cart(theta, phi)
-        self.annotations.append(
-            {**dict(x=x[0], y=y[0], z=z[0], arrowcolor=colour), **ARROW_STYLE}
-        )
 
     def _create_Dm_matrix(self, m: int, emm: np.ndarray) -> np.ndarray:
         """

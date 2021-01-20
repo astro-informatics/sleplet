@@ -20,7 +20,7 @@ def main() -> None:
     # plot
     f = slepian_inverse(f_p, L, swc.slepian)
     name = f"south_america_wavelet_reconstruction_L{L}"
-    Plot(f, L, name, annotations=swc.annotations).execute()
+    Plot(f, L, name, region=swc.region).execute()
 
 
 if __name__ == "__main__":

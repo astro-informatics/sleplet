@@ -79,10 +79,6 @@ class F_P(Coefficients):
         self._slepian = slepian
 
     @abstractmethod
-    def _create_annotations(self) -> None:
-        raise NotImplementedError
-
-    @abstractmethod
     def _create_coefficients(self) -> None:
         raise NotImplementedError
 

@@ -40,13 +40,6 @@ class F_LM(Coefficients):
             )
 
     @abstractmethod
-    def _create_annotations(self) -> None:
-        """
-        creates the annotations for the plot
-        """
-        raise NotImplementedError
-
-    @abstractmethod
     def _create_coefficients(self) -> None:
         """
         creates the flm on the north pole

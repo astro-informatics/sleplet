@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import numpy as np
 
@@ -16,7 +16,6 @@ class Coefficients:
     region: Optional[Region]
     noise: Optional[float]
     smoothing: Optional[float]
-    _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _coefficients: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _L: int = field(init=False, repr=False)
@@ -30,7 +29,6 @@ class Coefficients:
     def __post_init__(self) -> None:
         self._setup_args()
         self._create_name()
-        self._create_annotations()
         self._set_spin()
         self._set_reality()
         self._create_coefficients()
@@ -64,14 +62,6 @@ class Coefficients:
         """
         if isinstance(self.region, Region) and "slepian" not in self.name:
             self.name += f"_{self.region.name_ending}"
-
-    @property
-    def annotations(self) -> List[Dict]:
-        return self._annotations
-
-    @annotations.setter
-    def annotations(self, annotations: List[Dict]) -> None:
-        self._annotations = annotations
 
     @property
     def coefficients(self) -> np.ndarray:
@@ -196,13 +186,6 @@ class Coefficients:
     def _smooth_signal(self) -> None:
         """
         applies Gaussian smoothing to the signal
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _create_annotations(self) -> None:
-        """
-        creates the annotations for the plot
         """
         raise NotImplementedError
 

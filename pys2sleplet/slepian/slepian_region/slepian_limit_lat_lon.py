@@ -14,8 +14,6 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import (
-    ANNOTATION_COLOUR,
-    ARROW_STYLE,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,
@@ -47,34 +45,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_max=self.phi_max,
         )
         super().__post_init__()
-
-    def _create_annotations(self) -> None:
-        p1, p2, t1, t2 = (
-            np.array([self.phi_min]),
-            np.array([self.phi_max]),
-            np.array([self.theta_min]),
-            np.array([self.theta_max]),
-        )
-        p3, p4, t3, t4 = (
-            (p1 + 2 * p2) / 3,
-            (2 * p1 + p2) / 3,
-            (t1 + 2 * t2) / 3,
-            (2 * t1 + t2) / 3,
-        )
-        for t in [t1, t2, t3, t4]:
-            t_condition = (t == [t3, t4]).any()
-            for p in [p1, p2, p3, p4]:
-                p_condition = (p == [p3, p4]).any()
-                if not (t_condition and p_condition):
-                    x, y, z = ssht.s2_to_cart(t, p)
-                    self.annotations.append(
-                        {
-                            **dict(
-                                x=x[0], y=y[0], z=z[0], arrowcolor=ANNOTATION_COLOUR
-                            ),
-                            **ARROW_STYLE,
-                        }
-                    )
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian_{self.region.name_ending}"

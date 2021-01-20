@@ -26,7 +26,7 @@ def main() -> None:
         f_p += slepian_wavelet_inverse(coeff, swc.wavelets, swc.slepian.N)
         f = slepian_inverse(f_p, L, swc.slepian)
         name = f"south_america_wavelet_reconstruction_progressive_{p}_L{L}"
-        Plot(f, L, name, annotations=swc.annotations).execute()
+        Plot(f, L, name, region=swc.region).execute()
 
 
 if __name__ == "__main__":

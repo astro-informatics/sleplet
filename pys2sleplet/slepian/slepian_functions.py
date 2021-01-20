@@ -1,7 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 import numpy as np
 
@@ -11,7 +10,6 @@ from pys2sleplet.utils.logger import logger
 @dataclass  # type:ignore
 class SlepianFunctions:
     L: int
-    _annotations: List[Dict] = field(default_factory=list, init=False, repr=False)
     _area: float = field(init=False, repr=False)
     _eigenvalues: np.ndarray = field(init=False, repr=False)
     _eigenvectors: np.ndarray = field(init=False, repr=False)
@@ -23,7 +21,6 @@ class SlepianFunctions:
 
     def __post_init__(self) -> None:
         self._create_mask()
-        self._create_annotations()
         self._create_fn_name()
         self._calculate_area()
         self.N = int(round(self.area * self.L ** 2 / (4 * np.pi)))
@@ -31,14 +28,6 @@ class SlepianFunctions:
         logger.info("start solving eigenproblem")
         self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
-
-    @property
-    def annotations(self) -> List[Dict]:
-        return self._annotations
-
-    @annotations.setter
-    def annotations(self, annotations: np.ndarray) -> None:
-        self._annotations = annotations
 
     @property
     def area(self) -> float:
@@ -103,13 +92,6 @@ class SlepianFunctions:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @abstractmethod
-    def _create_annotations(self) -> None:
-        """
-        creates the annotations for the plot
-        """
-        raise NotImplementedError
 
     @abstractmethod
     def _create_fn_name(self) -> None:

@@ -1,5 +1,3 @@
-import numpy as np
-
 from pys2sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -34,13 +32,6 @@ def is_limited_lat_lon(
         or phi_max != PHI_MAX_DEFAULT
         or theta_min != THETA_MIN_DEFAULT
     )
-
-
-def is_small_polar_cap(theta_max: float) -> bool:
-    """
-    assuming it is a polar cap small defined for visualisation purposes
-    """
-    return bool(theta_max <= np.pi / 4)
 
 
 def is_ergodic(j_min: int, j: int = 0) -> bool:

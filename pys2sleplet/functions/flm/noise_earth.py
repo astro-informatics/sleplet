@@ -16,9 +16,6 @@ class NoiseEarth(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_annotations(self) -> None:
-        pass
-
     def _create_coefficients(self) -> None:
         earth = Earth(self.L)
         noise = create_noise(self.L, earth.coefficients, self.SNR)

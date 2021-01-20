@@ -39,7 +39,7 @@ def main(snr: int, sigma: int) -> None:
     f = denoising_slepian(fun, fun_noised, sw, snr, sigma)
     name = f"{fun.name}_snr{snr}_n{sigma}_denoised_L{L}"
     Plot(
-        f, L, name, amplitude=amplitude, annotations=sw.annotations, plot_type=PLOT_TYPE
+        f, L, name, amplitude=amplitude, plot_type=PLOT_TYPE, region=sw.region
     ).execute()
 
 

@@ -68,7 +68,7 @@ def main() -> None:
     for j, diff in enumerate(differences):
         name = f"slepian_covariance_diff_{j}"
         logger.info(name)
-        Plot(diff, L, name, annotations=sw.annotations).execute()
+        Plot(diff, L, name, region=sw.region).execute()
 
 
 if __name__ == "__main__":

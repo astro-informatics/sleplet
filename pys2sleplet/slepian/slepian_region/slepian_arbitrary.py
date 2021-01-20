@@ -29,12 +29,7 @@ from pys2sleplet.utils.parallel_methods import (
 )
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
-from pys2sleplet.utils.vars import (
-    ANNOTATION_COLOUR,
-    ARROW_STYLE,
-    L_MAX_DEFAULT,
-    L_MIN_DEFAULT,
-)
+from pys2sleplet.utils.vars import L_MAX_DEFAULT, L_MIN_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _slepian_path = _file_location.parents[2] / "data" / "slepian"
@@ -55,16 +50,6 @@ class SlepianArbitrary(SlepianFunctions):
         self.region = Region(mask_name=self.mask_name)
         self.resolution = settings.SAMPLES * self.L
         super().__post_init__()
-
-    def _create_annotations(self) -> None:
-        outline = np.load(_slepian_path / "outlines" / f"{self.mask_name}_outline.npy")
-        for o in outline:
-            self.annotations.append(
-                {
-                    **dict(x=o[0], y=o[1], z=o[2], arrowcolor=ANNOTATION_COLOUR),
-                    **ARROW_STYLE,
-                }
-            )
 
     def _create_fn_name(self) -> None:
         self.name = f"slepian_{self.mask_name}"

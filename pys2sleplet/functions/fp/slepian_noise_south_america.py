@@ -18,9 +18,6 @@ class SlepianNoiseSouthAmerica(F_P):
         if self.region.name_ending != "south_america":
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_annotations(self) -> None:
-        self.annotations = self.slepian.annotations
-
     def _create_coefficients(self) -> None:
         sa = SlepianSouthAmerica(self.L, region=self.region)
         noise = create_slepian_noise(self.L, sa.coefficients, self.slepian, self.SNR)
