@@ -15,7 +15,7 @@ def main() -> None:
     south_america = SlepianSouthAmerica(L, region=region)
 
     # perform reconstruction
-    f = slepian_inverse(L, south_america.coefficients, slepian)
+    f = slepian_inverse(south_america.coefficients, L, slepian)
 
     # plot
     name = f"south_america_slepian_reconstruction_L{L}"

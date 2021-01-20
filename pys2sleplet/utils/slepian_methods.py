@@ -37,7 +37,7 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
         return SlepianArbitrary(L, region.mask_name)
 
 
-def slepian_inverse(L: int, f_p: np.ndarray, slepian: SlepianFunctions) -> np.ndarray:
+def slepian_inverse(f_p: np.ndarray, L: int, slepian: SlepianFunctions) -> np.ndarray:
     """
     computes the Slepian inverse transform up to the Shannon number
     """

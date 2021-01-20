@@ -198,7 +198,7 @@ def plot(
             coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
         )
         if isinstance(f, F_LM)
-        else slepian_inverse(f.L, coefficients, f.slepian)
+        else slepian_inverse(coefficients, f.L, f.slepian)
     )
 
     # do plot

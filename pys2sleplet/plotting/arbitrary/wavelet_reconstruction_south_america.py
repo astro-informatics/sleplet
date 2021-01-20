@@ -18,7 +18,7 @@ def main() -> None:
     f_p = slepian_wavelet_inverse(swc.wavelet_coefficients, swc.wavelets, swc.slepian.N)
 
     # plot
-    f = slepian_inverse(L, f_p, swc.slepian)
+    f = slepian_inverse(f_p, L, swc.slepian)
     name = f"south_america_wavelet_reconstruction_L{L}"
     Plot(f, L, name, annotations=swc.annotations).execute()
 

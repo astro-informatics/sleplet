@@ -36,7 +36,7 @@ class F_P(Coefficients):
         super().__post_init__()
 
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
-        f = slepian_inverse(self.L, self.coefficients, self.slepian)
+        f = slepian_inverse(self.coefficients, self.L, self.slepian)
         flm = ssht.forward(f, self.L, Method=SAMPLING_SCHEME)
         flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
         return slepian_forward(self.L, self.slepian, flm=flm_rot)

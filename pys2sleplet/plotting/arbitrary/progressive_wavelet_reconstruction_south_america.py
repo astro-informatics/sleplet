@@ -24,7 +24,7 @@ def main() -> None:
     for p, coeff in enumerate(swc.wavelet_coefficients):
         logger.info(f"plot reconstruction: {p}")
         f_p += slepian_wavelet_inverse(coeff, swc.wavelets, swc.slepian.N)
-        f = slepian_inverse(L, f_p, swc.slepian)
+        f = slepian_inverse(f_p, L, swc.slepian)
         name = f"south_america_wavelet_reconstruction_progressive_{p}_L{L}"
         Plot(f, L, name, annotations=swc.annotations).execute()
 

@@ -53,8 +53,8 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
         shannon=slepian_dirac_delta_polar_cap.slepian.N,
     )
     field = slepian_inverse(
-        slepian_dirac_delta_polar_cap.L,
         sdd_trans,
+        slepian_dirac_delta_polar_cap.L,
         slepian_dirac_delta_polar_cap.slepian,
     )
     new_max = tuple(np.argwhere(field == field.max())[0])
@@ -84,8 +84,8 @@ def test_slepian_translation_changes_max_lim_lat_lon(
         shannon=slepian_dirac_delta_lim_lat_lon.slepian.N,
     )
     field = slepian_inverse(
-        slepian_dirac_delta_lim_lat_lon.L,
         sdd_trans,
+        slepian_dirac_delta_lim_lat_lon.L,
         slepian_dirac_delta_lim_lat_lon.slepian,
     )
     new_max = tuple(np.argwhere(field == field.max())[0])

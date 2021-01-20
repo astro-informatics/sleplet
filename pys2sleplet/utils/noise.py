@@ -74,7 +74,7 @@ def create_slepian_noise(
     computes Gaussian white noise in Slepian space
     """
     flm = ssht.forward(
-        slepian_inverse(L, slepian_signal, slepian), L, Method=SAMPLING_SCHEME
+        slepian_inverse(slepian_signal, L, slepian), L, Method=SAMPLING_SCHEME
     )
     nlm = create_noise(L, flm, snr_in)
     return slepian_forward(L, slepian, flm=nlm)
@@ -128,7 +128,7 @@ def slepian_hard_thresholding(
     logger.info("begin Slepian hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
         logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
-        f = slepian_inverse(L, coefficient, slepian)
+        f = slepian_inverse(coefficient, L, slepian)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j] = slepian_forward(L, slepian, f=f_thresholded)
     return wav_coeffs

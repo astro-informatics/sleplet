@@ -104,4 +104,4 @@ def denoising_slepian(
     # compute SNR
     compute_snr(signal.L, signal.coefficients, f_p - signal.coefficients)
 
-    return slepian_inverse(signal.L, f_p, slepian_wavelets.slepian)
+    return slepian_inverse(f_p, signal.L, slepian_wavelets.slepian)

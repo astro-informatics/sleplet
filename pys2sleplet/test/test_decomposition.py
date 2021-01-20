@@ -77,7 +77,7 @@ def test_equality_to_harmonic_transform_polar(
     f_p = slepian_forward(
         slepian_polar_cap.L, slepian_polar_cap, flm=earth_polar_cap.coefficients
     )
-    f_slepian = slepian_inverse(slepian_polar_cap.L, f_p, slepian_polar_cap)
+    f_slepian = slepian_inverse(f_p, slepian_polar_cap.L, slepian_polar_cap)
     f_harmonic = ssht.inverse(
         earth_polar_cap.coefficients, slepian_polar_cap.L, Method=SAMPLING_SCHEME
     )
@@ -94,7 +94,7 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
     f_p = slepian_forward(
         slepian_lim_lat_lon.L, slepian_lim_lat_lon, flm=earth_lim_lat_lon.coefficients
     )
-    f_slepian = slepian_inverse(slepian_lim_lat_lon.L, f_p, slepian_lim_lat_lon)
+    f_slepian = slepian_inverse(f_p, slepian_lim_lat_lon.L, slepian_lim_lat_lon)
     f_harmonic = ssht.inverse(
         earth_lim_lat_lon.coefficients, slepian_lim_lat_lon.L, Method=SAMPLING_SCHEME
     )

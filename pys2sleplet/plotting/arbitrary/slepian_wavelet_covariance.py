@@ -52,7 +52,7 @@ def main() -> None:
         # compute field values
         for j, coefficient in enumerate(w_p):
             logger.info(f"run: {i+1}/{RUNS}, compute covariance: {j+1}/{len(w_p)}")
-            covar_data_runs[i, j] = slepian_inverse(L, coefficient, sw.slepian)
+            covar_data_runs[i, j] = slepian_inverse(coefficient, L, sw.slepian)
 
     # compute covariance
     runs_axis = 0

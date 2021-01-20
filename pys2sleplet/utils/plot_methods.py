@@ -82,7 +82,7 @@ def find_max_amplitude(
     given plot type such that plots can have the same scale as the input
     """
     if isinstance(slepian, SlepianFunctions):
-        field = slepian_inverse(L, coefficients, slepian)
+        field = slepian_inverse(coefficients, L, slepian)
     else:
         field = ssht.inverse(coefficients, L, Method=SAMPLING_SCHEME)
     return np.abs(create_plot_type(field, plot_type)).max()
