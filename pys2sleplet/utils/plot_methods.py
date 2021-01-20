@@ -9,8 +9,10 @@ from matplotlib import pyplot as plt
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mask_methods import create_mask_region
+from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from pys2sleplet.utils.vars import SAMPLING_SCHEME, UNSEEN
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -101,3 +103,22 @@ def create_plot_type(field: np.ndarray, plot_type: str) -> np.ndarray:
         return field.real
     elif plot_type == "sum":
         return field.real + field.imag
+
+
+def set_outside_region_to_minimum(
+    f_plot: np.ndarray, L: int, region: Region
+) -> np.ndarray:
+    """
+    for the Slepian region set the outisde area to negative infinity
+    hence it is clear we are only interested in the coloured region
+    """
+    # create mask of interest
+    mask = create_mask_region(L, region)
+
+    # adapt for closed plot
+    first_row, phi_index = 0, 1
+    _, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
+    closed_mask = np.insert(mask, n_phi, mask[:, first_row], axis=phi_index)
+
+    # set values outside mask to negative infinity
+    return np.where(closed_mask, f_plot, UNSEEN)

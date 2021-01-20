@@ -25,4 +25,5 @@ SOUTH_AMERICA_RANGE: int = np.deg2rad(40)
 THETA_0: float = 0.0
 THETA_MIN_DEFAULT: float = 0
 THETA_MAX_DEFAULT: float = np.pi
+UNSEEN: float = -1.56e30
 ZOOM_DEFAULT: float = 7.88

@@ -206,9 +206,10 @@ def plot(
         field,
         f.L,
         filename,
-        plot_type=plot_type,
         annotations=annotation,
+        plot_type=plot_type,
         reality=f.reality,
+        region=f.region if not isinstance(f, F_LM) else None,
         spin=f.spin,
     ).execute()
 

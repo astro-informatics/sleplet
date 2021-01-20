@@ -21,8 +21,10 @@ from pys2sleplet.utils.plot_methods import (
     calc_plot_resolution,
     convert_colourscale,
     create_plot_type,
+    set_outside_region_to_minimum,
 )
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, ZOOM_DEFAULT
+from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.vars import SAMPLING_SCHEME, UNSEEN, ZOOM_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -37,6 +39,7 @@ class Plot:
     plot_type: str = field(default="real", repr=False)
     annotations: List[Dict] = field(default_factory=list, repr=False)
     reality: bool = field(default=False, repr=False)
+    region: Optional[Region] = field(default=None, repr=False)
     spin: int = field(default=0, repr=False)
 
     def __post_init__(self) -> None:
@@ -57,6 +60,10 @@ class Plot:
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f, self.resolution, method=SAMPLING_SCHEME
         )
+
+        if isinstance(self.region, Region):
+            # make plot area clearer
+            f_plot = set_outside_region_to_minimum(f_plot, self.resolution, self.region)
 
         # appropriate zoom in on north pole
         camera = Camera(
@@ -166,7 +173,7 @@ class Plot:
             vmax = color_range[1]
             f_plot[f_plot < color_range[0]] = color_range[0]
             f_plot[f_plot > color_range[1]] = color_range[1]
-            f_plot[f_plot == -1.56e30] = np.nan
+            f_plot[f_plot == UNSEEN] = np.nan
 
         # Compute position scaling for parametric plot.
         f_normalised = (
@@ -179,7 +186,7 @@ class Plot:
         # Close plot.
         if close:
             first_row, phi_index = 0, 1
-            n_theta, n_phi = ssht.sample_shape(resolution, Method=method)
+            _, n_phi = ssht.sample_shape(resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, first_row], axis=phi_index)
             if parametric:
                 f_normalised = np.insert(
