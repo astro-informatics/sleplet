@@ -3,7 +3,6 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
-import pyssht as ssht
 
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -14,10 +13,7 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import (
     choose_slepian_method,
     compute_s_p_omega_prime,
-    slepian_forward,
-    slepian_inverse,
 )
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
 @dataclass  # type:ignore
@@ -37,10 +33,7 @@ class F_P(Coefficients):
         super().__post_init__()
 
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
-        f = slepian_inverse(self.coefficients, self.L, self.slepian)
-        flm = ssht.forward(f, self.L, Method=SAMPLING_SCHEME)
-        flm_rot = ssht.rotate_flms(flm, alpha, beta, gamma, self.L)
-        return slepian_forward(self.L, self.slepian, flm=flm_rot)
+        raise NotImplementedError("Slepian rotation is not defined")
 
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
@@ -57,7 +50,7 @@ class F_P(Coefficients):
             self.coefficients += np
 
     def _smooth_signal(self) -> None:
-        pass
+        raise NotImplementedError("Slepian smoothing is not defined")
 
     @property  # type:ignore
     def region(self) -> Optional[Region]:
