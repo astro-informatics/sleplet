@@ -24,7 +24,7 @@ def main() -> None:
     aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
 
     # fix amplitude
-    amplitude = find_max_amplitude(L, fun_noised.coefficients, PLOT_TYPE)
+    amplitude = find_max_amplitude(fun_noised, PLOT_TYPE)
 
     f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
     name = f"{fun.name}_denoised_axisym_L{L}"

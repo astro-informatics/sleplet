@@ -1,13 +1,14 @@
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
 from matplotlib import colors
 from matplotlib import pyplot as plt
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
@@ -80,20 +81,31 @@ def save_plot(path: Path, name: str) -> None:
 
 
 def find_max_amplitude(
-    L: int,
-    coefficients: np.ndarray,
+    coefficients: Coefficients,
     plot_type: str,
-    slepian: Optional[SlepianFunctions] = None,
 ) -> Dict[str, float]:
     """
     for a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input
     """
-    if isinstance(slepian, SlepianFunctions):
-        field = slepian_inverse(coefficients, L, slepian)
+    # compute inverse transform
+    if hasattr(coefficients, "slepian"):
+        field = slepian_inverse(coefficients, coefficients.L, coefficients.slepian)
     else:
-        field = ssht.inverse(coefficients, L, Method=SAMPLING_SCHEME)
-    return np.abs(create_plot_type(field, plot_type)).max()
+        field = ssht.inverse(coefficients, coefficients.L, Method=SAMPLING_SCHEME)
+
+    # find resolution of final plot for boosting if necessary
+    resolution = (
+        calc_plot_resolution(coefficients.L) if settings.UPSAMPLE else coefficients.L
+    )
+
+    # boost field to match final plot
+    boosted_field = boost_field(
+        field, coefficients.L, resolution, coefficients.reality, coefficients.spin
+    )
+
+    # find maximum absolute value for given plot type
+    return np.abs(create_plot_type(boosted_field, plot_type)).max()
 
 
 def create_plot_type(field: np.ndarray, plot_type: str) -> np.ndarray:
@@ -135,3 +147,32 @@ def rotate_earth_to_south_america(earth_flm: np.ndarray, L: int) -> np.ndarray:
     rotates the flms of the Earth to a view centered on South America
     """
     return ssht.rotate_flms(earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)
+
+
+def normalise_function(f: np.ndarray) -> np.ndarray:
+    """
+    normalise function between 0 and 1 for visualisation
+    """
+    if not settings.NORMALISE:
+        return f
+    elif (f == 0).all():
+        # if all 0, set to 0
+        return f + 0.5
+    elif (f == f.max()).all():
+        # if all non-zero, set to 1
+        return f / f.max()
+    else:
+        # scale from [0, 1]
+        return (f - f.min()) / f.ptp()
+
+
+def boost_field(
+    field: np.ndarray, L: int, resolution: int, reality: bool = False, spin: int = 0
+) -> np.ndarray:
+    """
+    inverts and then boosts the field before plotting
+    """
+    if not settings.UPSAMPLE:
+        return field
+    flm = ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
+    return invert_flm_boosted(flm, L, resolution, reality=reality, spin=spin)

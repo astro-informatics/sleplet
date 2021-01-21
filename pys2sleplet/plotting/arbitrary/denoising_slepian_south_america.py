@@ -33,9 +33,7 @@ def main(snr: int, sigma: int) -> None:
     sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
 
     # fix amplitude
-    amplitude = find_max_amplitude(
-        L, fun_noised.coefficients, PLOT_TYPE, slepian=sw.slepian
-    )
+    amplitude = find_max_amplitude(fun_noised, PLOT_TYPE)
 
     f = denoising_slepian(fun, fun_noised, sw, snr, sigma)
     name = f"{fun.name}_snr{snr}_n{sigma}_denoised_L{L}"

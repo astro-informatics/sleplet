@@ -15,12 +15,13 @@ from plotly.graph_objs.surface import ColorBar, Lighting
 from plotly.graph_objs.surface.colorbar import Tickfont
 
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import (
+    boost_field,
     calc_plot_resolution,
     convert_colourscale,
     create_plot_type,
+    normalise_function,
     set_outside_region_to_minimum,
 )
 from pys2sleplet.utils.region import Region
@@ -208,36 +209,8 @@ class Plot:
         """
         boosts, forces plot type and then scales the field before plotting
         """
-        return self._normalise_function(
-            create_plot_type(self._boost_field(f), self.plot_type)
+        boosted_field = boost_field(
+            f, self.L, self.resolution, reality=self.reality, spin=self.spin
         )
-
-    def _boost_field(self, f: np.ndarray) -> np.ndarray:
-        """
-        inverts and then boosts the field before plotting
-        """
-        if not settings.UPSAMPLE:
-            return f
-        flm = ssht.forward(
-            f, self.L, Reality=self.reality, Spin=self.spin, Method=SAMPLING_SCHEME
-        )
-        return invert_flm_boosted(
-            flm, self.L, self.resolution, reality=self.reality, spin=self.spin
-        )
-
-    @staticmethod
-    def _normalise_function(f: np.ndarray) -> np.ndarray:
-        """
-        normalise function between 0 and 1 for visualisation
-        """
-        if not settings.NORMALISE:
-            return f
-        elif (f == 0).all():
-            # if all 0, set to 0
-            return f + 0.5
-        elif (f == f.max()).all():
-            # if all non-zero, set to 1
-            return f / f.max()
-        else:
-            # scale from [0, 1]
-            return (f - f.min()) / f.ptp()
+        field_space = create_plot_type(boosted_field, self.plot_type)
+        return normalise_function(field_space)
