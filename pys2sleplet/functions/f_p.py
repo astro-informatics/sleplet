@@ -43,11 +43,11 @@ class F_P(Coefficients):
         adds Gaussian white noise converted to Slepian space
         """
         if self.noise is not None:
-            np = create_slepian_noise(
+            n_p = create_slepian_noise(
                 self.L, self.coefficients, self.slepian, self.noise
             )
-            self.snr = compute_snr(self.L, self.coefficients, np)
-            self.coefficients += np
+            self.snr = compute_snr(self.L, self.coefficients, n_p)
+            self.coefficients += n_p
 
     @property  # type:ignore
     def region(self) -> Optional[Region]:

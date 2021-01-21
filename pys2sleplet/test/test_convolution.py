@@ -40,11 +40,11 @@ def test_south_america_slepian_identity_convolution(
     test to ensure that the convolving with the Slepian
     identity function doesn't change the map in Slepian space
     """
-    fp = slepian_forward(
+    f_p = slepian_forward(
         slepian_arbitrary.L, slepian_arbitrary, flm=south_america_arbitrary.coefficients
     )
     g = SlepianIdentity(slepian_arbitrary.L, region=slepian_arbitrary.region)
     fp_conv = south_america_arbitrary.convolve(
-        fp, g.coefficients, shannon=slepian_arbitrary.N
+        f_p, g.coefficients, shannon=slepian_arbitrary.N
     )
-    assert_array_equal(fp, fp_conv)
+    assert_array_equal(f_p, fp_conv)

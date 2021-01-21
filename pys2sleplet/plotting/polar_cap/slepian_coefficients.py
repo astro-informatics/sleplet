@@ -25,9 +25,9 @@ def main() -> None:
     """
     N = SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     flm = earth_region_harmonic_coefficients(L, THETA_MAX)[:N]
-    fp = np.sort(earth_region_slepian_coefficients(L, THETA_MAX))[::-1]
+    f_p = np.sort(earth_region_slepian_coefficients(L, THETA_MAX))[::-1]
     ax = plt.gca()
-    sns.scatterplot(x=range(N), y=fp, ax=ax, label="slepian", linewidth=0, marker="*")
+    sns.scatterplot(x=range(N), y=f_p, ax=ax, label="slepian", linewidth=0, marker="*")
     sns.scatterplot(x=range(N), y=flm, ax=ax, label="harmonic", linewidth=0, marker=".")
     ax.set_xlabel("coefficients")
     ax.set_ylabel("magnitude")
