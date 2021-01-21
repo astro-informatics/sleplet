@@ -68,10 +68,7 @@ def read_args() -> Namespace:
         help="alpha/phi pi fraction - defaults to 0",
     )
     parser.add_argument(
-        "--outline",
-        "-o",
-        action="store_false",
-        help="flag which removes any annotation",
+        "--bandlimit", "-L", type=int, default=settings.L, help="bandlimit"
     )
     parser.add_argument(
         "--beta",
@@ -103,9 +100,6 @@ def read_args() -> Namespace:
         help="gamma pi fraction - defaults to 0 - rotation only",
     )
     parser.add_argument(
-        "--bandlimit", "-L", type=int, default=settings.L, help="bandlimit"
-    )
-    parser.add_argument(
         "--method",
         "-m",
         type=str,
@@ -116,6 +110,12 @@ def read_args() -> Namespace:
         help="plotting routine: defaults to north",
     )
     parser.add_argument("--noise", "-n", type=int, help="the SNR_IN of the noise level")
+    parser.add_argument(
+        "--outline",
+        "-o",
+        action="store_false",
+        help="flag which removes any annotation",
+    )
     parser.add_argument(
         "--region",
         "-r",
