@@ -12,7 +12,13 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, UNSEEN
+from pys2sleplet.utils.vars import (
+    EARTH_ALPHA,
+    EARTH_BETA,
+    EARTH_GAMMA,
+    SAMPLING_SCHEME,
+    UNSEEN,
+)
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -122,3 +128,10 @@ def set_outside_region_to_minimum(
 
     # set values outside mask to negative infinity
     return np.where(closed_mask, f_plot, UNSEEN)
+
+
+def rotate_earth_to_south_america(earth_flm: np.ndarray, L: int) -> np.ndarray:
+    """
+    rotates the flms of the Earth to a view centered on South America
+    """
+    return ssht.rotate_flms(earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)

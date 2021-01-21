@@ -13,8 +13,9 @@ from pys2sleplet.utils.noise import (
     harmonic_hard_thresholding,
     slepian_hard_thresholding,
 )
+from pys2sleplet.utils.plot_methods import rotate_earth_to_south_america
 from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLING_SCHEME
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,
@@ -52,11 +53,7 @@ def denoising_axisym(
     )
 
     # rotate to South America
-    flm_rot = (
-        ssht.rotate_flms(flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, signal.L)
-        if "earth" in signal.name
-        else flm
-    )
+    flm_rot = rotate_earth_to_south_america(flm, signal.L)
 
     # compute SNR
     denoised_snr = compute_snr(signal.L, signal.coefficients, flm - signal.coefficients)

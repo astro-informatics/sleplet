@@ -7,7 +7,8 @@ import pyssht as ssht
 from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
-from pys2sleplet.utils.vars import EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, SAMPLING_SCHEME
+from pys2sleplet.utils.plot_methods import rotate_earth_to_south_america
+from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[2] / "data" / "slepian" / "masks"
@@ -42,10 +43,8 @@ class SouthAmerica(F_LM):
         """
         function on the grid
         """
-        earth_flm = create_flm(self.L)
-        rot_flm = ssht.rotate_flms(
-            earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, self.L
-        )
+        earth_flm = create_flm(self.L, smoothed=self.smoothed)
+        rot_flm = rotate_earth_to_south_america(earth_flm, self.L)
         earth_f = ssht.inverse(
             rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
         )

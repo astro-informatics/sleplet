@@ -12,7 +12,10 @@ from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS_LM
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_default_region
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
+from pys2sleplet.utils.plot_methods import (
+    calc_nearest_grid_point,
+    rotate_earth_to_south_america,
+)
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from pys2sleplet.utils.string_methods import filename_angle, filename_args
 from pys2sleplet.utils.vars import (
@@ -20,9 +23,6 @@ from pys2sleplet.utils.vars import (
     ANNOTATION_COLOUR,
     ARROW_STYLE,
     BETA_DEFAULT,
-    EARTH_ALPHA,
-    EARTH_BETA,
-    EARTH_GAMMA,
     SAMPLING_SCHEME,
 )
 
@@ -186,9 +186,7 @@ def plot(
 
     # rotate plot of Earth to South America
     if "earth" in filename:
-        coefficients = ssht.rotate_flms(
-            coefficients, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, f.L
-        )
+        coefficients = rotate_earth_to_south_america(coefficients, f.L)
 
     # get field value
     field = (
