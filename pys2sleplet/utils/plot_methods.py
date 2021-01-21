@@ -81,7 +81,7 @@ def save_plot(path: Path, name: str) -> None:
 
 
 def find_max_amplitude(
-    coefficients: Coefficients,
+    function: Coefficients,
     plot_type: str,
 ) -> Dict[str, float]:
     """
@@ -89,19 +89,17 @@ def find_max_amplitude(
     given plot type such that plots can have the same scale as the input
     """
     # compute inverse transform
-    if hasattr(coefficients, "slepian"):
-        field = slepian_inverse(coefficients, coefficients.L, coefficients.slepian)
+    if hasattr(function, "slepian"):
+        field = slepian_inverse(function.coefficients, function.L, function.slepian)
     else:
-        field = ssht.inverse(coefficients, coefficients.L, Method=SAMPLING_SCHEME)
+        field = ssht.inverse(function.coefficients, function.L, Method=SAMPLING_SCHEME)
 
     # find resolution of final plot for boosting if necessary
-    resolution = (
-        calc_plot_resolution(coefficients.L) if settings.UPSAMPLE else coefficients.L
-    )
+    resolution = calc_plot_resolution(function.L) if settings.UPSAMPLE else function.L
 
     # boost field to match final plot
     boosted_field = boost_field(
-        field, coefficients.L, resolution, coefficients.reality, coefficients.spin
+        field, function.L, resolution, function.reality, function.spin
     )
 
     # find maximum absolute value for given plot type
