@@ -10,7 +10,7 @@ class Earth(F_LM):
         super().__post_init__()
 
     def _create_coefficients(self) -> None:
-        self.coefficients = create_flm(self.L)
+        self.coefficients = create_flm(self.L, smoothed=self.smoothed)
 
     def _create_name(self) -> None:
         self.name = "earth"

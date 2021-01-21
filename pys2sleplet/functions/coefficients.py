@@ -15,7 +15,7 @@ class Coefficients:
     extra_args: Optional[List[int]]
     region: Optional[Region]
     noise: Optional[float]
-    smoothing: Optional[float]
+    smoothed: bool
     _coefficients: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _L: int = field(init=False, repr=False)
@@ -23,7 +23,7 @@ class Coefficients:
     _reality: bool = field(default=False, init=False, repr=False)
     _region: Region = field(default=None, init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
-    _smoothing: Optional[float] = field(default=None, init=False, repr=False)
+    _smoothed: bool = field(default=False, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -34,7 +34,6 @@ class Coefficients:
         self._create_coefficients()
         self._add_region_to_name()
         self._add_noise_to_signal()
-        self._smooth_signal()
 
     def translate(
         self, alpha: float, beta: float, shannon: Optional[int] = None
@@ -138,16 +137,16 @@ class Coefficients:
         self._region = region
 
     @property  # type:ignore
-    def smoothing(self) -> Optional[float]:
-        return self._smoothing
+    def smoothed(self) -> bool:
+        return self._smoothed
 
-    @smoothing.setter
-    def smoothing(self, smoothing: Optional[float]) -> None:
-        if isinstance(smoothing, property):
+    @smoothed.setter
+    def smoothed(self, smoothed: bool) -> None:
+        if isinstance(smoothed, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            smoothing = Coefficients._smoothing
-        self._smoothing = smoothing
+            smoothed = Coefficients._smoothed
+        self._smoothed = smoothed
 
     @property
     def spin(self) -> int:
@@ -179,13 +178,6 @@ class Coefficients:
     def _add_noise_to_signal(self) -> None:
         """
         adds Gaussian white noise to the signal
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _smooth_signal(self) -> None:
-        """
-        applies Gaussian smoothing to the signal
         """
         raise NotImplementedError
 

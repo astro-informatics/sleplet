@@ -6,7 +6,6 @@ import pyssht as ssht
 
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.utils.noise import compute_snr, create_noise
-from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
 
 
 @dataclass  # type:ignore
@@ -29,15 +28,6 @@ class F_LM(Coefficients):
             nlm = create_noise(self.L, self.coefficients, self.noise)
             self.snr = compute_snr(self.L, self.coefficients, nlm)
             self.coefficients += nlm
-
-    def _smooth_signal(self) -> None:
-        """
-        applies Gaussian smoothing to the signal
-        """
-        if self.smoothing is not None:
-            self.coefficients = apply_gaussian_smoothing(
-                self.coefficients, self.L, self.smoothing
-            )
 
     @abstractmethod
     def _create_coefficients(self) -> None:

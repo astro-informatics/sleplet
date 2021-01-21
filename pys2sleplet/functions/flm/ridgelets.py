@@ -20,7 +20,6 @@ class Ridgelets(F_LM):
     _B: int = field(default=2, init=False, repr=False)
     _j_min: int = field(default=3, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
-
     _spin: int = field(default=2, init=False, repr=False)
     _wavelets: np.ndarray = field(init=False, repr=False)
 

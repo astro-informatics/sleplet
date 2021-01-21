@@ -23,7 +23,6 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
     _j_min: int = field(default=2, init=False, repr=False)
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
-
     _wavelets: np.ndarray = field(init=False, repr=False)
     _wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
@@ -63,7 +62,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
         computes wavelet coefficients of the Earth
         """
         self.wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
-        self.earth = Earth(self.L)
+        self.earth = Earth(self.L, smoothed=self.smoothed)
         self.wavelet_coefficients = axisymmetric_wavelet_forward(
             self.L, self.earth.coefficients, self.wavelets
         )

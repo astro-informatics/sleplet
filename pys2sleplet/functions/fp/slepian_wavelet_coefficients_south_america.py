@@ -23,7 +23,6 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
     _j: Optional[int] = field(default=None, init=False, repr=False)
     _j_max: int = field(init=False, repr=False)
     _j_min: int = field(default=2, init=False, repr=False)
-
     _wavelets: np.ndarray = field(init=False, repr=False)
     _wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
@@ -65,7 +64,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         computes wavelet coefficients in Slepian space
         """
         self.wavelets = create_slepian_wavelets(self.L, self.B, self.j_min)
-        sa = SlepianSouthAmerica(self.L, region=self.region)
+        sa = SlepianSouthAmerica(self.L, region=self.region, smoothed=self.smoothed)
         self.wavelet_coefficients = slepian_wavelet_forward(
             sa.coefficients, self.wavelets, self.slepian.N
         )

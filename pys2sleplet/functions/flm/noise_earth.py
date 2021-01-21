@@ -17,7 +17,7 @@ class NoiseEarth(F_LM):
         super().__post_init__()
 
     def _create_coefficients(self) -> None:
-        earth = Earth(self.L)
+        earth = Earth(self.L, smoothed=self.smoothed)
         noise = create_noise(self.L, earth.coefficients, self.SNR)
         compute_snr(self.L, earth.coefficients, noise)
         self.coefficients = noise

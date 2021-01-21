@@ -49,9 +49,6 @@ class F_P(Coefficients):
             self.snr = compute_snr(self.L, self.coefficients, np)
             self.coefficients += np
 
-    def _smooth_signal(self) -> None:
-        raise NotImplementedError("Slepian smoothing is not defined")
-
     @property  # type:ignore
     def region(self) -> Optional[Region]:
         return self._region

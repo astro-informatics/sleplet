@@ -13,6 +13,7 @@ J_MIN = 2
 L = 128
 N_SIGMA = 2
 PLOT_TYPE = "real"
+SMOOTHED = True
 SNR_IN = -10
 
 
@@ -25,8 +26,8 @@ def main(snr: int, sigma: int) -> None:
     region = Region(mask_name="south_america")
 
     # create map & noised map
-    fun = SlepianSouthAmerica(L, region=region)
-    fun_noised = SlepianSouthAmerica(L, region=region, noise=snr)
+    fun = SlepianSouthAmerica(L, region=region, smoothed=SMOOTHED)
+    fun_noised = SlepianSouthAmerica(L, noise=snr, region=region, smoothed=SMOOTHED)
 
     # create wavelets
     sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)

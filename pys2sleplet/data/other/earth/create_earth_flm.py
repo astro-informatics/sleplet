@@ -4,11 +4,13 @@ import numpy as np
 import pyssht as ssht
 from scipy import io as sio
 
+from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
+
 _file_location = Path(__file__).resolve()
 _matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
 
 
-def create_flm(L: int) -> np.ndarray:
+def create_flm(L: int, smoothed: bool = False) -> np.ndarray:
     """
     creates the flm for the whole Earth
     """
@@ -27,6 +29,9 @@ def create_flm(L: int) -> np.ndarray:
     # don't take the full L
     # invert dataset as Earth backwards
     flm = flm[: L ** 2].conj()
+
+    if smoothed:
+        flm = apply_gaussian_smoothing(flm, L)
     return flm
 
 
