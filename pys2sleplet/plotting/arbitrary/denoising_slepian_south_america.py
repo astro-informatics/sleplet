@@ -36,7 +36,7 @@ def main(snr: int, sigma: int) -> None:
     amplitude = find_max_amplitude(fun_noised, PLOT_TYPE)
 
     f = denoising_slepian(fun, fun_noised, sw, snr, sigma)
-    name = f"{fun.name}_snr{snr}_n{sigma}_denoised_L{L}"
+    name = f"{fun.name}_snr{snr}_n{sigma}_{SMOOTHING}smoothed_denoised_L{L}"
     Plot(
         f, L, name, amplitude=amplitude, plot_type=PLOT_TYPE, region=sw.region
     ).execute()
