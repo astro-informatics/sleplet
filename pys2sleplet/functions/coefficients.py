@@ -15,7 +15,7 @@ class Coefficients:
     extra_args: Optional[List[int]]
     region: Optional[Region]
     noise: Optional[float]
-    smoothed: bool
+    smoothing: Optional[int]
     _coefficients: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _L: int = field(init=False, repr=False)
@@ -23,7 +23,7 @@ class Coefficients:
     _reality: bool = field(default=False, init=False, repr=False)
     _region: Region = field(default=None, init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
-    _smoothed: bool = field(default=False, init=False, repr=False)
+    _smoothing: Optional[int] = field(default=None, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -137,16 +137,16 @@ class Coefficients:
         self._region = region
 
     @property  # type:ignore
-    def smoothed(self) -> bool:
-        return self._smoothed
+    def smoothing(self) -> Optional[int]:
+        return self._smoothing
 
-    @smoothed.setter
-    def smoothed(self, smoothed: bool) -> None:
-        if isinstance(smoothed, property):
+    @smoothing.setter
+    def smoothing(self, smoothing: Optional[int]) -> None:
+        if isinstance(smoothing, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            smoothed = Coefficients._smoothed
-        self._smoothed = smoothed
+            smoothing = Coefficients._smoothing
+        self._smoothing = smoothing
 
     @property
     def spin(self) -> int:

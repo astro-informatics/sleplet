@@ -64,7 +64,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         computes wavelet coefficients in Slepian space
         """
         self.wavelets = create_slepian_wavelets(self.L, self.B, self.j_min)
-        sa = SlepianSouthAmerica(self.L, region=self.region, smoothed=self.smoothed)
+        sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
         self.wavelet_coefficients = slepian_wavelet_forward(
             sa.coefficients, self.wavelets, self.slepian.N
         )

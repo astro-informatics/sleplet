@@ -2,9 +2,9 @@ from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
+from pys2sleplet.utils.vars import SMOOTHING
 
 L = 128
-SMOOTHED = True
 
 
 def main() -> None:
@@ -13,7 +13,7 @@ def main() -> None:
     """
     region = Region(mask_name="south_america")
     slepian = choose_slepian_method(L, region)
-    south_america = SlepianSouthAmerica(L, region=region, smoothed=SMOOTHED)
+    south_america = SlepianSouthAmerica(L, region=region, smoothing=SMOOTHING)
 
     # perform reconstruction
     f = slepian_inverse(south_america.coefficients, L, slepian)

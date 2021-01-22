@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -10,7 +11,7 @@ _file_location = Path(__file__).resolve()
 _matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
 
 
-def create_flm(L: int, smoothed: bool = False) -> np.ndarray:
+def create_flm(L: int, smoothing: Optional[int] = None) -> np.ndarray:
     """
     creates the flm for the whole Earth
     """
@@ -30,8 +31,8 @@ def create_flm(L: int, smoothed: bool = False) -> np.ndarray:
     # invert dataset as Earth backwards
     flm = flm[: L ** 2].conj()
 
-    if smoothed:
-        flm = apply_gaussian_smoothing(flm, L)
+    if isinstance(smoothing, int):
+        flm = apply_gaussian_smoothing(flm, L, smoothing)
     return flm
 
 

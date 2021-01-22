@@ -43,7 +43,7 @@ class SouthAmerica(F_LM):
         """
         function on the grid
         """
-        earth_flm = create_flm(self.L, smoothed=self.smoothed)
+        earth_flm = create_flm(self.L, smoothing=self.smoothing)
         rot_flm = rotate_earth_to_south_america(earth_flm, self.L)
         earth_f = ssht.inverse(
             rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME

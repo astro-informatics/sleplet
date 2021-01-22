@@ -19,7 +19,7 @@ class SlepianNoiseSouthAmerica(F_P):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> None:
-        sa = SlepianSouthAmerica(self.L, region=self.region, smoothed=self.smoothed)
+        sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
         noise = create_slepian_noise(self.L, sa.coefficients, self.slepian, self.SNR)
         compute_snr(self.L, sa.coefficients, noise)
         self.coefficients = noise

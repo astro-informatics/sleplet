@@ -123,10 +123,10 @@ def read_args() -> Namespace:
         help="flag which masks the function for a region (based on settings.toml)",
     )
     parser.add_argument(
-        "--smoothed",
+        "--smoothing",
         "-s",
-        action="store_true",
-        help="flag which enables Gaussian smoothing of the Earth",
+        type=int,
+        help="the scaling of the sigma in Gaussian smoothing of the Earth",
     )
     parser.add_argument(
         "--type",
@@ -155,8 +155,10 @@ def plot(
     master plotting method
     """
     noised = f"{filename_args(f.noise, 'noise')}" if f.noise is not None else ""
-    smoothed = "_smoothed" if f.smoothed else ""
-    filename = f"{f.name}{noised}{smoothed}_L{f.L}"
+    smoothing = (
+        f"{filename_args(f.smoothing, 'smoothed')}" if f.smoothing is not None else ""
+    )
+    filename = f"{f.name}{noised}{smoothing}_L{f.L}"
     coefficients = f.coefficients
 
     # turn off annotation if needed
@@ -221,7 +223,7 @@ def main() -> None:
         extra_args=args.extra_args,
         region=mask,
         noise=args.noise if args.noise is not None else None,
-        smoothed=args.smoothed,
+        smoothing=args.smoothing if args.smoothing is not None else None,
     )
 
     g = (

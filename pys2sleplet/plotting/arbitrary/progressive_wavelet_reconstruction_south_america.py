@@ -7,10 +7,10 @@ from pys2sleplet.plotting.create_plot import Plot
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
+from pys2sleplet.utils.vars import SMOOTHING
 from pys2sleplet.utils.wavelet_methods import slepian_wavelet_inverse
 
 L = 128
-SMOOTHED = True
 
 
 def main() -> None:
@@ -18,7 +18,7 @@ def main() -> None:
     the reconstruction of a signal in Slepian space
     """
     region = Region(mask_name="south_america")
-    swc = SlepianWaveletCoefficientsSouthAmerica(L, region=region, smoothed=SMOOTHED)
+    swc = SlepianWaveletCoefficientsSouthAmerica(L, region=region, smoothing=SMOOTHING)
 
     # plot
     f_p = np.zeros(swc.slepian.N, dtype=np.complex_)
