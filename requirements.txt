@@ -7,7 +7,7 @@ isort
 matplotlib
 multiprocess
 mypy
-numba
+numba>=0.53.0rc1
 numpy
 pandas
 plotly
