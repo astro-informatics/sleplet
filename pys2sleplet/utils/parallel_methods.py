@@ -1,5 +1,3 @@
-from typing import List
-
 import numpy as np
 from multiprocess.shared_memory import SharedMemory
 
@@ -8,7 +6,7 @@ from pys2sleplet.utils.vars import L_MIN_DEFAULT
 
 def split_L_into_chunks(
     L_max: int, ncpu: int, L_min: int = L_MIN_DEFAULT
-) -> List[np.ndarray]:
+) -> list[np.ndarray]:
     """
     split L into a list of arrays for parallelism
     """

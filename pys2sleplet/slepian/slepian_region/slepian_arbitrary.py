@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 import numpy as np
 import pyssht as ssht
@@ -110,7 +110,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_r_ext, shm_r_ext = create_shared_memory_array(D_r)
         D_i_ext, shm_i_ext = create_shared_memory_array(D_i)
 
-        def func(chunk: List[int]) -> None:
+        def func(chunk: list[int]) -> None:
             """
             calculate D matrix components for each chunk
             """

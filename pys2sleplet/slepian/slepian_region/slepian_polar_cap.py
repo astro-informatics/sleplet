@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
 import gmpy2 as gp
 import numpy as np
@@ -161,7 +161,7 @@ class SlepianPolarCap(SlepianFunctions):
 
         Dm_ext, shm_ext = create_shared_memory_array(Dm)
 
-        def func(chunk: List[int]) -> None:
+        def func(chunk: list[int]) -> None:
             """
             calculate D matrix components for each chunk
             """

@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -36,7 +36,7 @@ def calc_plot_resolution(L: int) -> int:
     return L
 
 
-def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float, str]]:
+def convert_colourscale(cmap: colors, pl_entries: int = 255) -> list[Tuple[float, str]]:
     """
     converts cmocean colourscale to a plotly colourscale
     """
