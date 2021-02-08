@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -83,7 +83,7 @@ def save_plot(path: Path, name: str) -> None:
 def find_max_amplitude(
     function: Coefficients,
     plot_type: str,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """
     for a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input

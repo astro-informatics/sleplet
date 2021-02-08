@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict
 
 import numpy as np
 import pyssht as ssht
@@ -101,7 +100,7 @@ class SlepianArbitrary(SlepianFunctions):
         computes the D matrix in parallel
         """
         # create dictionary for the integrals
-        self._fields: Dict[int, np.ndarray] = {}
+        self._fields: dict[int, np.ndarray] = {}
 
         # initialise real and imaginary matrices
         D_r = np.zeros((self.L ** 2, self.L ** 2))

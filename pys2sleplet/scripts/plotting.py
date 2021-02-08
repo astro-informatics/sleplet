@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Dict, Optional, Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -275,7 +275,7 @@ def translation_helper(
     alpha_pi_frac: Optional[float],
     beta_pi_frac: Optional[float],
     shannon: int,
-) -> Tuple[np.ndarray, str, Dict]:
+) -> Tuple[np.ndarray, str, dict]:
     """
     performs the translation specific steps
     """

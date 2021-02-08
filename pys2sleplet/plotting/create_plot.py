@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Optional, Tuple
 
 import cmocean
 import numpy as np
@@ -38,7 +38,7 @@ class Plot:
     filename: str
     amplitude: Optional[float] = field(default=None, repr=False)
     plot_type: str = field(default="real", repr=False)
-    annotations: list[Dict] = field(default_factory=list, repr=False)
+    annotations: list[dict] = field(default_factory=list, repr=False)
     reality: bool = field(default=False, repr=False)
     region: Optional[Region] = field(default=None, repr=False)
     spin: int = field(default=0, repr=False)
