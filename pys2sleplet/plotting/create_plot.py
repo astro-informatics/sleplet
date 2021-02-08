@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional
 
 import cmocean
 import numpy as np
@@ -146,7 +146,7 @@ class Plot:
         parametric: bool = False,
         parametric_scaling: list[float] = [0.0, 0.5],
         color_range: Optional[list[float]] = None,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot
         """

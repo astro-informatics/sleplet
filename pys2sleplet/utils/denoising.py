@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 import pyssht as ssht
 
@@ -30,7 +28,7 @@ def denoising_axisym(
     axisymmetric_wavelets: AxisymmetricWavelets,
     snr_in: int,
     n_sigma: int,
-) -> Tuple[np.ndarray, float, float]:
+) -> tuple[np.ndarray, float, float]:
     """
     reproduce the denoising demo from s2let paper
     """

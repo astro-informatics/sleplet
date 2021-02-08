@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -250,7 +250,7 @@ def rotation_helper(
     alpha_pi_frac: Optional[float],
     beta_pi_frac: Optional[float],
     gamma_pi_frac: Optional[float],
-) -> Tuple[np.ndarray, str]:
+) -> tuple[np.ndarray, str]:
     """
     performs the rotation specific steps
     """
@@ -275,7 +275,7 @@ def translation_helper(
     alpha_pi_frac: Optional[float],
     beta_pi_frac: Optional[float],
     shannon: int,
-) -> Tuple[np.ndarray, str, dict]:
+) -> tuple[np.ndarray, str, dict]:
     """
     performs the translation specific steps
     """
@@ -304,7 +304,7 @@ def convolution_helper(
     coefficients: np.ndarray,
     shannon: int,
     filename: str,
-) -> Tuple[np.ndarray, str]:
+) -> tuple[np.ndarray, str]:
     """
     performs the convolution specific steps
     """

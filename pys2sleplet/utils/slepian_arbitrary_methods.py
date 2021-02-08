@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 
@@ -23,8 +22,8 @@ def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.n
 
 
 def clean_evals_and_evecs(
-    eigendecomposition: Tuple[np.ndarray, np.ndarray]
-) -> Tuple[np.ndarray, np.ndarray]:
+    eigendecomposition: tuple[np.ndarray, np.ndarray]
+) -> tuple[np.ndarray, np.ndarray]:
     """
     need eigenvalues and eigenvectors to be in a certain format
     """

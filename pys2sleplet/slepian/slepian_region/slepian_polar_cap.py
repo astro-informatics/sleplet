@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 
 import gmpy2 as gp
 import numpy as np
@@ -115,7 +115,7 @@ class SlepianPolarCap(SlepianFunctions):
                 np.save(evec_loc, self.eigenvectors[: self.N])
                 np.save(order_loc, self.order[: self.N])
 
-    def _solve_eigenproblem_order(self, m: int) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
         """
         solves the eigenproblem for a given order 'm;
         """
@@ -127,7 +127,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _sort_all_evals_and_evecs(
         self, eigenvalues: np.ndarray, eigenvectors: np.ndarray, orders: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         sorts all eigenvalues and eigenvectors for all orders
         """
@@ -192,7 +192,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _create_legendre_polynomials_table(
         self, emm: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         create Legendre polynomials table for matrix calculation
         """
@@ -325,7 +325,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _clean_evals_and_evecs(
         self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray, m: int
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """
