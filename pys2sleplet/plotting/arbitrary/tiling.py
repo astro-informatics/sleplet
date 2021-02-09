@@ -42,7 +42,7 @@ def main() -> None:
         textcoords="offset points",
         annotation_clip=False,
     )
-    plt.xlim([1, xlim])
+    plt.xlim(1, xlim)
     ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
