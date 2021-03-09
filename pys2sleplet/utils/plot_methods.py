@@ -111,14 +111,10 @@ def create_plot_type(field: np.ndarray, plot_type: str) -> np.ndarray:
     gets the given plot type of the field
     """
     logger.info(f"plotting type: '{plot_type}'")
-    if plot_type == "abs":
-        return np.abs(field)
-    elif plot_type == "imag":
-        return field.imag
-    elif plot_type == "real":
-        return field.real
-    elif plot_type == "sum":
-        return field.real + field.imag
+    plot_dict = dict(
+        abs=np.abs(field), imag=field.imag, real=field.real, sum=field.real + field.imag
+    )
+    return plot_dict[plot_type]
 
 
 def set_outside_region_to_minimum(
