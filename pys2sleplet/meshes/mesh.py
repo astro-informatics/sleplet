@@ -9,22 +9,30 @@ from pys2sleplet.utils.mesh_methods import mesh_eigendecomposition, read_mesh
 
 @dataclass  # type: ignore
 class Mesh:
-    number: Optional[int]
+    number: int
     extra_args: Optional[List[int]]
     _eigenvalues: np.ndarray = field(init=False, repr=False)
     _eigenvectors: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _number: Optional[int] = field(default=100, init=False, repr=False)
+    _number: int = field(default=0, init=False, repr=False)
     _triangles: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_name()
+        self._setup_args()
         self.vertices, self.triangles = read_mesh(self.name)
         self.eigenvalues, self.eigenvectors = mesh_eigendecomposition(
-            self.vertices, self.triangles, self.number
+            self.vertices, self.triangles, self.number + 1
         )
+
+    def _setup_args(self) -> None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(f"The number of extra arguments should be {num_args}")
+            self.number = self.extra_args[0]
 
     @property
     def eigenvalues(self) -> np.ndarray:
@@ -63,11 +71,11 @@ class Mesh:
         self._name = name
 
     @property  # type: ignore
-    def number(self) -> Optional[int]:
+    def number(self) -> int:
         return self._number
 
     @number.setter
-    def number(self, number: Optional[int]) -> None:
+    def number(self, number: int) -> None:
         if isinstance(number, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333

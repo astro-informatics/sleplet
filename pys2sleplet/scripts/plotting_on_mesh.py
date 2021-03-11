@@ -68,7 +68,7 @@ def plot(
     Plot(
         f.vertices,
         f.triangles,
-        f.eigenvectors[0],
+        f.eigenvectors[f.number],
         filename,
         annotations=annotation,
         plot_type=plot_type,
