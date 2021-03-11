@@ -7,5 +7,10 @@ setup(
     author_email="patrickjamesroddy@gmail.com",
     packages=find_namespace_packages(),
     include_package_data=True,
-    entry_points=dict(console_scripts=["plotting=pys2sleplet.scripts.plotting:main"]),
+    entry_points=dict(
+        console_scripts=[
+            "sphere=pys2sleplet.scripts.plotting_on_sphere:main",
+            "mesh=pys2sleplet.scripts.plotting_on_mesh:main",
+        ],
+    ),
 )
