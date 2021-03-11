@@ -49,7 +49,7 @@ class Plot:
         f = self._prepare_field(self.f)
 
         # appropriate zoom in on north pole
-        camera = create_camera(0, -1, 10, 6)
+        camera = create_camera(0, -0.01, 10, 5.65)
 
         # pick largest tick max value
         tick_mark = create_tick_mark(f.min(), f.max(), amplitude=self.amplitude)
@@ -66,7 +66,7 @@ class Plot:
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
                 cmin=0 if settings.NORMALISE else -tick_mark,
-                colorbar=create_colour_bar(tick_mark, 0.8),
+                colorbar=create_colour_bar(tick_mark, 0.79),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
