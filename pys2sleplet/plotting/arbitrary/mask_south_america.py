@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 
-from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.plotting.create_plot_sphere import Plot
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"

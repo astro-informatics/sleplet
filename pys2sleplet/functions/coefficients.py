@@ -97,7 +97,7 @@ class Coefficients:
         self._L = L
 
     @property
-    def name(self) -> np.ndarray:
+    def name(self) -> str:
         return self._name
 
     @name.setter

@@ -7,7 +7,7 @@ import pyssht as ssht
 
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS_LM
 from pys2sleplet.utils.logger import logger

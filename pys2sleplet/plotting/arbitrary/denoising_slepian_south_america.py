@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 
 from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.utils.denoising import denoising_slepian
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import find_max_amplitude
