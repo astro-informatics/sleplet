@@ -15,7 +15,7 @@ def read_mesh(mesh_name: str) -> Tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh
     """
-    vertices, triangles = read_triangle_mesh(str(_meshes_path / f"{mesh_name}.obj"))
+    vertices, triangles = read_triangle_mesh(str(_meshes_path / mesh_name))
     return vertices.T, triangles.T
 
 

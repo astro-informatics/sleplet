@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
+from pathlib import Path
 from typing import List
-
-import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.plotting.create_plot_mesh import Plot
@@ -60,20 +59,17 @@ def plot(
     """
     master plotting method
     """
-    filename = f"{f.name}"
+    filename = Path(f.name).stem
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
     annotation: List = []
 
-    colour = np.ones(f.eigenvectors[f.number].shape)
-    colour[np.argwhere(f.region)] = 0
-
     # do plot
     Plot(
         f.vertices,
         f.triangles,
-        colour,
+        f.eigenvectors[f.number],
         filename,
         annotations=annotation,
         plot_type=plot_type,

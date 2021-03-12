@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from dataclasses import dataclass
 
 from pys2sleplet.meshes.mesh import Mesh
@@ -8,13 +9,10 @@ YMAX = 1.4
 ZMAX = -0.4
 
 
-@dataclass
+@dataclass  # type: ignore
 class Bunny(Mesh):
     def __post_init__(self) -> None:
         super().__post_init__()
-
-    def _create_name(self) -> None:
-        self.name = "bunny"
 
     def _setup_region(self) -> None:
         self.region = (
@@ -23,3 +21,7 @@ class Bunny(Mesh):
             & (self.vertices[1] < YMAX)
             & (self.vertices[2] < ZMAX)
         )
+
+    @abstractmethod
+    def _create_name(self) -> None:
+        raise NotImplementedError

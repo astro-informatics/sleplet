@@ -14,7 +14,7 @@ class Armadillo(Mesh):
         super().__post_init__()
 
     def _create_name(self) -> None:
-        self.name = "armadillo"
+        self.name = "armadillo.obj"
 
     def _setup_region(self) -> None:
         self.region = (

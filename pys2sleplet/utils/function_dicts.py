@@ -31,7 +31,10 @@ from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import 
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.models.armadillo import Armadillo
-from pys2sleplet.meshes.models.bunny import Bunny
+from pys2sleplet.meshes.models.bunny_resolutions.bunny_high import BunnyHigh
+from pys2sleplet.meshes.models.bunny_resolutions.bunny_low import BunnyLow
+from pys2sleplet.meshes.models.bunny_resolutions.bunny_mid import BunnyMid
+from pys2sleplet.meshes.models.bunny_resolutions.bunny_orig import BunnyOrig
 from pys2sleplet.meshes.models.tyra import Tyra
 
 FLM: Dict[str, Coefficients] = dict(
@@ -70,4 +73,11 @@ MAPS_P: Dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica
 
 FUNCTIONS: Dict[str, Coefficients] = {**FLM, **FP}
 
-MESHES: Dict[str, Mesh] = dict(armadillo=Armadillo, bunny=Bunny, tyra=Tyra)
+MESHES: Dict[str, Mesh] = dict(
+    armadillo=Armadillo,
+    bunny=BunnyLow,
+    bunny_high=BunnyHigh,
+    bunny_mid=BunnyMid,
+    bunny_orig=BunnyOrig,
+    tyra=Tyra,
+)

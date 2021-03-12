@@ -13,7 +13,7 @@ class Tyra(Mesh):
         super().__post_init__()
 
     def _create_name(self) -> None:
-        self.name = "tyra"
+        self.name = "tyra.obj"
 
     def _setup_region(self) -> None:
         self.region = (
