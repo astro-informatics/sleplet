@@ -2,6 +2,8 @@
 from argparse import ArgumentParser, Namespace
 from typing import List
 
+import numpy as np
+
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.plotting.create_plot_mesh import Plot
 from pys2sleplet.utils.function_dicts import MESHES
@@ -64,11 +66,14 @@ def plot(
     logger.info(f"annotations on: {annotations}")
     annotation: List = []
 
+    colour = np.ones(f.eigenvectors[f.number].shape)
+    colour[np.argwhere(f.region)] = 0
+
     # do plot
     Plot(
         f.vertices,
         f.triangles,
-        f.eigenvectors[f.number],
+        colour,
         filename,
         annotations=annotation,
         plot_type=plot_type,

@@ -16,6 +16,7 @@ class Mesh:
     _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _number: int = field(default=0, init=False, repr=False)
+    _region: np.ndarray = field(init=False, repr=False)
     _triangles: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
 
@@ -23,6 +24,7 @@ class Mesh:
         self._create_name()
         self._setup_args()
         self.vertices, self.triangles = read_mesh(self.name)
+        self._setup_region()
         self.eigenvalues, self.eigenvectors = mesh_eigendecomposition(
             self.vertices, self.triangles, self.number + 1
         )
@@ -83,6 +85,14 @@ class Mesh:
         self._number = number
 
     @property
+    def region(self) -> np.ndarray:
+        return self._region
+
+    @region.setter
+    def region(self, region: np.ndarray) -> None:
+        self._region = region
+
+    @property
     def triangles(self) -> np.ndarray:
         return self._triangles
 
@@ -102,5 +112,12 @@ class Mesh:
     def _create_name(self) -> None:
         """
         creates the name of the mesh
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _setup_region(self) -> None:
+        """
+        creates a Slepian region on the mesh
         """
         raise NotImplementedError
