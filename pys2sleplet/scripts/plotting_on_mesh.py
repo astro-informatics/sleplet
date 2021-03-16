@@ -68,8 +68,8 @@ def plot(
     # do plot
     Plot(
         f.vertices,
-        f.triangles,
         f.eigenvectors[f.number],
+        f.faces,
         filename,
         annotations=annotation,
         plot_type=plot_type,

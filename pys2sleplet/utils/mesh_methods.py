@@ -19,13 +19,13 @@ def read_mesh(mesh_name: str) -> Tuple[np.ndarray, np.ndarray]:
 
 
 def mesh_eigendecomposition(
-    vertices: np.ndarray, triangles: np.ndarray, number: int
+    vertices: np.ndarray, faces: np.ndarray, number: int
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     computes the eigendecomposition of a given mesh according to this example
     https://geometryprocessing.github.io/blackbox-computing-python/geo_viz/#various-examples-eigendecomposition
     """
     logger.info(f"finding {number} basis functions of mesh")
-    laplacian = -cotmatrix(vertices, triangles)
+    laplacian = -cotmatrix(vertices, faces)
     eigenvalues, eigenvectors = LA.eigsh(laplacian, number, sigma=0, which="LM")
     return eigenvalues, eigenvectors.T

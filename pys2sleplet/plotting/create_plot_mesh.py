@@ -30,7 +30,7 @@ _fig_path = _file_location.parents[1] / "figures"
 @dataclass
 class Plot:
     vertices: np.ndarray = field(repr=False)
-    triangles: np.ndarray = field(repr=False)
+    faces: np.ndarray = field(repr=False)
     f: np.ndarray = field(repr=False)
     filename: str
     amplitude: Optional[float] = field(default=None, repr=False)
@@ -59,9 +59,9 @@ class Plot:
                 x=-self.vertices[:, 0],
                 y=self.vertices[:, 1],
                 z=-self.vertices[:, 2],
-                i=self.triangles[:, 0],
-                j=self.triangles[:, 1],
-                k=self.triangles[:, 2],
+                i=self.faces[:, 0],
+                j=self.faces[:, 1],
+                k=self.faces[:, 2],
                 intensity=f,
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,

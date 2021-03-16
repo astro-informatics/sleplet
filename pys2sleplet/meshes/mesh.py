@@ -17,16 +17,16 @@ class Mesh:
     _name: str = field(init=False, repr=False)
     _number: int = field(default=0, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
-    _triangles: np.ndarray = field(init=False, repr=False)
+    _faces: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_name()
         self._setup_args()
-        self.vertices, self.triangles = read_mesh(self.name)
+        self.vertices, self.faces = read_mesh(self.name)
         self._setup_region()
         self.eigenvalues, self.eigenvectors = mesh_eigendecomposition(
-            self.vertices, self.triangles, self.number + 1
+            self.vertices, self.faces, self.number + 1
         )
 
     def _setup_args(self) -> None:
@@ -93,12 +93,12 @@ class Mesh:
         self._region = region
 
     @property
-    def triangles(self) -> np.ndarray:
-        return self._triangles
+    def faces(self) -> np.ndarray:
+        return self._faces
 
-    @triangles.setter
-    def triangles(self, triangles: np.ndarray) -> None:
-        self._triangles = triangles
+    @faces.setter
+    def faces(self, faces: np.ndarray) -> None:
+        self._faces = faces
 
     @property
     def vertices(self) -> np.ndarray:
