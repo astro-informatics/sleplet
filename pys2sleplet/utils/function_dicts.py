@@ -1,5 +1,3 @@
-from typing import Dict
-
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
@@ -38,7 +36,7 @@ from pys2sleplet.meshes.models.bunny_resolutions.bunny_mid import BunnyMid
 from pys2sleplet.meshes.models.bunny_resolutions.bunny_orig import BunnyOrig
 from pys2sleplet.meshes.models.tyra import Tyra
 
-FLM: Dict[str, Coefficients] = dict(
+FLM: dict[str, Coefficients] = dict(
     axisymmetric_wavelet_coefficients_earth=AxisymmetricWaveletCoefficientsEarth,
     axisymmetric_wavelets=AxisymmetricWavelets,
     dirac_delta=DiracDelta,
@@ -56,7 +54,7 @@ FLM: Dict[str, Coefficients] = dict(
     wmap=Wmap,
 )
 
-FP: Dict[str, Coefficients] = dict(
+FP: dict[str, Coefficients] = dict(
     slepian=Slepian,
     slepian_dirac_delta=SlepianDiracDelta,
     slepian_identity=SlepianIdentity,
@@ -66,15 +64,15 @@ FP: Dict[str, Coefficients] = dict(
     slepian_wavelets=SlepianWavelets,
 )
 
-MAPS_LM: Dict[str, Coefficients] = dict(
+MAPS_LM: dict[str, Coefficients] = dict(
     earth=Earth, south_america=SouthAmerica, wmap=Wmap
 )
 
-MAPS_P: Dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica)
+MAPS_P: dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica)
 
-FUNCTIONS: Dict[str, Coefficients] = {**FLM, **FP}
+FUNCTIONS: dict[str, Coefficients] = {**FLM, **FP}
 
-MESHES: Dict[str, Mesh] = dict(
+MESHES: dict[str, Mesh] = dict(
     armadillo=Armadillo,
     bumpy=Bumpy,
     bunny=BunnyLow,

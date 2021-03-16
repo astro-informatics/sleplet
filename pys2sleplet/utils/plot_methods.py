@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -36,7 +35,7 @@ def calc_plot_resolution(L: int) -> int:
     return L
 
 
-def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float, str]]:
+def convert_colourscale(cmap: colors, pl_entries: int = 255) -> list[tuple[float, str]]:
     """
     converts cmocean colourscale to a plotly colourscale
     """
@@ -52,7 +51,7 @@ def convert_colourscale(cmap: colors, pl_entries: int = 255) -> List[Tuple[float
 
 def calc_nearest_grid_point(
     L: int, alpha_pi_fraction: float, beta_pi_fraction: float
-) -> Tuple[float, float]:
+) -> tuple[float, float]:
     """
     calculate nearest index of alpha/beta for translation
     this is due to calculating omega' through the pixel
@@ -83,7 +82,7 @@ def save_plot(path: Path, name: str) -> None:
 def find_max_amplitude(
     function: Coefficients,
     plot_type: str,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """
     for a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input

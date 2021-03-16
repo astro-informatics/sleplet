@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import cmocean
 import numpy as np
@@ -40,7 +40,7 @@ class Plot:
     filename: str
     amplitude: Optional[float] = field(default=None, repr=False)
     plot_type: str = field(default="real", repr=False)
-    annotations: List[Dict] = field(default_factory=list, repr=False)
+    annotations: list[dict] = field(default_factory=list, repr=False)
     reality: bool = field(default=False, repr=False)
     region: Optional[Region] = field(default=None, repr=False)
     spin: int = field(default=0, repr=False)
@@ -113,9 +113,9 @@ class Plot:
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
-        parametric_scaling: List[float] = [0.0, 0.5],
-        color_range: Optional[List[float]] = None,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
+        parametric_scaling: list[float] = [0.0, 0.5],
+        color_range: Optional[list[float]] = None,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot
         """

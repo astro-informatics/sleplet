@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 import pyssht as ssht
@@ -201,8 +200,8 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: Tuple[np.ndarray, np.ndarray]
-    ) -> Tuple[np.ndarray, np.ndarray]:
+        eigendecomposition: tuple[np.ndarray, np.ndarray]
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """
