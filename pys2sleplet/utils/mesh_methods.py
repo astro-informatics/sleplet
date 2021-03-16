@@ -15,8 +15,7 @@ def read_mesh(mesh_name: str) -> Tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh
     """
-    vertices, triangles = read_triangle_mesh(str(_meshes_path / mesh_name))
-    return vertices.T, triangles.T
+    return read_triangle_mesh(str(_meshes_path / mesh_name))
 
 
 def mesh_eigendecomposition(
@@ -27,6 +26,6 @@ def mesh_eigendecomposition(
     https://geometryprocessing.github.io/blackbox-computing-python/geo_viz/#various-examples-eigendecomposition
     """
     logger.info(f"finding {number} basis functions of mesh")
-    laplacian = -cotmatrix(vertices.T, triangles.T)
+    laplacian = -cotmatrix(vertices, triangles)
     eigenvalues, eigenvectors = LA.eigsh(laplacian, number, sigma=0, which="LM")
     return eigenvalues, eigenvectors.T

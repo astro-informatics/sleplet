@@ -17,7 +17,7 @@ class Tyra(Mesh):
 
     def _setup_region(self) -> None:
         self.region = (
-            (self.vertices[1] > YMIN)
-            & (self.vertices[1] < YMAX)
-            & (self.vertices[2] < ZMAX)
+            (self.vertices[:, 1] > YMIN)
+            & (self.vertices[:, 1] < YMAX)
+            & (self.vertices[:, 2] < ZMAX)
         )

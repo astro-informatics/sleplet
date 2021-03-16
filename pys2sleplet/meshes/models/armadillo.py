@@ -18,8 +18,8 @@ class Armadillo(Mesh):
 
     def _setup_region(self) -> None:
         self.region = (
-            (self.vertices[0] > XMIN)
-            & (self.vertices[0] < XMAX)
-            & (self.vertices[1] < YMAX)
-            & (self.vertices[2] < ZMAX)
+            (self.vertices[:, 0] > XMIN)
+            & (self.vertices[:, 0] < XMAX)
+            & (self.vertices[:, 1] < YMAX)
+            & (self.vertices[:, 2] < ZMAX)
         )
