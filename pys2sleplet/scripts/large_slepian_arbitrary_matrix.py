@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List
 
 import numpy as np
 from numpy import linalg as LA
@@ -15,7 +14,7 @@ _eigen_path = _file_location.parents[1] / "data" / "slepian" / "eigensolutions"
 
 
 def compute_large_D_matrix(
-    mask_name: str, L: int, L_ranges: List[int], shannon: int
+    mask_name: str, L: int, L_ranges: list[int], shannon: int
 ) -> None:
     """
     checks that the split up D matrix has the same eigenvalues

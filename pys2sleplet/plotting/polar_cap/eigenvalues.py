@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 import seaborn as sns
@@ -32,7 +31,7 @@ def main() -> None:
     save_plot(fig_path, "simons_5_3")
 
 
-def _create_plot(ax: np.ndarray, position: Tuple[int, int], theta_max: int) -> None:
+def _create_plot(ax: np.ndarray, position: tuple[int, int], theta_max: int) -> None:
     """
     helper method which actually makes the plot
     """

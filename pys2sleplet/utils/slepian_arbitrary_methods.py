@@ -1,12 +1,11 @@
 from pathlib import Path
-from typing import List, Tuple
 
 import numpy as np
 
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
 
-def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: List[int]) -> np.ndarray:
+def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.ndarray:
     """
     splits up and calculates intermediate matrices for higher L
     """
@@ -23,8 +22,8 @@ def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: List[int]) -> np.n
 
 
 def clean_evals_and_evecs(
-    eigendecomposition: Tuple[np.ndarray, np.ndarray]
-) -> Tuple[np.ndarray, np.ndarray]:
+    eigendecomposition: tuple[np.ndarray, np.ndarray]
+) -> tuple[np.ndarray, np.ndarray]:
     """
     need eigenvalues and eigenvectors to be in a certain format
     """
