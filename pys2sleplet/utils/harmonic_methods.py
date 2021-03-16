@@ -1,4 +1,4 @@
-from typing import Callable  # TODO: import from collections.abc
+from collections.abc import Callable
 
 import numpy as np
 import pyssht as ssht
