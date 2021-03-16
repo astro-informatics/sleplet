@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 import cmocean
 import numpy as np
@@ -35,7 +35,7 @@ class Plot:
     filename: str
     amplitude: Optional[float] = field(default=None, repr=False)
     plot_type: str = field(default="real", repr=False)
-    annotations: List[Dict] = field(default_factory=list, repr=False)
+    annotations: list[dict] = field(default_factory=list, repr=False)
 
     def __post_init__(self) -> None:
         self.filename += f"_{self.plot_type}"

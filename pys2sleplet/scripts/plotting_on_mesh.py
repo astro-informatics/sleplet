@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
-from typing import List
 
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.plotting.create_plot_mesh import Plot
@@ -63,13 +62,13 @@ def plot(
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
-    annotation: List = []
+    annotation: list = []
 
     # do plot
     Plot(
         f.vertices,
-        f.eigenvectors[f.number],
         f.faces,
+        f.eigenvectors[f.number],
         filename,
         annotations=annotation,
         plot_type=plot_type,

@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 
@@ -10,10 +10,10 @@ from pys2sleplet.utils.mesh_methods import mesh_eigendecomposition, read_mesh
 @dataclass  # type: ignore
 class Mesh:
     number: int
-    extra_args: Optional[List[int]]
+    extra_args: Optional[list[int]]
     _eigenvalues: np.ndarray = field(init=False, repr=False)
     _eigenvectors: np.ndarray = field(init=False, repr=False)
-    _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
+    _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _number: int = field(default=0, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
@@ -53,11 +53,11 @@ class Mesh:
         self._eigenvectors = eigenvectors
 
     @property  # type:ignore
-    def extra_args(self) -> Optional[List[int]]:
+    def extra_args(self) -> Optional[list[int]]:
         return self._extra_args
 
     @extra_args.setter
-    def extra_args(self, extra_args: Optional[List[int]]) -> None:
+    def extra_args(self, extra_args: Optional[list[int]]) -> None:
         if isinstance(extra_args, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333

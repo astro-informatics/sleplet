@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 from igl import cotmatrix, read_triangle_mesh
@@ -11,7 +10,7 @@ _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
 
 
-def read_mesh(mesh_name: str) -> Tuple[np.ndarray, np.ndarray]:
+def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh
     """
@@ -20,7 +19,7 @@ def read_mesh(mesh_name: str) -> Tuple[np.ndarray, np.ndarray]:
 
 def mesh_eigendecomposition(
     vertices: np.ndarray, faces: np.ndarray, number: int
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """
     computes the eigendecomposition of a given mesh according to this example
     https://geometryprocessing.github.io/blackbox-computing-python/geo_viz/#various-examples-eigendecomposition

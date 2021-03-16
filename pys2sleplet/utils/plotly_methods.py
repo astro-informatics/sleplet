@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import Optional
 
 from plotly.graph_objs import Layout
 from plotly.graph_objs.layout import Margin, Scene
@@ -24,7 +24,7 @@ def create_camera(x: float, y: float, z: float, zoom: float) -> Camera:
     return Camera(eye=Eye(x=x / zoom, y=y / zoom, z=z / zoom))
 
 
-def create_layout(camera: Camera, annotations: Optional[List[Dict]] = None) -> Layout:
+def create_layout(camera: Camera, annotations: Optional[list[dict]] = None) -> Layout:
     """
     default plotly layout
     """
@@ -52,7 +52,7 @@ def create_tick_mark(
     return amplitude if amplitude is not None else max(abs(fmin), abs(fmax))
 
 
-def create_colour_bar(tick_mark: float, bar_pos: float) -> Dict:
+def create_colour_bar(tick_mark: float, bar_pos: float) -> dict:
     """
     default plotly colour bar
     """
