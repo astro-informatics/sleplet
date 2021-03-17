@@ -1,0 +1,12 @@
+name: py39
+
+channels:
+    - conda-forge
+
+dependencies:
+    - igl
+    - pip
+    - python=3.9
+
+    - pip:
+          - -r file:requirements.txt

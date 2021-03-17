@@ -6,25 +6,26 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - name: checkout source
+            - name: Checkout source
               uses: actions/checkout@v2
 
-            - name: Set up Python
-              uses: actions/setup-python@v2
+            - uses: actions/checkout@v2
+            - name: Cache conda
+              uses: actions/cache@v1
               with:
-                  python-version: 3.9
+                  path: ~/conda_pkgs_dir
+                  key: ${{ hashFiles('environment.yml') }}
 
-            - name: restore python cache
-              uses: actions/cache@v2
+            - name: Setup conda
+              uses: conda-incubator/setup-miniconda@v2
               with:
-                  path: ${{ env.pythonLocation }}
-                  key: ${{ hashFiles('requirements.txt') }}
+                  activate-environment: py39
+                  environment-file: environment.yml
+                  use-only-tar-bz2: true
 
-            - name: Install dependencies
+            - name: Install other dependencies
               run: |
                   sudo apt-get install libmpc-dev libmpfr-dev
-                  python -m pip install --upgrade pip
-                  pip install -r requirements.txt
 
             - name: pull LFS files
               run: |
