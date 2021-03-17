@@ -15,7 +15,6 @@ jobs:
             - name: Install other dependencies
               run: sudo apt-get install libmpc-dev libmpfr-dev
 
-            - uses: actions/checkout@v2
             - name: Cache conda
               uses: actions/cache@v1
               with:
