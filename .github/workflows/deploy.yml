@@ -9,6 +9,10 @@ jobs:
             - name: Checkout source
               uses: actions/checkout@v2
 
+            - name: Install other dependencies
+              run: |
+                  sudo apt-get install libmpc-dev libmpfr-dev
+
             - uses: actions/checkout@v2
             - name: Cache conda
               uses: actions/cache@v1
@@ -22,10 +26,6 @@ jobs:
                   activate-environment: py39
                   environment-file: environment.yml
                   use-only-tar-bz2: true
-
-            - name: Install other dependencies
-              run: |
-                  sudo apt-get install libmpc-dev libmpfr-dev
 
             - name: pull LFS files
               run: |
