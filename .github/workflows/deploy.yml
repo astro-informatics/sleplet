@@ -15,11 +15,17 @@ jobs:
             - name: Install other dependencies
               run: sudo apt-get install libmpc-dev libmpfr-dev
 
-            - name: Cache conda
+            - name: Restore conda cache
               uses: actions/cache@v1
               with:
                   path: ~/conda_pkgs_dir
-                  key: ${{ hashFiles('environment.yml') }}-${{ hashFiles('requirements.txt') }}
+                  key: ${{ hashFiles('environment.yml') }}
+
+            - name: Restore python cache
+              uses: actions/cache@v2
+              with:
+                  path: ${{ env.pythonLocation }}
+                  key: ${{ hashFiles('requirements.txt') }}
 
             - name: Setup conda
               uses: conda-incubator/setup-miniconda@v2
