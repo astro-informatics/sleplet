@@ -16,16 +16,26 @@ jobs:
               run: sudo apt-get install libmpc-dev libmpfr-dev
 
             - name: Restore conda cache
-              uses: actions/cache@v1
+              uses: actions/cache@v2
+              env:
+                  # Increase this value to reset cache if
+                  # environment.yml has not changed
+                  CACHE_NUMBER: 0
               with:
                   path: ~/conda_pkgs_dir
-                  key: ${{ hashFiles('environment.yml') }}
+                  key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+                      hashFiles('environment.yml') }}
 
-            - name: Restore python cache
+            - name: Restore pip cache
               uses: actions/cache@v2
               with:
-                  path: ${{ env.pythonLocation }}
-                  key: ${{ hashFiles('requirements.txt') }}
+                  # This path is specific to Ubuntu
+                  path: ~/.cache/pip
+                  # Look to see if there is a cache hit for the corresponding requirements file
+                  key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-
+                      ${{ runner.os }}-
 
             - name: Setup conda
               uses: conda-incubator/setup-miniconda@v2
