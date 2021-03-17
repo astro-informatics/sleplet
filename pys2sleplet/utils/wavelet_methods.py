@@ -1,3 +1,5 @@
+from typing import Union
+
 import numpy as np
 import pys2let as s2let
 import pyssht as ssht
@@ -111,7 +113,7 @@ def create_slepian_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
 
 
 def find_non_zero_wavelet_coefficients(
-    wav_coeffs: np.ndarray, axis: int | tuple[int, ...]
+    wav_coeffs: np.ndarray, axis: Union[int, tuple[int, ...]]
 ) -> np.ndarray:
     """
     finds the coefficients within the shannon number to speed up computations
