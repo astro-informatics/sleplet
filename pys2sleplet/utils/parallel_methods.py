@@ -16,7 +16,7 @@ def split_L_into_chunks(
     return [np.sort(arr[i::ncpu]) for i in range(ncpu)]
 
 
-def create_shared_memory_array(array: np.ndarray) -> np.ndarray:
+def create_shared_memory_array(array: np.ndarray) -> tuple[np.ndarray, SharedMemory]:
     """
     creates a shared memory array to be used in a parallel function
     """
@@ -25,7 +25,9 @@ def create_shared_memory_array(array: np.ndarray) -> np.ndarray:
     return array_ext, ext_shared_memory
 
 
-def attach_to_shared_memory_block(array: np.ndarray, ext_shared_memory: SharedMemory):
+def attach_to_shared_memory_block(
+    array: np.ndarray, ext_shared_memory: SharedMemory
+) -> tuple[np.ndarray, SharedMemory]:
     """
     used within the parallel function to attach an array to the shared memory
     """
