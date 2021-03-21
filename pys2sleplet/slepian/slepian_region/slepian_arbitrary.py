@@ -153,7 +153,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i[i][i] = integral.imag
         _, m_i = ssht.ind2elm(i)
 
-        for j in range(i + 1, self.L ** 2):
+        for j in range(i + 1, D_r.shape[0]):
             ell_j, m_j = ssht.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
