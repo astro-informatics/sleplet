@@ -4,13 +4,13 @@ from multiprocess.shared_memory import SharedMemory
 from pys2sleplet.utils.vars import L_MIN_DEFAULT
 
 
-def split_L_into_chunks(
-    L_max: int, ncpu: int, L_min: int = L_MIN_DEFAULT
+def split_arr_into_chunks(
+    arr_max: int, ncpu: int, arr_min: int = L_MIN_DEFAULT
 ) -> list[np.ndarray]:
     """
     split L into a list of arrays for parallelism
     """
-    arr = np.arange(L_min, L_max)
+    arr = np.arange(arr_max, arr_min)
     size = len(arr)
     arr[size // 2 : size] = arr[size // 2 : size][::-1]
     return [np.sort(arr[i::ncpu]) for i in range(ncpu)]

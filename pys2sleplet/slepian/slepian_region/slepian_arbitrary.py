@@ -24,7 +24,7 @@ from pys2sleplet.utils.parallel_methods import (
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
-    split_L_into_chunks,
+    split_arr_into_chunks,
 )
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
@@ -124,8 +124,8 @@ class SlepianArbitrary(SlepianFunctions):
             free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(
-            self.L_max ** 2, settings.NCPU, L_min=self.L_min ** 2
+        chunks = split_arr_into_chunks(
+            self.L_max ** 2, settings.NCPU, arr_min=self.L_min ** 2
         )
 
         # initialise pool and apply function

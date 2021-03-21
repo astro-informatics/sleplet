@@ -18,7 +18,7 @@ from pys2sleplet.utils.parallel_methods import (
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
-    split_L_into_chunks,
+    split_arr_into_chunks,
 )
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import GAP_DEFAULT
@@ -176,7 +176,7 @@ class SlepianPolarCap(SlepianFunctions):
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L - m, settings.NCPU)
+        chunks = split_arr_into_chunks(self.L - m, settings.NCPU)
 
         # initialise pool and apply function
         with Pool(processes=settings.NCPU) as p:
