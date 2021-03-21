@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import numpy as np
-from igl import cotmatrix, read_triangle_mesh
+from igl import cotmatrix, massmatrix, read_triangle_mesh
 from scipy.sparse import linalg as LA
 
 from pys2sleplet.utils.logger import logger
@@ -28,3 +28,14 @@ def mesh_eigendecomposition(
     laplacian = -cotmatrix(vertices, faces)
     eigenvalues, eigenvectors = LA.eigsh(laplacian, number, sigma=0, which="LM")
     return eigenvalues, eigenvectors.T
+
+
+def mesh_integral(
+    vertices: np.ndarray, faces: np.ndarray, function: np.ndarray
+) -> float:
+    """
+    computes the integral of a function defined on the vertices of the mesh
+    by multiplying the function by the mass matrix of the mesh
+    """
+    mass = massmatrix(vertices, faces)
+    return mass.dot(function).sum()
