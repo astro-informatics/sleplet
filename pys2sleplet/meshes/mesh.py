@@ -23,11 +23,8 @@ class Mesh:
     def __post_init__(self) -> None:
         self._create_name()
         self._setup_args()
-        self.vertices, self.faces = read_mesh(self.name)
+        self._solve_eigenproblem()
         self._setup_region()
-        self.eigenvalues, self.eigenvectors = mesh_eigendecomposition(
-            self.vertices, self.faces, self.number + 1
-        )
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
@@ -35,6 +32,15 @@ class Mesh:
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.number = self.extra_args[0]
+
+    def _solve_eigenproblem(self) -> None:
+        """
+        reads in the mesh and computes the eigendecomposition
+        """
+        self.vertices, self.faces = read_mesh(self.name)
+        self.eigenvalues, self.eigenvectors = mesh_eigendecomposition(
+            self.vertices, self.faces, self.number + 1
+        )
 
     @property
     def eigenvalues(self) -> np.ndarray:
