@@ -70,7 +70,7 @@ MAPS_LM: dict[str, Coefficients] = dict(
 
 MAPS_P: dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica)
 
-FUNCTIONS: dict[str, Coefficients] = {**FLM, **FP}
+COEFFICIENTS: dict[str, Coefficients] = {**FLM, **FP}
 
 MESHES: dict[str, Mesh] = dict(
     armadillo=Armadillo,

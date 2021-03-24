@@ -9,7 +9,7 @@ from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS_LM
+from pys2sleplet.utils.function_dicts import COEFFICIENTS, MAPS_LM
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_default_region
 from pys2sleplet.utils.plot_methods import (
@@ -42,7 +42,7 @@ def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    if func_name in FUNCTIONS:
+    if func_name in COEFFICIENTS:
         function = func_name
     else:
         raise ValueError("Not a valid function name to plot")
@@ -57,7 +57,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "function",
         type=valid_plotting,
-        choices=list(FUNCTIONS.keys()),
+        choices=list(COEFFICIENTS.keys()),
         help="function to plot on the sphere",
     )
     parser.add_argument(
@@ -218,7 +218,7 @@ def main() -> None:
 
     mask = create_default_region(settings) if args.region else None
 
-    f = FUNCTIONS[args.function](
+    f = COEFFICIENTS[args.function](
         args.bandlimit,
         extra_args=args.extra_args,
         region=mask,
@@ -227,7 +227,7 @@ def main() -> None:
     )
 
     g = (
-        FUNCTIONS[args.convolve](args.bandlimit)
+        COEFFICIENTS[args.convolve](args.bandlimit)
         if isinstance(args.convolve, str)
         else None
     )
