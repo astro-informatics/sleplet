@@ -1,76 +1,50 @@
-from abc import abstractmethod
 from dataclasses import dataclass, field
-from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.utils.mesh_methods import mesh_eigendecomposition, read_mesh
+from pys2sleplet.utils.mesh_methods import (
+    create_mesh_region,
+    mesh_eigendecomposition,
+    read_mesh,
+)
 
 
 @dataclass  # type: ignore
 class Mesh:
-    number: int
-    extra_args: Optional[list[int]]
-    _eigenvalues: np.ndarray = field(init=False, repr=False)
-    _eigenvectors: np.ndarray = field(init=False, repr=False)
-    _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
+    name: str
+    num_basis_fun: int
+    _basis_functions: np.ndarray = field(init=False, repr=False)
+    _mesh_eigenvalues: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _number: int = field(default=0, init=False, repr=False)
+    _num_basis_fun: int = field(default=0, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
     _faces: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._create_name()
-        self._setup_args()
-        self._solve_eigenproblem()
-        self._setup_region()
-
-    def _setup_args(self) -> None:
-        if isinstance(self.extra_args, list):
-            num_args = 1
-            if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.number = self.extra_args[0]
-
-    def _solve_eigenproblem(self) -> None:
-        """
-        reads in the mesh and computes the eigendecomposition
-        """
         self.vertices, self.faces = read_mesh(self.name)
+        self.region = create_mesh_region(self.name, self.vertices)
         self.eigenvalues, self.eigenvectors = mesh_eigendecomposition(
-            self.vertices, self.faces, self.number + 1
+            self.vertices, self.faces, self.num_basis_fun
         )
 
     @property
-    def eigenvalues(self) -> np.ndarray:
-        return self._eigenvalues
+    def mesh_eigenvalues(self) -> np.ndarray:
+        return self._mesh_eigenvalues
 
-    @eigenvalues.setter
-    def eigenvalues(self, eigenvalues: np.ndarray) -> None:
-        self._eigenvalues = eigenvalues
-
-    @property
-    def eigenvectors(self) -> np.ndarray:
-        return self._eigenvectors
-
-    @eigenvectors.setter
-    def eigenvectors(self, eigenvectors: np.ndarray) -> None:
-        self._eigenvectors = eigenvectors
-
-    @property  # type:ignore
-    def extra_args(self) -> Optional[list[int]]:
-        return self._extra_args
-
-    @extra_args.setter
-    def extra_args(self, extra_args: Optional[list[int]]) -> None:
-        if isinstance(extra_args, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            extra_args = Mesh._extra_args
-        self._extra_args = extra_args
+    @mesh_eigenvalues.setter
+    def mesh_eigenvalues(self, mesh_eigenvalues: np.ndarray) -> None:
+        self._mesh_eigenvalues = mesh_eigenvalues
 
     @property
+    def basis_functions(self) -> np.ndarray:
+        return self.basis_functions
+
+    @basis_functions.setter
+    def basis_functions(self, basis_functions: np.ndarray) -> None:
+        self.basis_functions = basis_functions
+
+    @property  # type: ignore
     def name(self) -> str:
         return self._name
 
@@ -79,16 +53,12 @@ class Mesh:
         self._name = name
 
     @property  # type: ignore
-    def number(self) -> int:
-        return self._number
+    def num_basis_fun(self) -> int:
+        return self._num_basis_fun
 
-    @number.setter
-    def number(self, number: int) -> None:
-        if isinstance(number, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            number = Mesh._number
-        self._number = number
+    @num_basis_fun.setter
+    def num_basis_fun(self, num_basis_fun: int) -> None:
+        self._num_basis_fun = num_basis_fun
 
     @property
     def region(self) -> np.ndarray:
@@ -113,17 +83,3 @@ class Mesh:
     @vertices.setter
     def vertices(self, vertices: np.ndarray) -> None:
         self._vertices = vertices
-
-    @abstractmethod
-    def _create_name(self) -> None:
-        """
-        creates the name of the mesh
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def _setup_region(self) -> None:
-        """
-        creates a Slepian region on the mesh
-        """
-        raise NotImplementedError

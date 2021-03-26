@@ -1,0 +1,7 @@
+FILENAME = "armadillo.obj"
+XMIN = -0.3
+XMAX = 0.3
+YMIN = -inf
+YMAX = 1.5
+ZMIN = -inf
+ZMAX = -0.5
