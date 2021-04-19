@@ -22,6 +22,7 @@ from pys2sleplet.utils.plotly_methods import (
     create_layout,
     create_tick_mark,
 )
+from pys2sleplet.utils.vars import UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -34,8 +35,9 @@ class Plot:
     f: np.ndarray = field(repr=False)
     filename: str
     amplitude: Optional[float] = field(default=None, repr=False)
-    plot_type: str = field(default="real", repr=False)
     annotations: list[dict] = field(default_factory=list, repr=False)
+    plot_type: str = field(default="real", repr=False)
+    region: Optional[np.ndarray] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         self.filename += f"_{self.plot_type}"
@@ -47,6 +49,10 @@ class Plot:
         creates 3d plotly mesh plot
         """
         f = self._prepare_field(self.f)
+
+        if isinstance(self.region, np.ndarray):
+            # make plot area clearer
+            f = self._set_outside_region_to_minimum(f)
 
         # appropriate zoom in on north pole
         camera = create_camera(0, -0.01, 10, 5.65)
@@ -95,3 +101,10 @@ class Plot:
         """
         field_space = create_plot_type(f, self.plot_type)
         return normalise_function(field_space)
+
+    def _set_outside_region_to_minimum(self, f: np.ndarray) -> np.ndarray:
+        """
+        for the Slepian region set the outisde area to negative infinity
+        hence it is clear we are only interested in the coloured region
+        """
+        return np.where(self.region, f, UNSEEN)

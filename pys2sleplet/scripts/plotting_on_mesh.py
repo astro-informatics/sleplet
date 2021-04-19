@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from pathlib import Path
 
-from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.mesh_plot import MeshPlot
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.function_dicts import MESHES
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mesh_methods import MESHES
 
 
 def valid_plotting(func_name: str) -> str:
@@ -23,19 +22,31 @@ def read_args() -> Namespace:
     """
     method to read args from the command line
     """
-    parser = ArgumentParser(description="Create SSHT plot")
+    parser = ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",
         type=valid_plotting,
-        choices=list(MESHES.keys()),
+        choices=MESHES,
         help="mesh to plot",
     )
     parser.add_argument(
-        "--extra_args",
-        "-e",
+        "--index",
+        "-i",
         type=int,
-        nargs="+",
-        help="list of extra args for functions",
+        default=0,
+        help="index of basis function to plot",
+    )
+    parser.add_argument(
+        "--region",
+        "-r",
+        action="store_true",
+        help="flag which masks the function for a region (based on settings.toml)",
+    )
+    parser.add_argument(
+        "--slepian",
+        "-s",
+        action="store_true",
+        help="plot the Slepian functions of the region of a mesh",
     )
     parser.add_argument(
         "--type",
@@ -51,14 +62,20 @@ def read_args() -> Namespace:
 
 
 def plot(
-    f: Mesh,
+    args: Namespace,
     plot_type: str = "real",
     annotations: bool = True,
 ) -> None:
     """
     master plotting method
     """
-    filename = Path(f.name).stem
+    # create mesh plot
+    f = MeshPlot(args.function, args.index, slepian=args.slepian)
+
+    # adjust filename
+    filename = f.name
+    filename += "_slepian" if args.slepian else ""
+    filename += f"_rank{args.index}"
 
     # turn off annotation if needed
     logger.info(f"annotations on: {annotations}")
@@ -68,24 +85,17 @@ def plot(
     Plot(
         f.vertices,
         f.faces,
-        f.eigenvectors[f.number],
+        f.eigenvector,
         filename,
         annotations=annotation,
         plot_type=plot_type,
+        region=f.region if args.slepian else None,
     ).execute()
 
 
 def main() -> None:
     args = read_args()
-
-    f = MESHES[args.function](
-        extra_args=args.extra_args,
-    )
-
-    plot(
-        f,
-        plot_type=args.type,
-    )
+    plot(args)
 
 
 if __name__ == "__main__":

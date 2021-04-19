@@ -1,4 +1,5 @@
 FILENAME = "armadillo.obj"
+NUMBER = nan
 XMIN = -0.3
 XMAX = 0.3
 YMIN = -inf

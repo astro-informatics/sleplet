@@ -1,4 +1,5 @@
 FILENAME = "bunny_2503.obj"
+NUMBER = 2502
 XMIN = -0.05
 XMAX = inf
 YMIN = 0.05

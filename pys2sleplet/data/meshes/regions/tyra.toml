@@ -1,4 +1,5 @@
 FILENAME = "tyra.obj"
+NUMBER = nan
 XMIN = -inf
 XMAX = inf
 YMIN = -0.4
