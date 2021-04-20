@@ -3,8 +3,8 @@ from pathlib import Path
 
 import numpy as np
 from box import Box
-from igl import cotmatrix, massmatrix, read_triangle_mesh
-from scipy.sparse import linalg as LA
+from igl import adjacency_matrix, massmatrix, read_triangle_mesh
+from numpy import linalg as LA
 
 from pys2sleplet.utils.logger import logger
 
@@ -29,8 +29,7 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray, int]:
     """
     data = _read_toml(mesh_name)
     vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
-    num_basis_functions = data.NUMBER
-    return vertices, faces, num_basis_functions
+    return vertices, faces
 
 
 def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
@@ -48,17 +47,26 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     )
 
 
+def _graph_laplacian(faces: np.ndarray) -> np.ndarray:
+    """
+    computes the graph laplacian L = D - A
+    where D is the degree matrix and A is the adjacency matrix
+    """
+    a_matrix = adjacency_matrix(faces).toarray()
+    degrees = a_matrix.sum(axis=1)
+    d_matrix = np.diagflat(degrees)
+    return a_matrix - d_matrix
+
+
 def mesh_eigendecomposition(
-    vertices: np.ndarray, faces: np.ndarray, number: int
+    vertices: np.ndarray, faces: np.ndarray
 ) -> tuple[np.ndarray, np.ndarray]:
     """
-    computes the eigendecomposition of a given mesh according to this example
-    https://geometryprocessing.github.io/blackbox-computing-python/geo_viz/#various-examples-eigendecomposition
+    computes the eigendecomposition of the mesh represented as a graph
     """
-    logger.info(f"finding {number} basis functions of mesh")
-    laplacian = -cotmatrix(vertices, faces)
-    eigenvalues, eigenvectors = LA.eigsh(laplacian, number, sigma=0, which="LM")
-    return eigenvalues, eigenvectors.T
+    logger.info(f"finding {vertices.shape[0]} basis functions of mesh")
+    laplacian = _graph_laplacian(faces)
+    return clean_evals_and_evecs(LA.eigh(laplacian))
 
 
 def integrate_whole_mesh(

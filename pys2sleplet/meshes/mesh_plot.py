@@ -27,7 +27,7 @@ class MeshPlot:
             self.region = slepian_mesh.mesh.region
             self.vertices = slepian_mesh.mesh.vertices
         else:
-            mesh = Mesh(self.name, num_basis_fun=self.index + 1)
+            mesh = Mesh(self.name)
             self.eigenvalue = mesh.mesh_eigenvalues[self.index]
             self.eigenvector = mesh.basis_functions[self.index]
             self.faces = mesh.faces

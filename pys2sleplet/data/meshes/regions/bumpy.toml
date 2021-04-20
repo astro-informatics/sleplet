@@ -1,5 +1,4 @@
 FILENAME = "bumpy.off"
-NUMBER = 1249
 XMIN = -inf
 XMAX = inf
 YMIN = -inf

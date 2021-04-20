@@ -70,7 +70,7 @@ class SlepianMesh:
         """
         computes the D matrix for the mesh eigenfunctions
         """
-        D = np.zeros((self.mesh.num_basis_fun, self.mesh.num_basis_fun))
+        D = np.zeros((self.mesh.vertices.shape[0], self.mesh.vertices.shape[0]))
 
         D_ext, shm_ext = create_shared_memory_array(D)
 
@@ -88,7 +88,7 @@ class SlepianMesh:
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.mesh.num_basis_fun, settings.NCPU)
+        chunks = split_arr_into_chunks(self.mesh.vertices.shape[0], settings.NCPU)
 
         # initialise pool and apply function
         with Pool(processes=settings.NCPU) as p:
@@ -107,7 +107,7 @@ class SlepianMesh:
         fill in the D matrix elements using symmetries
         """
         D[i][i] = self._integral(i, i)
-        for j in range(i + 1, self.mesh.num_basis_fun):
+        for j in range(i + 1, self.mesh.vertices.shape[0]):
             D[j][i] = self._integral(j, i)
 
     def _integral(self, i: int, j: int) -> float:

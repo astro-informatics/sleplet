@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
 
 import numpy as np
 
@@ -13,23 +12,18 @@ from pys2sleplet.utils.mesh_methods import (
 @dataclass  # type: ignore
 class Mesh:
     name: str
-    num_basis_fun: Optional[int]
     _basis_functions: np.ndarray = field(init=False, repr=False)
     _mesh_eigenvalues: np.ndarray = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _num_basis_fun: Optional[int] = field(default=None, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
     _faces: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.vertices, self.faces, num_basis_fun = read_mesh(self.name)
-        if self.num_basis_fun is None:
-            # find the number to calculate if not provided
-            self.num_basis_fun = num_basis_fun
+        self.vertices, self.faces = read_mesh(self.name)
         self.region = create_mesh_region(self.name, self.vertices)
         self.mesh_eigenvalues, self.basis_functions = mesh_eigendecomposition(
-            self.vertices, self.faces, self.num_basis_fun
+            self.vertices, self.faces
         )
 
     @property
@@ -55,18 +49,6 @@ class Mesh:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @property  # type: ignore
-    def num_basis_fun(self) -> Optional[int]:
-        return self._num_basis_fun
-
-    @num_basis_fun.setter
-    def num_basis_fun(self, num_basis_fun: Optional[int]) -> None:
-        if isinstance(num_basis_fun, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            num_basis_fun = Mesh._num_basis_fun
-        self._num_basis_fun = num_basis_fun
 
     @property
     def region(self) -> np.ndarray:
