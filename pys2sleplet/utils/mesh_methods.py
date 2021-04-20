@@ -23,7 +23,7 @@ def _read_toml(mesh_name: str) -> Box:
     return Box.from_toml(filename=_meshes_path / "regions" / f"{mesh_name}.toml")
 
 
-def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray, int]:
+def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh
     """
