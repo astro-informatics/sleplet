@@ -6,6 +6,7 @@ from box import Box
 from igl import adjacency_matrix, massmatrix, read_triangle_mesh
 from numpy import linalg as LA
 
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 
 _file_location = Path(__file__).resolve()
@@ -59,14 +60,27 @@ def _graph_laplacian(faces: np.ndarray) -> np.ndarray:
 
 
 def mesh_eigendecomposition(
-    vertices: np.ndarray, faces: np.ndarray
+    name: str, vertices: np.ndarray, faces: np.ndarray
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     computes the eigendecomposition of the mesh represented as a graph
+    if already computed then it loads the data
     """
     logger.info(f"finding {vertices.shape[0]} basis functions of mesh")
-    laplacian = _graph_laplacian(faces)
-    return clean_evals_and_evecs(LA.eigh(laplacian))
+    eval_loc = _meshes_path / "basis_functions" / name / "eigenvalues.npy"
+    evec_loc = _meshes_path / "basis_functions" / name / "eigenvectors.npy"
+    if eval_loc.exists() and evec_loc.exists():
+        logger.info("binaries found - loading...")
+        eigenvalues = np.load(eval_loc)
+        eigenvectors = np.load(evec_loc)
+    else:
+        laplacian = _graph_laplacian(faces)
+        eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(laplacian))
+        if settings.SAVE_MATRICES:
+            logger.info("saving binaries...")
+            np.save(eval_loc, eigenvalues)
+            np.save(evec_loc, eigenvectors)
+    return eigenvalues, eigenvectors
 
 
 def integrate_whole_mesh(
