@@ -1,7 +1,7 @@
 FILENAME = "bunny_34817.obj"
-XMIN = -0.7
+XMIN = -0.15
 XMAX = inf
-YMIN = 0.1
-YMAX = 1.4
+YMIN = -inf
+YMAX = 1.2
 ZMIN = -inf
-ZMAX = -0.4
+ZMAX = inf
