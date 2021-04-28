@@ -4,6 +4,7 @@ import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
+from pys2sleplet.utils.mesh_methods import mesh_inverse
 
 
 @dataclass()
@@ -21,8 +22,9 @@ class MeshPlot:
     def __post_init__(self) -> None:
         if self.slepian:
             slepian_mesh = SlepianMesh(self.name)
+            s_p_i = slepian_mesh.slepian_functions[self.index]
             self.eigenvalue = slepian_mesh.slepian_eigenvalues[self.index]
-            self.eigenvector = slepian_mesh.slepian_functions[self.index]
+            self.eigenvector = mesh_inverse(slepian_mesh.mesh.basis_functions, s_p_i)
             self.faces = slepian_mesh.mesh.faces
             self.region = slepian_mesh.mesh.region
             self.vertices = slepian_mesh.mesh.vertices
