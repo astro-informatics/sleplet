@@ -39,7 +39,9 @@ class SlepianMesh:
         """
         computes the Shannon number for the region
         """
-        return D.trace(dtype=int)
+        N = D.trace()
+        logger.info(f"trace of D matrix: {N:e}")
+        return np.floor(N).astype(int)
 
     def _compute_slepian_functions(self) -> None:
         """
