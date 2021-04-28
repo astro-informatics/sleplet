@@ -122,3 +122,23 @@ def clean_evals_and_evecs(
     # ensure first element of each eigenvector is positive
     eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
     return eigenvalues, eigenvectors
+
+
+def mesh_forward(
+    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
+) -> np.ndarray:
+    """
+    computes the mesh forward transform from real space to harmonic space
+    """
+    u_i = np.zeros(basis_functions.shape[0])
+    for i, phi_i in enumerate(basis_functions):
+        u_i[i] = integrate_whole_mesh(vertices, faces, u * phi_i.conj())
+    return u_i
+
+
+def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
+    """
+    computes the mesh inverse transform from harmonic space to real space
+    """
+    i_idx = 0
+    return (u_i * basis_functions).sum(axis=i_idx)

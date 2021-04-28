@@ -20,6 +20,7 @@ from pys2sleplet.test.constants import (
     THETA_MAX,
 )
 from pys2sleplet.utils.harmonic_methods import compute_random_signal
+from pys2sleplet.utils.mesh_methods import mesh_eigendecomposition, read_mesh
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
@@ -141,3 +142,19 @@ def random_nd_flm() -> np.ndarray:
     """
     rng = default_rng(RANDOM_SEED)
     return np.array([compute_random_signal(L_SMALL, rng, 1) for _ in range(ARRAY_DIM)])
+
+
+@pytest.fixture(scope="session")
+def bunny_mesh() -> tuple[np.ndarray, np.ndarray]:
+    """
+    creates a small Stanford bunny mesh
+    """
+    return read_mesh("bunny")
+
+
+@pytest.fixture(scope="session")
+def bunny_mesh_eigendecomposition(bunny_mesh) -> tuple[np.ndarray, np.ndarray]:
+    """
+    performs the eigendecomposition of the mesh
+    """
+    return mesh_eigendecomposition("bunny", *bunny_mesh)

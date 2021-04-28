@@ -19,7 +19,7 @@ from pys2sleplet.utils.parallel_methods import (
 )
 
 _file_location = Path(__file__).resolve()
-_slepian_path = _file_location.parent / "data" / "meshes" / "slepians"
+_slepian_path = _file_location.parents[1] / "data" / "meshes" / "slepian_functions"
 
 
 @dataclass  # type: ignore
@@ -45,6 +45,7 @@ class SlepianMesh:
         """
         computes the Slepian functions of the mesh
         """
+        logger.info("computing slepian functions of mesh")
         eval_loc = _slepian_path / self.name / "eigenvalues.npy"
         evec_loc = _slepian_path / self.name / "eigenvectors.npy"
         if eval_loc.exists() and evec_loc.exists():
