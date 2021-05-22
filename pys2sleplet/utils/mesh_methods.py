@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 from box import Box
-from igl import adjacency_matrix, massmatrix, read_triangle_mesh
+from igl import adjacency_matrix, all_pairs_distances, massmatrix, read_triangle_mesh
 from numpy import linalg as LA
 
 from pys2sleplet.utils.config import settings
@@ -48,33 +48,50 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     )
 
 
-def _graph_laplacian(faces: np.ndarray) -> np.ndarray:
+def _weighting_function(
+    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: int, knn: int
+) -> np.ndarray:
     """
-    computes the graph laplacian L = D - A
-    where D is the degree matrix and A is the adjacency matrix
+    thresholded Gaussian kernel weighting function
     """
-    a_matrix = adjacency_matrix(faces).toarray()
-    degrees = a_matrix.sum(axis=1)
-    d_matrix = np.diagflat(degrees)
-    return a_matrix - d_matrix
+    W = np.exp(
+        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta ** 2)
+    )
+    knn_threshold = D <= knn
+    return W * A * knn_threshold
+
+
+def _graph_laplacian(
+    vertices: np.ndarray, faces: np.ndarray, theta: int, knn: int
+) -> np.ndarray:
+    """
+    computes the graph laplacian L = D - W
+    where D is the degree matrix and W is the weighting function
+    """
+    rows = 0
+    A = adjacency_matrix(faces)
+    D = np.diagflat(A.sum(axis=rows))
+    W = _weighting_function(D, A, vertices, theta, knn)
+    return D - W
 
 
 def mesh_eigendecomposition(
-    name: str, vertices: np.ndarray, faces: np.ndarray
+    name: str, vertices: np.ndarray, faces: np.ndarray, theta: int = 1, knn: int = 5
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     computes the eigendecomposition of the mesh represented as a graph
     if already computed then it loads the data
     """
     logger.info(f"finding {vertices.shape[0]} basis functions of mesh")
-    eval_loc = _meshes_path / "basis_functions" / name / "eigenvalues.npy"
-    evec_loc = _meshes_path / "basis_functions" / name / "eigenvectors.npy"
+    eigd_loc = _meshes_path / "basis_functions" / f"{name}_t{theta}_k{knn}"
+    eval_loc = eigd_loc / "eigenvalues.npy"
+    evec_loc = eigd_loc / "eigenvectors.npy"
     if eval_loc.exists() and evec_loc.exists():
         logger.info("binaries found - loading...")
         eigenvalues = np.load(eval_loc)
         eigenvectors = np.load(evec_loc)
     else:
-        laplacian = _graph_laplacian(faces)
+        laplacian = _graph_laplacian(vertices, faces, theta, knn)
         eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(laplacian))
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
@@ -120,7 +137,7 @@ def clean_evals_and_evecs(
     eigenvectors = eigenvectors[:, idx].conj().T
 
     # ensure first element of each eigenvector is positive
-    eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
+    eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)
     return eigenvalues, eigenvectors
 
 
