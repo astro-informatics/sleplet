@@ -12,9 +12,6 @@ jobs:
             - name: Checkout source
               uses: actions/checkout@v2
 
-            - name: Install other dependencies
-              run: sudo apt-get install libmpc-dev libmpfr-dev
-
             - name: Restore conda cache
               uses: actions/cache@v2
               env:

@@ -5,6 +5,8 @@ channels:
 
 dependencies:
     - igl
+    - mpc
+    - mpfr
     - pip
     - plotly-orca
     - python=3.9
