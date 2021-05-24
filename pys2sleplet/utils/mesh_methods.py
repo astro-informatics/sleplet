@@ -72,7 +72,7 @@ def _graph_laplacian(
     A = adjacency_matrix(faces)
     D = np.diagflat(A.sum(axis=rows))
     W = _weighting_function(D, A, vertices, theta, knn)
-    return D - W
+    return np.asarray(D - W)
 
 
 def mesh_eigendecomposition(
