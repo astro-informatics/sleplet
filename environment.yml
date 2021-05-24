@@ -6,6 +6,7 @@ channels:
 dependencies:
     - igl
     - pip
+    - plotly-orca
     - python=3.9
 
     - pip:
