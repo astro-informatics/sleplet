@@ -83,7 +83,7 @@ def mesh_eigendecomposition(
     if already computed then it loads the data
     """
     logger.info(f"finding {vertices.shape[0]} basis functions of mesh")
-    eigd_loc = _meshes_path / "basis_functions" / f"{name}_t{theta}_k{knn}"
+    eigd_loc = _meshes_path / "basis_functions" / name
     eval_loc = eigd_loc / "eigenvalues.npy"
     evec_loc = eigd_loc / "eigenvectors.npy"
     if eval_loc.exists() and evec_loc.exists():
