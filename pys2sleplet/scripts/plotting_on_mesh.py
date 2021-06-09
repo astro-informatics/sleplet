@@ -40,7 +40,7 @@ def read_args() -> Namespace:
         "--region",
         "-r",
         action="store_true",
-        help="flag which masks the function for a region (based on settings.toml)",
+        help="flag which masks the function for a region",
     )
     parser.add_argument(
         "--slepian",
@@ -81,6 +81,9 @@ def plot(
     logger.info(f"annotations on: {annotations}")
     annotation: list = []
 
+    # whether to show region
+    show_region = f.region if args.slepian or args.region else None
+
     # do plot
     Plot(
         f.vertices,
@@ -89,7 +92,7 @@ def plot(
         filename,
         annotations=annotation,
         plot_type=plot_type,
-        region=f.region if args.slepian else None,
+        region=show_region,
     ).execute()
 
 
