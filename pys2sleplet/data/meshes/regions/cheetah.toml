@@ -1,8 +1,10 @@
 FILENAME = "cheetah.off"
-XMIN = -inf
-XMAX = inf
-YMIN = -inf
-YMAX = inf
-ZMIN = -inf
-ZMAX = inf
+KNN = 5
 NUMBER = 1
+THETA = 1
+XMAX = inf
+XMIN = -inf
+YMAX = inf
+YMIN = -inf
+ZMAX = inf
+ZMIN = -inf

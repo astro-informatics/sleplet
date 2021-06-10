@@ -1,13 +1,25 @@
 import glob
 from pathlib import Path
+from typing import Union
 
 import numpy as np
 from box import Box
-from igl import adjacency_matrix, all_pairs_distances, massmatrix, read_triangle_mesh
+from igl import (
+    adjacency_matrix,
+    all_pairs_distances,
+    cotmatrix,
+    massmatrix,
+    read_triangle_mesh,
+)
 from numpy import linalg as LA
+from scipy.sparse import linalg as LA_sparse
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.vars import (
+    GAUSSIAN_KERNEL_KNN_DEFAULT,
+    GAUSSIAN_KERNEL_THETA_DEFAULT,
+)
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
@@ -49,7 +61,7 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
 
 
 def _weighting_function(
-    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: int, knn: int
+    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: float, knn: int
 ) -> np.ndarray:
     """
     thresholded Gaussian kernel weighting function
@@ -62,7 +74,10 @@ def _weighting_function(
 
 
 def _graph_laplacian(
-    vertices: np.ndarray, faces: np.ndarray, theta: int, knn: int
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    theta: float = GAUSSIAN_KERNEL_THETA_DEFAULT,
+    knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
 ) -> np.ndarray:
     """
     computes the graph laplacian L = D - W
@@ -75,24 +90,46 @@ def _graph_laplacian(
     return np.asarray(D - W)
 
 
+def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
+    """
+    computes the cotagent mesh laplacian
+    """
+    return -cotmatrix(vertices, faces)
+
+
 def mesh_eigendecomposition(
-    name: str, vertices: np.ndarray, faces: np.ndarray, theta: int = 1, knn: int = 5
+    name: str, vertices: np.ndarray, faces: np.ndarray, laplacian_type: str = "mesh"
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     computes the eigendecomposition of the mesh represented as a graph
     if already computed then it loads the data
     """
-    logger.info(f"finding {vertices.shape[0]} basis functions of mesh")
-    eigd_loc = _meshes_path / "basis_functions" / name
+    logger.info(f"finding {vertices.shape[0]} basis functions of {name} mesh")
+
+    # read in polygon data
+    data = _read_toml(name)
+
+    # create filenames
+    eigd_loc = _meshes_path / "basis_functions" / name / f"{laplacian_type}_laplacian"
     eval_loc = eigd_loc / "eigenvalues.npy"
     evec_loc = eigd_loc / "eigenvectors.npy"
+
     if eval_loc.exists() and evec_loc.exists():
         logger.info("binaries found - loading...")
         eigenvalues = np.load(eval_loc)
         eigenvectors = np.load(evec_loc)
     else:
-        laplacian = _graph_laplacian(vertices, faces, theta, knn)
-        eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(laplacian))
+        if laplacian_type == "mesh":
+            laplacian = _mesh_laplacian(vertices, faces)
+            eigendecomposition = LA_sparse.eigsh(
+                laplacian, data.NUMBER, which="LM", sigma=0
+            )
+        else:
+            laplacian = _graph_laplacian(
+                vertices, faces, theta=data.THETA, knn=data.KNN
+            )
+            eigendecomposition = LA.eigh(laplacian)
+        eigenvalues, eigenvectors = clean_evals_and_evecs(eigendecomposition)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
@@ -103,20 +140,25 @@ def mesh_eigendecomposition(
 def integrate_whole_mesh(
     vertices: np.ndarray,
     faces: np.ndarray,
-    function: np.ndarray,
+    function: Union[np.ndarray, int],
 ) -> float:
     """
-    computes the integral of a function defined on the vertices of the mesh
+    computes the integral of a function defined on the vertices
+    of the mesh or the same constant value at each vertex
     """
     mass = massmatrix(vertices, faces)
     return mass.dot(function).sum()
 
 
 def integrate_region_mesh(
-    vertices: np.ndarray, faces: np.ndarray, function: np.ndarray, mask: np.ndarray
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    function: Union[np.ndarray, int],
+    mask: np.ndarray,
 ) -> float:
     """
-    computes the integral of a region of a function defines of a mesh vertices
+    computes the integral of a region of a function defines on the
+    vertices of the mesh or the same constant value at each vertex
     """
     mass = massmatrix(vertices, faces)
     return mass.dot(function * mask).sum()
@@ -132,12 +174,12 @@ def clean_evals_and_evecs(
     eigenvalues, eigenvectors = eigendecomposition
 
     # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-    idx = eigenvalues.argsort()[::-1]
+    idx = eigenvalues.argsort()
     eigenvalues = eigenvalues[idx]
-    eigenvectors = eigenvectors[:, idx].conj().T
+    eigenvectors = eigenvectors[:, idx].T
 
     # ensure first element of each eigenvector is positive
-    eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)
+    eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
     return eigenvalues, eigenvectors
 
 
@@ -149,7 +191,7 @@ def mesh_forward(
     """
     u_i = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(vertices, faces, u * phi_i.conj())
+        u_i[i] = integrate_whole_mesh(vertices, faces, u * phi_i)
     return u_i
 
 

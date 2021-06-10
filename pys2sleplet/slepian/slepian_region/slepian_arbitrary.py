@@ -58,7 +58,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _calculate_area(self) -> None:
         self.weight = calc_integration_weight(self.resolution)
-        self.area = np.where(self.mask, self.weight, 0).sum()
+        self.area = (self.mask * self.weight).sum()
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
