@@ -14,6 +14,7 @@ GAUSSIAN_KERNEL_KNN_DEFAULT: int = 5
 GAUSSIAN_KERNEL_THETA_DEFAULT: float = 1
 L_MAX_DEFAULT: int = -1
 L_MIN_DEFAULT: int = 0
+LAPLACIAN_DEFAULT: str = "mesh"
 PHI_0: float = np.pi
 PHI_MIN_DEFAULT: float = 0.0
 PHI_MAX_DEFAULT: float = 2 * np.pi

@@ -200,7 +200,7 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     computes the mesh inverse transform from harmonic space to real space
     """
     i_idx = 0
-    return (u_i * basis_functions).sum(axis=i_idx)
+    return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
 
 
 def compute_shannon(

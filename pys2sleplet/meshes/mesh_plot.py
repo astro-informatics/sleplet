@@ -4,6 +4,7 @@ import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mesh_methods import mesh_inverse
 
 
@@ -20,21 +21,18 @@ class MeshPlot:
     _slepian: bool = field(default=False, init=False, repr=False)
 
     def __post_init__(self) -> None:
+        mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
+        self.faces = mesh.faces
+        self.region = mesh.region
+        self.vertices = mesh.vertices
         if self.slepian:
-            slepian_mesh = SlepianMesh(self.name)
+            slepian_mesh = SlepianMesh(mesh)
             s_p_i = slepian_mesh.slepian_functions[self.index]
             self.eigenvalue = slepian_mesh.slepian_eigenvalues[self.index]
-            self.eigenvector = mesh_inverse(slepian_mesh.mesh.basis_functions, s_p_i)
-            self.faces = slepian_mesh.mesh.faces
-            self.region = slepian_mesh.mesh.region
-            self.vertices = slepian_mesh.mesh.vertices
+            self.eigenvector = mesh_inverse(mesh.basis_functions, s_p_i)
         else:
-            mesh = Mesh(self.name)
             self.eigenvalue = mesh.mesh_eigenvalues[self.index]
             self.eigenvector = mesh.basis_functions[self.index]
-            self.faces = mesh.faces
-            self.region = mesh.region
-            self.vertices = mesh.vertices
 
     @property
     def eigenvalue(self) -> float:

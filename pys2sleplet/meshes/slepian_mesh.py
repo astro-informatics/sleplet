@@ -28,15 +28,13 @@ _slepian_path = _file_location.parents[1] / "data" / "meshes" / "slepian_functio
 
 @dataclass  # type: ignore
 class SlepianMesh:
-    name: str
+    mesh: Mesh
     _mesh: Mesh = field(init=False, repr=False)
     _N: int = field(init=False, repr=False)
-    _name: str = field(init=False, repr=False)
     _slepian_eigenvalues: np.ndarray = field(init=False, repr=False)
     _slepian_functions: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.mesh = Mesh(self.name)
         self.N = compute_shannon(
             self.mesh.vertices,
             self.mesh.faces,
@@ -49,8 +47,12 @@ class SlepianMesh:
         computes the Slepian functions of the mesh
         """
         logger.info("computing slepian functions of mesh")
-        eval_loc = _slepian_path / self.name / "eigenvalues.npy"
-        evec_loc = _slepian_path / self.name / "eigenvectors.npy"
+
+        # create filenames
+        eigd_loc = _slepian_path / self.mesh.name / settings.LAPLACIAN
+        eval_loc = eigd_loc / "eigenvalues.npy"
+        evec_loc = eigd_loc / "eigenvectors.npy"
+
         if eval_loc.exists() and evec_loc.exists():
             logger.info("binaries found - loading...")
             self.slepian_eigenvalues = np.load(eval_loc)
@@ -74,7 +76,9 @@ class SlepianMesh:
         """
         computes the D matrix for the mesh eigenfunctions
         """
-        D = np.zeros((self.mesh.vertices.shape[0], self.mesh.vertices.shape[0]))
+        D = np.zeros(
+            (self.mesh.basis_functions.shape[0], self.mesh.basis_functions.shape[0])
+        )
 
         D_ext, shm_ext = create_shared_memory_array(D)
 
@@ -92,7 +96,9 @@ class SlepianMesh:
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.mesh.vertices.shape[0], settings.NCPU)
+        chunks = split_arr_into_chunks(
+            self.mesh.basis_functions.shape[0], settings.NCPU
+        )
 
         # initialise pool and apply function
         with Pool(processes=settings.NCPU) as p:
@@ -111,7 +117,7 @@ class SlepianMesh:
         fill in the D matrix elements using symmetries
         """
         D[i][i] = self._integral(i, i)
-        for j in range(i + 1, self.mesh.vertices.shape[0]):
+        for j in range(i + 1, self.mesh.basis_functions.shape[0]):
             D[j][i] = self._integral(j, i)
 
     def _integral(self, i: int, j: int) -> float:
@@ -125,7 +131,7 @@ class SlepianMesh:
             self.mesh.region,
         )
 
-    @property
+    @property  # type: ignore
     def mesh(self) -> Mesh:
         return self._mesh
 
@@ -140,14 +146,6 @@ class SlepianMesh:
     @N.setter
     def N(self, N: int) -> None:
         self._N = N
-
-    @property  # type: ignore
-    def name(self) -> str:
-        return self._name
-
-    @name.setter
-    def name(self, name: str) -> None:
-        self._name = name
 
     @property
     def slepian_eigenvalues(self) -> np.ndarray:
