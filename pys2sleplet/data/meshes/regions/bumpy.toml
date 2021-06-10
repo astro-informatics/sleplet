@@ -1,7 +1,0 @@
-FILENAME = "bumpy.off"
-XMIN = -inf
-XMAX = inf
-YMIN = -inf
-YMAX = inf
-ZMIN = -inf
-ZMAX = -2.7

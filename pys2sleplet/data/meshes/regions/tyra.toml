@@ -1,7 +1,0 @@
-FILENAME = "tyra.obj"
-XMIN = -inf
-XMAX = inf
-YMIN = -0.4
-YMAX = 0.3
-ZMIN = -inf
-ZMAX = -1.3

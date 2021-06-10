@@ -1,0 +1,8 @@
+FILENAME = "cubehighres.off"
+XMIN = -inf
+XMAX = inf
+YMIN = -inf
+YMAX = inf
+ZMIN = -inf
+ZMAX = inf
+NUMBER = 1
