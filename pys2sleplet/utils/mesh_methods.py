@@ -201,3 +201,18 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     """
     i_idx = 0
     return (u_i * basis_functions).sum(axis=i_idx)
+
+
+def compute_shannon(
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    mask: np.ndarray,
+) -> int:
+    """
+    computes the effective Shannon number for a region of a mesh
+    """
+    function_value = 1
+    num_basis_fun = vertices.shape[0]
+    region_area = integrate_region_mesh(vertices, faces, function_value, mask)
+    mesh_area = integrate_whole_mesh(vertices, faces, function_value)
+    return round(region_area / mesh_area * num_basis_fun)

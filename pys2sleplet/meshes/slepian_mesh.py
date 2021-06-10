@@ -9,7 +9,11 @@ from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import clean_evals_and_evecs, integrate_region_mesh
+from pys2sleplet.utils.mesh_methods import (
+    clean_evals_and_evecs,
+    compute_shannon,
+    integrate_region_mesh,
+)
 from pys2sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
@@ -33,15 +37,12 @@ class SlepianMesh:
 
     def __post_init__(self) -> None:
         self.mesh = Mesh(self.name)
+        self.N = compute_shannon(
+            self.mesh.vertices,
+            self.mesh.faces,
+            self.mesh.region,
+        )
         self._compute_slepian_functions()
-
-    def _compute_shannon(self, D: np.ndarray) -> int:
-        """
-        computes the Shannon number for the region
-        """
-        N = D.trace()
-        logger.info(f"trace of D matrix: {N:e}")
-        return np.floor(N).astype(int)
 
     def _compute_slepian_functions(self) -> None:
         """
@@ -56,7 +57,7 @@ class SlepianMesh:
             self.slepian_functions = np.load(evec_loc)
         else:
             D = self._create_D_matrix()
-            self.N = self._compute_shannon(D)
+            logger.info(f"Shannon number: {self.N}, trace of D matrix: {D.trace():e}")
 
             # fill in remaining triangle section
             fill_upper_triangle_of_hermitian_matrix(D)
