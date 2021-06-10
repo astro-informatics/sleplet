@@ -2,6 +2,7 @@ AUTO_OPEN = true
 L = 16
 L_MIN = 0
 L_MAX = -1
+LAPLACIAN = "mesh"
 NCPU = 4
 NORMALISE = false
 PHI_MIN = 0

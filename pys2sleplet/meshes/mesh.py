@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.mesh_methods import (
     create_mesh_region,
     mesh_eigendecomposition,
@@ -23,7 +24,7 @@ class Mesh:
         self.vertices, self.faces = read_mesh(self.name)
         self.region = create_mesh_region(self.name, self.vertices)
         self.mesh_eigenvalues, self.basis_functions = mesh_eigendecomposition(
-            self.name, self.vertices, self.faces
+            self.name, self.vertices, self.faces, laplacian_type=settings.LAPLACIAN
         )
 
     @property
