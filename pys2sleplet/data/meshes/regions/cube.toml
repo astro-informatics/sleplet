@@ -1,7 +1,7 @@
-CAMERA_X = 0
-CAMERA_Y = -1
-CAMERA_Z = 10
-FILENAME = "homernoise.off"
+CAMERA_X = 1
+CAMERA_Y = 1
+CAMERA_Z = 1
+FILENAME = "cube.off"
 KNN = 5
 NUMBER = 698
 THETA = 1
@@ -11,4 +11,4 @@ YMAX = inf
 YMIN = -inf
 ZMAX = inf
 ZMIN = -inf
-ZOOM = 6.29
+ZOOM = 1
