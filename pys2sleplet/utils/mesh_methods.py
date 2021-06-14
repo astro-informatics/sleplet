@@ -12,10 +12,12 @@ from igl import (
     read_triangle_mesh,
 )
 from numpy import linalg as LA
+from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
@@ -58,6 +60,14 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
         & (vertices[:, 2] > data.ZMIN)
         & (vertices[:, 2] < data.ZMAX)
     )
+
+
+def create_mesh_camera_view(mesh_name: str) -> Camera:
+    """
+    creates plotly camera view for a given mesh
+    """
+    data = _read_toml(mesh_name)
+    return create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM)
 
 
 def _weighting_function(

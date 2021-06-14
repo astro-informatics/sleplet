@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 from pys2sleplet.meshes.mesh_plot import MeshPlot
 from pys2sleplet.plotting.create_plot_mesh import Plot
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import MESHES
+from pys2sleplet.utils.mesh_methods import MESHES, create_mesh_camera_view
 
 
 def valid_plotting(func_name: str) -> str:
@@ -90,6 +90,7 @@ def plot(
         f.faces,
         f.eigenvector,
         filename,
+        create_mesh_camera_view(args.function),
         annotations=annotation,
         plot_type=plot_type,
         region=show_region,

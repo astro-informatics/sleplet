@@ -7,6 +7,7 @@ import numpy as np
 import plotly.io as pio
 import plotly.offline as py
 from plotly.graph_objs import Figure, Mesh3d
+from plotly.graph_objs.layout.scene import Camera
 from plotly.graph_objs.mesh3d import Lighting
 
 from pys2sleplet.utils.config import settings
@@ -17,7 +18,6 @@ from pys2sleplet.utils.plot_methods import (
     normalise_function,
 )
 from pys2sleplet.utils.plotly_methods import (
-    create_camera,
     create_colour_bar,
     create_layout,
     create_tick_mark,
@@ -34,6 +34,7 @@ class Plot:
     faces: np.ndarray = field(repr=False)
     f: np.ndarray = field(repr=False)
     filename: str
+    camera_view: Camera
     amplitude: Optional[float] = field(default=None, repr=False)
     annotations: list[dict] = field(default_factory=list, repr=False)
     plot_type: str = field(default="real", repr=False)
@@ -54,17 +55,14 @@ class Plot:
             # make plot area clearer
             f = self._set_outside_region_to_minimum(f)
 
-        # appropriate zoom in on north pole
-        camera = create_camera(0, -0.01, 10, 5.65)
-
         # pick largest tick max value
         tick_mark = create_tick_mark(f.min(), f.max(), amplitude=self.amplitude)
 
         data = [
             Mesh3d(
-                x=-self.vertices[:, 0],
+                x=self.vertices[:, 0],
                 y=self.vertices[:, 1],
-                z=-self.vertices[:, 2],
+                z=self.vertices[:, 2],
                 i=self.faces[:, 0],
                 j=self.faces[:, 1],
                 k=self.faces[:, 2],
@@ -79,7 +77,7 @@ class Plot:
             )
         ]
 
-        layout = create_layout(camera, annotations=self.annotations)
+        layout = create_layout(self.camera_view, annotations=self.annotations)
 
         fig = Figure(data=data, layout=layout)
 
