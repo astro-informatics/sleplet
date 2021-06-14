@@ -1,7 +1,7 @@
 FILENAME = "bird.off"
 KNN = 5
 NUMBER = 698
-THETA=1
+THETA = 1
 XMAX = inf
 XMIN = -inf
 YMAX = inf
