@@ -35,6 +35,7 @@ class Plot:
     f: np.ndarray = field(repr=False)
     filename: str
     camera_view: Camera
+    colourbar_pos: float
     amplitude: Optional[float] = field(default=None, repr=False)
     annotations: list[dict] = field(default_factory=list, repr=False)
     plot_type: str = field(default="real", repr=False)
@@ -61,8 +62,8 @@ class Plot:
         data = [
             Mesh3d(
                 x=self.vertices[:, 0],
-                y=self.vertices[:, 1],
-                z=self.vertices[:, 2],
+                y=self.vertices[:, 2],
+                z=self.vertices[:, 1],
                 i=self.faces[:, 0],
                 j=self.faces[:, 1],
                 k=self.faces[:, 2],
@@ -70,7 +71,7 @@ class Plot:
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
                 cmin=0 if settings.NORMALISE else -tick_mark,
-                colorbar=create_colour_bar(tick_mark, 0.79),
+                colorbar=create_colour_bar(tick_mark, self.colourbar_pos),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,

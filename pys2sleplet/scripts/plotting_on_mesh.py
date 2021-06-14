@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 from pys2sleplet.meshes.mesh_plot import MeshPlot
 from pys2sleplet.plotting.create_plot_mesh import Plot
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import MESHES, create_mesh_camera_view
+from pys2sleplet.utils.mesh_methods import MESHES, mesh_plotly_config
 
 
 def valid_plotting(func_name: str) -> str:
@@ -84,13 +84,17 @@ def plot(
     # whether to show region
     show_region = f.region if args.slepian or args.region else None
 
+    # plotly config
+    camera_view, colourbar_pos = mesh_plotly_config(args.function)
+
     # do plot
     Plot(
         f.vertices,
         f.faces,
         f.eigenvector,
         filename,
-        create_mesh_camera_view(args.function),
+        camera_view,
+        colourbar_pos,
         annotations=annotation,
         plot_type=plot_type,
         region=show_region,

@@ -62,12 +62,15 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     )
 
 
-def create_mesh_camera_view(mesh_name: str) -> Camera:
+def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
     """
     creates plotly camera view for a given mesh
     """
     data = _read_toml(mesh_name)
-    return create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM)
+    return (
+        create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM),
+        data.COLOURBAR_POS,
+    )
 
 
 def _weighting_function(
