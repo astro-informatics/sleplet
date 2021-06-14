@@ -49,7 +49,7 @@ class SlepianMesh:
         logger.info("computing slepian functions of mesh")
 
         # create filenames
-        eigd_loc = _slepian_path / self.mesh.name / settings.LAPLACIAN
+        eigd_loc = _slepian_path / self.mesh.name / f"{settings.LAPLACIAN}_laplacian"
         eval_loc = eigd_loc / "eigenvalues.npy"
         evec_loc = eigd_loc / "eigenvectors.npy"
 
