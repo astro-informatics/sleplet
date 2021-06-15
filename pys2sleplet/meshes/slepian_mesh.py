@@ -23,7 +23,7 @@ from pys2sleplet.utils.parallel_methods import (
 )
 
 _file_location = Path(__file__).resolve()
-_slepian_path = _file_location.parents[1] / "data" / "meshes" / "slepian_functions"
+_meshes_path = _file_location.parents[1] / "data" / "meshes" / "slepian_functions"
 
 
 @dataclass  # type: ignore
@@ -49,7 +49,13 @@ class SlepianMesh:
         logger.info("computing slepian functions of mesh")
 
         # create filenames
-        eigd_loc = _slepian_path / self.mesh.name / f"{settings.LAPLACIAN}_laplacian"
+        eigd_loc = (
+            _meshes_path
+            / "laplacians"
+            / settings.LAPLACIAN
+            / "slepian_functions"
+            / self.mesh.name
+        )
         eval_loc = eigd_loc / "eigenvalues.npy"
         evec_loc = eigd_loc / "eigenvectors.npy"
 

@@ -117,13 +117,14 @@ def mesh_eigendecomposition(
     computes the eigendecomposition of the mesh represented as a graph
     if already computed then it loads the data
     """
-    logger.info(f"finding {vertices.shape[0]} basis functions of {name} mesh")
-
     # read in polygon data
     data = _read_toml(name)
+    logger.info(
+        f"finding {data.NUMBER}/{vertices.shape[0]} basis functions of {name} mesh"
+    )
 
     # create filenames
-    eigd_loc = _meshes_path / "basis_functions" / name / f"{laplacian_type}_laplacian"
+    eigd_loc = _meshes_path / "laplacians" / laplacian_type / "basis_functions" / name
     eval_loc = eigd_loc / "eigenvalues.npy"
     evec_loc = eigd_loc / "eigenvectors.npy"
 
