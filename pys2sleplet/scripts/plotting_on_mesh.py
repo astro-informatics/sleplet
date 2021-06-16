@@ -3,7 +3,6 @@ from argparse import ArgumentParser, Namespace
 
 from pys2sleplet.meshes.mesh_plot import MeshPlot
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mesh_methods import MESHES, mesh_plotly_config
 
 
@@ -53,7 +52,6 @@ def read_args() -> Namespace:
 
 def plot(
     args: Namespace,
-    annotations: bool = True,
 ) -> None:
     """
     master plotting method
@@ -65,10 +63,6 @@ def plot(
     filename = f.name
     filename += "_slepian" if args.slepian else ""
     filename += f"_rank{args.index}"
-
-    # turn off annotation if needed
-    logger.info(f"annotations on: {annotations}")
-    annotation: list = []
 
     # whether to show region
     show_region = f.region if args.slepian or args.region else None
@@ -84,7 +78,6 @@ def plot(
         filename,
         camera_view,
         colourbar_pos,
-        annotations=annotation,
         region=show_region,
     ).execute()
 

@@ -33,7 +33,6 @@ class Plot:
     camera_view: Camera
     colourbar_pos: float
     amplitude: Optional[float] = field(default=None, repr=False)
-    annotations: list[dict] = field(default_factory=list, repr=False)
     region: Optional[np.ndarray] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
@@ -72,7 +71,7 @@ class Plot:
             )
         ]
 
-        layout = create_layout(self.camera_view, annotations=self.annotations)
+        layout = create_layout(self.camera_view)
 
         fig = Figure(data=data, layout=layout)
 
