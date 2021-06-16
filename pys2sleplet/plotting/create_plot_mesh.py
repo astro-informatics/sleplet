@@ -12,11 +12,7 @@ from plotly.graph_objs.mesh3d import Lighting
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import (
-    convert_colourscale,
-    create_plot_type,
-    normalise_function,
-)
+from pys2sleplet.utils.plot_methods import convert_colourscale, normalise_function
 from pys2sleplet.utils.plotly_methods import (
     create_colour_bar,
     create_layout,
@@ -38,11 +34,9 @@ class Plot:
     colourbar_pos: float
     amplitude: Optional[float] = field(default=None, repr=False)
     annotations: list[dict] = field(default_factory=list, repr=False)
-    plot_type: str = field(default="real", repr=False)
     region: Optional[np.ndarray] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
-        self.filename += f"_{self.plot_type}"
         if settings.NORMALISE:
             self.filename += "_norm"
 
@@ -98,8 +92,7 @@ class Plot:
         """
         forces plot type and then scales the field before plotting
         """
-        field_space = create_plot_type(f, self.plot_type)
-        return normalise_function(field_space)
+        return normalise_function(f)
 
     def _set_outside_region_to_minimum(self, f: np.ndarray) -> np.ndarray:
         """

@@ -48,22 +48,11 @@ def read_args() -> Namespace:
         action="store_true",
         help="plot the Slepian functions of the region of a mesh",
     )
-    parser.add_argument(
-        "--type",
-        "-t",
-        type=str,
-        nargs="?",
-        default="real",
-        const="real",
-        choices=["abs", "real", "imag", "sum"],
-        help="plotting type: defaults to real",
-    )
     return parser.parse_args()
 
 
 def plot(
     args: Namespace,
-    plot_type: str = "real",
     annotations: bool = True,
 ) -> None:
     """
@@ -96,7 +85,6 @@ def plot(
         camera_view,
         colourbar_pos,
         annotations=annotation,
-        plot_type=plot_type,
         region=show_region,
     ).execute()
 
