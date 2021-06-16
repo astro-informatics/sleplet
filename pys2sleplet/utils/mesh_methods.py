@@ -179,7 +179,7 @@ def integrate_region_mesh(
 
 
 def clean_evals_and_evecs(
-    eigendecomposition: tuple[np.ndarray, np.ndarray]
+    eigendecomposition: tuple[np.ndarray, np.ndarray], descending_order: bool = False
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     need eigenvalues and eigenvectors to be in a certain format
@@ -187,8 +187,12 @@ def clean_evals_and_evecs(
     # access values
     eigenvalues, eigenvectors = eigendecomposition
 
-    # Sort eigenvalues and eigenvectors in descending order of eigenvalues
+    # Sort eigenvalues and eigenvectors in order of eigenvalues
     idx = eigenvalues.argsort()
+    if descending_order:
+        idx = idx[::-1]
+
+    # perform sort
     eigenvalues = eigenvalues[idx]
     eigenvectors = eigenvectors[:, idx].T
 
