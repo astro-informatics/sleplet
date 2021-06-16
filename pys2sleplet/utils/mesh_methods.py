@@ -135,15 +135,15 @@ def mesh_eigendecomposition(
     else:
         if laplacian_type == "mesh":
             laplacian = _mesh_laplacian(vertices, faces)
-            eigendecomposition = LA_sparse.eigsh(
+            eigenvalues, eigenvectors = LA_sparse.eigsh(
                 laplacian, data.NUMBER, which="LM", sigma=0
             )
         else:
             laplacian = _graph_laplacian(
                 vertices, faces, theta=data.THETA, knn=data.KNN
             )
-            eigendecomposition = LA.eigh(laplacian)
-        eigenvalues, eigenvectors = clean_evals_and_evecs(eigendecomposition)
+            eigenvalues, eigenvectors = LA.eigh(laplacian)
+        eigenvectors = eigenvectors.T
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
@@ -179,7 +179,7 @@ def integrate_region_mesh(
 
 
 def clean_evals_and_evecs(
-    eigendecomposition: tuple[np.ndarray, np.ndarray], descending_order: bool = False
+    eigendecomposition: tuple[np.ndarray, np.ndarray]
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     need eigenvalues and eigenvectors to be in a certain format
@@ -187,12 +187,8 @@ def clean_evals_and_evecs(
     # access values
     eigenvalues, eigenvectors = eigendecomposition
 
-    # Sort eigenvalues and eigenvectors in order of eigenvalues
-    idx = eigenvalues.argsort()
-    if descending_order:
-        idx = idx[::-1]
-
-    # perform sort
+    # sort eigenvalues and eigenvectors in descending order of eigenvalues
+    idx = eigenvalues.argsort()[::-1]
     eigenvalues = eigenvalues[idx]
     eigenvectors = eigenvectors[:, idx].T
 

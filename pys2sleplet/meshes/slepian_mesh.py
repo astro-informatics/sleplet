@@ -72,7 +72,7 @@ class SlepianMesh:
 
             # solve eigenproblem
             self.slepian_eigenvalues, self.slepian_functions = clean_evals_and_evecs(
-                LA.eigh(D), descending_order=True
+                LA.eigh(D)
             )
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.slepian_eigenvalues[: self.N])
