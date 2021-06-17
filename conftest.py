@@ -145,16 +145,16 @@ def random_nd_flm() -> np.ndarray:
 
 
 @pytest.fixture(scope="session")
-def bunny_mesh() -> tuple[np.ndarray, np.ndarray]:
+def bird_mesh() -> tuple[np.ndarray, np.ndarray]:
     """
-    creates a small Stanford bunny mesh
+    creates a bird mesh
     """
-    return read_mesh("bunny")
+    return read_mesh("bird")
 
 
 @pytest.fixture(scope="session")
-def bunny_mesh_eigendecomposition(bunny_mesh) -> tuple[np.ndarray, np.ndarray]:
+def bird_mesh_eigendecomposition(bird_mesh) -> tuple[np.ndarray, np.ndarray]:
     """
     performs the eigendecomposition of the mesh
     """
-    return mesh_eigendecomposition("bunny", *bunny_mesh)
+    return mesh_eigendecomposition("bird", *bird_mesh)

@@ -45,7 +45,7 @@ jobs:
             - name: Pull LFS files
               run: |
                   git lfs ls-files -I \
-                  basis_functions/bunny,\
+                  mesh/basis_functions/bird,\
                   EGM2008_Topography_flms_L2190.mat,\
                   polar40_L32.npy,\
                   theta30-60_phi30-60_L32.npy,\
