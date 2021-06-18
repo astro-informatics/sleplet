@@ -229,4 +229,4 @@ def compute_shannon(
     num_basis_fun = vertices.shape[0]
     region_area = integrate_region_mesh(vertices, faces, function_value, mask)
     mesh_area = integrate_whole_mesh(vertices, faces, function_value)
-    return round(region_area / mesh_area * num_basis_fun)
+    return round(region_area / mesh_area) * num_basis_fun

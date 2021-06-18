@@ -6,6 +6,7 @@ from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -20,7 +21,6 @@ from pys2sleplet.test.constants import (
     THETA_MAX,
 )
 from pys2sleplet.utils.harmonic_methods import compute_random_signal
-from pys2sleplet.utils.mesh_methods import mesh_eigendecomposition, read_mesh
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
@@ -145,16 +145,8 @@ def random_nd_flm() -> np.ndarray:
 
 
 @pytest.fixture(scope="session")
-def bird_mesh() -> tuple[np.ndarray, np.ndarray]:
+def mesh() -> Mesh:
     """
     creates a bird mesh
     """
-    return read_mesh("bird")
-
-
-@pytest.fixture(scope="session")
-def bird_mesh_eigendecomposition(bird_mesh) -> tuple[np.ndarray, np.ndarray]:
-    """
-    performs the eigendecomposition of the mesh
-    """
-    return mesh_eigendecomposition("bird", *bird_mesh)
+    return Mesh("bird")

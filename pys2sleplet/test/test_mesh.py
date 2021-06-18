@@ -9,27 +9,23 @@ from pys2sleplet.utils.mesh_methods import (
 )
 
 
-def test_forward_inverse_transform_recovery(
-    bird_mesh, bird_mesh_eigendecomposition
-) -> None:
+def test_forward_inverse_transform_recovery(mesh) -> None:
     """
     tests that a given function is recovered after an
     forward and inverse transform on the mesh
     """
-    vertices, faces = bird_mesh
-    _, basis_functions = bird_mesh_eigendecomposition
-    kernel = gaussian_curvature(vertices, faces)
-    u_i = mesh_forward(vertices, faces, basis_functions, kernel)
-    kernel_recov = mesh_inverse(basis_functions, u_i)
+    kernel = gaussian_curvature(mesh.vertices, mesh.faces)
+    u_i = mesh_forward(mesh.vertices, mesh.faces, mesh.basis_functions, kernel)
+    kernel_recov = mesh_inverse(mesh.basis_functions, u_i)
     assert_allclose(np.abs(kernel - kernel_recov).mean(), 0, atol=0.2)
+    assert_equal(mesh.vertices.shape[0], kernel_recov.shape[0])
 
 
-def test_integrate_whole_mesh_equals_area(bird_mesh) -> None:
+def test_integrate_whole_mesh_equals_area(mesh) -> None:
     """
     ensures that integrating a whole mesh equals area of the mesh
     when the function defined over is just one at the vertices
     """
-    vertices, faces = bird_mesh
-    integral = integrate_whole_mesh(vertices, faces, 1)
-    area = (doublearea(vertices, faces) / 2).sum()
+    integral = integrate_whole_mesh(mesh.vertices, mesh.faces, 1)
+    area = (doublearea(mesh.vertices, mesh.faces) / 2).sum()
     assert_equal(integral, area)

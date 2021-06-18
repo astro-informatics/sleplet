@@ -43,6 +43,10 @@ class Mesh:
 
     @laplacian_type.setter
     def laplacian_type(self, laplacian_type: str) -> None:
+        if isinstance(laplacian_type, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            laplacian_type = Mesh._laplacian_type
         self._laplacian_type = laplacian_type
 
     @property
