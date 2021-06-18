@@ -3,6 +3,7 @@ from igl import doublearea, gaussian_curvature
 from numpy.testing import assert_allclose, assert_equal
 
 from pys2sleplet.utils.mesh_methods import (
+    compute_shannon,
     integrate_whole_mesh,
     mesh_forward,
     mesh_inverse,
@@ -29,3 +30,11 @@ def test_integrate_whole_mesh_equals_area(mesh) -> None:
     integral = integrate_whole_mesh(mesh.vertices, mesh.faces, 1)
     area = (doublearea(mesh.vertices, mesh.faces) / 2).sum()
     assert_equal(integral, area)
+
+
+def test_shannon_less_than_basis_functions(mesh) -> None:
+    """
+    Shannon number should be less than the total number of basis functions
+    """
+    shannon = compute_shannon(mesh.vertices, mesh.faces, mesh.region)
+    assert shannon < mesh.basis_functions.shape[0]
