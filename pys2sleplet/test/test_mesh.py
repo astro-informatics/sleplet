@@ -4,6 +4,7 @@ from numpy.testing import assert_allclose, assert_equal
 
 from pys2sleplet.utils.mesh_methods import (
     compute_shannon,
+    create_mesh_region,
     integrate_whole_mesh,
     mesh_forward,
     mesh_inverse,
@@ -38,3 +39,11 @@ def test_shannon_less_than_basis_functions(mesh) -> None:
     """
     shannon = compute_shannon(mesh.vertices, mesh.faces, mesh.region)
     assert shannon < mesh.basis_functions.shape[0]
+
+
+def test_mesh_region_is_some_fraction_of_totel(mesh) -> None:
+    """
+    the region should be some fraction of the total nodes
+    """
+    region = create_mesh_region(mesh.name, mesh.vertices)
+    assert region.sum() < region.shape[0]
