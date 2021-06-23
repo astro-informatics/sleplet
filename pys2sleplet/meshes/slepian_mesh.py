@@ -23,7 +23,7 @@ from pys2sleplet.utils.parallel_methods import (
 )
 
 _file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[1] / "data" / "meshes" / "slepian_functions"
+_meshes_path = _file_location.parents[1] / "data" / "meshes"
 
 
 @dataclass  # type: ignore
