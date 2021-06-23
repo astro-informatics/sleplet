@@ -15,6 +15,7 @@ from numpy import linalg as LA
 from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
 
+from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plotly_methods import create_camera
@@ -218,15 +219,13 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
 
 
 def compute_shannon(
-    vertices: np.ndarray,
-    faces: np.ndarray,
-    mask: np.ndarray,
+    mesh: Mesh,
 ) -> int:
     """
     computes the effective Shannon number for a region of a mesh
     """
-    function_value = 1
-    num_basis_fun = vertices.shape[0]
-    region_area = integrate_region_mesh(vertices, faces, function_value, mask)
-    mesh_area = integrate_whole_mesh(vertices, faces, function_value)
+    num_basis_fun = mesh.basis_functions.shape[0]
+    mass = massmatrix(mesh.vertices, mesh.faces)
+    region_area = (mass * mesh.region).sum()
+    mesh_area = mass.sum()
     return round(region_area / mesh_area) * num_basis_fun
