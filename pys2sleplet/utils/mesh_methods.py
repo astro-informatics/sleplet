@@ -192,9 +192,6 @@ def clean_evals_and_evecs(
     idx = eigenvalues.argsort()[::-1]
     eigenvalues = eigenvalues[idx]
     eigenvectors = eigenvectors[:, idx].T
-
-    # ensure first element of each eigenvector is positive
-    eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
     return eigenvalues, eigenvectors
 
 
