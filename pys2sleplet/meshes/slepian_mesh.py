@@ -66,7 +66,11 @@ class SlepianMesh:
             self.slepian_functions = np.load(evec_loc)
         else:
             D = self._create_D_matrix()
-            logger.info(f"Shannon number: {self.N}, trace of D matrix: {D.trace():e}")
+            logger.info(
+                f"Shannon number: {self.N}, "
+                f"trace of D matrix: {D.trace():e}, "
+                f"difference: {round(np.abs(D.trace()) - self.N)}"
+            )
 
             # fill in remaining triangle section
             fill_upper_triangle_of_hermitian_matrix(D)
