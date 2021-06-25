@@ -1,4 +1,6 @@
 import numpy as np
+from hypothesis import given, seed
+from hypothesis.strategies import SearchStrategy, integers
 from igl import euler_characteristic, gaussian_curvature
 from numpy.testing import assert_allclose, assert_equal
 
@@ -9,6 +11,14 @@ from pys2sleplet.utils.mesh_methods import (
     mesh_forward,
     mesh_inverse,
 )
+from pys2sleplet.utils.vars import RANDOM_SEED
+
+
+def valid_indices() -> SearchStrategy[int]:
+    """
+    index can be in the range 0 to num_basis_function - 1
+    """
+    return integers(min_value=0, max_value=10)
 
 
 def test_forward_inverse_transform_recovery(mesh) -> None:
@@ -27,7 +37,9 @@ def test_shannon_less_than_basis_functions(mesh) -> None:
     """
     Shannon number should be less than the total number of basis functions
     """
-    shannon = compute_shannon(mesh)
+    shannon = compute_shannon(
+        mesh.vertices, mesh.faces, mesh.region, mesh.basis_functions
+    )
     assert shannon < mesh.basis_functions.shape[0]
 
 
@@ -47,3 +59,15 @@ def test_gauss_bonnet_theorem(mesh) -> None:
     integral = integrate_whole_mesh(K)
     chi = euler_characteristic(mesh.faces)
     assert_allclose(integral, 2 * np.pi * chi)
+
+
+@seed(RANDOM_SEED)
+@given(i=valid_indices(), j=valid_indices())
+def test_orthonormality_over_mesh(mesh, i, j) -> None:
+    """
+    for the computation of the Slepian D matrix the basis
+    functions must be orthornomal over the whole mesh
+    """
+    integral = integrate_whole_mesh(mesh.basis_functions[i] * mesh.basis_functions[j])
+    print(i, j)
+    assert_allclose(integral, 1) if i == j else assert_allclose(integral, 0, atol=1e-15)

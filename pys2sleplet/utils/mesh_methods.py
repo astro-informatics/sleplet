@@ -1,6 +1,5 @@
 import glob
 from pathlib import Path
-from typing import Union
 
 import numpy as np
 from box import Box
@@ -15,7 +14,6 @@ from numpy import linalg as LA
 from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
 
-from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plotly_methods import create_camera
@@ -94,8 +92,8 @@ def _graph_laplacian(
     knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
 ) -> np.ndarray:
     """
-    computes the graph laplacian L = D - W
-    where D is the degree matrix and W is the weighting function
+    computes the graph laplacian L = D - W where D
+    is the degree matrix and W is the weighting function
     """
     rows = 0
     A = adjacency_matrix(faces)
@@ -115,8 +113,8 @@ def mesh_eigendecomposition(
     name: str, vertices: np.ndarray, faces: np.ndarray, laplacian_type: str = "mesh"
 ) -> tuple[np.ndarray, np.ndarray]:
     """
-    computes the eigendecomposition of the mesh represented as a graph
-    if already computed then it loads the data
+    computes the eigendecomposition of the mesh represented
+    as a graph if already computed then it loads the data
     """
     # read in polygon data
     data = _read_toml(name)
@@ -153,30 +151,22 @@ def mesh_eigendecomposition(
 
 
 def integrate_whole_mesh(
-    vertices: np.ndarray,
-    faces: np.ndarray,
-    function: Union[np.ndarray, int],
+    function: np.ndarray,
 ) -> float:
     """
-    computes the integral of a function defined on the vertices
-    of the mesh or the same constant value at each vertex
+    computes the integral of a function on the vertices
     """
-    mass = massmatrix(vertices, faces)
-    return mass.dot(function).sum()
+    return function.sum()
 
 
 def integrate_region_mesh(
-    vertices: np.ndarray,
-    faces: np.ndarray,
-    function: Union[np.ndarray, int],
+    function: np.ndarray,
     mask: np.ndarray,
 ) -> float:
     """
-    computes the integral of a region of a function defines on the
-    vertices of the mesh or the same constant value at each vertex
+    computes the integral of a region of a function on the vertices
     """
-    mass = massmatrix(vertices, faces)
-    return mass.dot(function * mask).sum()
+    return (function * mask).sum()
 
 
 def clean_evals_and_evecs(
@@ -195,15 +185,13 @@ def clean_evals_and_evecs(
     return eigenvalues, eigenvectors
 
 
-def mesh_forward(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
-) -> np.ndarray:
+def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
     """
     computes the mesh forward transform from real space to harmonic space
     """
     u_i = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(vertices, faces, u * phi_i)
+        u_i[i] = integrate_whole_mesh(u * phi_i)
     return u_i
 
 
@@ -216,13 +204,16 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
 
 
 def compute_shannon(
-    mesh: Mesh,
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    mask: np.ndarray,
+    basis_functions: np.ndarray,
 ) -> int:
     """
     computes the effective Shannon number for a region of a mesh
     """
-    num_basis_fun = mesh.basis_functions.shape[0]
-    mass = massmatrix(mesh.vertices, mesh.faces)
-    region_area = (mass * mesh.region).sum()
+    num_basis_fun = basis_functions.shape[0]
+    mass = massmatrix(vertices, faces)
+    region_area = mass[:, mask][mask].sum()
     mesh_area = mass.sum()
-    return round(region_area / mesh_area) * num_basis_fun
+    return round(region_area / mesh_area * num_basis_fun)

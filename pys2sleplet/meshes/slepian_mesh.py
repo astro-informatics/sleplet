@@ -35,7 +35,12 @@ class SlepianMesh:
     _slepian_functions: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.N = compute_shannon(self.mesh)
+        self.N = compute_shannon(
+            self.mesh.vertices,
+            self.mesh.faces,
+            self.mesh.region,
+            self.mesh.basis_functions,
+        )
         self._compute_slepian_functions()
 
     def _compute_slepian_functions(self) -> None:
@@ -127,8 +132,6 @@ class SlepianMesh:
         calculates the D integral between two mesh basis functions
         """
         return integrate_region_mesh(
-            self.mesh.vertices,
-            self.mesh.faces,
             self.mesh.basis_functions[i] * self.mesh.basis_functions[j],
             self.mesh.region,
         )
