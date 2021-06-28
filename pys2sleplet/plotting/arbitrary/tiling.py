@@ -3,11 +3,11 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
-from pys2let import axisym_wav_l
 from scipy.interpolate import pchip
 
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.utils.plot_methods import save_plot
+from pys2sleplet.utils.wavelet_methods import create_kappas
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
@@ -26,10 +26,10 @@ def main() -> None:
     xlim = L ** 2
     x = np.arange(xlim)
     xi = np.arange(0, xlim - 1 + STEP, STEP)
-    kappa0, kappa = axisym_wav_l(B, xlim, J_MIN)
-    yi = pchip(x, kappa0)
+    kappas = create_kappas(xlim, B, J_MIN)
+    yi = pchip(x, kappas[0])
     plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
-    for j, k in enumerate(kappa.T):
+    for j, k in enumerate(kappas[1:]):
         yi = pchip(x, k)
         plt.semilogx(xi, yi(xi), label=rf"$\Psi^{j+J_MIN}_p$")
     slepian = SlepianArbitrary(L, "south_america")

@@ -7,7 +7,7 @@ from pys2let import pys2let_j_max
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
-from pys2sleplet.utils.wavelet_methods import create_slepian_wavelets
+from pys2sleplet.utils.wavelet_methods import create_kappas
 
 
 @dataclass
@@ -56,7 +56,7 @@ class SlepianWavelets(F_P):
         """
         computes wavelets in Slepian space
         """
-        self.wavelets = create_slepian_wavelets(self.L, self.B, self.j_min)
+        self.wavelets = create_kappas(self.L ** 2, self.B, self.j_min)
 
     @property  # type:ignore
     def B(self) -> int:

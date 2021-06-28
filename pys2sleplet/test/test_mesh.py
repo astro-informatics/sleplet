@@ -68,4 +68,4 @@ def test_orthonormality_over_mesh(mesh, i, j) -> None:
     """
     integral = integrate_whole_mesh(mesh.basis_functions[i] * mesh.basis_functions[j])
     print(i, j)
-    assert_allclose(integral, 1) if i == j else assert_allclose(integral, 0, atol=1e-15)
+    assert_allclose(integral, 1) if i == j else assert_allclose(integral, 0, atol=1e-14)
