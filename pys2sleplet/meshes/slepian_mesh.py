@@ -53,7 +53,7 @@ class SlepianMesh:
             / "laplacians"
             / settings.LAPLACIAN
             / "slepian_functions"
-            / self.mesh.name
+            / f"{self.mesh.name}_b{self.mesh.basis_functions.shape[0]}_N{self.N}"
         )
         eval_loc = eigd_loc / "eigenvalues.npy"
         evec_loc = eigd_loc / "eigenvectors.npy"
@@ -65,9 +65,9 @@ class SlepianMesh:
         else:
             D = self._create_D_matrix()
             logger.info(
-                f"Shannon number: {self.N}, "
-                f"trace of D matrix: {D.trace():e}, "
-                f"difference: {round(np.abs(D.trace()) - self.N)}"
+                f"Shannon number from vertices: {self.N}, "
+                f"Trace of D matrix: {round(D.trace())}, "
+                f"difference: {round(np.abs(self.N - D.trace()))}"
             )
 
             # fill in remaining triangle section

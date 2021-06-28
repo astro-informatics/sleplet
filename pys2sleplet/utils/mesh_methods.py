@@ -117,7 +117,13 @@ def mesh_eigendecomposition(
     )
 
     # create filenames
-    eigd_loc = _meshes_path / "laplacians" / laplacian_type / "basis_functions" / name
+    eigd_loc = (
+        _meshes_path
+        / "laplacians"
+        / laplacian_type
+        / "basis_functions"
+        / f"{name}_b{data.NUMBER}"
+    )
     eval_loc = eigd_loc / "eigenvalues.npy"
     evec_loc = eigd_loc / "eigenvectors.npy"
 
