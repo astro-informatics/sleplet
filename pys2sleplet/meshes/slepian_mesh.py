@@ -36,8 +36,6 @@ class SlepianMesh:
 
     def __post_init__(self) -> None:
         self.N = compute_shannon(
-            self.mesh.vertices,
-            self.mesh.faces,
             self.mesh.region,
             self.mesh.basis_functions,
         )

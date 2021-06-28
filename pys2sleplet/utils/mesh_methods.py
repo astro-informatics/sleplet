@@ -3,13 +3,7 @@ from pathlib import Path
 
 import numpy as np
 from box import Box
-from igl import (
-    adjacency_matrix,
-    all_pairs_distances,
-    cotmatrix,
-    massmatrix,
-    read_triangle_mesh,
-)
+from igl import adjacency_matrix, all_pairs_distances, cotmatrix, read_triangle_mesh
 from numpy import linalg as LA
 from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
@@ -204,8 +198,6 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
 
 
 def compute_shannon(
-    vertices: np.ndarray,
-    faces: np.ndarray,
     mask: np.ndarray,
     basis_functions: np.ndarray,
 ) -> int:
@@ -213,7 +205,6 @@ def compute_shannon(
     computes the effective Shannon number for a region of a mesh
     """
     num_basis_fun = basis_functions.shape[0]
-    mass = massmatrix(vertices, faces)
-    region_area = mass[:, mask][mask].sum()
-    mesh_area = mass.sum()
-    return round(region_area / mesh_area * num_basis_fun)
+    region_vertices = mask.sum()
+    total_vertices = mask.shape[0]
+    return round(region_vertices / total_vertices * num_basis_fun)
