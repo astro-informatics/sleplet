@@ -1,8 +1,8 @@
 from typing import Union
 
 import numpy as np
-import pys2let as s2let
 import pyssht as ssht
+from pys2let import axisym_wav_l
 
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.convolution_methods import sifting_convolution
@@ -94,7 +94,7 @@ def create_axisymmetric_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
     """
     computes the axisymmetric wavelets
     """
-    kappa0, kappa = s2let.axisym_wav_l(B, L, j_min)
+    kappa0, kappa = axisym_wav_l(B, L, j_min)
     wavelets = np.zeros((kappa.shape[1] + 1, L ** 2), dtype=np.complex_)
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
@@ -108,7 +108,7 @@ def create_slepian_wavelets(L: int, B: int, j_min: int) -> np.ndarray:
     """
     computes the Slepian wavelets
     """
-    kappa0, kappa = s2let.axisym_wav_l(B, L ** 2, j_min)
+    kappa0, kappa = axisym_wav_l(B, L ** 2, j_min)
     return np.concatenate((kappa0[np.newaxis], kappa.T))
 
 

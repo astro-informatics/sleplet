@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
-import pys2let as s2let
+from pys2let import pys2let_j_max
 
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
@@ -80,7 +80,7 @@ class SlepianWavelets(F_P):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             j = SlepianWavelets._j
-        self.j_max = s2let.pys2let_j_max(self.B, self.L ** 2, self.j_min)
+        self.j_max = pys2let_j_max(self.B, self.L ** 2, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
         if j is not None and j > self.j_max - self.j_min:

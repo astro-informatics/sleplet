@@ -1,7 +1,7 @@
 import numpy as np
-import pys2let as s2let
 import pyssht as ssht
 from numpy.testing import assert_allclose, assert_array_equal, assert_equal
+from pys2let import pys2let_j_max
 
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
@@ -89,7 +89,7 @@ def test_create_slepian_wavelets() -> None:
     checks that the method creates the scaling function and wavelets
     """
     wavelets = create_slepian_wavelets(L_LARGE, B, J_MIN)
-    j_max = s2let.pys2let_j_max(B, L_LARGE ** 2, J_MIN)
+    j_max = pys2let_j_max(B, L_LARGE ** 2, J_MIN)
     assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
     assert_equal(L_LARGE ** 2, wavelets.shape[1])
 

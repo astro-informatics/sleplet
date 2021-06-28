@@ -1,9 +1,9 @@
 from pathlib import Path
 
 import numpy as np
-import pys2let as s2let
 import seaborn as sns
 from matplotlib import pyplot as plt
+from pys2let import axisym_wav_l
 from scipy.interpolate import pchip
 
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
@@ -26,7 +26,7 @@ def main() -> None:
     xlim = L ** 2
     x = np.arange(xlim)
     xi = np.arange(0, xlim - 1 + STEP, STEP)
-    kappa0, kappa = s2let.axisym_wav_l(B, xlim, J_MIN)
+    kappa0, kappa = axisym_wav_l(B, xlim, J_MIN)
     yi = pchip(x, kappa0)
     plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
     for j, k in enumerate(kappa.T):

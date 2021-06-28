@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
-import pys2let as s2let
 import pyssht as ssht
+from pys2let import pys2let_j_max, wavelet_tiling
 
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.logger import logger
@@ -62,9 +62,7 @@ class DirectionalSpinWavelets(F_LM):
         """
         compute all wavelets
         """
-        phi_l, psi_lm = s2let.wavelet_tiling(
-            self.B, self.L, self.N, self.j_min, self.spin
-        )
+        phi_l, psi_lm = wavelet_tiling(self.B, self.L, self.N, self.j_min, self.spin)
         self.wavelets = np.zeros((psi_lm.shape[1] + 1, self.L ** 2), dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
@@ -93,7 +91,7 @@ class DirectionalSpinWavelets(F_LM):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             j = DirectionalSpinWavelets._j
-        self.j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
+        self.j_max = pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
         if j is not None and j > self.j_max - self.j_min:
