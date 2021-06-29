@@ -27,20 +27,34 @@ class MeshPlot:
     _region: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self._create_plot()
+
+    def _create_plot(self) -> None:
+        """
+        master plotting method which initialises the eigenvalue and
+        eigenvector depending on what the value of method is
+        """
+        # initialise mesh object
         mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
         self.faces = mesh.faces
         self.region = mesh.region
         self.vertices = mesh.vertices
+
+        # if basis then just plot them
         if self.method == "basis":
             self.eigenvalue = mesh.mesh_eigenvalues[self.index]
             self.eigenvector = mesh.basis_functions[self.index]
         else:
+            # initialise Slepian mesh object
             slepian_mesh = SlepianMesh(mesh)
             self.eigenvalue = slepian_mesh.slepian_eigenvalues[self.index]
+
+            # if slepian then plot the Slepian functions
             if self.method == "slepian":
                 s_p_i = slepian_mesh.slepian_functions[self.index]
                 self.eigenvector = mesh_inverse(mesh.basis_functions, s_p_i)
             else:
+                # initialise Slepian wavelets mesh object
                 slepian_wavelets_mesh = SlepianWaveletsMesh(
                     slepian_mesh, B=self.B, j_min=self.j_min
                 )
