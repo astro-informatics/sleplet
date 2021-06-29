@@ -77,11 +77,6 @@ def plot(
     # create mesh plot
     f = MeshPlot(args.function, args.index, args.method, args.B, args.j_min)
 
-    # adjust filename
-    filename = f.name
-    filename += f"_{args.method}" if args.method != "basis" else ""
-    filename += f"_rank{args.index}"
-
     # whether to show region
     show_region = f.region if args.method != "basis" or args.region else None
 
@@ -93,7 +88,7 @@ def plot(
         f.vertices,
         f.faces,
         f.eigenvector,
-        filename,
+        f.name,
         camera_view,
         colourbar_pos,
         region=show_region,
