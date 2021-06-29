@@ -1,5 +1,6 @@
 import numpy as np
 
+from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.utils.mesh_methods import mesh_inverse
 
 
@@ -19,22 +20,19 @@ def clean_evals_and_evecs(
     return eigenvalues, eigenvectors
 
 
-def compute_shannon(
-    mask: np.ndarray,
-    basis_functions: np.ndarray,
-) -> int:
+def compute_shannon(mesh: Mesh) -> int:
     """
     computes the effective Shannon number for a region of a mesh
     """
-    num_basis_fun = basis_functions.shape[0]
-    region_vertices = mask.sum()
-    total_vertices = mask.shape[0]
+    num_basis_fun = mesh.basis_functions.shape[0]
+    region_vertices = mesh.region.sum()
+    total_vertices = mesh.region.shape[0]
     return round(region_vertices / total_vertices * num_basis_fun)
 
 
 def slepian_mesh_inverse(
+    mesh: Mesh,
     f_p: np.ndarray,
-    basis_functions: np.ndarray,
     slepian_functions: np.ndarray,
     shannon: int,
 ) -> np.ndarray:
@@ -43,7 +41,7 @@ def slepian_mesh_inverse(
     """
     p_idx = 0
     f_p_reshape = f_p[:shannon, np.newaxis]
-    s_p = _compute_mesh_s_p_real(basis_functions, slepian_functions, shannon)
+    s_p = _compute_mesh_s_p_real(mesh.basis_functions, slepian_functions, shannon)
     return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
