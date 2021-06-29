@@ -31,8 +31,8 @@ def compute_shannon(mesh: Mesh) -> int:
 
 
 def slepian_mesh_inverse(
-    mesh: Mesh,
     f_p: np.ndarray,
+    mesh: Mesh,
     slepian_functions: np.ndarray,
     shannon: int,
 ) -> np.ndarray:

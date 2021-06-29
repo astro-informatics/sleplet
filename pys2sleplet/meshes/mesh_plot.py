@@ -45,8 +45,8 @@ class MeshPlot:
                     slepian_mesh, B=self.B, j_min=self.j_min
                 )
                 self.eigenvector = slepian_mesh_inverse(
-                    mesh,
                     slepian_wavelets_mesh.wavelets[self.index],
+                    mesh,
                     slepian_mesh.slepian_functions,
                     slepian_mesh.N,
                 )
