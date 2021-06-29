@@ -36,16 +36,34 @@ def read_args() -> Namespace:
         help="index of basis function to plot",
     )
     parser.add_argument(
+        "--j_min",
+        "-j",
+        type=int,
+        default=2,
+        help="wavelet scale j_min defaults to 2",
+    )
+    parser.add_argument(
+        "--B",
+        "-b",
+        type=int,
+        default=3,
+        help="lambda parameter defaults to 3",
+    )
+    parser.add_argument(
+        "--method",
+        "-m",
+        type=str,
+        nargs="?",
+        default="basis",
+        const="basis",
+        choices=["basis", "slepian", "wavelets"],
+        help="plotting routine: defaults to basis",
+    )
+    parser.add_argument(
         "--region",
         "-r",
         action="store_true",
         help="flag which masks the function for a region",
-    )
-    parser.add_argument(
-        "--slepian",
-        "-s",
-        action="store_true",
-        help="plot the Slepian functions of the region of a mesh",
     )
     return parser.parse_args()
 
@@ -57,15 +75,15 @@ def plot(
     master plotting method
     """
     # create mesh plot
-    f = MeshPlot(args.function, args.index, slepian=args.slepian)
+    f = MeshPlot(args.function, args.index, args.method, args.B, args.j_min)
 
     # adjust filename
     filename = f.name
-    filename += "_slepian" if args.slepian else ""
+    filename += f"_{args.method}" if args.method != "basis" else ""
     filename += f"_rank{args.index}"
 
     # whether to show region
-    show_region = f.region if args.slepian or args.region else None
+    show_region = f.region if args.method != "basis" or args.region else None
 
     # plotly config
     camera_view, colourbar_pos = mesh_plotly_config(args.function)

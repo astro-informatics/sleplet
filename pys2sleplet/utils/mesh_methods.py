@@ -214,3 +214,30 @@ def compute_shannon(
     region_vertices = mask.sum()
     total_vertices = mask.shape[0]
     return round(region_vertices / total_vertices * num_basis_fun)
+
+
+def slepian_mesh_inverse(
+    f_p: np.ndarray,
+    basis_functions: np.ndarray,
+    slepian_functions: np.ndarray,
+    shannon: int,
+) -> np.ndarray:
+    """
+    computes the Slepian inverse transform on the mesh up to the Shannon number
+    """
+    p_idx = 0
+    f_p_reshape = f_p[:shannon, np.newaxis]
+    s_p = compute_mesh_s_p_real(basis_functions, slepian_functions, shannon)
+    return (f_p_reshape * s_p).sum(axis=p_idx)
+
+
+def compute_mesh_s_p_real(
+    basis_functions: np.ndarray, slepian_functions: np.ndarray, shannon: int
+) -> np.ndarray:
+    """
+    method to calculate Sp(omega) for a given region
+    """
+    sp = np.zeros((shannon, basis_functions.shape[1]))
+    for p in range(shannon):
+        sp[p] = mesh_inverse(basis_functions, slepian_functions[p])
+    return sp
