@@ -5,12 +5,12 @@ from igl import euler_characteristic, gaussian_curvature
 from numpy.testing import assert_allclose, assert_equal
 
 from pys2sleplet.utils.mesh_methods import (
-    compute_shannon,
     create_mesh_region,
     integrate_whole_mesh,
     mesh_forward,
     mesh_inverse,
 )
+from pys2sleplet.utils.slepian_mesh_methods import compute_shannon
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 

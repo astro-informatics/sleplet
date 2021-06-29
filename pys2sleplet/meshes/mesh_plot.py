@@ -6,7 +6,8 @@ from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.slepian_wavelets_mesh import SlepianWaveletsMesh
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.mesh_methods import mesh_inverse, slepian_mesh_inverse
+from pys2sleplet.utils.mesh_methods import mesh_inverse
+from pys2sleplet.utils.slepian_mesh_methods import slepian_mesh_inverse
 
 
 @dataclass()
