@@ -9,27 +9,27 @@ from pys2sleplet.meshes.mesh import Mesh
 @dataclass
 class MeshField:
     mesh: Mesh
-    _function: np.ndarray = field(init=False, repr=False)
+    _field_values: np.ndarray = field(init=False, repr=False)
     _mesh: Mesh = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._compute_function()
+        self._compute_field_values()
 
-    def _compute_function(self) -> None:
+    def _compute_field_values(self) -> None:
         """
         compute field on the vertices of the mesh
         """
-        _, _, self.function, _ = principal_curvature(
+        _, _, self.field_values, _ = principal_curvature(
             self.mesh.vertices, self.mesh.faces
         )
 
     @property
-    def field(self) -> np.ndarray:
-        return self._field
+    def field_values(self) -> np.ndarray:
+        return self._field_values
 
-    @field.setter
-    def field(self, field: np.ndarray) -> None:
-        self._field = field
+    @field_values.setter
+    def field_values(self, field_values: np.ndarray) -> None:
+        self._field_values = field_values
 
     @property  # type: ignore
     def mesh(self) -> Mesh:

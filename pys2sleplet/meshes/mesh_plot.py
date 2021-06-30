@@ -66,7 +66,7 @@ class MeshPlot:
         plots a field defined on the vertices of the mesh
         """
         mesh_field = MeshField(self.mesh)
-        self.eigenvector = mesh_field.function
+        self.eigenvector = mesh_field.field_values
 
     def _plot_slepian_functions(self, slepian_mesh: SlepianMesh) -> None:
         """
