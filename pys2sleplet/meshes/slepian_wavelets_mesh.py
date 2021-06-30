@@ -39,14 +39,6 @@ class SlepianWaveletsMesh:
             B = SlepianWaveletsMesh._B
         self._B = B
 
-    @property
-    def j_max(self) -> int:
-        return self._j_max
-
-    @j_max.setter
-    def j_max(self, j_max: int) -> None:
-        self._j_max = j_max
-
     @property  # type:ignore
     def j_min(self) -> int:
         return self._j_min
