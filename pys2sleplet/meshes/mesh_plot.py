@@ -23,9 +23,9 @@ class MeshPlot:
     _eigenvector: np.ndarray = field(init=False, repr=False)
     _index: int = field(init=False, repr=False)
     _j_min: int = field(init=False, repr=False)
+    _mesh: Mesh = field(init=False, repr=False)
     _method: str = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
-    _region: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_plot()
@@ -36,53 +36,70 @@ class MeshPlot:
         eigenvector depending on what the value of method is
         """
         # initialise mesh object
-        mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
-        self.faces = mesh.faces
-        self.region = mesh.region
-        self.vertices = mesh.vertices
+        self.mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
 
         if self.method == "basis":
-            # if basis then just plot them
-            self.name = (
-                f"{self.name}_rank{self.index}_lam{mesh.mesh_eigenvalues[self.index]:e}"
-            )
-            self.eigenvector = mesh.basis_functions[self.index]
+            self._plot_basis_functions()
         elif self.method == "field":
-            # a field defined on the vertices of the mesh
-            mesh_field = MeshField(mesh)
-            self.eigenvector = mesh_field.function
+            self._plot_field_on_mesh()
         else:
             # initialise Slepian mesh object
-            slepian_mesh = SlepianMesh(mesh)
-            self.eigenvalue = slepian_mesh.slepian_eigenvalues[self.index]
+            slepian_mesh = SlepianMesh(self.mesh)
 
-            # if slepian then plot the Slepian functions
             if self.method == "slepian":
-                self.name = (
-                    f"slepian_{self.name}_rank{self.index}_"
-                    f"lam{slepian_mesh.slepian_eigenvalues[self.index]:e}"
-                )
-                s_p_i = slepian_mesh.slepian_functions[self.index]
-                self.eigenvector = mesh_inverse(mesh.basis_functions, s_p_i)
+                self._plot_slepian_functions(slepian_mesh)
             else:
-                # create file ending for wavelets
-                j = None if self.index == 0 else self.index - 1
-                name_end = wavelet_ending(self.j_min, j)
+                self._plot_slepian_wavelets(slepian_mesh)
 
-                # initialise Slepian wavelets mesh object
-                slepian_wavelets_mesh = SlepianWaveletsMesh(
-                    slepian_mesh, B=self.B, j_min=self.j_min
-                )
-                self.name = (
-                    f"slepian_wavelets_{self.name}_"
-                    f"{self.B}B_{self.j_min}jmin{name_end}"
-                )
-                self.eigenvector = slepian_mesh_inverse(
-                    slepian_wavelets_mesh.wavelets[self.index],
-                    mesh,
-                    slepian_mesh.slepian_functions,
-                    slepian_mesh.N,
-                )
+    def _plot_basis_functions(self) -> None:
+        """
+        method to plot the basis functions of the mesh directly
+        """
+        self.name = (
+            f"{self.name}_rank{self.index}_"
+            f"lam{self.mesh.mesh_eigenvalues[self.index]:e}"
+        )
+        self.eigenvector = self.mesh.basis_functions[self.index]
+
+    def _plot_field_on_mesh(self) -> None:
+        """
+        plots a field defined on the vertices of the mesh
+        """
+        mesh_field = MeshField(self.mesh)
+        self.eigenvector = mesh_field.function
+
+    def _plot_slepian_functions(self, slepian_mesh: SlepianMesh) -> None:
+        """
+        method to plot the Slepian functions of the mesh
+        """
+        self.name = (
+            f"slepian_{self.name}_rank{self.index}_"
+            f"lam{slepian_mesh.slepian_eigenvalues[self.index]:e}"
+        )
+        s_p_i = slepian_mesh.slepian_functions[self.index]
+        self.eigenvector = mesh_inverse(slepian_mesh.mesh.basis_functions, s_p_i)
+
+    def _plot_slepian_wavelets(self, slepian_mesh: SlepianMesh) -> None:
+        """
+        method to plot the Slepian wavelets of the mesh
+        """
+        # create file ending for wavelets
+        j = None if self.index == 0 else self.index - 1
+        name_end = wavelet_ending(self.j_min, j)
+
+        # initialise Slepian wavelets mesh object
+        slepian_wavelets_mesh = SlepianWaveletsMesh(
+            slepian_mesh, B=self.B, j_min=self.j_min
+        )
+        self.name = (
+            f"slepian_wavelets_{self.name}_" f"{self.B}B_{self.j_min}jmin{name_end}"
+        )
+        self.eigenvector = slepian_mesh_inverse(
+            slepian_wavelets_mesh.wavelets[self.index],
+            slepian_mesh.mesh,
+            slepian_mesh.slepian_functions,
+            slepian_mesh.N,
+        )
 
     @property  # type: ignore
     def B(self) -> int:
@@ -116,6 +133,14 @@ class MeshPlot:
     def j_min(self, j_min: int) -> None:
         self._j_min = j_min
 
+    @property
+    def mesh(self) -> Mesh:
+        return self._mesh
+
+    @mesh.setter
+    def mesh(self, mesh: Mesh) -> None:
+        self._mesh = mesh
+
     @property  # type: ignore
     def method(self) -> str:
         return self._method
@@ -131,11 +156,3 @@ class MeshPlot:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @property
-    def region(self) -> np.ndarray:
-        return self._region
-
-    @region.setter
-    def region(self, region: np.ndarray) -> None:
-        self._region = region

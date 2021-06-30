@@ -79,7 +79,7 @@ def plot(
 
     # whether to show region
     show_region = (
-        f.region if args.method not in {"basis", "field"} or args.region else None
+        f.mesh.region if args.method not in {"basis", "field"} or args.region else None
     )
 
     # plotly config
@@ -87,8 +87,8 @@ def plot(
 
     # do plot
     Plot(
-        f.vertices,
-        f.faces,
+        f.mesh.vertices,
+        f.mesh.faces,
         f.eigenvector,
         f.name,
         camera_view,
