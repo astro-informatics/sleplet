@@ -19,12 +19,9 @@ class MeshField:
         """
         compute field on the vertices of the mesh
         """
-        (
-            _,
-            _,
-            self.function,
-            _,
-        ) = principal_curvature(self.mesh.vertices, self.mesh.faces)
+        _, _, self.function, _ = principal_curvature(
+            self.mesh.vertices, self.mesh.faces
+        )
 
     @property
     def field(self) -> np.ndarray:
