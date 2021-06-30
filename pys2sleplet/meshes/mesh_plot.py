@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.mesh_field import MeshField
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.slepian_wavelets_mesh import SlepianWaveletsMesh
 from pys2sleplet.utils.config import settings
@@ -40,12 +41,16 @@ class MeshPlot:
         self.region = mesh.region
         self.vertices = mesh.vertices
 
-        # if basis then just plot them
         if self.method == "basis":
+            # if basis then just plot them
             self.name = (
                 f"{self.name}_rank{self.index}_lam{mesh.mesh_eigenvalues[self.index]:e}"
             )
             self.eigenvector = mesh.basis_functions[self.index]
+        elif self.method == "field":
+            # a field defined on the vertices of the mesh
+            mesh_field = MeshField(mesh)
+            self.eigenvector = mesh_field.function
         else:
             # initialise Slepian mesh object
             slepian_mesh = SlepianMesh(mesh)

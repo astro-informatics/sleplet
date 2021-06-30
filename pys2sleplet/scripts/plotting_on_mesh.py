@@ -56,7 +56,7 @@ def read_args() -> Namespace:
         nargs="?",
         default="basis",
         const="basis",
-        choices=["basis", "slepian", "wavelets"],
+        choices=["basis", "field", "slepian", "wavelets"],
         help="plotting routine: defaults to basis",
     )
     parser.add_argument(
@@ -78,7 +78,9 @@ def plot(
     f = MeshPlot(args.function, args.index, args.method, args.B, args.j_min)
 
     # whether to show region
-    show_region = f.region if args.method != "basis" or args.region else None
+    show_region = (
+        f.region if args.method not in {"basis", "field"} or args.region else None
+    )
 
     # plotly config
     camera_view, colourbar_pos = mesh_plotly_config(args.function)
