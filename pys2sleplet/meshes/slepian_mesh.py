@@ -131,8 +131,9 @@ class SlepianMesh:
         calculates the D integral between two mesh basis functions
         """
         return integrate_region_mesh(
-            self.mesh.basis_functions[i] * self.mesh.basis_functions[j],
             self.mesh.region,
+            self.mesh.basis_functions[i],
+            self.mesh.basis_functions[j],
         )
 
     @property  # type: ignore

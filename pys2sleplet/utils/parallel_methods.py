@@ -20,6 +20,7 @@ def create_shared_memory_array(array: np.ndarray) -> tuple[np.ndarray, SharedMem
     """
     creates a shared memory array to be used in a parallel function
     """
+    array_ext: np.ndarray
     ext_shared_memory = SharedMemory(create=True, size=array.nbytes)
     array_ext = np.ndarray(array.shape, dtype=array.dtype, buffer=ext_shared_memory.buf)
     return array_ext, ext_shared_memory
@@ -31,6 +32,7 @@ def attach_to_shared_memory_block(
     """
     used within the parallel function to attach an array to the shared memory
     """
+    array_int: np.ndarray
     int_shared_memory = SharedMemory(name=ext_shared_memory.name)
     array_int = np.ndarray(array.shape, dtype=array.dtype, buffer=int_shared_memory.buf)
     return array_int, int_shared_memory

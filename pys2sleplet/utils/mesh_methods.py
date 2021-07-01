@@ -1,4 +1,5 @@
 import glob
+from functools import reduce
 from pathlib import Path
 
 import numpy as np
@@ -150,23 +151,28 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors
 
 
-def integrate_whole_mesh(
-    function: np.ndarray,
-) -> float:
+def integrate_whole_mesh(*functions: np.ndarray) -> float:
     """
-    computes the integral of a function on the vertices
+    computes the integral of functions on the vertices
     """
-    return function.sum()
+    return _multiply_args(*functions).sum()
 
 
 def integrate_region_mesh(
-    function: np.ndarray,
     mask: np.ndarray,
+    *functions: np.ndarray,
 ) -> float:
     """
-    computes the integral of a region of a function on the vertices
+    computes the integral of a region of functions on the vertices
     """
-    return (function * mask).sum()
+    return (_multiply_args(*functions) * mask).sum()
+
+
+def _multiply_args(*args: np.ndarray) -> np.ndarray:
+    """
+    method to multiply an unknown number of arguments
+    """
+    return reduce((lambda x, y: x * y), args)
 
 
 def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
@@ -175,7 +181,7 @@ def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
     """
     u_i = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(u * phi_i)
+        u_i[i] = integrate_whole_mesh(u, phi_i)
     return u_i
 
 

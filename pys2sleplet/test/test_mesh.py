@@ -66,6 +66,6 @@ def test_orthonormality_over_mesh(mesh, i, j) -> None:
     for the computation of the Slepian D matrix the basis
     functions must be orthornomal over the whole mesh
     """
-    integral = integrate_whole_mesh(mesh.basis_functions[i] * mesh.basis_functions[j])
+    integral = integrate_whole_mesh(mesh.basis_functions[i], mesh.basis_functions[j])
     print(i, j)
     assert_allclose(integral, 1) if i == j else assert_allclose(integral, 0, atol=1e-14)
