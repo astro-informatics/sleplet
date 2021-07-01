@@ -38,12 +38,12 @@ class MeshPlot:
         # initialise mesh object
         self.mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
 
-        if self.method == "region":
-            self._plot_region()
-        elif self.method == "basis":
+        if self.method == "basis":
             self._plot_basis_functions()
         elif self.method == "field":
             self._plot_field_on_mesh()
+        elif self.method == "region":
+            self._plot_region()
         else:
             # initialise Slepian mesh object
             slepian_mesh = SlepianMesh(self.mesh)
