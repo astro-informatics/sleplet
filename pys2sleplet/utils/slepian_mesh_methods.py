@@ -1,6 +1,9 @@
+from typing import Optional
+
 import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.slepian_decomposition_mesh import SlepianDecompositionMesh
 from pys2sleplet.utils.mesh_methods import mesh_inverse
 
 
@@ -43,6 +46,24 @@ def slepian_mesh_inverse(
     f_p_reshape = f_p[:shannon, np.newaxis]
     s_p = _compute_mesh_s_p_real(mesh.basis_functions, slepian_functions, shannon)
     return (f_p_reshape * s_p).sum(axis=p_idx)
+
+
+def slepian_mesh_forward(
+    mesh: Mesh,
+    slepian_eigenvalues: np.ndarray,
+    slepian_functions: np.ndarray,
+    shannon: int,
+    u: Optional[np.ndarray] = None,
+    u_i: Optional[np.ndarray] = None,
+    mask: bool = False,
+) -> np.ndarray:
+    """
+    computes the Slepian forward transform for all coefficients
+    """
+    sd = SlepianDecompositionMesh(
+        mesh, slepian_eigenvalues, slepian_functions, shannon, u=u, u_i=u_i, mask=mask
+    )
+    return sd.decompose_all()
 
 
 def _compute_mesh_s_p_real(
