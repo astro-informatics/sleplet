@@ -56,7 +56,7 @@ def read_args() -> Namespace:
         nargs="?",
         default="basis",
         const="basis",
-        choices=["basis", "field", "region", "slepian", "wavelets"],
+        choices=["basis", "field", "region", "slepian", "slepian_field", "wavelets"],
         help="plotting routine: defaults to basis",
     )
     return parser.parse_args()
@@ -78,7 +78,7 @@ def plot(
     Plot(
         f.mesh.vertices,
         f.mesh.faces,
-        f.eigenvector,
+        f.field_values,
         f.name,
         camera_view,
         colourbar_pos,

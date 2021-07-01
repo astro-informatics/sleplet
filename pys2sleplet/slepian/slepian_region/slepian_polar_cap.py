@@ -282,11 +282,11 @@ class SlepianPolarCap(SlepianFunctions):
             tmin = max(0, max(t1, t2))
             tmax = min(t3, min(t4, t5))
 
-            s = 0
-            # sum is over all those t for which the following factorials have
-            # non-zero arguments.
-            for t in range(tmin, tmax + 1):
-                s += (-1) ** t / (
+            # sum is over all those t for which the
+            # following factorials have non-zero arguments
+            s = sum(
+                (-1) ** t
+                / (
                     gp.factorial(t)
                     * gp.factorial(t - t1)
                     * gp.factorial(t - t2)
@@ -294,7 +294,8 @@ class SlepianPolarCap(SlepianFunctions):
                     * gp.factorial(t4 - t)
                     * gp.factorial(t5 - t)
                 )
-
+                for t in range(tmin, tmax + 1)
+            )
             triangle_coefficient = (
                 gp.factorial(t3)
                 * gp.factorial(l1 - l2 + l3)

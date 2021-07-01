@@ -52,7 +52,7 @@ class SlepianDecompositionMesh:
         """
         decompose all ranks of the Slepian coefficients
         """
-        coefficients = np.zeros(self.shannon, dtype=np.complex_)
+        coefficients = np.zeros(self.shannon)
         for rank in range(self.shannon):
             coefficients[rank] = self.decompose(rank)
         return coefficients

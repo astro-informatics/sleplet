@@ -69,7 +69,7 @@ class Coefficients:
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
         if isinstance(self.region, Region) and all(
-            x not in self.name for x in {"slepian", "south_america"}
+            _ not in self.name for _ in {"slepian", "south_america"}
         ):
             coefficients = ensure_masked_flm_bandlimited(
                 coefficients, self.L, self.region, self.reality, self.spin
