@@ -45,7 +45,7 @@ class Plot:
         """
         f = self._prepare_field(self.f)
 
-        if isinstance(self.region, np.ndarray):
+        if any(_ in self.filename for _ in {"region", "slepian", "wavelets"}):
             # make plot area clearer
             f = self._set_outside_region_to_minimum(f)
 

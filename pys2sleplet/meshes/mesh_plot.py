@@ -38,7 +38,9 @@ class MeshPlot:
         # initialise mesh object
         self.mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
 
-        if self.method == "basis":
+        if self.method == "region":
+            self._plot_region()
+        elif self.method == "basis":
             self._plot_basis_functions()
         elif self.method == "field":
             self._plot_field_on_mesh()
@@ -50,6 +52,13 @@ class MeshPlot:
                 self._plot_slepian_functions(slepian_mesh)
             else:
                 self._plot_slepian_wavelets(slepian_mesh)
+
+    def _plot_region(self) -> None:
+        """
+        method to just plot the region of interest
+        """
+        self.name = f"{self.name}_region"
+        self.eigenvector = np.ones(self.mesh.vertices.shape[0])
 
     def _plot_basis_functions(self) -> None:
         """
@@ -65,6 +74,7 @@ class MeshPlot:
         """
         plots a field defined on the vertices of the mesh
         """
+        self.name = f"{self.name}_field"
         mesh_field = MeshField(self.mesh)
         self.eigenvector = mesh_field.field_values
 
@@ -86,13 +96,13 @@ class MeshPlot:
         # create file ending for wavelets
         j = None if self.index == 0 else self.index - 1
         name_end = wavelet_ending(self.j_min, j)
+        self.name = (
+            f"slepian_wavelets_{self.name}_" f"{self.B}B_{self.j_min}jmin{name_end}"
+        )
 
         # initialise Slepian wavelets mesh object
         slepian_wavelets_mesh = SlepianWaveletsMesh(
             slepian_mesh, B=self.B, j_min=self.j_min
-        )
-        self.name = (
-            f"slepian_wavelets_{self.name}_" f"{self.B}B_{self.j_min}jmin{name_end}"
         )
         self.eigenvector = slepian_mesh_inverse(
             slepian_wavelets_mesh.wavelets[self.index],
