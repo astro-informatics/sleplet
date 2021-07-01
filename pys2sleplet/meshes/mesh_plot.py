@@ -14,6 +14,8 @@ from pys2sleplet.utils.slepian_mesh_methods import (
 )
 from pys2sleplet.utils.string_methods import wavelet_ending
 
+REAL_VALUED_FUNCTIONS: set[str] = {"basis", "field", "region"}
+
 
 @dataclass()
 class MeshPlot:
@@ -40,7 +42,7 @@ class MeshPlot:
         self.mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
         mesh_field = MeshField(self.mesh)
 
-        if self.method in {"basis", "field", "region"}:
+        if self.method in REAL_VALUED_FUNCTIONS:
             self._plot_real_valued_functions(mesh_field)
         else:
             slepian_mesh = SlepianMesh(self.mesh)
