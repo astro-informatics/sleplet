@@ -63,7 +63,7 @@ class Plot:
                 i=self.faces[:, 0],
                 j=self.faces[:, 1],
                 k=self.faces[:, 2],
-                intensitymode=settings.INTENSITY,
+                intensitymode="cell" if settings.INTENSITY_FACES else "vertex",
                 intensity=f,
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
@@ -95,7 +95,7 @@ class Plot:
         """
         forces plot type and then scales the field before plotting
         """
-        if settings.INTENSITY == "cell":
+        if settings.INTENSITY_FACES:
             f = average_onto_faces(self.faces, f)
         return normalise_function(f)
 
@@ -106,7 +106,7 @@ class Plot:
         """
         region = (
             convert_vertices_region_to_faces(self.faces, self.region)
-            if settings.INTENSITY == "cell"
+            if settings.INTENSITY_FACES
             else self.region
         )
         return np.where(region, f, UNSEEN)
