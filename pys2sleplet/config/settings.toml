@@ -1,4 +1,5 @@
 AUTO_OPEN = true
+INTENSITY = "cell"
 L = 16
 L_MIN = 0
 L_MAX = -1

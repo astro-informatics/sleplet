@@ -63,7 +63,7 @@ class Plot:
                 i=self.faces[:, 0],
                 j=self.faces[:, 1],
                 k=self.faces[:, 2],
-                intensitymode="cell",
+                intensitymode=settings.INTENSITY,
                 intensity=f,
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
@@ -95,12 +95,18 @@ class Plot:
         """
         forces plot type and then scales the field before plotting
         """
-        return normalise_function(average_onto_faces(self.faces, f))
+        if settings.INTENSITY == "cell":
+            f = average_onto_faces(self.faces, f)
+        return normalise_function(f)
 
     def _set_outside_region_to_minimum(self, f: np.ndarray) -> np.ndarray:
         """
         for the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region
         """
-        region_on_faces = convert_vertices_region_to_faces(self.faces, self.region)
-        return np.where(region_on_faces, f, UNSEEN)
+        region = (
+            convert_vertices_region_to_faces(self.faces, self.region)
+            if settings.INTENSITY == "cell"
+            else self.region
+        )
+        return np.where(region, f, UNSEEN)
