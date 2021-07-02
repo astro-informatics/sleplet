@@ -191,3 +191,18 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     """
     i_idx = 0
     return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
+
+
+def convert_vertices_region_to_faces(
+    faces: np.ndarray, region_on_vertices: np.ndarray
+) -> np.ndarray:
+    """
+    the final plot requires the region on the faces, the region is
+    found using cartesian coordinates then need to find faces with
+    syntax (v1, v2, v3) that all exist in region
+    """
+    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
+    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
+    region_on_faces = np.zeros(faces.shape[0])
+    region_on_faces[faces_in_region] = 1
+    return region_on_faces
