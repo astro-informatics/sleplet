@@ -7,7 +7,7 @@ from pys2sleplet.utils.wavelet_methods import create_kappas
 
 
 @dataclass
-class SlepianWaveletsMesh:
+class SlepianMeshWavelets:
     slepian_mesh: SlepianMesh
     B: int
     j_min: int
@@ -36,7 +36,7 @@ class SlepianWaveletsMesh:
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = SlepianWaveletsMesh._B
+            B = SlepianMeshWavelets._B
         self._B = B
 
     @property  # type:ignore
@@ -48,7 +48,7 @@ class SlepianWaveletsMesh:
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = SlepianWaveletsMesh._j_min
+            j_min = SlepianMeshWavelets._j_min
         self._j_min = j_min
 
     @property  # type: ignore

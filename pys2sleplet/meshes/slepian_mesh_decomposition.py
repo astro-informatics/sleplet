@@ -13,7 +13,7 @@ from pys2sleplet.utils.mesh_methods import (
 
 
 @dataclass
-class SlepianDecompositionMesh:
+class SlepianMeshDecomposition:
     mesh: Mesh
     slepian_eigenvalues: np.ndarray
     slepian_functions: np.ndarray
@@ -130,7 +130,7 @@ class SlepianDecompositionMesh:
         if isinstance(mask, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            mask = SlepianDecompositionMesh._mask
+            mask = SlepianMeshDecomposition._mask
         self._mask = mask
 
     @property  # type:ignore
@@ -182,7 +182,7 @@ class SlepianDecompositionMesh:
         if isinstance(u, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            u = SlepianDecompositionMesh._u
+            u = SlepianMeshDecomposition._u
         self._u = u
 
     @property  # type:ignore
@@ -194,5 +194,5 @@ class SlepianDecompositionMesh:
         if isinstance(u_i, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            u_i = SlepianDecompositionMesh._u_i
+            u_i = SlepianMeshDecomposition._u_i
         self._u_i = u_i

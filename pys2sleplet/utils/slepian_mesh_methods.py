@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
-from pys2sleplet.meshes.slepian_decomposition_mesh import SlepianDecompositionMesh
+from pys2sleplet.meshes.slepian_mesh_decomposition import SlepianMeshDecomposition
 from pys2sleplet.utils.mesh_methods import mesh_inverse
 
 
@@ -60,7 +60,7 @@ def slepian_mesh_forward(
     """
     computes the Slepian forward transform for all coefficients
     """
-    sd = SlepianDecompositionMesh(
+    sd = SlepianMeshDecomposition(
         mesh, slepian_eigenvalues, slepian_functions, shannon, u=u, u_i=u_i, mask=mask
     )
     return sd.decompose_all()

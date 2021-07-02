@@ -6,10 +6,10 @@ from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.mesh_field import MeshField
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.slepian_mesh_field import SlepianMeshField
-from pys2sleplet.meshes.slepian_wavelet_coefficients_mesh import (
-    SlepianWaveletCoefficientsMesh,
+from pys2sleplet.meshes.slepian_mesh_wavelet_coefficients import (
+    SlepianMeshWaveletCoefficients,
 )
-from pys2sleplet.meshes.slepian_wavelets_mesh import SlepianWaveletsMesh
+from pys2sleplet.meshes.slepian_mesh_wavelets import SlepianMeshWavelets
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_mesh_methods import (
@@ -76,21 +76,21 @@ class MeshPlot:
         # initialise some helpful classes
         slepian_mesh = SlepianMesh(self.mesh)
         slepian_mesh_field = SlepianMeshField(mesh_field, slepian_mesh)
-        slepian_wavelets_mesh = SlepianWaveletsMesh(
+        slepian_mesh_wavelets = SlepianMeshWavelets(
             slepian_mesh, B=self.B, j_min=self.j_min
         )
 
         # determine type of Slepian coefficients
         if self.method == "coefficients":
             slepian_coefficients = self._plot_slepian_wavelet_coefficients(
-                slepian_mesh_field, slepian_wavelets_mesh
+                slepian_mesh_field, slepian_mesh_wavelets
             )
         elif self.method == "slepian":
             slepian_coefficients = self._plot_slepian_functions(slepian_mesh)
         elif self.method == "slepian_field":
             slepian_coefficients = self._plot_slepian_field(slepian_mesh_field)
         else:
-            slepian_coefficients = self._plot_slepian_wavelets(slepian_wavelets_mesh)
+            slepian_coefficients = self._plot_slepian_wavelets(slepian_mesh_wavelets)
 
         # convert to Slepian coefficients to real space
         self.field_values = slepian_mesh_inverse(
@@ -131,7 +131,7 @@ class MeshPlot:
     def _plot_slepian_wavelet_coefficients(
         self,
         slepian_mesh_field: SlepianMeshField,
-        slepian_wavelets_mesh: SlepianWaveletsMesh,
+        slepian_mesh_wavelets: SlepianMeshWavelets,
     ) -> np.ndarray:
         """
         method to plot the Slepian wavelet coefficients of a field on the mesh
@@ -139,10 +139,10 @@ class MeshPlot:
         self.name = (
             f"slepian_wavelet_coefficients_{self.name}{self._wavelet_filename()}"
         )
-        slepian_wavelet_coefficients_mesh = SlepianWaveletCoefficientsMesh(
-            slepian_mesh_field, slepian_wavelets_mesh
+        slepian_mesh_wavelet_coefficients = SlepianMeshWaveletCoefficients(
+            slepian_mesh_field, slepian_mesh_wavelets
         )
-        return slepian_wavelet_coefficients_mesh.wavelet_coefficients[self.index]
+        return slepian_mesh_wavelet_coefficients.wavelet_coefficients[self.index]
 
     def _plot_slepian_functions(self, slepian_mesh: SlepianMesh) -> np.ndarray:
         """
@@ -173,13 +173,13 @@ class MeshPlot:
         return slepian_mesh_field.slepian_coefficients
 
     def _plot_slepian_wavelets(
-        self, slepian_wavelets_mesh: SlepianWaveletsMesh
+        self, slepian_mesh_wavelets: SlepianMeshWavelets
     ) -> np.ndarray:
         """
         method to plot the Slepian wavelets of the mesh
         """
         self.name = f"slepian_wavelets_{self.name}{self._wavelet_filename()}"
-        return slepian_wavelets_mesh.wavelets[self.index]
+        return slepian_mesh_wavelets.wavelets[self.index]
 
     def _wavelet_filename(self) -> str:
         """
