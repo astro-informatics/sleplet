@@ -58,7 +58,7 @@ class DirectionalSpinWavelets(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.spin, self.N, self.j = self.extra_args
 
-    def _create_wavelets(self) -> np.ndarray:
+    def _create_wavelets(self) -> None:
         """
         compute all wavelets
         """
