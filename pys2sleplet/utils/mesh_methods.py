@@ -4,7 +4,13 @@ from pathlib import Path
 
 import numpy as np
 from box import Box
-from igl import adjacency_matrix, all_pairs_distances, cotmatrix, read_triangle_mesh
+from igl import (
+    adjacency_matrix,
+    all_pairs_distances,
+    cotmatrix,
+    massmatrix,
+    read_triangle_mesh,
+)
 from numpy import linalg as LA
 from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
@@ -148,7 +154,7 @@ def mesh_eigendecomposition(
                 vertices, faces, theta=data.THETA, knn=data.KNN
             )
             eigenvalues, eigenvectors = LA.eigh(laplacian)
-        eigenvectors = eigenvectors.T
+        eigenvectors = orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
@@ -156,21 +162,29 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors
 
 
-def integrate_whole_mesh(*functions: np.ndarray) -> float:
+def integrate_whole_mesh(
+    vertices: np.ndarray, faces: np.ndarray, *functions: np.ndarray
+) -> float:
     """
     computes the integral of functions on the vertices
     """
-    return _multiply_args(*functions).sum()
+    mass = massmatrix(vertices, faces)
+    multiplied_inputs = _multiply_args(*functions)
+    return (mass * multiplied_inputs).sum()
 
 
 def integrate_region_mesh(
+    vertices: np.ndarray,
+    faces: np.ndarray,
     mask: np.ndarray,
     *functions: np.ndarray,
 ) -> float:
     """
     computes the integral of a region of functions on the vertices
     """
-    return (_multiply_args(*functions) * mask).sum()
+    mass = massmatrix(vertices, faces)
+    multiplied_inputs = _multiply_args(*functions)
+    return (mass * multiplied_inputs * mask).sum()
 
 
 def _multiply_args(*args: np.ndarray) -> np.ndarray:
@@ -180,13 +194,15 @@ def _multiply_args(*args: np.ndarray) -> np.ndarray:
     return reduce((lambda x, y: x * y), args)
 
 
-def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
+def mesh_forward(
+    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
+) -> np.ndarray:
     """
     computes the mesh forward transform from real space to harmonic space
     """
     u_i = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(u, phi_i)
+        u_i[i] = integrate_whole_mesh(vertices, faces, u, phi_i)
     return u_i
 
 
@@ -211,3 +227,17 @@ def convert_vertices_region_to_faces(
     region_on_faces = np.zeros(faces.shape[0])
     region_on_faces[faces_in_region] = 1
     return region_on_faces
+
+
+def orthonormalise_basis_functions(
+    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
+) -> np.ndarray:
+    """
+    for computing the Slepian D matrix the basis functions must be orthonormal
+    """
+    logger.info("orthonormalising basis functions")
+    factor = np.zeros(basis_functions.shape[0])
+    for i, phi_i in enumerate(basis_functions):
+        factor[i] = integrate_whole_mesh(vertices, faces, phi_i, phi_i)
+    normalisation = np.sqrt(factor).reshape(-1, 1)
+    return basis_functions / normalisation

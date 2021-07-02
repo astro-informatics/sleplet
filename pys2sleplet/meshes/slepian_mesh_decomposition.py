@@ -68,7 +68,9 @@ class SlepianMeshDecomposition:
             self.mesh.basis_functions,
             self.slepian_functions[rank],
         )
-        integration = integrate_region_mesh(self.mesh.region, self.u, s_p)
+        integration = integrate_region_mesh(
+            self.mesh.vertices, self.mesh.faces, self.mesh.region, self.u, s_p
+        )
         return integration / self.slepian_eigenvalues[rank]
 
     def _integrate_sphere(self, rank: int) -> float:
@@ -81,7 +83,7 @@ class SlepianMeshDecomposition:
             self.mesh.basis_functions,
             self.slepian_functions[rank],
         )
-        return integrate_whole_mesh(self.u, s_p)
+        return integrate_whole_mesh(self.mesh.vertices, self.mesh.faces, self.u, s_p)
 
     def _harmonic_sum(self, rank: int) -> float:
         r"""
