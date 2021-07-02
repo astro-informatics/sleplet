@@ -46,7 +46,7 @@ class MeshPlot:
         logger.info(f"'{self.method}' plotting method selected")
 
         # initialise some helpful classes
-        self.mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
+        self.mesh = Mesh(self.name, mesh_laplacian=settings.MESH_LAPLACIAN)
         mesh_field = MeshField(self.mesh)
 
         # Slepian valued functions need to undergo an inverse transform

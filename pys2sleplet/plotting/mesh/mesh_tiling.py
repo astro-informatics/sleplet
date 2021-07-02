@@ -27,7 +27,7 @@ def main(mesh_name: str) -> None:
     plots the tiling of the Slepian line
     """
     # initialise mesh and Slepian mesh
-    mesh = Mesh(mesh_name, laplacian_type=settings.LAPLACIAN)
+    mesh = Mesh(mesh_name, mesh_laplacian=settings.MESH_LAPLACIAN)
     slepian_mesh = SlepianMesh(mesh)
 
     # set up x-axis

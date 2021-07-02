@@ -15,6 +15,7 @@ from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
+    MESH_LAPLACIAN_DEFAULT,
 )
 
 _file_location = Path(__file__).resolve()
@@ -105,7 +106,10 @@ def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
 
 
 def mesh_eigendecomposition(
-    name: str, vertices: np.ndarray, faces: np.ndarray, laplacian_type: str = "mesh"
+    name: str,
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    mesh_laplacian: bool = MESH_LAPLACIAN_DEFAULT,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     computes the eigendecomposition of the mesh represented
@@ -118,6 +122,7 @@ def mesh_eigendecomposition(
     )
 
     # create filenames
+    laplacian_type = "mesh" if mesh_laplacian else "graph"
     eigd_loc = (
         _meshes_path
         / "laplacians"
