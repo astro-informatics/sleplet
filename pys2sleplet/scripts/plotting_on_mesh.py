@@ -56,7 +56,15 @@ def read_args() -> Namespace:
         nargs="?",
         default="basis",
         const="basis",
-        choices=["basis", "field", "region", "slepian", "slepian_field", "wavelets"],
+        choices=[
+            "basis",
+            "coefficients",
+            "field",
+            "region",
+            "slepian",
+            "slepian_field",
+            "wavelets",
+        ],
         help="plotting routine: defaults to basis",
     )
     return parser.parse_args()

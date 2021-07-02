@@ -6,15 +6,19 @@ from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.mesh_field import MeshField
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.slepian_mesh_field import SlepianMeshField
+from pys2sleplet.meshes.slepian_wavelet_coefficients_mesh import (
+    SlepianWaveletCoefficientsMesh,
+)
 from pys2sleplet.meshes.slepian_wavelets_mesh import SlepianWaveletsMesh
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_mesh_methods import (
     slepian_mesh_forward,
     slepian_mesh_inverse,
 )
-from pys2sleplet.utils.string_methods import wavelet_ending
+from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
-REAL_VALUED_FUNCTIONS: set[str] = {"basis", "field", "region"}
+SLEPIAN_SPACE: set[str] = {"coefficients", "slepian", "slepian_field", "wavelets"}
 
 
 @dataclass()
@@ -39,14 +43,18 @@ class MeshPlot:
         """
         master plotting method depending on the method value
         """
+        logger.info(f"'{self.method}' plotting method selected")
+
+        # initialise some helpful classes
         self.mesh = Mesh(self.name, laplacian_type=settings.LAPLACIAN)
         mesh_field = MeshField(self.mesh)
 
-        if self.method in REAL_VALUED_FUNCTIONS:
+        # Slepian valued functions need to undergo an inverse transform
+        if self.method not in SLEPIAN_SPACE:
             self._plot_real_valued_functions(mesh_field)
         else:
-            slepian_mesh = SlepianMesh(self.mesh)
-            self._plot_slepian_coefficients(mesh_field, slepian_mesh)
+            self._plot_slepian_coefficients(mesh_field)
+        logger.info("finished calculating values, preparing plot...")
 
     def _plot_real_valued_functions(self, mesh_field: MeshField) -> None:
         """
@@ -56,21 +64,34 @@ class MeshPlot:
             self._plot_basis_functions()
         elif self.method == "field":
             self._plot_field_on_mesh(mesh_field)
-        else:
+        elif self.method == "region":
             self._plot_region()
+        else:
+            raise ValueError(f"'{self.method}' is not a valid method")
 
-    def _plot_slepian_coefficients(
-        self, mesh_field: MeshField, slepian_mesh: SlepianMesh
-    ) -> None:
+    def _plot_slepian_coefficients(self, mesh_field: MeshField) -> None:
         """
         master method to plot the functions defined in Slepian space
         """
-        if self.method == "slepian":
+        # initialise some helpful classes
+        slepian_mesh = SlepianMesh(self.mesh)
+        slepian_mesh_field = SlepianMeshField(mesh_field, slepian_mesh)
+        slepian_wavelets_mesh = SlepianWaveletsMesh(
+            slepian_mesh, B=self.B, j_min=self.j_min
+        )
+
+        # determine type of Slepian coefficients
+        if self.method == "coefficients":
+            slepian_coefficients = self._plot_slepian_wavelet_coefficients(
+                slepian_mesh_field, slepian_wavelets_mesh
+            )
+        elif self.method == "slepian":
             slepian_coefficients = self._plot_slepian_functions(slepian_mesh)
         elif self.method == "slepian_field":
-            slepian_coefficients = self._plot_slepian_field(mesh_field, slepian_mesh)
+            slepian_coefficients = self._plot_slepian_field(slepian_mesh_field)
         else:
-            slepian_coefficients = self._plot_slepian_wavelets(slepian_mesh)
+            slepian_coefficients = self._plot_slepian_wavelets(slepian_wavelets_mesh)
+
         # convert to Slepian coefficients to real space
         self.field_values = slepian_mesh_inverse(
             slepian_coefficients,
@@ -107,6 +128,22 @@ class MeshPlot:
         self.name = f"{self.name}_region"
         self.field_values = np.ones(self.mesh.vertices.shape[0])
 
+    def _plot_slepian_wavelet_coefficients(
+        self,
+        slepian_mesh_field: SlepianMeshField,
+        slepian_wavelets_mesh: SlepianWaveletsMesh,
+    ) -> np.ndarray:
+        """
+        method to plot the Slepian wavelet coefficients of a field on the mesh
+        """
+        self.name = (
+            f"slepian_wavelet_coefficients_{self.name}{self._wavelet_filename()}"
+        )
+        slepian_wavelet_coefficients_mesh = SlepianWaveletCoefficientsMesh(
+            slepian_mesh_field, slepian_wavelets_mesh
+        )
+        return slepian_wavelet_coefficients_mesh.wavelet_coefficients[self.index]
+
     def _plot_slepian_functions(self, slepian_mesh: SlepianMesh) -> np.ndarray:
         """
         method to plot the Slepian functions of the mesh
@@ -128,30 +165,33 @@ class MeshPlot:
             u_i=s_p_i,
         )
 
-    def _plot_slepian_field(self, mesh_field, slepian_mesh) -> np.ndarray:
+    def _plot_slepian_field(self, slepian_mesh_field: SlepianMeshField) -> np.ndarray:
         """
         method to plot Slepian coefficients of a field
         """
         self.name = f"slepian_{self.name}_field"
-        slepian_mesh_field = SlepianMeshField(mesh_field, slepian_mesh)
         return slepian_mesh_field.slepian_coefficients
 
-    def _plot_slepian_wavelets(self, slepian_mesh: SlepianMesh) -> np.ndarray:
+    def _plot_slepian_wavelets(
+        self, slepian_wavelets_mesh: SlepianWaveletsMesh
+    ) -> np.ndarray:
         """
         method to plot the Slepian wavelets of the mesh
         """
-        # create file ending for wavelets
-        j = None if self.index == 0 else self.index - 1
-        name_end = wavelet_ending(self.j_min, j)
-        self.name = (
-            f"slepian_wavelets_{self.name}_" f"{self.B}B_{self.j_min}jmin{name_end}"
-        )
-
-        # initialise Slepian wavelets mesh object
-        slepian_wavelets_mesh = SlepianWaveletsMesh(
-            slepian_mesh, B=self.B, j_min=self.j_min
-        )
+        self.name = f"slepian_wavelets_{self.name}{self._wavelet_filename()}"
         return slepian_wavelets_mesh.wavelets[self.index]
+
+    def _wavelet_filename(self) -> str:
+        """
+        wavelet parameters in the figure filename
+        """
+        # determine if scaling function
+        j = None if self.index == 0 else self.index - 1
+        return (
+            f"{filename_args(self.B, 'B')}"
+            f"{filename_args(self.j_min, 'jmin')}"
+            f"{wavelet_ending(self.j_min, j)}"
+        )
 
     @property  # type: ignore
     def B(self) -> int:

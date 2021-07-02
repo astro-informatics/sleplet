@@ -22,7 +22,7 @@ from pys2sleplet.utils.vars import UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
-FUNCTIONS_IN_REGION: set[str] = {"region", "slepian", "wavelets"}
+FUNCTIONS_IN_REGION: set[str] = {"region", "slepian"}
 
 
 @dataclass
@@ -46,7 +46,7 @@ class Plot:
         """
         f = self._prepare_field(self.f)
 
-        if any(_ in self.filename for _ in FUNCTIONS_IN_REGION):
+        if set(self.filename.split("_")) & FUNCTIONS_IN_REGION:
             # make plot area clearer
             f = self._set_outside_region_to_minimum(f)
 
