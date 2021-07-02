@@ -8,7 +8,7 @@ from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.region import Region
 
-COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south_america"}
+COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
 @dataclass  # type:ignore
@@ -70,8 +70,9 @@ class Coefficients:
 
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
-        if isinstance(self.region, Region) and all(
-            _ not in self.name for _ in COEFFICIENTS_TO_NOT_MASK
+        if (
+            isinstance(self.region, Region)
+            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
             coefficients = ensure_masked_flm_bandlimited(
                 coefficients, self.L, self.region, self.reality, self.spin
