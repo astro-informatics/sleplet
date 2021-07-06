@@ -125,13 +125,14 @@ def mesh_eigendecomposition(
     """
     # read in polygon data
     data = _read_toml(name)
-    logger.info(
-        f"finding {data.NUMBER}/{vertices.shape[0]} basis functions of {name} mesh"
-    )
 
     # determine number of basis functions
     if number_basis_functions is None:
         number_basis_functions = data.NUMBER
+    logger.info(
+        f"finding {number_basis_functions}/{vertices.shape[0]} "
+        f"basis functions of {name} mesh"
+    )
 
     # create filenames
     laplacian_type = "mesh" if mesh_laplacian else "graph"
@@ -153,7 +154,7 @@ def mesh_eigendecomposition(
         if laplacian_type == "mesh":
             laplacian = _mesh_laplacian(vertices, faces)
             eigenvalues, eigenvectors = LA_sparse.eigsh(
-                laplacian, data.NUMBER, which="LM", sigma=0
+                laplacian, number_basis_functions, which="LM", sigma=0
             )
         else:
             laplacian = _graph_laplacian(
