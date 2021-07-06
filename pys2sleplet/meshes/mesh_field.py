@@ -9,8 +9,10 @@ from pys2sleplet.meshes.mesh import Mesh
 @dataclass
 class MeshField:
     mesh: Mesh
+    mask_region: bool
     _field_values: np.ndarray = field(init=False, repr=False)
     _mesh: Mesh = field(init=False, repr=False)
+    _mask_region: bool = field(default=False, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._compute_field_values()
@@ -22,6 +24,14 @@ class MeshField:
         _, _, self.field_values, _ = principal_curvature(
             self.mesh.vertices, self.mesh.faces
         )
+        self._set_outside_region_to_zero()
+
+    def _set_outside_region_to_zero(self) -> None:
+        """
+        method to set the outside the region to zero
+        """
+        if self.mask_region:
+            self.field_values = np.where(self.mesh.region, self.field_values, 0)
 
     @property
     def field_values(self) -> np.ndarray:
@@ -30,6 +40,18 @@ class MeshField:
     @field_values.setter
     def field_values(self, field_values: np.ndarray) -> None:
         self._field_values = field_values
+
+    @property  # type: ignore
+    def mask_region(self) -> bool:
+        return self._mask_region
+
+    @mask_region.setter
+    def mask_region(self, mask_region: bool) -> None:
+        if isinstance(mask_region, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            mask_region = MeshField._mask_region
+        self._mask_region = mask_region
 
     @property  # type: ignore
     def mesh(self) -> Mesh:
