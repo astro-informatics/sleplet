@@ -21,7 +21,6 @@ from pys2sleplet.utils.parallel_methods import (
     split_arr_into_chunks,
 )
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import GAP_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
@@ -32,7 +31,7 @@ class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     order: Optional[Union[int, np.ndarray]]
     gap: bool
-    _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
+    _gap: bool = field(default=False, init=False, repr=False)
     _order: Optional[Union[int, np.ndarray]] = field(
         default=None, init=False, repr=False
     )

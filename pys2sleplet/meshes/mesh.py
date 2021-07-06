@@ -8,7 +8,6 @@ from pys2sleplet.utils.mesh_methods import (
     mesh_eigendecomposition,
     read_mesh,
 )
-from pys2sleplet.utils.vars import MESH_LAPLACIAN_DEFAULT
 
 
 @dataclass  # type: ignore
@@ -18,9 +17,7 @@ class Mesh:
     number_basis_functions: Optional[int]
     _basis_functions: np.ndarray = field(init=False, repr=False)
     _mesh_eigenvalues: np.ndarray = field(init=False, repr=False)
-    _mesh_laplacian: bool = field(
-        default=MESH_LAPLACIAN_DEFAULT, init=False, repr=False
-    )
+    _mesh_laplacian: bool = field(default=True, init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _number_basis_functions: Optional[int] = field(default=None, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)

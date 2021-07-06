@@ -22,7 +22,6 @@ from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
-    MESH_LAPLACIAN_DEFAULT,
 )
 
 _file_location = Path(__file__).resolve()
@@ -116,7 +115,7 @@ def mesh_eigendecomposition(
     name: str,
     vertices: np.ndarray,
     faces: np.ndarray,
-    mesh_laplacian: bool = MESH_LAPLACIAN_DEFAULT,
+    mesh_laplacian: bool = True,
     number_basis_functions: Optional[int] = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
