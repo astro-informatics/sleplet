@@ -1,6 +1,7 @@
 import glob
 from functools import reduce
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 from box import Box
@@ -116,6 +117,7 @@ def mesh_eigendecomposition(
     vertices: np.ndarray,
     faces: np.ndarray,
     mesh_laplacian: bool = MESH_LAPLACIAN_DEFAULT,
+    number_basis_functions: Optional[int] = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     computes the eigendecomposition of the mesh represented
@@ -127,6 +129,10 @@ def mesh_eigendecomposition(
         f"finding {data.NUMBER}/{vertices.shape[0]} basis functions of {name} mesh"
     )
 
+    # determine number of basis functions
+    if number_basis_functions is None:
+        number_basis_functions = data.NUMBER
+
     # create filenames
     laplacian_type = "mesh" if mesh_laplacian else "graph"
     eigd_loc = (
@@ -134,7 +140,7 @@ def mesh_eigendecomposition(
         / "laplacians"
         / laplacian_type
         / "basis_functions"
-        / f"{name}_b{data.NUMBER}"
+        / f"{name}_b{number_basis_functions}"
     )
     eval_loc = eigd_loc / "eigenvalues.npy"
     evec_loc = eigd_loc / "eigenvectors.npy"
