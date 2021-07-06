@@ -40,16 +40,6 @@ def test_mesh_region_is_some_fraction_of_totel(mesh) -> None:
     assert region.sum() < region.shape[0]
 
 
-# def test_gauss_bonnet_theorem(mesh) -> None:
-#     """
-#     tests the Gauss-Bonnet theorem holds for the mesh
-#     """
-#     K = gaussian_curvature(mesh.vertices, mesh.faces)
-#     integral = integrate_whole_mesh(mesh.vertices, mesh.faces, K)
-#     chi = euler_characteristic(mesh.faces)
-#     assert_allclose(integral, 2 * np.pi * chi)
-
-
 @seed(RANDOM_SEED)
 @given(i=valid_indices(), j=valid_indices())
 def test_orthonormality_over_mesh(mesh, i, j) -> None:
@@ -60,5 +50,4 @@ def test_orthonormality_over_mesh(mesh, i, j) -> None:
     integral = integrate_whole_mesh(
         mesh.vertices, mesh.faces, mesh.basis_functions[i], mesh.basis_functions[j]
     )
-    print(i, j)
     assert_allclose(integral, 1) if i == j else assert_allclose(integral, 0, atol=0.3)
