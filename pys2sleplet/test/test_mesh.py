@@ -32,7 +32,7 @@ def test_forward_inverse_transform_recovery(mesh) -> None:
     assert_equal(mesh.vertices.shape[0], kernel_recov.shape[0])
 
 
-def test_mesh_region_is_some_fraction_of_totel(mesh) -> None:
+def test_mesh_region_is_some_fraction_of_total(mesh) -> None:
     """
     the region should be some fraction of the total nodes
     """
