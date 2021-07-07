@@ -1,6 +1,5 @@
 import numpy as np
-from hypothesis import given, seed
-from hypothesis.strategies import SearchStrategy, integers
+import pytest
 from igl import gaussian_curvature
 from numpy.testing import assert_allclose, assert_equal
 
@@ -10,14 +9,6 @@ from pys2sleplet.utils.mesh_methods import (
     mesh_forward,
     mesh_inverse,
 )
-from pys2sleplet.utils.vars import RANDOM_SEED
-
-
-def valid_indices() -> SearchStrategy[int]:
-    """
-    index can be in the range 0 to num_basis_function - 1
-    """
-    return integers(min_value=0, max_value=10)
 
 
 def test_forward_inverse_transform_recovery(mesh) -> None:
@@ -40,14 +31,19 @@ def test_mesh_region_is_some_fraction_of_total(mesh) -> None:
     assert region.sum() < region.shape[0]
 
 
-@seed(RANDOM_SEED)
-@given(i=valid_indices(), j=valid_indices())
-def test_orthonormality_over_mesh(mesh, i, j) -> None:
+@pytest.mark.slow
+def test_orthonormality_over_mesh_full(mesh) -> None:
     """
     for the computation of the Slepian D matrix the basis
     functions must be orthornomal over the whole mesh
     """
-    integral = integrate_whole_mesh(
-        mesh.vertices, mesh.faces, mesh.basis_functions[i], mesh.basis_functions[j]
+    orthonormality = np.zeros(
+        (mesh.basis_functions.shape[0], mesh.basis_functions.shape[0])
     )
-    assert_allclose(integral, 1) if i == j else assert_allclose(integral, 0, atol=0.3)
+    for i, phi_i in enumerate(mesh.basis_functions):
+        for j, phi_j in enumerate(mesh.basis_functions):
+            orthonormality[i, j] = integrate_whole_mesh(
+                mesh.vertices, mesh.faces, phi_i, phi_j
+            )
+    identity = np.identity(mesh.basis_functions.shape[0])
+    np.testing.assert_allclose(np.abs(orthonormality - identity).mean(), 0, atol=0.04)
