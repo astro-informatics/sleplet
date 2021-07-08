@@ -83,7 +83,7 @@ def test_forward_inverse_transform_slepian(slepian_mesh, mesh_field_masked) -> N
             slepian_mesh.mesh.region
         ].mean(),
         0,
-        atol=0.5,
+        atol=0.7,
     )
 
 

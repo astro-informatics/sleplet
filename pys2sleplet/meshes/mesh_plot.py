@@ -126,7 +126,7 @@ class MeshPlot:
         method to just plot the region of interest
         """
         self.name = f"{self.name}_region"
-        self.field_values = np.ones(self.mesh.vertices.shape[0])
+        self.field_values = np.ones(self.mesh.faces.shape[0])
 
     def _plot_slepian_wavelet_coefficients(
         self,
