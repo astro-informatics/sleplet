@@ -54,7 +54,10 @@ def create_mesh_region(mesh_name: str, faces: np.ndarray) -> np.ndarray:
     creates the boolean region for the given mesh
     """
     data = _read_toml(mesh_name)
-    return ((faces >= data.FACES_MIN) & (faces <= data.FACES_MAX)).any(axis=1)
+    faces_selected = np.zeros(faces.shape, dtype=int)
+    for faces_min, faces_max in data.FACES_RANGES.to_list():
+        faces_selected |= (faces >= faces_min) & (faces <= faces_max)
+    return faces_selected.any(axis=1)
 
 
 def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
