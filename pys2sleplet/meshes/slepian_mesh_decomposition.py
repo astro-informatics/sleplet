@@ -41,8 +41,8 @@ class SlepianMeshDecomposition:
 
         if self.method == "harmonic_sum":
             return self._harmonic_sum(rank)
-        elif self.method == "integrate_sphere":
-            return self._integrate_sphere(rank)
+        elif self.method == "integrate_mesh":
+            return self._integrate_mesh(rank)
         elif self.method == "integrate_region":
             return self._integrate_region(rank)
         else:
@@ -68,10 +68,12 @@ class SlepianMeshDecomposition:
             self.mesh.basis_functions,
             self.slepian_functions[rank],
         )
-        integration = integrate_region_mesh(self.mesh.region, self.u, s_p)
+        integration = integrate_region_mesh(
+            self.mesh.vertices, self.mesh.faces, self.mesh.region, self.u, s_p
+        )
         return integration / self.slepian_eigenvalues[rank]
 
-    def _integrate_sphere(self, rank: int) -> float:
+    def _integrate_mesh(self, rank: int) -> float:
         r"""
         f_{p} =
         \int\limits_{x} \dd{x}
@@ -81,7 +83,7 @@ class SlepianMeshDecomposition:
             self.mesh.basis_functions,
             self.slepian_functions[rank],
         )
-        return integrate_whole_mesh(self.u, s_p)
+        return integrate_whole_mesh(self.mesh.vertices, self.mesh.faces, self.u, s_p)
 
     def _harmonic_sum(self, rank: int) -> float:
         r"""
@@ -99,10 +101,10 @@ class SlepianMeshDecomposition:
             logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
         elif isinstance(self.u, np.ndarray) and not self.mask:
-            logger.info("integrating the whole sphere method selected")
-            self.method = "integrate_sphere"
+            logger.info("integrating the whole mesh method selected")
+            self.method = "integrate_mesh"
         elif isinstance(self.u, np.ndarray):
-            logger.info("integrating a region on the sphere method selected")
+            logger.info("integrating a region on the mesh method selected")
             self.method = "integrate_region"
         else:
             raise RuntimeError(

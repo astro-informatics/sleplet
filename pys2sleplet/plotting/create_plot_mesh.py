@@ -6,14 +6,12 @@ import cmocean
 import numpy as np
 import plotly.io as pio
 import plotly.offline as py
-from igl import average_onto_faces
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.layout.scene import Camera
 from plotly.graph_objs.mesh3d import Lighting
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import convert_vertices_region_to_faces
 from pys2sleplet.utils.plot_methods import convert_colourscale, normalise_function
 from pys2sleplet.utils.plotly_methods import (
     create_colour_bar,
@@ -63,7 +61,7 @@ class Plot:
                 i=self.faces[:, 0],
                 j=self.faces[:, 1],
                 k=self.faces[:, 2],
-                intensitymode="cell" if settings.INTENSITY_FACES else "vertex",
+                intensitymode="cell",
                 intensity=f,
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
@@ -93,10 +91,8 @@ class Plot:
 
     def _prepare_field(self, f: np.ndarray) -> np.ndarray:
         """
-        forces plot type and then scales the field before plotting
+        scales the field before plotting
         """
-        if settings.INTENSITY_FACES:
-            f = average_onto_faces(self.faces, f)
         return normalise_function(f)
 
     def _set_outside_region_to_minimum(self, f: np.ndarray) -> np.ndarray:
@@ -104,9 +100,4 @@ class Plot:
         for the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region
         """
-        region = (
-            convert_vertices_region_to_faces(self.faces, self.region)
-            if settings.INTENSITY_FACES
-            else self.region
-        )
-        return np.where(region, f, UNSEEN)
+        return np.where(self.region, f, UNSEEN)

@@ -4,7 +4,11 @@ import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.slepian_mesh_decomposition import SlepianMeshDecomposition
-from pys2sleplet.utils.mesh_methods import mesh_inverse
+from pys2sleplet.utils.mesh_methods import (
+    integrate_region_mesh,
+    integrate_whole_mesh,
+    mesh_inverse,
+)
 
 
 def clean_evals_and_evecs(
@@ -27,10 +31,11 @@ def compute_shannon(mesh: Mesh) -> int:
     """
     computes the effective Shannon number for a region of a mesh
     """
+    value = 1
     num_basis_fun = mesh.basis_functions.shape[0]
-    region_vertices = mesh.region.sum()
-    total_vertices = mesh.region.shape[0]
-    return round(region_vertices / total_vertices * num_basis_fun)
+    region_area = integrate_region_mesh(mesh.vertices, mesh.faces, mesh.region, value)
+    total_area = integrate_whole_mesh(mesh.vertices, mesh.faces, value)
+    return round(region_area / total_area * num_basis_fun)
 
 
 def slepian_mesh_inverse(
@@ -44,7 +49,7 @@ def slepian_mesh_inverse(
     """
     p_idx = 0
     f_p_reshape = f_p[:shannon, np.newaxis]
-    s_p = _compute_mesh_s_p_real(mesh.basis_functions, slepian_functions, shannon)
+    s_p = _compute_mesh_s_p_pixel(mesh.basis_functions, slepian_functions, shannon)
     return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
@@ -66,7 +71,7 @@ def slepian_mesh_forward(
     return sd.decompose_all()
 
 
-def _compute_mesh_s_p_real(
+def _compute_mesh_s_p_pixel(
     basis_functions: np.ndarray, slepian_functions: np.ndarray, shannon: int
 ) -> np.ndarray:
     """
