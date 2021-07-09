@@ -8,8 +8,9 @@ from box import Box
 from igl import (
     adjacency_matrix,
     all_pairs_distances,
+    average_onto_faces,
     cotmatrix,
-    massmatrix,
+    doublearea,
     read_triangle_mesh,
 )
 from numpy import linalg as LA
@@ -48,19 +49,12 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     return vertices, faces
 
 
-def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
+def create_mesh_region(mesh_name: str, faces: np.ndarray) -> np.ndarray:
     """
     creates the boolean region for the given mesh
     """
     data = _read_toml(mesh_name)
-    return (
-        (vertices[:, 0] > data.XMIN)
-        & (vertices[:, 0] < data.XMAX)
-        & (vertices[:, 1] > data.YMIN)
-        & (vertices[:, 1] < data.YMAX)
-        & (vertices[:, 2] > data.ZMIN)
-        & (vertices[:, 2] < data.ZMAX)
-    )
+    return ((faces >= data.FACES_MIN) & (faces <= data.FACES_MAX)).any(axis=1)
 
 
 def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
@@ -160,7 +154,7 @@ def mesh_eigendecomposition(
                 vertices, faces, theta=data.THETA, knn=data.KNN
             )
             eigenvalues, eigenvectors = LA.eigh(laplacian)
-        eigenvectors = orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
+        eigenvectors = _tidy_eigenvectors(vertices, faces, eigenvectors.T)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
@@ -174,9 +168,8 @@ def integrate_whole_mesh(
     """
     computes the integral of functions on the vertices
     """
-    mass = massmatrix(vertices, faces)
-    multiplied_inputs = _multiply_args(*functions)
-    return (mass * multiplied_inputs).sum()
+    area, multiplied_inputs = _prepare_integral(vertices, faces, *functions)
+    return (area * multiplied_inputs).sum()
 
 
 def integrate_region_mesh(
@@ -188,9 +181,19 @@ def integrate_region_mesh(
     """
     computes the integral of a region of functions on the vertices
     """
-    mass = massmatrix(vertices, faces)
+    area, multiplied_inputs = _prepare_integral(vertices, faces, *functions)
+    return (area * multiplied_inputs * mask).sum()
+
+
+def _prepare_integral(
+    vertices: np.ndarray, faces: np.ndarray, *functions: np.ndarray
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    repeated step in calculating the whole/region integrals
+    """
+    area = doublearea(vertices, faces) / 2
     multiplied_inputs = _multiply_args(*functions)
-    return (mass * multiplied_inputs * mask).sum()
+    return area, multiplied_inputs
 
 
 def _multiply_args(*args: np.ndarray) -> np.ndarray:
@@ -220,22 +223,17 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
 
 
-def convert_vertices_region_to_faces(
-    faces: np.ndarray, region_on_vertices: np.ndarray
+def _tidy_eigenvectors(
+    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
 ) -> np.ndarray:
     """
-    the final plot requires the region on the faces, the region is
-    found using cartesian coordinates then need to find faces with
-    syntax (v1, v2, v3) that all exist in region
+    combines averaging onto faces and orthonormalisation steps
     """
-    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
-    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
-    region_on_faces = np.zeros(faces.shape[0])
-    region_on_faces[faces_in_region] = 1
-    return region_on_faces
+    averaged = average_functions_on_vertices_to_faces(faces, basis_functions)
+    return _orthonormalise_basis_functions(vertices, faces, averaged)
 
 
-def orthonormalise_basis_functions(
+def _orthonormalise_basis_functions(
     vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
 ) -> np.ndarray:
     """
@@ -247,3 +245,27 @@ def orthonormalise_basis_functions(
         factor[i] = integrate_whole_mesh(vertices, faces, phi_i, phi_i)
     normalisation = np.sqrt(factor).reshape(-1, 1)
     return basis_functions / normalisation
+
+
+def average_functions_on_vertices_to_faces(
+    faces: np.ndarray,
+    functions_on_vertices: np.ndarray,
+) -> np.ndarray:
+    """
+    the integrals require all functions to be defined on faces
+    this method handles an arbitrary number of functions
+    """
+    logger.info("converting function on vertices to faces")
+    # handle the case of a 1D array
+    array_is_1d = len(functions_on_vertices.shape) == 1
+    if array_is_1d:
+        functions_on_vertices = functions_on_vertices.reshape(1, -1)
+
+    functions_on_faces = np.zeros((functions_on_vertices.shape[0], faces.shape[0]))
+    for i, f in enumerate(functions_on_vertices):
+        functions_on_faces[i] = average_onto_faces(faces, f)
+
+    # put the vector back in 1D form
+    if array_is_1d:
+        functions_on_faces = functions_on_faces.reshape(-1)
+    return functions_on_faces

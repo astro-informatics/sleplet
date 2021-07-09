@@ -1,5 +1,4 @@
 AUTO_OPEN = true
-INTENSITY_FACES = true
 L = 16
 L_MIN = 0
 L_MAX = -1
