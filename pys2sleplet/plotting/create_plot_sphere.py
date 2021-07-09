@@ -1,18 +1,14 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import cmocean
 import numpy as np
 import plotly.io as pio
 import plotly.offline as py
 import pyssht as ssht
-from plotly.graph_objs import Figure, Layout, Surface
-from plotly.graph_objs.layout import Margin, Scene
-from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
-from plotly.graph_objs.layout.scene.camera import Eye
-from plotly.graph_objs.surface import ColorBar, Lighting
-from plotly.graph_objs.surface.colorbar import Tickfont
+from plotly.graph_objs import Figure, Surface
+from plotly.graph_objs.surface import Lighting
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
@@ -24,8 +20,14 @@ from pys2sleplet.utils.plot_methods import (
     normalise_function,
     set_outside_region_to_minimum,
 )
+from pys2sleplet.utils.plotly_methods import (
+    create_camera,
+    create_colour_bar,
+    create_layout,
+    create_tick_mark,
+)
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, UNSEEN, ZOOM_DEFAULT
+from pys2sleplet.utils.vars import SAMPLING_SCHEME, UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -38,7 +40,7 @@ class Plot:
     filename: str
     amplitude: Optional[float] = field(default=None, repr=False)
     plot_type: str = field(default="real", repr=False)
-    annotations: List[Dict] = field(default_factory=list, repr=False)
+    annotations: list[dict] = field(default_factory=list, repr=False)
     reality: bool = field(default=False, repr=False)
     region: Optional[Region] = field(default=None, repr=False)
     spin: int = field(default=0, repr=False)
@@ -67,14 +69,10 @@ class Plot:
             f_plot = set_outside_region_to_minimum(f_plot, self.resolution, self.region)
 
         # appropriate zoom in on north pole
-        camera = Camera(
-            eye=Eye(x=-0.1 / ZOOM_DEFAULT, y=-0.1 / ZOOM_DEFAULT, z=10 / ZOOM_DEFAULT)
-        )
+        camera = create_camera(-0.1, -0.1, 10, 7.88)
 
         # pick largest tick max value
-        tick_mark = (
-            self.amplitude if self.amplitude is not None else max(abs(vmin), abs(vmax))
-        )
+        tick_mark = create_tick_mark(vmin, vmax, amplitude=self.amplitude)
 
         data = [
             Surface(
@@ -85,43 +83,14 @@ class Plot:
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
                 cmin=0 if settings.NORMALISE else -tick_mark,
-                colorbar=ColorBar(
-                    x=0.93,
-                    len=0.98,
-                    nticks=2 if settings.NORMALISE else None,
-                    tickfont=Tickfont(color="#666666", size=32),
-                    tickformat=None if settings.NORMALISE else "+.1e",
-                    tick0=None if settings.NORMALISE else -tick_mark,
-                    dtick=None if settings.NORMALISE else tick_mark,
-                ),
+                colorbar=create_colour_bar(tick_mark, 0.93),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
             )
         ]
 
-        axis = dict(
-            title="",
-            showgrid=False,
-            zeroline=False,
-            ticks="",
-            showticklabels=False,
-            showbackground=False,
-        )
-
-        layout = Layout(
-            scene=Scene(
-                dragmode="orbit",
-                camera=camera,
-                xaxis=XAxis(axis),
-                yaxis=YAxis(axis),
-                zaxis=ZAxis(axis),
-                annotations=self.annotations,
-            ),
-            margin=Margin(l=0, r=0, b=0, t=0),
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-        )
+        layout = create_layout(camera, annotations=self.annotations)
 
         fig = Figure(data=data, layout=layout)
 
@@ -144,9 +113,9 @@ class Plot:
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
-        parametric_scaling: List[float] = [0.0, 0.5],
-        color_range: Optional[List[float]] = None,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
+        parametric_scaling: list[float] = [0.0, 0.5],
+        color_range: Optional[list[float]] = None,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot
         """

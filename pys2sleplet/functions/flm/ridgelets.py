@@ -2,13 +2,14 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
-import pys2let as s2let
 import pyssht as ssht
+from pys2let import pys2let_j_max
 from scipy.special import gammaln
 
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
+from pys2sleplet.utils.wavelet_methods import create_kappas
 
 
 @dataclass
@@ -31,7 +32,7 @@ class Ridgelets(F_LM):
         self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
-        self.coefficients = self.wavelet_coefficients[jth]
+        self.coefficients = self.wavelets[jth]
 
     def _create_name(self) -> None:
         self.name = (
@@ -60,12 +61,12 @@ class Ridgelets(F_LM):
         compute all wavelets
         """
         ring_lm = self._compute_ring()
-        kappa0, kappa = s2let.axisym_wav_l(self.B, self.L, self.j_min)
-        self.wavelets = np.zeros((kappa.shape[1] + 1, self.L ** 2), dtype=np.complex_)
+        kappas = create_kappas(self.L, self.B, self.j_min)
+        self.wavelets = np.zeros((kappas.shape[0], self.L ** 2), dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            self.wavelets[0, ind] = kappa0[ell] * ring_lm[ind]
-            self.wavelets[1:, ind] = kappa[ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
+            self.wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
+            self.wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
 
     def _compute_ring(self) -> np.ndarray:
         """
@@ -115,7 +116,7 @@ class Ridgelets(F_LM):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             j = Ridgelets._j
-        j_max = s2let.pys2let_j_max(self.B, self.L, self.j_min)
+        j_max = pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
         if j is not None and j > j_max - self.j_min:

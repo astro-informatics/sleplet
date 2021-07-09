@@ -18,13 +18,13 @@ from pys2sleplet.utils.vars import SAMPLING_SCHEME
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
-    f: np.ndarray
-    flm: np.ndarray
-    mask: np.ndarray
+    f: Optional[np.ndarray]
+    flm: Optional[np.ndarray]
+    mask: Optional[np.ndarray]
     _f: Optional[np.ndarray] = field(default=None, init=False, repr=False)
     _flm: Optional[np.ndarray] = field(default=None, init=False, repr=False)
     _L: int = field(init=False, repr=False)
-    _mask: np.ndarray = field(default=None, init=False, repr=False)
+    _mask: Optional[np.ndarray] = field(default=None, init=False, repr=False)
     _slepian: SlepianFunctions = field(init=False, repr=False)
 
     def __post_init__(self) -> None:

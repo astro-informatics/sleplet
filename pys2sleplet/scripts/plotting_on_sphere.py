@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Dict, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.function_dicts import FUNCTIONS, MAPS_LM
+from pys2sleplet.utils.function_dicts import COEFFICIENTS, MAPS_LM
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_default_region
 from pys2sleplet.utils.plot_methods import (
@@ -42,7 +42,7 @@ def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    if func_name in FUNCTIONS:
+    if func_name in COEFFICIENTS:
         function = func_name
     else:
         raise ValueError("Not a valid function name to plot")
@@ -57,7 +57,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "function",
         type=valid_plotting,
-        choices=list(FUNCTIONS.keys()),
+        choices=list(COEFFICIENTS.keys()),
         help="function to plot on the sphere",
     )
     parser.add_argument(
@@ -65,7 +65,7 @@ def read_args() -> Namespace:
         "-a",
         type=float,
         default=ALPHA_DEFAULT,
-        help="alpha/phi pi fraction - defaults to 0",
+        help=f"alpha/phi pi fraction - defaults to {ALPHA_DEFAULT}",
     )
     parser.add_argument(
         "--bandlimit", "-L", type=int, default=settings.L, help="bandlimit"
@@ -75,7 +75,7 @@ def read_args() -> Namespace:
         "-b",
         type=float,
         default=BETA_DEFAULT,
-        help="beta/theta pi fraction - defaults to 0",
+        help=f"beta/theta pi fraction - defaults to {BETA_DEFAULT}",
     )
     parser.add_argument(
         "--convolve",
@@ -143,13 +143,13 @@ def read_args() -> Namespace:
 
 def plot(
     f: Coefficients,
-    g: Optional[Coefficients] = None,
-    method: str = "north",
-    plot_type: str = "real",
-    annotations: bool = True,
-    alpha_pi_frac: Optional[float] = None,
-    beta_pi_frac: Optional[float] = None,
-    gamma_pi_frac: Optional[float] = None,
+    g: Optional[Coefficients],
+    alpha_pi_frac: float,
+    beta_pi_frac: float,
+    gamma_pi_frac: float,
+    annotations: bool,
+    method: str,
+    plot_type: str,
 ) -> None:
     """
     master plotting method
@@ -218,7 +218,7 @@ def main() -> None:
 
     mask = create_default_region(settings) if args.region else None
 
-    f = FUNCTIONS[args.function](
+    f = COEFFICIENTS[args.function](
         args.bandlimit,
         extra_args=args.extra_args,
         region=mask,
@@ -227,30 +227,30 @@ def main() -> None:
     )
 
     g = (
-        FUNCTIONS[args.convolve](args.bandlimit)
+        COEFFICIENTS[args.convolve](args.bandlimit)
         if isinstance(args.convolve, str)
         else None
     )
 
     plot(
         f,
-        g=g,
-        method=args.method,
-        plot_type=args.type,
-        annotations=args.outline,
-        alpha_pi_frac=args.alpha,
-        beta_pi_frac=args.beta,
-        gamma_pi_frac=args.gamma,
+        g,
+        args.alpha,
+        args.beta,
+        args.gamma,
+        args.outline,
+        args.method,
+        args.type,
     )
 
 
 def rotation_helper(
     f: Coefficients,
     filename: str,
-    alpha_pi_frac: Optional[float],
-    beta_pi_frac: Optional[float],
-    gamma_pi_frac: Optional[float],
-) -> Tuple[np.ndarray, str]:
+    alpha_pi_frac: float,
+    beta_pi_frac: float,
+    gamma_pi_frac: float,
+) -> tuple[np.ndarray, str]:
     """
     performs the rotation specific steps
     """
@@ -272,10 +272,10 @@ def rotation_helper(
 def translation_helper(
     f: Coefficients,
     filename: str,
-    alpha_pi_frac: Optional[float],
-    beta_pi_frac: Optional[float],
+    alpha_pi_frac: float,
+    beta_pi_frac: float,
     shannon: int,
-) -> Tuple[np.ndarray, str, Dict]:
+) -> tuple[np.ndarray, str, dict]:
     """
     performs the translation specific steps
     """
@@ -304,7 +304,7 @@ def convolution_helper(
     coefficients: np.ndarray,
     shannon: int,
     filename: str,
-) -> Tuple[np.ndarray, str]:
+) -> tuple[np.ndarray, str]:
     """
     performs the convolution specific steps
     """

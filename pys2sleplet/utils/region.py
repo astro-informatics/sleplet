@@ -4,7 +4,6 @@ from typing import Optional
 from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from pys2sleplet.utils.vars import (
-    GAP_DEFAULT,
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,
@@ -20,7 +19,7 @@ class Region:
     phi_max: float
     mask_name: Optional[str]
     gap: bool
-    _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
+    _gap: bool = field(default=False, init=False, repr=False)
     _mask_name: Optional[str] = field(default=None, init=False, repr=False)
     _name_ending: str = field(init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)

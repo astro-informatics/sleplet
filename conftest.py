@@ -6,6 +6,10 @@ from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.mesh_field import MeshField
+from pys2sleplet.meshes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.slepian_mesh_wavelets import SlepianMeshWavelets
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -141,3 +145,35 @@ def random_nd_flm() -> np.ndarray:
     """
     rng = default_rng(RANDOM_SEED)
     return np.array([compute_random_signal(L_SMALL, rng, 1) for _ in range(ARRAY_DIM)])
+
+
+@pytest.fixture(scope="session")
+def mesh() -> Mesh:
+    """
+    creates a bird mesh
+    """
+    return Mesh("bird")
+
+
+@pytest.fixture(scope="session")
+def slepian_mesh(mesh) -> SlepianMesh:
+    """
+    creates a Slepian bird mesh
+    """
+    return SlepianMesh(mesh)
+
+
+@pytest.fixture(scope="session")
+def mesh_field_masked(mesh) -> MeshField:
+    """
+    creates a field on the mesh
+    """
+    return MeshField(mesh, mask_region=True)
+
+
+@pytest.fixture(scope="session")
+def slepian_mesh_wavelets(slepian_mesh) -> SlepianMeshWavelets:
+    """
+    creates a field on the mesh
+    """
+    return SlepianMeshWavelets(slepian_mesh)

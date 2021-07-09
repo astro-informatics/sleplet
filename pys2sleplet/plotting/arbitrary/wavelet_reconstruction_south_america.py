@@ -1,7 +1,7 @@
 from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
 )
-from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import SMOOTHING

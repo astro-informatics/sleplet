@@ -1,6 +1,6 @@
 from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.plotting.create_plot import Plot
+from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.utils.denoising import denoising_axisym
 from pys2sleplet.utils.plot_methods import find_max_amplitude
 

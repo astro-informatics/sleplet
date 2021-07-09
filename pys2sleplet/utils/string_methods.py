@@ -1,10 +1,10 @@
 from fractions import Fraction
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
 
-def _get_angle_num_dem(angle_fraction: float) -> Tuple[int, int]:
+def _get_angle_num_dem(angle_fraction: float) -> tuple[int, int]:
     """
     ger numerator and denominator for a given decimal
     """
@@ -81,7 +81,7 @@ def angle_as_degree(radian: float) -> int:
     """
     converts radian angle to integer degree
     """
-    return int(round(np.rad2deg(radian)))
+    return round(np.rad2deg(radian))
 
 
 def wavelet_ending(j_min: int, j: Optional[int]) -> str:

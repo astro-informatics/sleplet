@@ -1,7 +1,7 @@
 import numpy as np
-import pys2let as s2let
 import pyssht as ssht
 from numpy.testing import assert_allclose, assert_array_equal, assert_equal
+from pys2let import pys2let_j_max
 
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
@@ -13,7 +13,7 @@ from pys2sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_inverse,
     compute_slepian_wavelet_covariance,
     compute_wavelet_covariance,
-    create_slepian_wavelets,
+    create_kappas,
     find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,
     slepian_wavelet_inverse,
@@ -84,12 +84,12 @@ def test_only_wavelet_coefficients_within_shannon_returned() -> None:
     assert_array_equal(shannon_coeffs, coeffs_out)
 
 
-def test_create_slepian_wavelets() -> None:
+def test_create_kappas() -> None:
     """
     checks that the method creates the scaling function and wavelets
     """
-    wavelets = create_slepian_wavelets(L_LARGE, B, J_MIN)
-    j_max = s2let.pys2let_j_max(B, L_LARGE ** 2, J_MIN)
+    wavelets = create_kappas(L_LARGE ** 2, B, J_MIN)
+    j_max = pys2let_j_max(B, L_LARGE ** 2, J_MIN)
     assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
     assert_equal(L_LARGE ** 2, wavelets.shape[1])
 

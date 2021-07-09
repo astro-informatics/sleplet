@@ -1,0 +1,11 @@
+CAMERA_X = 3
+CAMERA_Y = 1
+CAMERA_Z = 0
+COLOURBAR_POS = 0.75
+FACES_MAX = inf
+FACES_MIN = -inf
+FILENAME = "cheetah.off"
+KNN = 5
+NUMBER = 500
+THETA = 1
+ZOOM = 1.89

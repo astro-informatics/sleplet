@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 
@@ -8,16 +8,18 @@ from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.region import Region
 
+COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
+
 
 @dataclass  # type:ignore
 class Coefficients:
     L: int
-    extra_args: Optional[List[int]]
+    extra_args: Optional[list[int]]
     region: Optional[Region]
     noise: Optional[float]
     smoothing: Optional[int]
     _coefficients: np.ndarray = field(init=False, repr=False)
-    _extra_args: Optional[List[int]] = field(default=None, init=False, repr=False)
+    _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
     _L: int = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
@@ -68,8 +70,9 @@ class Coefficients:
 
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
-        if isinstance(self.region, Region) and all(
-            x not in self.name for x in {"slepian", "south_america"}
+        if (
+            isinstance(self.region, Region)
+            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
             coefficients = ensure_masked_flm_bandlimited(
                 coefficients, self.L, self.region, self.reality, self.spin
@@ -77,11 +80,11 @@ class Coefficients:
         self._coefficients = coefficients
 
     @property  # type:ignore
-    def extra_args(self) -> Optional[List[int]]:
+    def extra_args(self) -> Optional[list[int]]:
         return self._extra_args
 
     @extra_args.setter
-    def extra_args(self, extra_args: Optional[List[int]]) -> None:
+    def extra_args(self, extra_args: Optional[list[int]]) -> None:
         if isinstance(extra_args, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
@@ -97,7 +100,7 @@ class Coefficients:
         self._L = L
 
     @property
-    def name(self) -> np.ndarray:
+    def name(self) -> str:
         return self._name
 
     @name.setter

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Union
 
 import gmpy2 as gp
 import numpy as np
@@ -18,10 +18,9 @@ from pys2sleplet.utils.parallel_methods import (
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
-    split_L_into_chunks,
+    split_arr_into_chunks,
 )
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import GAP_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
@@ -32,7 +31,7 @@ class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     order: Optional[Union[int, np.ndarray]]
     gap: bool
-    _gap: bool = field(default=GAP_DEFAULT, init=False, repr=False)
+    _gap: bool = field(default=False, init=False, repr=False)
     _order: Optional[Union[int, np.ndarray]] = field(
         default=None, init=False, repr=False
     )
@@ -115,7 +114,7 @@ class SlepianPolarCap(SlepianFunctions):
                 np.save(evec_loc, self.eigenvectors[: self.N])
                 np.save(order_loc, self.order[: self.N])
 
-    def _solve_eigenproblem_order(self, m: int) -> Tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
         """
         solves the eigenproblem for a given order 'm;
         """
@@ -127,7 +126,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _sort_all_evals_and_evecs(
         self, eigenvalues: np.ndarray, eigenvectors: np.ndarray, orders: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         sorts all eigenvalues and eigenvectors for all orders
         """
@@ -161,7 +160,7 @@ class SlepianPolarCap(SlepianFunctions):
 
         Dm_ext, shm_ext = create_shared_memory_array(Dm)
 
-        def func(chunk: List[int]) -> None:
+        def func(chunk: list[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
@@ -176,7 +175,7 @@ class SlepianPolarCap(SlepianFunctions):
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(self.L - m, settings.NCPU)
+        chunks = split_arr_into_chunks(self.L - m, settings.NCPU)
 
         # initialise pool and apply function
         with Pool(processes=settings.NCPU) as p:
@@ -192,7 +191,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _create_legendre_polynomials_table(
         self, emm: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         create Legendre polynomials table for matrix calculation
         """
@@ -282,11 +281,11 @@ class SlepianPolarCap(SlepianFunctions):
             tmin = max(0, max(t1, t2))
             tmax = min(t3, min(t4, t5))
 
-            s = 0
-            # sum is over all those t for which the following factorials have
-            # non-zero arguments.
-            for t in range(tmin, tmax + 1):
-                s += (-1) ** t / (
+            # sum is over all those t for which the
+            # following factorials have non-zero arguments
+            s = sum(
+                (-1) ** t
+                / (
                     gp.factorial(t)
                     * gp.factorial(t - t1)
                     * gp.factorial(t - t2)
@@ -294,7 +293,8 @@ class SlepianPolarCap(SlepianFunctions):
                     * gp.factorial(t4 - t)
                     * gp.factorial(t5 - t)
                 )
-
+                for t in range(tmin, tmax + 1)
+            )
             triangle_coefficient = (
                 gp.factorial(t3)
                 * gp.factorial(l1 - l2 + l3)
@@ -325,7 +325,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _clean_evals_and_evecs(
         self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray, m: int
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """

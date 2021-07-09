@@ -1,0 +1,15 @@
+name: py39
+
+channels:
+    - conda-forge
+
+dependencies:
+    - igl
+    - mpc
+    - mpfr
+    - pip
+    - plotly-orca
+    - python=3.9
+
+    - pip:
+          - -r file:requirements.txt

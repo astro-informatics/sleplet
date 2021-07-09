@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
 
 import numpy as np
 import pyssht as ssht
@@ -25,7 +24,7 @@ from pys2sleplet.utils.parallel_methods import (
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
-    split_L_into_chunks,
+    split_arr_into_chunks,
 )
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
@@ -59,7 +58,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _calculate_area(self) -> None:
         self.weight = calc_integration_weight(self.resolution)
-        self.area = np.where(self.mask, self.weight, 0).sum()
+        self.area = (self.mask * self.weight).sum()
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (
@@ -101,7 +100,7 @@ class SlepianArbitrary(SlepianFunctions):
         computes the D matrix in parallel
         """
         # create dictionary for the integrals
-        self._fields: Dict[int, np.ndarray] = {}
+        self._fields: dict[int, np.ndarray] = {}
 
         # initialise real and imaginary matrices
         D_r = np.zeros((self.L ** 2, self.L ** 2))
@@ -110,7 +109,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_r_ext, shm_r_ext = create_shared_memory_array(D_r)
         D_i_ext, shm_i_ext = create_shared_memory_array(D_i)
 
-        def func(chunk: List[int]) -> None:
+        def func(chunk: list[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
@@ -125,8 +124,8 @@ class SlepianArbitrary(SlepianFunctions):
             free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_L_into_chunks(
-            self.L_max ** 2, settings.NCPU, L_min=self.L_min ** 2
+        chunks = split_arr_into_chunks(
+            self.L_max ** 2, settings.NCPU, arr_min=self.L_min ** 2
         )
 
         # initialise pool and apply function
@@ -154,7 +153,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i[i][i] = integral.imag
         _, m_i = ssht.ind2elm(i)
 
-        for j in range(i + 1, self.L ** 2):
+        for j in range(i + 1, D_r.shape[0]):
             ell_j, m_j = ssht.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
