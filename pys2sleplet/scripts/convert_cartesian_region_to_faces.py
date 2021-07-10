@@ -61,10 +61,8 @@ def _convert_vertices_region_to_faces(
     converts the region on vertices to faces
     """
     region_reshape = np.argwhere(region_on_vertices).reshape(-1)
-    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
-    region_on_faces = np.zeros(faces.shape[0])
-    region_on_faces[faces_in_region] = 1
-    return np.argwhere(region_on_faces).reshape(-1)
+    faces_in_region = faces[np.isin(faces, region_reshape)]
+    return np.unique(faces_in_region)
 
 
 def _consecutive_elements(data: np.ndarray, stepsize: int = 1) -> list[list[int]]:
