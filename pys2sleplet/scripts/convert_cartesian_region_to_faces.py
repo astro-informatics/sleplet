@@ -1,10 +1,10 @@
 from argparse import ArgumentParser
 
 import numpy as np
-import pandas as pd
 
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.scripts.plotting_on_mesh import valid_plotting
+from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mesh_methods import MESHES
 
 
@@ -17,13 +17,19 @@ def main(
     zmin: float,
     zmax: float,
 ) -> None:
+    # initialise mesh
     mesh = Mesh(mesh_name)
+
+    # create region based on cartesian coordinates
     region_on_vertices = _create_mesh_region(
         mesh.vertices, xmin, xmax, ymin, ymax, zmin, zmax
     )
+
+    # convert regionto faces
     region_on_faces = _convert_vertices_region_to_faces(mesh.faces, region_on_vertices)
-    df = pd.DataFrame(region_on_faces)
-    df.to_csv("region.csv", index=False, header=False)
+
+    # creates FACES_RANGES
+    logger.info(_consecutive_elements(region_on_faces))
 
 
 def _create_mesh_region(
@@ -39,12 +45,12 @@ def _create_mesh_region(
     creates the boolean region for the given mesh
     """
     return (
-        (vertices[:, 0] > xmin)
-        & (vertices[:, 0] < xmax)
-        & (vertices[:, 1] > ymin)
-        & (vertices[:, 1] < ymax)
-        & (vertices[:, 2] > zmin)
-        & (vertices[:, 2] < zmax)
+        (vertices[:, 0] >= xmin)
+        & (vertices[:, 0] <= xmax)
+        & (vertices[:, 1] >= ymin)
+        & (vertices[:, 1] <= ymax)
+        & (vertices[:, 2] >= zmin)
+        & (vertices[:, 2] <= zmax)
     )
 
 
@@ -58,7 +64,17 @@ def _convert_vertices_region_to_faces(
     faces_in_region = np.isin(faces, region_reshape).all(axis=1)
     region_on_faces = np.zeros(faces.shape[0])
     region_on_faces[faces_in_region] = 1
-    return np.argwhere(region_on_faces)
+    return np.argwhere(region_on_faces).reshape(-1)
+
+
+def _consecutive_elements(data: np.ndarray, stepsize: int = 1) -> list[list[int]]:
+    """
+    finds the values of the consecutive elements
+    https://stackoverflow.com/a/7353335/7359333
+    min/max of these ranges for toml files
+    """
+    consecutive = np.split(data, np.where(np.diff(data) != stepsize)[0] + 1)
+    return [[con.min(), con.max()] for con in consecutive]
 
 
 if __name__ == "__main__":

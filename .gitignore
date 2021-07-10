@@ -6,7 +6,6 @@ __pycache__
 .pytest_cache
 .vscode
 *.c
-*.csv
 *.egg-info
 *.html
 *.pdf
