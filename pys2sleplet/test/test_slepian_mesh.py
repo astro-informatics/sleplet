@@ -21,15 +21,15 @@ def test_shannon_less_than_basis_functions(mesh) -> None:
     assert shannon < mesh.basis_functions.shape[0]
 
 
-def test_decompose_all_mesh(slepian_mesh, mesh_field_masked) -> None:
+def test_decompose_all_mesh(slepian_mesh, mesh_field_region) -> None:
     """
     tests that all three methods produce the same coefficients for the mesh
     """
     harmonic_coefficients = mesh_forward(
-        mesh_field_masked.mesh.vertices,
-        mesh_field_masked.mesh.faces,
-        mesh_field_masked.mesh.basis_functions,
-        mesh_field_masked.field_values,
+        mesh_field_region.mesh_field.mesh.vertices,
+        mesh_field_region.mesh_field.mesh.faces,
+        mesh_field_region.mesh_field.mesh.basis_functions,
+        mesh_field_region.field_values,
     )
     harmonic_sum_p = slepian_mesh_forward(
         slepian_mesh.mesh,
@@ -43,7 +43,7 @@ def test_decompose_all_mesh(slepian_mesh, mesh_field_masked) -> None:
         slepian_mesh.slepian_eigenvalues,
         slepian_mesh.slepian_functions,
         slepian_mesh.N,
-        u=mesh_field_masked.field_values,
+        u=mesh_field_region.field_values,
     )
     integrate_region_p = slepian_mesh_forward(
         slepian_mesh.mesh,
@@ -55,16 +55,16 @@ def test_decompose_all_mesh(slepian_mesh, mesh_field_masked) -> None:
     assert_allclose(
         np.abs(integrate_sphere_p - harmonic_sum_p)[: slepian_mesh.N].mean(),
         0,
-        atol=1e-16,
+        atol=1e-15,
     )
     assert_allclose(
         np.abs(integrate_region_p - harmonic_sum_p)[: slepian_mesh.N].mean(),
         0,
-        atol=0.2,
+        atol=0.3,
     )
 
 
-def test_forward_inverse_transform_slepian(slepian_mesh, mesh_field_masked) -> None:
+def test_forward_inverse_transform_slepian(slepian_mesh, mesh_field_region) -> None:
     """
     tests that the Slepian forward and inverse transforms recover the field
     """
@@ -73,21 +73,21 @@ def test_forward_inverse_transform_slepian(slepian_mesh, mesh_field_masked) -> N
         slepian_mesh.slepian_eigenvalues,
         slepian_mesh.slepian_functions,
         slepian_mesh.N,
-        u=mesh_field_masked.field_values,
+        u=mesh_field_region.field_values,
     )
     f_slepian = slepian_mesh_inverse(
         f_p, slepian_mesh.mesh, slepian_mesh.slepian_functions, slepian_mesh.N
     )
     assert_allclose(
-        np.abs(f_slepian - mesh_field_masked.field_values)[
+        np.abs(f_slepian - mesh_field_region.field_values)[
             slepian_mesh.mesh.region
         ].mean(),
         0,
-        atol=0.7,
+        atol=1.8,
     )
 
 
-def test_synthesis_mesh(slepian_mesh_wavelets, mesh_field_masked) -> None:
+def test_synthesis_mesh(slepian_mesh_wavelets, mesh_field_region) -> None:
     """
     tests that Slepian polar wavelet synthesis matches the coefficients
     """
@@ -96,7 +96,7 @@ def test_synthesis_mesh(slepian_mesh_wavelets, mesh_field_masked) -> None:
         slepian_mesh_wavelets.slepian_mesh.slepian_eigenvalues,
         slepian_mesh_wavelets.slepian_mesh.slepian_functions,
         slepian_mesh_wavelets.slepian_mesh.N,
-        u=mesh_field_masked.field_values,
+        u=mesh_field_region.field_values,
     )
     wav_coeffs = slepian_wavelet_forward(
         coefficients,
@@ -108,4 +108,8 @@ def test_synthesis_mesh(slepian_mesh_wavelets, mesh_field_masked) -> None:
         slepian_mesh_wavelets.wavelets,
         slepian_mesh_wavelets.slepian_mesh.N,
     )
-    assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-17)
+    assert_allclose(
+        np.abs(f_p - coefficients)[: slepian_mesh_wavelets.slepian_mesh.N].mean(),
+        0,
+        atol=1e-17,
+    )

@@ -4,6 +4,7 @@ import numpy as np
 
 from pys2sleplet.meshes.mesh import Mesh
 from pys2sleplet.meshes.mesh_field import MeshField
+from pys2sleplet.meshes.mesh_field_region import MeshFieldRegion
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.slepian_mesh_field import SlepianMeshField
 from pys2sleplet.meshes.slepian_mesh_wavelet_coefficients import (
@@ -48,15 +49,18 @@ class MeshPlot:
         # initialise some helpful classes
         self.mesh = Mesh(self.name, mesh_laplacian=settings.MESH_LAPLACIAN)
         mesh_field = MeshField(self.mesh)
+        mesh_field_region = MeshFieldRegion(mesh_field)
 
         # Slepian valued functions need to undergo an inverse transform
         if self.method not in SLEPIAN_SPACE:
-            self._plot_real_valued_functions(mesh_field)
+            self._plot_real_valued_functions(mesh_field, mesh_field_region)
         else:
-            self._plot_slepian_coefficients(mesh_field)
+            self._plot_slepian_coefficients(mesh_field_region)
         logger.info("finished calculating values, preparing plot...")
 
-    def _plot_real_valued_functions(self, mesh_field: MeshField) -> None:
+    def _plot_real_valued_functions(
+        self, mesh_field: MeshField, mesh_field_region: MeshFieldRegion
+    ) -> None:
         """
         master method to plot the functions defined directly on vertices
         """
@@ -64,18 +68,20 @@ class MeshPlot:
             self._plot_basis_functions()
         elif self.method == "field":
             self._plot_field_on_mesh(mesh_field)
+        elif self.method == "field_region":
+            self._plot_field_in_region_on_mesh(mesh_field_region)
         elif self.method == "region":
             self._plot_region()
         else:
             raise ValueError(f"'{self.method}' is not a valid method")
 
-    def _plot_slepian_coefficients(self, mesh_field: MeshField) -> None:
+    def _plot_slepian_coefficients(self, mesh_field_region: MeshFieldRegion) -> None:
         """
         master method to plot the functions defined in Slepian space
         """
         # initialise some helpful classes
         slepian_mesh = SlepianMesh(self.mesh)
-        slepian_mesh_field = SlepianMeshField(mesh_field, slepian_mesh)
+        slepian_mesh_field = SlepianMeshField(mesh_field_region, slepian_mesh)
         slepian_mesh_wavelets = SlepianMeshWavelets(
             slepian_mesh, B=self.B, j_min=self.j_min
         )
@@ -120,6 +126,13 @@ class MeshPlot:
         """
         self.name = f"{self.name}_field"
         self.field_values = mesh_field.field_values
+
+    def _plot_field_in_region_on_mesh(self, mesh_field_region: MeshFieldRegion) -> None:
+        """
+        plots the field on the mesh concentrated in the region
+        """
+        self.name = f"{self.name}_field_region"
+        self.field_values = mesh_field_region.field_values
 
     def _plot_region(self) -> None:
         """

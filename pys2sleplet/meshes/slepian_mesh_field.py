@@ -2,16 +2,16 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.meshes.mesh_field import MeshField
+from pys2sleplet.meshes.mesh_field_region import MeshFieldRegion
 from pys2sleplet.meshes.slepian_mesh import SlepianMesh
 from pys2sleplet.utils.slepian_mesh_methods import slepian_mesh_forward
 
 
 @dataclass
 class SlepianMeshField:
-    mesh_field: MeshField
+    mesh_field_region: MeshFieldRegion
     slepian_mesh: SlepianMesh
-    _mesh_field: MeshField = field(init=False, repr=False)
+    _mesh_field_region: MeshFieldRegion = field(init=False, repr=False)
     _slepian_coefficients: np.ndarray = field(init=False, repr=False)
     _slepian_mesh: SlepianMesh = field(init=False, repr=False)
 
@@ -27,16 +27,16 @@ class SlepianMeshField:
             self.slepian_mesh.slepian_eigenvalues,
             self.slepian_mesh.slepian_functions,
             self.slepian_mesh.N,
-            u=self.mesh_field.field_values,
+            u=self.mesh_field_region.field_values,
         )
 
     @property  # type: ignore
-    def mesh_field(self) -> MeshField:
-        return self._mesh_field
+    def mesh_field_region(self) -> MeshFieldRegion:
+        return self._mesh_field_region
 
-    @mesh_field.setter
-    def mesh_field(self, mesh_field: MeshField) -> None:
-        self._mesh_field = mesh_field
+    @mesh_field_region.setter
+    def mesh_field_region(self, mesh_field_region: MeshFieldRegion) -> None:
+        self._mesh_field_region = mesh_field_region
 
     @property
     def slepian_coefficients(self) -> np.ndarray:

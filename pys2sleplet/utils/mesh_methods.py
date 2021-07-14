@@ -272,3 +272,18 @@ def average_functions_on_vertices_to_faces(
     if array_is_1d:
         functions_on_faces = functions_on_faces.reshape(-1)
     return functions_on_faces
+
+
+def bandlimit_signal(
+    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
+) -> np.ndarray:
+    """
+    ensures that signal in pixel space is bandlimited
+    """
+    u_i = mesh_forward(
+        vertices,
+        faces,
+        basis_functions,
+        u,
+    )
+    return mesh_inverse(basis_functions, u_i)

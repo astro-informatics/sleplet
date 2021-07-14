@@ -10,20 +10,20 @@ from pys2sleplet.utils.mesh_methods import (
 )
 
 
-def test_forward_inverse_transform_recovery(mesh_field_masked) -> None:
+def test_forward_inverse_transform_recovery(mesh_field_region) -> None:
     """
     tests that a given function is recovered after an
     forward and inverse transform on the mesh
     """
     u_i = mesh_forward(
-        mesh_field_masked.mesh.vertices,
-        mesh_field_masked.mesh.faces,
-        mesh_field_masked.mesh.basis_functions,
-        mesh_field_masked.field_values,
+        mesh_field_region.mesh_field.mesh.vertices,
+        mesh_field_region.mesh_field.mesh.faces,
+        mesh_field_region.mesh_field.mesh.basis_functions,
+        mesh_field_region.field_values,
     )
-    kernel_recov = mesh_inverse(mesh_field_masked.mesh.basis_functions, u_i)
+    kernel_recov = mesh_inverse(mesh_field_region.mesh_field.mesh.basis_functions, u_i)
     assert_allclose(
-        np.abs(mesh_field_masked.field_values - kernel_recov).mean(), 0, atol=0.3
+        np.abs(mesh_field_region.field_values - kernel_recov).mean(), 0, atol=0.7
     )
 
 
