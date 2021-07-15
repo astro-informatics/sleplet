@@ -19,6 +19,7 @@ from scipy.sparse import linalg as LA_sparse
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.noise import compute_snr, create_noise
 from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
@@ -287,3 +288,21 @@ def bandlimit_signal(
         u,
     )
     return mesh_inverse(basis_functions, u_i)
+
+
+def add_noise_to_mesh(
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    basis_functions: np.ndarray,
+    u: np.ndarray,
+    noise: int,
+) -> tuple[np.ndarray, float]:
+    """
+    adds Gaussian white noise to the signal
+    """
+    u_i = mesh_forward(vertices, faces, basis_functions, u)
+    n_i = create_noise(basis_functions.shape[0], u_i, noise)
+    snr = compute_snr(basis_functions.shape[0], u_i, n_i)
+    u_i += n_i
+    u = mesh_inverse(basis_functions, u_i)
+    return u, snr

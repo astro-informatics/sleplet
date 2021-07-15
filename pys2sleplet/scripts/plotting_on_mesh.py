@@ -29,27 +29,6 @@ def read_args() -> Namespace:
         help="mesh to plot",
     )
     parser.add_argument(
-        "--index",
-        "-i",
-        type=int,
-        default=0,
-        help="index of basis function to plot",
-    )
-    parser.add_argument(
-        "--j_min",
-        "-j",
-        type=int,
-        default=2,
-        help="wavelet scale j_min defaults to 2",
-    )
-    parser.add_argument(
-        "--B",
-        "-b",
-        type=int,
-        default=3,
-        help="lambda parameter defaults to 3",
-    )
-    parser.add_argument(
         "--method",
         "-m",
         type=str,
@@ -68,6 +47,28 @@ def read_args() -> Namespace:
         ],
         help="plotting routine: defaults to basis",
     )
+    parser.add_argument(
+        "--index",
+        "-i",
+        type=int,
+        default=0,
+        help="index of basis function to plot",
+    )
+    parser.add_argument("--noise", "-n", type=int, help="the SNR_IN of the noise level")
+    parser.add_argument(
+        "--B",
+        "-b",
+        type=int,
+        default=3,
+        help="lambda parameter defaults to 3",
+    )
+    parser.add_argument(
+        "--j_min",
+        "-j",
+        type=int,
+        default=2,
+        help="wavelet scale j_min defaults to 2",
+    )
     return parser.parse_args()
 
 
@@ -78,7 +79,7 @@ def plot(
     master plotting method
     """
     # create mesh plot
-    f = MeshPlot(args.function, args.index, args.method, args.B, args.j_min)
+    f = MeshPlot(args.function, args.method, args.index, args.noise, args.B, args.j_min)
 
     # plotly config
     camera_view, colourbar_pos = mesh_plotly_config(args.function)

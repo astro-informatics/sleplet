@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Optional
 
 import numpy as np
 
@@ -25,8 +26,9 @@ SLEPIAN_SPACE: set[str] = {"coefficients", "slepian", "slepian_field", "wavelets
 @dataclass()
 class MeshPlot:
     name: str
-    index: int
     method: str
+    index: int
+    noise: Optional[int]
     B: int
     j_min: int
     _B: int = field(init=False, repr=False)
@@ -36,6 +38,7 @@ class MeshPlot:
     _mesh: Mesh = field(init=False, repr=False)
     _method: str = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
+    _noise: Optional[int] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_plot()
@@ -48,7 +51,7 @@ class MeshPlot:
 
         # initialise some helpful classes
         self.mesh = Mesh(self.name, mesh_laplacian=settings.MESH_LAPLACIAN)
-        mesh_field = MeshField(self.mesh)
+        mesh_field = MeshField(self.mesh, noise=self.noise)
         mesh_field_region = MeshFieldRegion(mesh_field)
 
         # Slepian valued functions need to undergo an inverse transform
@@ -261,3 +264,11 @@ class MeshPlot:
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
+
+    @property  # type: ignore
+    def noise(self) -> Optional[int]:
+        return self._noise
+
+    @noise.setter
+    def noise(self, noise: Optional[int]) -> None:
+        self._noise = noise
