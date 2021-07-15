@@ -26,8 +26,6 @@ def test_decompose_all_mesh(slepian_mesh, mesh_field_region) -> None:
     tests that all three methods produce the same coefficients for the mesh
     """
     harmonic_coefficients = mesh_forward(
-        mesh_field_region.mesh_field.mesh.vertices,
-        mesh_field_region.mesh_field.mesh.faces,
         mesh_field_region.mesh_field.mesh.basis_functions,
         mesh_field_region.field_values,
     )

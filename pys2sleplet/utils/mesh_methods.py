@@ -156,7 +156,7 @@ def mesh_eigendecomposition(
                 vertices, faces, theta=data.THETA, knn=data.KNN
             )
             eigenvalues, eigenvectors = LA.eigh(laplacian)
-        eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
+        eigenvectors = _orthonormalise_basis_functions(eigenvectors.T)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
@@ -164,9 +164,7 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors
 
 
-def integrate_whole_mesh(
-    vertices: np.ndarray, faces: np.ndarray, *functions: np.ndarray
-) -> float:
+def integrate_whole_mesh(*functions: np.ndarray) -> float:
     """
     computes the integral of functions on the vertices
     """
@@ -175,8 +173,6 @@ def integrate_whole_mesh(
 
 
 def integrate_region_mesh(
-    vertices: np.ndarray,
-    faces: np.ndarray,
     mask: np.ndarray,
     *functions: np.ndarray,
 ) -> float:
@@ -194,15 +190,13 @@ def _multiply_args(*args: np.ndarray) -> np.ndarray:
     return reduce((lambda x, y: x * y), args)
 
 
-def mesh_forward(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
-) -> np.ndarray:
+def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
     """
     computes the mesh forward transform from real space to harmonic space
     """
     u_i = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(vertices, faces, u, phi_i)
+        u_i[i] = integrate_whole_mesh(u, phi_i)
     return u_i
 
 
@@ -214,16 +208,14 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
 
 
-def _orthonormalise_basis_functions(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
-) -> np.ndarray:
+def _orthonormalise_basis_functions(basis_functions: np.ndarray) -> np.ndarray:
     """
     for computing the Slepian D matrix the basis functions must be orthonormal
     """
     logger.info("orthonormalising basis functions")
     factor = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        factor[i] = integrate_whole_mesh(vertices, faces, phi_i, phi_i)
+        factor[i] = integrate_whole_mesh(phi_i, phi_i)
     normalisation = np.sqrt(factor).reshape(-1, 1)
     return basis_functions / normalisation
 
@@ -259,8 +251,6 @@ def bandlimit_signal(
     ensures that signal in pixel space is bandlimited
     """
     u_i = mesh_forward(
-        vertices,
-        faces,
         basis_functions,
         u,
     )
