@@ -31,7 +31,7 @@ def test_mesh_region_is_some_fraction_of_total(mesh) -> None:
     """
     the region should be some fraction of the total nodes
     """
-    region = create_mesh_region(mesh.name, mesh.faces)
+    region = create_mesh_region(mesh.name, mesh.vertices)
     assert region.sum() < region.shape[0]
 
 

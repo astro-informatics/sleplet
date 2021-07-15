@@ -4,7 +4,6 @@ import numpy as np
 from igl import principal_curvature
 
 from pys2sleplet.meshes.mesh import Mesh
-from pys2sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
 
 
 @dataclass
@@ -20,11 +19,8 @@ class MeshField:
         """
         compute field on the vertices of the mesh
         """
-        _, _, maximal_curvature, _ = principal_curvature(
+        _, _, self.field_values, _ = principal_curvature(
             self.mesh.vertices, self.mesh.faces
-        )
-        self.field_values = average_functions_on_vertices_to_faces(
-            self.mesh.faces, maximal_curvature
         )
 
     @property

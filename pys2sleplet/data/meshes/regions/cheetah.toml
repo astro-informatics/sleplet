@@ -2,7 +2,7 @@ CAMERA_X = 3
 CAMERA_Y = 1
 CAMERA_Z = 0
 COLOURBAR_POS = 0.75
-FACES_RANGES = [
+VERTICES_RANGES = [
     [
         103,
         110,

@@ -10,7 +10,6 @@ from igl import (
     all_pairs_distances,
     average_onto_faces,
     cotmatrix,
-    doublearea,
     read_triangle_mesh,
 )
 from numpy import linalg as LA
@@ -49,15 +48,15 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     return vertices, faces
 
 
-def create_mesh_region(mesh_name: str, faces: np.ndarray) -> np.ndarray:
+def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     """
     creates the boolean region for the given mesh
     """
     data = _read_toml(mesh_name)
-    faces_selected = np.zeros(faces.shape, dtype=int)
-    for faces_min, faces_max in data.FACES_RANGES.to_list():
-        faces_selected |= (faces >= faces_min) & (faces <= faces_max)
-    return faces_selected.any(axis=1)
+    vertices_selected = np.zeros(vertices.shape[0], dtype=int)
+    for vertices_min, vertices_max in data.VERTICES_RANGES.to_list():
+        vertices_selected[vertices_min : vertices_max + 1] = 1
+    return vertices_selected
 
 
 def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
@@ -157,7 +156,7 @@ def mesh_eigendecomposition(
                 vertices, faces, theta=data.THETA, knn=data.KNN
             )
             eigenvalues, eigenvectors = LA.eigh(laplacian)
-        eigenvectors = _tidy_eigenvectors(vertices, faces, eigenvectors.T)
+        eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
@@ -171,8 +170,8 @@ def integrate_whole_mesh(
     """
     computes the integral of functions on the vertices
     """
-    area, multiplied_inputs = _prepare_integral(vertices, faces, *functions)
-    return (area * multiplied_inputs).sum()
+    multiplied_inputs = _multiply_args(*functions)
+    return multiplied_inputs.sum()
 
 
 def integrate_region_mesh(
@@ -184,19 +183,8 @@ def integrate_region_mesh(
     """
     computes the integral of a region of functions on the vertices
     """
-    area, multiplied_inputs = _prepare_integral(vertices, faces, *functions)
-    return (area * multiplied_inputs * mask).sum()
-
-
-def _prepare_integral(
-    vertices: np.ndarray, faces: np.ndarray, *functions: np.ndarray
-) -> tuple[np.ndarray, np.ndarray]:
-    """
-    repeated step in calculating the whole/region integrals
-    """
-    area = doublearea(vertices, faces) / 2
     multiplied_inputs = _multiply_args(*functions)
-    return area, multiplied_inputs
+    return (multiplied_inputs * mask).sum()
 
 
 def _multiply_args(*args: np.ndarray) -> np.ndarray:
@@ -224,16 +212,6 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     """
     i_idx = 0
     return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
-
-
-def _tidy_eigenvectors(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
-) -> np.ndarray:
-    """
-    combines averaging onto faces and orthonormalisation steps
-    """
-    averaged = average_functions_on_vertices_to_faces(faces, basis_functions)
-    return _orthonormalise_basis_functions(vertices, faces, averaged)
 
 
 def _orthonormalise_basis_functions(
@@ -287,3 +265,16 @@ def bandlimit_signal(
         u,
     )
     return mesh_inverse(basis_functions, u_i)
+
+
+def convert_region_on_vertices_to_faces(
+    faces: np.ndarray, region_on_vertices: np.ndarray
+) -> np.ndarray:
+    """
+    converts the region on vertices to faces
+    """
+    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
+    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
+    region_on_faces = np.zeros(faces.shape[0])
+    region_on_faces[faces_in_region] = 1
+    return region_on_faces
