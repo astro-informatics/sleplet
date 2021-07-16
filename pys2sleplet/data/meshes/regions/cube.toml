@@ -3,6 +3,7 @@ CAMERA_Y = 1
 CAMERA_Z = 1
 COLOURBAR_POS = 0.85
 FILENAME = "cube.off"
+UPSAMPLE = 0
 VERTICES_RANGES = [
     [
         2,

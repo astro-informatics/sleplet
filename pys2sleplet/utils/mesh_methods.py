@@ -11,6 +11,7 @@ from igl import (
     average_onto_faces,
     cotmatrix,
     read_triangle_mesh,
+    upsample,
 )
 from numpy import linalg as LA
 from plotly.graph_objs.layout.scene import Camera
@@ -45,7 +46,7 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     data = _read_toml(mesh_name)
     vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
-    return vertices, faces
+    return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
 
 
 def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
