@@ -2,6 +2,10 @@ CAMERA_X = 0
 CAMERA_Y = 1
 CAMERA_Z = 0
 COLOURBAR_POS = 0.7
+FILENAME = "homer.off"
+KNN = 5
+NUMBER = 1275
+THETA = 1
 VERTICES_RANGES = [
     [
         463,
@@ -192,8 +196,4 @@ VERTICES_RANGES = [
         4994,
     ],
 ]
-FILENAME = "homer.off"
-KNN = 5
-NUMBER = 1275
-THETA = 1
 ZOOM = 0.47

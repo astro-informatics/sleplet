@@ -2,6 +2,10 @@ CAMERA_X = 1
 CAMERA_Y = 1
 CAMERA_Z = 1
 COLOURBAR_POS = 0.85
+FILENAME = "cube.off"
+KNN = 5
+NUMBER = 1536
+THETA = 1
 VERTICES_RANGES = [
     [
         2,
@@ -240,8 +244,4 @@ VERTICES_RANGES = [
         3905,
     ],
 ]
-FILENAME = "cube.off"
-KNN = 5
-NUMBER = 1536
-THETA = 1
 ZOOM = 0.81

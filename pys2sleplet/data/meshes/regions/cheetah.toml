@@ -2,6 +2,10 @@ CAMERA_X = 3
 CAMERA_Y = 1
 CAMERA_Z = 0
 COLOURBAR_POS = 0.75
+FILENAME = "cheetah.off"
+KNN = 5
+NUMBER = 500
+THETA = 1
 VERTICES_RANGES = [
     [
         103,
@@ -92,8 +96,4 @@ VERTICES_RANGES = [
         1995,
     ],
 ]
-FILENAME = "cheetah.off"
-KNN = 5
-NUMBER = 500
-THETA = 1
 ZOOM = 1.89
