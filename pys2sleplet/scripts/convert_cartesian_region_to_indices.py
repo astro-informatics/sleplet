@@ -26,10 +26,10 @@ def main(
     )
 
     # convert regionto faces
-    region_on_faces = _convert_vertices_region_to_faces(mesh.faces, region_on_vertices)
+    vertices_indices = np.argwhere(region_on_vertices).reshape(-1)
 
-    # creates FACES_RANGES
-    logger.info(_consecutive_elements(region_on_faces))
+    # creates FACES_VERTICES
+    logger.info(_consecutive_elements(vertices_indices))
 
 
 def _create_mesh_region(
@@ -52,17 +52,6 @@ def _create_mesh_region(
         & (vertices[:, 2] >= zmin)
         & (vertices[:, 2] <= zmax)
     )
-
-
-def _convert_vertices_region_to_faces(
-    faces: np.ndarray, region_on_vertices: np.ndarray
-) -> np.ndarray:
-    """
-    converts the region on vertices to faces
-    """
-    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
-    faces_in_region = faces[np.isin(faces, region_reshape)]
-    return np.unique(faces_in_region)
 
 
 def _consecutive_elements(data: np.ndarray, stepsize: int = 1) -> list[list[int]]:
