@@ -58,7 +58,7 @@ def test_decompose_all_mesh(slepian_mesh, mesh_field_region) -> None:
     assert_allclose(
         np.abs(integrate_region_p - harmonic_sum_p)[: slepian_mesh.N].mean(),
         0,
-        atol=0.3,
+        atol=2.6,
     )
 
 
@@ -81,7 +81,7 @@ def test_forward_inverse_transform_slepian(slepian_mesh, mesh_field_region) -> N
             slepian_mesh.mesh.region
         ].mean(),
         0,
-        atol=1.8,
+        atol=0.007,
     )
 
 
@@ -109,5 +109,5 @@ def test_synthesis_mesh(slepian_mesh_wavelets, mesh_field_region) -> None:
     assert_allclose(
         np.abs(f_p - coefficients)[: slepian_mesh_wavelets.slepian_mesh.N].mean(),
         0,
-        atol=1e-17,
+        atol=1e-15,
     )
