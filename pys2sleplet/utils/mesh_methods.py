@@ -153,7 +153,8 @@ def mesh_eigendecomposition(
             )
         else:
             laplacian = _graph_laplacian(
-                vertices, faces, theta=data.THETA, knn=data.KNN
+                vertices,
+                faces,
             )
             eigenvalues, eigenvectors = LA.eigh(laplacian)
         eigenvectors = _orthonormalise_basis_functions(eigenvectors.T)
