@@ -40,7 +40,8 @@ if __name__ == "__main__":
         help="mesh to plot",
     )
     parser.add_argument(
-        "basis",
+        "--basis",
+        "-b",
         type=int,
         help="number of basis functions to extract",
     )
