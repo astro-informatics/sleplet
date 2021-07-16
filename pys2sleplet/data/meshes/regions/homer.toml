@@ -1,3 +1,4 @@
+# YMIN = 0.14
 CAMERA_X = 0
 CAMERA_Y = 1
 CAMERA_Z = 0
