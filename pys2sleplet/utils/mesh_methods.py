@@ -118,12 +118,9 @@ def mesh_eigendecomposition(
     computes the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data
     """
-    # read in polygon data
-    data = _read_toml(name)
-
     # determine number of basis functions
     if number_basis_functions is None:
-        number_basis_functions = data.NUMBER
+        number_basis_functions = vertices.shape[0] // 4
     logger.info(
         f"finding {number_basis_functions}/{vertices.shape[0]} "
         f"basis functions of {name} mesh"
