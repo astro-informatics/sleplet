@@ -247,9 +247,7 @@ def average_functions_on_vertices_to_faces(
     return functions_on_faces
 
 
-def bandlimit_signal(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
-) -> np.ndarray:
+def bandlimit_signal(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
     """
     ensures that signal in pixel space is bandlimited
     """
