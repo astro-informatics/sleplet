@@ -14,18 +14,18 @@ from pys2sleplet.utils.slepian_methods import (
 from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 
 
-def _signal_power(L: int, signal: np.ndarray) -> float:
+def _signal_power(signal: np.ndarray) -> float:
     """
     computes the power of the signal
     """
-    return (np.abs(signal) ** 2).sum() / L ** 2
+    return (np.abs(signal) ** 2).sum()
 
 
 def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:
     """
     computes the signal to noise ratio
     """
-    snr = 10 * np.log10(_signal_power(L, signal) / _signal_power(L, noise))
+    snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
     signal_type = "Harmonic" if len(signal) == L ** 2 else "Slepian"
     logger.info(f"{signal_type} SNR: {snr:.2f}")
     return snr
@@ -35,7 +35,7 @@ def _compute_sigma_noise(L: int, signal: np.ndarray, snr_in: int) -> float:
     """
     compute the std dev of the noise
     """
-    return np.sqrt(10 ** (-snr_in / 10) * _signal_power(L, signal))
+    return np.sqrt(10 ** (-snr_in / 10) * _signal_power(signal) / L ** 2)
 
 
 def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
