@@ -18,7 +18,7 @@ def _signal_power(L: int, signal: np.ndarray) -> float:
     """
     computes the power of the signal
     """
-    return (np.abs(signal) ** 2).sum()
+    return (np.abs(signal) ** 2).sum() / L ** 2
 
 
 def compute_snr(L: int, signal: np.ndarray, noise: np.ndarray) -> float:
@@ -35,7 +35,7 @@ def _compute_sigma_noise(L: int, signal: np.ndarray, snr_in: int) -> float:
     """
     compute the std dev of the noise
     """
-    return np.sqrt(10 ** (-snr_in / 10) * _signal_power(L, signal) * L ** 2)
+    return np.sqrt(10 ** (-snr_in / 10) * _signal_power(L, signal))
 
 
 def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
