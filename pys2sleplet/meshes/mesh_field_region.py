@@ -23,8 +23,6 @@ class MeshFieldRegion:
             self.mesh_field.mesh.region, self.mesh_field.field_values, 0
         )
         self.field_values = bandlimit_signal(
-            self.mesh_field.mesh.vertices,
-            self.mesh_field.mesh.faces,
             self.mesh_field.mesh.basis_functions,
             masked_region,
         )

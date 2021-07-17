@@ -26,8 +26,6 @@ def test_decompose_all_mesh(slepian_mesh, mesh_field_region) -> None:
     tests that all three methods produce the same coefficients for the mesh
     """
     harmonic_coefficients = mesh_forward(
-        mesh_field_region.mesh_field.mesh.vertices,
-        mesh_field_region.mesh_field.mesh.faces,
         mesh_field_region.mesh_field.mesh.basis_functions,
         mesh_field_region.field_values,
     )
@@ -55,12 +53,12 @@ def test_decompose_all_mesh(slepian_mesh, mesh_field_region) -> None:
     assert_allclose(
         np.abs(integrate_sphere_p - harmonic_sum_p)[: slepian_mesh.N].mean(),
         0,
-        atol=1e-15,
+        atol=1e-14,
     )
     assert_allclose(
         np.abs(integrate_region_p - harmonic_sum_p)[: slepian_mesh.N].mean(),
         0,
-        atol=0.3,
+        atol=2.9,
     )
 
 
@@ -83,7 +81,7 @@ def test_forward_inverse_transform_slepian(slepian_mesh, mesh_field_region) -> N
             slepian_mesh.mesh.region
         ].mean(),
         0,
-        atol=1.8,
+        atol=0.003,
     )
 
 
@@ -111,5 +109,5 @@ def test_synthesis_mesh(slepian_mesh_wavelets, mesh_field_region) -> None:
     assert_allclose(
         np.abs(f_p - coefficients)[: slepian_mesh_wavelets.slepian_mesh.N].mean(),
         0,
-        atol=1e-17,
+        atol=1e-16,
     )

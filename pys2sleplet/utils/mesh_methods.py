@@ -10,8 +10,8 @@ from igl import (
     all_pairs_distances,
     average_onto_faces,
     cotmatrix,
-    doublearea,
     read_triangle_mesh,
+    upsample,
 )
 from numpy import linalg as LA
 from plotly.graph_objs.layout.scene import Camera
@@ -47,18 +47,22 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     data = _read_toml(mesh_name)
     vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
-    return vertices, faces
+    return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
 
 
-def create_mesh_region(mesh_name: str, faces: np.ndarray) -> np.ndarray:
+def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     """
     creates the boolean region for the given mesh
     """
     data = _read_toml(mesh_name)
-    faces_selected = np.zeros(faces.shape, dtype=int)
-    for faces_min, faces_max in data.FACES_RANGES.to_list():
-        faces_selected |= (faces >= faces_min) & (faces <= faces_max)
-    return faces_selected.any(axis=1)
+    return (
+        (vertices[:, 0] >= data.XMIN)
+        & (vertices[:, 0] <= data.XMAX)
+        & (vertices[:, 1] >= data.YMIN)
+        & (vertices[:, 1] <= data.YMAX)
+        & (vertices[:, 2] >= data.ZMIN)
+        & (vertices[:, 2] <= data.ZMAX)
+    )
 
 
 def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
@@ -115,17 +119,14 @@ def mesh_eigendecomposition(
     faces: np.ndarray,
     mesh_laplacian: bool = True,
     number_basis_functions: Optional[int] = None,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, int]:
     """
     computes the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data
     """
-    # read in polygon data
-    data = _read_toml(name)
-
     # determine number of basis functions
     if number_basis_functions is None:
-        number_basis_functions = data.NUMBER
+        number_basis_functions = vertices.shape[0] // 4
     logger.info(
         f"finding {number_basis_functions}/{vertices.shape[0]} "
         f"basis functions of {name} mesh"
@@ -155,49 +156,35 @@ def mesh_eigendecomposition(
             )
         else:
             laplacian = _graph_laplacian(
-                vertices, faces, theta=data.THETA, knn=data.KNN
+                vertices,
+                faces,
             )
             eigenvalues, eigenvectors = LA.eigh(laplacian)
-        eigenvectors = _tidy_eigenvectors(vertices, faces, eigenvectors.T)
+        eigenvectors = _orthonormalise_basis_functions(eigenvectors.T)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
             np.save(evec_loc, eigenvectors)
-    return eigenvalues, eigenvectors
+    return eigenvalues, eigenvectors, number_basis_functions
 
 
-def integrate_whole_mesh(
-    vertices: np.ndarray, faces: np.ndarray, *functions: np.ndarray
-) -> float:
+def integrate_whole_mesh(*functions: np.ndarray) -> float:
     """
     computes the integral of functions on the vertices
     """
-    area, multiplied_inputs = _prepare_integral(vertices, faces, *functions)
-    return (area * multiplied_inputs).sum()
+    multiplied_inputs = _multiply_args(*functions)
+    return multiplied_inputs.sum()
 
 
 def integrate_region_mesh(
-    vertices: np.ndarray,
-    faces: np.ndarray,
     mask: np.ndarray,
     *functions: np.ndarray,
 ) -> float:
     """
     computes the integral of a region of functions on the vertices
     """
-    area, multiplied_inputs = _prepare_integral(vertices, faces, *functions)
-    return (area * multiplied_inputs * mask).sum()
-
-
-def _prepare_integral(
-    vertices: np.ndarray, faces: np.ndarray, *functions: np.ndarray
-) -> tuple[np.ndarray, np.ndarray]:
-    """
-    repeated step in calculating the whole/region integrals
-    """
-    area = doublearea(vertices, faces) / 2
     multiplied_inputs = _multiply_args(*functions)
-    return area, multiplied_inputs
+    return (multiplied_inputs * mask).sum()
 
 
 def _multiply_args(*args: np.ndarray) -> np.ndarray:
@@ -207,15 +194,13 @@ def _multiply_args(*args: np.ndarray) -> np.ndarray:
     return reduce((lambda x, y: x * y), args)
 
 
-def mesh_forward(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
-) -> np.ndarray:
+def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
     """
     computes the mesh forward transform from real space to harmonic space
     """
     u_i = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(vertices, faces, u, phi_i)
+        u_i[i] = integrate_whole_mesh(u, phi_i)
     return u_i
 
 
@@ -227,26 +212,14 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
 
 
-def _tidy_eigenvectors(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
-) -> np.ndarray:
-    """
-    combines averaging onto faces and orthonormalisation steps
-    """
-    averaged = average_functions_on_vertices_to_faces(faces, basis_functions)
-    return _orthonormalise_basis_functions(vertices, faces, averaged)
-
-
-def _orthonormalise_basis_functions(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
-) -> np.ndarray:
+def _orthonormalise_basis_functions(basis_functions: np.ndarray) -> np.ndarray:
     """
     for computing the Slepian D matrix the basis functions must be orthonormal
     """
     logger.info("orthonormalising basis functions")
     factor = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        factor[i] = integrate_whole_mesh(vertices, faces, phi_i, phi_i)
+        factor[i] = integrate_whole_mesh(phi_i, phi_i)
     normalisation = np.sqrt(factor).reshape(-1, 1)
     return basis_functions / normalisation
 
@@ -275,19 +248,28 @@ def average_functions_on_vertices_to_faces(
     return functions_on_faces
 
 
-def bandlimit_signal(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray, u: np.ndarray
-) -> np.ndarray:
+def bandlimit_signal(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
     """
     ensures that signal in pixel space is bandlimited
     """
     u_i = mesh_forward(
-        vertices,
-        faces,
         basis_functions,
         u,
     )
     return mesh_inverse(basis_functions, u_i)
+
+
+def convert_region_on_vertices_to_faces(
+    faces: np.ndarray, region_on_vertices: np.ndarray
+) -> np.ndarray:
+    """
+    converts the region on vertices to faces
+    """
+    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
+    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
+    region_on_faces = np.zeros(faces.shape[0])
+    region_on_faces[faces_in_region] = 1
+    return region_on_faces
 
 
 def add_noise_to_mesh(
@@ -300,7 +282,7 @@ def add_noise_to_mesh(
     """
     adds Gaussian white noise to the signal
     """
-    u_i = mesh_forward(vertices, faces, basis_functions, u)
+    u_i = mesh_forward(basis_functions, u)
     n_i = create_noise(basis_functions.shape[0], u_i, noise)
     snr = compute_snr(basis_functions.shape[0], u_i, n_i)
     u_i += n_i

@@ -5,10 +5,7 @@ import numpy as np
 from igl import principal_curvature
 
 from pys2sleplet.meshes.mesh import Mesh
-from pys2sleplet.utils.mesh_methods import (
-    add_noise_to_mesh,
-    average_functions_on_vertices_to_faces,
-)
+from pys2sleplet.utils.mesh_methods import add_noise_to_mesh
 
 
 @dataclass
@@ -26,11 +23,8 @@ class MeshField:
         """
         compute field on the vertices of the mesh
         """
-        _, _, maximal_curvature, _ = principal_curvature(
+        _, _, self.field_values, _ = principal_curvature(
             self.mesh.vertices, self.mesh.faces
-        )
-        self.field_values = average_functions_on_vertices_to_faces(
-            self.mesh.faces, maximal_curvature
         )
         if self.noise is not None:
             self.field_values, _ = add_noise_to_mesh(
