@@ -54,10 +54,14 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     creates the boolean region for the given mesh
     """
     data = _read_toml(mesh_name)
-    vertices_selected = np.zeros(vertices.shape[0], dtype=int)
-    for vertices_min, vertices_max in data.VERTICES_RANGES.to_list():
-        vertices_selected[vertices_min : vertices_max + 1] = 1
-    return vertices_selected
+    return (
+        (vertices[:, 0] >= data.XMIN)
+        & (vertices[:, 0] <= data.XMAX)
+        & (vertices[:, 1] >= data.YMIN)
+        & (vertices[:, 1] <= data.YMAX)
+        & (vertices[:, 2] >= data.ZMIN)
+        & (vertices[:, 2] <= data.ZMAX)
+    )
 
 
 def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
