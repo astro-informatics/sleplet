@@ -118,7 +118,7 @@ def mesh_eigendecomposition(
     faces: np.ndarray,
     mesh_laplacian: bool = True,
     number_basis_functions: Optional[int] = None,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, int]:
     """
     computes the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data
@@ -164,7 +164,7 @@ def mesh_eigendecomposition(
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
             np.save(evec_loc, eigenvectors)
-    return eigenvalues, eigenvectors
+    return eigenvalues, eigenvectors, number_basis_functions
 
 
 def integrate_whole_mesh(*functions: np.ndarray) -> float:

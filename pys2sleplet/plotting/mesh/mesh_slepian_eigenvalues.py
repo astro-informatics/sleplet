@@ -28,7 +28,9 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     plt.plot(slepian_mesh.slepian_eigenvalues)
     plt.xlabel("rank")
     plt.ylabel("eigenvalue $\lambda$")
-    save_plot(fig_path, f"{mesh_name}_slepian_eigenvalues_b{num_basis_fun}")
+    save_plot(
+        fig_path, f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
+    )
 
 
 if __name__ == "__main__":
