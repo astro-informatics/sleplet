@@ -21,7 +21,7 @@ def test_forward_inverse_transform_recovery(mesh_field_region) -> None:
     )
     kernel_recov = mesh_inverse(mesh_field_region.mesh_field.mesh.basis_functions, u_i)
     assert_allclose(
-        np.abs(mesh_field_region.field_values - kernel_recov).mean(), 0, atol=1e-15
+        np.abs(mesh_field_region.field_values - kernel_recov).mean(), 0, atol=1e-14
     )
 
 
