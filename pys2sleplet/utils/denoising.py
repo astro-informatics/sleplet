@@ -39,7 +39,7 @@ def denoising_axisym(
 
     # compute wavelet noise
     sigma_j = compute_sigma_j(
-        signal.L, signal.coefficients, axisymmetric_wavelets.wavelets[1:], snr_in
+        signal.coefficients, axisymmetric_wavelets.wavelets[1:], snr_in
     )
 
     # hard thresholding

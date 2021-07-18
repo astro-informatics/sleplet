@@ -274,7 +274,7 @@ def convert_region_on_vertices_to_faces(
     return region_on_faces
 
 
-def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
+def create_noise(signal: np.ndarray, snr_in: int) -> np.ndarray:
     """
     computes Gaussian white noise
     """
