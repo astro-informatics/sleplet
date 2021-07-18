@@ -282,7 +282,7 @@ def create_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
     rng = default_rng(RANDOM_SEED)
 
     # initialise
-    n_i = np.zeros(u_i.shape[0], dtype=np.complex_)
+    n_i = np.zeros(u_i.shape[0])
 
     # std dev of the noise
     sigma_noise = compute_sigma_noise(u_i, snr_in)
