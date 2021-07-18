@@ -20,7 +20,7 @@ from scipy.sparse import linalg as LA_sparse
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.noise import compute_snr, create_noise
+from pys2sleplet.utils.noise import compute_sigma_noise, compute_snr
 from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
@@ -274,7 +274,7 @@ def convert_region_on_vertices_to_faces(
     return region_on_faces
 
 
-def create_noise(signal: np.ndarray, snr_in: int) -> np.ndarray:
+def create_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
     """
     computes Gaussian white noise
     """
@@ -282,25 +282,15 @@ def create_noise(signal: np.ndarray, snr_in: int) -> np.ndarray:
     rng = default_rng(RANDOM_SEED)
 
     # initialise
-    nlm = np.zeros(L ** 2, dtype=np.complex_)
+    n_i = np.zeros(u_i.shape[0], dtype=np.complex_)
 
     # std dev of the noise
-    sigma_noise = _compute_sigma_noise(L, signal, snr_in)
+    sigma_noise = compute_sigma_noise(u_i, snr_in)
 
     # compute noise
-    for ell in range(L):
-        ind = ssht.elm2ind(ell, 0)
-        nlm[ind] = sigma_noise * rng.standard_normal()
-        for m in range(1, ell + 1):
-            ind_pm = ssht.elm2ind(ell, m)
-            ind_nm = ssht.elm2ind(ell, -m)
-            nlm[ind_pm] = (
-                sigma_noise
-                / np.sqrt(2)
-                * (rng.standard_normal() + 1j * rng.standard_normal())
-            )
-            nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
-    return nlm
+    for i in range(u_i.shape[0]):
+        n_i[i] = sigma_noise * rng.standard_normal()
+    return n_i
 
 
 def add_noise_to_mesh(
@@ -312,7 +302,7 @@ def add_noise_to_mesh(
     adds Gaussian white noise to the signal
     """
     u_i = mesh_forward(basis_functions, u)
-    n_i = create_noise(basis_functions.shape[0], u_i, noise)
+    n_i = create_noise(u_i, noise)
     snr = compute_snr(u_i, n_i, "Harmonic")
     u_i += n_i
     u = mesh_inverse(basis_functions, u_i)
