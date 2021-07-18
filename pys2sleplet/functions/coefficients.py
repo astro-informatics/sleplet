@@ -23,7 +23,7 @@ class Coefficients:
     _L: int = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
-    _region: Region = field(default=None, init=False, repr=False)
+    _region: Optional[Region] = field(default=None, init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
     _smoothing: Optional[int] = field(default=None, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
@@ -128,11 +128,11 @@ class Coefficients:
         self._reality = reality
 
     @property  # type:ignore
-    def region(self) -> Region:
+    def region(self) -> Optional[Region]:
         return self._region
 
     @region.setter
-    def region(self, region: Region) -> None:
+    def region(self, region: Optional[Region]) -> None:
         if isinstance(region, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
