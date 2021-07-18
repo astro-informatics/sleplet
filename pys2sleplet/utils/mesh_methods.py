@@ -14,6 +14,7 @@ from igl import (
     upsample,
 )
 from numpy import linalg as LA
+from numpy.random import default_rng
 from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
 
@@ -24,6 +25,7 @@ from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
+    RANDOM_SEED,
 )
 
 _file_location = Path(__file__).resolve()
@@ -272,9 +274,36 @@ def convert_region_on_vertices_to_faces(
     return region_on_faces
 
 
+def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
+    """
+    computes Gaussian white noise
+    """
+    # set random seed
+    rng = default_rng(RANDOM_SEED)
+
+    # initialise
+    nlm = np.zeros(L ** 2, dtype=np.complex_)
+
+    # std dev of the noise
+    sigma_noise = _compute_sigma_noise(L, signal, snr_in)
+
+    # compute noise
+    for ell in range(L):
+        ind = ssht.elm2ind(ell, 0)
+        nlm[ind] = sigma_noise * rng.standard_normal()
+        for m in range(1, ell + 1):
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            nlm[ind_pm] = (
+                sigma_noise
+                / np.sqrt(2)
+                * (rng.standard_normal() + 1j * rng.standard_normal())
+            )
+            nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
+    return nlm
+
+
 def add_noise_to_mesh(
-    vertices: np.ndarray,
-    faces: np.ndarray,
     basis_functions: np.ndarray,
     u: np.ndarray,
     noise: int,

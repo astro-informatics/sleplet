@@ -28,8 +28,6 @@ class MeshField:
         )
         if self.noise is not None:
             self.field_values, _ = add_noise_to_mesh(
-                self.mesh.vertices,
-                self.mesh.faces,
                 self.mesh.basis_functions,
                 self.field_values,
                 self.noise,
