@@ -3,15 +3,17 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.meshes.mesh import Mesh
-from pys2sleplet.meshes.mesh_field import MeshField
-from pys2sleplet.meshes.mesh_field_region import MeshFieldRegion
-from pys2sleplet.meshes.slepian_mesh import SlepianMesh
-from pys2sleplet.meshes.slepian_mesh_field import SlepianMeshField
-from pys2sleplet.meshes.slepian_mesh_wavelet_coefficients import (
+from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from pys2sleplet.meshes.harmonic_coefficients.mesh_field_region import MeshFieldRegion
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelet_coefficients import (
     SlepianMeshWaveletCoefficients,
 )
-from pys2sleplet.meshes.slepian_mesh_wavelets import SlepianMeshWavelets
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+    SlepianMeshWavelets,
+)
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_mesh_methods import (

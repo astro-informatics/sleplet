@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.meshes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
 from pys2sleplet.utils.wavelet_methods import create_kappas
 
 

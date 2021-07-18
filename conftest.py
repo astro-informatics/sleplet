@@ -6,11 +6,13 @@ from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.meshes.mesh import Mesh
-from pys2sleplet.meshes.mesh_field import MeshField
-from pys2sleplet.meshes.mesh_field_region import MeshFieldRegion
-from pys2sleplet.meshes.slepian_mesh import SlepianMesh
-from pys2sleplet.meshes.slepian_mesh_wavelets import SlepianMeshWavelets
+from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from pys2sleplet.meshes.harmonic_coefficients.mesh_field_region import MeshFieldRegion
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+    SlepianMeshWavelets,
+)
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap

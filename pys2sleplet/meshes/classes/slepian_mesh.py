@@ -5,7 +5,7 @@ import numpy as np
 from multiprocess import Pool
 from numpy import linalg as LA
 
-from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger

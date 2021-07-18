@@ -3,7 +3,7 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mesh_methods import (
     integrate_region_mesh,

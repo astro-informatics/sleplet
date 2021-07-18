@@ -2,8 +2,10 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.meshes.mesh import Mesh
-from pys2sleplet.meshes.slepian_mesh_decomposition import SlepianMeshDecomposition
+from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.classes.slepian_mesh_decomposition import (
+    SlepianMeshDecomposition,
+)
 from pys2sleplet.utils.mesh_methods import mesh_inverse
 
 

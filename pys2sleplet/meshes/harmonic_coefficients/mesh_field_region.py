@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.meshes.mesh_field import MeshField
+from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from pys2sleplet.utils.mesh_methods import bandlimit_signal
 
 

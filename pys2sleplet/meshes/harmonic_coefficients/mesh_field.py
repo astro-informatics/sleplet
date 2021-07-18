@@ -4,7 +4,7 @@ from typing import Optional
 import numpy as np
 from igl import principal_curvature
 
-from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.mesh_methods import add_noise_to_mesh
 
 

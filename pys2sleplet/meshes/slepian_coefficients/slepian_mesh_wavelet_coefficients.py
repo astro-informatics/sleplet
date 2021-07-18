@@ -2,8 +2,10 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.meshes.slepian_mesh_field import SlepianMeshField
-from pys2sleplet.meshes.slepian_mesh_wavelets import SlepianMeshWavelets
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+    SlepianMeshWavelets,
+)
 from pys2sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
