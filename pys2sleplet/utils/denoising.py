@@ -54,7 +54,9 @@ def denoising_axisym(
     flm_rot = rotate_earth_to_south_america(flm, signal.L)
 
     # compute SNR
-    denoised_snr = compute_snr(signal.L, signal.coefficients, flm - signal.coefficients)
+    denoised_snr = compute_snr(
+        signal.coefficients, flm - signal.coefficients, "Harmonic"
+    )
 
     f = ssht.inverse(flm_rot, signal.L, Method=SAMPLING_SCHEME)
     return f, noised_signal.snr, denoised_snr
@@ -97,6 +99,6 @@ def denoising_slepian(
     )
 
     # compute SNR
-    compute_snr(signal.L, signal.coefficients, f_p - signal.coefficients)
+    compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
 
     return slepian_inverse(f_p, signal.L, slepian_wavelets.slepian)

@@ -313,7 +313,7 @@ def add_noise_to_mesh(
     """
     u_i = mesh_forward(basis_functions, u)
     n_i = create_noise(basis_functions.shape[0], u_i, noise)
-    snr = compute_snr(basis_functions.shape[0], u_i, n_i)
+    snr = compute_snr(u_i, n_i, "Harmonic")
     u_i += n_i
     u = mesh_inverse(basis_functions, u_i)
     return u, snr

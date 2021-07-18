@@ -19,7 +19,7 @@ class NoiseEarth(F_LM):
     def _create_coefficients(self) -> None:
         earth = Earth(self.L, smoothing=self.smoothing)
         noise = create_noise(self.L, earth.coefficients, self.SNR)
-        compute_snr(self.L, earth.coefficients, noise)
+        compute_snr(earth.coefficients, noise, "Harmonic")
         self.coefficients = noise
 
     def _create_name(self) -> None:

@@ -21,7 +21,7 @@ class SlepianNoiseSouthAmerica(F_P):
     def _create_coefficients(self) -> None:
         sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
         noise = create_slepian_noise(self.L, sa.coefficients, self.slepian, self.SNR)
-        compute_snr(self.L, sa.coefficients, noise)
+        compute_snr(sa.coefficients, noise, "Slepian")
         self.coefficients = noise
 
     def _create_name(self) -> None:

@@ -26,7 +26,7 @@ class F_LM(Coefficients):
         """
         if self.noise is not None:
             nlm = create_noise(self.L, self.coefficients, self.noise)
-            self.snr = compute_snr(self.L, self.coefficients, nlm)
+            self.snr = compute_snr(self.coefficients, nlm, "Harmonic")
             self.coefficients += nlm
 
     @abstractmethod

@@ -46,7 +46,7 @@ class F_P(Coefficients):
             n_p = create_slepian_noise(
                 self.L, self.coefficients, self.slepian, self.noise
             )
-            self.snr = compute_snr(self.L, self.coefficients, n_p)
+            self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
 
     @property  # type:ignore
