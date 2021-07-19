@@ -6,7 +6,7 @@ from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.classes.slepian_mesh_decomposition import (
     SlepianMeshDecomposition,
 )
-from pys2sleplet.utils.mesh_methods import mesh_inverse
+from pys2sleplet.utils.mesh_methods import create_mesh_noise, mesh_forward, mesh_inverse
 
 
 def clean_evals_and_evecs(
@@ -35,19 +35,25 @@ def compute_shannon(mesh: Mesh) -> int:
     return round(region_vertices / total_vertices * num_basis_fun)
 
 
-def slepian_mesh_inverse(
-    f_p: np.ndarray,
+def create_slepian_mesh_noise(
     mesh: Mesh,
+    slepian_eigenvalues: np.ndarray,
     slepian_functions: np.ndarray,
     shannon: int,
+    slepian_signal: np.ndarray,
+    snr_in: int,
 ) -> np.ndarray:
     """
-    computes the Slepian inverse transform on the mesh up to the Shannon number
+    computes Gaussian white noise in Slepian space
     """
-    p_idx = 0
-    f_p_reshape = f_p[:shannon, np.newaxis]
-    s_p = _compute_mesh_s_p_pixel(mesh.basis_functions, slepian_functions, shannon)
-    return (f_p_reshape * s_p).sum(axis=p_idx)
+    u_i = mesh_forward(
+        mesh.basis_functions,
+        slepian_mesh_inverse(slepian_signal, mesh, slepian_functions, shannon),
+    )
+    n_i = create_mesh_noise(u_i, snr_in)
+    return slepian_mesh_forward(
+        mesh, slepian_eigenvalues, slepian_functions, shannon, u_i=n_i
+    )
 
 
 def slepian_mesh_forward(
@@ -66,6 +72,21 @@ def slepian_mesh_forward(
         mesh, slepian_eigenvalues, slepian_functions, shannon, u=u, u_i=u_i, mask=mask
     )
     return sd.decompose_all()
+
+
+def slepian_mesh_inverse(
+    f_p: np.ndarray,
+    mesh: Mesh,
+    slepian_functions: np.ndarray,
+    shannon: int,
+) -> np.ndarray:
+    """
+    computes the Slepian inverse transform on the mesh up to the Shannon number
+    """
+    p_idx = 0
+    f_p_reshape = f_p[:shannon, np.newaxis]
+    s_p = _compute_mesh_s_p_pixel(mesh.basis_functions, slepian_functions, shannon)
+    return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
 def _compute_mesh_s_p_pixel(

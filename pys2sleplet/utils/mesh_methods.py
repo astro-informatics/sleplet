@@ -34,57 +34,67 @@ MESHES: set[str] = {
 }
 
 
+def average_functions_on_vertices_to_faces(
+    faces: np.ndarray,
+    functions_on_vertices: np.ndarray,
+) -> np.ndarray:
+    """
+    the integrals require all functions to be defined on faces
+    this method handles an arbitrary number of functions
+    """
+    logger.info("converting function on vertices to faces")
+    # handle the case of a 1D array
+    array_is_1d = len(functions_on_vertices.shape) == 1
+    if array_is_1d:
+        functions_on_vertices = functions_on_vertices.reshape(1, -1)
+
+    functions_on_faces = np.zeros((functions_on_vertices.shape[0], faces.shape[0]))
+    for i, f in enumerate(functions_on_vertices):
+        functions_on_faces[i] = average_onto_faces(faces, f)
+
+    # put the vector back in 1D form
+    if array_is_1d:
+        functions_on_faces = functions_on_faces.reshape(-1)
+    return functions_on_faces
+
+
+def convert_region_on_vertices_to_faces(
+    faces: np.ndarray, region_on_vertices: np.ndarray
+) -> np.ndarray:
+    """
+    converts the region on vertices to faces
+    """
+    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
+    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
+    region_on_faces = np.zeros(faces.shape[0])
+    region_on_faces[faces_in_region] = 1
+    return region_on_faces
+
+
+def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
+    """
+    computes Gaussian white noise
+    """
+    # set random seed
+    rng = default_rng(RANDOM_SEED)
+
+    # initialise
+    n_i = np.zeros(u_i.shape[0])
+
+    # std dev of the noise
+    sigma_noise = compute_sigma_noise(u_i, snr_in)
+
+    # compute noise
+    for i in range(u_i.shape[0]):
+        n_i[i] = sigma_noise * rng.standard_normal()
+    return n_i
+
+
 def mesh_config(mesh_name: str) -> Box:
     """
     reads in the given mesh region settings file
     """
     return Box.from_toml(filename=_meshes_path / "regions" / f"{mesh_name}.toml")
-
-
-def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
-    """
-    reads in the given mesh
-    """
-    data = mesh_config(mesh_name)
-    vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
-    return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
-
-
-def _weighting_function(
-    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: float, knn: int
-) -> np.ndarray:
-    """
-    thresholded Gaussian kernel weighting function
-    """
-    W = np.exp(
-        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta ** 2)
-    )
-    knn_threshold = D <= knn
-    return W * A * knn_threshold
-
-
-def _graph_laplacian(
-    vertices: np.ndarray,
-    faces: np.ndarray,
-    theta: float = GAUSSIAN_KERNEL_THETA_DEFAULT,
-    knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
-) -> np.ndarray:
-    """
-    computes the graph laplacian L = D - W where D
-    is the degree matrix and W is the weighting function
-    """
-    rows = 0
-    A = adjacency_matrix(faces)
-    D = np.diagflat(A.sum(axis=rows))
-    W = _weighting_function(D, A, vertices, theta, knn)
-    return np.asarray(D - W)
-
-
-def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
-    """
-    computes the cotagent mesh laplacian
-    """
-    return -cotmatrix(vertices, faces)
 
 
 def mesh_eigendecomposition(
@@ -160,6 +170,39 @@ def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
     return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
 
 
+def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
+    """
+    reads in the given mesh
+    """
+    data = mesh_config(mesh_name)
+    vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
+    return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
+
+
+def _graph_laplacian(
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    theta: float = GAUSSIAN_KERNEL_THETA_DEFAULT,
+    knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
+) -> np.ndarray:
+    """
+    computes the graph laplacian L = D - W where D
+    is the degree matrix and W is the weighting function
+    """
+    rows = 0
+    A = adjacency_matrix(faces)
+    D = np.diagflat(A.sum(axis=rows))
+    W = _weighting_function(D, A, vertices, theta, knn)
+    return np.asarray(D - W)
+
+
+def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
+    """
+    computes the cotagent mesh laplacian
+    """
+    return -cotmatrix(vertices, faces)
+
+
 def _orthonormalise_basis_functions(basis_functions: np.ndarray) -> np.ndarray:
     """
     for computing the Slepian D matrix the basis functions must be orthonormal
@@ -172,73 +215,14 @@ def _orthonormalise_basis_functions(basis_functions: np.ndarray) -> np.ndarray:
     return basis_functions / normalisation
 
 
-def average_functions_on_vertices_to_faces(
-    faces: np.ndarray,
-    functions_on_vertices: np.ndarray,
+def _weighting_function(
+    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: float, knn: int
 ) -> np.ndarray:
     """
-    the integrals require all functions to be defined on faces
-    this method handles an arbitrary number of functions
+    thresholded Gaussian kernel weighting function
     """
-    logger.info("converting function on vertices to faces")
-    # handle the case of a 1D array
-    array_is_1d = len(functions_on_vertices.shape) == 1
-    if array_is_1d:
-        functions_on_vertices = functions_on_vertices.reshape(1, -1)
-
-    functions_on_faces = np.zeros((functions_on_vertices.shape[0], faces.shape[0]))
-    for i, f in enumerate(functions_on_vertices):
-        functions_on_faces[i] = average_onto_faces(faces, f)
-
-    # put the vector back in 1D form
-    if array_is_1d:
-        functions_on_faces = functions_on_faces.reshape(-1)
-    return functions_on_faces
-
-
-def convert_region_on_vertices_to_faces(
-    faces: np.ndarray, region_on_vertices: np.ndarray
-) -> np.ndarray:
-    """
-    converts the region on vertices to faces
-    """
-    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
-    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
-    region_on_faces = np.zeros(faces.shape[0])
-    region_on_faces[faces_in_region] = 1
-    return region_on_faces
-
-
-def create_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
-    """
-    computes Gaussian white noise
-    """
-    # set random seed
-    rng = default_rng(RANDOM_SEED)
-
-    # initialise
-    n_i = np.zeros(u_i.shape[0])
-
-    # std dev of the noise
-    sigma_noise = compute_sigma_noise(u_i, snr_in)
-
-    # compute noise
-    for i in range(u_i.shape[0]):
-        n_i[i] = sigma_noise * rng.standard_normal()
-    return n_i
-
-
-def add_noise_to_mesh(
-    basis_functions: np.ndarray,
-    u: np.ndarray,
-    noise: int,
-) -> tuple[np.ndarray, float]:
-    """
-    adds Gaussian white noise to the signal
-    """
-    u_i = mesh_forward(basis_functions, u)
-    n_i = create_noise(u_i, noise)
-    snr = compute_snr(u_i, n_i, "Harmonic")
-    u_i += n_i
-    u = mesh_inverse(basis_functions, u_i)
-    return u, snr
+    W = np.exp(
+        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta ** 2)
+    )
+    knn_threshold = D <= knn
+    return W * A * knn_threshold
