@@ -72,7 +72,7 @@ def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
     """
     creates plotly camera view for a given mesh
     """
-    data = read_mesh_toml(mesh_name)
+    data = mesh_config(mesh_name)
     return (
         create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM),
         data.COLOURBAR_POS,

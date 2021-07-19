@@ -94,7 +94,7 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     """
     creates the boolean region for the given mesh
     """
-    data = read_mesh_toml(mesh_name)
+    data = mesh_config(mesh_name)
     return (
         (vertices[:, 0] >= data.XMIN)
         & (vertices[:, 0] <= data.XMAX)

@@ -36,7 +36,7 @@ MESHES: set[str] = {
 }
 
 
-def read_mesh_toml(mesh_name: str) -> Box:
+def mesh_config(mesh_name: str) -> Box:
     """
     reads in the given mesh region settings file
     """
@@ -47,7 +47,7 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh
     """
-    data = read_mesh_toml(mesh_name)
+    data = mesh_config(mesh_name)
     vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
     return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
 
