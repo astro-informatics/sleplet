@@ -3,6 +3,7 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
@@ -87,3 +88,13 @@ def compute_s_p_omega_prime(
     # pad with zeros so it has the expected shape
     boost = L ** 2 - slepian.N
     return boost_coefficient_resolution(sp_omega_prime, boost)
+
+
+def compute_mesh_shannon(mesh: Mesh) -> int:
+    """
+    computes the effective Shannon number for a region of a mesh
+    """
+    num_basis_fun = mesh.basis_functions.shape[0]
+    region_vertices = mesh.region.sum()
+    total_vertices = mesh.region.shape[0]
+    return round(region_vertices / total_vertices * num_basis_fun)

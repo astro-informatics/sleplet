@@ -17,10 +17,8 @@ from pys2sleplet.utils.parallel_methods import (
     release_shared_memory,
     split_arr_into_chunks,
 )
-from pys2sleplet.utils.slepian_mesh_methods import (
-    clean_evals_and_evecs,
-    compute_shannon,
-)
+from pys2sleplet.utils.slepian_mesh_methods import clean_evals_and_evecs
+from pys2sleplet.utils.slepian_methods import compute_mesh_shannon
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
@@ -35,7 +33,7 @@ class SlepianMesh:
     _slepian_functions: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.N = compute_shannon(self.mesh)
+        self.N = compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 
     def _compute_slepian_functions(self) -> None:

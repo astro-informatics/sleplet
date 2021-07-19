@@ -3,10 +3,10 @@ from numpy.testing import assert_allclose
 
 from pys2sleplet.utils.harmonic_methods import mesh_forward
 from pys2sleplet.utils.slepian_mesh_methods import (
-    compute_shannon,
     slepian_mesh_forward,
     slepian_mesh_inverse,
 )
+from pys2sleplet.utils.slepian_methods import compute_mesh_shannon
 from pys2sleplet.utils.wavelet_methods import (
     slepian_wavelet_forward,
     slepian_wavelet_inverse,
@@ -17,7 +17,7 @@ def test_shannon_less_than_basis_functions(mesh) -> None:
     """
     Shannon number should be less than the total number of basis functions
     """
-    shannon = compute_shannon(mesh)
+    shannon = compute_mesh_shannon(mesh)
     assert shannon < mesh.basis_functions.shape[0]
 
 

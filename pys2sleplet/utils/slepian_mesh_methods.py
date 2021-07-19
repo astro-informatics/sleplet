@@ -25,16 +25,6 @@ def clean_evals_and_evecs(
     return eigenvalues, eigenvectors
 
 
-def compute_shannon(mesh: Mesh) -> int:
-    """
-    computes the effective Shannon number for a region of a mesh
-    """
-    num_basis_fun = mesh.basis_functions.shape[0]
-    region_vertices = mesh.region.sum()
-    total_vertices = mesh.region.shape[0]
-    return round(region_vertices / total_vertices * num_basis_fun)
-
-
 def slepian_mesh_forward(
     mesh: Mesh,
     slepian_eigenvalues: np.ndarray,
