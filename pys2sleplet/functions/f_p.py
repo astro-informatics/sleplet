@@ -79,22 +79,12 @@ class F_P(Coefficients):
 
     @abstractmethod
     def _set_reality(self) -> None:
-        """
-        sets the reality flag to speed up computations
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _set_spin(self) -> None:
-        """
-        sets the spin value in computations
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """
-        initialises function specific args
-        either default value or user input
-        """
         raise NotImplementedError

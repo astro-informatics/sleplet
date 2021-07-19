@@ -31,36 +31,20 @@ class F_LM(Coefficients):
 
     @abstractmethod
     def _create_coefficients(self) -> None:
-        """
-        creates the flm on the north pole
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _create_name(self) -> None:
-        """
-        creates the name of the function
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _set_reality(self) -> None:
-        """
-        sets the reality flag to speed up computations
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _set_spin(self) -> None:
-        """
-        sets the spin value in computations
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """
-        initialises function specific args
-        either default value or user input
-        """
         raise NotImplementedError
