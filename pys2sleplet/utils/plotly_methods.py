@@ -6,6 +6,7 @@ from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
 from plotly.graph_objs.layout.scene.camera import Eye
 
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.mesh_methods import read_mesh_toml
 
 _axis = dict(
     title="",
@@ -64,4 +65,15 @@ def create_colour_bar(tick_mark: float, bar_pos: float) -> dict:
         tickformat=None if settings.NORMALISE else "+.1e",
         tick0=None if settings.NORMALISE else -tick_mark,
         dtick=None if settings.NORMALISE else tick_mark,
+    )
+
+
+def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
+    """
+    creates plotly camera view for a given mesh
+    """
+    data = read_mesh_toml(mesh_name)
+    return (
+        create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM),
+        data.COLOURBAR_POS,
     )

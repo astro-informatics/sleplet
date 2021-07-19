@@ -52,17 +52,6 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
 
 
-def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
-    """
-    creates plotly camera view for a given mesh
-    """
-    data = read_mesh_toml(mesh_name)
-    return (
-        create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM),
-        data.COLOURBAR_POS,
-    )
-
-
 def _weighting_function(
     D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: float, knn: int
 ) -> np.ndarray:

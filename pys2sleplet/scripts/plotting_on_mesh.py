@@ -3,7 +3,8 @@ from argparse import ArgumentParser, Namespace
 
 from pys2sleplet.meshes.mesh_plot import MeshPlot
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.mesh_methods import MESHES, mesh_plotly_config
+from pys2sleplet.utils.mesh_methods import MESHES
+from pys2sleplet.utils.plotly_methods import mesh_plotly_config
 
 
 def valid_plotting(func_name: str) -> str:
