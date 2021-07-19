@@ -5,16 +5,13 @@ import numpy as np
 from igl import principal_curvature
 
 from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.utils.mesh_methods import add_noise_to_mesh
 
 
 @dataclass
 class MeshField:
     mesh: Mesh
-    noise: Optional[int]
     _field_values: np.ndarray = field(init=False, repr=False)
     _mesh: Mesh = field(init=False, repr=False)
-    _noise: Optional[int] = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._compute_field_values()
@@ -26,12 +23,6 @@ class MeshField:
         _, _, self.field_values, _ = principal_curvature(
             self.mesh.vertices, self.mesh.faces
         )
-        if self.noise is not None:
-            self.field_values, _ = add_noise_to_mesh(
-                self.mesh.basis_functions,
-                self.field_values,
-                self.noise,
-            )
 
     @property
     def field_values(self) -> np.ndarray:
