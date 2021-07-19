@@ -4,8 +4,14 @@ import numpy as np
 import pyssht as ssht
 from numpy.random import default_rng
 
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
+from pys2sleplet.utils.harmonic_methods import mesh_forward
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.slepian_mesh_methods import (
+    slepian_mesh_forward,
+    slepian_mesh_inverse,
+)
 from pys2sleplet.utils.slepian_methods import (
     compute_s_p_omega,
     slepian_forward,
@@ -184,3 +190,24 @@ def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
     for i in range(u_i.shape[0]):
         n_i[i] = sigma_noise * rng.standard_normal()
     return n_i
+
+
+def create_slepian_mesh_noise(
+    mesh: Mesh,
+    slepian_eigenvalues: np.ndarray,
+    slepian_functions: np.ndarray,
+    shannon: int,
+    slepian_signal: np.ndarray,
+    snr_in: int,
+) -> np.ndarray:
+    """
+    computes Gaussian white noise in Slepian space
+    """
+    u_i = mesh_forward(
+        mesh.basis_functions,
+        slepian_mesh_inverse(slepian_signal, mesh, slepian_functions, shannon),
+    )
+    n_i = create_mesh_noise(u_i, snr_in)
+    return slepian_mesh_forward(
+        mesh, slepian_eigenvalues, slepian_functions, shannon, u_i=n_i
+    )

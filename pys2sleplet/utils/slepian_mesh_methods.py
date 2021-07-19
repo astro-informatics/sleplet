@@ -6,8 +6,7 @@ from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.classes.slepian_mesh_decomposition import (
     SlepianMeshDecomposition,
 )
-from pys2sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
-from pys2sleplet.utils.noise import create_mesh_noise
+from pys2sleplet.utils.harmonic_methods import mesh_inverse
 
 
 def clean_evals_and_evecs(
@@ -34,27 +33,6 @@ def compute_shannon(mesh: Mesh) -> int:
     region_vertices = mesh.region.sum()
     total_vertices = mesh.region.shape[0]
     return round(region_vertices / total_vertices * num_basis_fun)
-
-
-def create_slepian_mesh_noise(
-    mesh: Mesh,
-    slepian_eigenvalues: np.ndarray,
-    slepian_functions: np.ndarray,
-    shannon: int,
-    slepian_signal: np.ndarray,
-    snr_in: int,
-) -> np.ndarray:
-    """
-    computes Gaussian white noise in Slepian space
-    """
-    u_i = mesh_forward(
-        mesh.basis_functions,
-        slepian_mesh_inverse(slepian_signal, mesh, slepian_functions, shannon),
-    )
-    n_i = create_mesh_noise(u_i, snr_in)
-    return slepian_mesh_forward(
-        mesh, slepian_eigenvalues, slepian_functions, shannon, u_i=n_i
-    )
 
 
 def slepian_mesh_forward(
