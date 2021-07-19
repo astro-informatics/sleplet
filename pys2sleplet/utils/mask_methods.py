@@ -114,3 +114,16 @@ def ensure_masked_bandlimit_mesh_signal(
     field = mesh_inverse(basis_functions, coefficients)
     field = np.where(region, field, 0)
     return mesh_forward(basis_functions, field)
+
+
+def convert_region_on_vertices_to_faces(
+    faces: np.ndarray, region_on_vertices: np.ndarray
+) -> np.ndarray:
+    """
+    converts the region on vertices to faces
+    """
+    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
+    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
+    region_on_faces = np.zeros(faces.shape[0])
+    region_on_faces[faces_in_region] = 1
+    return region_on_faces

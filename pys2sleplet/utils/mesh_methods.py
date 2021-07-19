@@ -58,19 +58,6 @@ def average_functions_on_vertices_to_faces(
     return functions_on_faces
 
 
-def convert_region_on_vertices_to_faces(
-    faces: np.ndarray, region_on_vertices: np.ndarray
-) -> np.ndarray:
-    """
-    converts the region on vertices to faces
-    """
-    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
-    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
-    region_on_faces = np.zeros(faces.shape[0])
-    region_on_faces[faces_in_region] = 1
-    return region_on_faces
-
-
 def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
     """
     computes Gaussian white noise
