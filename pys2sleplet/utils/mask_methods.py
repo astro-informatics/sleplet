@@ -5,6 +5,7 @@ import pyssht as ssht
 from box import Box
 
 from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mesh_methods import read_mesh_toml
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
@@ -86,4 +87,19 @@ def create_default_region(settings: Box) -> Region:
         phi_min=np.deg2rad(settings.PHI_MIN),
         theta_max=np.deg2rad(settings.THETA_MAX),
         theta_min=np.deg2rad(settings.THETA_MIN),
+    )
+
+
+def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
+    """
+    creates the boolean region for the given mesh
+    """
+    data = read_mesh_toml(mesh_name)
+    return (
+        (vertices[:, 0] >= data.XMIN)
+        & (vertices[:, 0] <= data.XMAX)
+        & (vertices[:, 1] >= data.YMIN)
+        & (vertices[:, 1] <= data.YMAX)
+        & (vertices[:, 2] >= data.ZMIN)
+        & (vertices[:, 2] <= data.ZMAX)
     )

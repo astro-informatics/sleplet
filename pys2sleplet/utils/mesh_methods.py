@@ -52,21 +52,6 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
 
 
-def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
-    """
-    creates the boolean region for the given mesh
-    """
-    data = read_mesh_toml(mesh_name)
-    return (
-        (vertices[:, 0] >= data.XMIN)
-        & (vertices[:, 0] <= data.XMAX)
-        & (vertices[:, 1] >= data.YMIN)
-        & (vertices[:, 1] <= data.YMAX)
-        & (vertices[:, 2] >= data.ZMIN)
-        & (vertices[:, 2] <= data.ZMAX)
-    )
-
-
 def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
     """
     creates plotly camera view for a given mesh

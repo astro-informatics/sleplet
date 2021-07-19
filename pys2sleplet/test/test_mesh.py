@@ -2,8 +2,8 @@ import numpy as np
 import pytest
 from numpy.testing import assert_allclose
 
+from pys2sleplet.utils.mask_methods import create_mesh_region
 from pys2sleplet.utils.mesh_methods import (
-    create_mesh_region,
     integrate_whole_mesh,
     mesh_forward,
     mesh_inverse,
