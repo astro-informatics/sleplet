@@ -117,24 +117,6 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors, number_basis_functions
 
 
-def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
-    """
-    computes the mesh forward transform from real space to harmonic space
-    """
-    u_i = np.zeros(basis_functions.shape[0])
-    for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(u, phi_i)
-    return u_i
-
-
-def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
-    """
-    computes the mesh inverse transform from harmonic space to real space
-    """
-    i_idx = 0
-    return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
-
-
 def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh

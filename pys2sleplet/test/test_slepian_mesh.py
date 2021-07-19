@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.testing import assert_allclose
 
-from pys2sleplet.utils.mesh_methods import mesh_forward
+from pys2sleplet.utils.harmonic_methods import mesh_forward
 from pys2sleplet.utils.slepian_mesh_methods import (
     compute_shannon,
     slepian_mesh_forward,

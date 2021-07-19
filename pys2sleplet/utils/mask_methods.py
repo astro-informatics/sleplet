@@ -4,8 +4,9 @@ import numpy as np
 import pyssht as ssht
 from box import Box
 
+from pys2sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import mesh_config, mesh_forward, mesh_inverse
+from pys2sleplet.utils.mesh_methods import mesh_config
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
