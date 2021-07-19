@@ -36,7 +36,7 @@ MESHES: set[str] = {
 }
 
 
-def _read_toml(mesh_name: str) -> Box:
+def read_mesh_toml(mesh_name: str) -> Box:
     """
     reads in the given mesh region settings file
     """
@@ -47,7 +47,7 @@ def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh
     """
-    data = _read_toml(mesh_name)
+    data = read_mesh_toml(mesh_name)
     vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
     return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
 
@@ -56,7 +56,7 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
     """
     creates the boolean region for the given mesh
     """
-    data = _read_toml(mesh_name)
+    data = read_mesh_toml(mesh_name)
     return (
         (vertices[:, 0] >= data.XMIN)
         & (vertices[:, 0] <= data.XMAX)
@@ -71,7 +71,7 @@ def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
     """
     creates plotly camera view for a given mesh
     """
-    data = _read_toml(mesh_name)
+    data = read_mesh_toml(mesh_name)
     return (
         create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM),
         data.COLOURBAR_POS,
