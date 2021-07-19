@@ -8,8 +8,8 @@ from numpy import linalg as LA
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.integration_methods import integrate_region_mesh
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import integrate_region_mesh
 from pys2sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,

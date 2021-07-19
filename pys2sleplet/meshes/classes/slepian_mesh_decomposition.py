@@ -4,12 +4,12 @@ from typing import Optional
 import numpy as np
 
 from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import (
+from pys2sleplet.utils.integration_methods import (
     integrate_region_mesh,
     integrate_whole_mesh,
-    mesh_inverse,
 )
+from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mesh_methods import mesh_inverse
 
 
 @dataclass

@@ -2,12 +2,9 @@ import numpy as np
 import pytest
 from numpy.testing import assert_allclose
 
+from pys2sleplet.utils.integration_methods import integrate_whole_mesh
 from pys2sleplet.utils.mask_methods import create_mesh_region
-from pys2sleplet.utils.mesh_methods import (
-    integrate_whole_mesh,
-    mesh_forward,
-    mesh_inverse,
-)
+from pys2sleplet.utils.mesh_methods import mesh_forward, mesh_inverse
 
 
 def test_forward_inverse_transform_recovery(mesh_field_region) -> None:

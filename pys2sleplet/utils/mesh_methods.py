@@ -1,5 +1,4 @@
 import glob
-from functools import reduce
 from pathlib import Path
 from typing import Optional
 
@@ -15,13 +14,12 @@ from igl import (
 )
 from numpy import linalg as LA
 from numpy.random import default_rng
-from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
 
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.integration_methods import integrate_whole_mesh
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.noise import compute_sigma_noise, compute_snr
-from pys2sleplet.utils.plotly_methods import create_camera
+from pys2sleplet.utils.noise import compute_sigma_noise
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
@@ -142,32 +140,6 @@ def mesh_eigendecomposition(
             np.save(eval_loc, eigenvalues)
             np.save(evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
-
-
-def integrate_whole_mesh(*functions: np.ndarray) -> float:
-    """
-    computes the integral of functions on the vertices
-    """
-    multiplied_inputs = _multiply_args(*functions)
-    return multiplied_inputs.sum()
-
-
-def integrate_region_mesh(
-    mask: np.ndarray,
-    *functions: np.ndarray,
-) -> float:
-    """
-    computes the integral of a region of functions on the vertices
-    """
-    multiplied_inputs = _multiply_args(*functions)
-    return (multiplied_inputs * mask).sum()
-
-
-def _multiply_args(*args: np.ndarray) -> np.ndarray:
-    """
-    method to multiply an unknown number of arguments
-    """
-    return reduce((lambda x, y: x * y), args)
 
 
 def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
