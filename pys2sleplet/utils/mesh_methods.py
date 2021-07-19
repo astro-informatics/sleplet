@@ -13,17 +13,14 @@ from igl import (
     upsample,
 )
 from numpy import linalg as LA
-from numpy.random import default_rng
 from scipy.sparse import linalg as LA_sparse
 
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.integration_methods import integrate_whole_mesh
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.noise import compute_sigma_noise
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
-    RANDOM_SEED,
 )
 
 _file_location = Path(__file__).resolve()
@@ -56,25 +53,6 @@ def average_functions_on_vertices_to_faces(
     if array_is_1d:
         functions_on_faces = functions_on_faces.reshape(-1)
     return functions_on_faces
-
-
-def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
-    """
-    computes Gaussian white noise
-    """
-    # set random seed
-    rng = default_rng(RANDOM_SEED)
-
-    # initialise
-    n_i = np.zeros(u_i.shape[0])
-
-    # std dev of the noise
-    sigma_noise = compute_sigma_noise(u_i, snr_in)
-
-    # compute noise
-    for i in range(u_i.shape[0]):
-        n_i[i] = sigma_noise * rng.standard_normal()
-    return n_i
 
 
 def mesh_config(mesh_name: str) -> Box:

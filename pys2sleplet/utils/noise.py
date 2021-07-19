@@ -165,3 +165,22 @@ def compute_slepian_sigma_j(
     psi_j_reshape = psi_j[:, : slepian.N, np.newaxis, np.newaxis]
     wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_axis)
     return sigma_noise * np.sqrt(wavelet_power)
+
+
+def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
+    """
+    computes Gaussian white noise
+    """
+    # set random seed
+    rng = default_rng(RANDOM_SEED)
+
+    # initialise
+    n_i = np.zeros(u_i.shape[0])
+
+    # std dev of the noise
+    sigma_noise = compute_sigma_noise(u_i, snr_in)
+
+    # compute noise
+    for i in range(u_i.shape[0]):
+        n_i[i] = sigma_noise * rng.standard_normal()
+    return n_i

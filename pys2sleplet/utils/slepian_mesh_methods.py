@@ -6,7 +6,8 @@ from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.classes.slepian_mesh_decomposition import (
     SlepianMeshDecomposition,
 )
-from pys2sleplet.utils.mesh_methods import create_mesh_noise, mesh_forward, mesh_inverse
+from pys2sleplet.utils.mesh_methods import mesh_forward, mesh_inverse
+from pys2sleplet.utils.noise import create_mesh_noise
 
 
 def clean_evals_and_evecs(
