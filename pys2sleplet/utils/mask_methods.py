@@ -5,7 +5,7 @@ import pyssht as ssht
 from box import Box
 
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import mesh_config
+from pys2sleplet.utils.mesh_methods import mesh_config, mesh_forward, mesh_inverse
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
@@ -103,3 +103,14 @@ def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
         & (vertices[:, 2] >= data.ZMIN)
         & (vertices[:, 2] <= data.ZMAX)
     )
+
+
+def ensure_masked_bandlimit_mesh_signal(
+    basis_functions: np.ndarray, region: np.ndarray, coefficients: np.ndarray
+) -> np.ndarray:
+    """
+    ensures that signal in pixel space is bandlimited
+    """
+    field = mesh_inverse(basis_functions, coefficients)
+    field = np.where(region, field, 0)
+    return mesh_forward(basis_functions, field)
