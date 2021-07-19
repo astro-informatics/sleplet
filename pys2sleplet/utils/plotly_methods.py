@@ -6,7 +6,7 @@ from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
 from plotly.graph_objs.layout.scene.camera import Eye
 
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.mesh_methods import read_mesh_toml
+from pys2sleplet.utils.mesh_methods import mesh_config
 
 _axis = dict(
     title="",

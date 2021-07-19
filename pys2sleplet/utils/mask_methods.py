@@ -5,7 +5,7 @@ import pyssht as ssht
 from box import Box
 
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import read_mesh_toml
+from pys2sleplet.utils.mesh_methods import mesh_config
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
