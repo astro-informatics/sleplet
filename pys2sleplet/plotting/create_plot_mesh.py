@@ -13,10 +13,7 @@ from plotly.graph_objs.mesh3d import Lighting
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
-from pys2sleplet.utils.mesh_methods import (
-    average_functions_on_vertices_to_faces,
-    convert_region_on_vertices_to_faces,
-)
+from pys2sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
 from pys2sleplet.utils.plot_methods import convert_colourscale, normalise_function
 from pys2sleplet.utils.plotly_methods import (
     create_colour_bar,
