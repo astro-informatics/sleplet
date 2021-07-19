@@ -109,5 +109,5 @@ def test_synthesis_mesh(slepian_mesh_wavelets, mesh_field_region) -> None:
     assert_allclose(
         np.abs(f_p - coefficients)[: slepian_mesh_wavelets.slepian_mesh.N].mean(),
         0,
-        atol=1e-16,
+        atol=1e-15,
     )
