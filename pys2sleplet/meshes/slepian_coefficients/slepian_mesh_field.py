@@ -4,7 +4,7 @@ import numpy as np
 
 from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.harmonic_coefficients.mesh_field_region import MeshFieldRegion
-from pys2sleplet.utils.slepian_mesh_methods import slepian_mesh_forward
+from pys2sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
 @dataclass

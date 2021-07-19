@@ -16,10 +16,7 @@ from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
 )
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_mesh_methods import (
-    slepian_mesh_forward,
-    slepian_mesh_inverse,
-)
+from pys2sleplet.utils.slepian_methods import slepian_mesh_forward, slepian_mesh_inverse
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 
 SLEPIAN_SPACE: set[str] = {"coefficients", "slepian", "slepian_field", "wavelets"}

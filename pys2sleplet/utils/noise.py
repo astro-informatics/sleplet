@@ -8,14 +8,12 @@ from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.harmonic_methods import mesh_forward
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_mesh_methods import (
-    slepian_mesh_forward,
-    slepian_mesh_inverse,
-)
 from pys2sleplet.utils.slepian_methods import (
     compute_s_p_omega,
     slepian_forward,
     slepian_inverse,
+    slepian_mesh_forward,
+    slepian_mesh_inverse,
 )
 from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 

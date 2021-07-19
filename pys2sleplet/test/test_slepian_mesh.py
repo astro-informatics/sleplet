@@ -2,11 +2,11 @@ import numpy as np
 from numpy.testing import assert_allclose
 
 from pys2sleplet.utils.harmonic_methods import mesh_forward
-from pys2sleplet.utils.slepian_mesh_methods import (
+from pys2sleplet.utils.slepian_methods import (
+    compute_mesh_shannon,
     slepian_mesh_forward,
     slepian_mesh_inverse,
 )
-from pys2sleplet.utils.slepian_methods import compute_mesh_shannon
 from pys2sleplet.utils.wavelet_methods import (
     slepian_wavelet_forward,
     slepian_wavelet_inverse,
