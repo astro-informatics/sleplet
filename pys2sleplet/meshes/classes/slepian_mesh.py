@@ -17,7 +17,6 @@ from pys2sleplet.utils.parallel_methods import (
     release_shared_memory,
     split_arr_into_chunks,
 )
-from pys2sleplet.utils.slepian_mesh_methods import clean_evals_and_evecs
 from pys2sleplet.utils.slepian_methods import compute_mesh_shannon
 
 _file_location = Path(__file__).resolve()
@@ -70,9 +69,10 @@ class SlepianMesh:
             fill_upper_triangle_of_hermitian_matrix(D)
 
             # solve eigenproblem
-            self.slepian_eigenvalues, self.slepian_functions = clean_evals_and_evecs(
-                LA.eigh(D)
-            )
+            (
+                self.slepian_eigenvalues,
+                self.slepian_functions,
+            ) = self._clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.slepian_eigenvalues[: self.N])
                 np.save(evec_loc, self.slepian_functions[: self.N])
@@ -134,6 +134,22 @@ class SlepianMesh:
             self.mesh.basis_functions[i],
             self.mesh.basis_functions[j],
         )
+
+    @staticmethod
+    def _clean_evals_and_evecs(
+        eigendecomposition: tuple[np.ndarray, np.ndarray]
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """
+        need eigenvalues and eigenvectors to be in a certain format
+        """
+        # access values
+        eigenvalues, eigenvectors = eigendecomposition
+
+        # sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = eigenvectors[:, idx].T
+        return eigenvalues, eigenvectors
 
     @property  # type: ignore
     def mesh(self) -> Mesh:
