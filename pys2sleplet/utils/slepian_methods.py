@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.classes.slepian_mesh_decomposition import (
     SlepianMeshDecomposition,
 )
@@ -97,10 +97,7 @@ def compute_s_p_omega_prime(
 
 
 def slepian_mesh_forward(
-    mesh: Mesh,
-    slepian_eigenvalues: np.ndarray,
-    slepian_functions: np.ndarray,
-    shannon: int,
+    slepian_mesh: SlepianMesh,
     u: Optional[np.ndarray] = None,
     u_i: Optional[np.ndarray] = None,
     mask: bool = False,
@@ -109,33 +106,35 @@ def slepian_mesh_forward(
     computes the Slepian forward transform for all coefficients
     """
     sd = SlepianMeshDecomposition(
-        mesh, slepian_eigenvalues, slepian_functions, shannon, u=u, u_i=u_i, mask=mask
+        slepian_mesh.mesh,
+        slepian_mesh.slepian_eigenvalues,
+        slepian_mesh.slepian_functions,
+        slepian_mesh.N,
+        u=u,
+        u_i=u_i,
+        mask=mask,
     )
     return sd.decompose_all()
 
 
 def slepian_mesh_inverse(
+    slepian_mesh: SlepianMesh,
     f_p: np.ndarray,
-    mesh: Mesh,
-    slepian_functions: np.ndarray,
-    shannon: int,
 ) -> np.ndarray:
     """
     computes the Slepian inverse transform on the mesh up to the Shannon number
     """
     p_idx = 0
-    f_p_reshape = f_p[:shannon, np.newaxis]
-    s_p = _compute_mesh_s_p_pixel(mesh, slepian_functions, shannon)
+    f_p_reshape = f_p[: slepian_mesh.N, np.newaxis]
+    s_p = _compute_mesh_s_p_pixel(slepian_mesh)
     return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
-def _compute_mesh_s_p_pixel(
-    mesh: Mesh, slepian_functions: np.ndarray, shannon: int
-) -> np.ndarray:
+def _compute_mesh_s_p_pixel(slepian_mesh: SlepianMesh) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
-    sp = np.zeros((shannon, mesh.basis_functions.shape[1]))
-    for p in range(shannon):
-        sp[p] = mesh_inverse(mesh, slepian_functions[p])
+    sp = np.zeros((slepian_mesh.N, slepian_mesh.mesh.basis_functions.shape[1]))
+    for p in range(slepian_mesh.N):
+        sp[p] = mesh_inverse(slepian_mesh.mesh, slepian_mesh.slepian_functions[p])
     return sp

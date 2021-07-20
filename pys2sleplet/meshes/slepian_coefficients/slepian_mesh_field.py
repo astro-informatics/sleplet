@@ -23,10 +23,7 @@ class SlepianMeshField:
         computes the Slepian coefficients of the mesh field values
         """
         self.slepian_coefficients = slepian_mesh_forward(
-            self.slepian_mesh.mesh,
-            self.slepian_mesh.slepian_eigenvalues,
-            self.slepian_mesh.slepian_functions,
-            self.slepian_mesh.N,
+            self.slepian_mesh,
             u=self.mesh_field_region.field_values,
         )
 

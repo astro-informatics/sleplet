@@ -102,10 +102,8 @@ class MeshPlot:
 
         # convert to Slepian coefficients to real space
         self.field_values = slepian_mesh_inverse(
+            slepian_mesh,
             slepian_coefficients,
-            slepian_mesh.mesh,
-            slepian_mesh.slepian_functions,
-            slepian_mesh.N,
         )
 
     def _plot_basis_functions(self) -> None:
@@ -173,10 +171,7 @@ class MeshPlot:
         )
         s_p_i = slepian_mesh.slepian_functions[self.index]
         return slepian_mesh_forward(
-            self.mesh,
-            slepian_mesh.slepian_eigenvalues,
-            slepian_mesh.slepian_functions,
-            slepian_mesh.N,
+            slepian_mesh,
             u_i=s_p_i,
         )
 
