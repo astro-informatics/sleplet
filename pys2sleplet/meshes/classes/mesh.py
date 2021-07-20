@@ -11,7 +11,7 @@ from pys2sleplet.utils.mesh_methods import (
 )
 
 
-@dataclass  # type: ignore
+@dataclass  # type:ignore
 class Mesh:
     name: str
     mesh_laplacian: bool
@@ -65,7 +65,7 @@ class Mesh:
     def mesh_eigenvalues(self, mesh_eigenvalues: np.ndarray) -> None:
         self._mesh_eigenvalues = mesh_eigenvalues
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mesh_laplacian(self) -> bool:
         return self._mesh_laplacian
 
@@ -77,7 +77,7 @@ class Mesh:
             mesh_laplacian = Mesh._mesh_laplacian
         self._mesh_laplacian = mesh_laplacian
 
-    @property  # type: ignore
+    @property  # type:ignore
     def name(self) -> str:
         return self._name
 
@@ -85,7 +85,7 @@ class Mesh:
     def name(self, name: str) -> None:
         self._name = name
 
-    @property  # type: ignore
+    @property  # type:ignore
     def number_basis_functions(self) -> Optional[int]:
         return self._number_basis_functions
 

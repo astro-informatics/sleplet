@@ -23,7 +23,7 @@ _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
 
 
-@dataclass  # type: ignore
+@dataclass  # type:ignore
 class SlepianMesh:
     mesh: Mesh
     _mesh: Mesh = field(init=False, repr=False)
@@ -151,7 +151,7 @@ class SlepianMesh:
         eigenvectors = eigenvectors[:, idx].T
         return eigenvalues, eigenvectors
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mesh(self) -> Mesh:
         return self._mesh
 

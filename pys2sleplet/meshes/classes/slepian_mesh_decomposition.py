@@ -115,7 +115,7 @@ class SlepianMeshDecomposition:
         if rank >= self.slepian_mesh.N:
             raise ValueError(f"rank should be less than {self.slepian_mesh.N}")
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mask(self) -> bool:
         return self._mask
 

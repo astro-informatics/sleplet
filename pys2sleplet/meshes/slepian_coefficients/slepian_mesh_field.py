@@ -27,7 +27,7 @@ class SlepianMeshField:
             u=self.mesh_field_region.field_values,
         )
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mesh_field_region(self) -> MeshFieldRegion:
         return self._mesh_field_region
 
@@ -43,7 +43,7 @@ class SlepianMeshField:
     def slepian_coefficients(self, slepian_coefficients: np.ndarray) -> None:
         self._slepian_coefficients = slepian_coefficients
 
-    @property  # type: ignore
+    @property  # type:ignore
     def slepian_mesh(self) -> SlepianMesh:
         return self._slepian_mesh
 

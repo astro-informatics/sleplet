@@ -203,7 +203,7 @@ class MeshPlot:
             f"{wavelet_ending(self.j_min, j)}"
         )
 
-    @property  # type: ignore
+    @property  # type:ignore
     def B(self) -> int:
         return self._B
 
@@ -227,7 +227,7 @@ class MeshPlot:
     def index(self, index: int) -> None:
         self._index = index
 
-    @property  # type: ignore
+    @property  # type:ignore
     def j_min(self) -> int:
         return self._j_min
 
@@ -243,7 +243,7 @@ class MeshPlot:
     def mesh(self, mesh: Mesh) -> None:
         self._mesh = mesh
 
-    @property  # type: ignore
+    @property  # type:ignore
     def method(self) -> str:
         return self._method
 
@@ -251,7 +251,7 @@ class MeshPlot:
     def method(self, method: str) -> None:
         self._method = method
 
-    @property  # type: ignore
+    @property  # type:ignore
     def name(self) -> str:
         return self._name
 
@@ -259,7 +259,7 @@ class MeshPlot:
     def name(self, name: str) -> None:
         self._name = name
 
-    @property  # type: ignore
+    @property  # type:ignore
     def noise(self) -> Optional[int]:
         return self._noise
 

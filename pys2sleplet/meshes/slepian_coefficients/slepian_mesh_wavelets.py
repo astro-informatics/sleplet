@@ -51,7 +51,7 @@ class SlepianMeshWavelets:
             j_min = SlepianMeshWavelets._j_min
         self._j_min = j_min
 
-    @property  # type: ignore
+    @property  # type:ignore
     def slepian_mesh(self) -> SlepianMesh:
         return self._slepian_mesh
 

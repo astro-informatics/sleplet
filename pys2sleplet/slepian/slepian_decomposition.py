@@ -151,7 +151,7 @@ class SlepianDecomposition:
     def L(self, L: int) -> None:
         self._L = L
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mask(self) -> Optional[np.ndarray]:
         return self._mask
 

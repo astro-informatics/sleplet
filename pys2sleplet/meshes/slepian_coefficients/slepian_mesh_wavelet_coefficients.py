@@ -30,7 +30,7 @@ class SlepianMeshWaveletCoefficients:
             self.slepian_mesh_wavelets.slepian_mesh.N,
         )
 
-    @property  # type: ignore
+    @property  # type:ignore
     def slepian_mesh_field(self) -> np.ndarray:
         return self._slepian_mesh_field
 
@@ -38,7 +38,7 @@ class SlepianMeshWaveletCoefficients:
     def slepian_mesh_field(self, slepian_mesh_field: np.ndarray) -> None:
         self._slepian_mesh_field = slepian_mesh_field
 
-    @property  # type: ignore
+    @property  # type:ignore
     def slepian_mesh_wavelets(self) -> np.ndarray:
         return self._slepian_mesh_wavelets
 

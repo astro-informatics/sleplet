@@ -6,7 +6,7 @@ from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
 from pys2sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
 
 
-@dataclass  # type: ignore
+@dataclass  # type:ignore
 class MeshSlepianCoefficients(MeshCoefficients):
     _slepian_mesh: SlepianMesh = field(init=False, repr=False)
 
