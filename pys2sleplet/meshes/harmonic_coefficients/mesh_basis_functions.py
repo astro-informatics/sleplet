@@ -28,8 +28,8 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
     def _create_name(self) -> str:
         return (
             (
-                f"{self.name}_rank{self.index}_"
-                f"lam{self.mesh.mesh_eigenvalues[self.index]:e}"
+                f"{self.name}_rank{self.rank}_"
+                f"lam{self.mesh.mesh_eigenvalues[self.rank]:e}"
             )
             .replace(".", "-")
             .replace("+", "")

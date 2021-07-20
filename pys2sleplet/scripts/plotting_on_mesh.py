@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 
-from plotly.graph_objs.layout.scene import Camera
-
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
+from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.function_dicts import MESH_COEFFICIENTS, MESH_HARMONIC, MESHES
+from pys2sleplet.utils.function_dicts import MESH_COEFFICIENTS, MESHES
 from pys2sleplet.utils.harmonic_methods import mesh_inverse
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import extract_mesh_config
-from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.slepian_methods import slepian_mesh_inverse
 from pys2sleplet.utils.string_methods import filename_args
 
@@ -83,7 +80,7 @@ def plot(f: MeshCoefficients) -> None:
     # get field value
     field = (
         mesh_inverse(f.mesh, f.coefficients)
-        if isinstance(f, MESH_HARMONIC)
+        if isinstance(f, MeshHarmonicCoefficients)
         else slepian_mesh_inverse(f.slepian_mesh, coefficients)
     )
 

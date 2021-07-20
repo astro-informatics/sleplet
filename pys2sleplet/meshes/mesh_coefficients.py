@@ -25,7 +25,7 @@ class MeshCoefficients:
     _region: bool = field(default=False, init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.mesh = Mesh(self.name, mesh_laplacian=settings.LAPLACIAN)
+        self.mesh = Mesh(self.name, mesh_laplacian=settings.MESH_LAPLACIAN)
         self._setup_args()
         self.name = self._create_name()
         self._create_coefficients()
