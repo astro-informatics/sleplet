@@ -6,9 +6,10 @@ from pys2let import pys2let_j_max
 
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
+from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
-from pys2sleplet.utils.wavelet_methods import create_kappas, slepian_wavelet_forward
+from pys2sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
 @dataclass
@@ -60,10 +61,10 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         """
         computes wavelet coefficients in Slepian space
         """
-        self.wavelets = create_kappas(self.L ** 2, self.B, self.j_min)
+        sw = SlepianWavelets(self.L, B=self.B, j_min=self.j_min, region=self.region)
         sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
         self.wavelet_coefficients = slepian_wavelet_forward(
-            sa.coefficients, self.wavelets, self.slepian.N
+            sa.coefficients, sw.wavelets, self.slepian.N
         )
 
     @property  # type:ignore
