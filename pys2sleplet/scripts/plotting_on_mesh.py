@@ -74,14 +74,13 @@ def plot(f: MeshCoefficients) -> None:
     """
     master plotting method
     """
-
     noised = f"{filename_args(f.noise, 'noise')}" if f.noise is not None else ""
     filename = f"{f.name}{noised}"
     coefficients = f.coefficients
 
     # get field value
     field = (
-        mesh_inverse(f.mesh, f.coefficients)
+        mesh_inverse(f.mesh, coefficients)
         if isinstance(f, MeshHarmonicCoefficients)
         else slepian_mesh_inverse(f.slepian_mesh, coefficients)
     )
