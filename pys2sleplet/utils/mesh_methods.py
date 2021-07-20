@@ -1,4 +1,3 @@
-import glob
 from pathlib import Path
 from typing import Optional
 
@@ -25,10 +24,6 @@ from pys2sleplet.utils.vars import (
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
-MESHES: set[str] = {
-    Path(x.removesuffix(".toml")).stem
-    for x in glob.glob(str(_meshes_path / "regions" / "*.toml"))
-}
 
 
 def average_functions_on_vertices_to_faces(

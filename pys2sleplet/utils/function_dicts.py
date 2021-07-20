@@ -1,3 +1,6 @@
+from glob import glob
+from pathlib import Path
+
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
@@ -27,6 +30,13 @@ from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import 
     SlepianWaveletCoefficientsSouthAmerica,
 )
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+
+_file_location = Path(__file__).resolve()
+_meshes_path = _file_location.parents[1] / "data" / "meshes"
+MESHES: set[str] = {
+    Path(x.removesuffix(".toml")).stem
+    for x in glob(str(_meshes_path / "regions" / "*.toml"))
+}
 
 FLM: dict[str, Coefficients] = dict(
     axisymmetric_wavelet_coefficients_earth=AxisymmetricWaveletCoefficientsEarth,
