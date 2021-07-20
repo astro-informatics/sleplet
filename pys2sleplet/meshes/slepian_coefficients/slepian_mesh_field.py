@@ -14,7 +14,7 @@ class SlepianMeshField(MeshSlepianCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        mesh_field = MeshField(self.name)
+        mesh_field = MeshField(self.mesh)
         self.coefficients = slepian_mesh_forward(
             self.slepian_mesh,
             u_i=mesh_field.coefficients,

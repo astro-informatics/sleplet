@@ -55,8 +55,8 @@ class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
         """
         computes wavelet coefficients in Slepian space
         """
-        smw = SlepianMeshWavelets(self.name, B=self.B, j_min=self.j_min)
-        smf = SlepianMeshField(self.name)
+        smw = SlepianMeshWavelets(self.mesh, B=self.B, j_min=self.j_min)
+        smf = SlepianMeshField(self.mesh)
         self.wavelet_coefficients = slepian_wavelet_forward(
             smf.coefficients,
             smw.wavelets,
