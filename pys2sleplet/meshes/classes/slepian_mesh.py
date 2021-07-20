@@ -23,7 +23,7 @@ _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
 
 
-@dataclass  # type:ignore
+@dataclass
 class SlepianMesh:
     mesh: Mesh
     _mesh: Mesh = field(init=False, repr=False)

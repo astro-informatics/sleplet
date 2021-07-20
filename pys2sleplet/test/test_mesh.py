@@ -16,7 +16,8 @@
 #         mesh_field_region.mesh_field.mesh.basis_functions,
 #         mesh_field_region.field_values,
 #     )
-#     kernel_recov = mesh_inverse(mesh_field_region.mesh_field.mesh.basis_functions, u_i)
+#     kernel_recov = mesh_inverse(
+#     mesh_field_region.mesh_field.mesh.basis_functions, u_i)
 #     assert_allclose(
 #         np.abs(mesh_field_region.field_values - kernel_recov).mean(), 0, atol=1e-14
 #     )
@@ -43,4 +44,5 @@
 #         for j, phi_j in enumerate(mesh.basis_functions):
 #             orthonormality[i, j] = integrate_whole_mesh(phi_i, phi_j)
 #     identity = np.identity(mesh.basis_functions.shape[0])
-#     np.testing.assert_allclose(np.abs(orthonormality - identity).mean(), 0, atol=1e-16)
+#     np.testing.assert_allclose(np.abs(orthonormality -
+#     identity).mean(), 0, atol=1e-16)

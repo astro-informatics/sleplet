@@ -13,7 +13,7 @@ from pys2sleplet.utils.mesh_methods import (
 from pys2sleplet.utils.plotly_methods import create_camera
 
 
-@dataclass  # type:ignore
+@dataclass
 class Mesh:
     name: str
     mesh_laplacian: bool
