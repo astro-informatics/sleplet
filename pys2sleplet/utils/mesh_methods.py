@@ -69,7 +69,7 @@ def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
     )
 
 
-def mesh_config(mesh_name: str) -> Box:
+def extract_mesh_config(mesh_name: str) -> Box:
     """
     reads in the given mesh region settings file
     """

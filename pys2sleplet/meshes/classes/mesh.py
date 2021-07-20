@@ -5,7 +5,7 @@ import numpy as np
 
 from pys2sleplet.utils.mesh_methods import (
     create_mesh_region,
-    mesh_config,
+    extract_mesh_config,
     mesh_eigendecomposition,
     read_mesh,
 )
@@ -26,9 +26,9 @@ class Mesh:
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        config = mesh_config(self.name)
-        self.vertices, self.faces = read_mesh(config)
-        self.region = create_mesh_region(config, self.vertices)
+        mesh_config = extract_mesh_config(self.name)
+        self.vertices, self.faces = read_mesh(mesh_config)
+        self.region = create_mesh_region(mesh_config, self.vertices)
         (
             self.mesh_eigenvalues,
             self.basis_functions,
