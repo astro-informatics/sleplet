@@ -3,8 +3,8 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.utils.mask_methods import create_mesh_region
 from pys2sleplet.utils.mesh_methods import (
+    create_mesh_region,
     mesh_config,
     mesh_eigendecomposition,
     read_mesh,

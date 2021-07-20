@@ -55,6 +55,20 @@ def average_functions_on_vertices_to_faces(
     return functions_on_faces
 
 
+def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
+    """
+    creates the boolean region for the given mesh
+    """
+    return (
+        (vertices[:, 0] >= mesh_config.XMIN)
+        & (vertices[:, 0] <= mesh_config.XMAX)
+        & (vertices[:, 1] >= mesh_config.YMIN)
+        & (vertices[:, 1] <= mesh_config.YMAX)
+        & (vertices[:, 2] >= mesh_config.ZMIN)
+        & (vertices[:, 2] <= mesh_config.ZMAX)
+    )
+
+
 def mesh_config(mesh_name: str) -> Box:
     """
     reads in the given mesh region settings file
