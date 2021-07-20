@@ -7,7 +7,6 @@ import numpy as np
 import plotly.io as pio
 import plotly.offline as py
 from plotly.graph_objs import Figure, Mesh3d
-from plotly.graph_objs.layout.scene import Camera
 from plotly.graph_objs.mesh3d import Lighting
 
 from pys2sleplet.meshes.classes.mesh import Mesh
@@ -31,10 +30,8 @@ FUNCTIONS_IN_REGION: set[str] = {"region", "slepian"}
 @dataclass
 class Plot:
     mesh: Mesh
-    f: np.ndarray = field(repr=False)
     filename: str
-    camera_view: Camera
-    colourbar_pos: float
+    f: np.ndarray = field(repr=False)
     amplitude: Optional[float] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
@@ -67,14 +64,14 @@ class Plot:
                 cmax=1 if settings.NORMALISE else tick_mark,
                 cmid=0.5 if settings.NORMALISE else 0,
                 cmin=0 if settings.NORMALISE else -tick_mark,
-                colorbar=create_colour_bar(tick_mark, self.colourbar_pos),
+                colorbar=create_colour_bar(tick_mark, self.mesh.colourbar_pos),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
             )
         ]
 
-        layout = create_layout(self.camera_view)
+        layout = create_layout(self.mesh.camera_view)
 
         fig = Figure(data=data, layout=layout)
 

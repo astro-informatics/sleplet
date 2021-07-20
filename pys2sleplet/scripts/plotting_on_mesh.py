@@ -71,7 +71,7 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients, camera_view: Camera, colourbar_pos: float) -> None:
+def plot(f: MeshCoefficients) -> None:
     """
     master plotting method
     """
@@ -90,26 +90,14 @@ def plot(f: MeshCoefficients, camera_view: Camera, colourbar_pos: float) -> None
     # do plot
     Plot(
         f.mesh,
-        field,
         filename,
-        camera_view,
-        colourbar_pos,
+        field,
     ).execute()
 
 
 def main() -> None:
     args = read_args()
     logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
-
-    # plotly config
-    mesh_config = extract_mesh_config(args.function)
-    camera_view = create_camera(
-        mesh_config.CAMERA_X,
-        mesh_config.CAMERA_Y,
-        mesh_config.CAMERA_Z,
-        mesh_config.ZOOM,
-    )
-    colourbar_pos = mesh_config.COLOURBAR_POS
 
     # function to plot
     f = MESH_COEFFICIENTS[args.method](
@@ -120,7 +108,7 @@ def main() -> None:
     )
 
     # perform plot
-    plot(f, camera_view, colourbar_pos)
+    plot(f)
 
 
 if __name__ == "__main__":

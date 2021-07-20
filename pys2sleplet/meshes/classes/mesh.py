@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+from plotly.graph_objs.layout.scene import Camera
 
 from pys2sleplet.utils.mesh_methods import (
     create_mesh_region,
@@ -9,6 +10,7 @@ from pys2sleplet.utils.mesh_methods import (
     mesh_eigendecomposition,
     read_mesh,
 )
+from pys2sleplet.utils.plotly_methods import create_camera
 
 
 @dataclass  # type:ignore
@@ -17,16 +19,25 @@ class Mesh:
     mesh_laplacian: bool
     number_basis_functions: Optional[int]
     _basis_functions: np.ndarray = field(init=False, repr=False)
+    _camera_view: Camera = field(init=False, repr=False)
+    _colourbar_pos: float = field(init=False, repr=False)
+    _faces: np.ndarray = field(init=False, repr=False)
     _mesh_eigenvalues: np.ndarray = field(init=False, repr=False)
     _mesh_laplacian: bool = field(default=True, init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _number_basis_functions: Optional[int] = field(default=None, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
-    _faces: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         mesh_config = extract_mesh_config(self.name)
+        self.camera_view = create_camera(
+            mesh_config.CAMERA_X,
+            mesh_config.CAMERA_Y,
+            mesh_config.CAMERA_Z,
+            mesh_config.ZOOM,
+        )
+        self.colourbar_pos = mesh_config.COLOURBAR_POS
         self.vertices, self.faces = read_mesh(mesh_config)
         self.region = create_mesh_region(mesh_config, self.vertices)
         (
@@ -48,6 +59,22 @@ class Mesh:
     @basis_functions.setter
     def basis_functions(self, basis_functions: np.ndarray) -> None:
         self._basis_functions = basis_functions
+
+    @property
+    def camera_view(self) -> Camera:
+        return self._camera_view
+
+    @camera_view.setter
+    def camera_view(self, camera_view: Camera) -> None:
+        self._camera_view = camera_view
+
+    @property
+    def colourbar_pos(self) -> float:
+        return self._colourbar_pos
+
+    @colourbar_pos.setter
+    def colourbar_pos(self, colourbar_pos: float) -> None:
+        self._colourbar_pos = colourbar_pos
 
     @property
     def faces(self) -> np.ndarray:
