@@ -26,7 +26,7 @@ class MeshCoefficients:
     def __post_init__(self) -> None:
         self.mesh = Mesh(self.name, mesh_laplacian=settings.LAPLACIAN)
         self._setup_args()
-        self._create_name()
+        self.name = self._create_name()
         self._create_coefficients()
         self._add_region_to_name()
         self._add_noise_to_signal()
@@ -118,7 +118,7 @@ class MeshCoefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         """
         creates the name of the function
         """

@@ -1,53 +1,30 @@
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
-import numpy as np
 from igl import principal_curvature
 
-from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from pys2sleplet.utils.harmonic_methods import mesh_forward
 
 
 @dataclass
-class MeshField:
-    mesh: Mesh
-    _field_values: np.ndarray = field(init=False, repr=False)
-    _mesh: Mesh = field(init=False, repr=False)
-
+class MeshField(MeshHarmonicCoefficients):
     def __post_init__(self) -> None:
-        self._compute_field_values()
+        super().__post_init__()
 
-    def _compute_field_values(self) -> None:
+    def _create_coefficients(self) -> None:
         """
         compute field on the vertices of the mesh
         """
-        _, _, self.field_values, _ = principal_curvature(
+        _, _, maximal_curvature_value, _ = principal_curvature(
             self.mesh.vertices, self.mesh.faces
         )
+        self.coefficients = mesh_forward(self.mesh, maximal_curvature_value)
 
-    @property
-    def field_values(self) -> np.ndarray:
-        return self._field_values
+    def _create_name(self) -> str:
+        return f"{self.name}_field"
 
-    @field_values.setter
-    def field_values(self, field_values: np.ndarray) -> None:
-        self._field_values = field_values
-
-    @property  # type: ignore
-    def mesh(self) -> Mesh:
-        return self._mesh
-
-    @mesh.setter
-    def mesh(self, mesh: Mesh) -> None:
-        self._mesh = mesh
-
-    @property  # type: ignore
-    def noise(self) -> Optional[int]:
-        return self._noise
-
-    @noise.setter
-    def noise(self, noise: Optional[int]) -> None:
-        if isinstance(noise, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            noise = MeshField._noise
-        self._noise = noise
+    def _setup_args(self) -> None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f"{self.__class__.__name__} does not support extra arguments"
+            )

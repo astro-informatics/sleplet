@@ -5,7 +5,7 @@ from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
 from pys2sleplet.utils.noise import compute_snr, create_mesh_noise
 
 
-@dataclass  # type: ignore
+@dataclass  # type:ignore
 class MeshHarmonicCoefficients(MeshCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -24,7 +24,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         raise NotImplementedError
 
     @abstractmethod
