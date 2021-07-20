@@ -135,17 +135,17 @@ def slepian_mesh_inverse(
     """
     p_idx = 0
     f_p_reshape = f_p[:shannon, np.newaxis]
-    s_p = _compute_mesh_s_p_pixel(mesh.basis_functions, slepian_functions, shannon)
+    s_p = _compute_mesh_s_p_pixel(mesh, slepian_functions, shannon)
     return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
 def _compute_mesh_s_p_pixel(
-    basis_functions: np.ndarray, slepian_functions: np.ndarray, shannon: int
+    mesh: Mesh, slepian_functions: np.ndarray, shannon: int
 ) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
-    sp = np.zeros((shannon, basis_functions.shape[1]))
+    sp = np.zeros((shannon, mesh.basis_functions.shape[1]))
     for p in range(shannon):
-        sp[p] = mesh_inverse(basis_functions, slepian_functions[p])
+        sp[p] = mesh_inverse(mesh, slepian_functions[p])
     return sp
