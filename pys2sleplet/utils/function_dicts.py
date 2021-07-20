@@ -30,6 +30,21 @@ from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import 
     SlepianWaveletCoefficientsSouthAmerica,
 )
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from pys2sleplet.meshes.harmonic_coefficients.mesh_basis_functions import (
+    MeshBasisFunctions,
+)
+from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_functions import (
+    SlepianMeshFunctions,
+)
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelet_coefficients import (
+    SlepianMeshWaveletCoefficients,
+)
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+    SlepianMeshWavelets,
+)
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
@@ -73,3 +88,16 @@ MAPS_LM: dict[str, Coefficients] = dict(
 MAPS_P: dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica)
 
 COEFFICIENTS: dict[str, Coefficients] = {**FLM, **FP}
+
+MESH_HARMONIC: dict[str, MeshCoefficients] = dict(
+    basis=MeshBasisFunctions, field=MeshField
+)
+
+MESH_SLEPIAN: dict[str, MeshCoefficients] = dict(
+    coefficients=SlepianMeshWaveletCoefficients,
+    slepian=SlepianMeshFunctions,
+    slepian_field=SlepianMeshField,
+    wavelets=SlepianMeshWavelets,
+)
+
+MESH_COEFFICIENTS: dict[str, MeshCoefficients] = {**MESH_HARMONIC, **MESH_SLEPIAN}

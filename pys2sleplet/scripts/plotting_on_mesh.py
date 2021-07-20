@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 
 from pys2sleplet.meshes.mesh_plot import MeshPlot
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.mesh_methods import MESHES, mesh_config
+from pys2sleplet.utils.function_dicts import MESH_COEFFICIENTS, MESH_HARMONIC, MESHES
 from pys2sleplet.utils.plotly_methods import create_camera
 
 
