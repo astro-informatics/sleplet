@@ -21,7 +21,8 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         basis_function = self.mesh.basis_functions[self.rank]
         self.coefficients = mesh_forward(self.mesh, basis_function)
         logger.info(
-            f"Eigenvalue {self.rank}: {self.mesh.mesh_eigenvalues[self.rank]:e}"
+            f"Mesh eigenvalue {self.rank}: "
+            f"{self.mesh.mesh_eigenvalues[self.rank]:e}"
         )
 
     def _create_name(self) -> str:
