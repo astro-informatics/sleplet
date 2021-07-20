@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
 
@@ -46,3 +47,13 @@ def clean_evals_and_evecs(
     eigenvectors[pairs] *= 1j
 
     return eigenvalues, eigenvectors
+
+
+def compute_mesh_shannon(mesh: Mesh) -> int:
+    """
+    computes the effective Shannon number for a region of a mesh
+    """
+    num_basis_fun = mesh.basis_functions.shape[0]
+    region_vertices = mesh.region.sum()
+    total_vertices = mesh.region.shape[0]
+    return round(region_vertices / total_vertices * num_basis_fun)
