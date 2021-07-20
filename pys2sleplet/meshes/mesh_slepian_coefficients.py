@@ -11,6 +11,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
     _slepian_mesh: SlepianMesh = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.slepian_mesh = SlepianMesh(self.mesh)
         super().__post_init__()
 
     def _add_noise_to_signal(self) -> None:
