@@ -20,7 +20,7 @@ from pys2sleplet.utils.parallel_methods import (
 from pys2sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 
 _file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[1] / "data" / "meshes"
+_meshes_path = _file_location.parents[2] / "data" / "meshes"
 
 
 @dataclass
