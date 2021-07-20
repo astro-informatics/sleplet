@@ -30,8 +30,8 @@ class SlepianMeshFunctions(MeshSlepianCoefficients):
     def _create_name(self) -> None:
         self.name = (
             (
-                f"slepian_{self.mesh.name}_rank{self.index}_"
-                f"lam{self.slepian_mesh.slepian_eigenvalues[self.index]:e}"
+                f"slepian_{self.mesh.name}_rank{self.rank}_"
+                f"lam{self.slepian_mesh.slepian_eigenvalues[self.rank]:e}"
             )
             .replace(".", "-")
             .replace("+", "")
