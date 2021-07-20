@@ -117,13 +117,14 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors, number_basis_functions
 
 
-def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
+def read_mesh(mesh_config: Box) -> tuple[np.ndarray, np.ndarray]:
     """
     reads in the given mesh
     """
-    data = mesh_config(mesh_name)
-    vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
-    return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
+    vertices, faces = read_triangle_mesh(
+        str(_meshes_path / "polygons" / mesh_config.FILENAME)
+    )
+    return upsample(vertices, faces, number_of_subdivs=mesh_config.UPSAMPLE)
 
 
 def _graph_laplacian(

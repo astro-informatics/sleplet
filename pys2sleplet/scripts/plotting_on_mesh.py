@@ -3,8 +3,8 @@ from argparse import ArgumentParser, Namespace
 
 from pys2sleplet.meshes.mesh_plot import MeshPlot
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.mesh_methods import MESHES
-from pys2sleplet.utils.plotly_methods import mesh_plotly_config
+from pys2sleplet.utils.mesh_methods import MESHES, mesh_config
+from pys2sleplet.utils.plotly_methods import create_camera
 
 
 def valid_plotting(func_name: str) -> str:
@@ -83,7 +83,11 @@ def plot(
     f = MeshPlot(args.function, args.method, args.index, args.noise, args.B, args.j_min)
 
     # plotly config
-    camera_view, colourbar_pos = mesh_plotly_config(args.function)
+    config = mesh_config(args.function)
+    camera_view = (
+        create_camera(config.CAMERA_X, config.CAMERA_Y, config.CAMERA_Z, config.ZOOM),
+    )
+    colourbar_pos = config.COLOURBAR_POS
 
     # do plot
     Plot(

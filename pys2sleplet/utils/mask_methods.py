@@ -7,7 +7,6 @@ from box import Box
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import mesh_config
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
@@ -92,18 +91,17 @@ def create_default_region(settings: Box) -> Region:
     )
 
 
-def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
+def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
     """
     creates the boolean region for the given mesh
     """
-    data = mesh_config(mesh_name)
     return (
-        (vertices[:, 0] >= data.XMIN)
-        & (vertices[:, 0] <= data.XMAX)
-        & (vertices[:, 1] >= data.YMIN)
-        & (vertices[:, 1] <= data.YMAX)
-        & (vertices[:, 2] >= data.ZMIN)
-        & (vertices[:, 2] <= data.ZMAX)
+        (vertices[:, 0] >= mesh_config.XMIN)
+        & (vertices[:, 0] <= mesh_config.XMAX)
+        & (vertices[:, 1] >= mesh_config.YMIN)
+        & (vertices[:, 1] <= mesh_config.YMAX)
+        & (vertices[:, 2] >= mesh_config.ZMIN)
+        & (vertices[:, 2] <= mesh_config.ZMAX)
     )
 
 

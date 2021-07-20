@@ -4,7 +4,11 @@ from typing import Optional
 import numpy as np
 
 from pys2sleplet.utils.mask_methods import create_mesh_region
-from pys2sleplet.utils.mesh_methods import mesh_eigendecomposition, read_mesh
+from pys2sleplet.utils.mesh_methods import (
+    mesh_config,
+    mesh_eigendecomposition,
+    read_mesh,
+)
 
 
 @dataclass  # type: ignore
@@ -22,8 +26,9 @@ class Mesh:
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.vertices, self.faces = read_mesh(self.name)
-        self.region = create_mesh_region(self.name, self.vertices)
+        config = mesh_config(self.name)
+        self.vertices, self.faces = read_mesh(config)
+        self.region = create_mesh_region(config, self.vertices)
         (
             self.mesh_eigenvalues,
             self.basis_functions,
