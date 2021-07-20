@@ -106,10 +106,7 @@ def slepian_mesh_forward(
     computes the Slepian forward transform for all coefficients
     """
     sd = SlepianMeshDecomposition(
-        slepian_mesh.mesh,
-        slepian_mesh.slepian_eigenvalues,
-        slepian_mesh.slepian_functions,
-        slepian_mesh.N,
+        slepian_mesh,
         u=u,
         u_i=u_i,
         mask=mask,

@@ -3,7 +3,7 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
 from pys2sleplet.utils.harmonic_methods import mesh_inverse
 from pys2sleplet.utils.integration_methods import (
     integrate_region_mesh,
@@ -14,18 +14,12 @@ from pys2sleplet.utils.logger import logger
 
 @dataclass
 class SlepianMeshDecomposition:
-    mesh: Mesh
-    slepian_eigenvalues: np.ndarray
-    slepian_functions: np.ndarray
-    shannon: int
+    slepian_mesh: SlepianMesh
     u: Optional[np.ndarray]
     u_i: Optional[np.ndarray]
     mask: bool
     _mask: bool = field(default=False, init=False, repr=False)
-    _mesh: Mesh = field(init=False, repr=False)
-    _shannon: int = field(init=False, repr=False)
-    _slepian_eigenvalues: np.ndarray = field(init=False, repr=False)
-    _slepian_functions: np.ndarray = field(init=False, repr=False)
+    _slepian_mesh: SlepianMesh = field(init=False, repr=False)
     _u: Optional[np.ndarray] = field(default=None, init=False, repr=False)
     _u_i: Optional[np.ndarray] = field(default=None, init=False, repr=False)
 
@@ -52,8 +46,8 @@ class SlepianMeshDecomposition:
         """
         decompose all ranks of the Slepian coefficients
         """
-        coefficients = np.zeros(self.shannon)
-        for rank in range(self.shannon):
+        coefficients = np.zeros(self.slepian_mesh.N)
+        for rank in range(self.slepian_mesh.N):
             coefficients[rank] = self.decompose(rank)
         return coefficients
 
@@ -65,11 +59,11 @@ class SlepianMeshDecomposition:
         f(x) \overline{S_{p}(x)}
         """
         s_p = mesh_inverse(
-            self.mesh,
-            self.slepian_functions[rank],
+            self.slepian_mesh.mesh,
+            self.slepian_mesh.slepian_functions[rank],
         )
-        integration = integrate_region_mesh(self.mesh.region, self.u, s_p)
-        return integration / self.slepian_eigenvalues[rank]
+        integration = integrate_region_mesh(self.slepian_mesh.mesh.region, self.u, s_p)
+        return integration / self.slepian_mesh.slepian_eigenvalues[rank]
 
     def _integrate_mesh(self, rank: int) -> float:
         r"""
@@ -78,8 +72,8 @@ class SlepianMeshDecomposition:
         f(x) \overline{S_{p}(x)}
         """
         s_p = mesh_inverse(
-            self.mesh,
-            self.slepian_functions[rank],
+            self.slepian_mesh.mesh,
+            self.slepian_mesh.slepian_functions[rank],
         )
         return integrate_whole_mesh(self.u, s_p)
 
@@ -89,7 +83,7 @@ class SlepianMeshDecomposition:
         \sum\limits_{i=0}^{K}
         f_{i} (S_{p})_{i}^{*}
         """
-        return (self.u_i * self.slepian_functions[rank]).sum()
+        return (self.u_i * self.slepian_mesh.slepian_functions[rank]).sum()
 
     def _detect_method(self) -> None:
         """
@@ -118,8 +112,8 @@ class SlepianMeshDecomposition:
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        if rank >= self.shannon:
-            raise ValueError(f"rank should be less than {self.shannon}")
+        if rank >= self.slepian_mesh.N:
+            raise ValueError(f"rank should be less than {self.slepian_mesh.N}")
 
     @property  # type: ignore
     def mask(self) -> bool:
@@ -134,44 +128,12 @@ class SlepianMeshDecomposition:
         self._mask = mask
 
     @property  # type:ignore
-    def mesh(self) -> Mesh:
-        return self._mesh
+    def slepian_mesh(self) -> SlepianMesh:
+        return self._slepian_mesh
 
-    @mesh.setter
-    def mesh(self, mesh: Mesh) -> None:
-        self._mesh = mesh
-
-    @property  # type:ignore
-    def shannon(self) -> int:
-        return self._shannon
-
-    @shannon.setter
-    def shannon(self, shannon: int) -> None:
-        self._shannon = shannon
-
-    @property  # type:ignore
-    def slepian_eigenvalues(self) -> np.ndarray:
-        return self._slepian_eigenvalues
-
-    @slepian_eigenvalues.setter
-    def slepian_eigenvalues(self, slepian_eigenvalues: np.ndarray) -> None:
-        self._slepian_eigenvalues = slepian_eigenvalues
-
-    @property  # type:ignore
-    def slepian_functions(self) -> np.ndarray:
-        return self._slepian_functions
-
-    @slepian_functions.setter
-    def slepian_functions(self, slepian_functions: np.ndarray) -> None:
-        self._slepian_functions = slepian_functions
-
-    @property  # type:ignore
-    def mesh(self) -> Mesh:
-        return self._mesh
-
-    @mesh.setter
-    def mesh(self, mesh: Mesh) -> None:
-        self._mesh = mesh
+    @slepian_mesh.setter
+    def slepian_mesh(self, slepian_mesh: SlepianMesh) -> None:
+        self._slepian_mesh = slepian_mesh
 
     @property  # type:ignore
     def u(self) -> Optional[np.ndarray]:
