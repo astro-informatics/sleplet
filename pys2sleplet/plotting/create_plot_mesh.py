@@ -102,5 +102,5 @@ class Plot:
         for the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region
         """
-        region_on_faces = convert_region_on_vertices_to_faces(self.mesh)
+        region_on_faces = convert_region_on_vertices_to_faces(self.faces, self.region)
         return np.where(region_on_faces, f, UNSEEN)

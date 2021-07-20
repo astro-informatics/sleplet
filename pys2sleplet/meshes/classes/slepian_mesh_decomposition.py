@@ -59,7 +59,7 @@ class SlepianMeshDecomposition:
         f(x) \overline{S_{p}(x)}
         """
         s_p = mesh_inverse(
-            self.slepian_mesh.mesh,
+            self.slepian_mesh.mesh.basis_functions,
             self.slepian_mesh.slepian_functions[rank],
         )
         integration = integrate_region_mesh(self.slepian_mesh.mesh.region, self.u, s_p)
@@ -72,7 +72,7 @@ class SlepianMeshDecomposition:
         f(x) \overline{S_{p}(x)}
         """
         s_p = mesh_inverse(
-            self.slepian_mesh.mesh,
+            self.slepian_mesh.mesh.basis_functions,
             self.slepian_mesh.slepian_functions[rank],
         )
         return integrate_whole_mesh(self.u, s_p)

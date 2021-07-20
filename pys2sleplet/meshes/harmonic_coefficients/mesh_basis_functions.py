@@ -18,8 +18,8 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        basis_function = self.mesh.basis_functions[self.rank]
-        self.coefficients = mesh_forward(self.mesh, basis_function)
+        u = self.mesh.basis_functions[self.rank]
+        self.coefficients = mesh_forward(self.mesh.basis_functions, u)
         logger.info(
             f"Mesh eigenvalue {self.rank}: "
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}"

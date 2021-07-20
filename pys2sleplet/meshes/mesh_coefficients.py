@@ -49,7 +49,9 @@ class MeshCoefficients:
             isinstance(self.region, np.ndarray)
             and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
-            coefficients = ensure_masked_bandlimit_mesh_signal(self.mesh, coefficients)
+            coefficients = ensure_masked_bandlimit_mesh_signal(
+                self.mesh.basis_functions, self.mesh.region, coefficients
+            )
         self._coefficients = coefficients
 
     @property  # type:ignore
