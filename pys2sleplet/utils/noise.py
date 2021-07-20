@@ -199,7 +199,7 @@ def create_slepian_mesh_noise(
     computes Gaussian white noise in Slepian space
     """
     u_i = mesh_forward(
-        slepian_mesh.mesh.basis_functions,
+        slepian_mesh.mesh,
         slepian_mesh_inverse(
             slepian_signal,
             slepian_mesh.mesh,

@@ -18,9 +18,7 @@ class MeshField(MeshHarmonicCoefficients):
         _, _, maximal_curvature_value, _ = principal_curvature(
             self.mesh.vertices, self.mesh.faces
         )
-        self.coefficients = mesh_forward(
-            self.mesh.basis_functions, maximal_curvature_value
-        )
+        self.coefficients = mesh_forward(self.mesh, maximal_curvature_value)
 
     def _create_name(self) -> str:
         return f"{self.name}_field"

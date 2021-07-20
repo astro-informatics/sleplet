@@ -133,7 +133,5 @@ def _compute_mesh_s_p_pixel(slepian_mesh: SlepianMesh) -> np.ndarray:
     """
     sp = np.zeros((slepian_mesh.N, slepian_mesh.mesh.basis_functions.shape[1]))
     for p in range(slepian_mesh.N):
-        sp[p] = mesh_inverse(
-            slepian_mesh.mesh.basis_functions, slepian_mesh.slepian_functions[p]
-        )
+        sp[p] = mesh_inverse(slepian_mesh.mesh, slepian_mesh.slepian_functions[p])
     return sp

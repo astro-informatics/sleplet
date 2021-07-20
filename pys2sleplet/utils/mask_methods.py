@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from box import Box
 
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
@@ -104,25 +105,21 @@ def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
     )
 
 
-def ensure_masked_bandlimit_mesh_signal(
-    basis_functions: np.ndarray, region: np.ndarray, u_i: np.ndarray
-) -> np.ndarray:
+def ensure_masked_bandlimit_mesh_signal(mesh: Mesh, u_i: np.ndarray) -> np.ndarray:
     """
     ensures that signal in pixel space is bandlimited
     """
-    field = mesh_inverse(basis_functions, u_i)
-    masked_field = np.where(region, field, 0)
-    return mesh_forward(basis_functions, masked_field)
+    field = mesh_inverse(mesh, u_i)
+    masked_field = np.where(mesh.region, field, 0)
+    return mesh_forward(mesh, masked_field)
 
 
-def convert_region_on_vertices_to_faces(
-    faces: np.ndarray, region: np.ndarray
-) -> np.ndarray:
+def convert_region_on_vertices_to_faces(mesh: Mesh) -> np.ndarray:
     """
     converts the region on vertices to faces
     """
-    region_reshape = np.argwhere(region).reshape(-1)
-    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
-    region_on_faces = np.zeros(faces.shape[0])
+    region_reshape = np.argwhere(mesh.region).reshape(-1)
+    faces_in_region = np.isin(mesh.faces, region_reshape).all(axis=1)
+    region_on_faces = np.zeros(mesh.faces.shape[0])
     region_on_faces[faces_in_region] = 1
     return region_on_faces
