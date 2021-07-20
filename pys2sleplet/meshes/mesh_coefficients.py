@@ -13,6 +13,7 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian"}
 
 @dataclass  # type:ignore
 class MeshCoefficients:
+    name: str
     extra_args: Optional[list[int]]
     noise: Optional[float]
     region: Optional[np.ndarray]
@@ -71,7 +72,7 @@ class MeshCoefficients:
     def mesh(self, mesh: Mesh) -> None:
         self._mesh = mesh
 
-    @property
+    @property  # type:ignore
     def name(self) -> str:
         return self._name
 
