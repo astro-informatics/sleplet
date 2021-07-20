@@ -20,8 +20,8 @@ class MeshField(MeshHarmonicCoefficients):
         )
         self.coefficients = mesh_forward(self.mesh, maximal_curvature_value)
 
-    def _create_name(self) -> str:
-        return f"{self.name}_field"
+    def _create_name(self) -> None:
+        self.name = f"{self.mesh.name}_field"
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):

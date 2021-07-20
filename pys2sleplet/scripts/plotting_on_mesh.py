@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
 from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from pys2sleplet.plotting.create_plot_mesh import Plot
+from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.function_dicts import MESH_COEFFICIENTS, MESHES
 from pys2sleplet.utils.harmonic_methods import mesh_inverse
 from pys2sleplet.utils.logger import logger
@@ -97,8 +99,9 @@ def main() -> None:
     logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
+    mesh = Mesh(args.function, mesh_laplacian=settings.MESH_LAPLACIAN)
     f = MESH_COEFFICIENTS[args.method](
-        args.function,
+        mesh,
         extra_args=args.extra_args,
         noise=args.noise if args.noise is not None else None,
         region=args.region,

@@ -31,9 +31,9 @@ class SlepianMeshWavelets(MeshSlepianCoefficients):
         jth = 0 if self.j is None else self.j + 1
         self.coefficients = self.wavelets[jth]
 
-    def _create_name(self) -> str:
-        return (
-            f"slepian_wavelets_{self.name}"
+    def _create_name(self) -> None:
+        self.name = (
+            f"slepian_wavelets_{self.mesh.name}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{wavelet_ending(self.j_min, self.j)}"
@@ -76,7 +76,9 @@ class SlepianMeshWavelets(MeshSlepianCoefficients):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             j = SlepianMeshWavelets._j
-        self.j_max = pys2let_j_max(self.B, self.L ** 2, self.j_min)
+        self.j_max = pys2let_j_max(
+            self.B, self.mesh.basis_functions.shape[0], self.j_min
+        )
         if j is not None and j < 0:
             raise ValueError("j should be positive")
         if j is not None and j > self.j_max - self.j_min:

@@ -24,7 +24,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> str:
+    def _create_name(self) -> None:
         raise NotImplementedError
 
     @abstractmethod
