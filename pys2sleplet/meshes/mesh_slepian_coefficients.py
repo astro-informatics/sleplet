@@ -19,7 +19,9 @@ class MeshSlepianCoefficients(MeshCoefficients):
         adds Gaussian white noise converted to Slepian space
         """
         if self.noise is not None:
-            n_p = create_slepian_mesh_noise(self.mesh)
+            n_p = create_slepian_mesh_noise(
+                self.slepian_mesh, self.coefficients, self.noise
+            )
             self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
 

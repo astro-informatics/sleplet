@@ -201,10 +201,8 @@ def create_slepian_mesh_noise(
     u_i = mesh_forward(
         slepian_mesh.mesh,
         slepian_mesh_inverse(
+            slepian_mesh,
             slepian_signal,
-            slepian_mesh.mesh,
-            slepian_mesh.slepian_functions,
-            slepian_mesh.N,
         ),
     )
     n_i = create_mesh_noise(u_i, snr_in)
