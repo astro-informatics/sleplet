@@ -1,10 +1,17 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 
-from pys2sleplet.meshes.mesh_plot import MeshPlot
+from plotly.graph_objs.layout.scene import Camera
+
+from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
 from pys2sleplet.plotting.create_plot_mesh import Plot
 from pys2sleplet.utils.function_dicts import MESH_COEFFICIENTS, MESH_HARMONIC, MESHES
+from pys2sleplet.utils.harmonic_methods import mesh_inverse
+from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.mesh_methods import extract_mesh_config
 from pys2sleplet.utils.plotly_methods import create_camera
+from pys2sleplet.utils.slepian_methods import slepian_mesh_inverse
+from pys2sleplet.utils.string_methods import filename_args
 
 
 def valid_plotting(func_name: str) -> str:
@@ -30,6 +37,13 @@ def read_args() -> Namespace:
         help="mesh to plot",
     )
     parser.add_argument(
+        "--extra_args",
+        "-e",
+        type=int,
+        nargs="+",
+        help="list of extra args for functions",
+    )
+    parser.add_argument(
         "--method",
         "-m",
         type=str,
@@ -40,7 +54,6 @@ def read_args() -> Namespace:
             "basis",
             "coefficients",
             "field",
-            "field_region",
             "region",
             "slepian",
             "slepian_field",
@@ -48,62 +61,66 @@ def read_args() -> Namespace:
         ],
         help="plotting routine: defaults to basis",
     )
-    parser.add_argument(
-        "--index",
-        "-i",
-        type=int,
-        default=0,
-        help="index of basis function to plot",
-    )
     parser.add_argument("--noise", "-n", type=int, help="the SNR_IN of the noise level")
     parser.add_argument(
-        "--B",
-        "-b",
-        type=int,
-        default=3,
-        help="lambda parameter defaults to 3",
-    )
-    parser.add_argument(
-        "--j_min",
-        "-j",
-        type=int,
-        default=2,
-        help="wavelet scale j_min defaults to 2",
+        "--region",
+        "-r",
+        action="store_true",
+        help="flag which masks the function for a region (based on settings.toml)",
     )
     return parser.parse_args()
 
 
-def plot(
-    args: Namespace,
-) -> None:
+def plot(f: MeshCoefficients, camera_view: Camera, colourbar_pos: float) -> None:
     """
     master plotting method
     """
-    # create mesh plot
-    f = MeshPlot(args.function, args.method, args.index, args.noise, args.B, args.j_min)
 
-    # plotly config
-    config = mesh_config(args.function)
-    camera_view = (
-        create_camera(config.CAMERA_X, config.CAMERA_Y, config.CAMERA_Z, config.ZOOM),
+    noised = f"{filename_args(f.noise, 'noise')}" if f.noise is not None else ""
+    filename = f"{f.name}{noised}"
+    coefficients = f.coefficients
+
+    # get field value
+    field = (
+        mesh_inverse(f.mesh, f.coefficients)
+        if isinstance(f, MESH_HARMONIC)
+        else slepian_mesh_inverse(f.slepian_mesh, coefficients)
     )
-    colourbar_pos = config.COLOURBAR_POS
 
     # do plot
     Plot(
-        f.mesh.vertices,
-        f.mesh.faces,
-        f.field_values,
-        f.name,
+        f.mesh,
+        field,
+        filename,
         camera_view,
         colourbar_pos,
-        region=f.mesh.region,
     ).execute()
 
 
 def main() -> None:
     args = read_args()
-    plot(args)
+    logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
+
+    # plotly config
+    mesh_config = extract_mesh_config(args.function)
+    camera_view = create_camera(
+        mesh_config.CAMERA_X,
+        mesh_config.CAMERA_Y,
+        mesh_config.CAMERA_Z,
+        mesh_config.ZOOM,
+    )
+    colourbar_pos = mesh_config.COLOURBAR_POS
+
+    # function to plot
+    f = MESH_COEFFICIENTS[args.method](
+        args.function,
+        extra_args=args.extra_args,
+        noise=args.noise if args.noise is not None else None,
+        region=args.region,
+    )
+
+    # perform plot
+    plot(f, camera_view, colourbar_pos)
 
 
 if __name__ == "__main__":

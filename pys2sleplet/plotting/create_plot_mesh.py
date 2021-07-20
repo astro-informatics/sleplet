@@ -10,6 +10,7 @@ from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.layout.scene import Camera
 from plotly.graph_objs.mesh3d import Lighting
 
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
@@ -29,14 +30,12 @@ FUNCTIONS_IN_REGION: set[str] = {"region", "slepian"}
 
 @dataclass
 class Plot:
-    vertices: np.ndarray = field(repr=False)
-    faces: np.ndarray = field(repr=False)
+    mesh: Mesh
     f: np.ndarray = field(repr=False)
     filename: str
     camera_view: Camera
     colourbar_pos: float
     amplitude: Optional[float] = field(default=None, repr=False)
-    region: Optional[np.ndarray] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         if settings.NORMALISE:
@@ -57,12 +56,12 @@ class Plot:
 
         data = [
             Mesh3d(
-                x=self.vertices[:, 0],
-                y=self.vertices[:, 2],
-                z=self.vertices[:, 1],
-                i=self.faces[:, 0],
-                j=self.faces[:, 1],
-                k=self.faces[:, 2],
+                x=self.mesh.vertices[:, 0],
+                y=self.mesh.vertices[:, 2],
+                z=self.mesh.vertices[:, 1],
+                i=self.mesh.faces[:, 0],
+                j=self.mesh.faces[:, 1],
+                k=self.mesh.faces[:, 2],
                 intensitymode="cell",
                 intensity=f,
                 cmax=1 if settings.NORMALISE else tick_mark,
@@ -95,7 +94,9 @@ class Plot:
         """
         scales the field before plotting
         """
-        return normalise_function(average_functions_on_vertices_to_faces(self.faces, f))
+        return normalise_function(
+            average_functions_on_vertices_to_faces(self.mesh.faces, f)
+        )
 
     def _set_outside_region_to_minimum(self, f: np.ndarray) -> np.ndarray:
         """
