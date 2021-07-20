@@ -16,13 +16,13 @@ class MeshCoefficients:
     name: str
     extra_args: Optional[list[int]]
     noise: Optional[float]
-    region: Optional[np.ndarray]
+    region: bool
     _coefficients: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
     _mesh: Mesh = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
-    _region: Optional[np.ndarray] = field(default=None, init=False, repr=False)
+    _region: bool = field(default=False, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.mesh = Mesh(self.name, mesh_laplacian=settings.LAPLACIAN)
@@ -36,7 +36,7 @@ class MeshCoefficients:
         """
         adds region to the name if present if not a Slepian function
         """
-        if isinstance(self.region, np.ndarray) and "slepian" not in self.name:
+        if self.region and "slepian" not in self.name:
             self.name += "_region"
 
     @property
@@ -45,10 +45,7 @@ class MeshCoefficients:
 
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
-        if (
-            isinstance(self.region, np.ndarray)
-            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
-        ):
+        if self.region and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK:
             coefficients = ensure_masked_bandlimit_mesh_signal(self.mesh, coefficients)
         self._coefficients = coefficients
 
@@ -93,11 +90,11 @@ class MeshCoefficients:
         self._noise = noise
 
     @property  # type:ignore
-    def region(self) -> Optional[np.ndarray]:
+    def region(self) -> bool:
         return self._region
 
     @region.setter
-    def region(self, region: Optional[np.ndarray]) -> None:
+    def region(self, region: bool) -> None:
         if isinstance(region, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
