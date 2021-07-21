@@ -39,7 +39,7 @@ def main(mesh_name: str, snr: int, sigma: int) -> None:
 
     f = denoising_mesh_slepian(fun, fun_noised, smw, snr, sigma)
     name = f"{mesh_name}_snr{snr}_n{sigma}_denoised"
-    Plot(mesh, name, f, amplitude=amplitude).execute()
+    Plot(mesh, name, f, amplitude=amplitude, region=True).execute()
 
 
 if __name__ == "__main__":

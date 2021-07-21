@@ -87,9 +87,7 @@ def plot(f: MeshCoefficients) -> None:
 
     # do plot
     Plot(
-        f.mesh,
-        filename,
-        field,
+        f.mesh, filename, field, region=not isinstance(f, MeshHarmonicCoefficients)
     ).execute()
 
 

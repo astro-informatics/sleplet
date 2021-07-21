@@ -24,7 +24,6 @@ from pys2sleplet.utils.vars import UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
-FUNCTIONS_IN_REGION: set[str] = {"region", "slepian"}
 
 
 @dataclass
@@ -33,6 +32,7 @@ class Plot:
     filename: str
     f: np.ndarray = field(repr=False)
     amplitude: Optional[float] = field(default=None, repr=False)
+    region: bool = field(default=False, repr=False)
 
     def __post_init__(self) -> None:
         if settings.NORMALISE:
@@ -44,7 +44,7 @@ class Plot:
         """
         f = self._prepare_field(self.f)
 
-        if set(self.filename.split("_")) & FUNCTIONS_IN_REGION:
+        if self.region:
             # make plot area clearer
             f = self._set_outside_region_to_minimum(f)
 
