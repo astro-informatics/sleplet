@@ -7,7 +7,7 @@ import numpy as np
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
 
-COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian"}
+COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
 @dataclass  # type:ignore
@@ -42,10 +42,7 @@ class MeshCoefficients:
 
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
-        if (
-            self.region
-            and not set(self.mesh.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
-        ):
+        if self.region and not self.__class__.__name__.lower():
             coefficients = ensure_masked_bandlimit_mesh_signal(self.mesh, coefficients)
         self._coefficients = coefficients
 
