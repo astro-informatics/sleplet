@@ -227,7 +227,7 @@ def compute_slepian_mesh_sigma_j(
         signal, snr_in, denominator=slepian_mesh.mesh.basis_functions.shape[0]
     )
     s_p = compute_mesh_s_p_pixel(slepian_mesh)
-    psi_j_reshape = psi_j[:, : slepian_mesh.N, np.newaxis, np.newaxis]
+    psi_j_reshape = psi_j[:, : slepian_mesh.N, np.newaxis]
     wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_axis)
     return sigma_noise * np.sqrt(wavelet_power)
 
