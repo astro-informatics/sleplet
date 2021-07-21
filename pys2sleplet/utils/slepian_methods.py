@@ -123,11 +123,11 @@ def slepian_mesh_inverse(
     """
     p_idx = 0
     f_p_reshape = f_p[: slepian_mesh.N, np.newaxis]
-    s_p = _compute_mesh_s_p_pixel(slepian_mesh)
+    s_p = compute_mesh_s_p_pixel(slepian_mesh)
     return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
-def _compute_mesh_s_p_pixel(slepian_mesh: SlepianMesh) -> np.ndarray:
+def compute_mesh_s_p_pixel(slepian_mesh: SlepianMesh) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
