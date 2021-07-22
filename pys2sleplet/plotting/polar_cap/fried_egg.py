@@ -1,10 +1,11 @@
 import numpy as np
 
 from pys2sleplet.functions.fp.slepian import Slepian
+from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.plotting.inputs import THETA_MAX
-from pys2sleplet.scripts.plotting_on_sphere import plot
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.slepian_methods import slepian_inverse
 
 L = 19
 RANKS = 32
@@ -17,8 +18,14 @@ def main() -> None:
     region = Region(theta_max=np.deg2rad(THETA_MAX))
     for r in range(RANKS):
         logger.info(f"plotting rank={r}")
-        slepian = Slepian(L, rank=r, region=region)
-        plot(slepian)
+        slepian_function = Slepian(L, rank=r, region=region)
+        f = slepian_inverse(slepian_function.coefficients, L, slepian_function.slepian)
+        Plot(
+            f,
+            L,
+            slepian_function.name,
+            region=slepian_function.region,
+        ).execute()
 
 
 if __name__ == "__main__":

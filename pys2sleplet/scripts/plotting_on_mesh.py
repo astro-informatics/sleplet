@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 
-from pys2sleplet.meshes.mesh_plot import MeshPlot
+from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
+from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.mesh_methods import MESHES, mesh_plotly_config
+from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.function_dicts import MESH_COEFFICIENTS, MESHES
+from pys2sleplet.utils.harmonic_methods import mesh_inverse
+from pys2sleplet.utils.logger import logger
+from pys2sleplet.utils.slepian_methods import slepian_mesh_inverse
 
 
 def valid_plotting(func_name: str) -> str:
@@ -29,25 +35,11 @@ def read_args() -> Namespace:
         help="mesh to plot",
     )
     parser.add_argument(
-        "--index",
-        "-i",
+        "--extra_args",
+        "-e",
         type=int,
-        default=0,
-        help="index of basis function to plot",
-    )
-    parser.add_argument(
-        "--j_min",
-        "-j",
-        type=int,
-        default=2,
-        help="wavelet scale j_min defaults to 2",
-    )
-    parser.add_argument(
-        "--B",
-        "-b",
-        type=int,
-        default=3,
-        help="lambda parameter defaults to 3",
+        nargs="+",
+        help="list of extra args for functions",
     )
     parser.add_argument(
         "--method",
@@ -60,7 +52,6 @@ def read_args() -> Namespace:
             "basis",
             "coefficients",
             "field",
-            "field_region",
             "region",
             "slepian",
             "slepian_field",
@@ -68,36 +59,45 @@ def read_args() -> Namespace:
         ],
         help="plotting routine: defaults to basis",
     )
+    parser.add_argument("--noise", "-n", type=int, help="the SNR_IN of the noise level")
+    parser.add_argument(
+        "--region",
+        "-r",
+        action="store_true",
+        help="flag which masks the function for a region (based on settings.toml)",
+    )
     return parser.parse_args()
 
 
-def plot(
-    args: Namespace,
-) -> None:
+def plot(f: MeshCoefficients) -> None:
     """
     master plotting method
     """
-    # create mesh plot
-    f = MeshPlot(args.function, args.index, args.method, args.B, args.j_min)
-
-    # plotly config
-    camera_view, colourbar_pos = mesh_plotly_config(args.function)
-
-    # do plot
+    field = (
+        mesh_inverse(f.mesh, f.coefficients)
+        if isinstance(f, MeshHarmonicCoefficients)
+        else slepian_mesh_inverse(f.slepian_mesh, f.coefficients)
+    )
     Plot(
-        f.mesh.vertices,
-        f.mesh.faces,
-        f.field_values,
-        f.name,
-        camera_view,
-        colourbar_pos,
-        region=f.mesh.region,
+        f.mesh, f.name, field, region=not isinstance(f, MeshHarmonicCoefficients)
     ).execute()
 
 
 def main() -> None:
     args = read_args()
-    plot(args)
+    logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
+
+    # function to plot
+    mesh = Mesh(args.function, mesh_laplacian=settings.MESH_LAPLACIAN)
+    f = MESH_COEFFICIENTS[args.method](
+        mesh,
+        extra_args=args.extra_args,
+        noise=args.noise if args.noise is not None else None,
+        region=args.region,
+    )
+
+    # perform plot
+    plot(f)
 
 
 if __name__ == "__main__":

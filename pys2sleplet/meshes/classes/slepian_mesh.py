@@ -5,11 +5,11 @@ import numpy as np
 from multiprocess import Pool
 from numpy import linalg as LA
 
-from pys2sleplet.meshes.mesh import Mesh
+from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.integration_methods import integrate_region_mesh
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mesh_methods import integrate_region_mesh
 from pys2sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
@@ -17,16 +17,13 @@ from pys2sleplet.utils.parallel_methods import (
     release_shared_memory,
     split_arr_into_chunks,
 )
-from pys2sleplet.utils.slepian_mesh_methods import (
-    clean_evals_and_evecs,
-    compute_shannon,
-)
+from pys2sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 
 _file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[1] / "data" / "meshes"
+_meshes_path = _file_location.parents[2] / "data" / "meshes"
 
 
-@dataclass  # type: ignore
+@dataclass
 class SlepianMesh:
     mesh: Mesh
     _mesh: Mesh = field(init=False, repr=False)
@@ -35,7 +32,7 @@ class SlepianMesh:
     _slepian_functions: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.N = compute_shannon(self.mesh)
+        self.N = compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 
     def _compute_slepian_functions(self) -> None:
@@ -51,7 +48,7 @@ class SlepianMesh:
             / "laplacians"
             / laplacian_type
             / "slepian_functions"
-            / f"{self.mesh.name}_b{self.mesh.basis_functions.shape[0]}_N{self.N}"
+            / f"{self.mesh.name}_b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
         )
         eval_loc = eigd_loc / "eigenvalues.npy"
         evec_loc = eigd_loc / "eigenvectors.npy"
@@ -72,9 +69,10 @@ class SlepianMesh:
             fill_upper_triangle_of_hermitian_matrix(D)
 
             # solve eigenproblem
-            self.slepian_eigenvalues, self.slepian_functions = clean_evals_and_evecs(
-                LA.eigh(D)
-            )
+            (
+                self.slepian_eigenvalues,
+                self.slepian_functions,
+            ) = self._clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
                 np.save(eval_loc, self.slepian_eigenvalues[: self.N])
                 np.save(evec_loc, self.slepian_functions[: self.N])
@@ -84,7 +82,7 @@ class SlepianMesh:
         computes the D matrix for the mesh eigenfunctions
         """
         D = np.zeros(
-            (self.mesh.basis_functions.shape[0], self.mesh.basis_functions.shape[0])
+            (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0])
         )
 
         D_ext, shm_ext = create_shared_memory_array(D)
@@ -104,7 +102,7 @@ class SlepianMesh:
 
         # split up L range to maximise effiency
         chunks = split_arr_into_chunks(
-            self.mesh.basis_functions.shape[0], settings.NCPU
+            self.mesh.mesh_eigenvalues.shape[0], settings.NCPU
         )
 
         # initialise pool and apply function
@@ -124,7 +122,7 @@ class SlepianMesh:
         fill in the D matrix elements using symmetries
         """
         D[i][i] = self._integral(i, i)
-        for j in range(i + 1, self.mesh.basis_functions.shape[0]):
+        for j in range(i + 1, self.mesh.mesh_eigenvalues.shape[0]):
             D[j][i] = self._integral(j, i)
 
     def _integral(self, i: int, j: int) -> float:
@@ -137,7 +135,23 @@ class SlepianMesh:
             self.mesh.basis_functions[j],
         )
 
-    @property  # type: ignore
+    @staticmethod
+    def _clean_evals_and_evecs(
+        eigendecomposition: tuple[np.ndarray, np.ndarray]
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """
+        need eigenvalues and eigenvectors to be in a certain format
+        """
+        # access values
+        eigenvalues, eigenvectors = eigendecomposition
+
+        # sort eigenvalues and eigenvectors in descending order of eigenvalues
+        idx = eigenvalues.argsort()[::-1]
+        eigenvalues = eigenvalues[idx]
+        eigenvectors = eigenvectors[:, idx].T
+        return eigenvalues, eigenvectors
+
+    @property  # type:ignore
     def mesh(self) -> Mesh:
         return self._mesh
 

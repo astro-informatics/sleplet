@@ -1,3 +1,5 @@
+from functools import reduce
+
 import numpy as np
 import pyssht as ssht
 
@@ -14,17 +16,45 @@ def calc_integration_weight(L: int) -> np.ndarray:
     return np.sin(thetas) * delta_theta * delta_phi
 
 
-def integrate_whole_sphere(f: np.ndarray, g: np.ndarray, weight: np.ndarray) -> complex:
+def integrate_whole_sphere(weight: np.ndarray, *functions: np.ndarray) -> complex:
     """
     computes the integration for the whole sphere
     """
-    return (f * g * weight).sum()
+    multiplied_inputs = _multiply_args(*functions)
+    return (multiplied_inputs * weight).sum()
 
 
 def integrate_region_sphere(
-    f: np.ndarray, g: np.ndarray, weight: np.ndarray, mask: np.ndarray
+    mask: np.ndarray, weight: np.ndarray, *functions: np.ndarray
 ) -> complex:
     """
     computes the integration for a region of the sphere
     """
-    return (f * g * weight * mask).sum()
+    multiplied_inputs = _multiply_args(*functions)
+    return (multiplied_inputs * weight * mask).sum()
+
+
+def integrate_whole_mesh(*functions: np.ndarray) -> float:
+    """
+    computes the integral of functions on the vertices
+    """
+    multiplied_inputs = _multiply_args(*functions)
+    return multiplied_inputs.sum()
+
+
+def integrate_region_mesh(
+    mask: np.ndarray,
+    *functions: np.ndarray,
+) -> float:
+    """
+    computes the integral of a region of functions on the vertices
+    """
+    multiplied_inputs = _multiply_args(*functions)
+    return (multiplied_inputs * mask).sum()
+
+
+def _multiply_args(*args: np.ndarray) -> np.ndarray:
+    """
+    method to multiply an unknown number of arguments
+    """
+    return reduce((lambda x, y: x * y), args)

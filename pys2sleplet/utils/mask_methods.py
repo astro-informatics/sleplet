@@ -4,6 +4,8 @@ import numpy as np
 import pyssht as ssht
 from box import Box
 
+from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
@@ -31,11 +33,10 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
             f"mask {name} has shape {mask.shape} which does not match "
             f"the provided L={L}, the shape should be {thetas.shape}"
         )
-        return mask
 
     elif region.region_type == "lim_lat_lon":
         logger.info("creating limited latitude longitude mask")
-        return (
+        mask = (
             (thetas >= region.theta_min)
             & (thetas <= region.theta_max)
             & (phis >= region.phi_min)
@@ -48,7 +49,7 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
         if region.gap:
             logger.info("creating polar gap mask")
             mask |= thetas >= np.pi - region.theta_max
-        return mask
+    return mask
 
 
 def _load_mask(mask_name: str) -> np.ndarray:
@@ -88,3 +89,37 @@ def create_default_region(settings: Box) -> Region:
         theta_max=np.deg2rad(settings.THETA_MAX),
         theta_min=np.deg2rad(settings.THETA_MIN),
     )
+
+
+def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
+    """
+    creates the boolean region for the given mesh
+    """
+    return (
+        (vertices[:, 0] >= mesh_config.XMIN)
+        & (vertices[:, 0] <= mesh_config.XMAX)
+        & (vertices[:, 1] >= mesh_config.YMIN)
+        & (vertices[:, 1] <= mesh_config.YMAX)
+        & (vertices[:, 2] >= mesh_config.ZMIN)
+        & (vertices[:, 2] <= mesh_config.ZMAX)
+    )
+
+
+def ensure_masked_bandlimit_mesh_signal(mesh: Mesh, u_i: np.ndarray) -> np.ndarray:
+    """
+    ensures that signal in pixel space is bandlimited
+    """
+    field = mesh_inverse(mesh, u_i)
+    masked_field = np.where(mesh.region, field, 0)
+    return mesh_forward(mesh, masked_field)
+
+
+def convert_region_on_vertices_to_faces(mesh: Mesh) -> np.ndarray:
+    """
+    converts the region on vertices to faces
+    """
+    region_reshape = np.argwhere(mesh.region).reshape(-1)
+    faces_in_region = np.isin(mesh.faces, region_reshape).all(axis=1)
+    region_on_faces = np.zeros(mesh.faces.shape[0])
+    region_on_faces[faces_in_region] = 1
+    return region_on_faces

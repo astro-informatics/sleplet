@@ -3,12 +3,19 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
+from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.classes.slepian_mesh_decomposition import (
+    SlepianMeshDecomposition,
+)
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.harmonic_methods import boost_coefficient_resolution
+from pys2sleplet.utils.harmonic_methods import (
+    boost_coefficient_resolution,
+    mesh_inverse,
+)
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
@@ -87,3 +94,44 @@ def compute_s_p_omega_prime(
     # pad with zeros so it has the expected shape
     boost = L ** 2 - slepian.N
     return boost_coefficient_resolution(sp_omega_prime, boost)
+
+
+def slepian_mesh_forward(
+    slepian_mesh: SlepianMesh,
+    u: Optional[np.ndarray] = None,
+    u_i: Optional[np.ndarray] = None,
+    mask: bool = False,
+) -> np.ndarray:
+    """
+    computes the Slepian forward transform for all coefficients
+    """
+    sd = SlepianMeshDecomposition(
+        slepian_mesh,
+        u=u,
+        u_i=u_i,
+        mask=mask,
+    )
+    return sd.decompose_all()
+
+
+def slepian_mesh_inverse(
+    slepian_mesh: SlepianMesh,
+    f_p: np.ndarray,
+) -> np.ndarray:
+    """
+    computes the Slepian inverse transform on the mesh up to the Shannon number
+    """
+    p_idx = 0
+    f_p_reshape = f_p[: slepian_mesh.N, np.newaxis]
+    s_p = compute_mesh_s_p_pixel(slepian_mesh)
+    return (f_p_reshape * s_p).sum(axis=p_idx)
+
+
+def compute_mesh_s_p_pixel(slepian_mesh: SlepianMesh) -> np.ndarray:
+    """
+    method to calculate Sp(omega) for a given region
+    """
+    sp = np.zeros((slepian_mesh.N, slepian_mesh.mesh.vertices.shape[0]))
+    for p in range(slepian_mesh.N):
+        sp[p] = mesh_inverse(slepian_mesh.mesh, slepian_mesh.slepian_functions[p])
+    return sp

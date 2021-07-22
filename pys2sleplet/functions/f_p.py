@@ -46,7 +46,7 @@ class F_P(Coefficients):
             n_p = create_slepian_noise(
                 self.L, self.coefficients, self.slepian, self.noise
             )
-            self.snr = compute_snr(self.L, self.coefficients, n_p)
+            self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
 
     @property  # type:ignore
@@ -79,22 +79,12 @@ class F_P(Coefficients):
 
     @abstractmethod
     def _set_reality(self) -> None:
-        """
-        sets the reality flag to speed up computations
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _set_spin(self) -> None:
-        """
-        sets the spin value in computations
-        """
         raise NotImplementedError
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """
-        initialises function specific args
-        either default value or user input
-        """
         raise NotImplementedError

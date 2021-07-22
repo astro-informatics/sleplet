@@ -1,5 +1,3 @@
-import glob
-from functools import reduce
 from pathlib import Path
 from typing import Optional
 
@@ -14,12 +12,11 @@ from igl import (
     upsample,
 )
 from numpy import linalg as LA
-from plotly.graph_objs.layout.scene import Camera
 from scipy.sparse import linalg as LA_sparse
 
 from pys2sleplet.utils.config import settings
+from pys2sleplet.utils.integration_methods import integrate_whole_mesh
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plotly_methods import create_camera
 from pys2sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
@@ -27,89 +24,51 @@ from pys2sleplet.utils.vars import (
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
-MESHES: set[str] = {
-    Path(x.removesuffix(".toml")).stem
-    for x in glob.glob(str(_meshes_path / "regions" / "*.toml"))
-}
 
 
-def _read_toml(mesh_name: str) -> Box:
+def average_functions_on_vertices_to_faces(
+    faces: np.ndarray,
+    functions_on_vertices: np.ndarray,
+) -> np.ndarray:
+    """
+    the integrals require all functions to be defined on faces
+    this method handles an arbitrary number of functions
+    """
+    logger.info("converting function on vertices to faces")
+    # handle the case of a 1D array
+    array_is_1d = len(functions_on_vertices.shape) == 1
+    if array_is_1d:
+        functions_on_vertices = functions_on_vertices.reshape(1, -1)
+
+    functions_on_faces = np.zeros((functions_on_vertices.shape[0], faces.shape[0]))
+    for i, f in enumerate(functions_on_vertices):
+        functions_on_faces[i] = average_onto_faces(faces, f)
+
+    # put the vector back in 1D form
+    if array_is_1d:
+        functions_on_faces = functions_on_faces.reshape(-1)
+    return functions_on_faces
+
+
+def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
+    """
+    creates the boolean region for the given mesh
+    """
+    return (
+        (vertices[:, 0] >= mesh_config.XMIN)
+        & (vertices[:, 0] <= mesh_config.XMAX)
+        & (vertices[:, 1] >= mesh_config.YMIN)
+        & (vertices[:, 1] <= mesh_config.YMAX)
+        & (vertices[:, 2] >= mesh_config.ZMIN)
+        & (vertices[:, 2] <= mesh_config.ZMAX)
+    )
+
+
+def extract_mesh_config(mesh_name: str) -> Box:
     """
     reads in the given mesh region settings file
     """
     return Box.from_toml(filename=_meshes_path / "regions" / f"{mesh_name}.toml")
-
-
-def read_mesh(mesh_name: str) -> tuple[np.ndarray, np.ndarray]:
-    """
-    reads in the given mesh
-    """
-    data = _read_toml(mesh_name)
-    vertices, faces = read_triangle_mesh(str(_meshes_path / "polygons" / data.FILENAME))
-    return upsample(vertices, faces, number_of_subdivs=data.UPSAMPLE)
-
-
-def create_mesh_region(mesh_name: str, vertices: np.ndarray) -> np.ndarray:
-    """
-    creates the boolean region for the given mesh
-    """
-    data = _read_toml(mesh_name)
-    return (
-        (vertices[:, 0] >= data.XMIN)
-        & (vertices[:, 0] <= data.XMAX)
-        & (vertices[:, 1] >= data.YMIN)
-        & (vertices[:, 1] <= data.YMAX)
-        & (vertices[:, 2] >= data.ZMIN)
-        & (vertices[:, 2] <= data.ZMAX)
-    )
-
-
-def mesh_plotly_config(mesh_name: str) -> tuple[Camera, float]:
-    """
-    creates plotly camera view for a given mesh
-    """
-    data = _read_toml(mesh_name)
-    return (
-        create_camera(data.CAMERA_X, data.CAMERA_Y, data.CAMERA_Z, data.ZOOM),
-        data.COLOURBAR_POS,
-    )
-
-
-def _weighting_function(
-    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: float, knn: int
-) -> np.ndarray:
-    """
-    thresholded Gaussian kernel weighting function
-    """
-    W = np.exp(
-        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta ** 2)
-    )
-    knn_threshold = D <= knn
-    return W * A * knn_threshold
-
-
-def _graph_laplacian(
-    vertices: np.ndarray,
-    faces: np.ndarray,
-    theta: float = GAUSSIAN_KERNEL_THETA_DEFAULT,
-    knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
-) -> np.ndarray:
-    """
-    computes the graph laplacian L = D - W where D
-    is the degree matrix and W is the weighting function
-    """
-    rows = 0
-    A = adjacency_matrix(faces)
-    D = np.diagflat(A.sum(axis=rows))
-    W = _weighting_function(D, A, vertices, theta, knn)
-    return np.asarray(D - W)
-
-
-def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
-    """
-    computes the cotagent mesh laplacian
-    """
-    return -cotmatrix(vertices, faces)
 
 
 def mesh_eigendecomposition(
@@ -167,48 +126,38 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors, number_basis_functions
 
 
-def integrate_whole_mesh(*functions: np.ndarray) -> float:
+def read_mesh(mesh_config: Box) -> tuple[np.ndarray, np.ndarray]:
     """
-    computes the integral of functions on the vertices
+    reads in the given mesh
     """
-    multiplied_inputs = _multiply_args(*functions)
-    return multiplied_inputs.sum()
+    vertices, faces = read_triangle_mesh(
+        str(_meshes_path / "polygons" / mesh_config.FILENAME)
+    )
+    return upsample(vertices, faces, number_of_subdivs=mesh_config.UPSAMPLE)
 
 
-def integrate_region_mesh(
-    mask: np.ndarray,
-    *functions: np.ndarray,
-) -> float:
+def _graph_laplacian(
+    vertices: np.ndarray,
+    faces: np.ndarray,
+    theta: float = GAUSSIAN_KERNEL_THETA_DEFAULT,
+    knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
+) -> np.ndarray:
     """
-    computes the integral of a region of functions on the vertices
+    computes the graph laplacian L = D - W where D
+    is the degree matrix and W is the weighting function
     """
-    multiplied_inputs = _multiply_args(*functions)
-    return (multiplied_inputs * mask).sum()
+    rows = 0
+    A = adjacency_matrix(faces)
+    D = np.diagflat(A.sum(axis=rows))
+    W = _weighting_function(D, A, vertices, theta, knn)
+    return np.asarray(D - W)
 
 
-def _multiply_args(*args: np.ndarray) -> np.ndarray:
+def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     """
-    method to multiply an unknown number of arguments
+    computes the cotagent mesh laplacian
     """
-    return reduce((lambda x, y: x * y), args)
-
-
-def mesh_forward(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
-    """
-    computes the mesh forward transform from real space to harmonic space
-    """
-    u_i = np.zeros(basis_functions.shape[0])
-    for i, phi_i in enumerate(basis_functions):
-        u_i[i] = integrate_whole_mesh(u, phi_i)
-    return u_i
-
-
-def mesh_inverse(basis_functions: np.ndarray, u_i: np.ndarray) -> np.ndarray:
-    """
-    computes the mesh inverse transform from harmonic space to real space
-    """
-    i_idx = 0
-    return (u_i[:, np.newaxis] * basis_functions).sum(axis=i_idx)
+    return -cotmatrix(vertices, faces)
 
 
 def _orthonormalise_basis_functions(basis_functions: np.ndarray) -> np.ndarray:
@@ -223,49 +172,14 @@ def _orthonormalise_basis_functions(basis_functions: np.ndarray) -> np.ndarray:
     return basis_functions / normalisation
 
 
-def average_functions_on_vertices_to_faces(
-    faces: np.ndarray,
-    functions_on_vertices: np.ndarray,
+def _weighting_function(
+    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: float, knn: int
 ) -> np.ndarray:
     """
-    the integrals require all functions to be defined on faces
-    this method handles an arbitrary number of functions
+    thresholded Gaussian kernel weighting function
     """
-    logger.info("converting function on vertices to faces")
-    # handle the case of a 1D array
-    array_is_1d = len(functions_on_vertices.shape) == 1
-    if array_is_1d:
-        functions_on_vertices = functions_on_vertices.reshape(1, -1)
-
-    functions_on_faces = np.zeros((functions_on_vertices.shape[0], faces.shape[0]))
-    for i, f in enumerate(functions_on_vertices):
-        functions_on_faces[i] = average_onto_faces(faces, f)
-
-    # put the vector back in 1D form
-    if array_is_1d:
-        functions_on_faces = functions_on_faces.reshape(-1)
-    return functions_on_faces
-
-
-def bandlimit_signal(basis_functions: np.ndarray, u: np.ndarray) -> np.ndarray:
-    """
-    ensures that signal in pixel space is bandlimited
-    """
-    u_i = mesh_forward(
-        basis_functions,
-        u,
+    W = np.exp(
+        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta ** 2)
     )
-    return mesh_inverse(basis_functions, u_i)
-
-
-def convert_region_on_vertices_to_faces(
-    faces: np.ndarray, region_on_vertices: np.ndarray
-) -> np.ndarray:
-    """
-    converts the region on vertices to faces
-    """
-    region_reshape = np.argwhere(region_on_vertices).reshape(-1)
-    faces_in_region = np.isin(faces, region_reshape).all(axis=1)
-    region_on_faces = np.zeros(faces.shape[0])
-    region_on_faces[faces_in_region] = 1
-    return region_on_faces
+    knn_threshold = D <= knn
+    return W * A * knn_threshold

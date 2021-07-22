@@ -12,6 +12,7 @@ __pycache__
 *.png
 *.pyc
 *.so
+*.tmp
 build
 Coeff_Height_and_Depth_to2190_DTM2006.0
 default.profraw

@@ -7,6 +7,7 @@ import numpy as np
 from pys2sleplet.utils.convolution_methods import sifting_convolution
 from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.string_methods import filename_args
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
@@ -23,7 +24,7 @@ class Coefficients:
     _L: int = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _reality: bool = field(default=False, init=False, repr=False)
-    _region: Region = field(default=None, init=False, repr=False)
+    _region: Optional[Region] = field(default=None, init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
     _smoothing: Optional[int] = field(default=None, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
@@ -34,7 +35,7 @@ class Coefficients:
         self._set_spin()
         self._set_reality()
         self._create_coefficients()
-        self._add_region_to_name()
+        self._add_details_to_name()
         self._add_noise_to_signal()
 
     def translate(
@@ -57,12 +58,21 @@ class Coefficients:
         self.reality = False
         return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
 
-    def _add_region_to_name(self) -> None:
+    def _add_details_to_name(self) -> None:
         """
         adds region to the name if present if not a Slepian function
+        adds noise/smoothing if appropriate and bandlimit
         """
-        if isinstance(self.region, Region) and "slepian" not in self.name:
+        if (
+            isinstance(self.region, Region)
+            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
+        ):
             self.name += f"_{self.region.name_ending}"
+        if self.noise is not None:
+            self.name += f"{filename_args(self.noise, 'noise')}"
+        if self.smoothing is not None:
+            self.name += f"{filename_args(self.smoothing, 'smoothed')}"
+        self.name += f"_L{self.L}"
 
     @property
     def coefficients(self) -> np.ndarray:
@@ -128,11 +138,11 @@ class Coefficients:
         self._reality = reality
 
     @property  # type:ignore
-    def region(self) -> Region:
+    def region(self) -> Optional[Region]:
         return self._region
 
     @region.setter
-    def region(self, region: Region) -> None:
+    def region(self, region: Optional[Region]) -> None:
         if isinstance(region, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333

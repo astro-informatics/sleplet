@@ -7,6 +7,7 @@ from pys2sleplet.utils.denoising import denoising_slepian
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import find_max_amplitude
 from pys2sleplet.utils.region import Region
+from pys2sleplet.utils.string_methods import filename_args
 from pys2sleplet.utils.vars import SMOOTHING
 
 B = 3
@@ -36,7 +37,7 @@ def main(snr: int, sigma: int) -> None:
     amplitude = find_max_amplitude(fun_noised, PLOT_TYPE)
 
     f = denoising_slepian(fun, fun_noised, sw, snr, sigma)
-    name = f"{fun.name}_snr{snr}_n{sigma}_{SMOOTHING}smoothed_denoised_L{L}"
+    name = f"{fun.name}{filename_args(snr, 'snr')}{filename_args(sigma,'n')}_denoised"
     Plot(
         f, L, name, amplitude=amplitude, plot_type=PLOT_TYPE, region=sw.region
     ).execute()

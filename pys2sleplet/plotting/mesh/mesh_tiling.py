@@ -6,10 +6,11 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
-from pys2sleplet.meshes.slepian_mesh import Mesh, SlepianMesh
+from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
 from pys2sleplet.scripts.plotting_on_mesh import valid_plotting
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.mesh_methods import MESHES
+from pys2sleplet.utils.function_dicts import MESHES
 from pys2sleplet.utils.plot_methods import save_plot
 from pys2sleplet.utils.wavelet_methods import create_kappas
 
@@ -31,7 +32,7 @@ def main(mesh_name: str) -> None:
     slepian_mesh = SlepianMesh(mesh)
 
     # set up x-axis
-    xlim = mesh.basis_functions.shape[0]
+    xlim = mesh.mesh_eigenvalues.shape[0]
     x = np.arange(xlim)
 
     # scaling function
@@ -62,7 +63,7 @@ def main(mesh_name: str) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
     plt.legend()
-    save_plot(fig_path, f"{mesh_name}_slepian_tiling_b{mesh.basis_functions.shape[0]}")
+    save_plot(fig_path, f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
 
 
 if __name__ == "__main__":

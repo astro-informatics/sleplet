@@ -4,16 +4,18 @@ from typing import Optional
 import numpy as np
 from pys2let import pys2let_j_max
 
-from pys2sleplet.functions.f_p import F_P
-from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
-from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+    SlepianMeshWavelets,
+)
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
 from pys2sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
 @dataclass
-class SlepianWaveletCoefficientsSouthAmerica(F_P):
+class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
     B: int
     j_min: int
     j: Optional[int]
@@ -26,8 +28,6 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        if self.region.name_ending != "south_america":
-            raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> None:
         logger.info("start computing wavelet coefficients")
@@ -38,17 +38,11 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
 
     def _create_name(self) -> None:
         self.name = (
-            "slepian_wavelet_coefficients_south_america"
+            f"slepian_wavelet_coefficients_{self.mesh.name}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{wavelet_ending(self.j_min, self.j)}"
         )
-
-    def _set_reality(self) -> None:
-        self.reality = False
-
-    def _set_spin(self) -> None:
-        self.spin = 0
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
@@ -61,11 +55,12 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         """
         computes wavelet coefficients in Slepian space
         """
-        sw = SlepianWavelets(self.L, B=self.B, j_min=self.j_min, region=self.region)
-        sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
-        self.wavelets = sw.wavelets
+        smw = SlepianMeshWavelets(self.mesh, B=self.B, j_min=self.j_min)
+        smf = SlepianMeshField(self.mesh)
         self.wavelet_coefficients = slepian_wavelet_forward(
-            sa.coefficients, self.wavelets, self.slepian.N
+            smf.coefficients,
+            smw.wavelets,
+            self.slepian_mesh.N,
         )
 
     @property  # type:ignore
@@ -77,7 +72,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = SlepianWaveletCoefficientsSouthAmerica._B
+            B = SlepianMeshWaveletCoefficients._B
         self._B = B
 
     @property  # type:ignore
@@ -89,8 +84,10 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         if isinstance(j, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j = SlepianWaveletCoefficientsSouthAmerica._j
-        self.j_max = pys2let_j_max(self.B, self.L ** 2, self.j_min)
+            j = SlepianMeshWaveletCoefficients._j
+        self.j_max = pys2let_j_max(
+            self.B, self.mesh.mesh_eigenvalues.shape[0], self.j_min
+        )
         if j is not None and j < 0:
             raise ValueError("j should be positive")
         if j is not None and j > self.j_max - self.j_min:
@@ -116,7 +113,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = SlepianWaveletCoefficientsSouthAmerica._j_min
+            j_min = SlepianMeshWaveletCoefficients._j_min
         self._j_min = j_min
 
     @property

@@ -2,31 +2,44 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+from plotly.graph_objs.layout.scene import Camera
 
 from pys2sleplet.utils.mesh_methods import (
     create_mesh_region,
+    extract_mesh_config,
     mesh_eigendecomposition,
     read_mesh,
 )
+from pys2sleplet.utils.plotly_methods import create_camera
 
 
-@dataclass  # type: ignore
+@dataclass
 class Mesh:
     name: str
     mesh_laplacian: bool
     number_basis_functions: Optional[int]
     _basis_functions: np.ndarray = field(init=False, repr=False)
+    _camera_view: Camera = field(init=False, repr=False)
+    _colourbar_pos: float = field(init=False, repr=False)
+    _faces: np.ndarray = field(init=False, repr=False)
     _mesh_eigenvalues: np.ndarray = field(init=False, repr=False)
     _mesh_laplacian: bool = field(default=True, init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _number_basis_functions: Optional[int] = field(default=None, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
-    _faces: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.vertices, self.faces = read_mesh(self.name)
-        self.region = create_mesh_region(self.name, self.vertices)
+        mesh_config = extract_mesh_config(self.name)
+        self.camera_view = create_camera(
+            mesh_config.CAMERA_X,
+            mesh_config.CAMERA_Y,
+            mesh_config.CAMERA_Z,
+            mesh_config.ZOOM,
+        )
+        self.colourbar_pos = mesh_config.COLOURBAR_POS
+        self.vertices, self.faces = read_mesh(mesh_config)
+        self.region = create_mesh_region(mesh_config, self.vertices)
         (
             self.mesh_eigenvalues,
             self.basis_functions,
@@ -48,6 +61,22 @@ class Mesh:
         self._basis_functions = basis_functions
 
     @property
+    def camera_view(self) -> Camera:
+        return self._camera_view
+
+    @camera_view.setter
+    def camera_view(self, camera_view: Camera) -> None:
+        self._camera_view = camera_view
+
+    @property
+    def colourbar_pos(self) -> float:
+        return self._colourbar_pos
+
+    @colourbar_pos.setter
+    def colourbar_pos(self, colourbar_pos: float) -> None:
+        self._colourbar_pos = colourbar_pos
+
+    @property
     def faces(self) -> np.ndarray:
         return self._faces
 
@@ -63,7 +92,7 @@ class Mesh:
     def mesh_eigenvalues(self, mesh_eigenvalues: np.ndarray) -> None:
         self._mesh_eigenvalues = mesh_eigenvalues
 
-    @property  # type: ignore
+    @property  # type:ignore
     def mesh_laplacian(self) -> bool:
         return self._mesh_laplacian
 
@@ -75,7 +104,7 @@ class Mesh:
             mesh_laplacian = Mesh._mesh_laplacian
         self._mesh_laplacian = mesh_laplacian
 
-    @property  # type: ignore
+    @property  # type:ignore
     def name(self) -> str:
         return self._name
 
@@ -83,7 +112,7 @@ class Mesh:
     def name(self, name: str) -> None:
         self._name = name
 
-    @property  # type: ignore
+    @property  # type:ignore
     def number_basis_functions(self) -> Optional[int]:
         return self._number_basis_functions
 

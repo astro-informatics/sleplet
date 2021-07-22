@@ -4,6 +4,8 @@ import numpy as np
 import pyssht as ssht
 from numpy.random import Generator
 
+from pys2sleplet.meshes.classes.mesh import Mesh
+from pys2sleplet.utils.integration_methods import integrate_whole_mesh
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -73,3 +75,21 @@ def compute_random_signal(L: int, rng: Generator, var_signal: float) -> np.ndarr
     return np.sqrt(var_signal / 2) * (
         rng.standard_normal(L ** 2) + 1j * rng.standard_normal(L ** 2)
     )
+
+
+def mesh_forward(mesh: Mesh, u: np.ndarray) -> np.ndarray:
+    """
+    computes the mesh forward transform from real space to harmonic space
+    """
+    u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
+    for i, phi_i in enumerate(mesh.basis_functions):
+        u_i[i] = integrate_whole_mesh(u, phi_i)
+    return u_i
+
+
+def mesh_inverse(mesh: Mesh, u_i: np.ndarray) -> np.ndarray:
+    """
+    computes the mesh inverse transform from harmonic space to real space
+    """
+    i_idx = 0
+    return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=i_idx)
