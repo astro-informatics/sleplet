@@ -1,5 +1,7 @@
 from argparse import ArgumentParser
 
+import numpy as np
+
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
@@ -35,7 +37,9 @@ def main(mesh_name: str, snr: int, sigma: int) -> None:
     smw = SlepianMeshWavelets(mesh, B=B, j_min=J_MIN)
 
     # fix amplitude
-    amplitude = slepian_mesh_inverse(fun_noised.slepian_mesh, fun_noised.coefficients)
+    amplitude = np.abs(
+        slepian_mesh_inverse(fun_noised.slepian_mesh, fun_noised.coefficients)
+    ).max()
 
     f = denoising_mesh_slepian(fun, fun_noised, smw, snr, sigma)
     name = f"{mesh_name}_snr{snr}_n{sigma}_denoised"
