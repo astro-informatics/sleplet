@@ -61,7 +61,10 @@ class Coefficients:
         """
         adds region to the name if present if not a Slepian function
         """
-        if isinstance(self.region, Region) and "slepian" not in self.name:
+        if (
+            isinstance(self.region, Region)
+            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
+        ):
             self.name += f"_{self.region.name_ending}"
 
     @property
