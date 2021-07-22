@@ -26,8 +26,12 @@ class Mesh:
 
     def __post_init__(self) -> None:
         self.vertices, self.faces = read_mesh(self.name)
-        self.region = create_mesh_region(self.name, self.faces)
-        self.mesh_eigenvalues, self.basis_functions = mesh_eigendecomposition(
+        self.region = create_mesh_region(self.name, self.vertices)
+        (
+            self.mesh_eigenvalues,
+            self.basis_functions,
+            self.number_basis_functions,
+        ) = mesh_eigendecomposition(
             self.name,
             self.vertices,
             self.faces,

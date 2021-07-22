@@ -60,6 +60,7 @@ def read_args() -> Namespace:
             "basis",
             "coefficients",
             "field",
+            "field_region",
             "region",
             "slepian",
             "slepian_field",
