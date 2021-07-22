@@ -8,9 +8,7 @@ from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
-
-# from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
-# from pys2sleplet.meshes.harmonic_coefficients.mesh_field_region import MeshFieldRegion
+from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
     SlepianMeshWavelets,
 )
@@ -167,18 +165,17 @@ def slepian_mesh(mesh) -> SlepianMesh:
     return SlepianMesh(mesh)
 
 
-# @pytest.fixture(scope="session")
-# def mesh_field_region(mesh) -> MeshFieldRegion:
-#     """
-#     creates a field on the mesh
-#     """
-#     mesh_field = MeshField(mesh)
-#     return MeshFieldRegion(mesh_field)
-
-
 @pytest.fixture(scope="session")
-def slepian_mesh_wavelets(slepian_mesh) -> SlepianMeshWavelets:
+def mesh_field_region(mesh) -> MeshField:
     """
     creates a field on the mesh
     """
-    return SlepianMeshWavelets(slepian_mesh)
+    return MeshField(mesh, region=True)
+
+
+@pytest.fixture(scope="session")
+def slepian_mesh_wavelets(mesh) -> SlepianMeshWavelets:
+    """
+    creates a field on the mesh
+    """
+    return SlepianMeshWavelets(mesh)
