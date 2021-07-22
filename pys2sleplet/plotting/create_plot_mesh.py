@@ -43,13 +43,14 @@ class Plot:
         creates 3d plotly mesh plot
         """
         f = self._prepare_field(self.f)
+        vmin, vmax = f.min(), f.max()
 
         if self.region:
             # make plot area clearer
             f = self._set_outside_region_to_minimum(f)
 
         # pick largest tick max value
-        tick_mark = create_tick_mark(f.min(), f.max(), amplitude=self.amplitude)
+        tick_mark = create_tick_mark(vmin, vmax, amplitude=self.amplitude)
 
         data = [
             Mesh3d(
