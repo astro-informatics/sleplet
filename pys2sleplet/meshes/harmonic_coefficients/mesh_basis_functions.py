@@ -49,7 +49,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         checks the requested rank is valid
         """
         if isinstance(self.extra_args, list):
-            limit = self.mesh.basis_functions.shape[0]
+            limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] > limit:
                 raise ValueError(f"rank should be less than or equal to {limit}")
 

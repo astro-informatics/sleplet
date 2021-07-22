@@ -32,7 +32,7 @@ def main(mesh_name: str) -> None:
     slepian_mesh = SlepianMesh(mesh)
 
     # set up x-axis
-    xlim = mesh.basis_functions.shape[0]
+    xlim = mesh.mesh_eigenvalues.shape[0]
     x = np.arange(xlim)
 
     # scaling function
@@ -63,7 +63,7 @@ def main(mesh_name: str) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
     plt.legend()
-    save_plot(fig_path, f"{mesh_name}_slepian_tiling_b{mesh.basis_functions.shape[0]}")
+    save_plot(fig_path, f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
 
 
 if __name__ == "__main__":

@@ -48,7 +48,7 @@ class SlepianMesh:
             / "laplacians"
             / laplacian_type
             / "slepian_functions"
-            / f"{self.mesh.name}_b{self.mesh.basis_functions.shape[0]}_N{self.N}"
+            / f"{self.mesh.name}_b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
         )
         eval_loc = eigd_loc / "eigenvalues.npy"
         evec_loc = eigd_loc / "eigenvectors.npy"
@@ -82,7 +82,7 @@ class SlepianMesh:
         computes the D matrix for the mesh eigenfunctions
         """
         D = np.zeros(
-            (self.mesh.basis_functions.shape[0], self.mesh.basis_functions.shape[0])
+            (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0])
         )
 
         D_ext, shm_ext = create_shared_memory_array(D)
@@ -102,7 +102,7 @@ class SlepianMesh:
 
         # split up L range to maximise effiency
         chunks = split_arr_into_chunks(
-            self.mesh.basis_functions.shape[0], settings.NCPU
+            self.mesh.mesh_eigenvalues.shape[0], settings.NCPU
         )
 
         # initialise pool and apply function
@@ -122,7 +122,7 @@ class SlepianMesh:
         fill in the D matrix elements using symmetries
         """
         D[i][i] = self._integral(i, i)
-        for j in range(i + 1, self.mesh.basis_functions.shape[0]):
+        for j in range(i + 1, self.mesh.mesh_eigenvalues.shape[0]):
             D[j][i] = self._integral(j, i)
 
     def _integral(self, i: int, j: int) -> float:

@@ -81,7 +81,7 @@ def mesh_forward(mesh: Mesh, u: np.ndarray) -> np.ndarray:
     """
     computes the mesh forward transform from real space to harmonic space
     """
-    u_i = np.zeros(mesh.basis_functions.shape[0])
+    u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
     for i, phi_i in enumerate(mesh.basis_functions):
         u_i[i] = integrate_whole_mesh(u, phi_i)
     return u_i

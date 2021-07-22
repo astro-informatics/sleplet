@@ -86,7 +86,7 @@ class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
             # https://stackoverflow.com/a/61480946/7359333
             j = SlepianMeshWaveletCoefficients._j
         self.j_max = pys2let_j_max(
-            self.B, self.mesh.basis_functions.shape[0], self.j_min
+            self.B, self.mesh.mesh_eigenvalues.shape[0], self.j_min
         )
         if j is not None and j < 0:
             raise ValueError("j should be positive")

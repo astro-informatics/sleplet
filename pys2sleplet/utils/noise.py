@@ -224,7 +224,7 @@ def compute_slepian_mesh_sigma_j(
     """
     p_axis = 1
     sigma_noise = compute_sigma_noise(
-        signal, snr_in, denominator=slepian_mesh.mesh.basis_functions.shape[0]
+        signal, snr_in, denominator=slepian_mesh.slepian_eigenvalues.shape[0]
     )
     s_p = compute_mesh_s_p_pixel(slepian_mesh)
     psi_j_reshape = psi_j[:, : slepian_mesh.N, np.newaxis]

@@ -131,7 +131,7 @@ def compute_mesh_s_p_pixel(slepian_mesh: SlepianMesh) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
-    sp = np.zeros((slepian_mesh.N, slepian_mesh.mesh.basis_functions.shape[1]))
+    sp = np.zeros((slepian_mesh.N, slepian_mesh.mesh.vertices.shape[0]))
     for p in range(slepian_mesh.N):
         sp[p] = mesh_inverse(slepian_mesh.mesh, slepian_mesh.slepian_functions[p])
     return sp
