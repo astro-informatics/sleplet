@@ -10,7 +10,6 @@ from pys2sleplet.utils.function_dicts import MESH_COEFFICIENTS, MESHES
 from pys2sleplet.utils.harmonic_methods import mesh_inverse
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import slepian_mesh_inverse
-from pys2sleplet.utils.string_methods import filename_args
 
 
 def valid_plotting(func_name: str) -> str:
@@ -74,20 +73,13 @@ def plot(f: MeshCoefficients) -> None:
     """
     master plotting method
     """
-    noised = f"{filename_args(f.noise, 'noise')}" if f.noise is not None else ""
-    filename = f"{f.name}{noised}"
-    coefficients = f.coefficients
-
-    # get field value
     field = (
-        mesh_inverse(f.mesh, coefficients)
+        mesh_inverse(f.mesh, f.coefficients)
         if isinstance(f, MeshHarmonicCoefficients)
-        else slepian_mesh_inverse(f.slepian_mesh, coefficients)
+        else slepian_mesh_inverse(f.slepian_mesh, f.coefficients)
     )
-
-    # do plot
     Plot(
-        f.mesh, filename, field, region=not isinstance(f, MeshHarmonicCoefficients)
+        f.mesh, f.name, field, region=not isinstance(f, MeshHarmonicCoefficients)
     ).execute()
 
 

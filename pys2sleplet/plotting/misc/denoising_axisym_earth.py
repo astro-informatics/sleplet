@@ -27,7 +27,7 @@ def main() -> None:
     amplitude = find_max_amplitude(fun_noised, PLOT_TYPE)
 
     f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
-    name = f"{fun.name}_denoised_axisym_L{L}"
+    name = f"{fun.name}_denoised_axisym"
     Plot(f, L, name, amplitude=amplitude, plot_type=PLOT_TYPE).execute()
 
 

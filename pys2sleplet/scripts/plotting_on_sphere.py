@@ -17,7 +17,7 @@ from pys2sleplet.utils.plot_methods import (
     rotate_earth_to_south_america,
 )
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
-from pys2sleplet.utils.string_methods import filename_angle, filename_args
+from pys2sleplet.utils.string_methods import filename_angle
 from pys2sleplet.utils.vars import (
     ALPHA_DEFAULT,
     ANNOTATION_COLOUR,
@@ -154,11 +154,7 @@ def plot(
     """
     master plotting method
     """
-    noised = f"{filename_args(f.noise, 'noise')}" if f.noise is not None else ""
-    smoothing = (
-        f"{filename_args(f.smoothing, 'smoothed')}" if f.smoothing is not None else ""
-    )
-    filename = f"{f.name}{noised}{smoothing}_L{f.L}"
+    filename = f.name
     coefficients = f.coefficients
 
     # turn off annotation if needed
@@ -315,7 +311,7 @@ def convolution_helper(
     )
     coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
 
-    filename += f"_convolved_{g.name}_L{f.L}"
+    filename += f"_convolved_{g.name}"
     return coefficients, filename
 
 

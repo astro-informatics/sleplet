@@ -6,6 +6,7 @@ import numpy as np
 
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
+from pys2sleplet.utils.string_methods import filename_args
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
@@ -19,6 +20,7 @@ class MeshCoefficients:
     _coefficients: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
     _mesh: Mesh = field(init=False, repr=False)
+    _name: str = field(init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
     _region: bool = field(default=False, init=False, repr=False)
 
@@ -26,15 +28,17 @@ class MeshCoefficients:
         self._setup_args()
         self._create_name()
         self._create_coefficients()
-        self._add_region_to_name()
+        self._add_details_to_name()
         self._add_noise_to_signal()
 
-    def _add_region_to_name(self) -> None:
+    def _add_details_to_name(self) -> None:
         """
         adds region to the name if present if not a Slepian function
         """
         if self.region and "slepian" not in self.mesh.name:
-            self.mesh.name += "_region"
+            self.name += "_region"
+        if self.noise is not None:
+            self.name += f"{filename_args(self.noise, 'noise')}"
 
     @property
     def coefficients(self) -> np.ndarray:
@@ -65,6 +69,14 @@ class MeshCoefficients:
     @mesh.setter
     def mesh(self, mesh: Mesh) -> None:
         self._mesh = mesh
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, name: str) -> None:
+        self._name = name
 
     @property  # type:ignore
     def noise(self) -> Optional[float]:

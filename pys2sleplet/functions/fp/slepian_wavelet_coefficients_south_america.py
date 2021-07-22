@@ -63,8 +63,9 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         """
         sw = SlepianWavelets(self.L, B=self.B, j_min=self.j_min, region=self.region)
         sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
+        self.wavelets = sw.wavelets
         self.wavelet_coefficients = slepian_wavelet_forward(
-            sa.coefficients, sw.wavelets, self.slepian.N
+            sa.coefficients, self.wavelets, self.slepian.N
         )
 
     @property  # type:ignore
