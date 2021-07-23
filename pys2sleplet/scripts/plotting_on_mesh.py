@@ -12,15 +12,26 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import slepian_mesh_inverse
 
 
-def valid_plotting(func_name: str) -> str:
+def valid_meshes(mesh_name: str) -> str:
     """
-    check if valid function
+    check if valid mesh name
     """
-    if func_name in MESHES:
-        function = func_name
+    if mesh_name in MESHES:
+        mesh = mesh_name
     else:
-        raise ValueError("Not a valid function name to plot")
-    return function
+        raise ValueError(f"'{mesh_name}' is not a valid mesh name to plot")
+    return mesh
+
+
+def valid_methods(method_name: str) -> str:
+    """
+    check if valid mesh name
+    """
+    if method_name in MESH_COEFFICIENTS:
+        method = method_name
+    else:
+        raise ValueError(f"'{method_name}' is not a valid method to plot")
+    return method
 
 
 def read_args() -> Namespace:
@@ -30,7 +41,7 @@ def read_args() -> Namespace:
     parser = ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",
-        type=valid_plotting,
+        type=valid_meshes,
         choices=MESHES,
         help="mesh to plot",
     )
@@ -44,19 +55,11 @@ def read_args() -> Namespace:
     parser.add_argument(
         "--method",
         "-m",
-        type=str,
+        type=valid_methods,
         nargs="?",
         default="basis",
         const="basis",
-        choices=[
-            "basis",
-            "coefficients",
-            "field",
-            "region",
-            "slepian",
-            "slepian_field",
-            "wavelets",
-        ],
+        choices=MESH_COEFFICIENTS,
         help="plotting routine: defaults to basis",
     )
     parser.add_argument("--noise", "-n", type=int, help="the SNR_IN of the noise level")

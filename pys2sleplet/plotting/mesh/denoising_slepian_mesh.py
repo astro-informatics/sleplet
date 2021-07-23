@@ -8,7 +8,7 @@ from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
     SlepianMeshWavelets,
 )
 from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.scripts.plotting_on_mesh import valid_plotting
+from pys2sleplet.scripts.plotting_on_mesh import valid_meshes
 from pys2sleplet.utils.config import settings
 from pys2sleplet.utils.denoising import denoising_mesh_slepian
 from pys2sleplet.utils.function_dicts import MESHES
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="denoising")
     parser.add_argument(
         "function",
-        type=valid_plotting,
+        type=valid_meshes,
         choices=MESHES,
         help="mesh to plot",
     )
