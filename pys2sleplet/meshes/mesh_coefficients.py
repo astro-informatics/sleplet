@@ -46,7 +46,10 @@ class MeshCoefficients:
 
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
-        if self.region and not self.__class__.__name__.lower():
+        if (
+            self.region
+            and COEFFICIENTS_TO_NOT_MASK not in self.__class__.__name__.lower()
+        ):
             coefficients = ensure_masked_bandlimit_mesh_signal(self.mesh, coefficients)
         self._coefficients = coefficients
 
