@@ -50,7 +50,7 @@ class SlepianWavelets(F_P):
             num_args = 3
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.B, self.j_min, self.j = self.extra_args[:num_args]
+            self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> None:
         """
