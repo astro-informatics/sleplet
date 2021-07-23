@@ -34,10 +34,14 @@ from pys2sleplet.meshes.harmonic_coefficients.mesh_basis_functions import (
     MeshBasisFunctions,
 )
 from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from pys2sleplet.meshes.harmonic_coefficients.mesh_noise_field import MeshNoiseField
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_functions import (
     SlepianMeshFunctions,
+)
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_noise_field import (
+    SlepianMeshNoiseField,
 )
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelet_coefficients import (
     SlepianMeshWaveletCoefficients,
@@ -90,13 +94,14 @@ MAPS_P: dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica
 COEFFICIENTS: dict[str, Coefficients] = {**FLM, **FP}
 
 MESH_HARMONIC: dict[str, MeshCoefficients] = dict(
-    basis=MeshBasisFunctions, field=MeshField
+    basis=MeshBasisFunctions, field=MeshField, noise=MeshNoiseField
 )
 
 MESH_SLEPIAN: dict[str, MeshCoefficients] = dict(
     coefficients=SlepianMeshWaveletCoefficients,
     slepian=SlepianMeshFunctions,
     slepian_field=SlepianMeshField,
+    slepian_noise=SlepianMeshNoiseField,
     wavelets=SlepianMeshWavelets,
 )
 
