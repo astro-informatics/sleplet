@@ -14,10 +14,10 @@ class SlepianMeshField(MeshSlepianCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        mesh_field = MeshField(self.mesh, region=True)
+        mf = MeshField(self.mesh, region=True)
         self.coefficients = slepian_mesh_forward(
             self.slepian_mesh,
-            u_i=mesh_field.coefficients,
+            u_i=mf.coefficients,
         )
 
     def _create_name(self) -> None:
