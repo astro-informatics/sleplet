@@ -83,7 +83,7 @@ def mesh_forward(mesh: Mesh, u: np.ndarray) -> np.ndarray:
     """
     u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
     for i, phi_i in enumerate(mesh.basis_functions):
-        u_i[i] = integrate_whole_mesh(u, phi_i)
+        u_i[i] = integrate_whole_mesh(mesh.vertices, mesh.faces, u, phi_i)
     return u_i
 
 

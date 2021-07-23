@@ -131,6 +131,8 @@ class SlepianMesh:
         """
         return integrate_region_mesh(
             self.mesh.region,
+            self.mesh.vertices,
+            self.mesh.faces,
             self.mesh.basis_functions[i],
             self.mesh.basis_functions[j],
         )

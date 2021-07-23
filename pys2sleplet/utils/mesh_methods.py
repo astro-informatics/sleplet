@@ -118,7 +118,7 @@ def mesh_eigendecomposition(
                 faces,
             )
             eigenvalues, eigenvectors = LA.eigh(laplacian)
-        eigenvectors = _orthonormalise_basis_functions(eigenvectors.T)
+        eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
@@ -160,14 +160,16 @@ def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     return -cotmatrix(vertices, faces)
 
 
-def _orthonormalise_basis_functions(basis_functions: np.ndarray) -> np.ndarray:
+def _orthonormalise_basis_functions(
+    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
+) -> np.ndarray:
     """
     for computing the Slepian D matrix the basis functions must be orthonormal
     """
     logger.info("orthonormalising basis functions")
     factor = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        factor[i] = integrate_whole_mesh(phi_i, phi_i)
+        factor[i] = integrate_whole_mesh(vertices, faces, phi_i, phi_i)
     normalisation = np.sqrt(factor).reshape(-1, 1)
     return basis_functions / normalisation
 

@@ -34,7 +34,9 @@ def integrate_region_sphere(
     return (multiplied_inputs * weight * mask).sum()
 
 
-def integrate_whole_mesh(*functions: np.ndarray) -> float:
+def integrate_whole_mesh(
+    vertices: np.ndarray, faces: np.ndarray, *functions: np.ndarray
+) -> float:
     """
     computes the integral of functions on the vertices
     """
@@ -44,6 +46,8 @@ def integrate_whole_mesh(*functions: np.ndarray) -> float:
 
 def integrate_region_mesh(
     mask: np.ndarray,
+    vertices: np.ndarray,
+    faces: np.ndarray,
     *functions: np.ndarray,
 ) -> float:
     """

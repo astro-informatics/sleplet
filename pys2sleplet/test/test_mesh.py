@@ -29,6 +29,8 @@ def test_orthonormality_over_mesh_full(mesh) -> None:
     )
     for i, phi_i in enumerate(mesh.basis_functions):
         for j, phi_j in enumerate(mesh.basis_functions):
-            orthonormality[i, j] = integrate_whole_mesh(phi_i, phi_j)
+            orthonormality[i, j] = integrate_whole_mesh(
+                mesh.vertices, mesh.faces, phi_i, phi_j
+            )
     identity = np.identity(mesh.mesh_eigenvalues.shape[0])
     np.testing.assert_allclose(np.abs(orthonormality - identity).mean(), 0, atol=1e-16)
