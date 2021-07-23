@@ -110,7 +110,7 @@ def mesh_eigendecomposition(
         if laplacian_type == "mesh":
             laplacian = _mesh_laplacian(vertices, faces)
             eigenvalues, eigenvectors = LA_sparse.eigsh(
-                laplacian, number_basis_functions, which="LM", sigma=0
+                laplacian, k=number_basis_functions, which="LM", sigma=0
             )
         else:
             laplacian = _graph_laplacian(
