@@ -20,7 +20,7 @@ def main() -> None:
     """
     slepian = SlepianArbitrary(L, "south_america")
     p_range = np.arange(0, slepian.N)
-    plt.semilogx(p_range, slepian.eigenvalues, "k.")
+    plt.semilogx(p_range, slepian.eigenvalues[: slepian.N], "k.")
     ticks = 2 ** np.arange(np.log2(slepian.N) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
