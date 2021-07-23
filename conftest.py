@@ -94,9 +94,9 @@ def earth_lim_lat_lon(slepian_lim_lat_lon) -> Earth:
 @pytest.fixture(scope="session")
 def south_america_arbitrary(slepian_arbitrary) -> SouthAmerica:
     """
-    South America with arbitrary region
+    South America already has region
     """
-    return SouthAmerica(slepian_arbitrary.L, region=slepian_arbitrary.region)
+    return SouthAmerica(slepian_arbitrary.L)
 
 
 @pytest.fixture(scope="session")

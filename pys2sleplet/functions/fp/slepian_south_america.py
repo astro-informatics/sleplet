@@ -13,7 +13,7 @@ class SlepianSouthAmerica(F_P):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> None:
-        sa = SouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
+        sa = SouthAmerica(self.L, smoothing=self.smoothing)
         self.coefficients = slepian_forward(self.L, self.slepian, flm=sa.coefficients)
 
     def _create_name(self) -> None:
