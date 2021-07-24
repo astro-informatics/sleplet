@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from igl import principal_curvature
+from igl import per_vertex_normals
 
 from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from pys2sleplet.utils.harmonic_methods import mesh_forward
@@ -15,10 +15,8 @@ class MeshField(MeshHarmonicCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        _, _, maximal_curvature_value, _ = principal_curvature(
-            self.mesh.vertices, self.mesh.faces
-        )
-        self.coefficients = mesh_forward(self.mesh, maximal_curvature_value)
+        field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
+        self.coefficients = mesh_forward(self.mesh, field)
 
     def _create_name(self) -> None:
         self.name = f"{self.mesh.name}_field"
