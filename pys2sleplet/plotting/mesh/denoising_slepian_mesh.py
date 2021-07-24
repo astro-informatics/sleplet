@@ -19,7 +19,7 @@ from pys2sleplet.utils.string_methods import filename_args
 B = 3
 J_MIN = 2
 N_SIGMA = 1
-SNR_IN = -10
+SNR_IN = -5
 
 
 def main(mesh_name: str, snr: int, sigma: int) -> None:

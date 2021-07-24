@@ -9,7 +9,7 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class SlepianMeshNoiseField(MeshSlepianCoefficients):
     SNR: float
-    _SNR: float = field(default=-10, init=False, repr=False)
+    _SNR: float = field(default=-5, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
