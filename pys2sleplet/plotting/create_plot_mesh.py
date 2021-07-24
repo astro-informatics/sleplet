@@ -42,8 +42,8 @@ class Plot:
         """
         creates 3d plotly mesh plot
         """
+        vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
-        vmin, vmax = f.min(), f.max()
 
         if self.region:
             # make plot area clearer
