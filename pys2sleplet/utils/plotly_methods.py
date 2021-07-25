@@ -69,7 +69,7 @@ def create_colour_bar(tick_mark: float, bar_pos: float) -> dict:
     """
     return dict(
         x=bar_pos,
-        len=0.98,
+        len=0.95,
         nticks=2 if settings.NORMALISE else None,
         tickfont=dict(color="#666666", size=32),
         tickformat=None if settings.NORMALISE else "+.1e",
