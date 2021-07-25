@@ -18,6 +18,7 @@ class Mesh:
     name: str
     mesh_laplacian: bool
     number_basis_functions: Optional[int]
+    zoom: bool
     _basis_functions: np.ndarray = field(init=False, repr=False)
     _camera_view: Camera = field(init=False, repr=False)
     _colourbar_pos: float = field(init=False, repr=False)
@@ -28,6 +29,7 @@ class Mesh:
     _number_basis_functions: Optional[int] = field(default=None, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
     _vertices: np.ndarray = field(init=False, repr=False)
+    _zoom: bool = field(default=False, init=False, repr=False)
 
     def __post_init__(self) -> None:
         mesh_config = extract_mesh_config(self.name)
@@ -35,9 +37,16 @@ class Mesh:
             mesh_config.CAMERA_X,
             mesh_config.CAMERA_Y,
             mesh_config.CAMERA_Z,
-            mesh_config.ZOOM,
+            mesh_config.REGION_ZOOM if self.zoom else mesh_config.DEFAULT_ZOOM,
+            x_center=mesh_config.CENTER_X if self.zoom else 0,
+            y_center=mesh_config.CENTER_Y if self.zoom else 0,
+            z_center=mesh_config.CENTER_Z if self.zoom else 0,
         )
-        self.colourbar_pos = mesh_config.COLOURBAR_POS
+        self.colourbar_pos = (
+            mesh_config.REGION_COLOURBAR_POS
+            if self.zoom
+            else mesh_config.DEFAULT_COLOURBAR_POS
+        )
         self.vertices, self.faces = read_mesh(mesh_config)
         self.region = create_mesh_region(mesh_config, self.vertices)
         (
@@ -139,3 +148,15 @@ class Mesh:
     @vertices.setter
     def vertices(self, vertices: np.ndarray) -> None:
         self._vertices = vertices
+
+    @property  # type:ignore
+    def zoom(self) -> bool:
+        return self._zoom
+
+    @zoom.setter
+    def zoom(self, zoom: bool) -> None:
+        if isinstance(zoom, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            zoom = Mesh._zoom
+        self._zoom = zoom

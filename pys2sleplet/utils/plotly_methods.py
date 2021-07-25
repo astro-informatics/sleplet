@@ -3,7 +3,7 @@ from typing import Optional
 from plotly.graph_objs import Layout
 from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
-from plotly.graph_objs.layout.scene.camera import Eye
+from plotly.graph_objs.layout.scene.camera import Center, Eye
 
 from pys2sleplet.utils.config import settings
 
@@ -17,11 +17,22 @@ _axis = dict(
 )
 
 
-def create_camera(x: float, y: float, z: float, zoom: float) -> Camera:
+def create_camera(
+    x_eye: float,
+    y_eye: float,
+    z_eye: float,
+    zoom: float,
+    x_center: float = 0,
+    y_center: float = 0,
+    z_center: float = 0,
+) -> Camera:
     """
     creates default camera view with a zoom factor
     """
-    return Camera(eye=Eye(x=x / zoom, y=y / zoom, z=z / zoom))
+    return Camera(
+        eye=Eye(x=x_eye / zoom, y=y_eye / zoom, z=z_eye / zoom),
+        center=Center(x=x_center, y=y_center, z=z_center),
+    )
 
 
 def create_layout(camera: Camera, annotations: Optional[list[dict]] = None) -> Layout:

@@ -67,7 +67,13 @@ def read_args() -> Namespace:
         "--region",
         "-r",
         action="store_true",
-        help="flag which masks the function for a region (based on settings.toml)",
+        help="flag which masks the function for a region",
+    )
+    parser.add_argument(
+        "--zoom",
+        "-z",
+        action="store_true",
+        help="flag which zooms in on the region of interest",
     )
     return parser.parse_args()
 
@@ -91,7 +97,7 @@ def main() -> None:
     logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
-    mesh = Mesh(args.function, mesh_laplacian=settings.MESH_LAPLACIAN)
+    mesh = Mesh(args.function, mesh_laplacian=settings.MESH_LAPLACIAN, zoom=args.zoom)
     f = MESH_COEFFICIENTS[args.method](
         mesh,
         extra_args=args.extra_args,

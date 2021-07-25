@@ -39,6 +39,8 @@ class MeshCoefficients:
             self.name += "_region"
         if self.noise is not None:
             self.name += f"{filename_args(self.noise, 'noise')}"
+        if self.mesh.zoom:
+            self.name += "_zoom"
 
     @property
     def coefficients(self) -> np.ndarray:
