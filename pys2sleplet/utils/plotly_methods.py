@@ -5,8 +5,6 @@ from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
 from plotly.graph_objs.layout.scene.camera import Center, Eye
 
-from pys2sleplet.utils.config import settings
-
 _axis = dict(
     title="",
     showgrid=False,
@@ -63,16 +61,16 @@ def create_tick_mark(
     return amplitude if amplitude is not None else max(abs(fmin), abs(fmax))
 
 
-def create_colour_bar(tick_mark: float, bar_pos: float) -> dict:
+def create_colour_bar(tick_mark: float, normalise: bool, bar_pos: float = 0.93) -> dict:
     """
     default plotly colour bar
     """
     return dict(
         x=bar_pos,
         len=0.95,
-        nticks=2 if settings.NORMALISE else None,
+        nticks=2 if normalise else None,
         tickfont=dict(color="#666666", size=32),
-        tickformat=None if settings.NORMALISE else "+.1e",
-        tick0=None if settings.NORMALISE else -tick_mark,
-        dtick=None if settings.NORMALISE else tick_mark,
+        tickformat=None if normalise else "+.1e",
+        tick0=None if normalise else -tick_mark,
+        dtick=None if normalise else tick_mark,
     )

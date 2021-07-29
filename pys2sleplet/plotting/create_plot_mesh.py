@@ -32,10 +32,11 @@ class Plot:
     filename: str
     f: np.ndarray = field(repr=False)
     amplitude: Optional[float] = field(default=None, repr=False)
+    normalise: bool = field(default=True, repr=False)
     region: bool = field(default=False, repr=False)
 
     def __post_init__(self) -> None:
-        if settings.NORMALISE:
+        if self.normalise:
             self.filename += "_norm"
 
     def execute(self) -> None:
@@ -62,10 +63,12 @@ class Plot:
                 k=self.mesh.faces[:, 2],
                 intensitymode="cell",
                 intensity=f,
-                cmax=1 if settings.NORMALISE else tick_mark,
-                cmid=0.5 if settings.NORMALISE else 0,
-                cmin=0 if settings.NORMALISE else -tick_mark,
-                colorbar=create_colour_bar(tick_mark, self.mesh.colourbar_pos),
+                cmax=1 if self.normalise else tick_mark,
+                cmid=0.5 if self.normalise else 0,
+                cmin=0 if self.normalise else -tick_mark,
+                colorbar=create_colour_bar(
+                    tick_mark, self.normalise, bar_pos=self.mesh.colourbar_pos
+                ),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
@@ -93,7 +96,7 @@ class Plot:
         scales the field before plotting
         """
         return normalise_function(
-            average_functions_on_vertices_to_faces(self.mesh.faces, f)
+            average_functions_on_vertices_to_faces(self.mesh.faces, f), self.normalise
         )
 
     def _set_outside_region_to_minimum(self, f: np.ndarray) -> np.ndarray:

@@ -70,6 +70,12 @@ def read_args() -> Namespace:
         help="flag which masks the function for a region",
     )
     parser.add_argument(
+        "--unnormalise",
+        "-u",
+        action="store_true",
+        help="flag turns off normalisation for plot",
+    )
+    parser.add_argument(
         "--zoom",
         "-z",
         action="store_true",
@@ -78,7 +84,7 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients) -> None:
+def plot(f: MeshCoefficients, normalise: bool) -> None:
     """
     master plotting method
     """
@@ -88,7 +94,11 @@ def plot(f: MeshCoefficients) -> None:
         else slepian_mesh_inverse(f.slepian_mesh, f.coefficients)
     )
     Plot(
-        f.mesh, f.name, field, region=not isinstance(f, MeshHarmonicCoefficients)
+        f.mesh,
+        f.name,
+        field,
+        normalise=normalise,
+        region=not isinstance(f, MeshHarmonicCoefficients),
     ).execute()
 
 
@@ -106,7 +116,7 @@ def main() -> None:
     )
 
     # perform plot
-    plot(f)
+    plot(f, not args.unnormalise)
 
 
 if __name__ == "__main__":

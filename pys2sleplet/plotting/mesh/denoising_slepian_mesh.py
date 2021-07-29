@@ -19,6 +19,7 @@ from pys2sleplet.utils.string_methods import filename_args
 B = 3
 J_MIN = 2
 N_SIGMA = 1
+NORMALISE = False
 SNR_IN = -5
 
 
@@ -44,7 +45,7 @@ def main(mesh_name: str, snr: int, sigma: int) -> None:
 
     f = denoising_mesh_slepian(fun, fun_noised, smw, snr, sigma)
     name = f"{mesh_name}{filename_args(snr, 'snr')}{filename_args(sigma,'n')}_denoised"
-    Plot(mesh, name, f, amplitude=amplitude, region=True).execute()
+    Plot(mesh, name, f, amplitude=amplitude, normalise=NORMALISE, region=True).execute()
 
 
 if __name__ == "__main__":

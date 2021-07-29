@@ -5,6 +5,7 @@ from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_inv
 from pys2sleplet.utils.vars import SMOOTHING
 
 L = 128
+NORMALISE = False
 
 
 def main() -> None:
@@ -20,7 +21,7 @@ def main() -> None:
 
     # plot
     name = f"south_america_slepian_reconstruction_L{L}"
-    Plot(f, L, name, region=slepian.region).execute()
+    Plot(f, L, name, normalise=NORMALISE, region=slepian.region).execute()
 
 
 if __name__ == "__main__":

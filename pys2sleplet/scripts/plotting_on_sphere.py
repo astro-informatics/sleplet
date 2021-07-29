@@ -138,6 +138,12 @@ def read_args() -> Namespace:
         choices=["abs", "real", "imag", "sum"],
         help="plotting type: defaults to real",
     )
+    parser.add_argument(
+        "--unnormalise",
+        "-u",
+        action="store_true",
+        help="flag turns off normalisation for plot",
+    )
     return parser.parse_args()
 
 
@@ -148,6 +154,7 @@ def plot(
     beta_pi_frac: float,
     gamma_pi_frac: float,
     annotations: bool,
+    normalise: bool,
     method: str,
     plot_type: str,
 ) -> None:
@@ -202,6 +209,7 @@ def plot(
         f.L,
         filename,
         annotations=annotation,
+        normalise=normalise,
         plot_type=plot_type,
         reality=f.reality,
         region=f.region if not isinstance(f, F_LM) else None,
@@ -235,6 +243,7 @@ def main() -> None:
         args.beta,
         args.gamma,
         args.outline,
+        not args.unnormalise,
         args.method,
         args.type,
     )

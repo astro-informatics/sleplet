@@ -8,7 +8,7 @@ B = 2
 J_MIN = 0
 L = 128
 N_SIGMA = 3
-PLOT_TYPE = "real"
+NORMALISE = False
 SNR_IN = 10
 
 
@@ -24,11 +24,11 @@ def main() -> None:
     aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
 
     # fix amplitude
-    amplitude = find_max_amplitude(fun_noised, PLOT_TYPE)
+    amplitude = find_max_amplitude(fun_noised)
 
     f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
     name = f"{fun.name}_denoised_axisym"
-    Plot(f, L, name, amplitude=amplitude, plot_type=PLOT_TYPE).execute()
+    Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
 
 
 if __name__ == "__main__":

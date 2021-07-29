@@ -82,7 +82,7 @@ def save_plot(path: Path, name: str) -> None:
 
 def find_max_amplitude(
     function: Coefficients,
-    plot_type: str,
+    plot_type: str = "real",
 ) -> dict[str, float]:
     """
     for a given set of coefficients it finds the largest absolute value for a
@@ -143,11 +143,11 @@ def rotate_earth_to_south_america(earth_flm: np.ndarray, L: int) -> np.ndarray:
     return ssht.rotate_flms(earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)
 
 
-def normalise_function(f: np.ndarray) -> np.ndarray:
+def normalise_function(f: np.ndarray, normalise: bool) -> np.ndarray:
     """
     normalise function between 0 and 1 for visualisation
     """
-    if not settings.NORMALISE:
+    if not normalise:
         return f
     elif (f == 0).all():
         # if all 0, set to 0

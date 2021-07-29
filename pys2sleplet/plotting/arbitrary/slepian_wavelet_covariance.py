@@ -17,6 +17,7 @@ from pys2sleplet.utils.wavelet_methods import (
 B = 3
 J_MIN = 2
 L = 128
+NORMALISE = False
 RUNS = 10
 VAR_FP = 1
 
@@ -68,7 +69,7 @@ def main() -> None:
     for j, diff in enumerate(differences):
         name = f"slepian_covariance_diff_{j}"
         logger.info(name)
-        Plot(diff, L, name, region=sw.region).execute()
+        Plot(diff, L, name, normalise=NORMALISE, region=sw.region).execute()
 
 
 if __name__ == "__main__":

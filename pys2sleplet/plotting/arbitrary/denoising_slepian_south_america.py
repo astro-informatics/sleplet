@@ -14,7 +14,7 @@ B = 3
 J_MIN = 2
 L = 128
 N_SIGMA = 2
-PLOT_TYPE = "real"
+NORMALISE = False
 SNR_IN = -10
 
 
@@ -34,12 +34,12 @@ def main(snr: int, sigma: int) -> None:
     sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
 
     # fix amplitude
-    amplitude = find_max_amplitude(fun_noised, PLOT_TYPE)
+    amplitude = find_max_amplitude(fun_noised)
 
     f = denoising_slepian(fun, fun_noised, sw, snr, sigma)
     name = f"{fun.name}{filename_args(snr, 'snr')}{filename_args(sigma,'n')}_denoised"
     Plot(
-        f, L, name, amplitude=amplitude, plot_type=PLOT_TYPE, region=sw.region
+        f, L, name, amplitude=amplitude, normalise=NORMALISE, region=sw.region
     ).execute()
 
 

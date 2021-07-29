@@ -8,6 +8,7 @@ from pys2sleplet.utils.vars import SMOOTHING
 from pys2sleplet.utils.wavelet_methods import slepian_wavelet_inverse
 
 L = 128
+NORMALISE = False
 
 
 def main() -> None:
@@ -21,7 +22,7 @@ def main() -> None:
     # plot
     f = slepian_inverse(f_p, L, swc.slepian)
     name = f"south_america_wavelet_reconstruction_L{L}"
-    Plot(f, L, name, region=swc.region).execute()
+    Plot(f, L, name, normalise=NORMALISE, region=swc.region).execute()
 
 
 if __name__ == "__main__":

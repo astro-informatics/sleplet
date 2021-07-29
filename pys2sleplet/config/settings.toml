@@ -4,7 +4,6 @@ L_MIN = 0
 L_MAX = -1
 MESH_LAPLACIAN = true
 NCPU = 4
-NORMALISE = true
 PHI_MIN = 0
 PHI_MAX = 360
 POLAR_GAP = false

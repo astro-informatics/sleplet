@@ -41,6 +41,7 @@ class Plot:
     amplitude: Optional[float] = field(default=None, repr=False)
     plot_type: str = field(default="real", repr=False)
     annotations: list[dict] = field(default_factory=list, repr=False)
+    normalise: bool = field(default=True, repr=False)
     reality: bool = field(default=False, repr=False)
     region: Optional[Region] = field(default=None, repr=False)
     spin: int = field(default=0, repr=False)
@@ -50,7 +51,7 @@ class Plot:
         if settings.UPSAMPLE:
             self.filename += f"_res{self.resolution}"
         self.filename += f"_{self.plot_type}"
-        if settings.NORMALISE:
+        if self.normalise:
             self.filename += "_norm"
 
     def execute(self) -> None:
@@ -80,10 +81,10 @@ class Plot:
                 y=y,
                 z=z,
                 surfacecolor=f_plot,
-                cmax=1 if settings.NORMALISE else tick_mark,
-                cmid=0.5 if settings.NORMALISE else 0,
-                cmin=0 if settings.NORMALISE else -tick_mark,
-                colorbar=create_colour_bar(tick_mark, 0.93),
+                cmax=1 if self.normalise else tick_mark,
+                cmid=0.5 if self.normalise else 0,
+                cmin=0 if self.normalise else -tick_mark,
+                colorbar=create_colour_bar(tick_mark, self.normalise),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
@@ -182,4 +183,4 @@ class Plot:
             f, self.L, self.resolution, reality=self.reality, spin=self.spin
         )
         field_space = create_plot_type(boosted_field, self.plot_type)
-        return normalise_function(field_space)
+        return normalise_function(field_space, self.normalise)
