@@ -29,7 +29,7 @@ def main(mesh_name: str, snr: int, sigma: int) -> None:
     """
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
-    mesh = Mesh(mesh_name, mesh_laplacian=settings.MESH_LAPLACIAN)
+    mesh = Mesh(mesh_name, mesh_laplacian=settings.MESH_LAPLACIAN, zoom=True)
 
     # create map & noised map
     fun = SlepianMeshField(mesh)
