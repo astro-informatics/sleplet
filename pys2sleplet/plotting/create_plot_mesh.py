@@ -4,7 +4,6 @@ from typing import Optional
 
 import cmocean
 import numpy as np
-import plotly.io as pio
 import plotly.offline as py
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
@@ -89,7 +88,7 @@ class Plot:
             for file_type in ["png", "pdf"]:
                 logger.info(f"saving {file_type}")
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-                pio.write_image(fig, filename, engine="kaleido")
+                fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(self, f: np.ndarray) -> np.ndarray:
         """

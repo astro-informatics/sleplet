@@ -4,7 +4,6 @@ from typing import Optional
 
 import cmocean
 import numpy as np
-import plotly.io as pio
 import plotly.offline as py
 import pyssht as ssht
 from plotly.graph_objs import Figure, Surface
@@ -105,7 +104,7 @@ class Plot:
             for file_type in ["png", "pdf"]:
                 logger.info(f"saving {file_type}")
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-                pio.write_image(fig, filename, engine="kaleido")
+                fig.write_image(filename, engine="kaleido")
 
     @staticmethod
     def _setup_plot(
