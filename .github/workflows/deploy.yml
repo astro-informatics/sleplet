@@ -45,10 +45,11 @@ jobs:
             - name: Pull LFS files
               run: |
                   git lfs ls-files -I \
-                  bird_b697,\
                   EGM2008_Topography_flms_L2190.mat,\
+                  mesh/basis_functions/bird_b697,\
+                  mesh/slepian_functions/bird_b697_N194,\
                   polar40_L32.npy,\
-                  theta30-60_phi30-60_L32.npy,\
+                  theta30-60_phi30-60_L32.npy\
                   -l | cut -d' ' -f1 | sort > .lfs-assets-id
                   git lfs pull
 
