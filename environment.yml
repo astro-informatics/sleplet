@@ -4,11 +4,11 @@ channels:
     - conda-forge
 
 dependencies:
-    - igl
-    - mpc
-    - mpfr
-    - pip
-    - python=3.9
+    - igl=2.2.1
+    - mpc=1.1.0
+    - mpfr=4.1.0
+    - pip=21.2.4
+    - python=3.9.6
 
     - pip:
           - -r requirements.txt
