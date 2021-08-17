@@ -105,7 +105,7 @@ class Plot:
             for file_type in ["png", "pdf"]:
                 logger.info(f"saving {file_type}")
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-                pio.write_image(fig, filename)
+                pio.write_image(fig, filename, engine="kaleido")
 
     @staticmethod
     def _setup_plot(
