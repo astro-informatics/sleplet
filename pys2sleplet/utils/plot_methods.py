@@ -72,7 +72,7 @@ def save_plot(path: Path, name: str) -> None:
     """
     plt.tight_layout()
     if settings.SAVE_FIG:
-        for file_type in ["png", "pdf"]:
+        for file_type in {"png", "pdf"}:
             logger.info(f"saving {file_type}")
             filename = path / file_type / f"{name}.{file_type}"
             plt.savefig(filename, bbox_inches="tight")
