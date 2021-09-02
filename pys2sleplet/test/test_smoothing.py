@@ -5,7 +5,7 @@ from pys2sleplet.test.constants import L_LARGE
 from pys2sleplet.utils.vars import SMOOTHING
 
 
-def test_adding_noise_changes_flm() -> None:
+def test_smoothing_changes_flm() -> None:
     """
     tests the addition of Gaussian noise changes the coefficients
     """
