@@ -23,7 +23,7 @@ NORMALISE = False
 SNR_IN = -5
 
 
-def main(mesh_name: str, snr: int, sigma: int) -> None:
+def main(mesh_name: str, snr: float, sigma: int) -> None:
     """
     denoising demo using Slepian wavelets
     """
