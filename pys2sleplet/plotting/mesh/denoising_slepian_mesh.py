@@ -40,7 +40,7 @@ def main(mesh_name: str, snr: int, sigma: int) -> None:
 
     # fix amplitude
     amplitude = np.abs(
-        slepian_mesh_inverse(fun_noised.slepian_mesh, fun_noised.coefficients)
+        slepian_mesh_inverse(fun_noised.slepian_mesh, fun.coefficients)
     ).max()
 
     f = denoising_mesh_slepian(fun, fun_noised, smw, snr, sigma)

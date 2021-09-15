@@ -19,6 +19,7 @@ class MeshCoefficients:
     region: bool
     _coefficients: np.ndarray = field(init=False, repr=False)
     _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
+    _unnoised_coefficients: Optional[np.ndarray] = field(default=None, repr=False)
     _mesh: Mesh = field(init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _noise: Optional[float] = field(default=None, init=False, repr=False)
@@ -106,6 +107,20 @@ class MeshCoefficients:
             # https://stackoverflow.com/a/61480946/7359333
             region = MeshCoefficients._region
         self._region = region
+
+    @property
+    def unnoised_coefficients(self) -> Optional[np.ndarray]:
+        return self._unnoised_coefficients
+
+    @unnoised_coefficients.setter
+    def unnoised_coefficients(
+        self, unnoised_coefficients: Optional[np.ndarray]
+    ) -> None:
+        if isinstance(unnoised_coefficients, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            unnoised_coefficients = MeshCoefficients._unnoised_coefficients
+        self._unnoised_coefficients = unnoised_coefficients
 
     @abstractmethod
     def _add_noise_to_signal(self) -> None:

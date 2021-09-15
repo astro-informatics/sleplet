@@ -15,6 +15,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
         adds Gaussian white noise to the signal
         """
         if self.noise is not None:
+            self.unnoised_coefficients = self.coefficients.copy()
             nlm = create_mesh_noise(self.coefficients, self.noise)
             self.snr = compute_snr(self.coefficients, nlm, "Harmonic")
             self.coefficients += nlm

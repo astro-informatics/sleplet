@@ -157,6 +157,7 @@ def plot(
     normalise: bool,
     method: str,
     plot_type: str,
+    amplitude: Optional[float],
 ) -> None:
     """
     master plotting method
@@ -195,19 +196,14 @@ def plot(
         coefficients = rotate_earth_to_south_america(coefficients, f.L)
 
     # get field value
-    field = (
-        ssht.inverse(
-            coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
-        )
-        if isinstance(f, F_LM)
-        else slepian_inverse(coefficients, f.L, f.slepian)
-    )
+    field = _coefficients_to_field(f, coefficients)
 
     # do plot
     Plot(
         field,
         f.L,
         filename,
+        amplitude=amplitude,
         annotations=annotation,
         normalise=normalise,
         plot_type=plot_type,
@@ -292,6 +288,30 @@ def _convolution_helper(
     return coefficients, filename
 
 
+def _coefficients_to_field(f: Coefficients, coefficients: np.ndarray) -> np.ndarray:
+    """
+    computes the field over the samples from the harmonic/Slepian coefficients
+    """
+    return (
+        ssht.inverse(
+            coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
+        )
+        if isinstance(f, F_LM)
+        else slepian_inverse(coefficients, f.L, f.slepian)
+    )
+
+
+def _compute_amplitude_for_noisy_plots(f: Coefficients) -> Optional[float]:
+    """
+    for the noised plots fix the amplitude to the initial data
+    """
+    return (
+        np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
+        if f.noise is not None
+        else None
+    )
+
+
 def main() -> None:
     args = read_args()
 
@@ -311,6 +331,9 @@ def main() -> None:
         else None
     )
 
+    # custom amplitude for noisy plots
+    amplitude = _compute_amplitude_for_noisy_plots(f)
+
     plot(
         f,
         g,
@@ -321,6 +344,7 @@ def main() -> None:
         not args.unnormalise,
         args.method,
         args.type,
+        amplitude,
     )
 
 

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
+from typing import Optional
+
+import numpy as np
 
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
@@ -84,22 +87,41 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients, normalise: bool) -> None:
+def plot(f: MeshCoefficients, normalise: bool, amplitude: Optional[float]) -> None:
     """
     master plotting method
     """
-    field = (
-        mesh_inverse(f.mesh, f.coefficients)
-        if isinstance(f, MeshHarmonicCoefficients)
-        else slepian_mesh_inverse(f.slepian_mesh, f.coefficients)
-    )
+    field = _coefficients_to_field(f, f.coefficients)
     Plot(
         f.mesh,
         f.name,
         field,
+        amplitude=amplitude,
         normalise=normalise,
         region=not isinstance(f, MeshHarmonicCoefficients),
     ).execute()
+
+
+def _coefficients_to_field(f: MeshCoefficients, coefficients: np.ndarray) -> np.ndarray:
+    """
+    computes the field over the whole mesh from the harmonic/Slepian coefficients
+    """
+    return (
+        mesh_inverse(f.mesh, coefficients)
+        if isinstance(f, MeshHarmonicCoefficients)
+        else slepian_mesh_inverse(f.slepian_mesh, coefficients)
+    )
+
+
+def _compute_amplitude_for_noisy_plots(f: MeshCoefficients) -> Optional[float]:
+    """
+    for the noised plots fix the amplitude to the initial data
+    """
+    return (
+        np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
+        if f.noise is not None
+        else None
+    )
 
 
 def main() -> None:
@@ -115,8 +137,11 @@ def main() -> None:
         region=args.region,
     )
 
+    # custom amplitude for noisy plots
+    amplitude = _compute_amplitude_for_noisy_plots(f)
+
     # perform plot
-    plot(f, not args.unnormalise)
+    plot(f, not args.unnormalise, amplitude)
 
 
 if __name__ == "__main__":

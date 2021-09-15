@@ -28,6 +28,7 @@ class Coefficients:
     _noise: Optional[float] = field(default=None, init=False, repr=False)
     _smoothing: Optional[int] = field(default=None, init=False, repr=False)
     _spin: int = field(default=0, init=False, repr=False)
+    _unnoised_coefficients: Optional[np.ndarray] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args()
@@ -172,6 +173,20 @@ class Coefficients:
             # https://stackoverflow.com/a/61480946/7359333
             spin = Coefficients._spin
         self._spin = spin
+
+    @property
+    def unnoised_coefficients(self) -> Optional[np.ndarray]:
+        return self._unnoised_coefficients
+
+    @unnoised_coefficients.setter
+    def unnoised_coefficients(
+        self, unnoised_coefficients: Optional[np.ndarray]
+    ) -> None:
+        if isinstance(unnoised_coefficients, property):
+            # initial value not specified, use default
+            # https://stackoverflow.com/a/61480946/7359333
+            unnoised_coefficients = Coefficients._unnoised_coefficients
+        self._unnoised_coefficients = unnoised_coefficients
 
     @abstractmethod
     def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:

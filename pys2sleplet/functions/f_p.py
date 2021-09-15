@@ -43,6 +43,7 @@ class F_P(Coefficients):
         adds Gaussian white noise converted to Slepian space
         """
         if self.noise is not None:
+            self.unnoised_coefficients = self.coefficients.copy()
             n_p = create_slepian_noise(
                 self.L, self.coefficients, self.slepian, self.noise
             )

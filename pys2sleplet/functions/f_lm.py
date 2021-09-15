@@ -25,6 +25,7 @@ class F_LM(Coefficients):
         adds Gaussian white noise to the signal
         """
         if self.noise is not None:
+            self.unnoised_coefficients = self.coefficients.copy()
             nlm = create_noise(self.L, self.coefficients, self.noise)
             self.snr = compute_snr(self.coefficients, nlm, "Harmonic")
             self.coefficients += nlm
