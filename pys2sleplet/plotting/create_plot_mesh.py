@@ -5,6 +5,7 @@ from typing import Optional
 import cmocean
 import numpy as np
 import plotly.offline as py
+from matplotlib.colors import LinearSegmentedColormap
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 
@@ -31,6 +32,7 @@ class Plot:
     filename: str
     f: np.ndarray = field(repr=False)
     amplitude: Optional[float] = field(default=None, repr=False)
+    colour: LinearSegmentedColormap = field(default=cmocean.cm.ice, repr=False)
     normalise: bool = field(default=True, repr=False)
     region: bool = field(default=False, repr=False)
 
@@ -68,7 +70,7 @@ class Plot:
                 colorbar=create_colour_bar(
                     tick_mark, self.normalise, bar_pos=self.mesh.colourbar_pos
                 ),
-                colorscale=convert_colourscale(cmocean.cm.ice),
+                colorscale=convert_colourscale(self.colour),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
             )

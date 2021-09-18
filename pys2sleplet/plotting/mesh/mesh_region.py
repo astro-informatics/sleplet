@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
+import cmocean
 import numpy as np
 import seaborn as sns
 
@@ -27,7 +28,7 @@ def main(mesh_name: str) -> None:
     field[mesh.region] = 1
 
     name = f"{mesh_name}_region"
-    Plot(mesh, name, field, region=True).execute()
+    Plot(mesh, name, field, colour=cmocean.cm.haline, region=True).execute()
 
 
 if __name__ == "__main__":
