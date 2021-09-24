@@ -42,10 +42,6 @@ jobs:
                   environment-file: environment.yml
                   use-only-tar-bz2: true
 
-            - name: Conan remotes
-              run: |
-                  conan remote list
-
             - name: Pull LFS files
               run: |
                   git lfs ls-files -I \
