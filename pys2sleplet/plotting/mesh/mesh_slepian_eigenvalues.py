@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
+import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
@@ -26,7 +27,9 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
         number_basis_functions=num_basis_fun,
     )
     slepian_mesh = SlepianMesh(mesh)
-    plt.plot(slepian_mesh.slepian_eigenvalues)
+    plt.semilogx(slepian_mesh.slepian_eigenvalues, "k.")
+    ticks = 2 ** np.arange(np.log2(slepian_mesh.N) + 1, dtype=int)
+    plt.xticks(ticks, ticks)
     plt.xlabel("rank")
     plt.ylabel("eigenvalue $\lambda$")
     save_plot(
