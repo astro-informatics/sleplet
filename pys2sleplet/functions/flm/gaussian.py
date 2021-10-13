@@ -10,7 +10,7 @@ from pys2sleplet.utils.string_methods import filename_args
 @dataclass
 class Gaussian(F_LM):
     sigma: float
-    _sigma: float = field(default=1_000, init=False, repr=False)
+    _sigma: float = field(default=10, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
