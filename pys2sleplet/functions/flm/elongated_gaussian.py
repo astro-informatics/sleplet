@@ -12,7 +12,7 @@ from pys2sleplet.utils.vars import PHI_0, THETA_0
 class ElongatedGaussian(F_LM):
     p_sigma: float
     t_sigma: float
-    _p_sigma: float = field(default=0.1, init=False, repr=False)
+    _p_sigma: float = field(default=0.001, init=False, repr=False)
     _t_sigma: float = field(default=1, init=False, repr=False)
 
     def __post_init__(self) -> None:
