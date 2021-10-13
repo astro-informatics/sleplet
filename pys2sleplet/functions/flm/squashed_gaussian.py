@@ -13,7 +13,7 @@ class SquashedGaussian(F_LM):
     t_sigma: float
     freq: float
     _t_sigma: float = field(default=1, init=False, repr=False)
-    _freq: float = field(default=10, init=False, repr=False)
+    _freq: float = field(default=0.1, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()
