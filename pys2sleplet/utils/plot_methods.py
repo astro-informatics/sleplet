@@ -81,8 +81,7 @@ def save_plot(path: Path, name: str) -> None:
 
 
 def find_max_amplitude(
-    function: Coefficients,
-    plot_type: str = "real",
+    function: Coefficients, plot_type: str = "real", upsample: bool = True
 ) -> dict[str, float]:
     """
     for a given set of coefficients it finds the largest absolute value for a
@@ -95,11 +94,11 @@ def find_max_amplitude(
         field = ssht.inverse(function.coefficients, function.L, Method=SAMPLING_SCHEME)
 
     # find resolution of final plot for boosting if necessary
-    resolution = calc_plot_resolution(function.L) if settings.UPSAMPLE else function.L
+    resolution = calc_plot_resolution(function.L) if upsample else function.L
 
     # boost field to match final plot
     boosted_field = boost_field(
-        field, function.L, resolution, function.reality, function.spin
+        field, function.L, resolution, function.reality, function.spin, upsample
     )
 
     # find maximum absolute value for given plot type
@@ -161,12 +160,12 @@ def normalise_function(f: np.ndarray, normalise: bool) -> np.ndarray:
 
 
 def boost_field(
-    field: np.ndarray, L: int, resolution: int, reality: bool = False, spin: int = 0
+    field: np.ndarray, L: int, resolution: int, reality: bool, spin: int, upsample: bool
 ) -> np.ndarray:
     """
     inverts and then boosts the field before plotting
     """
-    if not settings.UPSAMPLE:
+    if not upsample:
         return field
     flm = ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
     return invert_flm_boosted(flm, L, resolution, reality=reality, spin=spin)

@@ -144,6 +144,12 @@ def read_args() -> Namespace:
         action="store_true",
         help="flag turns off normalisation for plot",
     )
+    parser.add_argument(
+        "--unzeropad",
+        "-z",
+        action="store_true",
+        help="flag turns off upsampling for plot",
+    )
     return parser.parse_args()
 
 
@@ -157,6 +163,7 @@ def plot(
     normalise: bool,
     method: str,
     plot_type: str,
+    upsample: bool,
     amplitude: Optional[float],
 ) -> None:
     """
@@ -210,6 +217,7 @@ def plot(
         reality=f.reality,
         region=f.region if not isinstance(f, F_LM) else None,
         spin=f.spin,
+        upsample=upsample,
     ).execute()
 
 
@@ -344,6 +352,7 @@ def main() -> None:
         not args.unnormalise,
         args.method,
         args.type,
+        not args.unzeropad,
         amplitude,
     )
 

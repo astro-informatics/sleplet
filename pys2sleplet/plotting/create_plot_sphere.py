@@ -44,10 +44,11 @@ class Plot:
     reality: bool = field(default=False, repr=False)
     region: Optional[Region] = field(default=None, repr=False)
     spin: int = field(default=0, repr=False)
+    upsample: bool = field(default=True, repr=False)
 
     def __post_init__(self) -> None:
-        self.resolution = calc_plot_resolution(self.L) if settings.UPSAMPLE else self.L
-        if settings.UPSAMPLE:
+        self.resolution = calc_plot_resolution(self.L) if self.upsample else self.L
+        if self.upsample:
             self.filename += f"_res{self.resolution}"
         self.filename += f"_{self.plot_type}"
         if self.normalise:
@@ -179,7 +180,7 @@ class Plot:
         boosts, forces plot type and then scales the field before plotting
         """
         boosted_field = boost_field(
-            f, self.L, self.resolution, reality=self.reality, spin=self.spin
+            f, self.L, self.resolution, self.reality, self.spin, self.upsample
         )
         field_space = create_plot_type(boosted_field, self.plot_type)
         return normalise_function(field_space, self.normalise)
