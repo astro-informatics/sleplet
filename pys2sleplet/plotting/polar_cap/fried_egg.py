@@ -7,8 +7,8 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 
-L = 19
-RANKS = 32
+L = 16
+RANKS = 16
 
 
 def main() -> None:
