@@ -23,9 +23,10 @@ def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
         atol=0.05,
     )
     assert_allclose(
-        np.abs(slepian.eigenvectors - slepian_polar_cap.eigenvectors)[
-            : slepian_polar_cap.N
-        ].mean(),
+        np.abs(
+            slepian.eigenvectors[: slepian_polar_cap.N]
+            - slepian_polar_cap.eigenvectors[: slepian_polar_cap.N]
+        ).mean(),
         0,
         atol=0.03,
     )
