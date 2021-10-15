@@ -22,6 +22,8 @@ from pys2sleplet.utils.parallel_methods import (
 )
 from pys2sleplet.utils.region import Region
 
+L_SAVE_ALL = 16
+
 _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 
@@ -110,9 +112,10 @@ class SlepianPolarCap(SlepianFunctions):
                 self.order,
             ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues[: self.N])
-                np.save(evec_loc, self.eigenvectors[: self.N])
-                np.save(order_loc, self.order[: self.N])
+                limit = self.N if self.L > L_SAVE_ALL else None
+                np.save(eval_loc, self.eigenvalues[:limit])
+                np.save(evec_loc, self.eigenvectors[:limit])
+                np.save(order_loc, self.order[:limit])
 
     def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
         """
