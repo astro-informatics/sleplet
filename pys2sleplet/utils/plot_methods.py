@@ -151,7 +151,7 @@ def normalise_function(f: np.ndarray, normalise: bool) -> np.ndarray:
     elif (f == 0).all():
         # if all 0, set to 0
         return f + 0.5
-    elif (f == f.max()).all():
+    elif np.allclose(f, f.max()):
         # if all non-zero, set to 1
         return f / f.max()
     else:
