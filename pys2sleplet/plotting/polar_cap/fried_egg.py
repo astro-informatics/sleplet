@@ -8,6 +8,7 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 
 L = 16
+NORMALISE = False
 RANKS = 16
 
 
@@ -24,6 +25,7 @@ def main() -> None:
             f,
             L,
             slepian_function.name,
+            normalise=NORMALISE,
             region=slepian_function.region,
         ).execute()
 
