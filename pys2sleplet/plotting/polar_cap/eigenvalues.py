@@ -20,18 +20,8 @@ def main() -> None:
     creates a plot of Slepian eigenvalues against rank
     """
     slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX))
-    orders = np.abs(slepian.order)
-    labels = np.array([f"$\pm${m}" if m != 0 else m for m in orders])
-    idx = np.argsort(orders)
-    scatter = sns.scatterplot(
-        x=np.arange(L ** 2) + 1,
-        y=slepian.eigenvalues,
-        hue=labels,
-        hue_order=labels[idx],
-        legend="full",
-        style=labels,
-    )
-    scatter.set(xscale="log")
+    p_range = np.arange(0, L ** 2)
+    plt.semilogx(p_range, slepian.eigenvalues, "k.")
     plt.axvline(x=slepian.N, c="k", ls="--", alpha=0.5)
     plt.annotate(
         f"N={slepian.N}",
@@ -43,9 +33,8 @@ def main() -> None:
     )
     ticks = 2 ** np.arange(np.log2(L ** 2) + 1, dtype=int)
     plt.xticks(ticks, ticks)
-    plt.xlabel("rank $p$")
-    plt.ylabel("eigenvalue $\mu$")
-    plt.legend(ncol=4)
+    plt.xlabel("p")
+    plt.ylabel(r"$\mu$")
     save_plot(fig_path, "polar_cap_eigenvalues")
 
 
