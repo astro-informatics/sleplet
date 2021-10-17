@@ -61,9 +61,9 @@ def _create_plot(ax: np.ndarray, position: tuple[int, int], theta_max: int) -> N
         annotation_clip=False,
     )
     if position[1] == 0:
-        axs.set_ylabel("eigenvalue $\lambda$")
+        axs.set_ylabel("$\mu$")
     if position[0] == 1:
-        axs.set_xlabel("rank")
+        axs.set_xlabel("$p$")
     axs.text(
         0.02,
         0.34,

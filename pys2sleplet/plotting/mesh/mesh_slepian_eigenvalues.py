@@ -30,8 +30,8 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     plt.semilogx(slepian_mesh.slepian_eigenvalues, "k.")
     ticks = 2 ** np.arange(np.log2(slepian_mesh.N) + 1, dtype=int)
     plt.xticks(ticks, ticks)
-    plt.xlabel("rank")
-    plt.ylabel("eigenvalue $\lambda$")
+    plt.xlabel("p")
+    plt.ylabel("$\mu$")
     save_plot(
         fig_path, f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
     )

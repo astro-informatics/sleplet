@@ -24,7 +24,7 @@ def main() -> None:
     ticks = 2 ** np.arange(np.log2(slepian.N) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel("p")
-    plt.ylabel(r"$\lambda$")
+    plt.ylabel(r"$\mu$")
     save_plot(fig_path, f"south_america_eigenvalues_L{L}")
 
 
