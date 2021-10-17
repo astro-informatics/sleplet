@@ -44,7 +44,7 @@ def main(mesh_name: str) -> None:
     # wavelets
     for j, k in enumerate(kappas[1:]):
         yi = pchip(x, k)
-        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{j+J_MIN}_p$")
+        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_p$")
 
     # add vertical line
     plt.axvline(slepian_mesh.N, color="k", linestyle="dashed")

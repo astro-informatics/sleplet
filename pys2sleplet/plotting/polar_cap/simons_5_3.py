@@ -67,7 +67,7 @@ def _create_plot(ax: np.ndarray, position: tuple[int, int], theta_max: int) -> N
     axs.text(
         0.02,
         0.34,
-        fr"$\Theta$={theta_max}$^\circ$",
+        rf"$\Theta={{{theta_max}}}^\circ$",
         transform=axs.transAxes,
         bbox=TEXT_BOX,
     )
