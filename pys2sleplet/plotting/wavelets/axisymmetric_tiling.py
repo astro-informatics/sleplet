@@ -35,8 +35,8 @@ def main() -> None:
     ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$\ell$")
-    plt.legend()
-    save_plot(fig_path, f"polar_cap_tiling_L{L}")
+    plt.legend(loc=6)
+    save_plot(fig_path, f"axisymmetric_tiling_L{L}")
 
 
 if __name__ == "__main__":
