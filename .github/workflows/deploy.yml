@@ -42,12 +42,6 @@ jobs:
                   environment-file: environment.yml
                   use-only-tar-bz2: true
 
-            - name: Fix conan problems
-              run: |
-                pip install conan==1.40.2
-                conan remote add conan-center https://conan.bintray.com True
-                pip install pys2let==2.2.3 pyssht==1.5.0
-
             - name: Pull LFS files
               run: |
                   git lfs ls-files -I \
