@@ -61,7 +61,7 @@ def main(mesh_name: str) -> None:
     plt.xlim(1, xlim)
     ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
-    plt.xlabel("p")
+    plt.xlabel(r"$p$")
     plt.legend()
     save_plot(fig_path, f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
 

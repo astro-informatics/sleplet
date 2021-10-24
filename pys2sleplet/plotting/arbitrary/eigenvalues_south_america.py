@@ -23,7 +23,7 @@ def main() -> None:
     plt.semilogx(p_range, slepian.eigenvalues[: slepian.N], "k.")
     ticks = 2 ** np.arange(np.log2(slepian.N) + 1, dtype=int)
     plt.xticks(ticks, ticks)
-    plt.xlabel("p")
+    plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     save_plot(fig_path, f"south_america_eigenvalues_L{L}")
 

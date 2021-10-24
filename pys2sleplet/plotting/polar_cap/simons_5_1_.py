@@ -35,7 +35,7 @@ def main() -> None:
         ax,
         xlim=[0, 180],
         xticks=[0, 40, 180],
-        xticklabels=["$0^\circ$", "$40^\circ$", "$180^\circ$"],
+        xticklabels=[r"$0^\circ$", r"$40^\circ$", r"$180^\circ$"],
         ylim=[-3, 3],
         yticks=[-2, 0, 2],
     )
@@ -64,7 +64,7 @@ def _helper(
     lam = slepian.eigenvalues[rank]
     f = invert_flm_boosted(flm, L, resolution).real
     if rank == 0:
-        axs.set_ylabel(f"m = {order}")
+        axs.set_ylabel(rf"$m={{{order}}}$")
     if order == 0:
         axs.set_title(rf"$\alpha={{{rank+1}}}$")
     if order == ORDERS - 1:

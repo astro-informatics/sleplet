@@ -38,7 +38,7 @@ def main() -> None:
         ax,
         xlim=[0, 180],
         xticks=[0, 40, 180],
-        xticklabels=["$0^\circ$", "$40^\circ$", "$180^\circ$"],
+        xticklabels=[r"$0^\circ$", r"$40^\circ$", r"$180^\circ$"],
         ylim=[-3, 3],
         yticks=[-2, 0, 2],
     )

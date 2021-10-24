@@ -33,7 +33,7 @@ def main() -> None:
     )
     ticks = 2 ** np.arange(np.log2(L ** 2) + 1, dtype=int)
     plt.xticks(ticks, ticks)
-    plt.xlabel("p")
+    plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     save_plot(fig_path, "polar_cap_eigenvalues")
 

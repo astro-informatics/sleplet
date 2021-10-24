@@ -45,7 +45,7 @@ def main() -> None:
     plt.xlim(1, xlim)
     ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
-    plt.xlabel("p")
+    plt.xlabel(r"$p$")
     plt.legend()
     save_plot(fig_path, f"south_america_slepian_tiling_L{L}")
 
