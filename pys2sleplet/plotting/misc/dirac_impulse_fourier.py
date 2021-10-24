@@ -10,7 +10,7 @@ from pys2sleplet.utils.plot_methods import save_plot
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
 sns.set(
-    context="paper", rc={"font.size": 20, "axes.titlesize": 20, "axes.labelsize": 20}
+    context="paper", rc={"font.size": 18, "axes.titlesize": 18, "axes.labelsize": 18}
 )
 
 LIM = 25
