@@ -9,7 +9,9 @@ from pys2sleplet.utils.plot_methods import save_plot
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-sns.set(context="paper")
+sns.set(
+    context="paper", rc={"font.size": 20, "axes.titlesize": 20, "axes.labelsize": 20}
+)
 
 LIM = 50
 
@@ -27,6 +29,7 @@ def _plot_impulse(impulse: np.ndarray) -> None:
     """
     plots the Dirac impulse
     """
+    plt.figure()
     plt.plot(impulse)
     plt.xticks([])
     plt.xlabel(r"$t$")
@@ -38,6 +41,7 @@ def _plot_fft(impulse: np.ndarray) -> None:
     """
     plots resultant Fourier transform
     """
+    plt.figure()
     fourier = np.fft.fft(impulse)
     plt.plot(fourier.real)
     plt.xticks([])
