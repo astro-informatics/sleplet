@@ -13,7 +13,7 @@ sns.set(
     context="paper", rc={"font.size": 20, "axes.titlesize": 20, "axes.labelsize": 20}
 )
 
-LIM = 50
+LIM = 25
 
 
 def main() -> None:
