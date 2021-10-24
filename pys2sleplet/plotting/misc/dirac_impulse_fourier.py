@@ -33,7 +33,6 @@ def _plot_impulse(impulse: np.ndarray) -> None:
     plt.plot(impulse)
     plt.xticks([])
     plt.xlabel(r"$t$")
-    plt.ylabel(r"$f(t)$")
     save_plot(fig_path, "dirac_impulse")
 
 
@@ -46,7 +45,6 @@ def _plot_fft(impulse: np.ndarray) -> None:
     plt.plot(fourier.real)
     plt.xticks([])
     plt.xlabel(r"$\varpi$")
-    plt.ylabel(r"$F(\varpi)$")
     save_plot(fig_path, "dirac_fft")
 
 
