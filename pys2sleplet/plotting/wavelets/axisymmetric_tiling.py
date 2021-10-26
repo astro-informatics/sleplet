@@ -27,10 +27,10 @@ def main() -> None:
     xi = np.arange(0, xlim - 1 + STEP, STEP)
     kappas = create_kappas(xlim, B, J_MIN)
     yi = pchip(x, kappas[0])
-    plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
+    plt.semilogx(xi, yi(xi), label=r"$\Phi_{\ell0}$")
     for j, k in enumerate(kappas[1:]):
         yi = pchip(x, k)
-        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_p$")
+        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_{{\ell0}}$")
     plt.xlim(1, xlim)
     ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
     plt.xticks(ticks, ticks)
