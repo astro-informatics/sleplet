@@ -23,10 +23,7 @@ def main() -> None:
     amplitude = np.zeros(size * len(FREQUENCIES))
     for c, f in enumerate(FREQUENCIES):
         amplitude[size * c : size * (c + 1)] = _ricker(f)
-    t = range(len(amplitude))
-    plt.plot(t, amplitude)
-    plt.fill_between(t, amplitude, where=amplitude > 0)
-    plt.fill_between(t, amplitude, where=amplitude < 0)
+    plt.plot(amplitude)
     plt.xticks([])
     plt.xlabel(r"$t$")
     save_plot(fig_path, "ricker_wavelets")
