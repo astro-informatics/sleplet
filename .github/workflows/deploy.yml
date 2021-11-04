@@ -35,11 +35,12 @@ jobs:
                       ${{ runner.os }}-
 
             - name: Setup conda
-              uses: conda-incubator/setup-miniconda@v2
+              uses: conda-incubator/setup-miniforge@v2
               with:
                   activate-environment: py39
                   channel-priority: strict
                   environment-file: environment.yml
+                  miniforge-version: latest
                   use-only-tar-bz2: true
 
             - name: Pull LFS files
