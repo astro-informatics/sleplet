@@ -35,7 +35,7 @@ jobs:
                       ${{ runner.os }}-
 
             - name: Setup conda
-              uses: conda-incubator/setup-miniforge@v2
+              uses: conda-incubator/setup-miniconda@v2
               with:
                   activate-environment: py39
                   channel-priority: strict
