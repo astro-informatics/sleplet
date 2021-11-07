@@ -25,7 +25,7 @@ def main() -> None:
     plt.plot(x, j)
     plt.xticks([0, ELL], [0, r"$\ell$"])
     plt.yticks([0, 0])
-    plt.xlabel(r"$x$")
+    plt.xlabel(r"$kr$")
     plt.show()
     save_plot(fig_path, "spherical_bessel")
 
