@@ -54,4 +54,4 @@ jobs:
                   git lfs pull
 
             - name: Test with pytest
-              run: pytest -v --runslow
+              run: pytest --color=yes --runslow -v
