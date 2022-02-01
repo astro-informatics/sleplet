@@ -10,7 +10,7 @@ from pys2sleplet.utils.slepian_arbitrary_methods import (
 )
 
 _file_location = Path(__file__).resolve()
-_eigen_path = _file_location.parent / "data" / "slepian" / "eigensolutions"
+_eigen_path = _file_location.parents[1] / "data" / "slepian" / "eigensolutions"
 
 
 def compute_large_D_matrix(

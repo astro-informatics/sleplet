@@ -11,7 +11,7 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
-_mask_path = _file_location.parent / "data" / "slepian" / "masks"
+_mask_path = _file_location.parents[1] / "data" / "slepian" / "masks"
 
 
 def create_mask_region(L: int, region: Region) -> np.ndarray:
