@@ -51,7 +51,7 @@ from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
 )
 
 _file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[1] / "data" / "meshes"
+_meshes_path = _file_location.parent / "data" / "meshes"
 MESHES: set[str] = {
     Path(x.removesuffix(".toml")).stem
     for x in glob(str(_meshes_path / "regions" / "*.toml"))

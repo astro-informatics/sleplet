@@ -23,7 +23,7 @@ from pys2sleplet.utils.vars import (
 )
 
 _file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[1] / "data" / "meshes"
+_meshes_path = _file_location.parent / "data" / "meshes"
 
 
 def average_functions_on_vertices_to_faces(

@@ -23,7 +23,7 @@ from pys2sleplet.utils.plotly_methods import (
 from pys2sleplet.utils.vars import UNSEEN
 
 _file_location = Path(__file__).resolve()
-_fig_path = _file_location.parents[1] / "figures"
+_fig_path = _file_location.parent / "figures"
 
 
 @dataclass
