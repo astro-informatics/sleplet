@@ -37,7 +37,7 @@ jobs:
             - name: Setup conda
               uses: conda-incubator/setup-miniconda@v2
               with:
-                  activate-environment: py39
+                  activate-environment: s2sleplet
                   channel-priority: strict
                   environment-file: environment.yml
                   miniforge-version: latest
