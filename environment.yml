@@ -5,6 +5,7 @@ channels:
 
 dependencies:
     - igl=2.2.1
+    - llvmlite=0.38.0
     - mpc=1.2.1
     - mpfr=4.1.0
     - pip=22.0.4
