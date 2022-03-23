@@ -41,6 +41,7 @@ jobs:
                   environment-file: environment.yml
                   miniforge-version: latest
                   use-only-tar-bz2: true
+                  use-mamba: true
 
             - name: Pull LFS files
               run: |
