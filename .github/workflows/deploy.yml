@@ -10,10 +10,10 @@ jobs:
                 shell: bash -l {0}
         steps:
             - name: Checkout source
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Restore conda cache
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               env:
                   # Increase this value to reset cache if
                   # environment.yml has not changed
@@ -24,7 +24,7 @@ jobs:
                       hashFiles('environment.yml') }}
 
             - name: Restore pip cache
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   # This path is specific to Ubuntu
                   path: ~/.cache/pip
