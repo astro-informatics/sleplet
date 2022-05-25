@@ -109,7 +109,7 @@ def test_pass_rank_higher_than_available(slepian_polar_cap, earth_polar_cap) -> 
     sd = SlepianDecomposition(
         slepian_polar_cap.L, slepian_polar_cap, flm=earth_polar_cap.coefficients
     )
-    assert_raises(ValueError, sd.decompose, slepian_polar_cap.N)
+    assert_raises(ValueError, sd.decompose, slepian_polar_cap.L**2)
 
 
 def test_no_method_found_for_decomposition(slepian_polar_cap) -> None:
