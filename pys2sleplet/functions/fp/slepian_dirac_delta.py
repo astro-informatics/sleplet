@@ -6,6 +6,7 @@ import pyssht as ssht
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.slepian_methods import compute_s_p_omega_prime
+from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 
@@ -24,7 +25,10 @@ class SlepianDiracDelta(F_P):
         ).conj()
 
     def _create_name(self) -> None:
-        self.name = f"slepian_dirac_delta_{self.slepian.region.name_ending}"
+        self.name = (
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{self.slepian.region.name_ending}"
+        )
 
     def _set_reality(self) -> None:
         self.reality = False

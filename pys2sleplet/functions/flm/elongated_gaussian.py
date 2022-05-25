@@ -4,7 +4,10 @@ import numpy as np
 
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import (
+    convert_camel_case_to_snake_case,
+    filename_args,
+)
 from pys2sleplet.utils.vars import PHI_0, THETA_0
 
 
@@ -25,7 +28,7 @@ class ElongatedGaussian(F_LM):
 
     def _create_name(self) -> None:
         self.name = (
-            "elongated_gaussian"
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.t_sigma, 'tsig')}"
             f"{filename_args(self.p_sigma, 'psig')}"
         )

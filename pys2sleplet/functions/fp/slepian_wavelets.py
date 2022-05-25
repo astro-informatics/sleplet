@@ -6,7 +6,11 @@ from pys2let import pys2let_j_max
 
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
+from pys2sleplet.utils.string_methods import (
+    convert_camel_case_to_snake_case,
+    filename_args,
+    wavelet_ending,
+)
 from pys2sleplet.utils.wavelet_methods import create_kappas
 
 
@@ -33,7 +37,8 @@ class SlepianWavelets(F_P):
 
     def _create_name(self) -> None:
         self.name = (
-            f"slepian_wavelets_{self.slepian.region.name_ending}"
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"_{self.slepian.region.name_ending}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{wavelet_ending(self.j_min, self.j)}"

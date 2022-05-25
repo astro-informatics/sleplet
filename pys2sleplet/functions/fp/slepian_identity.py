@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from pys2sleplet.functions.f_p import F_P
+from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
 @dataclass
@@ -14,7 +15,10 @@ class SlepianIdentity(F_P):
         self.coefficients = np.ones(self.L**2, dtype=np.complex_)
 
     def _create_name(self) -> None:
-        self.name = f"slepian_identity_{self.slepian.region.name_ending}"
+        self.name = (
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"_{self.slepian.region.name_ending}"
+        )
 
     def _set_reality(self) -> None:
         self.reality = False

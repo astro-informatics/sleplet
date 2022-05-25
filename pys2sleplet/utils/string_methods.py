@@ -5,13 +5,6 @@ from typing import Any, Optional
 import numpy as np
 
 
-def _convert_camel_case_to_snake_case(name: str) -> str:
-    """
-    converts a string in camel case to snake case
-    """
-    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
-
-
 def _get_angle_num_dem(angle_fraction: float) -> tuple[int, int]:
     """
     ger numerator and denominator for a given decimal
@@ -99,8 +92,15 @@ def wavelet_ending(j_min: int, j: Optional[int]) -> str:
     return "_scaling" if j is None else f"{filename_args(j + j_min, 'j')}"
 
 
+def convert_camel_case_to_snake_case(name: str) -> str:
+    """
+    converts a string in camel case to snake case
+    """
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+
+
 def convert_classes_list_to_snake_case(classes: list[Any]) -> list[str]:
     """
     converts a list of classes to snake case
     """
-    return [_convert_camel_case_to_snake_case(c.__name__) for c in classes]
+    return [convert_camel_case_to_snake_case(c.__name__) for c in classes]
