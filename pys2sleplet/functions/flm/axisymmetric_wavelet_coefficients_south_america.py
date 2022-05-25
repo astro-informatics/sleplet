@@ -66,9 +66,9 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(F_LM):
         computes wavelet coefficients of South America
         """
         self.wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
-        sa = SouthAmerica(self.L, smoothing=self.smoothing)
+        self.south_america = SouthAmerica(self.L, smoothing=self.smoothing)
         self.wavelet_coefficients = axisymmetric_wavelet_forward(
-            self.L, sa.coefficients, self.wavelets
+            self.L, self.south_america.coefficients, self.wavelets
         )
 
     @property  # type:ignore
