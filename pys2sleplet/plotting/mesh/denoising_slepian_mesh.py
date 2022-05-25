@@ -3,9 +3,9 @@ from argparse import ArgumentParser
 import numpy as np
 
 from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import MeshSlepianField
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
-    SlepianMeshWavelets,
+    MeshSlepianWavelets,
 )
 from pys2sleplet.plotting.create_plot_mesh import Plot
 from pys2sleplet.scripts.plotting_on_mesh import valid_meshes
@@ -32,11 +32,11 @@ def main(mesh_name: str, snr: float, sigma: int) -> None:
     mesh = Mesh(mesh_name, mesh_laplacian=settings.MESH_LAPLACIAN, zoom=True)
 
     # create map & noised map
-    fun = SlepianMeshField(mesh)
-    fun_noised = SlepianMeshField(mesh, noise=snr)
+    fun = MeshSlepianField(mesh)
+    fun_noised = MeshSlepianField(mesh, noise=snr)
 
     # create wavelets
-    smw = SlepianMeshWavelets(mesh, B=B, j_min=J_MIN)
+    smw = MeshSlepianWavelets(mesh, B=B, j_min=J_MIN)
 
     # fix amplitude
     amplitude = np.abs(

@@ -6,7 +6,7 @@ from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
-    SlepianMeshWavelets,
+    MeshSlepianWavelets,
 )
 from pys2sleplet.utils.noise import (
     compute_sigma_j,
@@ -117,7 +117,7 @@ def denoising_slepian(
 def denoising_mesh_slepian(
     signal: MeshCoefficients,
     noised_signal: MeshCoefficients,
-    slepian_mesh_wavelets: SlepianMeshWavelets,
+    slepian_mesh_wavelets: MeshSlepianWavelets,
     snr_in: int,
     n_sigma: int,
 ) -> np.ndarray:

@@ -20,7 +20,7 @@ def valid_meshes(mesh_name: str) -> str:
     """
     check if valid mesh name
     """
-    if mesh_name in convert_classes_list_to_snake_case(MESHES):
+    if mesh_name in MESHES:
         return mesh_name
     else:
         raise ValueError(f"'{mesh_name}' is not a valid mesh name to plot")

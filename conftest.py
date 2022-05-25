@@ -10,7 +10,7 @@ from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
 from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
-    SlepianMeshWavelets,
+    MeshSlepianWavelets,
 )
 from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
@@ -176,8 +176,8 @@ def mesh_field_region(mesh) -> MeshField:
 
 
 @pytest.fixture(scope="session")
-def slepian_mesh_wavelets(mesh) -> SlepianMeshWavelets:
+def slepian_mesh_wavelets(mesh) -> MeshSlepianWavelets:
     """
     creates a field on the mesh
     """
-    return SlepianMeshWavelets(mesh)
+    return MeshSlepianWavelets(mesh)

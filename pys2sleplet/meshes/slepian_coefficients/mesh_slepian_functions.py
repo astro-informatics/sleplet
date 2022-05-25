@@ -6,7 +6,7 @@ from pys2sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
 @dataclass
-class SlepianMeshFunctions(MeshSlepianCoefficients):
+class MeshSlepianFunctions(MeshSlepianCoefficients):
     rank: int
     _rank: int = field(default=0, init=False, repr=False)
 
@@ -64,7 +64,7 @@ class SlepianMeshFunctions(MeshSlepianCoefficients):
         if isinstance(rank, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            rank = SlepianMeshFunctions._rank
+            rank = MeshSlepianFunctions._rank
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:

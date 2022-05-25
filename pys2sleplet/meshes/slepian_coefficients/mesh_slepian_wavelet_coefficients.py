@@ -5,9 +5,9 @@ import numpy as np
 from pys2let import pys2let_j_max
 
 from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
+from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import MeshSlepianField
 from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
-    SlepianMeshWavelets,
+    MeshSlepianWavelets,
 )
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
@@ -15,7 +15,7 @@ from pys2sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
 @dataclass
-class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
+class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
     B: int
     j_min: int
     j: Optional[int]
@@ -55,8 +55,8 @@ class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
         """
         computes wavelet coefficients in Slepian space
         """
-        smw = SlepianMeshWavelets(self.mesh, B=self.B, j_min=self.j_min)
-        smf = SlepianMeshField(self.mesh)
+        smw = MeshSlepianWavelets(self.mesh, B=self.B, j_min=self.j_min)
+        smf = MeshSlepianField(self.mesh)
         self.wavelet_coefficients = slepian_wavelet_forward(
             smf.coefficients,
             smw.wavelets,
@@ -72,7 +72,7 @@ class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = SlepianMeshWaveletCoefficients._B
+            B = MeshSlepianWaveletCoefficients._B
         self._B = B
 
     @property  # type:ignore
@@ -84,7 +84,7 @@ class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
         if isinstance(j, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j = SlepianMeshWaveletCoefficients._j
+            j = MeshSlepianWaveletCoefficients._j
         self.j_max = pys2let_j_max(
             self.B, self.mesh.mesh_eigenvalues.shape[0], self.j_min
         )
@@ -113,7 +113,7 @@ class SlepianMeshWaveletCoefficients(MeshSlepianCoefficients):
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = SlepianMeshWaveletCoefficients._j_min
+            j_min = MeshSlepianWaveletCoefficients._j_min
         self._j_min = j_min
 
     @property
