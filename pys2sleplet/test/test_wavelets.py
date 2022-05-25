@@ -68,7 +68,7 @@ def test_axisymmetric_synthesis() -> None:
     """
     tests that the axisymmetric wavelet synthesis recoveres the coefficients
     """
-    awc = AxisymmetricWaveletCoefficientsEarth(L_SMALL)
+    awc = AxisymmetricWaveletCoefficientsEarth(L_SMALL, B=B, j_min=J_MIN)
     flm = axisymmetric_wavelet_inverse(L_SMALL, awc.wavelet_coefficients, awc.wavelets)
     assert_allclose(np.abs(flm - awc.earth.coefficients).mean(), 0, atol=1e-13)
 
