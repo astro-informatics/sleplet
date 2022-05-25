@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
 from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from pys2sleplet.scripts.plotting_on_mesh import valid_meshes
 from pys2sleplet.utils.class_lists import MESHES
 from pys2sleplet.utils.config import settings
@@ -29,7 +29,7 @@ def main(mesh_name: str) -> None:
     """
     # initialise mesh and Slepian mesh
     mesh = Mesh(mesh_name, mesh_laplacian=settings.MESH_LAPLACIAN)
-    slepian_mesh = SlepianMesh(mesh)
+    mesh_slepian = MeshSlepian(mesh)
 
     # set up x-axis
     xlim = mesh.mesh_eigenvalues.shape[0]
@@ -47,10 +47,10 @@ def main(mesh_name: str) -> None:
         plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_p$")
 
     # add vertical line
-    plt.axvline(slepian_mesh.N, color="k", linestyle="dashed")
+    plt.axvline(mesh_slepian.N, color="k", linestyle="dashed")
     plt.annotate(
-        f"N={slepian_mesh.N}",
-        xy=(slepian_mesh.N, 1),
+        f"N={mesh_slepian.N}",
+        xy=(mesh_slepian.N, 1),
         xytext=(17, 3),
         ha="center",
         textcoords="offset points",

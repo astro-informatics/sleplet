@@ -6,7 +6,7 @@ from pys2sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
 @dataclass
-class SlepianMeshFunctions(MeshSlepianCoefficients):
+class MeshSlepianFunctions(MeshSlepianCoefficients):
     rank: int
     _rank: int = field(default=0, init=False, repr=False)
 
@@ -17,21 +17,21 @@ class SlepianMeshFunctions(MeshSlepianCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        s_p_i = self.slepian_mesh.slepian_functions[self.rank]
+        s_p_i = self.mesh_slepian.slepian_functions[self.rank]
         self.coefficients = slepian_mesh_forward(
-            self.slepian_mesh,
+            self.mesh_slepian,
             u_i=s_p_i,
         )
         logger.info(
             f"Slepian eigenvalue {self.rank}: "
-            f"{self.slepian_mesh.slepian_eigenvalues[self.rank]:e}"
+            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
         )
 
     def _create_name(self) -> None:
         self.name = (
             (
                 f"slepian_{self.mesh.name}_rank{self.rank}_"
-                f"lam{self.slepian_mesh.slepian_eigenvalues[self.rank]:e}"
+                f"lam{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
             )
             .replace(".", "-")
             .replace("+", "")
@@ -64,7 +64,7 @@ class SlepianMeshFunctions(MeshSlepianCoefficients):
         if isinstance(rank, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            rank = SlepianMeshFunctions._rank
+            rank = MeshSlepianFunctions._rank
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:

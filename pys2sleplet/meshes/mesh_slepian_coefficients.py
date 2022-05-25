@@ -1,17 +1,17 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
 
-from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
 from pys2sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
 
 
 @dataclass  # type:ignore
 class MeshSlepianCoefficients(MeshCoefficients):
-    _slepian_mesh: SlepianMesh = field(init=False, repr=False)
+    _slepian_mesh: MeshSlepian = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.slepian_mesh = SlepianMesh(self.mesh)
+        self.mesh_slepian = MeshSlepian(self.mesh)
         super().__post_init__()
 
     def _add_noise_to_signal(self) -> None:
@@ -21,18 +21,18 @@ class MeshSlepianCoefficients(MeshCoefficients):
         if self.noise is not None:
             self.unnoised_coefficients = self.coefficients.copy()
             n_p = create_slepian_mesh_noise(
-                self.slepian_mesh, self.coefficients, self.noise
+                self.mesh_slepian, self.coefficients, self.noise
             )
             self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
 
     @property
-    def slepian_mesh(self) -> SlepianMesh:
+    def mesh_slepian(self) -> MeshSlepian:
         return self._slepian_mesh
 
-    @slepian_mesh.setter
-    def slepian_mesh(self, slepian_mesh: SlepianMesh) -> None:
-        self._slepian_mesh = slepian_mesh
+    @mesh_slepian.setter
+    def mesh_slepian(self, mesh_slepian: MeshSlepian) -> None:
+        self._slepian_mesh = mesh_slepian
 
     @abstractmethod
     def _create_coefficients(self) -> None:

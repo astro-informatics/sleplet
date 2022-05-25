@@ -45,12 +45,12 @@ class SlepianDecomposition:
         else:
             raise ValueError(f"'{self.method}' is not a valid method")
 
-    def decompose_all(self) -> np.ndarray:
+    def decompose_all(self, n_coefficients: int) -> np.ndarray:
         """
         decompose all ranks of the Slepian coefficients
         """
-        coefficients = np.zeros(self.slepian.N, dtype=np.complex_)
-        for rank in range(self.slepian.N):
+        coefficients = np.zeros(n_coefficients, dtype=np.complex_)
+        for rank in range(n_coefficients):
             coefficients[rank] = self.decompose(rank)
         return coefficients
 
@@ -116,8 +116,8 @@ class SlepianDecomposition:
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        if rank >= self.slepian.N:
-            raise ValueError(f"rank should be less than {self.slepian.N}")
+        if rank >= self.L**2:
+            raise ValueError(f"rank should be less than {self.L**2}")
 
     @property  # type:ignore
     def f(self) -> Optional[np.ndarray]:

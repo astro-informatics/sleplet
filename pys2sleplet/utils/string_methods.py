@@ -99,8 +99,13 @@ def convert_camel_case_to_snake_case(name: str) -> str:
     return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
 
 
-def convert_classes_list_to_snake_case(classes: list[Any]) -> list[str]:
+def convert_classes_list_to_snake_case(
+    classes: list[Any], *, word_to_remove: str = ""
+) -> list[str]:
     """
     converts a list of classes to snake case
     """
-    return [convert_camel_case_to_snake_case(c.__name__) for c in classes]
+    return [
+        convert_camel_case_to_snake_case(c.__name__.removeprefix(word_to_remove))
+        for c in classes
+    ]

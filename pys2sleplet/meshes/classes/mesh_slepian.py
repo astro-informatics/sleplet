@@ -24,7 +24,7 @@ _meshes_path = _file_location.parents[2] / "data" / "meshes"
 
 
 @dataclass
-class SlepianMesh:
+class MeshSlepian:
     mesh: Mesh
     _mesh: Mesh = field(init=False, repr=False)
     _N: int = field(init=False, repr=False)

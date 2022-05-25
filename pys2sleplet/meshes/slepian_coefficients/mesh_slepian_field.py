@@ -6,7 +6,7 @@ from pys2sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
 @dataclass
-class SlepianMeshField(MeshSlepianCoefficients):
+class MeshSlepianField(MeshSlepianCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
 
@@ -16,7 +16,7 @@ class SlepianMeshField(MeshSlepianCoefficients):
         """
         mf = MeshField(self.mesh, region=True)
         self.coefficients = slepian_mesh_forward(
-            self.slepian_mesh,
+            self.mesh_slepian,
             u_i=mf.coefficients,
         )
 

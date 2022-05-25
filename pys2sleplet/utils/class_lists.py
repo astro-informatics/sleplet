@@ -39,18 +39,18 @@ from pys2sleplet.meshes.harmonic_coefficients.mesh_basis_functions import (
 from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from pys2sleplet.meshes.harmonic_coefficients.mesh_noise_field import MeshNoiseField
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import SlepianMeshField
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_functions import (
-    SlepianMeshFunctions,
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_functions import (
+    MeshSlepianFunctions,
 )
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_noise_field import (
-    SlepianMeshNoiseField,
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field import (
+    MeshSlepianNoiseField,
 )
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelet_coefficients import (
-    SlepianMeshWaveletCoefficients,
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients import (
+    MeshSlepianWaveletCoefficients,
 )
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
-    SlepianMeshWavelets,
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+    MeshSlepianWavelets,
 )
 
 _file_location = Path(__file__).resolve()
@@ -80,13 +80,13 @@ FLM: list[Coefficients] = [
 ]
 
 FP: list[Coefficients] = [
+    Slepian,
     SlepianDiracDelta,
     SlepianIdentity,
     SlepianNoiseSouthAmerica,
     SlepianSouthAmerica,
     SlepianWaveletCoefficientsSouthAmerica,
     SlepianWavelets,
-    Slepian,
 ]
 
 COEFFICIENTS: list[Coefficients] = FLM + FP
@@ -96,11 +96,11 @@ MAPS_LM: list[Coefficients] = [Earth, SouthAmerica, Wmap]
 MESH_HARMONIC: list[MeshCoefficients] = [MeshBasisFunctions, MeshField, MeshNoiseField]
 
 MESH_SLEPIAN: list[MeshCoefficients] = [
-    SlepianMeshWaveletCoefficients,
-    SlepianMeshField,
-    SlepianMeshNoiseField,
-    SlepianMeshFunctions,
-    SlepianMeshWavelets,
+    MeshSlepianField,
+    MeshSlepianFunctions,
+    MeshSlepianNoiseField,
+    MeshSlepianWaveletCoefficients,
+    MeshSlepianWavelets,
 ]
 
 MESH_COEFFICIENTS: list[MeshCoefficients] = MESH_HARMONIC + MESH_SLEPIAN
