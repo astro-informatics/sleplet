@@ -62,7 +62,7 @@ class Ridgelets(F_LM):
         """
         ring_lm = self._compute_ring()
         kappas = create_kappas(self.L, self.B, self.j_min)
-        self.wavelets = np.zeros((kappas.shape[0], self.L ** 2), dtype=np.complex_)
+        self.wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
             self.wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
@@ -72,7 +72,7 @@ class Ridgelets(F_LM):
         """
         compute ring in harmonic space
         """
-        ring_lm = np.zeros(self.L ** 2, dtype=np.complex_)
+        ring_lm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(abs(self.spin), self.L):
             logp2 = (
                 gammaln(ell + self.spin + 1)

@@ -10,7 +10,7 @@ def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.n
     """
     splits up and calculates intermediate matrices for higher L
     """
-    D = np.zeros((L ** 2, L ** 2), dtype=np.complex_)
+    D = np.zeros((L**2, L**2), dtype=np.complex_)
     for i in range(len(L_ranges) - 1):
         L_min = L_ranges[i]
         L_max = L_ranges[i + 1]

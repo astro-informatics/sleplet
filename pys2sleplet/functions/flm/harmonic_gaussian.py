@@ -18,7 +18,7 @@ class HarmonicGaussian(F_LM):
         super().__post_init__()
 
     def _create_coefficients(self) -> None:
-        flm = np.zeros(self.L ** 2, dtype=np.complex_)
+        flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):

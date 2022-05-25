@@ -13,7 +13,7 @@ def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
     """
     create a spherical harmonic in harmonic space for the given index
     """
-    flm = np.zeros(L ** 2, dtype=np.complex_)
+    flm = np.zeros(L**2, dtype=np.complex_)
     flm[ind] = 1
     return flm
 
@@ -31,7 +31,7 @@ def invert_flm_boosted(
     """
     performs the inverse harmonic transform
     """
-    boost = resolution ** 2 - L ** 2
+    boost = resolution**2 - L**2
     flm = boost_coefficient_resolution(flm, boost)
     return ssht.inverse(
         flm, resolution, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME
@@ -73,7 +73,7 @@ def compute_random_signal(L: int, rng: Generator, var_signal: float) -> np.ndarr
     complex signal with mean 0 and variance 1
     """
     return np.sqrt(var_signal / 2) * (
-        rng.standard_normal(L ** 2) + 1j * rng.standard_normal(L ** 2)
+        rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
     )
 
 

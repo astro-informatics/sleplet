@@ -56,7 +56,7 @@ def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
     rng = default_rng(RANDOM_SEED)
 
     # initialise
-    nlm = np.zeros(L ** 2, dtype=np.complex_)
+    nlm = np.zeros(L**2, dtype=np.complex_)
 
     # std dev of the noise
     sigma_noise = compute_sigma_noise(signal, snr_in)
@@ -165,7 +165,7 @@ def compute_slepian_sigma_j(
     compute sigma_j for wavelets used in denoising the signal
     """
     p_axis = 1
-    sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L ** 2)
+    sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L**2)
     s_p = compute_s_p_omega(L, slepian)
     psi_j_reshape = psi_j[:, : slepian.N, np.newaxis, np.newaxis]
     wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_axis)

@@ -88,10 +88,10 @@ def test_create_kappas() -> None:
     """
     checks that the method creates the scaling function and wavelets
     """
-    wavelets = create_kappas(L_LARGE ** 2, B, J_MIN)
-    j_max = pys2let_j_max(B, L_LARGE ** 2, J_MIN)
+    wavelets = create_kappas(L_LARGE**2, B, J_MIN)
+    j_max = pys2let_j_max(B, L_LARGE**2, J_MIN)
     assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
-    assert_equal(L_LARGE ** 2, wavelets.shape[1])
+    assert_equal(L_LARGE**2, wavelets.shape[1])
 
 
 def test_wavelet_covariance(random_nd_flm) -> None:

@@ -103,8 +103,8 @@ class SlepianArbitrary(SlepianFunctions):
         self._fields: dict[int, np.ndarray] = {}
 
         # initialise real and imaginary matrices
-        D_r = np.zeros((self.L ** 2, self.L ** 2))
-        D_i = np.zeros((self.L ** 2, self.L ** 2))
+        D_r = np.zeros((self.L**2, self.L**2))
+        D_i = np.zeros((self.L**2, self.L**2))
 
         D_r_ext, shm_r_ext = create_shared_memory_array(D_r)
         D_i_ext, shm_i_ext = create_shared_memory_array(D_i)
@@ -125,7 +125,7 @@ class SlepianArbitrary(SlepianFunctions):
 
         # split up L range to maximise effiency
         chunks = split_arr_into_chunks(
-            self.L_max ** 2, settings.NCPU, arr_min=self.L_min ** 2
+            self.L_max**2, settings.NCPU, arr_min=self.L_min**2
         )
 
         # initialise pool and apply function

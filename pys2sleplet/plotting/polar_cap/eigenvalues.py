@@ -20,7 +20,7 @@ def main() -> None:
     creates a plot of Slepian eigenvalues against rank
     """
     slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX))
-    p_range = np.arange(0, L ** 2)
+    p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")
     plt.axvline(x=slepian.N, c="k", ls="--", alpha=0.5)
     plt.annotate(
@@ -31,7 +31,7 @@ def main() -> None:
         textcoords="offset points",
         annotation_clip=False,
     )
-    ticks = 2 ** np.arange(np.log2(L ** 2) + 1, dtype=int)
+    ticks = 2 ** np.arange(np.log2(L**2) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")

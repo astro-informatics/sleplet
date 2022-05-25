@@ -34,8 +34,8 @@ def _ricker(freq: float) -> np.ndarray:
     creates a Ricker wavelet
     """
     t = np.arange(-LENGTH / 2, (LENGTH - DELTA_T) / 2, DELTA_T)
-    return (1.0 - 2.0 * (np.pi ** 2) * (freq ** 2) * (t ** 2)) * np.exp(
-        -(np.pi ** 2) * (freq ** 2) * (t ** 2)
+    return (1.0 - 2.0 * (np.pi**2) * (freq**2) * (t**2)) * np.exp(
+        -(np.pi**2) * (freq**2) * (t**2)
     )
 
 

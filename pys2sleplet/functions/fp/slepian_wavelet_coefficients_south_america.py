@@ -90,7 +90,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
             j = SlepianWaveletCoefficientsSouthAmerica._j
-        self.j_max = pys2let_j_max(self.B, self.L ** 2, self.j_min)
+        self.j_max = pys2let_j_max(self.B, self.L**2, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
         if j is not None and j > self.j_max - self.j_min:

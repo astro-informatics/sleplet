@@ -29,7 +29,7 @@ def create_flm(L: int, smoothing: Optional[int] = None) -> np.ndarray:
 
     # don't take the full L
     # invert dataset as Earth backwards
-    flm = flm[: L ** 2].conj()
+    flm = flm[: L**2].conj()
 
     if isinstance(smoothing, int):
         flm = apply_gaussian_smoothing(flm, L, smoothing)

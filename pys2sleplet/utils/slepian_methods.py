@@ -92,7 +92,7 @@ def compute_s_p_omega_prime(
     q = ssht.phi_to_index(alpha, L, Method=SAMPLING_SCHEME)
     sp_omega_prime = sp_omega[:, p, q]
     # pad with zeros so it has the expected shape
-    boost = L ** 2 - slepian.N
+    boost = L**2 - slepian.N
     return boost_coefficient_resolution(sp_omega_prime, boost)
 
 

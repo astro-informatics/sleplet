@@ -13,9 +13,9 @@ def test_harmonic_coefficients_padded(random_flm) -> None:
     """
     tests that harmonic coefficients are zero padded for plotting
     """
-    boost = L_LARGE ** 2 - L_SMALL ** 2
+    boost = L_LARGE**2 - L_SMALL**2
     flm_boosted = boost_coefficient_resolution(random_flm, boost)
-    assert_equal(len(flm_boosted), L_LARGE ** 2)
+    assert_equal(len(flm_boosted), L_LARGE**2)
 
 
 def test_invert_flm_and_boost(random_flm) -> None:

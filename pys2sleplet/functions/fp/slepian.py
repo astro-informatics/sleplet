@@ -56,7 +56,7 @@ class Slepian(F_P):
         checks the requested rank is valid
         """
         if isinstance(self.extra_args, list):
-            limit = self.L ** 2
+            limit = self.L**2
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 

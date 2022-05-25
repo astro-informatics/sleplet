@@ -23,7 +23,7 @@ class SlepianFunctions:
         self._create_mask()
         self._create_fn_name()
         self._calculate_area()
-        self.N = round(self.area * self.L ** 2 / (4 * np.pi))
+        self.N = round(self.area * self.L**2 / (4 * np.pi))
         self._create_matrix_location()
         logger.info("start solving eigenproblem")
         self._solve_eigenproblem()

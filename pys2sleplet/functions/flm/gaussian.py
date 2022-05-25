@@ -16,10 +16,10 @@ class Gaussian(F_LM):
         super().__post_init__()
 
     def _create_coefficients(self) -> None:
-        flm = np.zeros(self.L ** 2, dtype=np.complex_)
+        flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma ** 2))
+            flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma**2))
         self.coefficients = flm
 
     def _create_name(self) -> None:

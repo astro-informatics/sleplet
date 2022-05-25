@@ -181,7 +181,7 @@ def _weighting_function(
     thresholded Gaussian kernel weighting function
     """
     W = np.exp(
-        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta ** 2)
+        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta**2)
     )
     knn_threshold = D <= knn
     return W * A * knn_threshold

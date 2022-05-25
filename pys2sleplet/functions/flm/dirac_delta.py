@@ -12,7 +12,7 @@ class DiracDelta(F_LM):
         super().__post_init__()
 
     def _create_coefficients(self) -> None:
-        flm = np.zeros(self.L ** 2, dtype=np.complex_)
+        flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
             flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
