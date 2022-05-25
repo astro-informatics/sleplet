@@ -5,7 +5,7 @@ import numpy as np
 from pys2let import pys2let_j_max
 
 from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.functions.flm.earth import Earth
+from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,
@@ -19,7 +19,7 @@ from pys2sleplet.utils.wavelet_methods import (
 
 
 @dataclass
-class AxisymmetricWaveletCoefficientsEarth(F_LM):
+class AxisymmetricWaveletCoefficientsSouthAmerica(F_LM):
     B: int
     j_min: int
     j: Optional[int]
@@ -63,12 +63,12 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
 
     def _create_wavelet_coefficients(self) -> None:
         """
-        computes wavelet coefficients of the Earth
+        computes wavelet coefficients of South America
         """
         self.wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
-        earth = Earth(self.L, smoothing=self.smoothing)
+        sa = SouthAmerica(self.L, smoothing=self.smoothing)
         self.wavelet_coefficients = axisymmetric_wavelet_forward(
-            self.L, earth.coefficients, self.wavelets
+            self.L, sa.coefficients, self.wavelets
         )
 
     @property  # type:ignore
@@ -80,7 +80,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
         if isinstance(B, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            B = AxisymmetricWaveletCoefficientsEarth._B
+            B = AxisymmetricWaveletCoefficientsSouthAmerica._B
         self._B = B
 
     @property  # type:ignore
@@ -92,7 +92,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
         if isinstance(j, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j = AxisymmetricWaveletCoefficientsEarth._j
+            j = AxisymmetricWaveletCoefficientsSouthAmerica._j
         self.j_max = pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
@@ -119,7 +119,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
         if isinstance(j_min, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333
-            j_min = AxisymmetricWaveletCoefficientsEarth._j_min
+            j_min = AxisymmetricWaveletCoefficientsSouthAmerica._j_min
         self._j_min = j_min
 
     @property
