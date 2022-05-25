@@ -3,7 +3,10 @@ from dataclasses import dataclass, field
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.utils.noise import compute_snr, create_slepian_noise
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import (
+    convert_camel_case_to_snake_case,
+    filename_args,
+)
 
 
 @dataclass
@@ -23,7 +26,10 @@ class SlepianNoiseSouthAmerica(F_P):
         self.coefficients = noise
 
     def _create_name(self) -> None:
-        self.name = f"slepian_noise_south_america{filename_args(self.SNR, 'snr')}"
+        self.name = (
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{filename_args(self.SNR, 'snr')}"
+        )
 
     def _set_reality(self) -> None:
         self.reality = False

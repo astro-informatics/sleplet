@@ -6,6 +6,9 @@ from pys2let import pys2let_j_max
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
 )
+from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america import (
+    AxisymmetricWaveletCoefficientsSouthAmerica,
+)
 from pys2sleplet.test.constants import J_MIN, L_LARGE, L_SMALL, VAR_SIGNAL, B
 from pys2sleplet.utils.slepian_methods import slepian_forward
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
@@ -64,13 +67,22 @@ def test_synthesis_lim_lat_lon(slepian_wavelets_lim_lat_lon, earth_lim_lat_lon) 
     assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=0)
 
 
-def test_axisymmetric_synthesis() -> None:
+def test_axisymmetric_synthesis_earth() -> None:
     """
     tests that the axisymmetric wavelet synthesis recoveres the coefficients
     """
-    awc = AxisymmetricWaveletCoefficientsEarth(L_SMALL)
+    awc = AxisymmetricWaveletCoefficientsEarth(L_SMALL, B=B, j_min=J_MIN)
     flm = axisymmetric_wavelet_inverse(L_SMALL, awc.wavelet_coefficients, awc.wavelets)
     assert_allclose(np.abs(flm - awc.earth.coefficients).mean(), 0, atol=1e-13)
+
+
+def test_axisymmetric_synthesis_south_america() -> None:
+    """
+    tests that the axisymmetric wavelet synthesis recoveres the coefficients
+    """
+    awc = AxisymmetricWaveletCoefficientsSouthAmerica(L_SMALL, B=B, j_min=J_MIN)
+    flm = axisymmetric_wavelet_inverse(L_SMALL, awc.wavelet_coefficients, awc.wavelets)
+    assert_allclose(np.abs(flm - awc.south_america.coefficients).mean(), 0, atol=1e-14)
 
 
 def test_only_wavelet_coefficients_within_shannon_returned() -> None:
@@ -98,7 +110,9 @@ def test_wavelet_covariance(random_nd_flm) -> None:
     """
     checks that sigma^j is computed for the axisymmetric case
     """
-    covariance = compute_wavelet_covariance(random_nd_flm, VAR_SIGNAL)
+    covariance = compute_wavelet_covariance(
+        L_SMALL, random_nd_flm, var_signal=VAR_SIGNAL
+    )
     assert_equal(random_nd_flm.shape[0], covariance.shape[0])
 
 
@@ -107,10 +121,10 @@ def test_slepian_wavelet_covariance(slepian_wavelets_polar_cap) -> None:
     checks that sigma^j is computed for the Slepian case
     """
     covariance = compute_slepian_wavelet_covariance(
-        slepian_wavelets_polar_cap.wavelets,
-        VAR_SIGNAL,
         slepian_wavelets_polar_cap.L,
+        slepian_wavelets_polar_cap.wavelets,
         slepian_wavelets_polar_cap.slepian,
+        var_signal=VAR_SIGNAL,
     )
     assert_equal(slepian_wavelets_polar_cap.wavelets.shape[0], covariance.shape[0])
     assert_equal(

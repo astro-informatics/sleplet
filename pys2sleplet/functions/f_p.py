@@ -32,7 +32,7 @@ class F_P(Coefficients):
         self.slepian = choose_slepian_method(self.L, self.region)
         super().__post_init__()
 
-    def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
+    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
         raise NotImplementedError("Slepian rotation is not defined")
 
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:

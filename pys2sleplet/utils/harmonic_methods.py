@@ -26,7 +26,7 @@ def boost_coefficient_resolution(flm: np.ndarray, boost: int) -> np.ndarray:
 
 
 def invert_flm_boosted(
-    flm: np.ndarray, L: int, resolution: int, reality: bool = False, spin: int = 0
+    flm: np.ndarray, L: int, resolution: int, *, reality: bool = False, spin: int = 0
 ) -> np.ndarray:
     """
     performs the inverse harmonic transform
@@ -67,7 +67,7 @@ def create_emm_vector(L: int) -> np.ndarray:
     return emm
 
 
-def compute_random_signal(L: int, rng: Generator, var_signal: float) -> np.ndarray:
+def compute_random_signal(L: int, rng: Generator, *, var_signal: float) -> np.ndarray:
     """
     generates a normally distributed random signal of a
     complex signal with mean 0 and variance 1

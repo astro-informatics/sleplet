@@ -3,7 +3,10 @@ from dataclasses import dataclass, field
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.functions.flm.earth import Earth
 from pys2sleplet.utils.noise import compute_snr, create_noise
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import (
+    convert_camel_case_to_snake_case,
+    filename_args,
+)
 
 
 @dataclass
@@ -21,7 +24,10 @@ class NoiseEarth(F_LM):
         self.coefficients = noise
 
     def _create_name(self) -> None:
-        self.name = f"noise_earth{filename_args(self.SNR, 'snr')}"
+        self.name = (
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{filename_args(self.SNR, 'snr')}"
+        )
 
     def _set_reality(self) -> None:
         self.reality = True

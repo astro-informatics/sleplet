@@ -34,7 +34,7 @@ def is_limited_lat_lon(
     )
 
 
-def is_ergodic(j_min: int, j: int = 0) -> bool:
+def is_ergodic(j_min: int, *, j: int = 0) -> bool:
     """
     computes whether the function follows ergodicity
 

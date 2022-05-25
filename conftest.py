@@ -29,17 +29,17 @@ from pys2sleplet.utils.harmonic_methods import compute_random_signal
 from pys2sleplet.utils.vars import RANDOM_SEED
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser) -> None:
     parser.addoption(
         "--runslow", action="store_true", default=False, help="run slow tests"
     )
 
 
-def pytest_configure(config):
+def pytest_configure(config) -> None:
     config.addinivalue_line("markers", "slow: mark test as slow to run")
 
 
-def pytest_collection_modifyitems(config, items):
+def pytest_collection_modifyitems(config, items) -> None:
     if config.getoption("--runslow"):
         # --runslow given in cli: do not skip slow tests
         return
@@ -137,7 +137,7 @@ def random_flm() -> np.ndarray:
     creates random flm
     """
     rng = default_rng(RANDOM_SEED)
-    return compute_random_signal(L_SMALL, rng, 1)
+    return compute_random_signal(L_SMALL, rng, var_signal=1)
 
 
 @pytest.fixture(scope="session")
@@ -146,7 +146,9 @@ def random_nd_flm() -> np.ndarray:
     creates multiple random flm
     """
     rng = default_rng(RANDOM_SEED)
-    return np.array([compute_random_signal(L_SMALL, rng, 1) for _ in range(ARRAY_DIM)])
+    return np.array(
+        [compute_random_signal(L_SMALL, rng, var_signal=1) for _ in range(ARRAY_DIM)]
+    )
 
 
 @pytest.fixture(scope="session")

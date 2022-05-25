@@ -8,8 +8,8 @@ import pyssht as ssht
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.plotting.create_plot_sphere import Plot
+from pys2sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.function_dicts import COEFFICIENTS, MAPS_LM
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_default_region
 from pys2sleplet.utils.plot_methods import (
@@ -17,7 +17,10 @@ from pys2sleplet.utils.plot_methods import (
     rotate_earth_to_south_america,
 )
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
-from pys2sleplet.utils.string_methods import filename_angle
+from pys2sleplet.utils.string_methods import (
+    convert_classes_list_to_snake_case,
+    filename_angle,
+)
 from pys2sleplet.utils.vars import (
     ALPHA_DEFAULT,
     ANNOTATION_COLOUR,
@@ -31,22 +34,20 @@ def valid_maps(map_name: str) -> str:
     """
     check if valid map
     """
-    if map_name in MAPS_LM:
-        function = map_name
+    if map_name in convert_classes_list_to_snake_case(MAPS_LM):
+        return map_name
     else:
-        raise ValueError("Not a valid map name to convolve")
-    return function
+        raise ValueError(f"{map_name} is not a valid map to convolve")
 
 
 def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    if func_name in COEFFICIENTS:
-        function = func_name
+    if func_name in convert_classes_list_to_snake_case(COEFFICIENTS):
+        return func_name
     else:
-        raise ValueError("Not a valid function name to plot")
-    return function
+        raise ValueError(f"{func_name} is not a valid function to plot")
 
 
 def read_args() -> Namespace:
@@ -57,7 +58,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "function",
         type=valid_plotting,
-        choices=list(COEFFICIENTS.keys()),
+        choices=convert_classes_list_to_snake_case(COEFFICIENTS),
         help="function to plot on the sphere",
     )
     parser.add_argument(
@@ -82,7 +83,7 @@ def read_args() -> Namespace:
         "-c",
         type=valid_maps,
         default=None,
-        choices=list(MAPS_LM.keys()),
+        choices=convert_classes_list_to_snake_case(MAPS_LM),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -242,7 +243,7 @@ def _rotation_helper(
     gamma = gamma_pi_frac * np.pi
 
     # rotate by alpha, beta, gamma
-    coefficients = f.rotate(alpha, beta, gamma)
+    coefficients = f.rotate(alpha, beta, gamma=gamma)
     return coefficients, filename
 
 
@@ -325,7 +326,9 @@ def main() -> None:
 
     mask = create_default_region(settings) if args.region else None
 
-    f = COEFFICIENTS[args.function](
+    f = COEFFICIENTS[
+        convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)
+    ](
         args.bandlimit,
         extra_args=args.extra_args,
         region=mask,
@@ -334,7 +337,9 @@ def main() -> None:
     )
 
     g = (
-        COEFFICIENTS[args.convolve](args.bandlimit)
+        MAPS_LM[convert_classes_list_to_snake_case(MAPS_LM).index(args.convolve)](
+            args.bandlimit
+        )
         if isinstance(args.convolve, str)
         else None
     )

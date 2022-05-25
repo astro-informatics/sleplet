@@ -40,7 +40,7 @@ class Coefficients:
         self._add_noise_to_signal()
 
     def translate(
-        self, alpha: float, beta: float, shannon: Optional[int] = None
+        self, alpha: float, beta: float, *, shannon: Optional[int] = None
     ) -> np.ndarray:
         g_coefficients = self._translation_helper(alpha, beta)
         return (
@@ -53,6 +53,7 @@ class Coefficients:
         self,
         f_coefficient: np.ndarray,
         g_coefficient: np.ndarray,
+        *,
         shannon: Optional[int] = None,
     ) -> np.ndarray:
         # translation/convolution are not real for general function
@@ -189,7 +190,7 @@ class Coefficients:
         self._unnoised_coefficients = unnoised_coefficients
 
     @abstractmethod
-    def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
+    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
         """
         rotates given flm on the sphere by alpha/beta/gamma
         """

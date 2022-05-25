@@ -1,5 +1,5 @@
 from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from pys2sleplet.functions.flm.earth import Earth
+from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.plotting.create_plot_sphere import Plot
 from pys2sleplet.utils.denoising import denoising_axisym
 from pys2sleplet.utils.plot_methods import find_max_amplitude
@@ -14,11 +14,11 @@ SNR_IN = 10
 
 def main() -> None:
     """
-    reproduce the denoising demo from s2let paper
+    contrast denosiing with an Earth map versus South America map
     """
     # create map & noised map
-    fun = Earth(L)
-    fun_noised = Earth(L, noise=SNR_IN)
+    fun = SouthAmerica(L)
+    fun_noised = SouthAmerica(L, noise=SNR_IN)
 
     # create wavelets
     aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
@@ -26,9 +26,7 @@ def main() -> None:
     # fix amplitude
     amplitude = find_max_amplitude(fun)
 
-    f, _, _ = denoising_axisym(
-        fun, fun_noised, aw, SNR_IN, N_SIGMA, rotate_to_south_america=True
-    )
+    f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
     name = f"{fun.name}_denoised_axisym"
     Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
 

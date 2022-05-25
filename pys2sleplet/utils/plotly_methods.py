@@ -20,6 +20,7 @@ def create_camera(
     y_eye: float,
     z_eye: float,
     zoom: float,
+    *,
     x_center: float = 0,
     y_center: float = 0,
     z_center: float = 0,
@@ -33,7 +34,9 @@ def create_camera(
     )
 
 
-def create_layout(camera: Camera, annotations: Optional[list[dict]] = None) -> Layout:
+def create_layout(
+    camera: Camera, *, annotations: Optional[list[dict]] = None
+) -> Layout:
     """
     default plotly layout
     """
@@ -53,7 +56,7 @@ def create_layout(camera: Camera, annotations: Optional[list[dict]] = None) -> L
 
 
 def create_tick_mark(
-    fmin: float, fmax: float, amplitude: Optional[float] = None
+    fmin: float, fmax: float, *, amplitude: Optional[float] = None
 ) -> float:
     """
     creates tick mark to use when using a non-normalised plot
@@ -61,7 +64,9 @@ def create_tick_mark(
     return amplitude if amplitude is not None else max(abs(fmin), abs(fmax))
 
 
-def create_colour_bar(tick_mark: float, normalise: bool, bar_pos: float = 0.93) -> dict:
+def create_colour_bar(
+    tick_mark: float, normalise: bool, *, bar_pos: float = 0.93
+) -> dict:
     """
     default plotly colour bar
     """

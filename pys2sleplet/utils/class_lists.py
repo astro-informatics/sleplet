@@ -5,6 +5,9 @@ from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
 )
+from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america import (
+    AxisymmetricWaveletCoefficientsSouthAmerica,
+)
 from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.flm.dirac_delta import DiracDelta
 from pys2sleplet.functions.flm.directional_spin_wavelets import DirectionalSpinWavelets
@@ -52,57 +55,52 @@ from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
-MESHES: set[str] = {
+MESHES: list[str] = [
     Path(x.removesuffix(".toml")).stem
     for x in glob(str(_meshes_path / "regions" / "*.toml"))
-}
+]
 
-FLM: dict[str, Coefficients] = dict(
-    axisymmetric_wavelet_coefficients_earth=AxisymmetricWaveletCoefficientsEarth,
-    axisymmetric_wavelets=AxisymmetricWavelets,
-    dirac_delta=DiracDelta,
-    directional_spin_wavelets=DirectionalSpinWavelets,
-    elongated_gaussian=ElongatedGaussian,
-    earth=Earth,
-    gaussian=Gaussian,
-    harmonic_gaussian=HarmonicGaussian,
-    identity=Identity,
-    noise=NoiseEarth,
-    ridgelets=Ridgelets,
-    south_america=SouthAmerica,
-    spherical_harmonic=SphericalHarmonic,
-    squashed_gaussian=SquashedGaussian,
-    wmap=Wmap,
-)
+FLM: list[Coefficients] = [
+    AxisymmetricWaveletCoefficientsEarth,
+    AxisymmetricWaveletCoefficientsSouthAmerica,
+    AxisymmetricWavelets,
+    DiracDelta,
+    DirectionalSpinWavelets,
+    Earth,
+    ElongatedGaussian,
+    Gaussian,
+    HarmonicGaussian,
+    Identity,
+    NoiseEarth,
+    Ridgelets,
+    SouthAmerica,
+    SphericalHarmonic,
+    SquashedGaussian,
+    Wmap,
+]
 
-FP: dict[str, Coefficients] = dict(
-    slepian=Slepian,
-    slepian_dirac_delta=SlepianDiracDelta,
-    slepian_identity=SlepianIdentity,
-    slepian_noise=SlepianNoiseSouthAmerica,
-    slepian_south_america=SlepianSouthAmerica,
-    slepian_wavelet_coefficients=SlepianWaveletCoefficientsSouthAmerica,
-    slepian_wavelets=SlepianWavelets,
-)
+FP: list[Coefficients] = [
+    SlepianDiracDelta,
+    SlepianIdentity,
+    SlepianNoiseSouthAmerica,
+    SlepianSouthAmerica,
+    SlepianWaveletCoefficientsSouthAmerica,
+    SlepianWavelets,
+    Slepian,
+]
 
-MAPS_LM: dict[str, Coefficients] = dict(
-    earth=Earth, south_america=SouthAmerica, wmap=Wmap
-)
+COEFFICIENTS: list[Coefficients] = FLM + FP
 
-MAPS_P: dict[str, Coefficients] = dict(slepian_south_america=SlepianSouthAmerica)
+MAPS_LM: list[Coefficients] = [Earth, SouthAmerica, Wmap]
 
-COEFFICIENTS: dict[str, Coefficients] = {**FLM, **FP}
+MESH_HARMONIC: list[MeshCoefficients] = [MeshBasisFunctions, MeshField, MeshNoiseField]
 
-MESH_HARMONIC: dict[str, MeshCoefficients] = dict(
-    basis=MeshBasisFunctions, field=MeshField, noise=MeshNoiseField
-)
+MESH_SLEPIAN: list[MeshCoefficients] = [
+    SlepianMeshWaveletCoefficients,
+    SlepianMeshField,
+    SlepianMeshNoiseField,
+    SlepianMeshFunctions,
+    SlepianMeshWavelets,
+]
 
-MESH_SLEPIAN: dict[str, MeshCoefficients] = dict(
-    coefficients=SlepianMeshWaveletCoefficients,
-    slepian=SlepianMeshFunctions,
-    slepian_field=SlepianMeshField,
-    slepian_noise=SlepianMeshNoiseField,
-    wavelets=SlepianMeshWavelets,
-)
-
-MESH_COEFFICIENTS: dict[str, MeshCoefficients] = {**MESH_HARMONIC, **MESH_SLEPIAN}
+MESH_COEFFICIENTS: list[MeshCoefficients] = MESH_HARMONIC + MESH_SLEPIAN

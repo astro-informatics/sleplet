@@ -8,6 +8,7 @@ from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
 from pys2sleplet.utils.plot_methods import rotate_earth_to_south_america
+from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
@@ -25,7 +26,7 @@ class SouthAmerica(F_LM):
         )
 
     def _create_name(self) -> None:
-        self.name = "south_america"
+        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> None:
         self.reality = True

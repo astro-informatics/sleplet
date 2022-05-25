@@ -4,7 +4,10 @@ import pyssht as ssht
 
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.harmonic_methods import create_spherical_harmonic
-from pys2sleplet.utils.string_methods import filename_args
+from pys2sleplet.utils.string_methods import (
+    convert_camel_case_to_snake_case,
+    filename_args,
+)
 
 
 @dataclass
@@ -20,7 +23,7 @@ class SphericalHarmonic(F_LM):
 
     def _create_name(self) -> None:
         self.name = (
-            "spherical_harmonic"
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.ell, 'l')}"
             f"{filename_args(self.m, 'm')}"
         )

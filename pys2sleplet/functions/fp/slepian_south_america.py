@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from pys2sleplet.functions.f_p import F_P
 from pys2sleplet.functions.flm.south_america import SouthAmerica
 from pys2sleplet.utils.slepian_methods import slepian_forward
+from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
 @dataclass
@@ -17,7 +18,7 @@ class SlepianSouthAmerica(F_P):
         self.coefficients = slepian_forward(self.L, self.slepian, flm=sa.coefficients)
 
     def _create_name(self) -> None:
-        self.name = f"slepian_{self.slepian.region.name_ending}"
+        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> None:
         self.reality = False

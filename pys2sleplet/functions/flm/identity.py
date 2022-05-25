@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from pys2sleplet.functions.f_lm import F_LM
+from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
 @dataclass
@@ -14,7 +15,7 @@ class Identity(F_LM):
         self.coefficients = np.ones(self.L**2, dtype=np.complex_)
 
     def _create_name(self) -> None:
-        self.name = "identity"
+        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> None:
         self.reality = True

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.functions.f_lm import F_LM
+from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
 @dataclass
@@ -13,7 +14,7 @@ class Earth(F_LM):
         self.coefficients = create_flm(self.L, smoothing=self.smoothing)
 
     def _create_name(self) -> None:
-        self.name = "earth"
+        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> None:
         self.reality = True

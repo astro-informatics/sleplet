@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 
 from pys2sleplet.functions.f_lm import F_LM
+from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
 @dataclass
@@ -19,7 +20,7 @@ class DiracDelta(F_LM):
         self.coefficients = flm
 
     def _create_name(self) -> None:
-        self.name = "dirac_delta"
+        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> None:
         self.reality = True

@@ -5,7 +5,7 @@ from pys2sleplet.utils.vars import L_MIN_DEFAULT
 
 
 def split_arr_into_chunks(
-    arr_max: int, ncpu: int, arr_min: int = L_MIN_DEFAULT
+    arr_max: int, ncpu: int, *, arr_min: int = L_MIN_DEFAULT
 ) -> list[np.ndarray]:
     """
     split L into a list of arrays for parallelism

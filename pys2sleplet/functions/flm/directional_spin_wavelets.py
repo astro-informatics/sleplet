@@ -7,7 +7,11 @@ from pys2let import pys2let_j_max, wavelet_tiling
 
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
+from pys2sleplet.utils.string_methods import (
+    convert_camel_case_to_snake_case,
+    filename_args,
+    wavelet_ending,
+)
 
 
 @dataclass
@@ -37,7 +41,7 @@ class DirectionalSpinWavelets(F_LM):
 
     def _create_name(self) -> None:
         self.name = (
-            "directional_spin_wavelets"
+            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
             f"{filename_args(self.spin, 'spin')}"

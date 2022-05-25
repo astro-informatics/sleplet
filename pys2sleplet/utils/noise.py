@@ -38,6 +38,7 @@ def compute_snr(signal: np.ndarray, noise: np.ndarray, signal_type: str) -> floa
 def compute_sigma_noise(
     signal: np.ndarray,
     snr_in: int,
+    *,
     denominator: Optional[int] = None,
 ) -> float:
     """

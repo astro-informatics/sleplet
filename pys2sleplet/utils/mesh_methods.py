@@ -75,6 +75,7 @@ def mesh_eigendecomposition(
     name: str,
     vertices: np.ndarray,
     faces: np.ndarray,
+    *,
     mesh_laplacian: bool = True,
     number_basis_functions: Optional[int] = None,
 ) -> tuple[np.ndarray, np.ndarray, int]:
@@ -139,6 +140,7 @@ def read_mesh(mesh_config: Box) -> tuple[np.ndarray, np.ndarray]:
 def _graph_laplacian(
     vertices: np.ndarray,
     faces: np.ndarray,
+    *,
     theta: float = GAUSSIAN_KERNEL_THETA_DEFAULT,
     knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
 ) -> np.ndarray:

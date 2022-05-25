@@ -9,8 +9,8 @@ from scipy.interpolate import pchip
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
 from pys2sleplet.scripts.plotting_on_mesh import valid_meshes
+from pys2sleplet.utils.class_lists import MESHES
 from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.function_dicts import MESHES
 from pys2sleplet.utils.plot_methods import save_plot
 from pys2sleplet.utils.wavelet_methods import create_kappas
 

@@ -34,6 +34,8 @@ def denoising_axisym(
     axisymmetric_wavelets: AxisymmetricWavelets,
     snr_in: int,
     n_sigma: int,
+    *,
+    rotate_to_south_america: bool = False,
 ) -> tuple[np.ndarray, float, float]:
     """
     reproduce the denoising demo from s2let paper
@@ -56,15 +58,17 @@ def denoising_axisym(
         signal.L, w_denoised, axisymmetric_wavelets.wavelets
     )
 
-    # rotate to South America
-    flm_rot = rotate_earth_to_south_america(flm, signal.L)
-
     # compute SNR
     denoised_snr = compute_snr(
         signal.coefficients, flm - signal.coefficients, "Harmonic"
     )
 
-    f = ssht.inverse(flm_rot, signal.L, Method=SAMPLING_SCHEME)
+    # rotate to South America
+    flm = (
+        rotate_earth_to_south_america(flm, signal.L) if rotate_to_south_america else flm
+    )
+
+    f = ssht.inverse(flm, signal.L, Method=SAMPLING_SCHEME)
     return f, noised_signal.snr, denoised_snr
 
 

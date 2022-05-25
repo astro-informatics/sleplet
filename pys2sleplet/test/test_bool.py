@@ -34,4 +34,4 @@ def test_bool_erodicity() -> None:
     verifies that a function follows ergodicity
     """
     assert not is_ergodic(J_MIN)
-    assert is_ergodic(J_MIN, J)
+    assert is_ergodic(J_MIN, j=J)

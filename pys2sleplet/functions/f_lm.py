@@ -14,7 +14,7 @@ class F_LM(Coefficients):
         self.coefficients: np.ndarray  # mypy
         super().__post_init__()
 
-    def rotate(self, alpha: float, beta: float, gamma: float = 0) -> np.ndarray:
+    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:

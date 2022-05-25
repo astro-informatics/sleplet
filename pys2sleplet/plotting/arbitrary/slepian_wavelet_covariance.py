@@ -33,7 +33,7 @@ def main() -> None:
 
     # theoretical covariance
     covar_theory = compute_slepian_wavelet_covariance(
-        sw.wavelets, VAR_FP, L, sw.slepian
+        L, sw.wavelets, sw.slepian, var_signal=VAR_FP
     )
 
     # initialise matrix
@@ -45,7 +45,7 @@ def main() -> None:
 
     for i in range(RUNS):
         # Generate normally distributed random complex signal
-        f_p = compute_random_signal(L, rng, VAR_FP)
+        f_p = compute_random_signal(L, rng, var_signal=VAR_FP)
 
         # compute wavelet coefficients
         w_p = slepian_wavelet_forward(f_p, sw.wavelets, sw.slepian.N)
