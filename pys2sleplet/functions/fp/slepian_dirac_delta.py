@@ -27,7 +27,7 @@ class SlepianDiracDelta(F_P):
     def _create_name(self) -> None:
         self.name = (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"{self.slepian.region.name_ending}"
+            f"_{self.slepian.region.name_ending}"
         )
 
     def _set_reality(self) -> None:
