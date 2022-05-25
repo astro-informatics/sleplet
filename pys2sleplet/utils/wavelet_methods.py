@@ -68,7 +68,9 @@ def axisymmetric_wavelet_inverse(
     return flm
 
 
-def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.ndarray:
+def compute_wavelet_covariance(
+    L: int, wavelets: np.ndarray, *, var_signal: float
+) -> np.ndarray:
     """
     computes the theoretical covariance of the wavelet coefficients
     """
@@ -78,7 +80,11 @@ def compute_wavelet_covariance(wavelets: np.ndarray, var_signal: float) -> np.nd
 
 
 def compute_slepian_wavelet_covariance(
-    wavelets: np.ndarray, var_signal: float, L: int, slepian: SlepianFunctions
+    L: int,
+    wavelets: np.ndarray,
+    slepian: SlepianFunctions,
+    *,
+    var_signal: float,
 ) -> np.ndarray:
     """
     computes the theoretical covariance of the wavelet coefficients

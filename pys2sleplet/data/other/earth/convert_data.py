@@ -28,8 +28,7 @@ def _helper(df: pd.DataFrame, filename: str) -> None:
     df["imag"] = pd.to_numeric(df["imag"].str.replace("D", "E"))
 
     # add missing tidal data
-    if not (df["ell"] == 0).any():
-        df = _add_missing_data(df)
+    df = _add_missing_data(df) if not (df["ell"] == 0).any() else df
 
     # bandlimit
     L = df["ell"].max()

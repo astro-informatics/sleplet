@@ -242,7 +242,7 @@ def _rotation_helper(
     gamma = gamma_pi_frac * np.pi
 
     # rotate by alpha, beta, gamma
-    coefficients = f.rotate(alpha, beta, gamma)
+    coefficients = f.rotate(alpha, beta, gamma=gamma)
     return coefficients, filename
 
 

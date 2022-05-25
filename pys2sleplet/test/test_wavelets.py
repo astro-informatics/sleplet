@@ -98,7 +98,9 @@ def test_wavelet_covariance(random_nd_flm) -> None:
     """
     checks that sigma^j is computed for the axisymmetric case
     """
-    covariance = compute_wavelet_covariance(random_nd_flm, VAR_SIGNAL)
+    covariance = compute_wavelet_covariance(
+        L_SMALL, random_nd_flm, var_signal=VAR_SIGNAL
+    )
     assert_equal(random_nd_flm.shape[0], covariance.shape[0])
 
 
@@ -107,10 +109,10 @@ def test_slepian_wavelet_covariance(slepian_wavelets_polar_cap) -> None:
     checks that sigma^j is computed for the Slepian case
     """
     covariance = compute_slepian_wavelet_covariance(
-        slepian_wavelets_polar_cap.wavelets,
-        VAR_SIGNAL,
         slepian_wavelets_polar_cap.L,
+        slepian_wavelets_polar_cap.wavelets,
         slepian_wavelets_polar_cap.slepian,
+        var_signal=VAR_SIGNAL,
     )
     assert_equal(slepian_wavelets_polar_cap.wavelets.shape[0], covariance.shape[0])
     assert_equal(

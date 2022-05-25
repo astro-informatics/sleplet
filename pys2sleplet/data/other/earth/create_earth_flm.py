@@ -11,7 +11,7 @@ _file_location = Path(__file__).resolve()
 _matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
 
 
-def create_flm(L: int, smoothing: Optional[int] = None) -> np.ndarray:
+def create_flm(L: int, *, smoothing: Optional[int] = None) -> np.ndarray:
     """
     creates the flm for the whole Earth
     """

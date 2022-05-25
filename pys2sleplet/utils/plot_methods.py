@@ -35,7 +35,9 @@ def calc_plot_resolution(L: int) -> int:
     return L
 
 
-def convert_colourscale(cmap: colors, pl_entries: int = 255) -> list[tuple[float, str]]:
+def convert_colourscale(
+    cmap: colors, *, pl_entries: int = 255
+) -> list[tuple[float, str]]:
     """
     converts cmocean colourscale to a plotly colourscale
     """
@@ -81,7 +83,7 @@ def save_plot(path: Path, name: str) -> None:
 
 
 def find_max_amplitude(
-    function: Coefficients, plot_type: str = "real", upsample: bool = True
+    function: Coefficients, *, plot_type: str = "real", upsample: bool = True
 ) -> dict[str, float]:
     """
     for a given set of coefficients it finds the largest absolute value for a

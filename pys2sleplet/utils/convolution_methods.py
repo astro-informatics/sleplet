@@ -4,7 +4,10 @@ import numpy as np
 
 
 def sifting_convolution(
-    f_coefficient: np.ndarray, g_coefficient: np.ndarray, shannon: Optional[int] = None
+    f_coefficient: np.ndarray,
+    g_coefficient: np.ndarray,
+    *,
+    shannon: Optional[int] = None
 ) -> np.ndarray:
     """
     computes the sifting convolution between two multipoles

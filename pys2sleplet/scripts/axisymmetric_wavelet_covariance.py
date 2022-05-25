@@ -12,9 +12,13 @@ from pys2sleplet.utils.wavelet_methods import (
     compute_wavelet_covariance,
 )
 
+B = 3
+J_MIN = 2
+L = 128
+
 
 def axisymmetric_wavelet_covariance(
-    L: int, B: int, j_min: int, runs: int = 100, var_flm: float = 1
+    L: int, B: int, j_min: int, *, runs: int = 100, var_flm: float = 1
 ) -> None:
     """
     compute theoretical covariance of wavelet coefficients
@@ -35,7 +39,7 @@ def axisymmetric_wavelet_covariance(
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # theoretical covariance
-    covar_theory = compute_wavelet_covariance(aw.wavelets, var_flm)
+    covar_theory = compute_wavelet_covariance(L, aw.wavelets, var_signal=var_flm)
 
     # initialise matrix
     covar_runs_shape = (runs,) + covar_theory.shape
@@ -48,7 +52,7 @@ def axisymmetric_wavelet_covariance(
         logger.info(f"start run: {i+1}/{runs}")
 
         # Generate normally distributed random complex signal
-        flm = compute_random_signal(L, rng, var_flm)
+        flm = compute_random_signal(L, rng, var_signal=var_flm)
 
         # compute wavelet coefficients
         wlm = axisymmetric_wavelet_forward(L, flm, aw.wavelets)
@@ -56,7 +60,9 @@ def axisymmetric_wavelet_covariance(
         # compute covariance from data
         for j, coefficient in enumerate(wlm):
             f_wav_j = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME)
-            covar_data[i, j] = f_wav_j.var() if is_ergodic(j_min, j) else f_wav_j[0, 0]
+            covar_data[i, j] = (
+                f_wav_j.var() if is_ergodic(j_min, j=j) else f_wav_j[0, 0]
+            )
 
     # compute mean and variance
     runs_axis = 0
@@ -78,11 +84,11 @@ def axisymmetric_wavelet_covariance(
     for j in range(len(aw.wavelets)):
         message = (
             f"error in std: {error_in_std[j]:e}"
-            if is_ergodic(j_min, j)
+            if is_ergodic(j_min, j=j)
             else f"absolute error: {error_absolute[j]:e}"
         )
         logger.info(f"axisymmetric wavelet covariance {j}: '{message}'")
 
 
 if __name__ == "__main__":
-    axisymmetric_wavelet_covariance(L=128, B=3, j_min=2)
+    axisymmetric_wavelet_covariance(L, B, J_MIN)
