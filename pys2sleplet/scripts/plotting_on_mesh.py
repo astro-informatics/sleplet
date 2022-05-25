@@ -108,7 +108,7 @@ def _coefficients_to_field(f: MeshCoefficients, coefficients: np.ndarray) -> np.
     return (
         mesh_inverse(f.mesh, coefficients)
         if isinstance(f, MeshHarmonicCoefficients)
-        else slepian_mesh_inverse(f.slepian_mesh, coefficients)
+        else slepian_mesh_inverse(f.mesh_slepian, coefficients)
     )
 
 

@@ -3,9 +3,9 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
-from pys2sleplet.meshes.classes.slepian_mesh_decomposition import (
-    SlepianMeshDecomposition,
+from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from pys2sleplet.meshes.classes.mesh_slepian_decomposition import (
+    MeshSlepianDecomposition,
 )
 from pys2sleplet.slepian.slepian_decomposition import SlepianDecomposition
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
@@ -57,15 +57,18 @@ def slepian_inverse(f_p: np.ndarray, L: int, slepian: SlepianFunctions) -> np.nd
 def slepian_forward(
     L: int,
     slepian: SlepianFunctions,
+    *,
     f: Optional[np.ndarray] = None,
     flm: Optional[np.ndarray] = None,
     mask: Optional[np.ndarray] = None,
+    n_coeffs: Optional[int] = None,
 ) -> np.ndarray:
     """
     computes the Slepian forward transform for all coefficients
     """
     sd = SlepianDecomposition(L, slepian, f=f, flm=flm, mask=mask)
-    return sd.decompose_all()
+    n_coeffs = slepian.N if n_coeffs is None else n_coeffs
+    return sd.decompose_all(n_coeffs)
 
 
 def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
@@ -97,41 +100,44 @@ def compute_s_p_omega_prime(
 
 
 def slepian_mesh_forward(
-    slepian_mesh: SlepianMesh,
+    mesh_slepian: MeshSlepian,
+    *,
     u: Optional[np.ndarray] = None,
     u_i: Optional[np.ndarray] = None,
     mask: bool = False,
+    n_coeffs: Optional[int] = None,
 ) -> np.ndarray:
     """
     computes the Slepian forward transform for all coefficients
     """
-    sd = SlepianMeshDecomposition(
-        slepian_mesh,
+    sd = MeshSlepianDecomposition(
+        mesh_slepian,
         u=u,
         u_i=u_i,
         mask=mask,
     )
-    return sd.decompose_all()
+    n_coeffs = mesh_slepian.N if n_coeffs is None else n_coeffs
+    return sd.decompose_all(n_coeffs)
 
 
 def slepian_mesh_inverse(
-    slepian_mesh: SlepianMesh,
+    mesh_slepian: MeshSlepian,
     f_p: np.ndarray,
 ) -> np.ndarray:
     """
     computes the Slepian inverse transform on the mesh up to the Shannon number
     """
     p_idx = 0
-    f_p_reshape = f_p[: slepian_mesh.N, np.newaxis]
-    s_p = compute_mesh_s_p_pixel(slepian_mesh)
+    f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
+    s_p = compute_mesh_s_p_pixel(mesh_slepian)
     return (f_p_reshape * s_p).sum(axis=p_idx)
 
 
-def compute_mesh_s_p_pixel(slepian_mesh: SlepianMesh) -> np.ndarray:
+def compute_mesh_s_p_pixel(mesh_slepian: MeshSlepian) -> np.ndarray:
     """
     method to calculate Sp(omega) for a given region
     """
-    sp = np.zeros((slepian_mesh.N, slepian_mesh.mesh.vertices.shape[0]))
-    for p in range(slepian_mesh.N):
-        sp[p] = mesh_inverse(slepian_mesh.mesh, slepian_mesh.slepian_functions[p])
+    sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
+    for p in range(mesh_slepian.N):
+        sp[p] = mesh_inverse(mesh_slepian.mesh, mesh_slepian.slepian_functions[p])
     return sp

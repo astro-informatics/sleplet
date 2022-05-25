@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 
 from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from pys2sleplet.scripts.plotting_on_mesh import valid_meshes
 from pys2sleplet.utils.class_lists import MESHES
 from pys2sleplet.utils.config import settings
@@ -26,9 +26,9 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
         mesh_laplacian=settings.MESH_LAPLACIAN,
         number_basis_functions=num_basis_fun,
     )
-    slepian_mesh = SlepianMesh(mesh)
-    plt.semilogx(slepian_mesh.slepian_eigenvalues, "k.")
-    ticks = 2 ** np.arange(np.log2(slepian_mesh.N) + 1, dtype=int)
+    mesh_slepian = MeshSlepian(mesh)
+    plt.semilogx(mesh_slepian.slepian_eigenvalues, "k.")
+    ticks = 2 ** np.arange(np.log2(mesh_slepian.N) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")

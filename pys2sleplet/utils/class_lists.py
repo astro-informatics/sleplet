@@ -39,17 +39,17 @@ from pys2sleplet.meshes.harmonic_coefficients.mesh_basis_functions import (
 from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from pys2sleplet.meshes.harmonic_coefficients.mesh_noise_field import MeshNoiseField
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import MeshSlepianField
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_functions import (
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_functions import (
     MeshSlepianFunctions,
 )
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_noise_field import (
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field import (
     MeshSlepianNoiseField,
 )
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelet_coefficients import (
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients import (
     MeshSlepianWaveletCoefficients,
 )
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 

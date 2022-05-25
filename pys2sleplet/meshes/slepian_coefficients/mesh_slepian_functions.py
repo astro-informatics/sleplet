@@ -17,21 +17,21 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        s_p_i = self.slepian_mesh.slepian_functions[self.rank]
+        s_p_i = self.mesh_slepian.slepian_functions[self.rank]
         self.coefficients = slepian_mesh_forward(
-            self.slepian_mesh,
+            self.mesh_slepian,
             u_i=s_p_i,
         )
         logger.info(
             f"Slepian eigenvalue {self.rank}: "
-            f"{self.slepian_mesh.slepian_eigenvalues[self.rank]:e}"
+            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
         )
 
     def _create_name(self) -> None:
         self.name = (
             (
                 f"slepian_{self.mesh.name}_rank{self.rank}_"
-                f"lam{self.slepian_mesh.slepian_eigenvalues[self.rank]:e}"
+                f"lam{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
             )
             .replace(".", "-")
             .replace("+", "")

@@ -16,7 +16,7 @@ class MeshSlepianField(MeshSlepianCoefficients):
         """
         mf = MeshField(self.mesh, region=True)
         self.coefficients = slepian_mesh_forward(
-            self.slepian_mesh,
+            self.mesh_slepian,
             u_i=mf.coefficients,
         )
 

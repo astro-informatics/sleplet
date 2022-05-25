@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import MeshSlepianField
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from pys2sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
 from pys2sleplet.utils.string_methods import filename_args
 
@@ -16,7 +16,7 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
 
     def _create_coefficients(self) -> None:
         smf = MeshSlepianField(self.mesh, region=True)
-        noise = create_slepian_mesh_noise(self.slepian_mesh, smf.coefficients, self.SNR)
+        noise = create_slepian_mesh_noise(self.mesh_slepian, smf.coefficients, self.SNR)
         compute_snr(smf.coefficients, noise, "Slepian")
         self.coefficients = noise
 

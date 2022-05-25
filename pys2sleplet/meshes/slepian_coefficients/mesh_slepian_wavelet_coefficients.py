@@ -5,8 +5,8 @@ import numpy as np
 from pys2let import pys2let_j_max
 
 from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_field import MeshSlepianField
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 from pys2sleplet.utils.logger import logger
@@ -60,7 +60,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
         self.wavelet_coefficients = slepian_wavelet_forward(
             smf.coefficients,
             smw.wavelets,
-            self.slepian_mesh.N,
+            self.mesh_slepian.N,
         )
 
     @property  # type:ignore

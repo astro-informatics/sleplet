@@ -5,7 +5,7 @@ from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
-from pys2sleplet.meshes.slepian_coefficients.slepian_mesh_wavelets import (
+from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 from pys2sleplet.utils.noise import (
@@ -117,7 +117,7 @@ def denoising_slepian(
 def denoising_mesh_slepian(
     signal: MeshCoefficients,
     noised_signal: MeshCoefficients,
-    slepian_mesh_wavelets: MeshSlepianWavelets,
+    mesh_slepian_wavelets: MeshSlepianWavelets,
     snr_in: int,
     n_sigma: int,
 ) -> np.ndarray:
@@ -127,29 +127,29 @@ def denoising_mesh_slepian(
     # compute wavelet coefficients
     w = slepian_wavelet_forward(
         noised_signal.coefficients,
-        slepian_mesh_wavelets.wavelets,
-        slepian_mesh_wavelets.slepian_mesh.N,
+        mesh_slepian_wavelets.wavelets,
+        mesh_slepian_wavelets.mesh_slepian.N,
     )
 
     # compute wavelet noise
     sigma_j = compute_slepian_mesh_sigma_j(
-        slepian_mesh_wavelets.slepian_mesh,
+        mesh_slepian_wavelets.mesh_slepian,
         signal.coefficients,
-        slepian_mesh_wavelets.wavelets,
+        mesh_slepian_wavelets.wavelets,
         snr_in,
     )
 
     # hard thresholding
     w_denoised = slepian_mesh_hard_thresholding(
-        slepian_mesh_wavelets.slepian_mesh, w, sigma_j, n_sigma
+        mesh_slepian_wavelets.mesh_slepian, w, sigma_j, n_sigma
     )
 
     # wavelet synthesis
     f_p = slepian_wavelet_inverse(
-        w_denoised, slepian_mesh_wavelets.wavelets, slepian_mesh_wavelets.slepian_mesh.N
+        w_denoised, mesh_slepian_wavelets.wavelets, mesh_slepian_wavelets.mesh_slepian.N
     )
 
     # compute SNR
     compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
 
-    return slepian_mesh_inverse(slepian_mesh_wavelets.slepian_mesh, f_p)
+    return slepian_mesh_inverse(mesh_slepian_wavelets.mesh_slepian, f_p)

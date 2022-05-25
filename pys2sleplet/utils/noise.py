@@ -4,7 +4,7 @@ import numpy as np
 import pyssht as ssht
 from numpy.random import default_rng
 
-from pys2sleplet.meshes.classes.slepian_mesh import SlepianMesh
+from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from pys2sleplet.slepian.slepian_functions import SlepianFunctions
 from pys2sleplet.utils.harmonic_methods import mesh_forward
 from pys2sleplet.utils.logger import logger
@@ -193,7 +193,7 @@ def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
 
 
 def create_slepian_mesh_noise(
-    slepian_mesh: SlepianMesh,
+    mesh_slepian: MeshSlepian,
     slepian_signal: np.ndarray,
     snr_in: int,
 ) -> np.ndarray:
@@ -201,21 +201,21 @@ def create_slepian_mesh_noise(
     computes Gaussian white noise in Slepian space
     """
     u_i = mesh_forward(
-        slepian_mesh.mesh,
+        mesh_slepian.mesh,
         slepian_mesh_inverse(
-            slepian_mesh,
+            mesh_slepian,
             slepian_signal,
         ),
     )
     n_i = create_mesh_noise(u_i, snr_in)
     return slepian_mesh_forward(
-        slepian_mesh,
+        mesh_slepian,
         u_i=n_i,
     )
 
 
 def compute_slepian_mesh_sigma_j(
-    slepian_mesh: SlepianMesh,
+    mesh_slepian: MeshSlepian,
     signal: np.ndarray,
     psi_j: np.ndarray,
     snr_in: int,
@@ -225,16 +225,16 @@ def compute_slepian_mesh_sigma_j(
     """
     p_axis = 1
     sigma_noise = compute_sigma_noise(
-        signal, snr_in, denominator=slepian_mesh.slepian_eigenvalues.shape[0]
+        signal, snr_in, denominator=mesh_slepian.slepian_eigenvalues.shape[0]
     )
-    s_p = compute_mesh_s_p_pixel(slepian_mesh)
-    psi_j_reshape = psi_j[:, : slepian_mesh.N, np.newaxis]
+    s_p = compute_mesh_s_p_pixel(mesh_slepian)
+    psi_j_reshape = psi_j[:, : mesh_slepian.N, np.newaxis]
     wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_axis)
     return sigma_noise * np.sqrt(wavelet_power)
 
 
 def slepian_mesh_hard_thresholding(
-    slepian_mesh: SlepianMesh,
+    mesh_slepian: MeshSlepian,
     wav_coeffs: np.ndarray,
     sigma_j: np.ndarray,
     n_sigma: int,
@@ -245,7 +245,7 @@ def slepian_mesh_hard_thresholding(
     logger.info("begin Slepian mesh hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
         logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
-        f = slepian_mesh_inverse(slepian_mesh, coefficient)
+        f = slepian_mesh_inverse(mesh_slepian, coefficient)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
-        wav_coeffs[j] = slepian_mesh_forward(slepian_mesh, u=f_thresholded)
+        wav_coeffs[j] = slepian_mesh_forward(mesh_slepian, u=f_thresholded)
     return wav_coeffs
