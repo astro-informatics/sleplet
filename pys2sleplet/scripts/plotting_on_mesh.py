@@ -30,7 +30,9 @@ def valid_methods(method_name: str) -> str:
     """
     check if valid mesh name
     """
-    if method_name in convert_classes_list_to_snake_case(MESH_COEFFICIENTS):
+    if method_name in convert_classes_list_to_snake_case(
+        MESH_COEFFICIENTS, word_to_remove="Mesh"
+    ):
         return method_name
     else:
         raise ValueError(f"'{method_name}' is not a valid method to plot")
@@ -59,9 +61,11 @@ def read_args() -> Namespace:
         "-m",
         type=valid_methods,
         nargs="?",
-        default="basis",
-        const="basis",
-        choices=convert_classes_list_to_snake_case(MESH_COEFFICIENTS),
+        default="basis_functions",
+        const="basis_functions",
+        choices=convert_classes_list_to_snake_case(
+            MESH_COEFFICIENTS, word_to_remove="Mesh"
+        ),
         help="plotting routine: defaults to basis",
     )
     parser.add_argument("--noise", "-n", type=int, help="the SNR_IN of the noise level")
@@ -130,7 +134,9 @@ def main() -> None:
     # function to plot
     mesh = Mesh(args.function, mesh_laplacian=settings.MESH_LAPLACIAN, zoom=args.zoom)
     f = MESH_COEFFICIENTS[
-        convert_classes_list_to_snake_case(MESH_COEFFICIENTS).index(args.method)
+        convert_classes_list_to_snake_case(
+            MESH_COEFFICIENTS, word_to_remove="Mesh"
+        ).index(args.method)
     ](
         mesh,
         extra_args=args.extra_args,
