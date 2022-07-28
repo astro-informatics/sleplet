@@ -48,10 +48,9 @@ def slepian_inverse(f_p: np.ndarray, L: int, slepian: SlepianFunctions) -> np.nd
     """
     computes the Slepian inverse transform up to the Shannon number
     """
-    p_idx = 0
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
     s_p = compute_s_p_omega(L, slepian)
-    return (f_p_reshape * s_p).sum(axis=p_idx)
+    return (f_p_reshape * s_p).sum(axis=0)
 
 
 def slepian_forward(
@@ -127,10 +126,9 @@ def slepian_mesh_inverse(
     """
     computes the Slepian inverse transform on the mesh up to the Shannon number
     """
-    p_idx = 0
     f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
     s_p = compute_mesh_s_p_pixel(mesh_slepian)
-    return (f_p_reshape * s_p).sum(axis=p_idx)
+    return (f_p_reshape * s_p).sum(axis=0)
 
 
 def compute_mesh_s_p_pixel(mesh_slepian: MeshSlepian) -> np.ndarray:

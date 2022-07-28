@@ -129,9 +129,8 @@ def set_outside_region_to_minimum(
     mask = create_mask_region(L, region)
 
     # adapt for closed plot
-    first_row, phi_index = 0, 1
     _, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
-    closed_mask = np.insert(mask, n_phi, mask[:, first_row], axis=phi_index)
+    closed_mask = np.insert(mask, n_phi, mask[:, 0], axis=1)
 
     # set values outside mask to negative infinity
     return np.where(closed_mask, f_plot, UNSEEN)

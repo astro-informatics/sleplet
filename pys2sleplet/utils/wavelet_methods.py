@@ -15,9 +15,8 @@ def slepian_wavelet_forward(
     """
     computes the coefficients of the given tiling function in Slepian space
     """
-    p_axis = 1
     return find_non_zero_wavelet_coefficients(
-        sifting_convolution(wavelets, f_p, shannon=shannon), p_axis
+        sifting_convolution(wavelets, f_p, shannon=shannon), axis=1
     )
 
 
@@ -27,13 +26,12 @@ def slepian_wavelet_inverse(
     """
     computes the inverse wavelet transform in Slepian space
     """
-    p_idx = 0
     # ensure wavelets are the same shape as the coefficients
     wavelets_shannon = wavelets[: len(wav_coeffs)]
     wavelet_reconstruction = sifting_convolution(
         wavelets_shannon, wav_coeffs.T, shannon=shannon
     )
-    return wavelet_reconstruction.sum(axis=p_idx)
+    return wavelet_reconstruction.sum(axis=0)
 
 
 def axisymmetric_wavelet_forward(
@@ -74,8 +72,7 @@ def compute_wavelet_covariance(
     """
     computes the theoretical covariance of the wavelet coefficients
     """
-    lm_idx = 1
-    covar_theory = (np.abs(wavelets) ** 2).sum(axis=lm_idx)
+    covar_theory = (np.abs(wavelets) ** 2).sum(axis=1)
     return covar_theory * var_signal
 
 
@@ -89,10 +86,9 @@ def compute_slepian_wavelet_covariance(
     """
     computes the theoretical covariance of the wavelet coefficients
     """
-    p_idx = 1
     s_p = compute_s_p_omega(L, slepian)
     wavelets_reshape = wavelets[:, : slepian.N, np.newaxis, np.newaxis]
-    covar_theory = (np.abs(wavelets_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_idx)
+    covar_theory = (np.abs(wavelets_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return covar_theory * var_signal
 
 
@@ -118,7 +114,7 @@ def create_kappas(xlim: int, B: int, j_min: int) -> np.ndarray:
 
 
 def find_non_zero_wavelet_coefficients(
-    wav_coeffs: np.ndarray, axis: Union[int, tuple[int, ...]]
+    wav_coeffs: np.ndarray, *, axis: Union[int, tuple[int, ...]]
 ) -> np.ndarray:
     """
     finds the coefficients within the shannon number to speed up computations

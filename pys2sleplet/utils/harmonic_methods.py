@@ -91,5 +91,4 @@ def mesh_inverse(mesh: Mesh, u_i: np.ndarray) -> np.ndarray:
     """
     computes the mesh inverse transform from harmonic space to real space
     """
-    i_idx = 0
-    return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=i_idx)
+    return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)

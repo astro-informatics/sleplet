@@ -149,9 +149,8 @@ def compute_sigma_j(signal: np.ndarray, psi_j: np.ndarray, snr_in: int) -> np.nd
     """
     compute sigma_j for wavelets used in denoising the signal
     """
-    lm_axis = 1
     sigma_noise = compute_sigma_noise(signal, snr_in)
-    wavelet_power = (np.abs(psi_j) ** 2).sum(axis=lm_axis)
+    wavelet_power = (np.abs(psi_j) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)
 
 
@@ -165,11 +164,10 @@ def compute_slepian_sigma_j(
     """
     compute sigma_j for wavelets used in denoising the signal
     """
-    p_axis = 1
     sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L**2)
     s_p = compute_s_p_omega(L, slepian)
     psi_j_reshape = psi_j[:, : slepian.N, np.newaxis, np.newaxis]
-    wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_axis)
+    wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)
 
 
@@ -223,13 +221,12 @@ def compute_slepian_mesh_sigma_j(
     """
     compute sigma_j for wavelets used in denoising the signal
     """
-    p_axis = 1
     sigma_noise = compute_sigma_noise(
         signal, snr_in, denominator=mesh_slepian.slepian_eigenvalues.shape[0]
     )
     s_p = compute_mesh_s_p_pixel(mesh_slepian)
     psi_j_reshape = psi_j[:, : mesh_slepian.N, np.newaxis]
-    wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=p_axis)
+    wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)
 
 

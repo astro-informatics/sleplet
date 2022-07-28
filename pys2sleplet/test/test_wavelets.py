@@ -89,10 +89,9 @@ def test_only_wavelet_coefficients_within_shannon_returned() -> None:
     """
     verifies that only the non-zero wavelet coefficients are returned
     """
-    p_idx = 1
     coeffs_in = np.array([[3], [2], [1], [0]])
     coeffs_out = np.array([[3], [2], [1]])
-    shannon_coeffs = find_non_zero_wavelet_coefficients(coeffs_in, p_idx)
+    shannon_coeffs = find_non_zero_wavelet_coefficients(coeffs_in, axis=1)
     assert_array_equal(shannon_coeffs, coeffs_out)
 
 

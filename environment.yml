@@ -1,13 +1,13 @@
 name: s2sleplet
 
 channels:
-    - conda-forge
+  - conda-forge
 
 dependencies:
-    - igl=2.2.1
-    - pip=22.0.4
-    - plotly-orca=1.3.1
-    - python=3.9
+  - igl=2.2.1
+  - pip=22.0.4
+  - plotly-orca=1.3.1
+  - python=3.9
 
-    - pip:
-          - -r requirements.txt
+  - pip:
+      - -r requirements.txt

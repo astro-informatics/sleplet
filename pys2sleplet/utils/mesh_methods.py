@@ -148,9 +148,8 @@ def _graph_laplacian(
     computes the graph laplacian L = D - W where D
     is the degree matrix and W is the weighting function
     """
-    rows = 0
     A = adjacency_matrix(faces)
-    D = np.diagflat(A.sum(axis=rows))
+    D = np.diagflat(A.sum(axis=0))
     W = _weighting_function(D, A, vertices, theta, knn)
     return np.asarray(D - W)
 

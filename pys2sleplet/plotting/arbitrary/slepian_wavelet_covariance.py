@@ -56,13 +56,11 @@ def main() -> None:
             covar_data_runs[i, j] = slepian_inverse(coefficient, L, sw.slepian)
 
     # compute covariance
-    runs_axis = 0
-    covar_data = covar_data_runs.var(axis=runs_axis)
+    covar_data = covar_data_runs.var(axis=0)
 
     # compute differences
-    omega_axis = (1, 2)
-    non_zero_theory = find_non_zero_wavelet_coefficients(covar_theory, omega_axis)
-    non_zero_data = find_non_zero_wavelet_coefficients(covar_data, omega_axis)
+    non_zero_theory = find_non_zero_wavelet_coefficients(covar_theory, axis=(1, 2))
+    non_zero_data = find_non_zero_wavelet_coefficients(covar_data, axis=(1, 2))
     differences = np.abs(non_zero_data - non_zero_theory) / non_zero_theory
 
     # report errors
