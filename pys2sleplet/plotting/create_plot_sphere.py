@@ -114,12 +114,14 @@ class Plot:
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
-        parametric_scaling: list[float] = [0.0, 0.5],
+        parametric_scaling: Optional[list[float]] = None,
         color_range: Optional[list[float]] = None,
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot
         """
+        if parametric_scaling is None:
+            parametric_scaling = [0.0, 0.5]
         if method == "MW_pole":
             if len(f) == 2:
                 f, _ = f
@@ -129,7 +131,7 @@ class Plot:
         thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
-            raise Exception("Bandlimit L deos not match that of f")
+            raise AttributeError("Bandlimit L deos not match that of f")
 
         f_plot = f.copy()
 

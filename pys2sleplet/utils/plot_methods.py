@@ -27,12 +27,14 @@ def calc_plot_resolution(L: int) -> int:
     """
     res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
 
-    for log_bandlimit, exponent in res_dict.items():
-        if L < 2**log_bandlimit:
-            return L * 2**exponent
-
-    # otherwise just use the bandlimit
-    return L
+    return next(
+        (
+            L * 2**exponent
+            for log_bandlimit, exponent in res_dict.items()
+            if L < 2**log_bandlimit
+        ),
+        L,
+    )
 
 
 def convert_colourscale(

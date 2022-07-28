@@ -28,17 +28,16 @@ def _helper(df: pd.DataFrame, filename: str) -> None:
     df["imag"] = pd.to_numeric(df["imag"].str.replace("D", "E"))
 
     # add missing tidal data
-    df = _add_missing_data(df) if not (df["ell"] == 0).any() else df
+    df = df if (df["ell"] == 0).any() else _add_missing_data(df)
 
     # bandlimit
     L = df["ell"].max()
 
     # fill dataframe with zero for missing values
     # the original data doesn't have negative indices
-    lst = []
+    lst: list = []
     for ell in range(L + 1):
-        for m in range(-ell, 0):
-            lst.append([ell, m, 0, 0])
+        lst.extend([ell, m, 0, 0] for m in range(-ell, 0))
     df_negatives = pd.DataFrame(np.array(lst), columns=df.columns.to_list())
 
     # combine dataframes and sort on ell & m

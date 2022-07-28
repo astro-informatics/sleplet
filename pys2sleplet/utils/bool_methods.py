@@ -12,7 +12,7 @@ def is_polar_cap(
     """
     circular mask at the north pole
     """
-    return bool(
+    return (
         phi_min == PHI_MIN_DEFAULT
         and phi_max == PHI_MAX_DEFAULT
         and theta_min == THETA_MIN_DEFAULT
@@ -26,7 +26,7 @@ def is_limited_lat_lon(
     """
     a region defined by angles, just need one to not be the default
     """
-    return bool(
+    return (
         not is_polar_cap(phi_min, phi_max, theta_min, theta_max)
         and phi_min != PHI_MIN_DEFAULT
         or phi_max != PHI_MAX_DEFAULT
@@ -44,4 +44,4 @@ def is_ergodic(j_min: int, *, j: int = 0) -> bool:
     variance over all realisations instead (of course, we then won't have a
     standard deviation to compare it to the theoretical variance).
     """
-    return bool(j_min != 0 or j != 0)
+    return j_min != 0 or j != 0
