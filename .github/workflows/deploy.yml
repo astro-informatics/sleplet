@@ -7,55 +7,55 @@ on:
   pull_request:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        defaults:
-            run:
-                shell: bash -l {0}
-        steps:
-            - name: Checkout source
-              uses: actions/checkout@v3
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
 
-            - name: Restore conda cache
-              uses: actions/cache@v3
-              env:
-                  # Increase this value to reset cache if
-                  # environment.yml has not changed
-                  CACHE_NUMBER: 0
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
-                      hashFiles('environment.yml') }}
+      - name: Restore conda cache
+        uses: actions/cache@v3
+        env:
+          # Increase this value to reset cache if
+          # environment.yml has not changed
+          CACHE_NUMBER: 0
+        with:
+          path: ~/conda_pkgs_dir
+          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+            hashFiles('environment.yml') }}
 
-            - name: Restore pip cache
-              uses: actions/cache@v3
-              with:
-                  # This path is specific to Ubuntu
-                  path: ~/.cache/pip
-                  # Look to see if there is a cache hit for the corresponding requirements file
-                  key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-                  restore-keys: |
-                      ${{ runner.os }}-pip-
-                      ${{ runner.os }}-
+      - name: Restore pip cache
+        uses: actions/cache@v3
+        with:
+          # This path is specific to Ubuntu
+          path: ~/.cache/pip
+          # Look to see if there is a cache hit for the corresponding requirements file
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
 
-            - name: Setup conda
-              uses: conda-incubator/setup-miniconda@v2
-              with:
-                  activate-environment: s2sleplet
-                  environment-file: environment.yml
-                  miniforge-version: latest
-                  use-only-tar-bz2: true
-                  use-mamba: true
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: s2sleplet
+          environment-file: environment.yml
+          miniforge-version: latest
+          use-only-tar-bz2: true
+          use-mamba: true
 
-            - name: Pull LFS files
-              run: |
-                  git lfs ls-files -I \
-                  EGM2008_Topography_flms_L2190.mat,\
-                  mesh/basis_functions/bird_b697,\
-                  polar40_L32.npy,\
-                  theta30-60_phi30-60_L32.npy\
-                  -l | cut -d' ' -f1 | sort > .lfs-assets-id
-                  git lfs pull
+      - name: Pull LFS files
+        run: |
+          git lfs ls-files -I \
+          EGM2008_Topography_flms_L2190.mat,\
+          mesh/basis_functions/bird_b697,\
+          polar40_L32.npy,\
+          theta30-60_phi30-60_L32.npy\
+          -l | cut -d' ' -f1 | sort > .lfs-assets-id
+          git lfs pull
 
-            - name: Test with pytest
-              run: pytest --color=yes --runslow -v
+      - name: Test with pytest
+        run: pytest --color=yes --runslow -v
