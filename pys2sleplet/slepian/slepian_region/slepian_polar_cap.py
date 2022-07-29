@@ -262,7 +262,7 @@ class SlepianPolarCap(SlepianFunctions):
             or 2 * m2 != np.floor(2 * m2)
             or 2 * m3 != np.floor(2 * m3)
         ):
-            raise Exception("Arguments must either be integer or half-integer!")
+            raise ValueError("Arguments must either be integer or half-integer!")
 
         if (
             m1 + m2 + m3 != 0
