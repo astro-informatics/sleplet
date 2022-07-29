@@ -3,7 +3,6 @@ from pathlib import Path
 
 import cmocean
 import numpy as np
-import seaborn as sns
 
 from pys2sleplet.meshes.classes.mesh import Mesh
 from pys2sleplet.plotting.create_plot_mesh import Plot
@@ -13,7 +12,6 @@ from pys2sleplet.utils.config import settings
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
-sns.set(context="paper")
 
 
 def main(mesh_name: str) -> None:
