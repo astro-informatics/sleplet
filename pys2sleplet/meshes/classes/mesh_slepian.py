@@ -74,7 +74,7 @@ class MeshSlepian:
                 self.slepian_functions,
             ) = self._clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.slepian_eigenvalues[: self.N])
+                np.save(eval_loc, self.slepian_eigenvalues)
                 np.save(evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> np.ndarray:

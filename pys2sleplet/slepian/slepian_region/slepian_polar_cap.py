@@ -113,9 +113,9 @@ class SlepianPolarCap(SlepianFunctions):
             ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
             if settings.SAVE_MATRICES:
                 limit = self.N if self.L > L_SAVE_ALL else None
-                np.save(eval_loc, self.eigenvalues[:limit])
+                np.save(eval_loc, self.eigenvalues)
                 np.save(evec_loc, self.eigenvectors[:limit])
-                np.save(order_loc, self.order[:limit])
+                np.save(order_loc, self.order)
 
     def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
         """

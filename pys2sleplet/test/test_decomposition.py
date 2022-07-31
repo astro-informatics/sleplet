@@ -142,7 +142,7 @@ def test_proportion_wavelet_energy_leakage_polar(
         np.sort(slepian_energy)[::-1][: slepian_polar_cap.N].sum()
         / slepian_energy.sum()
     )
-    assert_allclose(1 - proportion_inside, 0, atol=7e-5)
+    assert_allclose(1 - proportion_inside, 0, atol=5e-3)
 
 
 def test_proportion_wavelet_energy_leakage_lim_lat_lon(

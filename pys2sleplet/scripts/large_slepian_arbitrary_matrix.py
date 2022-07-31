@@ -32,7 +32,7 @@ def compute_large_D_matrix(
         assert_equal(eigenvalues_split, eigenvalues)
         assert_equal(eigenvectors_split, eigenvectors)
     else:
-        np.save(eval_loc, eigenvalues_split[:shannon])
+        np.save(eval_loc, eigenvalues_split)
         np.save(evec_loc, eigenvectors_split[:shannon])
 
 

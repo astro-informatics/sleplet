@@ -92,7 +92,7 @@ class SlepianArbitrary(SlepianFunctions):
             # solve eigenproblem
             self.eigenvalues, self.eigenvectors = clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues[: self.N])
+                np.save(eval_loc, self.eigenvalues)
                 np.save(evec_loc, self.eigenvectors[: self.N])
 
     def _create_D_matrix(self) -> np.ndarray:
