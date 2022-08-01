@@ -2,6 +2,7 @@ from glob import glob
 from pathlib import Path
 
 from pys2sleplet.functions.coefficients import Coefficients
+from pys2sleplet.functions.flm.africa import Africa
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
 )
@@ -61,6 +62,7 @@ MESHES: list[str] = [
 ]
 
 FLM: list[Coefficients] = [
+    Africa,
     AxisymmetricWaveletCoefficientsEarth,
     AxisymmetricWaveletCoefficientsSouthAmerica,
     AxisymmetricWavelets,

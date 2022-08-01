@@ -13,10 +13,13 @@ from pys2sleplet.utils.mask_methods import create_mask_region
 from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import slepian_inverse
 from pys2sleplet.utils.vars import (
-    EARTH_ALPHA,
-    EARTH_BETA,
-    EARTH_GAMMA,
+    AFRICA_ALPHA,
+    AFRICA_BETA,
+    AFRICA_GAMMA,
     SAMPLING_SCHEME,
+    SOUTH_AMERICA_ALPHA,
+    SOUTH_AMERICA_BETA,
+    SOUTH_AMERICA_GAMMA,
     UNSEEN,
 )
 
@@ -142,7 +145,16 @@ def rotate_earth_to_south_america(earth_flm: np.ndarray, L: int) -> np.ndarray:
     """
     rotates the flms of the Earth to a view centered on South America
     """
-    return ssht.rotate_flms(earth_flm, EARTH_ALPHA, EARTH_BETA, EARTH_GAMMA, L)
+    return ssht.rotate_flms(
+        earth_flm, SOUTH_AMERICA_ALPHA, SOUTH_AMERICA_BETA, SOUTH_AMERICA_GAMMA, L
+    )
+
+
+def rotate_earth_to_africa(earth_flm: np.ndarray, L: int) -> np.ndarray:
+    """
+    rotates the flms of the Earth to a view centered on Africa
+    """
+    return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)
 
 
 def normalise_function(f: np.ndarray, normalise: bool) -> np.ndarray:
