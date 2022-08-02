@@ -24,6 +24,7 @@ from pys2sleplet.functions.flm.spherical_harmonic import SphericalHarmonic
 from pys2sleplet.functions.flm.squashed_gaussian import SquashedGaussian
 from pys2sleplet.functions.flm.wmap import Wmap
 from pys2sleplet.functions.fp.slepian import Slepian
+from pys2sleplet.functions.fp.slepian_africa import SlepianAfrica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_identity import SlepianIdentity
 from pys2sleplet.functions.fp.slepian_noise_south_america import (
@@ -83,6 +84,7 @@ FLM: list[Coefficients] = [
 
 FP: list[Coefficients] = [
     Slepian,
+    SlepianAfrica,
     SlepianDiracDelta,
     SlepianIdentity,
     SlepianNoiseSouthAmerica,
