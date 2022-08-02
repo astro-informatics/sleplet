@@ -1,9 +1,9 @@
 import numpy as np
 
-AFRICA_ALPHA: float = np.deg2rad(54)
-AFRICA_BETA: float = np.deg2rad(108)
-AFRICA_GAMMA: float = np.deg2rad(63)
-AFRICA_RANGE: int = np.deg2rad(40)
+AFRICA_ALPHA: float = np.deg2rad(44)
+AFRICA_BETA: float = np.deg2rad(87)
+AFRICA_GAMMA: float = np.deg2rad(341)
+AFRICA_RANGE: int = np.deg2rad(41)
 ALPHA_DEFAULT: float = 0.75
 ANNOTATION_COLOUR: str = "gold"
 ARROW_STYLE: dict = dict(

@@ -7,7 +7,7 @@ import pyssht as ssht
 from pys2sleplet.data.other.earth.create_earth_flm import create_flm
 from pys2sleplet.functions.f_lm import F_LM
 from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
-from pys2sleplet.utils.plot_methods import rotate_earth_to_south_america
+from pys2sleplet.utils.plot_methods import rotate_earth_to_africa
 from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
@@ -45,7 +45,7 @@ class Africa(F_LM):
         function on the grid
         """
         earth_flm = create_flm(self.L, smoothing=self.smoothing)
-        rot_flm = rotate_earth_to_south_america(earth_flm, self.L)
+        rot_flm = rotate_earth_to_africa(earth_flm, self.L)
         earth_f = ssht.inverse(
             rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
         )
