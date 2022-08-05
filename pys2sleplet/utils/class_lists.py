@@ -3,6 +3,9 @@ from pathlib import Path
 
 from pys2sleplet.functions.coefficients import Coefficients
 from pys2sleplet.functions.flm.africa import Africa
+from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_africa import (
+    AxisymmetricWaveletCoefficientsAfrica,
+)
 from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
 )
@@ -27,10 +30,14 @@ from pys2sleplet.functions.fp.slepian import Slepian
 from pys2sleplet.functions.fp.slepian_africa import SlepianAfrica
 from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from pys2sleplet.functions.fp.slepian_identity import SlepianIdentity
+from pys2sleplet.functions.fp.slepian_noise_africa import SlepianNoiseAfrica
 from pys2sleplet.functions.fp.slepian_noise_south_america import (
     SlepianNoiseSouthAmerica,
 )
 from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
+from pys2sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
+    SlepianWaveletCoefficientsAfrica,
+)
 from pys2sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
 )
@@ -64,6 +71,7 @@ MESHES: list[str] = [
 
 FLM: list[Coefficients] = [
     Africa,
+    AxisymmetricWaveletCoefficientsAfrica,
     AxisymmetricWaveletCoefficientsEarth,
     AxisymmetricWaveletCoefficientsSouthAmerica,
     AxisymmetricWavelets,
@@ -87,8 +95,10 @@ FP: list[Coefficients] = [
     SlepianAfrica,
     SlepianDiracDelta,
     SlepianIdentity,
+    SlepianNoiseAfrica,
     SlepianNoiseSouthAmerica,
     SlepianSouthAmerica,
+    SlepianWaveletCoefficientsAfrica,
     SlepianWaveletCoefficientsSouthAmerica,
     SlepianWavelets,
 ]
