@@ -38,5 +38,5 @@ def compute_large_D_matrix(
 
 if __name__ == "__main__":
     compute_large_D_matrix(
-        mask_name="south_america", L=128, L_ranges=[0, 64, 128], shannon=678
+        mask_name="africa", L=128, L_ranges=[0, 83, 128], shannon=1208
     )

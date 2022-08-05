@@ -14,6 +14,7 @@ from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.mask_methods import create_default_region
 from pys2sleplet.utils.plot_methods import (
     calc_nearest_grid_point,
+    rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
 from pys2sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
@@ -151,6 +152,16 @@ def read_args() -> Namespace:
         action="store_true",
         help="flag turns off upsampling for plot",
     )
+    parser.add_argument(
+        "--view",
+        "-v",
+        type=str,
+        nargs="?",
+        default="south_america",
+        const="south_america",
+        choices=["africa", "south_america"],
+        help="view of Earth: defaults to 'south_america'",
+    )
     return parser.parse_args()
 
 
@@ -165,6 +176,7 @@ def plot(
     method: str,
     plot_type: str,
     upsample: bool,
+    earth_view: str,
     amplitude: Optional[float],
 ) -> None:
     """
@@ -178,7 +190,7 @@ def plot(
     annotation = []
 
     # Shannon number for Slepian coefficients
-    shannon = f.slepian.N if not isinstance(f, F_LM) else None
+    shannon = None if isinstance(f, F_LM) else f.slepian.N
 
     logger.info(f"plotting method: '{method}'")
     if method == "rotate":
@@ -199,9 +211,12 @@ def plot(
             f, g, coefficients, shannon, filename
         )
 
-    # rotate plot of Earth to South America
+    # rotate plot of Earth
     if "earth" in filename:
-        coefficients = rotate_earth_to_south_america(coefficients, f.L)
+        if earth_view == "africa":
+            coefficients = rotate_earth_to_africa(coefficients, f.L)
+        elif earth_view == "south_america":
+            coefficients = rotate_earth_to_south_america(coefficients, f.L)
 
     # get field value
     field = _coefficients_to_field(f, coefficients)
@@ -216,7 +231,7 @@ def plot(
         normalise=normalise,
         plot_type=plot_type,
         reality=f.reality,
-        region=f.region if not isinstance(f, F_LM) else None,
+        region=None if isinstance(f, F_LM) else f.region,
         spin=f.spin,
         upsample=upsample,
     ).execute()
@@ -252,7 +267,7 @@ def _translation_helper(
     filename: str,
     alpha_pi_frac: float,
     beta_pi_frac: float,
-    shannon: int,
+    shannon: Optional[int],
 ) -> tuple[np.ndarray, str, dict]:
     """
     performs the translation specific steps
@@ -280,7 +295,7 @@ def _convolution_helper(
     f: Coefficients,
     g: Coefficients,
     coefficients: np.ndarray,
-    shannon: int,
+    shannon: Optional[int],
     filename: str,
 ) -> tuple[np.ndarray, str]:
     """
@@ -358,6 +373,7 @@ def main() -> None:
         args.method,
         args.type,
         not args.unzeropad,
+        args.view,
         amplitude,
     )
 
