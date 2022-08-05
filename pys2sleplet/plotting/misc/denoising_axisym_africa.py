@@ -14,7 +14,7 @@ SNR_IN = 10
 
 def main() -> None:
     """
-    contrast denosiing with an Earth map versus South America map
+    contrast denosiing with an Earth map versus Africa map
     """
     # create map & noised map
     fun = Africa(L)

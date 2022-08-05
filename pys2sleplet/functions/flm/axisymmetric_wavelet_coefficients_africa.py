@@ -63,7 +63,7 @@ class AxisymmetricWaveletCoefficientsAfrica(F_LM):
 
     def _create_wavelet_coefficients(self) -> None:
         """
-        computes wavelet coefficients of South America
+        computes wavelet coefficients of Africa
         """
         self.wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
         self.africa = Africa(self.L, smoothing=self.smoothing)

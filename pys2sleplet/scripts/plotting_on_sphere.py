@@ -211,7 +211,7 @@ def plot(
             f, g, coefficients, shannon, filename
         )
 
-    # rotate plot of Earth to South America
+    # rotate plot of Earth
     if "earth" in filename:
         if earth_view == "africa":
             coefficients = rotate_earth_to_africa(coefficients, f.L)
