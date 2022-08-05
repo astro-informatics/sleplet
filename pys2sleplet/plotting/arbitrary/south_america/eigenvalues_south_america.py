@@ -8,7 +8,7 @@ from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrar
 from pys2sleplet.utils.plot_methods import save_plot
 
 file_location = Path(__file__).resolve()
-fig_path = file_location.parents[2] / "figures"
+fig_path = file_location.parents[3] / "figures"
 sns.set(context="paper")
 
 L = 128

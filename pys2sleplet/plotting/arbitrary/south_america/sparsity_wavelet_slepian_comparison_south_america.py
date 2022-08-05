@@ -14,7 +14,7 @@ from pys2sleplet.utils.plot_methods import save_plot
 from pys2sleplet.utils.region import Region
 
 file_location = Path(__file__).resolve()
-fig_path = file_location.parents[2] / "figures"
+fig_path = file_location.parents[3] / "figures"
 sns.set(context="paper")
 
 B = 3
