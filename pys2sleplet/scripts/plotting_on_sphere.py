@@ -215,6 +215,7 @@ def plot(
     if "earth" in filename:
         if earth_view == "africa":
             coefficients = rotate_earth_to_africa(coefficients, f.L)
+            filename += "_africa"
         elif earth_view == "south_america":
             coefficients = rotate_earth_to_south_america(coefficients, f.L)
 
