@@ -31,7 +31,7 @@ def compute_slepian_energy_leakage(earth_region: F_LM) -> None:
     proportion_inside = slepian_energy[: slepian.N].sum() / slepian_energy.sum()
 
     assert_allclose(proportion_inside, 1, atol=0.032)
-    logger.info(f"proportion inside={proportion_inside:.2%}")
+    logger.info(f"leakage={1-proportion_inside:.2%}")
 
 
 if __name__ == "__main__":
