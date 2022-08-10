@@ -9,7 +9,7 @@ from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import save_plot
 
-L = 19
+L = 16
 LEGEND_POS = (0, 0)
 RANKS = 60
 THETA_RANGE = {10: (0, 0), 20: (0, 1), 30: (1, 0), 40: (1, 1)}

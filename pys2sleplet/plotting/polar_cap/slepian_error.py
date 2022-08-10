@@ -14,7 +14,7 @@ from pys2sleplet.utils.region import Region
 from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 from pys2sleplet.utils.vars import SAMPLING_SCHEME
 
-L = 19
+L = 16
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"

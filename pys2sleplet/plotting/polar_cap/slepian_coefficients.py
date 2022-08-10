@@ -12,7 +12,7 @@ from pys2sleplet.plotting.plotting_utils import (
 from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from pys2sleplet.utils.plot_methods import save_plot
 
-L = 19
+L = 16
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"
