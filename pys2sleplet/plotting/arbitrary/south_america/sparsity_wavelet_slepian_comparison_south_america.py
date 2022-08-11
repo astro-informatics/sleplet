@@ -73,7 +73,8 @@ def main(limit: bool) -> None:
     plt.legend()
     filename = f"south_america_sparsity_wavelet_coefficients_comparison_L{L}"
     if limit:
-        plt.axis([0, 300, 0, 50])
+        plt.xlim(right=300)
+        plt.ylim(top=50)
         filename += "_limit"
     save_plot(fig_path, filename)
 
