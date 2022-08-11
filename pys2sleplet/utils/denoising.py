@@ -10,12 +10,14 @@ from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
 )
 from pys2sleplet.utils.noise import (
     compute_sigma_j,
+    compute_sigma_noise,
     compute_slepian_mesh_sigma_j,
     compute_slepian_sigma_j,
     compute_snr,
     harmonic_hard_thresholding,
-    slepian_hard_thresholding,
+    slepian_function_hard_thresholding,
     slepian_mesh_hard_thresholding,
+    slepian_wavelet_hard_thresholding,
 )
 from pys2sleplet.utils.plot_methods import rotate_earth_to_south_america
 from pys2sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
@@ -72,7 +74,7 @@ def denoising_axisym(
     return f, noised_signal.snr, denoised_snr
 
 
-def denoising_slepian(
+def denoising_slepian_wavelet(
     signal: Coefficients,
     noised_signal: Coefficients,
     slepian_wavelets: SlepianWavelets,
@@ -99,7 +101,7 @@ def denoising_slepian(
     )
 
     # hard thresholding
-    w_denoised = slepian_hard_thresholding(
+    w_denoised = slepian_wavelet_hard_thresholding(
         signal.L, w, sigma_j, n_sigma, slepian_wavelets.slepian
     )
 
@@ -112,6 +114,31 @@ def denoising_slepian(
     compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
 
     return slepian_inverse(f_p, signal.L, slepian_wavelets.slepian)
+
+
+def denoising_slepian_function(
+    signal: Coefficients,
+    noised_signal: Coefficients,
+    snr_in: int,
+    n_sigma: int,
+) -> np.ndarray:
+    """
+    denoising demo using Slepian function
+    """
+    # compute Slepian noise
+    sigma_noise = compute_sigma_noise(
+        signal.coefficients, snr_in, denominator=signal.L**2
+    )
+
+    # hard thresholding
+    f_p = slepian_function_hard_thresholding(
+        signal.L, noised_signal.coefficients, sigma_noise, n_sigma, signal.slepian
+    )
+
+    # compute SNR
+    compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
+
+    return slepian_inverse(f_p, signal.L, signal.slepian)
 
 
 def denoising_mesh_slepian(

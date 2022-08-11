@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from pys2sleplet.plotting.create_plot_sphere import Plot
-from pys2sleplet.utils.denoising import denoising_slepian
+from pys2sleplet.utils.denoising import denoising_slepian_wavelet
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import find_max_amplitude
 from pys2sleplet.utils.region import Region
@@ -36,7 +36,7 @@ def main(snr: int, sigma: int) -> None:
     # fix amplitude
     amplitude = find_max_amplitude(fun)
 
-    f = denoising_slepian(fun, fun_noised, sw, snr, sigma)
+    f = denoising_slepian_wavelet(fun, fun_noised, sw, snr, sigma)
     name = f"{fun.name}{filename_args(snr, 'snr')}{filename_args(sigma,'n')}_denoised"
     Plot(
         f, L, name, amplitude=amplitude, normalise=NORMALISE, region=sw.region

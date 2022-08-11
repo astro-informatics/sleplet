@@ -1,9 +1,8 @@
 from argparse import ArgumentParser
 
-from pys2sleplet.functions.fp.slepian_africa import SlepianAfrica
-from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from pys2sleplet.plotting.create_plot_sphere import Plot
-from pys2sleplet.utils.denoising import denoising_slepian_wavelet
+from pys2sleplet.utils.denoising import denoising_slepian_function
 from pys2sleplet.utils.logger import logger
 from pys2sleplet.utils.plot_methods import find_max_amplitude
 from pys2sleplet.utils.region import Region
@@ -24,23 +23,21 @@ def main(snr: int, sigma: int) -> None:
     """
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
-    region = Region(mask_name="africa")
+    region = Region(mask_name="south_america")
 
     # create map & noised map
-    fun = SlepianAfrica(L, region=region, smoothing=SMOOTHING)
-    fun_noised = SlepianAfrica(L, noise=snr, region=region, smoothing=SMOOTHING)
-
-    # create wavelets
-    sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
+    fun = SlepianSouthAmerica(L, region=region, smoothing=SMOOTHING)
+    fun_noised = SlepianSouthAmerica(L, noise=snr, region=region, smoothing=SMOOTHING)
 
     # fix amplitude
     amplitude = find_max_amplitude(fun)
 
-    f = denoising_slepian_wavelet(fun, fun_noised, sw, snr, sigma)
-    name = f"{fun.name}{filename_args(snr, 'snr')}{filename_args(sigma,'n')}_denoised"
-    Plot(
-        f, L, name, amplitude=amplitude, normalise=NORMALISE, region=sw.region
-    ).execute()
+    f = denoising_slepian_function(fun, fun_noised, snr, sigma)
+    name = (
+        f"{fun.name}{filename_args(snr, 'snr')}"
+        f"{filename_args(sigma,'n')}_denoised_function"
+    )
+    Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE, region=region).execute()
 
 
 if __name__ == "__main__":
@@ -54,7 +51,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--sigma",
         "-s",
-        type=int,
+        type=float,
         default=N_SIGMA,
     )
     args = parser.parse_args()

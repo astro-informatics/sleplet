@@ -101,16 +101,6 @@ def _perform_hard_thresholding(
     return np.where(np.abs(f) < threshold, 0, f)
 
 
-def _perform_soft_thresholding(
-    f: np.ndarray, sigma_j: Union[float, np.ndarray], n_sigma: int
-) -> np.ndarray:
-    """
-    wavelet soft thresholding
-    """
-    threshold = n_sigma * sigma_j
-    return np.maximum(0, 1 - (threshold / np.abs(f))) * f
-
-
 def harmonic_hard_thresholding(
     L: int, wav_coeffs: np.ndarray, sigma_j: np.ndarray, n_sigma: int
 ) -> np.ndarray:
@@ -126,7 +116,7 @@ def harmonic_hard_thresholding(
     return wav_coeffs
 
 
-def slepian_hard_thresholding(
+def slepian_wavelet_hard_thresholding(
     L: int,
     wav_coeffs: np.ndarray,
     sigma_j: np.ndarray,
@@ -134,7 +124,7 @@ def slepian_hard_thresholding(
     slepian: SlepianFunctions,
 ) -> np.ndarray:
     """
-    perform thresholding in Slepian space
+    perform thresholding in Slepian wavelet space
     """
     logger.info("begin Slepian hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
@@ -143,6 +133,22 @@ def slepian_hard_thresholding(
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j] = slepian_forward(L, slepian, f=f_thresholded)
     return wav_coeffs
+
+
+def slepian_function_hard_thresholding(
+    L: int,
+    coefficients: np.ndarray,
+    sigma: float,
+    n_sigma: int,
+    slepian: SlepianFunctions,
+) -> np.ndarray:
+    """
+    perform thresholding in Slepian function space
+    """
+    logger.info("begin Slepian hard thresholding")
+    f = slepian_inverse(coefficients, L, slepian)
+    f_thresholded = _perform_hard_thresholding(f, sigma, n_sigma)
+    return slepian_forward(L, slepian, f=f_thresholded)
 
 
 def compute_sigma_j(signal: np.ndarray, psi_j: np.ndarray, snr_in: int) -> np.ndarray:
