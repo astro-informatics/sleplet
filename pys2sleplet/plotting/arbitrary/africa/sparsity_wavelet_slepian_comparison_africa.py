@@ -71,9 +71,11 @@ def main(limit: bool) -> None:
     _plot_axisymmetric_coefficients(shannon)
     plt.xlabel("coefficient index")
     plt.legend()
+    filename = f"africa_sparsity_wavelet_coefficients_comparison_L{L}"
     if limit:
         plt.axis([0, 300, 0, 50])
-    save_plot(fig_path, f"africa_sparsity_wavelet_coefficients_comparison_L{L}")
+        filename += "_limit"
+    save_plot(fig_path, filename)
 
 
 if __name__ == "__main__":
