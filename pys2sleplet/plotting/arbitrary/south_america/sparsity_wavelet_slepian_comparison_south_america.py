@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from pathlib import Path
 
 import numpy as np
@@ -32,10 +33,13 @@ def _plot_slepian_coefficients() -> int:
     swc = SlepianWaveletCoefficientsSouthAmerica(L, B=B, j_min=J_MIN, region=region)
 
     # find sorted coefficients
-    w_p = np.sort(np.abs(swc.wavelet_coefficients.sum(axis=0)))[::-1]
+    w_p = np.sort(np.abs(swc.wavelet_coefficients), axis=1)[:, ::-1]
 
     # perform plot
-    plt.plot(w_p, label=r"$|W^{{\varphi}}_{p}|$")
+    plt.plot(w_p[0], label=r"$|W^{{\phi}}_{p}|$")
+
+    for j, w_j in enumerate(w_p[1:]):
+        plt.plot(w_j, label=rf"$|W^{{\phi^{j+J_MIN}}}_{{p}}|$")
 
     return swc.slepian.N
 
@@ -48,13 +52,16 @@ def _plot_axisymmetric_coefficients(shannon: int) -> None:
     awc = AxisymmetricWaveletCoefficientsSouthAmerica(L, B=B, j_min=J_MIN)
 
     # find sorted coefficients
-    w_lm = np.sort(np.abs(awc.wavelet_coefficients.sum(axis=0)))[::-1]
+    w_lm = np.sort(np.abs(awc.wavelet_coefficients), axis=1)[:, ::-1]
 
     # perform plot
-    plt.plot(w_lm[:shannon], label=r"$|W^{{\varphi}}_{\ell m}|$")
+    plt.plot(w_lm[0, :shannon], "--", label=r"$|W^{{\phi}}_{\ell m}|$")
+
+    for j, w_j in enumerate(w_lm[1:]):
+        plt.plot(w_j[:shannon], "--", label=rf"$|W^{{\phi^{j+J_MIN}}}_{{\ell m}}|$")
 
 
-def main() -> None:
+def main(limit: bool) -> None:
     """
     Plot a comparison of the absolute values of the wavelet coefficients
     compared to the Slepian coefficients. Expect the Slepian coefficients to
@@ -62,10 +69,20 @@ def main() -> None:
     """
     shannon = _plot_slepian_coefficients()
     _plot_axisymmetric_coefficients(shannon)
-    plt.legend()
     plt.xlabel("coefficient index")
+    plt.legend()
+    if limit:
+        plt.axis([0, 300, 0, 50])
     save_plot(fig_path, f"south_america_sparsity_wavelet_coefficients_comparison_L{L}")
 
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser(description="South America sparsity")
+    parser.add_argument(
+        "--limit",
+        "-l",
+        action="store_true",
+        help="flag which limits the region of the plot",
+    )
+    args = parser.parse_args()
+    main(args.limit)

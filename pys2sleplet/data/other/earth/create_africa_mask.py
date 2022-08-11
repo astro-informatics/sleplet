@@ -29,7 +29,7 @@ def create_mask(L: int) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="mesh Slepian eigenvalues")
+    parser = ArgumentParser(description="create the Africa region mask")
     parser.add_argument(
         "--bandlimit", "-L", type=int, default=settings.L, help="bandlimit"
     )
