@@ -20,7 +20,7 @@ from pys2sleplet.utils.plotly_methods import (
     create_layout,
     create_tick_mark,
 )
-from pys2sleplet.utils.vars import MESH_UNSEEN
+from pys2sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -68,7 +68,11 @@ class Plot:
                 cmid=0.5 if self.normalise else 0,
                 cmin=0 if self.normalise else -tick_mark,
                 colorbar=create_colour_bar(
-                    tick_mark, self.normalise, bar_pos=self.mesh.colourbar_pos
+                    tick_mark,
+                    self.normalise,
+                    bar_len=MESH_CBAR_LEN,
+                    bar_pos=self.mesh.colourbar_pos,
+                    font_size=MESH_CBAR_FONT_SIZE,
                 ),
                 colorscale=convert_colourscale(self.colour),
                 lighting=Lighting(ambient=1),
