@@ -90,7 +90,7 @@ class Plot:
             for file_type in {"png", "pdf"}:
                 logger.info(f"saving {file_type}")
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-                fig.write_image(filename, engine="orca")
+                fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(self, f: np.ndarray) -> np.ndarray:
         """
