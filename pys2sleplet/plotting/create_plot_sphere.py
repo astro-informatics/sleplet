@@ -26,7 +26,7 @@ from pys2sleplet.utils.plotly_methods import (
     create_tick_mark,
 )
 from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, UNSEEN
+from pys2sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -146,7 +146,7 @@ class Plot:
             vmax = color_range[1]
             f_plot[f_plot < color_range[0]] = color_range[0]
             f_plot[f_plot > color_range[1]] = color_range[1]
-            f_plot[f_plot == UNSEEN] = np.nan
+            f_plot[f_plot == SPHERE_UNSEEN] = np.nan
 
         # Compute position scaling for parametric plot.
         f_normalised = (

@@ -20,7 +20,7 @@ from pys2sleplet.utils.vars import (
     SOUTH_AMERICA_ALPHA,
     SOUTH_AMERICA_BETA,
     SOUTH_AMERICA_GAMMA,
-    UNSEEN,
+    SPHERE_UNSEEN,
 )
 
 
@@ -138,7 +138,7 @@ def set_outside_region_to_minimum(
     closed_mask = np.insert(mask, n_phi, mask[:, 0], axis=1)
 
     # set values outside mask to negative infinity
-    return np.where(closed_mask, f_plot, UNSEEN)
+    return np.where(closed_mask, f_plot, SPHERE_UNSEEN)
 
 
 def rotate_earth_to_south_america(earth_flm: np.ndarray, L: int) -> np.ndarray:

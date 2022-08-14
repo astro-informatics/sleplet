@@ -20,7 +20,7 @@ from pys2sleplet.utils.plotly_methods import (
     create_layout,
     create_tick_mark,
 )
-from pys2sleplet.utils.vars import UNSEEN
+from pys2sleplet.utils.vars import MESH_UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
@@ -106,4 +106,4 @@ class Plot:
         hence it is clear we are only interested in the coloured region
         """
         region_on_faces = convert_region_on_vertices_to_faces(self.mesh)
-        return np.where(region_on_faces, f, UNSEEN)
+        return np.where(region_on_faces, f, MESH_UNSEEN)
