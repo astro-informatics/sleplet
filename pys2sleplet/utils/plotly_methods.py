@@ -65,16 +65,16 @@ def create_tick_mark(
 
 
 def create_colour_bar(
-    tick_mark: float, normalise: bool, *, bar_pos: float = 0.93
+    tick_mark: float, normalise: bool, *, bar_pos: float = 0.97
 ) -> dict:
     """
     default plotly colour bar
     """
     return dict(
         x=bar_pos,
-        len=0.95,
+        len=0.94,
         nticks=2 if normalise else None,
-        tickfont=dict(color="#666666", size=32),
+        tickfont=dict(color="#666666", size=38),
         tickformat=None if normalise else "+.1e",
         tick0=None if normalise else -tick_mark,
         dtick=None if normalise else tick_mark,
