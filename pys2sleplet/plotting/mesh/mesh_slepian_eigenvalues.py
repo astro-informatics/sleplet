@@ -28,7 +28,16 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     )
     mesh_slepian = MeshSlepian(mesh)
     plt.semilogx(mesh_slepian.slepian_eigenvalues, "k.")
-    ticks = 2 ** np.arange(np.log2(mesh_slepian.N) + 1, dtype=int)
+    plt.axvline(mesh_slepian.N, c="k", ls="--", alpha=0.8)
+    plt.annotate(
+        f"N={mesh_slepian.N}",
+        xy=(mesh_slepian.N, 1),
+        xytext=(17, 3),
+        ha="center",
+        textcoords="offset points",
+        annotation_clip=False,
+    )
+    ticks = 2 ** np.arange(np.log2(mesh.number_basis_functions) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
