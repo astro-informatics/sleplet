@@ -1,4 +1,4 @@
-# src_s2sleplet
+# s2sleplet
 
 [![deploy](https://github.com/astro-informatics/src_s2sleplet/actions/workflows/deploy.yml/badge.svg)](https://github.com/astro-informatics/src_s2sleplet/actions/workflows/deploy.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
