@@ -9,4 +9,4 @@
 
 ## Formatting
 
-Execute `pip install -r requirements.txt; pre-commit install` to install git hooks in your `.git/` directory
+Execute `pip install -r requirements.txt; pre-commit install` to install git hooks in your `.git/` directory.
