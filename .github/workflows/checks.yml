@@ -41,3 +41,9 @@ jobs:
       # format their code.
       - name: run pre-commit
         run: pre-commit run --all-files --color always
+
+      # not included in pre-commit as it's quite slow
+      - name: run sourcery
+        uses: sourcery-ai/action@v1
+        with:
+          token: ${{ secrets.SOURCERY_TOKEN }}
