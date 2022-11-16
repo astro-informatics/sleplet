@@ -39,8 +39,8 @@ jobs:
       # the files being changed by pre-commit should be just those that are
       # being committed - provided that people are using the pre-commit hook to
       # format their code.
-      # - name: run pre-commit
-      #   run: pre-commit run --all-files --color always
+      - name: run pre-commit
+        run: pre-commit run --all-files --color always
 
       # not included in pre-commit as it's quite slow
       - name: run sourcery
