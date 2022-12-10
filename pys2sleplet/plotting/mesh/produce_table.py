@@ -1,5 +1,5 @@
-from pys2sleplet.plotting.mesh.denoising_slepian_mesh import main
-from pys2sleplet.utils.logger import logger
+from sleplet.plotting.mesh.denoising_slepian_mesh import main
+from sleplet.utils.logger import logger
 
 MESH_SNR_DICT = dict(
     cheetah=-8.64, dragon=-8.12, bird=-5.17, teapot=-3.11, cube=-7.33, homer=-5

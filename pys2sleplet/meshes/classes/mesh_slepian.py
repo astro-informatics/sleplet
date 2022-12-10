@@ -5,19 +5,19 @@ import numpy as np
 from multiprocess import Pool
 from numpy import linalg as LA
 
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.integration_methods import integrate_region_mesh
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.parallel_methods import (
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet.utils.config import settings
+from sleplet.utils.integration_methods import integrate_region_mesh
+from sleplet.utils.logger import logger
+from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
     split_arr_into_chunks,
 )
-from pys2sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
+from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[2] / "data" / "meshes"

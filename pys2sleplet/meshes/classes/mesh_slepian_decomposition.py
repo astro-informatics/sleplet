@@ -3,13 +3,13 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from pys2sleplet.utils.harmonic_methods import mesh_inverse
-from pys2sleplet.utils.integration_methods import (
+from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from sleplet.utils.harmonic_methods import mesh_inverse
+from sleplet.utils.integration_methods import (
     integrate_region_mesh,
     integrate_whole_mesh,
 )
-from pys2sleplet.utils.logger import logger
+from sleplet.utils.logger import logger
 
 
 @dataclass

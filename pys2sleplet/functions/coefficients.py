@@ -4,10 +4,10 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.utils.convolution_methods import sifting_convolution
-from pys2sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.string_methods import filename_args
+from sleplet.utils.convolution_methods import sifting_convolution
+from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
+from sleplet.utils.region import Region
+from sleplet.utils.string_methods import filename_args
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 

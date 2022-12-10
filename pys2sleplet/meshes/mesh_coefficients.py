@@ -4,9 +4,9 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
-from pys2sleplet.utils.string_methods import filename_args
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
+from sleplet.utils.string_methods import filename_args
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 

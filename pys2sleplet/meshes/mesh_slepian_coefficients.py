@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
 
-from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
-from pys2sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
+from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
 
 
 @dataclass  # type:ignore

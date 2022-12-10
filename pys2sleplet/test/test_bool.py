@@ -1,14 +1,6 @@
-from pys2sleplet.test.constants import (
-    J_MIN,
-    PHI_0,
-    PHI_1,
-    THETA_0,
-    THETA_1,
-    THETA_MAX,
-    J,
-)
-from pys2sleplet.utils.bool_methods import is_ergodic, is_limited_lat_lon, is_polar_cap
-from pys2sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
+from sleplet.test.constants import J_MIN, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX, J
+from sleplet.utils.bool_methods import is_ergodic, is_limited_lat_lon, is_polar_cap
+from sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
 
 
 def test_bool_polar_cap() -> None:

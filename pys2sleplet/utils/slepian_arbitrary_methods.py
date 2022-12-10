@@ -2,8 +2,8 @@ from pathlib import Path
 
 import numpy as np
 
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
 
 def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.ndarray:

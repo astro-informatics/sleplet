@@ -1,12 +1,9 @@
 from dataclasses import dataclass, field
 
-from pys2sleplet.functions.f_p import F_P
-from pys2sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
-from pys2sleplet.utils.noise import compute_snr, create_slepian_noise
-from pys2sleplet.utils.string_methods import (
-    convert_camel_case_to_snake_case,
-    filename_args,
-)
+from sleplet.functions.f_p import F_P
+from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
+from sleplet.utils.noise import compute_snr, create_slepian_noise
+from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
 @dataclass

@@ -4,16 +4,16 @@ from typing import Optional
 import numpy as np
 from pys2let import pys2let_j_max
 
-from pys2sleplet.functions.f_p import F_P
-from pys2sleplet.functions.fp.slepian_africa import SlepianAfrica
-from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.string_methods import (
+from sleplet.functions.f_p import F_P
+from sleplet.functions.fp.slepian_africa import SlepianAfrica
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.utils.logger import logger
+from sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,
     filename_args,
     wavelet_ending,
 )
-from pys2sleplet.utils.wavelet_methods import slepian_wavelet_forward
+from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
 @dataclass

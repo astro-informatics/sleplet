@@ -4,8 +4,8 @@ from dataclasses import dataclass
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.functions.coefficients import Coefficients
-from pys2sleplet.utils.noise import compute_snr, create_noise
+from sleplet.functions.coefficients import Coefficients
+from sleplet.utils.noise import compute_snr, create_noise
 
 
 @dataclass  # type:ignore

@@ -3,7 +3,7 @@ from functools import reduce
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def calc_integration_weight(L: int) -> np.ndarray:

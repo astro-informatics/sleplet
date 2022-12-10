@@ -4,14 +4,14 @@ from typing import Optional
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.integration_methods import (
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
     integrate_whole_sphere,
 )
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.logger import logger
+from sleplet.utils.vars import SAMPLING_SCHEME
 
 
 @dataclass

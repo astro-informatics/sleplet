@@ -4,7 +4,7 @@ from pathlib import Path
 
 import numpy as np
 
-from pys2sleplet.utils.logger import logger
+from sleplet.utils.logger import logger
 
 
 @dataclass  # type:ignore

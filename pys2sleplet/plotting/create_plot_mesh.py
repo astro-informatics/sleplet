@@ -9,18 +9,18 @@ from matplotlib.colors import LinearSegmentedColormap
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
-from pys2sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
-from pys2sleplet.utils.plot_methods import convert_colourscale, normalise_function
-from pys2sleplet.utils.plotly_methods import (
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils.config import settings
+from sleplet.utils.logger import logger
+from sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
+from sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
+from sleplet.utils.plot_methods import convert_colourscale, normalise_function
+from sleplet.utils.plotly_methods import (
     create_colour_bar,
     create_layout,
     create_tick_mark,
 )
-from pys2sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
+from sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"

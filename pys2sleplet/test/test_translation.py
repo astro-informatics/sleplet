@@ -4,11 +4,11 @@ from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
-from pys2sleplet.functions.flm.dirac_delta import DiracDelta
-from pys2sleplet.test.constants import L_LARGE, THETA_1
-from pys2sleplet.utils.plot_methods import calc_nearest_grid_point
-from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
+from sleplet.functions.flm.dirac_delta import DiracDelta
+from sleplet.test.constants import L_LARGE, THETA_1
+from sleplet.utils.plot_methods import calc_nearest_grid_point
+from sleplet.utils.slepian_methods import slepian_inverse
+from sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 
 
 def valid_alphas() -> SearchStrategy[float]:

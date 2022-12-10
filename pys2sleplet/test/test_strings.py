@@ -1,8 +1,8 @@
 import numpy as np
 from numpy.testing import assert_equal
 
-from pys2sleplet.test.constants import J_MIN, PHI_0, PHI_1, THETA_MAX
-from pys2sleplet.utils.string_methods import (
+from sleplet.test.constants import J_MIN, PHI_0, PHI_1, THETA_MAX
+from sleplet.utils.string_methods import (
     angle_as_degree,
     filename_angle,
     filename_args,

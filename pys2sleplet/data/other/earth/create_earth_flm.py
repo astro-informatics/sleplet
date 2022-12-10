@@ -5,7 +5,7 @@ import numpy as np
 import pyssht as ssht
 from scipy import io as sio
 
-from pys2sleplet.utils.smoothing import apply_gaussian_smoothing
+from sleplet.utils.smoothing import apply_gaussian_smoothing
 
 _file_location = Path(__file__).resolve()
 _matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"

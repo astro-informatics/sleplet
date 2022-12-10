@@ -9,9 +9,9 @@ import pyssht as ssht
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
 
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import (
+from sleplet.utils.config import settings
+from sleplet.utils.logger import logger
+from sleplet.utils.plot_methods import (
     boost_field,
     calc_plot_resolution,
     convert_colourscale,
@@ -19,14 +19,14 @@ from pys2sleplet.utils.plot_methods import (
     normalise_function,
     set_outside_region_to_minimum,
 )
-from pys2sleplet.utils.plotly_methods import (
+from sleplet.utils.plotly_methods import (
     create_camera,
     create_colour_bar,
     create_layout,
     create_tick_mark,
 )
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
+from sleplet.utils.region import Region
+from sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"

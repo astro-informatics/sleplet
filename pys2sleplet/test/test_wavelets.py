@@ -3,16 +3,16 @@ import pyssht as ssht
 from numpy.testing import assert_allclose, assert_array_equal, assert_equal
 from pys2let import pys2let_j_max
 
-from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
+from sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
 )
-from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america import (
+from sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america import (
     AxisymmetricWaveletCoefficientsSouthAmerica,
 )
-from pys2sleplet.test.constants import J_MIN, L_LARGE, L_SMALL, VAR_SIGNAL, B
-from pys2sleplet.utils.slepian_methods import slepian_forward
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
-from pys2sleplet.utils.wavelet_methods import (
+from sleplet.test.constants import J_MIN, L_LARGE, L_SMALL, VAR_SIGNAL, B
+from sleplet.utils.slepian_methods import slepian_forward
+from sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_inverse,
     compute_slepian_wavelet_covariance,
     compute_wavelet_covariance,

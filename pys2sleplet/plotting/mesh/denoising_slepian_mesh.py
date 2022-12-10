@@ -2,19 +2,19 @@ from argparse import ArgumentParser
 
 import numpy as np
 
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
-from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
-from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.scripts.plotting_on_mesh import valid_meshes
-from pys2sleplet.utils.class_lists import MESHES
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.denoising import denoising_mesh_slepian
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import slepian_mesh_inverse
-from pys2sleplet.utils.string_methods import filename_args
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.scripts.plotting_on_mesh import valid_meshes
+from sleplet.utils.class_lists import MESHES
+from sleplet.utils.config import settings
+from sleplet.utils.denoising import denoising_mesh_slepian
+from sleplet.utils.logger import logger
+from sleplet.utils.slepian_methods import slepian_mesh_inverse
+from sleplet.utils.string_methods import filename_args
 
 B = 3
 J_MIN = 2

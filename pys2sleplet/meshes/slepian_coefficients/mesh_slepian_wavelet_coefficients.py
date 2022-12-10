@@ -4,14 +4,14 @@ from typing import Optional
 import numpy as np
 from pys2let import pys2let_j_max
 
-from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
-from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.string_methods import filename_args, wavelet_ending
-from pys2sleplet.utils.wavelet_methods import slepian_wavelet_forward
+from sleplet.utils.logger import logger
+from sleplet.utils.string_methods import filename_args, wavelet_ending
+from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
 @dataclass

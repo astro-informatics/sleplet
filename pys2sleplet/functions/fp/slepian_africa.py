@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from pys2sleplet.functions.f_p import F_P
-from pys2sleplet.functions.flm.africa import Africa
-from pys2sleplet.utils.slepian_methods import slepian_forward
-from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.functions.f_p import F_P
+from sleplet.functions.flm.africa import Africa
+from sleplet.utils.slepian_methods import slepian_forward
+from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
 @dataclass

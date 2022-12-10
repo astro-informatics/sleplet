@@ -4,13 +4,13 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import THETA_MAX
-from pys2sleplet.plotting.plotting_utils import (
+from sleplet.plotting.inputs import THETA_MAX
+from sleplet.plotting.plotting_utils import (
     earth_region_harmonic_coefficients,
     earth_region_slepian_coefficients,
 )
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.plot_methods import save_plot
+from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.utils.plot_methods import save_plot
 
 L = 16
 

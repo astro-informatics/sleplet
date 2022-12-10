@@ -1,13 +1,13 @@
 import numpy as np
 from numpy.testing import assert_allclose
 
-from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.functions.flm.south_america import SouthAmerica
-from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import slepian_forward
-from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
-from pys2sleplet.utils.vars import SMOOTHING
+from sleplet.functions.f_lm import F_LM
+from sleplet.functions.flm.south_america import SouthAmerica
+from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
+from sleplet.utils.logger import logger
+from sleplet.utils.slepian_methods import slepian_forward
+from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.vars import SMOOTHING
 
 L = 16
 

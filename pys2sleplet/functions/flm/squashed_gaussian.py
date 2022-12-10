@@ -2,13 +2,10 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.utils.harmonic_methods import ensure_f_bandlimited
-from pys2sleplet.utils.string_methods import (
-    convert_camel_case_to_snake_case,
-    filename_args,
-)
-from pys2sleplet.utils.vars import THETA_0
+from sleplet.functions.f_lm import F_LM
+from sleplet.utils.harmonic_methods import ensure_f_bandlimited
+from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
+from sleplet.utils.vars import THETA_0
 
 
 @dataclass

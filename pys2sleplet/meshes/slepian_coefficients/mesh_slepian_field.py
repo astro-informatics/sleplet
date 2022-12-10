@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
-from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from pys2sleplet.utils.slepian_methods import slepian_mesh_forward
+from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
 @dataclass

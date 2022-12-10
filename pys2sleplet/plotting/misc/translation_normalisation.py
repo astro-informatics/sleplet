@@ -5,10 +5,10 @@ import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import save_plot
-from pys2sleplet.utils.vars import ALPHA_DEFAULT, SAMPLING_SCHEME
+from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
+from sleplet.utils.logger import logger
+from sleplet.utils.plot_methods import save_plot
+from sleplet.utils.vars import ALPHA_DEFAULT, SAMPLING_SCHEME
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / "figures"

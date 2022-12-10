@@ -2,12 +2,9 @@ from dataclasses import dataclass, field
 
 import pyssht as ssht
 
-from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.utils.harmonic_methods import create_spherical_harmonic
-from pys2sleplet.utils.string_methods import (
-    convert_camel_case_to_snake_case,
-    filename_args,
-)
+from sleplet.functions.f_lm import F_LM
+from sleplet.utils.harmonic_methods import create_spherical_harmonic
+from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
 @dataclass

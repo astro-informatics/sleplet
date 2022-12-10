@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from pys2sleplet.data.other.wmap.create_wmap_flm import create_flm
-from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.data.other.wmap.create_wmap_flm import create_flm
+from sleplet.functions.f_lm import F_LM
+from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
 @dataclass

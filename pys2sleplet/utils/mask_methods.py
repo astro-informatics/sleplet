@@ -4,11 +4,11 @@ import numpy as np
 import pyssht as ssht
 from box import Box
 
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
+from sleplet.utils.logger import logger
+from sleplet.utils.region import Region
+from sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[1] / "data" / "slepian" / "masks"

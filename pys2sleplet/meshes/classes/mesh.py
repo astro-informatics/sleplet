@@ -4,13 +4,13 @@ from typing import Optional
 import numpy as np
 from plotly.graph_objs.layout.scene import Camera
 
-from pys2sleplet.utils.mesh_methods import (
+from sleplet.utils.mesh_methods import (
     create_mesh_region,
     extract_mesh_config,
     mesh_eigendecomposition,
     read_mesh,
 )
-from pys2sleplet.utils.plotly_methods import create_camera
+from sleplet.utils.plotly_methods import create_camera
 
 
 @dataclass

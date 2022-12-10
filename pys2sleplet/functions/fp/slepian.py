@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 
-from pys2sleplet.functions.f_p import F_P
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import slepian_forward
+from sleplet.functions.f_p import F_P
+from sleplet.utils.logger import logger
+from sleplet.utils.slepian_methods import slepian_forward
 
 
 @dataclass

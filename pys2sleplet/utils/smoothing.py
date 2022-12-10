@@ -1,7 +1,7 @@
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.utils.logger import logger
+from sleplet.utils.logger import logger
 
 
 def apply_gaussian_smoothing(

@@ -1,9 +1,9 @@
 from numpy.testing import assert_array_equal, assert_array_less, assert_raises
 
-from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.test.constants import J_MIN, L_LARGE, N_SIGMA, SNR_IN, B
-from pys2sleplet.utils.denoising import denoising_axisym
+from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from sleplet.functions.flm.earth import Earth
+from sleplet.test.constants import J_MIN, L_LARGE, N_SIGMA, SNR_IN, B
+from sleplet.utils.denoising import denoising_axisym
 
 
 def test_denoising_earth_axisymmetric_wavelets() -> None:

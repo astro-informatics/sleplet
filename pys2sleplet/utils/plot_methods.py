@@ -5,14 +5,14 @@ import pyssht as ssht
 from matplotlib import colors
 from matplotlib import pyplot as plt
 
-from pys2sleplet.functions.coefficients import Coefficients
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import (
+from sleplet.functions.coefficients import Coefficients
+from sleplet.utils.config import settings
+from sleplet.utils.harmonic_methods import invert_flm_boosted
+from sleplet.utils.logger import logger
+from sleplet.utils.mask_methods import create_mask_region
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
+from sleplet.utils.vars import (
     AFRICA_ALPHA,
     AFRICA_BETA,
     AFRICA_GAMMA,

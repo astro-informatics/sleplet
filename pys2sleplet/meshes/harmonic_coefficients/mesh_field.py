@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 from igl import per_vertex_normals
 
-from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from pys2sleplet.utils.harmonic_methods import mesh_forward
+from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from sleplet.utils.harmonic_methods import mesh_forward
 
 
 @dataclass

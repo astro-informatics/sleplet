@@ -1,12 +1,12 @@
 import numpy as np
 from numpy.testing import assert_allclose, assert_array_equal
 
-from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
-from pys2sleplet.functions.flm.identity import Identity
-from pys2sleplet.functions.fp.slepian_identity import SlepianIdentity
-from pys2sleplet.test.constants import L_LARGE
-from pys2sleplet.utils.slepian_methods import slepian_forward
+from sleplet.functions.flm.earth import Earth
+from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
+from sleplet.functions.flm.identity import Identity
+from sleplet.functions.fp.slepian_identity import SlepianIdentity
+from sleplet.test.constants import L_LARGE
+from sleplet.utils.slepian_methods import slepian_forward
 
 
 def test_earth_identity_convolution() -> None:

@@ -1,8 +1,8 @@
 from numpy.testing import assert_array_equal, assert_raises
 
-from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.test.constants import L_LARGE
-from pys2sleplet.utils.vars import SMOOTHING
+from sleplet.functions.flm.earth import Earth
+from sleplet.test.constants import L_LARGE
+from sleplet.utils.vars import SMOOTHING
 
 
 def test_smoothing_changes_flm() -> None:

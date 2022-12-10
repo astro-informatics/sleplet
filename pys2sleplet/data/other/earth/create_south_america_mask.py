@@ -3,9 +3,9 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.data.other.earth.create_earth_flm import create_flm
-from pys2sleplet.utils.plot_methods import rotate_earth_to_south_america
-from pys2sleplet.utils.vars import SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
+from sleplet.data.other.earth.create_earth_flm import create_flm
+from sleplet.utils.plot_methods import rotate_earth_to_south_america
+from sleplet.utils.vars import SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
 
 _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[3] / "data" / "slepian" / "masks"

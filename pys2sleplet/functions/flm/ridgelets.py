@@ -6,14 +6,14 @@ import pyssht as ssht
 from pys2let import pys2let_j_max
 from scipy.special import gammaln
 
-from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.string_methods import (
+from sleplet.functions.f_lm import F_LM
+from sleplet.utils.logger import logger
+from sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,
     filename_args,
     wavelet_ending,
 )
-from pys2sleplet.utils.wavelet_methods import create_kappas
+from sleplet.utils.wavelet_methods import create_kappas
 
 
 @dataclass

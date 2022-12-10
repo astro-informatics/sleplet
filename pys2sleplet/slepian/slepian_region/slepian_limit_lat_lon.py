@@ -6,13 +6,13 @@ import pyssht as ssht
 from numba import njit, prange
 from numpy import linalg as LA
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.vars import (
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet.utils.config import settings
+from sleplet.utils.logger import logger
+from sleplet.utils.mask_methods import create_mask_region
+from sleplet.utils.region import Region
+from sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,

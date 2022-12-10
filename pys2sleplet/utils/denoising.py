@@ -1,14 +1,14 @@
 import numpy as np
 import pyssht as ssht
 
-from pys2sleplet.functions.coefficients import Coefficients
-from pys2sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
-from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+from sleplet.functions.coefficients import Coefficients
+from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
-from pys2sleplet.utils.noise import (
+from sleplet.utils.noise import (
     compute_sigma_j,
     compute_sigma_noise,
     compute_slepian_mesh_sigma_j,
@@ -19,10 +19,10 @@ from pys2sleplet.utils.noise import (
     slepian_mesh_hard_thresholding,
     slepian_wavelet_hard_thresholding,
 )
-from pys2sleplet.utils.plot_methods import rotate_earth_to_south_america
-from pys2sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
-from pys2sleplet.utils.wavelet_methods import (
+from sleplet.utils.plot_methods import rotate_earth_to_south_america
+from sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
+from sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,
     slepian_wavelet_forward,

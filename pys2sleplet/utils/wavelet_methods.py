@@ -4,9 +4,9 @@ import numpy as np
 import pyssht as ssht
 from pys2let import axisym_wav_l
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.convolution_methods import sifting_convolution
-from pys2sleplet.utils.slepian_methods import compute_s_p_omega
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils.convolution_methods import sifting_convolution
+from sleplet.utils.slepian_methods import compute_s_p_omega
 
 
 def slepian_wavelet_forward(

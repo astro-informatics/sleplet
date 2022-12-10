@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from pys2sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
-from pys2sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
-from pys2sleplet.utils.vars import (
+from sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
+from sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
+from sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,

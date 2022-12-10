@@ -1,14 +1,14 @@
 from argparse import ArgumentParser
 
-from pys2sleplet.functions.fp.slepian_africa import SlepianAfrica
-from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.plotting.create_plot_sphere import Plot
-from pys2sleplet.utils.denoising import denoising_slepian_wavelet
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import find_max_amplitude
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.string_methods import filename_args
-from pys2sleplet.utils.vars import SMOOTHING
+from sleplet.functions.fp.slepian_africa import SlepianAfrica
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils.denoising import denoising_slepian_wavelet
+from sleplet.utils.logger import logger
+from sleplet.utils.plot_methods import find_max_amplitude
+from sleplet.utils.region import Region
+from sleplet.utils.string_methods import filename_args
+from sleplet.utils.vars import SMOOTHING
 
 B = 3
 J_MIN = 2

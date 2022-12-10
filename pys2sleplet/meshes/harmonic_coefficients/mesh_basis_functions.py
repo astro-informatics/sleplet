@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 
-from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from pys2sleplet.utils.harmonic_methods import mesh_forward
-from pys2sleplet.utils.logger import logger
+from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from sleplet.utils.harmonic_methods import mesh_forward
+from sleplet.utils.logger import logger
 
 
 @dataclass

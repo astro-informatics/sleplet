@@ -8,19 +8,19 @@ import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.harmonic_methods import create_emm_vector
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.parallel_methods import (
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils.config import settings
+from sleplet.utils.harmonic_methods import create_emm_vector
+from sleplet.utils.logger import logger
+from sleplet.utils.mask_methods import create_mask_region
+from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
     split_arr_into_chunks,
 )
-from pys2sleplet.utils.region import Region
+from sleplet.utils.region import Region
 
 L_SAVE_ALL = 16
 

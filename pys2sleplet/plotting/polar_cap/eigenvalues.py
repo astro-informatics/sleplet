@@ -4,8 +4,8 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.plot_methods import save_plot
+from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.utils.plot_methods import save_plot
 
 L = 16
 THETA_MAX = 40

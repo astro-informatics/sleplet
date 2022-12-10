@@ -1,14 +1,14 @@
 import numpy as np
 
-from pys2sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
+from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
     SlepianWaveletCoefficientsAfrica,
 )
-from pys2sleplet.plotting.create_plot_sphere import Plot
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import slepian_inverse
-from pys2sleplet.utils.vars import SMOOTHING
-from pys2sleplet.utils.wavelet_methods import slepian_wavelet_inverse
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils.logger import logger
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
+from sleplet.utils.vars import SMOOTHING
+from sleplet.utils.wavelet_methods import slepian_wavelet_inverse
 
 B = 3
 J_MIN = 2

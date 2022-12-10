@@ -1,11 +1,11 @@
 import numpy as np
 
-from pys2sleplet.functions.fp.slepian import Slepian
-from pys2sleplet.plotting.create_plot_sphere import Plot
-from pys2sleplet.plotting.inputs import THETA_MAX
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import slepian_inverse
+from sleplet.functions.fp.slepian import Slepian
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.plotting.inputs import THETA_MAX
+from sleplet.utils.logger import logger
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
 
 L = 16
 NORMALISE = False

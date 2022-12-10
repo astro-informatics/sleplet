@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 
-from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import slepian_mesh_forward
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.utils.logger import logger
+from sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
 @dataclass

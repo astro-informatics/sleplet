@@ -2,8 +2,8 @@ import cmocean
 import numpy as np
 from numpy.testing import assert_equal
 
-from pys2sleplet.test.constants import L_LARGE, PHI_0, PL_ENTRIES, THETA_1
-from pys2sleplet.utils.plot_methods import (
+from sleplet.test.constants import L_LARGE, PHI_0, PL_ENTRIES, THETA_1
+from sleplet.utils.plot_methods import (
     calc_nearest_grid_point,
     calc_plot_resolution,
     convert_colourscale,

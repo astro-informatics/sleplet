@@ -5,14 +5,14 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.functions.flm.axisymmetric_wavelet_coefficients_africa import (
+from sleplet.functions.flm.axisymmetric_wavelet_coefficients_africa import (
     AxisymmetricWaveletCoefficientsAfrica,
 )
-from pys2sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
+from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
     SlepianWaveletCoefficientsAfrica,
 )
-from pys2sleplet.utils.plot_methods import save_plot
-from pys2sleplet.utils.region import Region
+from sleplet.utils.plot_methods import save_plot
+from sleplet.utils.region import Region
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[3] / "figures"

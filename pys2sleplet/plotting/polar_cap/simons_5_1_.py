@@ -4,12 +4,12 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.harmonic_methods import invert_flm_boosted
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import calc_plot_resolution, save_plot
-from pys2sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
+from sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
+from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.utils.harmonic_methods import invert_flm_boosted
+from sleplet.utils.logger import logger
+from sleplet.utils.plot_methods import calc_plot_resolution, save_plot
+from sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
 L = 16
 ORDERS = 4

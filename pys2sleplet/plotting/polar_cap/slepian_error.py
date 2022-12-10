@@ -5,14 +5,14 @@ import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.plotting.inputs import THETA_MAX
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.plot_methods import save_plot
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.functions.flm.earth import Earth
+from sleplet.plotting.inputs import THETA_MAX
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.utils.plot_methods import save_plot
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
+from sleplet.utils.vars import SAMPLING_SCHEME
 
 L = 16
 

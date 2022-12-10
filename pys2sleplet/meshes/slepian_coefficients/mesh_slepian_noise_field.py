@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 
-from pys2sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
-from pys2sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
-from pys2sleplet.utils.string_methods import filename_args
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
+from sleplet.utils.string_methods import filename_args
 
 
 @dataclass

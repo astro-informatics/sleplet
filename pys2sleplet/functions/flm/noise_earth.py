@@ -1,12 +1,9 @@
 from dataclasses import dataclass, field
 
-from pys2sleplet.functions.f_lm import F_LM
-from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.utils.noise import compute_snr, create_noise
-from pys2sleplet.utils.string_methods import (
-    convert_camel_case_to_snake_case,
-    filename_args,
-)
+from sleplet.functions.f_lm import F_LM
+from sleplet.functions.flm.earth import Earth
+from sleplet.utils.noise import compute_snr, create_noise
+from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
 @dataclass

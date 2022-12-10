@@ -1,7 +1,7 @@
 from numpy.testing import assert_allclose, assert_equal
 
-from pys2sleplet.test.constants import L_LARGE, L_SMALL, NCPU
-from pys2sleplet.utils.parallel_methods import split_arr_into_chunks
+from sleplet.test.constants import L_LARGE, L_SMALL, NCPU
+from sleplet.utils.parallel_methods import split_arr_into_chunks
 
 
 def test_split_L_into_chunks() -> None:

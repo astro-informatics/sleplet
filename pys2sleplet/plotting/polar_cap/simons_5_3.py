@@ -4,10 +4,10 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from pys2sleplet.plotting.inputs import TEXT_BOX
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.plot_methods import save_plot
+from sleplet.plotting.inputs import TEXT_BOX
+from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.utils.logger import logger
+from sleplet.utils.plot_methods import save_plot
 
 L = 16
 LEGEND_POS = (0, 0)

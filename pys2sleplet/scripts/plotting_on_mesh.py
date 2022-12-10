@@ -4,16 +4,16 @@ from typing import Optional
 
 import numpy as np
 
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
-from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from pys2sleplet.plotting.create_plot_mesh import Plot
-from pys2sleplet.utils.class_lists import MESH_COEFFICIENTS, MESHES
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.harmonic_methods import mesh_inverse
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import slepian_mesh_inverse
-from pys2sleplet.utils.string_methods import convert_classes_list_to_snake_case
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.utils.class_lists import MESH_COEFFICIENTS, MESHES
+from sleplet.utils.config import settings
+from sleplet.utils.harmonic_methods import mesh_inverse
+from sleplet.utils.logger import logger
+from sleplet.utils.slepian_methods import slepian_mesh_inverse
+from sleplet.utils.string_methods import convert_classes_list_to_snake_case
 
 
 def valid_meshes(mesh_name: str) -> str:

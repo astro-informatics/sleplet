@@ -14,10 +14,10 @@ from igl import (
 from numpy import linalg as LA
 from scipy.sparse import linalg as LA_sparse
 
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.integration_methods import integrate_whole_mesh
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.vars import (
+from sleplet.utils.config import settings
+from sleplet.utils.integration_methods import integrate_whole_mesh
+from sleplet.utils.logger import logger
+from sleplet.utils.vars import (
     GAUSSIAN_KERNEL_KNN_DEFAULT,
     GAUSSIAN_KERNEL_THETA_DEFAULT,
 )

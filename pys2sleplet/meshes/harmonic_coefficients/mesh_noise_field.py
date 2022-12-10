@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 
-from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
-from pys2sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from pys2sleplet.utils.noise import compute_snr, create_mesh_noise
-from pys2sleplet.utils.string_methods import filename_args
+from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from sleplet.utils.noise import compute_snr, create_mesh_noise
+from sleplet.utils.string_methods import filename_args
 
 
 @dataclass

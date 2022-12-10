@@ -1,7 +1,7 @@
 import numpy as np
 from multiprocess.shared_memory import SharedMemory
 
-from pys2sleplet.utils.vars import L_MIN_DEFAULT
+from sleplet.utils.vars import L_MIN_DEFAULT
 
 
 def split_arr_into_chunks(

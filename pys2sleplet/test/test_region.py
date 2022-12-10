@@ -1,7 +1,7 @@
 from numpy.testing import assert_equal
 
-from pys2sleplet.test.constants import MASK, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
-from pys2sleplet.utils.region import Region
+from sleplet.test.constants import MASK, PHI_0, PHI_1, THETA_0, THETA_1, THETA_MAX
+from sleplet.utils.region import Region
 
 
 def test_polar_cap_region() -> None:

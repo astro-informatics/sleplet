@@ -1,8 +1,8 @@
 import numpy as np
 
-from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
+from sleplet.functions.flm.earth import Earth
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 
 
 def earth_region_harmonic_coefficients(L: int, theta_max: int) -> np.ndarray:

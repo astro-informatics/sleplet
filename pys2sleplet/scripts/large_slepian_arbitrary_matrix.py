@@ -4,7 +4,7 @@ import numpy as np
 from numpy import linalg as LA
 from numpy.testing import assert_equal
 
-from pys2sleplet.utils.slepian_arbitrary_methods import (
+from sleplet.utils.slepian_arbitrary_methods import (
     calculate_high_L_matrix,
     clean_evals_and_evecs,
 )

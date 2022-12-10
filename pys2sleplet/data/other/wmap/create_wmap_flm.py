@@ -5,7 +5,7 @@ import pyssht as ssht
 from numpy.random import default_rng
 from scipy import io as sio
 
-from pys2sleplet.utils.vars import RANDOM_SEED
+from sleplet.utils.vars import RANDOM_SEED
 
 _file_location = Path(__file__).resolve()
 

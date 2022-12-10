@@ -1,8 +1,8 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from pys2sleplet.meshes.mesh_coefficients import MeshCoefficients
-from pys2sleplet.utils.noise import compute_snr, create_mesh_noise
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.utils.noise import compute_snr, create_mesh_noise
 
 
 @dataclass  # type:ignore

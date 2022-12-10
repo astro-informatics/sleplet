@@ -1,12 +1,12 @@
 import pyssht as ssht
 from numpy.testing import assert_equal
 
-from pys2sleplet.test.constants import L_LARGE, L_SMALL
-from pys2sleplet.utils.harmonic_methods import (
+from sleplet.test.constants import L_LARGE, L_SMALL
+from sleplet.utils.harmonic_methods import (
     boost_coefficient_resolution,
     invert_flm_boosted,
 )
-from pys2sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def test_harmonic_coefficients_padded(random_flm) -> None:

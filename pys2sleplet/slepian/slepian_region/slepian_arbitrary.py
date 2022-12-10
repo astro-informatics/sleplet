@@ -6,29 +6,26 @@ import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
 
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from pys2sleplet.utils.config import settings
-from pys2sleplet.utils.harmonic_methods import (
-    create_spherical_harmonic,
-    invert_flm_boosted,
-)
-from pys2sleplet.utils.integration_methods import (
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet.utils.config import settings
+from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
+from sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
 )
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.mask_methods import create_mask_region
-from pys2sleplet.utils.parallel_methods import (
+from sleplet.utils.logger import logger
+from sleplet.utils.mask_methods import create_mask_region
+from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
     split_arr_into_chunks,
 )
-from pys2sleplet.utils.region import Region
-from pys2sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
-from pys2sleplet.utils.vars import L_MAX_DEFAULT, L_MIN_DEFAULT
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
+from sleplet.utils.vars import L_MAX_DEFAULT, L_MIN_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _slepian_path = _file_location.parents[2] / "data" / "slepian"

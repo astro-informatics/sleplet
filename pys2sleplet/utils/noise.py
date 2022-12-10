@@ -4,11 +4,11 @@ import numpy as np
 import pyssht as ssht
 from numpy.random import default_rng
 
-from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from pys2sleplet.slepian.slepian_functions import SlepianFunctions
-from pys2sleplet.utils.harmonic_methods import mesh_forward
-from pys2sleplet.utils.logger import logger
-from pys2sleplet.utils.slepian_methods import (
+from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils.harmonic_methods import mesh_forward
+from sleplet.utils.logger import logger
+from sleplet.utils.slepian_methods import (
     compute_mesh_s_p_pixel,
     compute_s_p_omega,
     slepian_forward,
@@ -16,7 +16,7 @@ from pys2sleplet.utils.slepian_methods import (
     slepian_mesh_forward,
     slepian_mesh_inverse,
 )
-from pys2sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
+from sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 
 
 def _signal_power(signal: np.ndarray) -> float:

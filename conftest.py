@@ -2,20 +2,20 @@ import numpy as np
 import pytest
 from numpy.random import default_rng
 
-from pys2sleplet.functions.flm.earth import Earth
-from pys2sleplet.functions.flm.south_america import SouthAmerica
-from pys2sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
-from pys2sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from pys2sleplet.meshes.classes.mesh import Mesh
-from pys2sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from pys2sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
-from pys2sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+from sleplet.functions.flm.earth import Earth
+from sleplet.functions.flm.south_america import SouthAmerica
+from sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
-from pys2sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from pys2sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
-from pys2sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from pys2sleplet.test.constants import (
+from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
+from sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
+from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.test.constants import (
     ARRAY_DIM,
     L_SMALL,
     MASK,
@@ -25,8 +25,8 @@ from pys2sleplet.test.constants import (
     THETA_1,
     THETA_MAX,
 )
-from pys2sleplet.utils.harmonic_methods import compute_random_signal
-from pys2sleplet.utils.vars import RANDOM_SEED
+from sleplet.utils.harmonic_methods import compute_random_signal
+from sleplet.utils.vars import RANDOM_SEED
 
 
 def pytest_addoption(parser) -> None:
