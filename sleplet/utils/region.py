@@ -17,14 +17,11 @@ class Region:
     theta_max: float
     phi_min: float
     phi_max: float
-    mask_name: Optional[str]
-    gap: bool
-    _gap: bool = field(default=False, init=False, repr=False)
-    _mask_name: Optional[str] = field(default=None, init=False, repr=False)
+    mask_name: Optional[str] = None
+    gap: bool = False
     _name_ending: str = field(init=False, repr=False)
     _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
     _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
-    _region_type: str = field(init=False, repr=False)
     _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
     _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
 
@@ -62,30 +59,6 @@ class Region:
                 "need to specify either a polar cap, a limited latitude "
                 "longitude region, or a file with a mask"
             )
-
-    @property  # type:ignore
-    def gap(self) -> bool:
-        return self._gap
-
-    @gap.setter
-    def gap(self, gap: bool) -> None:
-        if isinstance(gap, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            gap = Region._gap
-        self._gap = gap
-
-    @property  # type:ignore
-    def mask_name(self) -> Optional[str]:
-        return self._mask_name
-
-    @mask_name.setter
-    def mask_name(self, mask_name: Optional[str]) -> None:
-        if isinstance(mask_name, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            mask_name = Region._mask_name
-        self._mask_name = mask_name
 
     @property
     def name_ending(self) -> str:
