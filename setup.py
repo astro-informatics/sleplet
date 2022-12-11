@@ -2,7 +2,7 @@ from setuptools import find_namespace_packages, setup
 
 setup(
     name="sleplet",
-    version="0.1.2",
+    version="0.1.3",
     author="Patrick Roddy",
     author_email="patrickjamesroddy@gmail.com",
     packages=find_namespace_packages(),
