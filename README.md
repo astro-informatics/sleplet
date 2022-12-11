@@ -1,4 +1,4 @@
-# sleplet
+# SLEPLET
 
 [![DOI](https://zenodo.org/badge/306052936.svg)](https://zenodo.org/badge/latestdoi/306052936)
 [![deploy](https://github.com/astro-informatics/sleplet/actions/workflows/deploy.yml/badge.svg)](https://github.com/astro-informatics/sleplet/actions/workflows/deploy.yml)
