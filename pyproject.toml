@@ -1,20 +1,3 @@
-[tool.black]
-line-length = 88
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
-
 [tool.ruff]
 select = [
   # pyflakes
@@ -35,3 +18,6 @@ ignore = ["E741", "W605"]
 
 [tool.ruff.mccabe]
 max-complexity = 18
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
