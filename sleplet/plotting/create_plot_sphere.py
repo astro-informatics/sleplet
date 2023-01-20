@@ -28,6 +28,8 @@ from sleplet.utils.plotly_methods import (
 from sleplet.utils.region import Region
 from sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 
+MW_POLE_LENGTH = 2
+
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
 
@@ -123,7 +125,7 @@ class Plot:
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
         if method == "MW_pole":
-            if len(f) == 2:
+            if len(f) == MW_POLE_LENGTH:
                 f, _ = f
             else:
                 f, _, _ = f
