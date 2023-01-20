@@ -32,8 +32,8 @@ jobs:
         with:
           # This path is specific to Ubuntu
           path: ~/.cache/pip
-          # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          # Look to see if there is a cache hit for the corresponding pyproject file
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
@@ -46,6 +46,9 @@ jobs:
           miniforge-version: latest
           use-only-tar-bz2: true
           use-mamba: true
+
+      - name: Pip install modules
+        run: pip install -e .
 
       - name: Pull LFS files
         run: |

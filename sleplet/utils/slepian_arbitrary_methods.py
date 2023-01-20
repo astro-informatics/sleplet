@@ -5,6 +5,8 @@ import numpy as np
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
+MACHINE_EPSILON = 1e-14
+
 
 def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.ndarray:
     """
@@ -43,7 +45,7 @@ def clean_evals_and_evecs(
     eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
     # find repeating eigenvalues and ensure orthorgonality
-    pairs = np.where(np.abs(np.diff(eigenvalues)) < 1e-14)[0] + 1
+    pairs = np.where(np.abs(np.diff(eigenvalues)) < MACHINE_EPSILON)[0] + 1
     eigenvectors[pairs] *= 1j
 
     return eigenvalues, eigenvectors
