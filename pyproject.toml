@@ -38,10 +38,14 @@ version = "0.1.3"
 mesh = "sleplet.scripts.plotting_on_mesh:main"
 sphere = "sleplet.scripts.plotting_on_sphere:main"
 
+[tool.isort]
+profile = "black"
+
 [tool.mypy]
 plugins = "numpy.typing.mypy_plugin"
 
 [tool.ruff]
+force-exclude = true
 ignore = ["E741", "W605"]
 select = [
   # flake8-bugbear
