@@ -45,6 +45,7 @@ profile = "black"
 plugins = "numpy.typing.mypy_plugin"
 
 [tool.ruff]
+fix = true
 force-exclude = true
 ignore = ["E741", "W605"]
 select = [
