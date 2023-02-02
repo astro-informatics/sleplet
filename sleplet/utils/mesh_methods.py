@@ -3,23 +3,12 @@ from typing import Optional
 
 import numpy as np
 from box import Box
-from igl import (
-    adjacency_matrix,
-    all_pairs_distances,
-    average_onto_faces,
-    cotmatrix,
-    read_triangle_mesh,
-    upsample,
-)
+from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
 from scipy.sparse import linalg as LA_sparse
 
 from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.logger import logger
-from sleplet.utils.vars import (
-    GAUSSIAN_KERNEL_KNN_DEFAULT,
-    GAUSSIAN_KERNEL_THETA_DEFAULT,
-)
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[1] / "data" / "meshes"
@@ -126,23 +115,6 @@ def read_mesh(mesh_config: Box) -> tuple[np.ndarray, np.ndarray]:
     return upsample(vertices, faces, number_of_subdivs=mesh_config.UPSAMPLE)
 
 
-def _graph_laplacian(
-    vertices: np.ndarray,
-    faces: np.ndarray,
-    *,
-    theta: float = GAUSSIAN_KERNEL_THETA_DEFAULT,
-    knn: int = GAUSSIAN_KERNEL_KNN_DEFAULT,
-) -> np.ndarray:
-    """
-    computes the graph laplacian L = D - W where D
-    is the degree matrix and W is the weighting function
-    """
-    A = adjacency_matrix(faces)
-    D = np.diagflat(A.sum(axis=0))
-    W = _weighting_function(D, A, vertices, theta, knn)
-    return np.asarray(D - W)
-
-
 def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     """
     computes the cotagent mesh laplacian
@@ -162,16 +134,3 @@ def _orthonormalise_basis_functions(
         factor[i] = integrate_whole_mesh(vertices, faces, phi_i, phi_i)
     normalisation = np.sqrt(factor).reshape(-1, 1)
     return basis_functions / normalisation
-
-
-def _weighting_function(
-    D: np.ndarray, A: np.ndarray, vertices: np.ndarray, theta: float, knn: int
-) -> np.ndarray:
-    """
-    thresholded Gaussian kernel weighting function
-    """
-    W = np.exp(
-        -all_pairs_distances(vertices, vertices, squared=True) / (2 * theta**2)
-    )
-    knn_threshold = D <= knn
-    return W * A * knn_threshold
