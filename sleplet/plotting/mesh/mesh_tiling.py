@@ -10,7 +10,6 @@ from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.class_lists import MESHES
-from sleplet.utils.config import settings
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.wavelet_methods import create_kappas
 
@@ -28,7 +27,7 @@ def main(mesh_name: str) -> None:
     plots the tiling of the Slepian line
     """
     # initialise mesh and Slepian mesh
-    mesh = Mesh(mesh_name, mesh_laplacian=settings.MESH_LAPLACIAN)
+    mesh = Mesh(mesh_name)
     mesh_slepian = MeshSlepian(mesh)
 
     # set up x-axis

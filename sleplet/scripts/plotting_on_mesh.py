@@ -9,7 +9,6 @@ from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.utils.class_lists import MESH_COEFFICIENTS, MESHES
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import mesh_inverse
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
@@ -132,7 +131,7 @@ def main() -> None:
     logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
-    mesh = Mesh(args.function, mesh_laplacian=settings.MESH_LAPLACIAN, zoom=args.zoom)
+    mesh = Mesh(args.function, zoom=args.zoom)
     f = MESH_COEFFICIENTS[
         convert_classes_list_to_snake_case(
             MESH_COEFFICIENTS, word_to_remove="Mesh"

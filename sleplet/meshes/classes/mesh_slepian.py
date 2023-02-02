@@ -43,11 +43,9 @@ class MeshSlepian:
         logger.info("computing slepian functions of mesh")
 
         # create filenames
-        laplacian_type = "mesh" if settings.MESH_LAPLACIAN else "graph"
         eigd_loc = (
             _meshes_path
             / "laplacians"
-            / laplacian_type
             / "slepian_functions"
             / f"{self.mesh.name}_b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
         )

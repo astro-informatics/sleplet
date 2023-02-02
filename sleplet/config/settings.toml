@@ -2,7 +2,6 @@ AUTO_OPEN = true
 L = 16
 L_MAX = -1
 L_MIN = 0
-MESH_LAPLACIAN = true
 NCPU = 4
 PHI_MAX = 360
 PHI_MIN = 0

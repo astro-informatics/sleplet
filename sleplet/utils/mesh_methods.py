@@ -11,7 +11,6 @@ from igl import (
     read_triangle_mesh,
     upsample,
 )
-from numpy import linalg as LA
 from scipy.sparse import linalg as LA_sparse
 
 from sleplet.utils.config import settings
@@ -76,7 +75,6 @@ def mesh_eigendecomposition(
     vertices: np.ndarray,
     faces: np.ndarray,
     *,
-    mesh_laplacian: bool = True,
     number_basis_functions: Optional[int] = None,
 ) -> tuple[np.ndarray, np.ndarray, int]:
     """
@@ -92,11 +90,9 @@ def mesh_eigendecomposition(
     )
 
     # create filenames
-    laplacian_type = "mesh" if mesh_laplacian else "graph"
     eigd_loc = (
         _meshes_path
         / "laplacians"
-        / laplacian_type
         / "basis_functions"
         / f"{name}_b{number_basis_functions}"
     )
@@ -108,17 +104,10 @@ def mesh_eigendecomposition(
         eigenvalues = np.load(eval_loc)
         eigenvectors = np.load(evec_loc)
     else:
-        if laplacian_type == "mesh":
-            laplacian = _mesh_laplacian(vertices, faces)
-            eigenvalues, eigenvectors = LA_sparse.eigsh(
-                laplacian, k=number_basis_functions, which="LM", sigma=0
-            )
-        else:
-            laplacian = _graph_laplacian(
-                vertices,
-                faces,
-            )
-            eigenvalues, eigenvectors = LA.eigh(laplacian)
+        laplacian = _mesh_laplacian(vertices, faces)
+        eigenvalues, eigenvectors = LA_sparse.eigsh(
+            laplacian, k=number_basis_functions, which="LM", sigma=0
+        )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         if settings.SAVE_MATRICES:
             logger.info("saving binaries...")

@@ -16,7 +16,6 @@ from sleplet.utils.plotly_methods import create_camera
 @dataclass
 class Mesh:
     name: str
-    mesh_laplacian: bool
     number_basis_functions: Optional[int]
     zoom: bool
     _basis_functions: np.ndarray = field(init=False, repr=False)
@@ -24,7 +23,6 @@ class Mesh:
     _colourbar_pos: float = field(init=False, repr=False)
     _faces: np.ndarray = field(init=False, repr=False)
     _mesh_eigenvalues: np.ndarray = field(init=False, repr=False)
-    _mesh_laplacian: bool = field(default=True, init=False, repr=False)
     _name: str = field(init=False, repr=False)
     _number_basis_functions: Optional[int] = field(default=None, init=False, repr=False)
     _region: np.ndarray = field(init=False, repr=False)
@@ -57,7 +55,6 @@ class Mesh:
             self.name,
             self.vertices,
             self.faces,
-            mesh_laplacian=self.mesh_laplacian,
             number_basis_functions=self.number_basis_functions,
         )
 
@@ -100,18 +97,6 @@ class Mesh:
     @mesh_eigenvalues.setter
     def mesh_eigenvalues(self, mesh_eigenvalues: np.ndarray) -> None:
         self._mesh_eigenvalues = mesh_eigenvalues
-
-    @property  # type:ignore
-    def mesh_laplacian(self) -> bool:
-        return self._mesh_laplacian
-
-    @mesh_laplacian.setter
-    def mesh_laplacian(self, mesh_laplacian: bool) -> None:
-        if isinstance(mesh_laplacian, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            mesh_laplacian = Mesh._mesh_laplacian
-        self._mesh_laplacian = mesh_laplacian
 
     @property  # type:ignore
     def name(self) -> str:
