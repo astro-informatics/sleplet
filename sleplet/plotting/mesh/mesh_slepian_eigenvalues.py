@@ -9,7 +9,6 @@ from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.class_lists import MESHES
-from sleplet.utils.config import settings
 from sleplet.utils.plot_methods import save_plot
 
 file_location = Path(__file__).resolve()
@@ -23,7 +22,6 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     """
     mesh = Mesh(
         mesh_name,
-        mesh_laplacian=settings.MESH_LAPLACIAN,
         number_basis_functions=num_basis_fun,
     )
     mesh_slepian = MeshSlepian(mesh)

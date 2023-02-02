@@ -10,7 +10,6 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.class_lists import MESHES
-from sleplet.utils.config import settings
 from sleplet.utils.denoising import denoising_mesh_slepian
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
@@ -29,7 +28,7 @@ def main(mesh_name: str, snr: float, sigma: int) -> None:
     """
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
-    mesh = Mesh(mesh_name, mesh_laplacian=settings.MESH_LAPLACIAN, zoom=True)
+    mesh = Mesh(mesh_name, zoom=True)
 
     # create map & noised map
     fun = MeshSlepianField(mesh)
