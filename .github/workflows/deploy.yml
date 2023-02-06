@@ -16,17 +16,6 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Restore conda cache
-        uses: actions/cache@v3
-        env:
-          # Increase this value to reset cache if
-          # environment.yml has not changed
-          CACHE_NUMBER: 0
-        with:
-          path: ~/conda_pkgs_dir
-          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
-            hashFiles('environment.yml') }}
-
       - name: Restore pip cache
         uses: actions/cache@v3
         with:
@@ -37,15 +26,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
-
-      - name: Setup conda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: sleplet
-          environment-file: environment.yml
-          miniforge-version: latest
-          use-only-tar-bz2: true
-          use-mamba: true
 
       - name: Pip install modules
         run: pip install -e .

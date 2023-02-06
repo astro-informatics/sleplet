@@ -1,9 +1,0 @@
-name: sleplet
-
-channels:
-  - conda-forge
-
-dependencies:
-  - igl=2.2.1
-  - pip=22.3
-  - python=3.9
