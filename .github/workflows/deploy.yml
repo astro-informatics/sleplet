@@ -9,46 +9,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Restore conda cache
-        uses: actions/cache@v3
-        env:
-          # Increase this value to reset cache if
-          # environment.yml has not changed
-          CACHE_NUMBER: 0
+      - name: set up python
+        uses: actions/setup-python@v4
         with:
-          path: ~/conda_pkgs_dir
-          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
-            hashFiles('environment.yml') }}
+          python-version: "3.10"
 
-      - name: Restore pip cache
+      - name: set PY
+        run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
+
+      - name: cache stuff
         uses: actions/cache@v3
         with:
-          # This path is specific to Ubuntu
-          path: ~/.cache/pip
-          # Look to see if there is a cache hit for the corresponding pyproject file
-          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-            ${{ runner.os }}-
-
-      - name: Setup conda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: sleplet
-          environment-file: environment.yml
-          miniforge-version: latest
-          use-only-tar-bz2: true
-          use-mamba: true
+          path: |
+            ${{ env.pythonLocation }}
+             ~/.cache/pip
+          key: |
+            pip-${{ env.PY }}-${{ hashFiles('pyproject.toml') }}
 
       - name: Pip install modules
-        run: pip install -e .
+        run: pip install .
 
       - name: Pull LFS files
         run: |

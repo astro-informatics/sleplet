@@ -25,30 +25,31 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
     """
     thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
 
-    if region.region_type == "arbitrary":
-        logger.info("loading and checking shape of provided mask")
-        name = f"{region.mask_name}_L{L}.npy"
-        mask = _load_mask(name)
-        assert mask.shape == thetas.shape, (
-            f"mask {name} has shape {mask.shape} which does not match "
-            f"the provided L={L}, the shape should be {thetas.shape}"
-        )
+    match region.region_type:  # noqa: E999
+        case "arbitrary":
+            logger.info("loading and checking shape of provided mask")
+            name = f"{region.mask_name}_L{L}.npy"
+            mask = _load_mask(name)
+            assert mask.shape == thetas.shape, (
+                f"mask {name} has shape {mask.shape} which does not match "
+                f"the provided L={L}, the shape should be {thetas.shape}"
+            )
 
-    elif region.region_type == "lim_lat_lon":
-        logger.info("creating limited latitude longitude mask")
-        mask = (
-            (thetas >= region.theta_min)
-            & (thetas <= region.theta_max)
-            & (phis >= region.phi_min)
-            & (phis <= region.phi_max)
-        )
+        case "lim_lat_lon":
+            logger.info("creating limited latitude longitude mask")
+            mask = (
+                (thetas >= region.theta_min)
+                & (thetas <= region.theta_max)
+                & (phis >= region.phi_min)
+                & (phis <= region.phi_max)
+            )
 
-    elif region.region_type == "polar":
-        logger.info("creating polar cap mask")
-        mask = thetas <= region.theta_max
-        if region.gap:
-            logger.info("creating polar gap mask")
-            mask |= thetas >= np.pi - region.theta_max
+        case "polar":
+            logger.info("creating polar cap mask")
+            mask = thetas <= region.theta_max
+            if region.gap:
+                logger.info("creating polar gap mask")
+                mask |= thetas >= np.pi - region.theta_max
     return mask
 
 

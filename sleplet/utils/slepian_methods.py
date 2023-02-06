@@ -20,23 +20,24 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
     """
     initialise Slepian object depending on input
     """
-    if region.region_type == "polar":
-        logger.info("polar cap region detected")
-        return SlepianPolarCap(L, region.theta_max, gap=region.gap)
+    match region.region_type:  # noqa: E999
+        case "polar":
+            logger.info("polar cap region detected")
+            return SlepianPolarCap(L, region.theta_max, gap=region.gap)
 
-    elif region.region_type == "lim_lat_lon":
-        logger.info("limited latitude longitude region detected")
-        return SlepianLimitLatLon(
-            L,
-            theta_min=region.theta_min,
-            theta_max=region.theta_max,
-            phi_min=region.phi_min,
-            phi_max=region.phi_max,
-        )
+        case "lim_lat_lon":
+            logger.info("limited latitude longitude region detected")
+            return SlepianLimitLatLon(
+                L,
+                theta_min=region.theta_min,
+                theta_max=region.theta_max,
+                phi_min=region.phi_min,
+                phi_max=region.phi_max,
+            )
 
-    elif region.region_type == "arbitrary":
-        logger.info("mask specified in file detected")
-        return SlepianArbitrary(L, region.mask_name)
+        case "arbitrary":
+            logger.info("mask specified in file detected")
+            return SlepianArbitrary(L, region.mask_name)
 
 
 def slepian_inverse(f_p: np.ndarray, L: int, slepian: SlepianFunctions) -> np.ndarray:

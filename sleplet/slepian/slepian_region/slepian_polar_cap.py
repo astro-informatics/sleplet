@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 import gmpy2 as gp
 import numpy as np
@@ -31,12 +31,10 @@ _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 @dataclass
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
-    order: Optional[Union[int, np.ndarray]]
+    order: Optional[int | np.ndarray]
     gap: bool
     _gap: bool = field(default=False, init=False, repr=False)
-    _order: Optional[Union[int, np.ndarray]] = field(
-        default=None, init=False, repr=False
-    )
+    _order: Optional[int | np.ndarray] = field(default=None, init=False, repr=False)
     _region: Region = field(init=False, repr=False)
     _theta_max: float = field(init=False, repr=False)
 
@@ -368,11 +366,11 @@ class SlepianPolarCap(SlepianFunctions):
         self._gap = gap
 
     @property  # type:ignore
-    def order(self) -> Optional[Union[int, np.ndarray]]:
+    def order(self) -> Optional[int | np.ndarray]:
         return self._order
 
     @order.setter
-    def order(self, order: Optional[Union[int, np.ndarray]]) -> None:
+    def order(self, order: Optional[int | np.ndarray]) -> None:
         if isinstance(order, property):
             # initial value not specified, use default
             # https://stackoverflow.com/a/61480946/7359333

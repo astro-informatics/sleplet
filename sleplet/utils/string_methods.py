@@ -47,21 +47,18 @@ def filename_angle(
     beta_num, beta_den = _get_angle_num_dem(beta_pi_fraction)
     gamma_num, gamma_den = _get_angle_num_dem(gamma_pi_fraction)
 
-    # if alpha = beta = 0
-    if not alpha_num and not beta_num:
-        filename = "alpha0_beta0"
-    # if alpha = 0
-    elif not alpha_num:
-        filename = f"alpha0_beta{_pi_in_filename(beta_num, beta_den)}"
-    # if beta = 0
-    elif not beta_num:
-        filename = f"alpha{_pi_in_filename(alpha_num, alpha_den)}_beta0"
-    # if alpha != 0 && beta !=0
-    else:
-        filename = (
-            f"alpha{_pi_in_filename(alpha_num, alpha_den)}"
-            f"_beta{_pi_in_filename(beta_num, beta_den)}"
-        )
+    match (alpha_num, beta_num):  # noqa: E999
+        case (0, 0):
+            filename = "alpha0_beta0"
+        case (0, _):
+            filename = f"alpha0_beta{_pi_in_filename(beta_num, beta_den)}"
+        case (_, 0):
+            filename = f"alpha{_pi_in_filename(alpha_num, alpha_den)}_beta0"
+        case _:
+            filename = (
+                f"alpha{_pi_in_filename(alpha_num, alpha_den)}"
+                f"_beta{_pi_in_filename(beta_num, beta_den)}"
+            )
 
     # if rotation with gamma != 0
     if gamma_num:
