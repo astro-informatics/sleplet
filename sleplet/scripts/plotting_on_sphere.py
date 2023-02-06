@@ -193,18 +193,19 @@ def plot(
     shannon = None if isinstance(f, F_LM) else f.slepian.N
 
     logger.info(f"plotting method: '{method}'")
-    if method == "rotate":
-        coefficients, filename = _rotation_helper(
-            f, filename, alpha_pi_frac, beta_pi_frac, gamma_pi_frac
-        )
-    elif method == "translate":
-        coefficients, filename, trans_annotation = _translation_helper(
-            f, filename, alpha_pi_frac, beta_pi_frac, shannon
-        )
+    match method:  # noqa: E999
+        case "rotate":
+            coefficients, filename = _rotation_helper(
+                f, filename, alpha_pi_frac, beta_pi_frac, gamma_pi_frac
+            )
+        case "translate":
+            coefficients, filename, trans_annotation = _translation_helper(
+                f, filename, alpha_pi_frac, beta_pi_frac, shannon
+            )
 
-        # annotate translation point
-        if annotations:
-            annotation.append(trans_annotation)
+            # annotate translation point
+            if annotations:
+                annotation.append(trans_annotation)
 
     if isinstance(g, Coefficients):
         coefficients, filename = _convolution_helper(
@@ -213,11 +214,12 @@ def plot(
 
     # rotate plot of Earth
     if "earth" in filename:
-        if earth_view == "africa":
-            coefficients = rotate_earth_to_africa(coefficients, f.L)
-            filename += "_africa"
-        elif earth_view == "south_america":
-            coefficients = rotate_earth_to_south_america(coefficients, f.L)
+        match earth_view:  # noqa: E999
+            case "africa":
+                coefficients = rotate_earth_to_africa(coefficients, f.L)
+                filename += "_africa"
+            case "south_america":
+                coefficients = rotate_earth_to_south_america(coefficients, f.L)
 
     # get field value
     field = _coefficients_to_field(f, coefficients)
