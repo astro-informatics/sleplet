@@ -31,7 +31,7 @@ keywords = ["manifolds", "python", "slepian-functions", "sphere", "wavelets"]
 license = {text = "BSD-3-Clause"}
 name = "sleplet"
 readme = "README.md"
-requires-python = "==3.10"
+requires-python = "~=3.10"
 version = "0.1.4"
 
 [project.scripts]
