@@ -9,24 +9,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Restore pip cache
+      - name: set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: set PY
+        run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
+
+      - name: cache stuff
         uses: actions/cache@v3
         with:
-          # This path is specific to Ubuntu
-          path: ~/.cache/pip
-          # Look to see if there is a cache hit for the corresponding pyproject file
-          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-            ${{ runner.os }}-
+          path: |
+            ${{ env.pythonLocation }}
+             ~/.cache/pip
+          key: |
+            pip-${{ env.PY }}-${{ hashFiles('pyproject.toml') }}
 
       - name: Pip install modules
         run: pip install .
