@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -92,7 +92,7 @@ def create_slepian_noise(
 
 
 def _perform_hard_thresholding(
-    f: np.ndarray, sigma_j: Union[float, np.ndarray], n_sigma: int
+    f: np.ndarray, sigma_j: float | np.ndarray, n_sigma: int
 ) -> np.ndarray:
     """
     set pixels in real space to zero if the magnitude is less than the threshold
