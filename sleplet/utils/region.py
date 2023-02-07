@@ -18,7 +18,7 @@ from sleplet.utils.vars import (
 class Region:
     gap: bool = False
     mask_name: str = ""
-    name_ending: str = field(init=False, repr=False)
+    name_ending: str = field(default="", init=False, repr=False)
     phi_max: float = PHI_MAX_DEFAULT
     phi_min: float = PHI_MIN_DEFAULT
     theta_max: float = THETA_MAX_DEFAULT
