@@ -14,9 +14,7 @@ from sleplet.utils.slepian_methods import choose_slepian_method, compute_s_p_ome
 
 @dataclass
 class F_P(Coefficients):
-    region: Optional[Region]
-    _region: Optional[Region] = field(default=None, init=False, repr=False)
-    _slepian: np.ndarray = field(init=False, repr=False)
+    region: Optional[Region] = None
 
     def __post_init__(self) -> None:
         self.coefficients: np.ndarray

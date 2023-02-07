@@ -27,10 +27,6 @@ _meshes_path = _file_location.parents[2] / "data" / "meshes"
 @dataclass
 class MeshSlepian:
     mesh: Mesh
-    _mesh: Mesh = field(init=False, repr=False)
-    _N: int = field(init=False, repr=False)
-    _slepian_eigenvalues: np.ndarray = field(init=False, repr=False)
-    _slepian_functions: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.N = compute_mesh_shannon(self.mesh)

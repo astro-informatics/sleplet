@@ -8,8 +8,7 @@ from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filen
 
 @dataclass
 class Gaussian(F_LM):
-    sigma: float
-    _sigma: float = field(default=10, init=False, repr=False)
+    sigma: float = 10
 
     def __post_init__(self) -> None:
         super().__post_init__()

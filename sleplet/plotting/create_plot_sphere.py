@@ -7,7 +7,7 @@ import plotly.offline as py
 import pyssht as ssht
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
-from pydantic.dataclasses import dataclass
+from pydantic.dataclasses import Field, dataclass
 
 from sleplet.utils.config import settings
 from sleplet.utils.logger import logger
@@ -36,17 +36,17 @@ _fig_path = _file_location.parents[1] / "figures"
 
 @dataclass
 class Plot:
-    f: np.ndarray = field(repr=False)
+    f: np.ndarray
     L: int
     filename: str
-    amplitude: Optional[float] = field(default=None, repr=False)
-    plot_type: str = field(default="real", repr=False)
-    annotations: list[dict] = field(default_factory=list, repr=False)
-    normalise: bool = field(default=True, repr=False)
-    reality: bool = field(default=False, repr=False)
-    region: Optional[Region] = field(default=None, repr=False)
-    spin: int = field(default=0, repr=False)
-    upsample: bool = field(default=True, repr=False)
+    amplitude: Optional[float] = None
+    plot_type: str = "real"
+    annotations: list[dict] = Field(default_factory=list)
+    normalise: bool = True
+    reality: bool = False
+    region: Optional[Region] = None
+    spin: int = 0
+    upsample: bool = True
 
     def __post_init__(self) -> None:
         self.resolution = calc_plot_resolution(self.L) if self.upsample else self.L

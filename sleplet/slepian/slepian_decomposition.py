@@ -18,14 +18,9 @@ from sleplet.utils.vars import SAMPLING_SCHEME
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
-    f: Optional[np.ndarray]
-    flm: Optional[np.ndarray]
-    mask: Optional[np.ndarray]
-    _f: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _flm: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _L: int = field(init=False, repr=False)
-    _mask: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _slepian: SlepianFunctions = field(init=False, repr=False)
+    f: Optional[np.ndarray] = None
+    flm: Optional[np.ndarray] = None
+    mask: Optional[np.ndarray] = None
 
     def __post_init__(self) -> None:
         self._detect_method()

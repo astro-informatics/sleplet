@@ -15,20 +15,10 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 @dataclass
 class Coefficients:
     L: int
-    extra_args: Optional[list[int]]
-    region: Optional[Region]
-    noise: Optional[float]
-    smoothing: Optional[int]
-    _coefficients: np.ndarray = field(init=False, repr=False)
-    _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
-    _L: int = field(init=False, repr=False)
-    _name: str = field(init=False, repr=False)
-    _reality: bool = field(default=False, init=False, repr=False)
-    _region: Optional[Region] = field(default=None, init=False, repr=False)
-    _noise: Optional[float] = field(default=None, init=False, repr=False)
-    _smoothing: Optional[int] = field(default=None, init=False, repr=False)
-    _spin: int = field(default=0, init=False, repr=False)
-    _unnoised_coefficients: Optional[np.ndarray] = field(default=None, repr=False)
+    extra_args: Optional[list[int]] = None
+    region: Optional[Region] = None
+    noise: Optional[float] = None
+    smoothing: Optional[int] = None
 
     def __post_init__(self) -> None:
         self._setup_args()

@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from pathlib import Path
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -10,14 +9,6 @@ from sleplet.utils.logger import logger
 @dataclass
 class SlepianFunctions:
     L: int
-    _area: float = field(init=False, repr=False)
-    _eigenvalues: np.ndarray = field(init=False, repr=False)
-    _eigenvectors: np.ndarray = field(init=False, repr=False)
-    _L: int = field(init=False, repr=False)
-    _mask: np.ndarray = field(init=False, repr=False)
-    _matrix_location: Path = field(init=False, repr=False)
-    _name: str = field(init=False, repr=False)
-    _N: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_mask()

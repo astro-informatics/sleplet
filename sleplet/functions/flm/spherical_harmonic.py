@@ -8,10 +8,8 @@ from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filen
 
 @dataclass
 class SphericalHarmonic(F_LM):
-    ell: int
-    m: int
-    _ell: int = field(default=0, init=False, repr=False)
-    _m: int = field(default=0, init=False, repr=False)
+    ell: int = 0
+    m: int = 0
 
     def _create_coefficients(self) -> None:
         ind = ssht.elm2ind(self.ell, self.m)

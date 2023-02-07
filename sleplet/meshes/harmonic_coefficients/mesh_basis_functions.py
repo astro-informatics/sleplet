@@ -7,8 +7,7 @@ from sleplet.utils.logger import logger
 
 @dataclass
 class MeshBasisFunctions(MeshHarmonicCoefficients):
-    rank: int
-    _rank: int = field(default=0, init=False, repr=False)
+    rank: int = 0
 
     def __post_init__(self) -> None:
         self._validate_rank()

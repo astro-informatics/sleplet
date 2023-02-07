@@ -1,7 +1,5 @@
 from typing import Optional
 
-import numpy as np
-from plotly.graph_objs.layout.scene import Camera
 from pydantic.dataclasses import dataclass
 
 from sleplet.utils.mesh_methods import (
@@ -16,18 +14,8 @@ from sleplet.utils.plotly_methods import create_camera
 @dataclass
 class Mesh:
     name: str
-    number_basis_functions: Optional[int]
-    zoom: bool
-    _basis_functions: np.ndarray = field(init=False, repr=False)
-    _camera_view: Camera = field(init=False, repr=False)
-    _colourbar_pos: float = field(init=False, repr=False)
-    _faces: np.ndarray = field(init=False, repr=False)
-    _mesh_eigenvalues: np.ndarray = field(init=False, repr=False)
-    _name: str = field(init=False, repr=False)
-    _number_basis_functions: Optional[int] = field(default=None, init=False, repr=False)
-    _region: np.ndarray = field(init=False, repr=False)
-    _vertices: np.ndarray = field(init=False, repr=False)
-    _zoom: bool = field(default=False, init=False, repr=False)
+    number_basis_functions: Optional[int] = None
+    zoom: bool = False
 
     def __post_init__(self) -> None:
         mesh_config = extract_mesh_config(self.name)

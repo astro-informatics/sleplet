@@ -16,18 +16,11 @@ from sleplet.utils.string_methods import (
 
 @dataclass
 class DirectionalSpinWavelets(F_LM):
-    B: int
-    j_min: int
-    spin: int
-    N: int
-    j: Optional[int]
-    _B: int = field(default=2, init=False, repr=False)
-    _j_min: int = field(default=2, init=False, repr=False)
-    _j: Optional[int] = field(default=None, init=False, repr=False)
-    _N: int = field(default=2, init=False, repr=False)
-    _spin: int = field(default=0, init=False, repr=False)
-    _j_max: int = field(init=False, repr=False)
-    _wavelets: np.ndarray = field(init=False, repr=False)
+    B: int = 3
+    j_min: int = 2
+    spin: int = 0
+    N: int = 2
+    j: Optional[int] = None
 
     def __post_init__(self) -> None:
         super().__post_init__()

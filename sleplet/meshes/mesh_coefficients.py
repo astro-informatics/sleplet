@@ -14,16 +14,9 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 @dataclass
 class MeshCoefficients:
     mesh: Mesh
-    extra_args: Optional[list[int]]
-    noise: Optional[float]
-    region: bool
-    _coefficients: np.ndarray = field(init=False, repr=False)
-    _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
-    _unnoised_coefficients: Optional[np.ndarray] = field(default=None, repr=False)
-    _mesh: Mesh = field(init=False, repr=False)
-    _name: str = field(init=False, repr=False)
-    _noise: Optional[float] = field(default=None, init=False, repr=False)
-    _region: bool = field(default=False, init=False, repr=False)
+    extra_args: Optional[list[int]] = None
+    noise: Optional[float] = None
+    region: bool = False
 
     def __post_init__(self) -> None:
         self._setup_args()

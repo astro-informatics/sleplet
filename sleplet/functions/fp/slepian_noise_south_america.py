@@ -8,8 +8,7 @@ from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filen
 
 @dataclass
 class SlepianNoiseSouthAmerica(F_P):
-    SNR: float
-    _SNR: float = field(default=-10, init=False, repr=False)
+    SNR: float = -10
 
     def __post_init__(self) -> None:
         super().__post_init__()

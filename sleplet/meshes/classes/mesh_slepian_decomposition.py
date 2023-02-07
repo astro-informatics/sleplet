@@ -15,13 +15,9 @@ from sleplet.utils.logger import logger
 @dataclass
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
-    u: Optional[np.ndarray]
-    u_i: Optional[np.ndarray]
-    mask: bool
-    _mask: bool = field(default=False, init=False, repr=False)
-    _slepian_mesh: MeshSlepian = field(init=False, repr=False)
-    _u: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _u_i: Optional[np.ndarray] = field(default=None, init=False, repr=False)
+    u: Optional[np.ndarray] = None
+    u_i: Optional[np.ndarray] = None
+    mask: bool = False
 
     def __post_init__(self) -> None:
         """ """

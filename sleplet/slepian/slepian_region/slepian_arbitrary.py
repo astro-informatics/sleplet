@@ -34,13 +34,8 @@ _slepian_path = _file_location.parents[2] / "data" / "slepian"
 @dataclass
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
-    L_min: int
-    L_max: int
-    _mask_name: str = field(init=False, repr=False)
-    _L_max: int = field(default=settings.L_MAX, init=False, repr=False)
-    _L_min: int = field(default=settings.L_MIN, init=False, repr=False)
-    _region: Region = field(init=False, repr=False)
-    _weight: np.ndarray = field(init=False, repr=False)
+    L_min: int = settings.L_MIN
+    L_max: int = settings.L_MAX
 
     def __post_init__(self) -> None:
         self.region = Region(mask_name=self.mask_name)

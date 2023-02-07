@@ -8,10 +8,8 @@ from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filen
 
 @dataclass
 class HarmonicGaussian(F_LM):
-    l_sigma: float
-    m_sigma: float
-    _l_sigma: float = field(default=10, init=False, repr=False)
-    _m_sigma: float = field(default=10, init=False, repr=False)
+    l_sigma: float = 10
+    m_sigma: float = 10
 
     def __post_init__(self) -> None:
         super().__post_init__()

@@ -11,9 +11,6 @@ from sleplet.utils.vars import SAMPLING_SCHEME
 
 @dataclass
 class SlepianDiracDelta(F_P):
-    _alpha: float = field(init=False, repr=False)
-    _beta: float = field(init=False, repr=False)
-
     def __post_init__(self) -> None:
         super().__post_init__()
 

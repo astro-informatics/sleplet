@@ -7,8 +7,7 @@ from sleplet.utils.slepian_methods import slepian_mesh_forward
 
 @dataclass
 class MeshSlepianFunctions(MeshSlepianCoefficients):
-    rank: int
-    _rank: int = field(default=0, init=False, repr=False)
+    rank: int = 0
 
     def __post_init__(self) -> None:
         super().__post_init__()

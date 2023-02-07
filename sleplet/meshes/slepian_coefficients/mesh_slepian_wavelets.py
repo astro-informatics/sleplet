@@ -1,6 +1,5 @@
 from typing import Optional
 
-import numpy as np
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
@@ -12,14 +11,9 @@ from sleplet.utils.wavelet_methods import create_kappas
 
 @dataclass
 class MeshSlepianWavelets(MeshSlepianCoefficients):
-    B: int
-    j_min: int
-    j: Optional[int]
-    _B: int = field(default=3, init=False, repr=False)
-    _j: Optional[int] = field(default=None, init=False, repr=False)
-    _j_max: int = field(init=False, repr=False)
-    _j_min: int = field(default=2, init=False, repr=False)
-    _wavelets: np.ndarray = field(init=False, repr=False)
+    B: int = 3
+    j_min: int = 2
+    j: Optional[int] = None
 
     def __post_init__(self) -> None:
         super().__post_init__()

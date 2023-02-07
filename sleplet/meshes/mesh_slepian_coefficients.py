@@ -9,8 +9,6 @@ from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
 
 @dataclass
 class MeshSlepianCoefficients(MeshCoefficients):
-    _slepian_mesh: MeshSlepian = field(init=False, repr=False)
-
     def __post_init__(self) -> None:
         self.mesh_slepian = MeshSlepian(self.mesh)
         super().__post_init__()

@@ -30,11 +30,11 @@ _fig_path = _file_location.parents[1] / "figures"
 class Plot:
     mesh: Mesh
     filename: str
-    f: np.ndarray = field(repr=False)
-    amplitude: Optional[float] = field(default=None, repr=False)
-    colour: LinearSegmentedColormap = field(default=cmocean.cm.ice, repr=False)
-    normalise: bool = field(default=True, repr=False)
-    region: bool = field(default=False, repr=False)
+    f: np.ndarray
+    amplitude: Optional[float] = None
+    colour: LinearSegmentedColormap = cmocean.cm.ice
+    normalise: bool = True
+    region: bool = False
 
     def __post_init__(self) -> None:
         if self.normalise:
