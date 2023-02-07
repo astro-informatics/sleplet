@@ -17,7 +17,7 @@ NORMALISE = False
 SNR_IN = -10
 
 
-def main(snr: int, sigma: int) -> None:
+def main(snr: float, sigma: int) -> None:
     """
     denoising demo using Slepian wavelets
     """

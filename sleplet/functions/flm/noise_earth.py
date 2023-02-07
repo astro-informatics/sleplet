@@ -9,7 +9,7 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation, kw_only=True)
 class NoiseEarth(F_LM):
-    SNR: int = 10
+    SNR: float = 10
 
     def __post_init__(self) -> None:
         super().__post_init__()

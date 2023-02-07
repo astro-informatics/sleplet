@@ -18,7 +18,6 @@ class F_P(Coefficients):
     region: Optional[Region] = None
 
     def __post_init__(self) -> None:
-        self.coefficients: np.ndarray
         self.region = (
             self.region
             if isinstance(self.region, Region)

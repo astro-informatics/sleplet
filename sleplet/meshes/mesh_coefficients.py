@@ -20,12 +20,12 @@ class MeshCoefficients:
     mesh: Mesh
     _: KW_ONLY
     coefficients: np.ndarray = field(init=False, repr=False)
-    extra_args: Optional[list[int]] = None
     mesh_slepian: MeshSlepian = field(init=False, repr=False)
     name: str = field(init=False, repr=False)
-    noise: Optional[int] = None
-    region: bool = False
     unnoised_coefficients: np.ndarray = field(init=False, repr=False)
+    extra_args: Optional[list[int]] = None
+    noise: Optional[float] = None
+    region: bool = False
 
     def __post_init__(self) -> None:
         self._setup_args()

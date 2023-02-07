@@ -9,7 +9,7 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation, kw_only=True)
 class MeshSlepianNoiseField(MeshSlepianCoefficients):
-    SNR: int = -5
+    SNR: float = -5
 
     def __post_init__(self) -> None:
         super().__post_init__()

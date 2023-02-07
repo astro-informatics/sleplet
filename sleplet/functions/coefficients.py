@@ -21,15 +21,15 @@ class Coefficients:
     L: int
     _: KW_ONLY
     coefficients: np.ndarray = field(init=False, repr=False)
-    extra_args: Optional[list[int]] = None
     name: str = field(init=False, repr=False)
-    noise: Optional[int] = None
-    region: Optional[Region] = None
     slepian: SlepianFunctions = field(init=False, repr=False)
-    smoothing: Optional[int] = None
     snr: float = field(init=False, repr=False)
     spin: int = field(init=False, repr=False)
     unnoised_coefficients: np.ndarray = field(init=False, repr=False)
+    smoothing: Optional[int] = None
+    noise: Optional[float] = None
+    region: Optional[Region] = None
+    extra_args: Optional[list[int]] = None
 
     def __post_init__(self) -> None:
         self._setup_args()

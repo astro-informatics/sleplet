@@ -34,7 +34,7 @@ def denoising_axisym(
     signal: Coefficients,
     noised_signal: Coefficients,
     axisymmetric_wavelets: AxisymmetricWavelets,
-    snr_in: int,
+    snr_in: float,
     n_sigma: int,
     *,
     rotate_to_south_america: bool = False,
@@ -78,7 +78,7 @@ def denoising_slepian_wavelet(
     signal: Coefficients,
     noised_signal: Coefficients,
     slepian_wavelets: SlepianWavelets,
-    snr_in: int,
+    snr_in: float,
     n_sigma: int,
 ) -> np.ndarray:
     """
@@ -119,7 +119,7 @@ def denoising_slepian_wavelet(
 def denoising_slepian_function(
     signal: Coefficients,
     noised_signal: Coefficients,
-    snr_in: int,
+    snr_in: float,
     n_sigma: int,
 ) -> np.ndarray:
     """
@@ -145,7 +145,7 @@ def denoising_mesh_slepian(
     signal: MeshCoefficients,
     noised_signal: MeshCoefficients,
     mesh_slepian_wavelets: MeshSlepianWavelets,
-    snr_in: int,
+    snr_in: float,
     n_sigma: int,
 ) -> np.ndarray:
     """

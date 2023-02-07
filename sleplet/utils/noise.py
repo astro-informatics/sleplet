@@ -37,7 +37,7 @@ def compute_snr(signal: np.ndarray, noise: np.ndarray, signal_type: str) -> floa
 
 def compute_sigma_noise(
     signal: np.ndarray,
-    snr_in: int,
+    snr_in: float,
     *,
     denominator: Optional[int] = None,
 ) -> float:
@@ -49,7 +49,7 @@ def compute_sigma_noise(
     return np.sqrt(10 ** (-snr_in / 10) * _signal_power(signal) / denominator)
 
 
-def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
+def create_noise(L: int, signal: np.ndarray, snr_in: float) -> np.ndarray:
     """
     computes Gaussian white noise
     """
@@ -79,7 +79,7 @@ def create_noise(L: int, signal: np.ndarray, snr_in: int) -> np.ndarray:
 
 
 def create_slepian_noise(
-    L: int, slepian_signal: np.ndarray, slepian: SlepianFunctions, snr_in: int
+    L: int, slepian_signal: np.ndarray, slepian: SlepianFunctions, snr_in: float
 ) -> np.ndarray:
     """
     computes Gaussian white noise in Slepian space
@@ -151,7 +151,7 @@ def slepian_function_hard_thresholding(
     return slepian_forward(L, slepian, f=f_thresholded)
 
 
-def compute_sigma_j(signal: np.ndarray, psi_j: np.ndarray, snr_in: int) -> np.ndarray:
+def compute_sigma_j(signal: np.ndarray, psi_j: np.ndarray, snr_in: float) -> np.ndarray:
     """
     compute sigma_j for wavelets used in denoising the signal
     """
@@ -164,7 +164,7 @@ def compute_slepian_sigma_j(
     L: int,
     signal: np.ndarray,
     psi_j: np.ndarray,
-    snr_in: int,
+    snr_in: float,
     slepian: SlepianFunctions,
 ) -> np.ndarray:
     """
@@ -177,7 +177,7 @@ def compute_slepian_sigma_j(
     return sigma_noise * np.sqrt(wavelet_power)
 
 
-def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
+def create_mesh_noise(u_i: np.ndarray, snr_in: float) -> np.ndarray:
     """
     computes Gaussian white noise
     """
@@ -199,7 +199,7 @@ def create_mesh_noise(u_i: np.ndarray, snr_in: int) -> np.ndarray:
 def create_slepian_mesh_noise(
     mesh_slepian: MeshSlepian,
     slepian_signal: np.ndarray,
-    snr_in: int,
+    snr_in: float,
 ) -> np.ndarray:
     """
     computes Gaussian white noise in Slepian space
@@ -222,7 +222,7 @@ def compute_slepian_mesh_sigma_j(
     mesh_slepian: MeshSlepian,
     signal: np.ndarray,
     psi_j: np.ndarray,
-    snr_in: int,
+    snr_in: float,
 ) -> np.ndarray:
     """
     compute sigma_j for wavelets used in denoising the signal
