@@ -14,10 +14,11 @@ from sleplet.utils.string_methods import (
     filename_args,
     wavelet_ending,
 )
+from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class SlepianWaveletCoefficientsAfrica(F_P):
     B: int = 3
     j_min: int = 2

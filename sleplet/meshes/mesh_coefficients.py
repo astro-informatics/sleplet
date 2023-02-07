@@ -10,11 +10,12 @@ from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
 from sleplet.utils.string_methods import filename_args
+from sleplet.utils.validation import Validation
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@dataclass
+@dataclass(config=Validation)
 class MeshCoefficients:
     mesh: Mesh
     _: KW_ONLY

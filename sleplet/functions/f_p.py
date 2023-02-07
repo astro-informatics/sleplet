@@ -10,9 +10,10 @@ from sleplet.utils.mask_methods import create_default_region
 from sleplet.utils.noise import compute_snr, create_slepian_noise
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, compute_s_p_omega_prime
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class F_P(Coefficients):
     region: Optional[Region] = None
 

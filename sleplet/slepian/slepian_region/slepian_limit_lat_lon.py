@@ -13,6 +13,7 @@ from sleplet.utils.config import settings
 from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -24,7 +25,7 @@ _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
     phi_max: float = PHI_MAX_DEFAULT
     phi_min: float = PHI_MIN_DEFAULT

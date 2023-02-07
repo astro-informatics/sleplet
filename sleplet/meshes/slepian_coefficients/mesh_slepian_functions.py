@@ -4,9 +4,10 @@ from pydantic.dataclasses import dataclass
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_mesh_forward
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class MeshSlepianFunctions(MeshSlepianCoefficients):
     rank: int = 0
 

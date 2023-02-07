@@ -5,9 +5,10 @@ from sleplet.functions.flm.africa import Africa
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_forward
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class SlepianAfrica(F_P):
     def __post_init__(self) -> None:
         super().__post_init__()

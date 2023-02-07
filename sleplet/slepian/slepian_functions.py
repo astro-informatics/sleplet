@@ -6,9 +6,10 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.utils.logger import logger
 from sleplet.utils.region import Region
+from sleplet.utils.validation import Validation
 
 
-@dataclass
+@dataclass(config=Validation)
 class SlepianFunctions:
     L: int
     _: KW_ONLY

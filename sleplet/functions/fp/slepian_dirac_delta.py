@@ -9,10 +9,11 @@ from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import compute_s_p_omega_prime
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class SlepianDiracDelta(F_P):
     slepian: SlepianFunctions = field(init=False, repr=False)
 

@@ -27,6 +27,7 @@ from sleplet.utils.plotly_methods import (
     create_tick_mark,
 )
 from sleplet.utils.region import Region
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 
 MW_POLE_LENGTH = 2
@@ -35,7 +36,7 @@ _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
 
 
-@dataclass
+@dataclass(config=Validation)
 class Plot:
     f: np.ndarray
     L: int

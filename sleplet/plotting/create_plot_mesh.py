@@ -21,13 +21,14 @@ from sleplet.utils.plotly_methods import (
     create_layout,
     create_tick_mark,
 )
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
 
 
-@dataclass
+@dataclass(config=Validation)
 class Plot:
     mesh: Mesh
     filename: str

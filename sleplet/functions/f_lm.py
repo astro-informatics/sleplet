@@ -6,9 +6,10 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.noise import compute_snr, create_noise
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class F_LM(Coefficients):
     def __post_init__(self) -> None:
         super().__post_init__()

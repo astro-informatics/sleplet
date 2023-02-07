@@ -12,13 +12,14 @@ from sleplet.utils.string_methods import (
     filename_args,
     wavelet_ending,
 )
+from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     create_axisymmetric_wavelets,
 )
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class AxisymmetricWaveletCoefficientsAfrica(F_LM):
     B: int = 3
     j_min: int = 2

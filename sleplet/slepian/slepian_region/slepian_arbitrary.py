@@ -27,13 +27,14 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import L_MAX_DEFAULT, L_MIN_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _slepian_path = _file_location.parents[2] / "data" / "slepian"
 
 
-@dataclass
+@dataclass(config=Validation)
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY

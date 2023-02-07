@@ -9,13 +9,14 @@ from sleplet.functions.f_lm import F_LM
 from sleplet.utils.harmonic_methods import ensure_f_bandlimited
 from sleplet.utils.plot_methods import rotate_earth_to_south_america
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[2] / "data" / "slepian" / "masks"
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class SouthAmerica(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()

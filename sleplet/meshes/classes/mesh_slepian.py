@@ -19,12 +19,13 @@ from sleplet.utils.parallel_methods import (
     split_arr_into_chunks,
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
+from sleplet.utils.validation import Validation
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[2] / "data" / "meshes"
 
 
-@dataclass
+@dataclass(config=Validation)
 class MeshSlepian:
     mesh: Mesh
 

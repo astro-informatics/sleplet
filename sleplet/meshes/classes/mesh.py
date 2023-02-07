@@ -10,9 +10,10 @@ from sleplet.utils.mesh_methods import (
     read_mesh,
 )
 from sleplet.utils.plotly_methods import create_camera
+from sleplet.utils.validation import Validation
 
 
-@dataclass
+@dataclass(config=Validation)
 class Mesh:
     name: str
     _: KW_ONLY

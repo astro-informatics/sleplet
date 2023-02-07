@@ -3,9 +3,10 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class Identity(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()

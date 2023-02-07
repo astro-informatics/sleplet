@@ -4,9 +4,10 @@ from sleplet.functions.f_lm import F_LM
 from sleplet.functions.flm.earth import Earth
 from sleplet.utils.noise import compute_snr, create_noise
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class NoiseEarth(F_LM):
     SNR: int = 10
 

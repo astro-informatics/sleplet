@@ -4,9 +4,10 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class HarmonicGaussian(F_LM):
     l_sigma: float = 10
     m_sigma: float = 10

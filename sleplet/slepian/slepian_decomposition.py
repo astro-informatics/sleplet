@@ -12,10 +12,11 @@ from sleplet.utils.integration_methods import (
     integrate_whole_sphere,
 )
 from sleplet.utils.logger import logger
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 
-@dataclass
+@dataclass(config=Validation)
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions

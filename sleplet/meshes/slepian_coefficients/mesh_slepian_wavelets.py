@@ -7,10 +7,11 @@ from pys2let import pys2let_j_max
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.utils.logger import logger
 from sleplet.utils.string_methods import filename_args, wavelet_ending
+from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import create_kappas
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class MeshSlepianWavelets(MeshSlepianCoefficients):
     B: int = 3
     j_min: int = 2

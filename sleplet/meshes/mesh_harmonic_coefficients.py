@@ -6,9 +6,10 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.utils.noise import compute_snr, create_mesh_noise
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class MeshHarmonicCoefficients(MeshCoefficients):
     coefficients: np.ndarray = field(init=False, repr=False)
     noise: int = field(init=False, repr=False)

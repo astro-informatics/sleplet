@@ -5,9 +5,10 @@ from pydantic.dataclasses import dataclass
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
+from sleplet.utils.validation import Validation
 
 
-@dataclass(kw_only=True)
+@dataclass(config=Validation, kw_only=True)
 class MeshSlepianCoefficients(MeshCoefficients):
     def __post_init__(self) -> None:
         self.mesh_slepian = MeshSlepian(self.mesh)

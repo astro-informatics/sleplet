@@ -23,6 +23,7 @@ from sleplet.utils.parallel_methods import (
     split_arr_into_chunks,
 )
 from sleplet.utils.region import Region
+from sleplet.utils.validation import Validation
 
 L_SAVE_ALL = 16
 
@@ -30,7 +31,7 @@ _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 
 
-@dataclass
+@dataclass(config=Validation)
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     _: KW_ONLY

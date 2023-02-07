@@ -11,9 +11,10 @@ from sleplet.utils.integration_methods import (
     integrate_whole_mesh,
 )
 from sleplet.utils.logger import logger
+from sleplet.utils.validation import Validation
 
 
-@dataclass
+@dataclass(config=Validation)
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: KW_ONLY
