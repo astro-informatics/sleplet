@@ -7,6 +7,7 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
 from sleplet.utils.string_methods import filename_args
 
@@ -17,9 +18,13 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 class MeshCoefficients:
     mesh: Mesh
     _: KW_ONLY
+    coefficients: np.ndarray = np.empty([])
     extra_args: Optional[list[int]] = None
-    noise: Optional[float] = None
+    mesh_slepian: MeshSlepian = MeshSlepian(Mesh("homer"))
+    name: str = ""
+    noise: Optional[int] = None
     region: bool = False
+    unnoised_coefficients: np.ndarray = np.empty([])
 
     def __post_init__(self) -> None:
         self._setup_args()

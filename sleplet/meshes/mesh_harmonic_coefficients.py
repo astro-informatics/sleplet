@@ -1,13 +1,17 @@
 from abc import abstractmethod
 
+import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.utils.noise import compute_snr, create_mesh_noise
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MeshHarmonicCoefficients(MeshCoefficients):
+    coefficients: np.ndarray
+    noise: int
+
     def __post_init__(self) -> None:
         super().__post_init__()
 

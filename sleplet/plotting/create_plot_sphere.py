@@ -42,9 +42,9 @@ class Plot:
     filename: str
     _: KW_ONLY
     amplitude: Optional[float] = None
-    plot_type: str = "real"
     annotations: list[dict] = field(default_factory=list)
     normalise: bool = True
+    plot_type: str = "real"
     reality: bool = False
     region: Optional[Region] = None
     spin: int = 0

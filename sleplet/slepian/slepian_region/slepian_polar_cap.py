@@ -34,8 +34,8 @@ _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     _: KW_ONLY
-    order: Optional[int | np.ndarray] = None
     gap: bool = False
+    order: Optional[int | np.ndarray] = None
 
     def __post_init__(self) -> None:
         self.region = Region(gap=self.gap, theta_max=self.theta_max)

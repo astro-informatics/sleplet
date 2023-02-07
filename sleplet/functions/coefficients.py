@@ -6,6 +6,8 @@ import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
+from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.convolution_methods import sifting_convolution
 from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from sleplet.utils.region import Region
@@ -18,10 +20,14 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 class Coefficients:
     L: int
     _: KW_ONLY
+    coefficients: np.ndarray = np.empty([])
     extra_args: Optional[list[int]] = None
+    name: str = ""
+    noise: Optional[int] = None
     region: Optional[Region] = None
-    noise: Optional[float] = None
+    slepian: SlepianFunctions = SlepianPolarCap(0, 0)
     smoothing: Optional[int] = None
+    spin: int = 0
 
     def __post_init__(self) -> None:
         self._setup_args()

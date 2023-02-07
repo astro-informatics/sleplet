@@ -1,3 +1,4 @@
+import numpy as np
 from igl import per_vertex_normals
 from pydantic.dataclasses import dataclass
 
@@ -7,6 +8,8 @@ from sleplet.utils.harmonic_methods import mesh_forward
 
 @dataclass
 class MeshField(MeshHarmonicCoefficients):
+    coefficients: np.ndarray = np.empty([])
+
     def __post_init__(self) -> None:
         super().__post_init__()
 

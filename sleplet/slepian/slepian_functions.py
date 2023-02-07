@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from dataclasses import KW_ONLY
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -9,6 +10,10 @@ from sleplet.utils.logger import logger
 @dataclass
 class SlepianFunctions:
     L: int
+    _: KW_ONLY
+    area: np.ndarray = np.empty([])
+    eigenvectors: np.ndarray = np.empty([])
+    eigenvalues: np.ndarray = np.empty([])
 
     def __post_init__(self) -> None:
         self._create_mask()

@@ -1,3 +1,4 @@
+from dataclasses import KW_ONLY
 from typing import Optional
 
 import numpy as np
@@ -16,9 +17,9 @@ from sleplet.utils.logger import logger
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: KW_ONLY
-    u: Optional[np.ndarray] = None
-    u_i: Optional[np.ndarray] = None
     mask: bool = False
+    u_i: Optional[np.ndarray] = None
+    u: Optional[np.ndarray] = None
 
     def __post_init__(self) -> None:
         """ """
