@@ -65,7 +65,7 @@ MESHES: list[str] = [
     for x in glob(str(_meshes_path / "regions" / "*.toml"))
 ]
 
-FLM: list[Coefficients] = [
+FLM: list = [
     Africa,
     AxisymmetricWaveletCoefficientsAfrica,
     AxisymmetricWaveletCoefficientsEarth,
@@ -86,7 +86,7 @@ FLM: list[Coefficients] = [
     Wmap,
 ]
 
-FP: list[Coefficients] = [
+FP: list = [
     Slepian,
     SlepianAfrica,
     SlepianDiracDelta,
@@ -101,11 +101,11 @@ FP: list[Coefficients] = [
 
 COEFFICIENTS: list[Coefficients] = FLM + FP
 
-MAPS_LM: list[Coefficients] = [Earth, SouthAmerica, Wmap]
+MAPS_LM: list = [Earth, SouthAmerica, Wmap]
 
-MESH_HARMONIC: list[MeshCoefficients] = [MeshBasisFunctions, MeshField, MeshNoiseField]
+MESH_HARMONIC: list = [MeshBasisFunctions, MeshField, MeshNoiseField]
 
-MESH_SLEPIAN: list[MeshCoefficients] = [
+MESH_SLEPIAN: list = [
     MeshSlepianField,
     MeshSlepianFunctions,
     MeshSlepianNoiseField,
