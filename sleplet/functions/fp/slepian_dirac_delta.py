@@ -55,11 +55,3 @@ class SlepianDiracDelta(F_P):
             f"angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})"
         )
         logger.info(f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})")
-
-    @alpha.setter
-    def alpha(self, alpha: float) -> None:
-        self._alpha = alpha
-
-    @beta.setter
-    def beta(self, beta: float) -> None:
-        self._beta = beta

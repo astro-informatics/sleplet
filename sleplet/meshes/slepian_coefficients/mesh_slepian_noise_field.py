@@ -37,7 +37,3 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.SNR = self.extra_args[0]
-
-    @SNR.setter
-    def SNR(self, SNR: float) -> None:
-        self._SNR = SNR

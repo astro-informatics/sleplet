@@ -5,7 +5,6 @@ from typing import Optional
 import numpy as np
 
 from sleplet.functions.coefficients import Coefficients
-from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.config import settings
 from sleplet.utils.mask_methods import create_default_region
 from sleplet.utils.noise import compute_snr, create_slepian_noise
@@ -46,14 +45,6 @@ class F_P(Coefficients):
             )
             self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
-
-    @region.setter
-    def region(self, region: Optional[Region]) -> None:
-        self._region = region
-
-    @slepian.setter
-    def slepian(self, slepian: SlepianFunctions) -> None:
-        self._slepian = slepian
 
     @abstractmethod
     def _create_coefficients(self) -> None:

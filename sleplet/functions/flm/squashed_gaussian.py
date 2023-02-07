@@ -50,11 +50,3 @@ class SquashedGaussian(F_LM):
         return np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
             self.freq * phi
         )
-
-    @freq.setter
-    def freq(self, freq: float) -> None:
-        self._freq = freq
-
-    @t_sigma.setter
-    def t_sigma(self, t_sigma: float) -> None:
-        self._t_sigma = t_sigma

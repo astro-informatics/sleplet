@@ -126,19 +126,3 @@ class MeshSlepianDecomposition:
                 "rank should be less than "
                 f"{self.mesh_slepian.mesh.number_basis_functions}"
             )
-
-    @mask.setter
-    def mask(self, mask: bool) -> None:
-        self._mask = mask
-
-    @mesh_slepian.setter
-    def mesh_slepian(self, mesh_slepian: MeshSlepian) -> None:
-        self._slepian_mesh = mesh_slepian
-
-    @u.setter
-    def u(self, u: Optional[np.ndarray]) -> None:
-        self._u = u
-
-    @u_i.setter
-    def u_i(self, u_i: Optional[np.ndarray]) -> None:
-        self._u_i = u_i

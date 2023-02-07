@@ -87,44 +87,6 @@ class Coefficients:
             )
         self._coefficients = coefficients
 
-    @extra_args.setter
-    def extra_args(self, extra_args: Optional[list[int]]) -> None:
-        self._extra_args = extra_args
-
-    @L.setter
-    def L(self, L: int) -> None:
-        self._L = L
-
-    @name.setter
-    def name(self, name: str) -> None:
-        self._name = name
-
-    @noise.setter
-    def noise(self, noise: Optional[float]) -> None:
-        self._noise = noise
-
-    @reality.setter
-    def reality(self, reality: bool) -> None:
-        self._reality = reality
-
-    @region.setter
-    def region(self, region: Optional[Region]) -> None:
-        self._region = region
-
-    @smoothing.setter
-    def smoothing(self, smoothing: Optional[int]) -> None:
-        self._smoothing = smoothing
-
-    @spin.setter
-    def spin(self, spin: int) -> None:
-        self._spin = spin
-
-    @unnoised_coefficients.setter
-    def unnoised_coefficients(
-        self, unnoised_coefficients: Optional[np.ndarray]
-    ) -> None:
-        self._unnoised_coefficients = unnoised_coefficients
-
     @abstractmethod
     def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
         """

@@ -47,11 +47,3 @@ class HarmonicGaussian(F_LM):
             self.l_sigma, self.m_sigma = [
                 np.float_power(10, x) for x in self.extra_args
             ]
-
-    @l_sigma.setter
-    def l_sigma(self, l_sigma: float) -> None:
-        self._l_sigma = l_sigma
-
-    @m_sigma.setter
-    def m_sigma(self, m_sigma: float) -> None:
-        self._m_sigma = m_sigma

@@ -52,32 +52,6 @@ class MeshCoefficients:
             coefficients = ensure_masked_bandlimit_mesh_signal(self.mesh, coefficients)
         self._coefficients = coefficients
 
-    @extra_args.setter
-    def extra_args(self, extra_args: Optional[list[int]]) -> None:
-        self._extra_args = extra_args
-
-    @mesh.setter
-    def mesh(self, mesh: Mesh) -> None:
-        self._mesh = mesh
-
-    @name.setter
-    def name(self, name: str) -> None:
-        self._name = name
-
-    @noise.setter
-    def noise(self, noise: Optional[float]) -> None:
-        self._noise = noise
-
-    @region.setter
-    def region(self, region: bool) -> None:
-        self._region = region
-
-    @unnoised_coefficients.setter
-    def unnoised_coefficients(
-        self, unnoised_coefficients: Optional[np.ndarray]
-    ) -> None:
-        self._unnoised_coefficients = unnoised_coefficients
-
     @abstractmethod
     def _add_noise_to_signal(self) -> None:
         """

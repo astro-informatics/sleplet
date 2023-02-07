@@ -26,10 +26,6 @@ class MeshSlepianCoefficients(MeshCoefficients):
             self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
 
-    @mesh_slepian.setter
-    def mesh_slepian(self, mesh_slepian: MeshSlepian) -> None:
-        self._slepian_mesh = mesh_slepian
-
     @abstractmethod
     def _create_coefficients(self) -> None:
         raise NotImplementedError

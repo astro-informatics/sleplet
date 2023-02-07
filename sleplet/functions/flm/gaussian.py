@@ -40,7 +40,3 @@ class Gaussian(F_LM):
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.sigma = np.float_power(10, self.extra_args[0])
-
-    @sigma.setter
-    def sigma(self, sigma: float) -> None:
-        self._sigma = sigma

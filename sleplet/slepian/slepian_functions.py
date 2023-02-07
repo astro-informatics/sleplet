@@ -30,38 +30,6 @@ class SlepianFunctions:
         self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
 
-    @area.setter
-    def area(self, area: float) -> None:
-        self._area = area
-
-    @eigenvalues.setter
-    def eigenvalues(self, eigenvalues: np.ndarray) -> None:
-        self._eigenvalues = eigenvalues
-
-    @eigenvectors.setter
-    def eigenvectors(self, eigenvectors: np.ndarray) -> None:
-        self._eigenvectors = eigenvectors
-
-    @L.setter
-    def L(self, L: int) -> None:
-        self._L = L
-
-    @mask.setter
-    def mask(self, mask: np.ndarray) -> None:
-        self._mask = mask
-
-    @matrix_location.setter
-    def matrix_location(self, matrix_location: Path) -> None:
-        self._matrix_location = matrix_location
-
-    @N.setter
-    def N(self, N: int) -> None:
-        self._N = N
-
-    @name.setter
-    def name(self, name: str) -> None:
-        self._name = name
-
     @abstractmethod
     def _create_fn_name(self) -> None:
         """

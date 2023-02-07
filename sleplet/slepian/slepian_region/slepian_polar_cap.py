@@ -353,19 +353,11 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @gap.setter
-    def gap(self, gap: bool) -> None:
-        self._gap = gap
-
     @order.setter
     def order(self, order: Optional[int | np.ndarray]) -> None:
         if order is not None and (np.abs(order) >= self.L).any():
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
-
-    @region.setter
-    def region(self, region: Region) -> None:
-        self._region = region
 
     @theta_max.setter
     def theta_max(self, theta_max: float) -> None:

@@ -56,11 +56,3 @@ class ElongatedGaussian(F_LM):
             )
             / 2
         )
-
-    @p_sigma.setter
-    def p_sigma(self, p_sigma: float) -> None:
-        self._p_sigma = p_sigma
-
-    @t_sigma.setter
-    def t_sigma(self, t_sigma: float) -> None:
-        self._t_sigma = t_sigma

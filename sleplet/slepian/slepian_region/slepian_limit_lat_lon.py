@@ -221,23 +221,3 @@ class SlepianLimitLatLon(SlepianFunctions):
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
-
-    @phi_max.setter
-    def phi_max(self, phi_max: float) -> None:
-        self._phi_max = phi_max
-
-    @phi_min.setter
-    def phi_min(self, phi_min: float) -> None:
-        self._phi_min = phi_min
-
-    @region.setter
-    def region(self, region: Region) -> None:
-        self._region = region
-
-    @theta_max.setter
-    def theta_max(self, theta_max: float) -> None:
-        self._theta_max = theta_max
-
-    @theta_min.setter
-    def theta_min(self, theta_min: float) -> None:
-        self._theta_min = theta_min

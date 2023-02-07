@@ -119,23 +119,3 @@ class SlepianDecomposition:
             raise ValueError("rank cannot be negative")
         if rank >= self.L**2:
             raise ValueError(f"rank should be less than {self.L**2}")
-
-    @f.setter
-    def f(self, f: Optional[np.ndarray]) -> None:
-        self._f = f
-
-    @flm.setter
-    def flm(self, flm: Optional[np.ndarray]) -> None:
-        self._flm = flm
-
-    @L.setter
-    def L(self, L: int) -> None:
-        self._L = L
-
-    @mask.setter
-    def mask(self, mask: Optional[np.ndarray]) -> None:
-        self._mask = mask
-
-    @slepian.setter
-    def slepian(self, slepian: SlepianFunctions) -> None:
-        self._slepian = slepian

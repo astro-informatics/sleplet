@@ -54,10 +54,6 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
         )
 
-    @B.setter
-    def B(self, B: int) -> None:
-        self._B = B
-
     @j.setter
     def j(self, j: Optional[int]) -> None:
         self.j_max = pys2let_j_max(
@@ -70,15 +66,3 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
                 f"j should be less than j_max - j_min: {self.j_max - self.j_min + 1}"
             )
         self._j = j
-
-    @j_max.setter
-    def j_max(self, j_max: int) -> None:
-        self._j_max = j_max
-
-    @j_min.setter
-    def j_min(self, j_min: int) -> None:
-        self._j_min = j_min
-
-    @wavelets.setter
-    def wavelets(self, wavelets: np.ndarray) -> None:
-        self._wavelets = wavelets

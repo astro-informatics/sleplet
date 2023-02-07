@@ -98,10 +98,6 @@ class Ridgelets(F_LM):
             )
         return ring_lm
 
-    @B.setter
-    def B(self, B: int) -> None:
-        self._B = B
-
     @j.setter
     def j(self, j: Optional[int]) -> None:
         j_max = pys2let_j_max(self.B, self.L, self.j_min)
@@ -112,15 +108,3 @@ class Ridgelets(F_LM):
                 f"j should be less than j_max - j_min: {j_max - self.j_min + 1}"
             )
         self._j = j
-
-    @j_min.setter
-    def j_min(self, j_min: int) -> None:
-        self._j_min = j_min
-
-    @spin.setter
-    def spin(self, spin: int) -> None:
-        self._spin = spin
-
-    @wavelets.setter
-    def wavelets(self, wavelets: np.ndarray) -> None:
-        self._wavelets = wavelets
