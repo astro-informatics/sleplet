@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import Optional
 
 import numpy as np
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
@@ -36,14 +37,14 @@ class MeshCoefficients:
         if self.mesh.zoom:
             self.name += "_zoom"
 
-    @coefficients.setter
-    def coefficients(self, coefficients: np.ndarray) -> None:
+    @validator("coefficients")
+    def check_coefficients(cls, coefficients: np.ndarray) -> np.ndarray:
         if (
-            self.region
-            and COEFFICIENTS_TO_NOT_MASK not in self.__class__.__name__.lower()
+            cls.region
+            and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
-            coefficients = ensure_masked_bandlimit_mesh_signal(self.mesh, coefficients)
-        self._coefficients = coefficients
+            coefficients = ensure_masked_bandlimit_mesh_signal(cls.mesh, coefficients)
+        return coefficients
 
     @abstractmethod
     def _add_noise_to_signal(self) -> None:

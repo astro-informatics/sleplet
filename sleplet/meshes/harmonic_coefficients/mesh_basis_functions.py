@@ -1,3 +1,4 @@
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
@@ -52,10 +53,10 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             if self.extra_args[0] > limit:
                 raise ValueError(f"rank should be less than or equal to {limit}")
 
-    @rank.setter
-    def rank(self, rank: int) -> None:
+    @validator("rank")
+    def check_rank(cls, rank: int) -> int:
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        self._rank = rank
+        return rank

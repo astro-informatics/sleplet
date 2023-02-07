@@ -1,5 +1,6 @@
 from typing import Optional
 
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
@@ -48,15 +49,13 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
         )
 
-    @j.setter
-    def j(self, j: Optional[int]) -> None:
-        self.j_max = pys2let_j_max(
-            self.B, self.mesh.mesh_eigenvalues.shape[0], self.j_min
-        )
+    @validator("j")
+    def check_j(cls, j: Optional[int]) -> Optional[int]:
+        cls.j_max = pys2let_j_max(cls.B, cls.mesh.mesh_eigenvalues.shape[0], cls.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
-        if j is not None and j > self.j_max - self.j_min:
+        if j is not None and j > cls.j_max - cls.j_min:
             raise ValueError(
-                f"j should be less than j_max - j_min: {self.j_max - self.j_min + 1}"
+                f"j should be less than j_max - j_min: {cls.j_max - cls.j_min + 1}"
             )
-        self._j = j
+        return j

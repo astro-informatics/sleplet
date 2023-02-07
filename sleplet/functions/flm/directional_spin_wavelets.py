@@ -2,6 +2,7 @@ from typing import Optional
 
 import numpy as np
 import pyssht as ssht
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max, wavelet_tiling
 
@@ -66,13 +67,13 @@ class DirectionalSpinWavelets(F_LM):
             self.wavelets[0, ind] = phi_l[ell]
         self.wavelets[1:] = psi_lm.T
 
-    @j.setter
-    def j(self, j: Optional[int]) -> None:
-        self.j_max = pys2let_j_max(self.B, self.L, self.j_min)
+    @validator("j")
+    def check_j(cls, j: Optional[int]) -> Optional[int]:
+        cls.j_max = pys2let_j_max(cls.B, cls.L, cls.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
-        if j is not None and j > self.j_max - self.j_min:
+        if j is not None and j > cls.j_max - cls.j_min:
             raise ValueError(
-                f"j should be less than j_max - j_min: {self.j_max - self.j_min + 1}"
+                f"j should be less than j_max - j_min: {cls.j_max - cls.j_min + 1}"
             )
-        self._j = j
+        return j

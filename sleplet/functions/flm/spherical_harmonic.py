@@ -1,4 +1,5 @@
 import pyssht as ssht
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
@@ -35,20 +36,20 @@ class SphericalHarmonic(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 
-    @ell.setter
-    def ell(self, ell: int) -> None:
+    @validator("ell")
+    def check_ell(cls, ell: int) -> int:
         if not isinstance(ell, int):
             raise TypeError("ell should be an integer")
         if ell < 0:
             raise ValueError("ell should be positive")
-        if ell >= self.L:
+        if ell >= cls.L:
             raise ValueError("ell should be less than or equal to L")
-        self._ell = ell
+        return ell
 
-    @m.setter
-    def m(self, m: int) -> None:
+    @validator("m")
+    def check_m(cls, m: int) -> int:
         if not isinstance(m, int):
             raise TypeError("m should be an integer")
-        if abs(m) > self.ell:
+        if abs(m) > cls.ell:
             raise ValueError("the magnitude of m should be less than ell")
-        self._m = m
+        return m

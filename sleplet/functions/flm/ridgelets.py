@@ -2,6 +2,7 @@ from typing import Optional
 
 import numpy as np
 import pyssht as ssht
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 from scipy.special import gammaln
@@ -93,13 +94,13 @@ class Ridgelets(F_LM):
             )
         return ring_lm
 
-    @j.setter
-    def j(self, j: Optional[int]) -> None:
-        j_max = pys2let_j_max(self.B, self.L, self.j_min)
+    @validator("j")
+    def check_j(cls, j: Optional[int]) -> Optional[int]:
+        j_max = pys2let_j_max(cls.B, cls.L, cls.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
-        if j is not None and j > j_max - self.j_min:
+        if j is not None and j > j_max - cls.j_min:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - self.j_min + 1}"
+                f"j should be less than j_max - j_min: {j_max - cls.j_min + 1}"
             )
-        self._j = j
+        return j

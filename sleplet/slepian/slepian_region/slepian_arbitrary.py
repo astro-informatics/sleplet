@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
@@ -178,18 +179,18 @@ class SlepianArbitrary(SlepianFunctions):
             self.mask, self.weight, self._fields[i], self._fields[j].conj()
         )
 
-    @L_max.setter
-    def L_max(self, L_max: int) -> None:
-        if L_max > self.L:
-            raise ValueError(f"L_max cannot be greater than L: {self.L}")
+    @validator("L_max")
+    def check_L_max(cls, L_max: int) -> int:
+        if L_max > cls.L:
+            raise ValueError(f"L_max cannot be greater than L: {cls.L}")
         if not isinstance(L_max, int):
             raise TypeError("L_max must be an integer")
-        self._L_max = L_max if L_max != L_MAX_DEFAULT else self.L
+        return L_max if L_max != L_MAX_DEFAULT else cls.L
 
-    @L_min.setter
-    def L_min(self, L_min: int) -> None:
+    @validator("L_min")
+    def check_L_min(cls, L_min: int) -> int:
         if L_min < 0:
             raise ValueError("L_min cannot be negative")
         if not isinstance(L_min, int):
             raise TypeError("L_min must be an integer")
-        self._L_min = L_min
+        return L_min

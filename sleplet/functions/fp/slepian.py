@@ -1,3 +1,4 @@
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
@@ -59,10 +60,10 @@ class Slepian(F_P):
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 
-    @rank.setter
-    def rank(self, rank: int) -> None:
+    @validator("rank")
+    def check_rank(cls, rank: int) -> int:
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
-        self._rank = rank
+        return rank

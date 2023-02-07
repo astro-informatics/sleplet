@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import Optional
 
 import numpy as np
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.utils.convolution_methods import sifting_convolution
@@ -66,16 +67,16 @@ class Coefficients:
             self.name += f"{filename_args(self.smoothing, 'smoothed')}"
         self.name += f"_L{self.L}"
 
-    @coefficients.setter
-    def coefficients(self, coefficients: np.ndarray) -> None:
+    @validator("coefficients")
+    def check_coefficients(cls, coefficients: np.ndarray) -> np.ndarray:
         if (
-            isinstance(self.region, Region)
-            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
+            isinstance(cls.region, Region)
+            and not set(cls.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
             coefficients = ensure_masked_flm_bandlimited(
-                coefficients, self.L, self.region, self.reality, self.spin
+                coefficients, cls.L, cls.region, cls.reality, cls.spin
             )
-        self._coefficients = coefficients
+        return coefficients
 
     @abstractmethod
     def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:

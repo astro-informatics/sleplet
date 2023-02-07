@@ -6,6 +6,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
+from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
@@ -349,14 +350,16 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @order.setter
-    def order(self, order: Optional[int | np.ndarray]) -> None:
-        if order is not None and (np.abs(order) >= self.L).any():
-            raise ValueError(f"Order magnitude should be less than {self.L}")
-        self._order = order
+    @validator("order")
+    def check_order(
+        cls, order: Optional[int | np.ndarray]
+    ) -> Optional[int | np.ndarray]:
+        if order is not None and (np.abs(order) >= cls.L).any():
+            raise ValueError(f"Order magnitude should be less than {cls.L}")
+        return order
 
-    @theta_max.setter
-    def theta_max(self, theta_max: float) -> None:
+    @validator("theta_max")
+    def check_theta_max(cls, theta_max: float) -> float:
         if theta_max == 0:
             raise ValueError("theta_max cannot be zero")
-        self._theta_max = theta_max
+        return theta_max
