@@ -54,10 +54,6 @@ class MeshCoefficients:
 
     @extra_args.setter
     def extra_args(self, extra_args: Optional[list[int]]) -> None:
-        if isinstance(extra_args, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            extra_args = MeshCoefficients._extra_args
         self._extra_args = extra_args
 
     @mesh.setter
@@ -70,28 +66,16 @@ class MeshCoefficients:
 
     @noise.setter
     def noise(self, noise: Optional[float]) -> None:
-        if isinstance(noise, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            noise = MeshCoefficients._noise
         self._noise = noise
 
     @region.setter
     def region(self, region: bool) -> None:
-        if isinstance(region, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            region = MeshCoefficients._region
         self._region = region
 
     @unnoised_coefficients.setter
     def unnoised_coefficients(
         self, unnoised_coefficients: Optional[np.ndarray]
     ) -> None:
-        if isinstance(unnoised_coefficients, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            unnoised_coefficients = MeshCoefficients._unnoised_coefficients
         self._unnoised_coefficients = unnoised_coefficients
 
     @abstractmethod

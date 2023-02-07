@@ -355,18 +355,10 @@ class SlepianPolarCap(SlepianFunctions):
 
     @gap.setter
     def gap(self, gap: bool) -> None:
-        if isinstance(gap, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            gap = SlepianPolarCap._gap
         self._gap = gap
 
     @order.setter
     def order(self, order: Optional[int | np.ndarray]) -> None:
-        if isinstance(order, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            order = SlepianPolarCap._order
         if order is not None and (np.abs(order) >= self.L).any():
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order

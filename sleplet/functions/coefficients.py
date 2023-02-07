@@ -89,10 +89,6 @@ class Coefficients:
 
     @extra_args.setter
     def extra_args(self, extra_args: Optional[list[int]]) -> None:
-        if isinstance(extra_args, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            extra_args = Coefficients._extra_args
         self._extra_args = extra_args
 
     @L.setter
@@ -105,10 +101,6 @@ class Coefficients:
 
     @noise.setter
     def noise(self, noise: Optional[float]) -> None:
-        if isinstance(noise, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            noise = Coefficients._noise
         self._noise = noise
 
     @reality.setter
@@ -117,36 +109,20 @@ class Coefficients:
 
     @region.setter
     def region(self, region: Optional[Region]) -> None:
-        if isinstance(region, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            region = Coefficients._region
         self._region = region
 
     @smoothing.setter
     def smoothing(self, smoothing: Optional[int]) -> None:
-        if isinstance(smoothing, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            smoothing = Coefficients._smoothing
         self._smoothing = smoothing
 
     @spin.setter
     def spin(self, spin: int) -> None:
-        if isinstance(spin, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            spin = Coefficients._spin
         self._spin = spin
 
     @unnoised_coefficients.setter
     def unnoised_coefficients(
         self, unnoised_coefficients: Optional[np.ndarray]
     ) -> None:
-        if isinstance(unnoised_coefficients, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            unnoised_coefficients = Coefficients._unnoised_coefficients
         self._unnoised_coefficients = unnoised_coefficients
 
     @abstractmethod

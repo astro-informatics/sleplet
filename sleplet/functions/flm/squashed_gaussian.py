@@ -53,16 +53,8 @@ class SquashedGaussian(F_LM):
 
     @freq.setter
     def freq(self, freq: float) -> None:
-        if isinstance(freq, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            freq = SquashedGaussian._freq
         self._freq = freq
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
-        if isinstance(t_sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            t_sigma = SquashedGaussian._t_sigma
         self._t_sigma = t_sigma

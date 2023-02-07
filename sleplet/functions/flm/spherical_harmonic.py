@@ -40,10 +40,6 @@ class SphericalHarmonic(F_LM):
 
     @ell.setter
     def ell(self, ell: int) -> None:
-        if isinstance(ell, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            ell = SphericalHarmonic._ell
         if not isinstance(ell, int):
             raise TypeError("ell should be an integer")
         if ell < 0:
@@ -54,10 +50,6 @@ class SphericalHarmonic(F_LM):
 
     @m.setter
     def m(self, m: int) -> None:
-        if isinstance(m, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            m = SphericalHarmonic._m
         if not isinstance(m, int):
             raise TypeError("m should be an integer")
         if abs(m) > self.ell:

@@ -84,10 +84,6 @@ class Mesh:
 
     @number_basis_functions.setter
     def number_basis_functions(self, number_basis_functions: Optional[int]) -> None:
-        if isinstance(number_basis_functions, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            number_basis_functions = Mesh._number_basis_functions
         self._number_basis_functions = number_basis_functions
 
     @region.setter
@@ -100,8 +96,4 @@ class Mesh:
 
     @zoom.setter
     def zoom(self, zoom: bool) -> None:
-        if isinstance(zoom, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            zoom = Mesh._zoom
         self._zoom = zoom

@@ -50,16 +50,8 @@ class HarmonicGaussian(F_LM):
 
     @l_sigma.setter
     def l_sigma(self, l_sigma: float) -> None:
-        if isinstance(l_sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            l_sigma = HarmonicGaussian._l_sigma
         self._l_sigma = l_sigma
 
     @m_sigma.setter
     def m_sigma(self, m_sigma: float) -> None:
-        if isinstance(m_sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            m_sigma = HarmonicGaussian._m_sigma
         self._m_sigma = m_sigma

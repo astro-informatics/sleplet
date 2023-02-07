@@ -43,8 +43,4 @@ class Gaussian(F_LM):
 
     @sigma.setter
     def sigma(self, sigma: float) -> None:
-        if isinstance(sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            sigma = Gaussian._sigma
         self._sigma = sigma

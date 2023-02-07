@@ -38,8 +38,4 @@ class MeshNoiseField(MeshHarmonicCoefficients):
 
     @SNR.setter
     def SNR(self, SNR: float) -> None:
-        if isinstance(SNR, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            SNR = MeshNoiseField._SNR
         self._SNR = SNR

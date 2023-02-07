@@ -75,18 +75,10 @@ class DirectionalSpinWavelets(F_LM):
 
     @B.setter
     def B(self, B: int) -> None:
-        if isinstance(B, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            B = DirectionalSpinWavelets._B
         self._B = B
 
     @j.setter
     def j(self, j: Optional[int]) -> None:
-        if isinstance(j, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            j = DirectionalSpinWavelets._j
         self.j_max = pys2let_j_max(self.B, self.L, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
@@ -102,26 +94,14 @@ class DirectionalSpinWavelets(F_LM):
 
     @j_min.setter
     def j_min(self, j_min: int) -> None:
-        if isinstance(j_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            j_min = DirectionalSpinWavelets._j_min
         self._j_min = j_min
 
     @N.setter
     def N(self, N: int) -> None:
-        if isinstance(N, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            N = DirectionalSpinWavelets._N
         self._N = N
 
     @spin.setter
     def spin(self, spin: int) -> None:
-        if isinstance(spin, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            spin = DirectionalSpinWavelets._spin
         self._spin = spin
 
     @wavelets.setter

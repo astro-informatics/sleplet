@@ -122,18 +122,10 @@ class SlepianDecomposition:
 
     @f.setter
     def f(self, f: Optional[np.ndarray]) -> None:
-        if isinstance(f, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            f = SlepianDecomposition._f
         self._f = f
 
     @flm.setter
     def flm(self, flm: Optional[np.ndarray]) -> None:
-        if isinstance(flm, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            flm = SlepianDecomposition._flm
         self._flm = flm
 
     @L.setter
@@ -142,10 +134,6 @@ class SlepianDecomposition:
 
     @mask.setter
     def mask(self, mask: Optional[np.ndarray]) -> None:
-        if isinstance(mask, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            mask = SlepianDecomposition._mask
         self._mask = mask
 
     @slepian.setter

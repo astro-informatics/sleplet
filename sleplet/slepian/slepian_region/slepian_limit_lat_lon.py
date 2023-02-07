@@ -224,18 +224,10 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @phi_max.setter
     def phi_max(self, phi_max: float) -> None:
-        if isinstance(phi_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            phi_max = SlepianLimitLatLon._phi_max
         self._phi_max = phi_max
 
     @phi_min.setter
     def phi_min(self, phi_min: float) -> None:
-        if isinstance(phi_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            phi_min = SlepianLimitLatLon._phi_min
         self._phi_min = phi_min
 
     @region.setter
@@ -244,16 +236,8 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @theta_max.setter
     def theta_max(self, theta_max: float) -> None:
-        if isinstance(theta_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            theta_max = SlepianLimitLatLon._theta_max
         self._theta_max = theta_max
 
     @theta_min.setter
     def theta_min(self, theta_min: float) -> None:
-        if isinstance(theta_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            theta_min = SlepianLimitLatLon._theta_min
         self._theta_min = theta_min

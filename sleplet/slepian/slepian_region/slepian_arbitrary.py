@@ -189,10 +189,6 @@ class SlepianArbitrary(SlepianFunctions):
 
     @L_max.setter
     def L_max(self, L_max: int) -> None:
-        if isinstance(L_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            L_max = SlepianArbitrary._L_max
         if L_max > self.L:
             raise ValueError(f"L_max cannot be greater than L: {self.L}")
         if not isinstance(L_max, int):
@@ -201,10 +197,6 @@ class SlepianArbitrary(SlepianFunctions):
 
     @L_min.setter
     def L_min(self, L_min: int) -> None:
-        if isinstance(L_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            L_min = SlepianArbitrary._L_min
         if L_min < 0:
             raise ValueError("L_min cannot be negative")
         if not isinstance(L_min, int):

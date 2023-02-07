@@ -129,10 +129,6 @@ class MeshSlepianDecomposition:
 
     @mask.setter
     def mask(self, mask: bool) -> None:
-        if isinstance(mask, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            mask = MeshSlepianDecomposition._mask
         self._mask = mask
 
     @mesh_slepian.setter
@@ -141,16 +137,8 @@ class MeshSlepianDecomposition:
 
     @u.setter
     def u(self, u: Optional[np.ndarray]) -> None:
-        if isinstance(u, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            u = MeshSlepianDecomposition._u
         self._u = u
 
     @u_i.setter
     def u_i(self, u_i: Optional[np.ndarray]) -> None:
-        if isinstance(u_i, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            u_i = MeshSlepianDecomposition._u_i
         self._u_i = u_i

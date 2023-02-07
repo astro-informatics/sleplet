@@ -65,18 +65,10 @@ class SlepianWavelets(F_P):
 
     @B.setter
     def B(self, B: int) -> None:
-        if isinstance(B, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            B = SlepianWavelets._B
         self._B = B
 
     @j.setter
     def j(self, j: Optional[int]) -> None:
-        if isinstance(j, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            j = SlepianWavelets._j
         self.j_max = pys2let_j_max(self.B, self.L**2, self.j_min)
         if j is not None and j < 0:
             raise ValueError("j should be positive")
@@ -92,10 +84,6 @@ class SlepianWavelets(F_P):
 
     @j_min.setter
     def j_min(self, j_min: int) -> None:
-        if isinstance(j_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            j_min = SlepianWavelets._j_min
         self._j_min = j_min
 
     @wavelets.setter

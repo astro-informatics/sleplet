@@ -59,16 +59,8 @@ class ElongatedGaussian(F_LM):
 
     @p_sigma.setter
     def p_sigma(self, p_sigma: float) -> None:
-        if isinstance(p_sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            p_sigma = ElongatedGaussian._p_sigma
         self._p_sigma = p_sigma
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:
-        if isinstance(t_sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            t_sigma = ElongatedGaussian._t_sigma
         self._t_sigma = t_sigma

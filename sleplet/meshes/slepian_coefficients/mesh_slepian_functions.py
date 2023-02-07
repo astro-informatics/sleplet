@@ -57,10 +57,6 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
 
     @rank.setter
     def rank(self, rank: int) -> None:
-        if isinstance(rank, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            rank = MeshSlepianFunctions._rank
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:

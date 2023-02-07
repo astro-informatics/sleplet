@@ -65,18 +65,10 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
 
     @B.setter
     def B(self, B: int) -> None:
-        if isinstance(B, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            B = MeshSlepianWaveletCoefficients._B
         self._B = B
 
     @j.setter
     def j(self, j: Optional[int]) -> None:
-        if isinstance(j, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            j = MeshSlepianWaveletCoefficients._j
         self.j_max = pys2let_j_max(
             self.B, self.mesh.mesh_eigenvalues.shape[0], self.j_min
         )
@@ -94,10 +86,6 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
 
     @j_min.setter
     def j_min(self, j_min: int) -> None:
-        if isinstance(j_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            j_min = MeshSlepianWaveletCoefficients._j_min
         self._j_min = j_min
 
     @wavelets.setter
