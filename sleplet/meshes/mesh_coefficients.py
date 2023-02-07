@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dataclasses import KW_ONLY
+from dataclasses import KW_ONLY, field
 from typing import Optional
 
 import numpy as np
@@ -18,13 +18,13 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 class MeshCoefficients:
     mesh: Mesh
     _: KW_ONLY
-    coefficients: np.ndarray = np.empty([])
+    coefficients: np.ndarray = field(init=False, repr=False)
     extra_args: Optional[list[int]] = None
-    mesh_slepian: MeshSlepian = MeshSlepian(Mesh("homer"))
-    name: str = ""
+    mesh_slepian: MeshSlepian = field(init=False, repr=False)
+    name: str = field(init=False, repr=False)
     noise: Optional[int] = None
     region: bool = False
-    unnoised_coefficients: np.ndarray = np.empty([])
+    unnoised_coefficients: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args()

@@ -26,10 +26,10 @@ _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 
 @dataclass(kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
-    theta_min: float = THETA_MIN_DEFAULT
-    theta_max: float = THETA_MAX_DEFAULT
-    phi_min: float = PHI_MIN_DEFAULT
     phi_max: float = PHI_MAX_DEFAULT
+    phi_min: float = PHI_MIN_DEFAULT
+    theta_max: float = THETA_MAX_DEFAULT
+    theta_min: float = THETA_MIN_DEFAULT
 
     def __post_init__(self) -> None:
         self.region = Region(

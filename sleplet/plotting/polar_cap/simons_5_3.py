@@ -39,6 +39,7 @@ def _create_plot(ax: np.ndarray, position: tuple[int, int], theta_max: int) -> N
     slepian = SlepianPolarCap(L, np.deg2rad(theta_max))
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
+    assert isinstance(slepian.order, np.ndarray)
     orders = np.abs(slepian.order[:RANKS])
     labels = np.array([f"$\pm${m}" if m != 0 else m for m in orders])
     idx = np.argsort(orders)

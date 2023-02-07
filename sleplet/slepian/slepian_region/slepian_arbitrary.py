@@ -37,8 +37,8 @@ _slepian_path = _file_location.parents[2] / "data" / "slepian"
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY
-    L_max: int = settings.L_MAX
     L_min: int = settings.L_MIN
+    L_max: int = settings.L_MAX
 
     def __post_init__(self) -> None:
         self.region = Region(mask_name=self.mask_name)

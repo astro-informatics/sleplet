@@ -89,7 +89,7 @@ def save_plot(path: Path, name: str) -> None:
 
 def find_max_amplitude(
     function: Coefficients, *, plot_type: str = "real", upsample: bool = True
-) -> dict[str, float]:
+) -> float:
     """
     for a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input

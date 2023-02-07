@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from dataclasses import field
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -9,8 +10,8 @@ from sleplet.utils.noise import compute_snr, create_mesh_noise
 
 @dataclass(kw_only=True)
 class MeshHarmonicCoefficients(MeshCoefficients):
-    coefficients: np.ndarray
-    noise: int
+    coefficients: np.ndarray = field(init=False, repr=False)
+    noise: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()

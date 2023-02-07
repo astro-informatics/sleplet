@@ -8,6 +8,7 @@ from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.utils.logger import logger
+from sleplet.utils.region import Region
 from sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,
     filename_args,
@@ -24,7 +25,7 @@ class SlepianWaveletCoefficientsAfrica(F_P):
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        if self.region.name_ending != "africa":
+        if isinstance(self.region, Region) and self.region.name_ending != "africa":
             raise RuntimeError("Slepian region selected must be 'africa'")
 
     def _create_coefficients(self) -> None:

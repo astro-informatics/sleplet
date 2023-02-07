@@ -1,3 +1,4 @@
+from dataclasses import field
 from typing import Optional
 
 import numpy as np
@@ -19,9 +20,10 @@ from sleplet.utils.string_methods import (
 class DirectionalSpinWavelets(F_LM):
     B: int = 3
     j_min: int = 2
-    spin: int = 0
-    N: int = 2
     j: Optional[int] = None
+    N: int = 2
+    spin: int = 0
+    wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()

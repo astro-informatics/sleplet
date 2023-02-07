@@ -61,6 +61,7 @@ class MeshSlepianDecomposition:
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
         )
+        assert isinstance(self.u, np.ndarray)
         integration = integrate_region_mesh(
             self.mesh_slepian.mesh.region,
             self.mesh_slepian.mesh.vertices,
@@ -80,6 +81,7 @@ class MeshSlepianDecomposition:
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
         )
+        assert isinstance(self.u, np.ndarray)
         return integrate_whole_mesh(
             self.mesh_slepian.mesh.vertices, self.mesh_slepian.mesh.faces, self.u, s_p
         )
@@ -119,6 +121,7 @@ class MeshSlepianDecomposition:
             raise TypeError("rank should be an integer")
         if rank < 0:
             raise ValueError("rank cannot be negative")
+        assert isinstance(self.mesh_slepian.mesh.number_basis_functions, int)
         if rank >= self.mesh_slepian.mesh.number_basis_functions:
             raise ValueError(
                 "rank should be less than "

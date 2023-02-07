@@ -21,8 +21,8 @@ from sleplet.utils.wavelet_methods import create_kappas
 class Ridgelets(F_LM):
     B: int = 3
     j_min: int = 2
-    spin: int = 2
     j: Optional[int] = None
+    spin: int = 2
 
     def __post_init__(self) -> None:
         super().__post_init__()

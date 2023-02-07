@@ -63,6 +63,8 @@ class SlepianDecomposition:
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
         weight = calc_integration_weight(self.L)
+        assert isinstance(self.mask, np.ndarray)
+        assert isinstance(self.f, np.ndarray)
         integration = integrate_region_sphere(self.mask, weight, self.f, s_p.conj())
         return integration / self.slepian.eigenvalues[rank]
 
@@ -76,6 +78,7 @@ class SlepianDecomposition:
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
         weight = calc_integration_weight(self.L)
+        assert isinstance(self.f, np.ndarray)
         return integrate_whole_sphere(weight, self.f, s_p.conj())
 
     def _harmonic_sum(self, rank: int) -> complex:

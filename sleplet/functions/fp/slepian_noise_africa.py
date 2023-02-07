@@ -3,16 +3,17 @@ from pydantic.dataclasses import dataclass
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.utils.noise import compute_snr, create_slepian_noise
+from sleplet.utils.region import Region
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
 @dataclass(kw_only=True)
 class SlepianNoiseAfrica(F_P):
-    SNR: float = -10
+    SNR: int = -10
 
     def __post_init__(self) -> None:
         super().__post_init__()
-        if self.region.name_ending != "africa":
+        if isinstance(self.region, Region) and self.region.name_ending != "africa":
             raise RuntimeError("Slepian region selected must be 'africa'")
 
     def _create_coefficients(self) -> None:

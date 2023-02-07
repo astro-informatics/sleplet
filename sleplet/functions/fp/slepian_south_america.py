@@ -2,15 +2,19 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
 from sleplet.functions.flm.south_america import SouthAmerica
+from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_forward
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SlepianSouthAmerica(F_P):
     def __post_init__(self) -> None:
         super().__post_init__()
-        if self.region.name_ending != "south_america":
+        if (
+            isinstance(self.region, Region)
+            and self.region.name_ending != "south_america"
+        ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> None:

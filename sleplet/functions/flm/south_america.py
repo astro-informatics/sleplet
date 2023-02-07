@@ -15,7 +15,7 @@ _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[2] / "data" / "slepian" / "masks"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SouthAmerica(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()

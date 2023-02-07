@@ -1,25 +1,29 @@
 from abc import abstractmethod
-from dataclasses import KW_ONLY
+from dataclasses import KW_ONLY, field
 
 import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.utils.logger import logger
+from sleplet.utils.region import Region
 
 
 @dataclass
 class SlepianFunctions:
     L: int
     _: KW_ONLY
-    area: np.ndarray = np.empty([])
-    eigenvectors: np.ndarray = np.empty([])
-    eigenvalues: np.ndarray = np.empty([])
+    area: np.ndarray = field(init=False, repr=False)
+    eigenvalues: np.ndarray = field(init=False, repr=False)
+    eigenvectors: np.ndarray = field(init=False, repr=False)
+    mask: np.ndarray = field(init=False, repr=False)
+    name: str = field(init=False, repr=False)
+    region: Region = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_mask()
         self._create_fn_name()
         self._calculate_area()
-        self.N = round(self.area * self.L**2 / (4 * np.pi))
+        self.N = np.round(self.area * self.L**2 / (4 * np.pi))
         logger.info(f"Shannon number N={self.N}")
         self._create_matrix_location()
         logger.info("start solving eigenproblem")

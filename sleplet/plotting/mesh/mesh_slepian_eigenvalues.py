@@ -35,13 +35,11 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
         textcoords="offset points",
         annotation_clip=False,
     )
-    ticks = 2 ** np.arange(np.log2(mesh.number_basis_functions) + 1, dtype=int)
+    ticks = 2 ** np.arange(np.log2(num_basis_fun) + 1, dtype=int)
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(
-        fig_path, f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
-    )
+    save_plot(fig_path, f"{mesh_name}_slepian_eigenvalues_b{num_basis_fun}")
 
 
 if __name__ == "__main__":

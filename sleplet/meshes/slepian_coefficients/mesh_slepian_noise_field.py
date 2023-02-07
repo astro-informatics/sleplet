@@ -8,7 +8,7 @@ from sleplet.utils.string_methods import filename_args
 
 @dataclass(kw_only=True)
 class MeshSlepianNoiseField(MeshSlepianCoefficients):
-    SNR: float = -5
+    SNR: int = -5
 
     def __post_init__(self) -> None:
         super().__post_init__()

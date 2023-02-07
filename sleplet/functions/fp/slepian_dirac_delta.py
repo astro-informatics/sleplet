@@ -1,16 +1,21 @@
+from dataclasses import field
+
 import numpy as np
 import pyssht as ssht
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
+from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import compute_s_p_omega_prime
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SlepianDiracDelta(F_P):
+    slepian: SlepianFunctions = field(init=False, repr=False)
+
     def __post_init__(self) -> None:
         super().__post_init__()
 

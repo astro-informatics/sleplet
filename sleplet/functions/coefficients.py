@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dataclasses import KW_ONLY
+from dataclasses import KW_ONLY, field
 from typing import Optional
 
 import numpy as np
@@ -7,7 +7,6 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.convolution_methods import sifting_convolution
 from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from sleplet.utils.region import Region
@@ -20,14 +19,16 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 class Coefficients:
     L: int
     _: KW_ONLY
-    coefficients: np.ndarray = np.empty([])
+    coefficients: np.ndarray = field(init=False, repr=False)
     extra_args: Optional[list[int]] = None
-    name: str = ""
+    name: str = field(init=False, repr=False)
     noise: Optional[int] = None
     region: Optional[Region] = None
-    slepian: SlepianFunctions = SlepianPolarCap(0, 0)
+    slepian: SlepianFunctions = field(init=False, repr=False)
     smoothing: Optional[int] = None
-    spin: int = 0
+    snr: float = field(init=False, repr=False)
+    spin: int = field(init=False, repr=False)
+    unnoised_coefficients: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args()

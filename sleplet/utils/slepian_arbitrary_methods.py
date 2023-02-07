@@ -24,9 +24,7 @@ def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.n
     return D
 
 
-def clean_evals_and_evecs(
-    eigendecomposition: tuple[np.ndarray, np.ndarray]
-) -> tuple[np.ndarray, np.ndarray]:
+def clean_evals_and_evecs(eigendecomposition: tuple) -> tuple[np.ndarray, np.ndarray]:
     """
     need eigenvalues and eigenvectors to be in a certain format
     """

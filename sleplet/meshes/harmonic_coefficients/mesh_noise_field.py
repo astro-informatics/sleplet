@@ -8,7 +8,7 @@ from sleplet.utils.string_methods import filename_args
 
 @dataclass(kw_only=True)
 class MeshNoiseField(MeshHarmonicCoefficients):
-    SNR: float = 10
+    SNR: int = 10
 
     def __post_init__(self) -> None:
         super().__post_init__()

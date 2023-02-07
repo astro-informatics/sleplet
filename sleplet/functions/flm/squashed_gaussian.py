@@ -9,8 +9,8 @@ from sleplet.utils.vars import THETA_0
 
 @dataclass(kw_only=True)
 class SquashedGaussian(F_LM):
-    t_sigma: float = 1
     freq: float = 0.1
+    t_sigma: float = 1
 
     def __post_init__(self) -> None:
         super().__post_init__()

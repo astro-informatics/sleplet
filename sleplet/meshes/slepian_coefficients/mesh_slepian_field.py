@@ -5,7 +5,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MeshSlepianField(MeshSlepianCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()

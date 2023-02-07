@@ -7,7 +7,7 @@ from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MeshSlepianCoefficients(MeshCoefficients):
     def __post_init__(self) -> None:
         self.mesh_slepian = MeshSlepian(self.mesh)

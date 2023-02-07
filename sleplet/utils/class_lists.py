@@ -1,5 +1,6 @@
 from glob import glob
 from pathlib import Path
+from typing import Type
 
 from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.flm.africa import Africa
@@ -65,7 +66,7 @@ MESHES: list[str] = [
     for x in glob(str(_meshes_path / "regions" / "*.toml"))
 ]
 
-FLM: list = [
+FLM: list[Type[Coefficients]] = [
     Africa,
     AxisymmetricWaveletCoefficientsAfrica,
     AxisymmetricWaveletCoefficientsEarth,
@@ -86,7 +87,7 @@ FLM: list = [
     Wmap,
 ]
 
-FP: list = [
+FP: list[Type[Coefficients]] = [
     Slepian,
     SlepianAfrica,
     SlepianDiracDelta,
@@ -99,13 +100,17 @@ FP: list = [
     SlepianWavelets,
 ]
 
-COEFFICIENTS: list[Coefficients] = FLM + FP
+COEFFICIENTS: list[Type[Coefficients]] = FLM + FP
 
-MAPS_LM: list = [Earth, SouthAmerica, Wmap]
+MAPS_LM: list[Type[Coefficients]] = [Earth, SouthAmerica, Wmap]
 
-MESH_HARMONIC: list = [MeshBasisFunctions, MeshField, MeshNoiseField]
+MESH_HARMONIC: list[Type[MeshCoefficients]] = [
+    MeshBasisFunctions,
+    MeshField,
+    MeshNoiseField,
+]
 
-MESH_SLEPIAN: list = [
+MESH_SLEPIAN: list[Type[MeshCoefficients]] = [
     MeshSlepianField,
     MeshSlepianFunctions,
     MeshSlepianNoiseField,
@@ -113,4 +118,4 @@ MESH_SLEPIAN: list = [
     MeshSlepianWavelets,
 ]
 
-MESH_COEFFICIENTS: list[MeshCoefficients] = MESH_HARMONIC + MESH_SLEPIAN
+MESH_COEFFICIENTS: list[Type[MeshCoefficients]] = MESH_HARMONIC + MESH_SLEPIAN

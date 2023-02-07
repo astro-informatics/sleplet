@@ -5,7 +5,7 @@ from sleplet.functions.f_p import F_P
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SlepianIdentity(F_P):
     def __post_init__(self) -> None:
         super().__post_init__()
