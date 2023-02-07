@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from dataclasses import dataclass
 
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.noise import compute_snr, create_noise

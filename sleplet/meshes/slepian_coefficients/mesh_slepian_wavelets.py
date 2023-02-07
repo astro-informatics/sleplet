@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients

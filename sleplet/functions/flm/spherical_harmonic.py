@@ -1,6 +1,5 @@
-from dataclasses import dataclass, field
-
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.harmonic_methods import create_spherical_harmonic

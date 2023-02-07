@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
 from sleplet.functions.flm.south_america import SouthAmerica

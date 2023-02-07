@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
@@ -7,6 +6,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
+from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.config import settings

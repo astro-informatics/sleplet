@@ -1,7 +1,6 @@
-from dataclasses import dataclass, field
-
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
 from sleplet.utils.logger import logger

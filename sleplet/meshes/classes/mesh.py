@@ -1,8 +1,8 @@
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
 from plotly.graph_objs.layout.scene import Camera
+from pydantic.dataclasses import dataclass
 
 from sleplet.utils.mesh_methods import (
     create_mesh_region,

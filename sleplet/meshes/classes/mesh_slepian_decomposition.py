@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.utils.harmonic_methods import mesh_inverse

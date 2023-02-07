@@ -1,5 +1,6 @@
 from abc import abstractmethod
-from dataclasses import dataclass, field
+
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.meshes.mesh_coefficients import MeshCoefficients

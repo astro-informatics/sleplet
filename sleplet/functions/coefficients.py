@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+from pydantic.dataclasses import dataclass
 
 from sleplet.utils.convolution_methods import sifting_convolution
 from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited

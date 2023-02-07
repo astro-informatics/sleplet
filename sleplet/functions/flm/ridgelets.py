@@ -1,8 +1,8 @@
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 from scipy.special import gammaln
 

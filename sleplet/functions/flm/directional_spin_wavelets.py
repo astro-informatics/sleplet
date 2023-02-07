@@ -1,8 +1,8 @@
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max, wavelet_tiling
 
 from sleplet.functions.f_lm import F_LM

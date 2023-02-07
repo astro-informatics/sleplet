@@ -1,10 +1,10 @@
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 from multiprocess import Pool
 from numpy import linalg as LA
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix

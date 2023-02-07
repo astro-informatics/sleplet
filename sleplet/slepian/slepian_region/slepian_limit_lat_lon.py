@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -6,6 +5,7 @@ import numpy as np
 import pyssht as ssht
 from numba import njit, prange
 from numpy import linalg as LA
+from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix

@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
@@ -8,6 +7,7 @@ import plotly.offline as py
 from matplotlib.colors import LinearSegmentedColormap
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.config import settings

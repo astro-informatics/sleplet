@@ -1,8 +1,8 @@
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.integration_methods import (

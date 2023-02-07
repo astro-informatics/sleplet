@@ -1,5 +1,6 @@
 from abc import abstractmethod
-from dataclasses import dataclass
+
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.utils.noise import compute_snr, create_mesh_noise

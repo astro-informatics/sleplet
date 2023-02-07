@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
@@ -8,6 +7,7 @@ import plotly.offline as py
 import pyssht as ssht
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
+from pydantic.dataclasses import dataclass
 
 from sleplet.utils.config import settings
 from sleplet.utils.logger import logger

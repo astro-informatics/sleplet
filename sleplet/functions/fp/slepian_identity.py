@@ -1,6 +1,5 @@
-from dataclasses import dataclass
-
 import numpy as np
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case

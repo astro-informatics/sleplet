@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField

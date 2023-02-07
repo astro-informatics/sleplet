@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal

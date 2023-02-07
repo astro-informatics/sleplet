@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.config import settings

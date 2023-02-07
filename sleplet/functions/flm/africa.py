@@ -1,8 +1,8 @@
-from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 
 from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.functions.f_lm import F_LM

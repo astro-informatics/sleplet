@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
+from pydantic.dataclasses import dataclass
 
 from sleplet.utils.logger import logger
 

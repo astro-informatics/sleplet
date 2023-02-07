@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
 from sleplet.functions.flm.earth import Earth

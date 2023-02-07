@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
