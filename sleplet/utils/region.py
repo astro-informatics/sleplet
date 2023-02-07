@@ -16,9 +16,9 @@ from sleplet.utils.vars import (
 
 @dataclass(config=Validation, kw_only=True)
 class Region:
-    name_ending: str = field(init=False, repr=False)
     gap: bool = False
     mask_name: str = ""
+    name_ending: str = field(default="", init=False, repr=False)
     phi_max: float = PHI_MAX_DEFAULT
     phi_min: float = PHI_MIN_DEFAULT
     theta_max: float = THETA_MAX_DEFAULT
@@ -60,41 +60,41 @@ class Region:
             )
 
     @validator("phi_max")
-    def check_phi_max(cls, phi_max: float) -> float:
-        if phi_max < PHI_MIN_DEFAULT:
+    def check_phi_max(cls, v):
+        if v < PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
-        if phi_max > PHI_MAX_DEFAULT:
+        if v > PHI_MAX_DEFAULT:
             raise ValueError(
                 f"phi_max cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
-        return phi_max
+        return v
 
     @validator("phi_min")
-    def check_phi_min(cls, phi_min: float) -> float:
-        if phi_min < PHI_MIN_DEFAULT:
+    def check_phi_min(cls, v):
+        if v < PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
-        if phi_min > PHI_MAX_DEFAULT:
+        if v > PHI_MAX_DEFAULT:
             raise ValueError(
                 f"phi_min cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
-        return phi_min
+        return v
 
     @validator("theta_max")
-    def check_theta_max(cls, theta_max: float) -> float:
-        if theta_max < THETA_MIN_DEFAULT:
+    def check_theta_max(cls, v):
+        if v < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
-        if theta_max > THETA_MAX_DEFAULT:
+        if v > THETA_MAX_DEFAULT:
             raise ValueError(
                 f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
-        return theta_max
+        return v
 
     @validator("theta_min")
-    def check_theta_min(cls, theta_min: float) -> float:
-        if theta_min < THETA_MIN_DEFAULT:
+    def check_theta_min(cls, v):
+        if v < THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
-        if theta_min > THETA_MAX_DEFAULT:
+        if v > THETA_MAX_DEFAULT:
             raise ValueError(
                 f"theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
-        return theta_min
+        return v

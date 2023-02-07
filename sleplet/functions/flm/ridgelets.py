@@ -96,12 +96,12 @@ class Ridgelets(F_LM):
         return ring_lm
 
     @validator("j")
-    def check_j(cls, j: Optional[int]) -> Optional[int]:
-        j_max = pys2let_j_max(cls.B, cls.L, cls.j_min)
-        if j is not None and j < 0:
+    def check_j(cls, v, values):
+        j_max = pys2let_j_max(values["B"], values["L"], values["j_min"])
+        if v is not None and v < 0:
             raise ValueError("j should be positive")
-        if j is not None and j > j_max - cls.j_min:
+        if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - cls.j_min + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
             )
-        return j
+        return v

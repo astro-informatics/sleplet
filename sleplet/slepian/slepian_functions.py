@@ -13,7 +13,7 @@ from sleplet.utils.validation import Validation
 class SlepianFunctions:
     L: int
     _: KW_ONLY
-    area: np.ndarray = field(init=False, repr=False)
+    area: np.ndarray = field(default=np.array([0]), init=False, repr=False)
     eigenvalues: np.ndarray = field(init=False, repr=False)
     eigenvectors: np.ndarray = field(init=False, repr=False)
     mask: np.ndarray = field(init=False, repr=False)

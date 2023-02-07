@@ -57,9 +57,9 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
                 raise ValueError(f"rank should be less than or equal to {limit}")
 
     @validator("rank")
-    def check_rank(cls, rank: int) -> int:
-        if not isinstance(rank, int):
+    def check_rank(cls, v):
+        if not isinstance(v, int):
             raise TypeError("rank should be an integer")
-        if rank < 0:
+        if v < 0:
             raise ValueError("rank cannot be negative")
-        return rank
+        return v

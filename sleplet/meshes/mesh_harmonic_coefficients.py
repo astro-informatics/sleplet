@@ -12,7 +12,7 @@ from sleplet.utils.validation import Validation
 @dataclass(config=Validation, kw_only=True)
 class MeshHarmonicCoefficients(MeshCoefficients):
     coefficients: np.ndarray = field(init=False, repr=False)
-    noise: float = field(init=False, repr=False)
+    noise: float = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()

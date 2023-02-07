@@ -183,17 +183,17 @@ class SlepianArbitrary(SlepianFunctions):
         )
 
     @validator("L_max")
-    def check_L_max(cls, L_max: int) -> int:
-        if L_max > cls.L:
-            raise ValueError(f"L_max cannot be greater than L: {cls.L}")
-        if not isinstance(L_max, int):
+    def check_L_max(cls, v, values):
+        if v > values["L"]:
+            raise ValueError(f"L_max cannot be greater than L: {values['L']}")
+        if not isinstance(v, int):
             raise TypeError("L_max must be an integer")
-        return L_max if L_max != L_MAX_DEFAULT else cls.L
+        return v if v != L_MAX_DEFAULT else values["L"]
 
     @validator("L_min")
-    def check_L_min(cls, L_min: int) -> int:
-        if L_min < 0:
+    def check_L_min(cls, v):
+        if v < 0:
             raise ValueError("L_min cannot be negative")
-        if not isinstance(L_min, int):
+        if not isinstance(v, int):
             raise TypeError("L_min must be an integer")
-        return L_min
+        return v

@@ -51,12 +51,15 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         )
 
     @validator("j")
-    def check_j(cls, j: Optional[int]) -> Optional[int]:
-        cls.j_max = pys2let_j_max(cls.B, cls.mesh.mesh_eigenvalues.shape[0], cls.j_min)
-        if j is not None and j < 0:
+    def check_j(cls, v, values) -> Optional[int]:
+        cls.j_max = pys2let_j_max(
+            values["B"], values["mesh"].mesh_eigenvalues.shape[0], values["j_min"]
+        )
+        if v is not None and v < 0:
             raise ValueError("j should be positive")
-        if j is not None and j > cls.j_max - cls.j_min:
+        if v is not None and v > cls.j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {cls.j_max - cls.j_min + 1}"
+                "j should be less than j_max - j_min: "
+                f"{cls.j_max - values['j_min'] + 1}"
             )
-        return j
+        return v

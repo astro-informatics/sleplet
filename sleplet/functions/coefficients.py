@@ -23,9 +23,11 @@ class Coefficients:
     coefficients: np.ndarray = field(init=False, repr=False)
     name: str = field(init=False, repr=False)
     slepian: SlepianFunctions = field(init=False, repr=False)
-    snr: float = field(init=False, repr=False)
+    snr: float = field(default=0, init=False, repr=False)
     spin: int = field(init=False, repr=False)
-    unnoised_coefficients: np.ndarray = field(init=False, repr=False)
+    unnoised_coefficients: np.ndarray = field(
+        default=np.array([0]), init=False, repr=False
+    )
     smoothing: Optional[int] = None
     noise: Optional[float] = None
     region: Optional[Region] = None
@@ -78,15 +80,19 @@ class Coefficients:
         self.name += f"_L{self.L}"
 
     @validator("coefficients")
-    def check_coefficients(cls, coefficients: np.ndarray) -> np.ndarray:
+    def check_coefficients(cls, v, values):
         if (
-            isinstance(cls.region, Region)
-            and not set(cls.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
+            "region" in values
+            and not set(values["name"].split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
-            coefficients = ensure_masked_flm_bandlimited(
-                coefficients, cls.L, cls.region, cls.reality, cls.spin
+            v = ensure_masked_flm_bandlimited(
+                v,
+                values["L"],
+                values["region"],
+                values["reality"],
+                values["spin"],
             )
-        return coefficients
+        return v
 
     @abstractmethod
     def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:

@@ -22,7 +22,9 @@ class MeshCoefficients:
     coefficients: np.ndarray = field(init=False, repr=False)
     mesh_slepian: MeshSlepian = field(init=False, repr=False)
     name: str = field(init=False, repr=False)
-    unnoised_coefficients: np.ndarray = field(init=False, repr=False)
+    unnoised_coefficients: np.ndarray = field(
+        default=np.array([0]), init=False, repr=False
+    )
     extra_args: Optional[list[int]] = None
     noise: Optional[float] = None
     region: bool = False
@@ -46,13 +48,13 @@ class MeshCoefficients:
             self.name += "_zoom"
 
     @validator("coefficients")
-    def check_coefficients(cls, coefficients: np.ndarray) -> np.ndarray:
+    def check_coefficients(cls, v, values):
         if (
-            cls.region
+            "region" in values
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
-            coefficients = ensure_masked_bandlimit_mesh_signal(cls.mesh, coefficients)
-        return coefficients
+            v = ensure_masked_bandlimit_mesh_signal(values["mesh"], v)
+        return v
 
     @abstractmethod
     def _add_noise_to_signal(self) -> None:
