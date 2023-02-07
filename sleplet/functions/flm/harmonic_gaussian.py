@@ -6,7 +6,7 @@ from sleplet.functions.f_lm import F_LM
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
-@dataclass
+@dataclass(kw_only=True)
 class HarmonicGaussian(F_LM):
     l_sigma: float = 10
     m_sigma: float = 10

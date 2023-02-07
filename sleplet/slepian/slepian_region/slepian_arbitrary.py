@@ -1,3 +1,4 @@
+from dataclasses import KW_ONLY
 from pathlib import Path
 
 import numpy as np
@@ -35,6 +36,7 @@ _slepian_path = _file_location.parents[2] / "data" / "slepian"
 @dataclass
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
+    _: KW_ONLY
     L_min: int = settings.L_MIN
     L_max: int = settings.L_MAX
 

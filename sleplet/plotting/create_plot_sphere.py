@@ -1,3 +1,4 @@
+from dataclasses import KW_ONLY, field
 from pathlib import Path
 from typing import Optional
 
@@ -7,7 +8,7 @@ import plotly.offline as py
 import pyssht as ssht
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
-from pydantic.dataclasses import Field, dataclass
+from pydantic.dataclasses import dataclass
 
 from sleplet.utils.config import settings
 from sleplet.utils.logger import logger
@@ -39,9 +40,10 @@ class Plot:
     f: np.ndarray
     L: int
     filename: str
+    _: KW_ONLY
     amplitude: Optional[float] = None
     plot_type: str = "real"
-    annotations: list[dict] = Field(default_factory=list)
+    annotations: list[dict] = field(default_factory=list)
     normalise: bool = True
     reality: bool = False
     region: Optional[Region] = None

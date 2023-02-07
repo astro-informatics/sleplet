@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from dataclasses import KW_ONLY
 from typing import Optional
 
 import numpy as np
@@ -16,6 +17,7 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 @dataclass
 class Coefficients:
     L: int
+    _: KW_ONLY
     extra_args: Optional[list[int]] = None
     region: Optional[Region] = None
     noise: Optional[float] = None

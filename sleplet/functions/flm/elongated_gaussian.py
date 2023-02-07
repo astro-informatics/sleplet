@@ -7,7 +7,7 @@ from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filen
 from sleplet.utils.vars import PHI_0, THETA_0
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ElongatedGaussian(F_LM):
     p_sigma: float = 0.1
     t_sigma: float = 1

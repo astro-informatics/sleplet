@@ -6,7 +6,7 @@ from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_mesh_forward
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MeshSlepianFunctions(MeshSlepianCoefficients):
     rank: int = 0
 

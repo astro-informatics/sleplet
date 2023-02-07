@@ -7,7 +7,7 @@ from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filen
 from sleplet.utils.vars import THETA_0
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SquashedGaussian(F_LM):
     t_sigma: float = 1
     freq: float = 0.1

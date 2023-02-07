@@ -6,7 +6,7 @@ from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_forward
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Slepian(F_P):
     rank: int = 0
 

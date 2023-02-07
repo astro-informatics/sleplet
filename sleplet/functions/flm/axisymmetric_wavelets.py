@@ -14,7 +14,7 @@ from sleplet.utils.string_methods import (
 from sleplet.utils.wavelet_methods import create_axisymmetric_wavelets
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AxisymmetricWavelets(F_LM):
     B: int = 3
     j_min: int = 2

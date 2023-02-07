@@ -6,7 +6,7 @@ from sleplet.utils.harmonic_methods import mesh_forward
 from sleplet.utils.logger import logger
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
     rank: int = 0
 

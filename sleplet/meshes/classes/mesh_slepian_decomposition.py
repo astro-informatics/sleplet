@@ -15,6 +15,7 @@ from sleplet.utils.logger import logger
 @dataclass
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
+    _: KW_ONLY
     u: Optional[np.ndarray] = None
     u_i: Optional[np.ndarray] = None
     mask: bool = False

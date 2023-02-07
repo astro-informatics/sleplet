@@ -1,3 +1,4 @@
+from dataclasses import KW_ONLY
 from typing import Optional
 
 import numpy as np
@@ -18,6 +19,7 @@ from sleplet.utils.vars import SAMPLING_SCHEME
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
+    _: KW_ONLY
     f: Optional[np.ndarray] = None
     flm: Optional[np.ndarray] = None
     mask: Optional[np.ndarray] = None

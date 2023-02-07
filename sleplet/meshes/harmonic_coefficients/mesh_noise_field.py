@@ -6,7 +6,7 @@ from sleplet.utils.noise import compute_snr, create_mesh_noise
 from sleplet.utils.string_methods import filename_args
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MeshNoiseField(MeshHarmonicCoefficients):
     SNR: float = 10
 

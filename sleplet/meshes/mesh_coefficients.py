@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from dataclasses import KW_ONLY
 from typing import Optional
 
 import numpy as np
@@ -15,6 +16,7 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 @dataclass
 class MeshCoefficients:
     mesh: Mesh
+    _: KW_ONLY
     extra_args: Optional[list[int]] = None
     noise: Optional[float] = None
     region: bool = False

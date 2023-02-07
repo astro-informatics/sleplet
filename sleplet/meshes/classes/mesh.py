@@ -1,3 +1,4 @@
+from dataclasses import KW_ONLY
 from typing import Optional
 
 from pydantic.dataclasses import dataclass
@@ -14,6 +15,7 @@ from sleplet.utils.plotly_methods import create_camera
 @dataclass
 class Mesh:
     name: str
+    _: KW_ONLY
     number_basis_functions: Optional[int] = None
     zoom: bool = False
 

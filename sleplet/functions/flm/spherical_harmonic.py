@@ -7,7 +7,7 @@ from sleplet.utils.harmonic_methods import create_spherical_harmonic
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SphericalHarmonic(F_LM):
     ell: int = 0
     m: int = 0

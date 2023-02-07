@@ -16,7 +16,7 @@ from sleplet.utils.string_methods import (
 from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SlepianWaveletCoefficientsSouthAmerica(F_P):
     B: int = 3
     j_min: int = 2

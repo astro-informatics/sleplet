@@ -15,7 +15,7 @@ from sleplet.utils.string_methods import (
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class DirectionalSpinWavelets(F_LM):
     B: int = 3
     j_min: int = 2

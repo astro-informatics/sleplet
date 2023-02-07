@@ -6,7 +6,7 @@ from sleplet.utils.noise import compute_snr, create_noise
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NoiseEarth(F_LM):
     SNR: float = 10
 

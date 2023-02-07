@@ -14,7 +14,7 @@ from sleplet.utils.string_methods import filename_args, wavelet_ending
 from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
     B: int = 3
     j_min: int = 2

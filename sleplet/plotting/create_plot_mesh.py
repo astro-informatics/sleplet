@@ -1,3 +1,4 @@
+from dataclasses import KW_ONLY
 from pathlib import Path
 from typing import Optional
 
@@ -31,6 +32,7 @@ class Plot:
     mesh: Mesh
     filename: str
     f: np.ndarray
+    _: KW_ONLY
     amplitude: Optional[float] = None
     colour: LinearSegmentedColormap = cmocean.cm.ice
     normalise: bool = True

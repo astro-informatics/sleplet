@@ -1,3 +1,4 @@
+from dataclasses import KW_ONLY
 from pathlib import Path
 from typing import Optional
 
@@ -32,6 +33,7 @@ _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 @dataclass
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
+    _: KW_ONLY
     order: Optional[int | np.ndarray] = None
     gap: bool = False
 

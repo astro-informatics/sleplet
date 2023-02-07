@@ -12,7 +12,7 @@ from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, compute_s_p_omega_prime
 
 
-@dataclass
+@dataclass(kw_only=True)
 class F_P(Coefficients):
     region: Optional[Region] = None
 
