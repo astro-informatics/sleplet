@@ -183,17 +183,9 @@ class SlepianArbitrary(SlepianFunctions):
             self.mask, self.weight, self._fields[i], self._fields[j].conj()
         )
 
-    @property  # type:ignore
-    def mask_name(self) -> str:
-        return self._mask_name
-
     @mask_name.setter
     def mask_name(self, mask_name: str) -> None:
         self._mask_name = mask_name
-
-    @property  # type:ignore
-    def L_max(self) -> int:
-        return self._L_max
 
     @L_max.setter
     def L_max(self, L_max: int) -> None:
@@ -207,10 +199,6 @@ class SlepianArbitrary(SlepianFunctions):
             raise TypeError("L_max must be an integer")
         self._L_max = L_max if L_max != L_MAX_DEFAULT else self.L
 
-    @property  # type:ignore
-    def L_min(self) -> int:
-        return self._L_min
-
     @L_min.setter
     def L_min(self, L_min: int) -> None:
         if isinstance(L_min, property):
@@ -223,17 +211,9 @@ class SlepianArbitrary(SlepianFunctions):
             raise TypeError("L_min must be an integer")
         self._L_min = L_min
 
-    @property
-    def region(self) -> Region:
-        return self._region
-
     @region.setter
     def region(self, region: Region) -> None:
         self._region = region
-
-    @property
-    def weight(self) -> np.ndarray:
-        return self._weight
 
     @weight.setter
     def weight(self, weight: np.ndarray) -> None:

@@ -353,10 +353,6 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @property  # type:ignore
-    def gap(self) -> bool:
-        return self._gap
-
     @gap.setter
     def gap(self, gap: bool) -> None:
         if isinstance(gap, property):
@@ -364,10 +360,6 @@ class SlepianPolarCap(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             gap = SlepianPolarCap._gap
         self._gap = gap
-
-    @property  # type:ignore
-    def order(self) -> Optional[int | np.ndarray]:
-        return self._order
 
     @order.setter
     def order(self, order: Optional[int | np.ndarray]) -> None:
@@ -379,17 +371,9 @@ class SlepianPolarCap(SlepianFunctions):
             raise ValueError(f"Order magnitude should be less than {self.L}")
         self._order = order
 
-    @property
-    def region(self) -> Region:
-        return self._region
-
     @region.setter
     def region(self, region: Region) -> None:
         self._region = region
-
-    @property  # type:ignore
-    def theta_max(self) -> float:
-        return self._theta_max
 
     @theta_max.setter
     def theta_max(self, theta_max: float) -> None:

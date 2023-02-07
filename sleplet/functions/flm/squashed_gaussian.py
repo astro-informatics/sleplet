@@ -51,10 +51,6 @@ class SquashedGaussian(F_LM):
             self.freq * phi
         )
 
-    @property  # type:ignore
-    def freq(self) -> float:
-        return self._freq
-
     @freq.setter
     def freq(self, freq: float) -> None:
         if isinstance(freq, property):
@@ -62,10 +58,6 @@ class SquashedGaussian(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             freq = SquashedGaussian._freq
         self._freq = freq
-
-    @property  # type:ignore
-    def t_sigma(self) -> float:
-        return self._t_sigma
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:

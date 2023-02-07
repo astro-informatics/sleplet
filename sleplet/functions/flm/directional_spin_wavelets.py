@@ -73,10 +73,6 @@ class DirectionalSpinWavelets(F_LM):
             self.wavelets[0, ind] = phi_l[ell]
         self.wavelets[1:] = psi_lm.T
 
-    @property  # type:ignore
-    def B(self) -> int:
-        return self._B
-
     @B.setter
     def B(self, B: int) -> None:
         if isinstance(B, property):
@@ -84,10 +80,6 @@ class DirectionalSpinWavelets(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             B = DirectionalSpinWavelets._B
         self._B = B
-
-    @property  # type:ignore
-    def j(self) -> Optional[int]:
-        return self._j
 
     @j.setter
     def j(self, j: Optional[int]) -> None:
@@ -104,17 +96,9 @@ class DirectionalSpinWavelets(F_LM):
             )
         self._j = j
 
-    @property
-    def j_max(self) -> int:
-        return self._j_max
-
     @j_max.setter
     def j_max(self, j_max: int) -> None:
         self._j_max = j_max
-
-    @property  # type:ignore
-    def j_min(self) -> int:
-        return self._j_min
 
     @j_min.setter
     def j_min(self, j_min: int) -> None:
@@ -124,10 +108,6 @@ class DirectionalSpinWavelets(F_LM):
             j_min = DirectionalSpinWavelets._j_min
         self._j_min = j_min
 
-    @property  # type:ignore
-    def N(self) -> int:
-        return self._N
-
     @N.setter
     def N(self, N: int) -> None:
         if isinstance(N, property):
@@ -136,10 +116,6 @@ class DirectionalSpinWavelets(F_LM):
             N = DirectionalSpinWavelets._N
         self._N = N
 
-    @property  # type:ignore
-    def spin(self) -> int:
-        return self._spin
-
     @spin.setter
     def spin(self, spin: int) -> None:
         if isinstance(spin, property):
@@ -147,10 +123,6 @@ class DirectionalSpinWavelets(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             spin = DirectionalSpinWavelets._spin
         self._spin = spin
-
-    @property
-    def wavelets(self) -> np.ndarray:
-        return self._wavelets
 
     @wavelets.setter
     def wavelets(self, wavelets: np.ndarray) -> None:

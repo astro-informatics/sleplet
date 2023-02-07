@@ -41,10 +41,6 @@ class Gaussian(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.sigma = np.float_power(10, self.extra_args[0])
 
-    @property  # type:ignore
-    def sigma(self) -> float:
-        return self._sigma
-
     @sigma.setter
     def sigma(self, sigma: float) -> None:
         if isinstance(sigma, property):

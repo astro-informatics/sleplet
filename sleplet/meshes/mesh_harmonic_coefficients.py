@@ -5,7 +5,7 @@ from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.utils.noise import compute_snr, create_mesh_noise
 
 
-@dataclass  # type:ignore
+@dataclass
 class MeshHarmonicCoefficients(MeshCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()

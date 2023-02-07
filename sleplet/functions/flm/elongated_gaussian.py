@@ -57,10 +57,6 @@ class ElongatedGaussian(F_LM):
             / 2
         )
 
-    @property  # type:ignore
-    def p_sigma(self) -> float:
-        return self._p_sigma
-
     @p_sigma.setter
     def p_sigma(self, p_sigma: float) -> None:
         if isinstance(p_sigma, property):
@@ -68,10 +64,6 @@ class ElongatedGaussian(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             p_sigma = ElongatedGaussian._p_sigma
         self._p_sigma = p_sigma
-
-    @property  # type:ignore
-    def t_sigma(self) -> float:
-        return self._t_sigma
 
     @t_sigma.setter
     def t_sigma(self, t_sigma: float) -> None:

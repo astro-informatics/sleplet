@@ -36,10 +36,6 @@ class MeshNoiseField(MeshHarmonicCoefficients):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.SNR = self.extra_args[0]
 
-    @property  # type:ignore
-    def SNR(self) -> float:
-        return self._SNR
-
     @SNR.setter
     def SNR(self, SNR: float) -> None:
         if isinstance(SNR, property):

@@ -48,10 +48,6 @@ class HarmonicGaussian(F_LM):
                 np.float_power(10, x) for x in self.extra_args
             ]
 
-    @property  # type:ignore
-    def l_sigma(self) -> float:
-        return self._l_sigma
-
     @l_sigma.setter
     def l_sigma(self, l_sigma: float) -> None:
         if isinstance(l_sigma, property):
@@ -59,10 +55,6 @@ class HarmonicGaussian(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             l_sigma = HarmonicGaussian._l_sigma
         self._l_sigma = l_sigma
-
-    @property  # type:ignore
-    def m_sigma(self) -> float:
-        return self._m_sigma
 
     @m_sigma.setter
     def m_sigma(self, m_sigma: float) -> None:

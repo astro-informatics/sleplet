@@ -127,10 +127,6 @@ class MeshSlepianDecomposition:
                 f"{self.mesh_slepian.mesh.number_basis_functions}"
             )
 
-    @property  # type:ignore
-    def mask(self) -> bool:
-        return self._mask
-
     @mask.setter
     def mask(self, mask: bool) -> None:
         if isinstance(mask, property):
@@ -139,17 +135,9 @@ class MeshSlepianDecomposition:
             mask = MeshSlepianDecomposition._mask
         self._mask = mask
 
-    @property  # type:ignore
-    def mesh_slepian(self) -> MeshSlepian:
-        return self._slepian_mesh
-
     @mesh_slepian.setter
     def mesh_slepian(self, mesh_slepian: MeshSlepian) -> None:
         self._slepian_mesh = mesh_slepian
-
-    @property  # type:ignore
-    def u(self) -> Optional[np.ndarray]:
-        return self._u
 
     @u.setter
     def u(self, u: Optional[np.ndarray]) -> None:
@@ -158,10 +146,6 @@ class MeshSlepianDecomposition:
             # https://stackoverflow.com/a/61480946/7359333
             u = MeshSlepianDecomposition._u
         self._u = u
-
-    @property  # type:ignore
-    def u_i(self) -> Optional[np.ndarray]:
-        return self._u_i
 
     @u_i.setter
     def u_i(self, u_i: Optional[np.ndarray]) -> None:

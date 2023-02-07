@@ -13,14 +13,14 @@ from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, compute_s_p_omega_prime
 
 
-@dataclass  # type:ignore
+@dataclass
 class F_P(Coefficients):
     region: Optional[Region]
     _region: Optional[Region] = field(default=None, init=False, repr=False)
     _slepian: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.coefficients: np.ndarray  # mypy
+        self.coefficients: np.ndarray
         self.region = (
             self.region
             if isinstance(self.region, Region)
@@ -47,10 +47,6 @@ class F_P(Coefficients):
             self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
 
-    @property  # type:ignore
-    def region(self) -> Optional[Region]:
-        return self._region
-
     @region.setter
     def region(self, region: Optional[Region]) -> None:
         if isinstance(region, property):
@@ -58,10 +54,6 @@ class F_P(Coefficients):
             # https://stackoverflow.com/a/61480946/7359333
             region = F_P._region
         self._region = region
-
-    @property
-    def slepian(self) -> SlepianFunctions:
-        return self._slepian
 
     @slepian.setter
     def slepian(self, slepian: SlepianFunctions) -> None:

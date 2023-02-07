@@ -222,10 +222,6 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @property  # type:ignore
-    def phi_max(self) -> float:
-        return self._phi_max
-
     @phi_max.setter
     def phi_max(self, phi_max: float) -> None:
         if isinstance(phi_max, property):
@@ -233,10 +229,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             phi_max = SlepianLimitLatLon._phi_max
         self._phi_max = phi_max
-
-    @property  # type:ignore
-    def phi_min(self) -> float:
-        return self._phi_min
 
     @phi_min.setter
     def phi_min(self, phi_min: float) -> None:
@@ -246,17 +238,9 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_min = SlepianLimitLatLon._phi_min
         self._phi_min = phi_min
 
-    @property
-    def region(self) -> Region:
-        return self._region
-
     @region.setter
     def region(self, region: Region) -> None:
         self._region = region
-
-    @property  # type:ignore
-    def theta_max(self) -> float:
-        return self._theta_max
 
     @theta_max.setter
     def theta_max(self, theta_max: float) -> None:
@@ -265,10 +249,6 @@ class SlepianLimitLatLon(SlepianFunctions):
             # https://stackoverflow.com/a/61480946/7359333
             theta_max = SlepianLimitLatLon._theta_max
         self._theta_max = theta_max
-
-    @property  # type:ignore
-    def theta_min(self) -> float:
-        return self._theta_min
 
     @theta_min.setter
     def theta_min(self, theta_min: float) -> None:

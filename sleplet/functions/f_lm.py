@@ -8,10 +8,10 @@ from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.noise import compute_snr, create_noise
 
 
-@dataclass  # type:ignore
+@dataclass
 class F_LM(Coefficients):
     def __post_init__(self) -> None:
-        self.coefficients: np.ndarray  # mypy
+        self.coefficients: np.ndarray
         super().__post_init__()
 
     def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:

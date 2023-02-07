@@ -58,57 +58,29 @@ class Mesh:
             number_basis_functions=self.number_basis_functions,
         )
 
-    @property
-    def basis_functions(self) -> np.ndarray:
-        return self._basis_functions
-
     @basis_functions.setter
     def basis_functions(self, basis_functions: np.ndarray) -> None:
         self._basis_functions = basis_functions
-
-    @property
-    def camera_view(self) -> Camera:
-        return self._camera_view
 
     @camera_view.setter
     def camera_view(self, camera_view: Camera) -> None:
         self._camera_view = camera_view
 
-    @property
-    def colourbar_pos(self) -> float:
-        return self._colourbar_pos
-
     @colourbar_pos.setter
     def colourbar_pos(self, colourbar_pos: float) -> None:
         self._colourbar_pos = colourbar_pos
-
-    @property
-    def faces(self) -> np.ndarray:
-        return self._faces
 
     @faces.setter
     def faces(self, faces: np.ndarray) -> None:
         self._faces = faces
 
-    @property
-    def mesh_eigenvalues(self) -> np.ndarray:
-        return self._mesh_eigenvalues
-
     @mesh_eigenvalues.setter
     def mesh_eigenvalues(self, mesh_eigenvalues: np.ndarray) -> None:
         self._mesh_eigenvalues = mesh_eigenvalues
 
-    @property  # type:ignore
-    def name(self) -> str:
-        return self._name
-
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @property  # type:ignore
-    def number_basis_functions(self) -> Optional[int]:
-        return self._number_basis_functions
 
     @number_basis_functions.setter
     def number_basis_functions(self, number_basis_functions: Optional[int]) -> None:
@@ -118,25 +90,13 @@ class Mesh:
             number_basis_functions = Mesh._number_basis_functions
         self._number_basis_functions = number_basis_functions
 
-    @property
-    def region(self) -> np.ndarray:
-        return self._region
-
     @region.setter
     def region(self, region: np.ndarray) -> None:
         self._region = region
 
-    @property
-    def vertices(self) -> np.ndarray:
-        return self._vertices
-
     @vertices.setter
     def vertices(self, vertices: np.ndarray) -> None:
         self._vertices = vertices
-
-    @property  # type:ignore
-    def zoom(self) -> bool:
-        return self._zoom
 
     @zoom.setter
     def zoom(self, zoom: bool) -> None:

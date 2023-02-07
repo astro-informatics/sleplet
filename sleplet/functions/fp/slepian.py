@@ -60,10 +60,6 @@ class Slepian(F_P):
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 
-    @property  # type:ignore
-    def rank(self) -> int:
-        return self._rank
-
     @rank.setter
     def rank(self, rank: int) -> None:
         if isinstance(rank, property):

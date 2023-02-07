@@ -152,33 +152,17 @@ class MeshSlepian:
         eigenvectors = eigenvectors[:, idx].T
         return eigenvalues, eigenvectors
 
-    @property  # type:ignore
-    def mesh(self) -> Mesh:
-        return self._mesh
-
     @mesh.setter
     def mesh(self, mesh: Mesh) -> None:
         self._mesh = mesh
-
-    @property
-    def N(self) -> int:
-        return self._N
 
     @N.setter
     def N(self, N: int) -> None:
         self._N = N
 
-    @property
-    def slepian_eigenvalues(self) -> np.ndarray:
-        return self._slepian_eigenvalues
-
     @slepian_eigenvalues.setter
     def slepian_eigenvalues(self, slepian_eigenvalues: np.ndarray) -> None:
         self._slepian_eigenvalues = slepian_eigenvalues
-
-    @property
-    def slepian_functions(self) -> np.ndarray:
-        return self._slepian_functions
 
     @slepian_functions.setter
     def slepian_functions(self, slepian_functions: np.ndarray) -> None:

@@ -120,10 +120,6 @@ class SlepianDecomposition:
         if rank >= self.L**2:
             raise ValueError(f"rank should be less than {self.L**2}")
 
-    @property  # type:ignore
-    def f(self) -> Optional[np.ndarray]:
-        return self._f
-
     @f.setter
     def f(self, f: Optional[np.ndarray]) -> None:
         if isinstance(f, property):
@@ -131,10 +127,6 @@ class SlepianDecomposition:
             # https://stackoverflow.com/a/61480946/7359333
             f = SlepianDecomposition._f
         self._f = f
-
-    @property  # type:ignore
-    def flm(self) -> Optional[np.ndarray]:
-        return self._flm
 
     @flm.setter
     def flm(self, flm: Optional[np.ndarray]) -> None:
@@ -144,17 +136,9 @@ class SlepianDecomposition:
             flm = SlepianDecomposition._flm
         self._flm = flm
 
-    @property  # type:ignore
-    def L(self) -> int:
-        return self._L
-
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
-
-    @property  # type:ignore
-    def mask(self) -> Optional[np.ndarray]:
-        return self._mask
 
     @mask.setter
     def mask(self, mask: Optional[np.ndarray]) -> None:
@@ -163,10 +147,6 @@ class SlepianDecomposition:
             # https://stackoverflow.com/a/61480946/7359333
             mask = SlepianDecomposition._mask
         self._mask = mask
-
-    @property  # type:ignore
-    def slepian(self) -> int:
-        return self._slepian
 
     @slepian.setter
     def slepian(self, slepian: SlepianFunctions) -> None:

@@ -12,7 +12,7 @@ from sleplet.utils.string_methods import filename_args
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@dataclass  # type:ignore
+@dataclass
 class Coefficients:
     L: int
     extra_args: Optional[list[int]]
@@ -76,10 +76,6 @@ class Coefficients:
             self.name += f"{filename_args(self.smoothing, 'smoothed')}"
         self.name += f"_L{self.L}"
 
-    @property
-    def coefficients(self) -> np.ndarray:
-        return self._coefficients
-
     @coefficients.setter
     def coefficients(self, coefficients: np.ndarray) -> None:
         if (
@@ -91,10 +87,6 @@ class Coefficients:
             )
         self._coefficients = coefficients
 
-    @property  # type:ignore
-    def extra_args(self) -> Optional[list[int]]:
-        return self._extra_args
-
     @extra_args.setter
     def extra_args(self, extra_args: Optional[list[int]]) -> None:
         if isinstance(extra_args, property):
@@ -103,25 +95,13 @@ class Coefficients:
             extra_args = Coefficients._extra_args
         self._extra_args = extra_args
 
-    @property  # type:ignore
-    def L(self) -> int:
-        return self._L
-
     @L.setter
     def L(self, L: int) -> None:
         self._L = L
 
-    @property
-    def name(self) -> str:
-        return self._name
-
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
-
-    @property  # type:ignore
-    def noise(self) -> Optional[float]:
-        return self._noise
 
     @noise.setter
     def noise(self, noise: Optional[float]) -> None:
@@ -131,17 +111,9 @@ class Coefficients:
             noise = Coefficients._noise
         self._noise = noise
 
-    @property
-    def reality(self) -> bool:
-        return self._reality
-
     @reality.setter
     def reality(self, reality: bool) -> None:
         self._reality = reality
-
-    @property  # type:ignore
-    def region(self) -> Optional[Region]:
-        return self._region
 
     @region.setter
     def region(self, region: Optional[Region]) -> None:
@@ -151,10 +123,6 @@ class Coefficients:
             region = Coefficients._region
         self._region = region
 
-    @property  # type:ignore
-    def smoothing(self) -> Optional[int]:
-        return self._smoothing
-
     @smoothing.setter
     def smoothing(self, smoothing: Optional[int]) -> None:
         if isinstance(smoothing, property):
@@ -163,10 +131,6 @@ class Coefficients:
             smoothing = Coefficients._smoothing
         self._smoothing = smoothing
 
-    @property
-    def spin(self) -> int:
-        return self._spin
-
     @spin.setter
     def spin(self, spin: int) -> None:
         if isinstance(spin, property):
@@ -174,10 +138,6 @@ class Coefficients:
             # https://stackoverflow.com/a/61480946/7359333
             spin = Coefficients._spin
         self._spin = spin
-
-    @property
-    def unnoised_coefficients(self) -> Optional[np.ndarray]:
-        return self._unnoised_coefficients
 
     @unnoised_coefficients.setter
     def unnoised_coefficients(

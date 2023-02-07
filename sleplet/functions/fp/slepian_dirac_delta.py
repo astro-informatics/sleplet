@@ -56,17 +56,9 @@ class SlepianDiracDelta(F_P):
         )
         logger.info(f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})")
 
-    @property
-    def alpha(self) -> float:
-        return self._alpha
-
     @alpha.setter
     def alpha(self, alpha: float) -> None:
         self._alpha = alpha
-
-    @property
-    def beta(self) -> float:
-        return self._beta
 
     @beta.setter
     def beta(self, beta: float) -> None:

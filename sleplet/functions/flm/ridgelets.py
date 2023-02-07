@@ -98,10 +98,6 @@ class Ridgelets(F_LM):
             )
         return ring_lm
 
-    @property  # type:ignore
-    def B(self) -> int:
-        return self._B
-
     @B.setter
     def B(self, B: int) -> None:
         if isinstance(B, property):
@@ -109,10 +105,6 @@ class Ridgelets(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             B = Ridgelets._B
         self._B = B
-
-    @property  # type:ignore
-    def j(self) -> Optional[int]:
-        return self._j
 
     @j.setter
     def j(self, j: Optional[int]) -> None:
@@ -129,10 +121,6 @@ class Ridgelets(F_LM):
             )
         self._j = j
 
-    @property  # type:ignore
-    def j_min(self) -> int:
-        return self._j_min
-
     @j_min.setter
     def j_min(self, j_min: int) -> None:
         if isinstance(j_min, property):
@@ -141,10 +129,6 @@ class Ridgelets(F_LM):
             j_min = Ridgelets._j_min
         self._j_min = j_min
 
-    @property  # type:ignore
-    def spin(self) -> int:
-        return self._spin
-
     @spin.setter
     def spin(self, spin: int) -> None:
         if isinstance(spin, property):
@@ -152,10 +136,6 @@ class Ridgelets(F_LM):
             # https://stackoverflow.com/a/61480946/7359333
             spin = Ridgelets._spin
         self._spin = spin
-
-    @property
-    def wavelets(self) -> np.ndarray:
-        return self._wavelets
 
     @wavelets.setter
     def wavelets(self, wavelets: np.ndarray) -> None:
