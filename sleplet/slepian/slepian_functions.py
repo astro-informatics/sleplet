@@ -12,7 +12,7 @@ class SlepianFunctions:
     L: int
 
     def __post_init__(self) -> None:
-        self._create_mask()
+        self.mask = self._create_mask()
         self.name = self._create_fn_name()
         area = self._calculate_area()
         self.N = round(area * self.L**2 / (4 * np.pi))
@@ -30,7 +30,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_mask(self) -> None:
+    def _create_mask(self) -> np.ndarray:
         """
         creates a mask of the region of interest
         """

@@ -45,8 +45,8 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"
 
-    def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self.region)
+    def _create_mask(self) -> np.ndarray:
+        return create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -> float:
         return 2 * np.pi * (1 - np.cos(self.theta_max))

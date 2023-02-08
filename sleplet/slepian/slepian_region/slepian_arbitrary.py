@@ -49,8 +49,8 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"
 
-    def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.resolution, self.region)
+    def _create_mask(self) -> np.ndarray:
+        return create_mask_region(self.resolution, self.region)
 
     def _calculate_area(self) -> float:
         self.weight = calc_integration_weight(self.resolution)
