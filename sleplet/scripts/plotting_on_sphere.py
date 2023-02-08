@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -167,7 +166,7 @@ def read_args() -> Namespace:
 
 def plot(
     f: Coefficients,
-    g: Optional[Coefficients],
+    g: Coefficients | None,
     alpha_pi_frac: float,
     beta_pi_frac: float,
     gamma_pi_frac: float,
@@ -177,7 +176,7 @@ def plot(
     plot_type: str,
     upsample: bool,
     earth_view: str,
-    amplitude: Optional[float],
+    amplitude: float | None,
 ) -> None:
     """
     master plotting method
@@ -270,7 +269,7 @@ def _translation_helper(
     filename: str,
     alpha_pi_frac: float,
     beta_pi_frac: float,
-    shannon: Optional[int],
+    shannon: int | None,
 ) -> tuple[np.ndarray, str, dict]:
     """
     performs the translation specific steps
@@ -298,7 +297,7 @@ def _convolution_helper(
     f: Coefficients,
     g: Coefficients,
     coefficients: np.ndarray,
-    shannon: Optional[int],
+    shannon: int | None,
     filename: str,
 ) -> tuple[np.ndarray, str]:
     """
@@ -328,7 +327,7 @@ def _coefficients_to_field(f: Coefficients, coefficients: np.ndarray) -> np.ndar
     )
 
 
-def _compute_amplitude_for_noisy_plots(f: Coefficients) -> Optional[float]:
+def _compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """

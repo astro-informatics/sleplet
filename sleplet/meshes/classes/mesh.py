@@ -1,5 +1,4 @@
 from dataclasses import KW_ONLY
-from typing import Optional
 
 from pydantic.dataclasses import dataclass
 
@@ -17,7 +16,7 @@ from sleplet.utils.validation import Validation
 class Mesh:
     name: str
     _: KW_ONLY
-    number_basis_functions: Optional[int] = None
+    number_basis_functions: int | None = None
     zoom: bool = False
 
     def __post_init__(self) -> None:

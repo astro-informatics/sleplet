@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 import pyssht as ssht
 from pydantic import validator
@@ -22,7 +20,7 @@ from sleplet.utils.wavelet_methods import create_kappas
 class Ridgelets(F_LM):
     B: int = 3
     j_min: int = 2
-    j: Optional[int] = None
+    j: int | None = None
     spin: int = 2
 
     def __post_init__(self) -> None:

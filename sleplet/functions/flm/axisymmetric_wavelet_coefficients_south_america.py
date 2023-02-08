@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -24,7 +22,7 @@ from sleplet.utils.wavelet_methods import (
 class AxisymmetricWaveletCoefficientsSouthAmerica(F_LM):
     B: int = 3
     j_min: int = 2
-    j: Optional[int] = None
+    j: int | None = None
 
     def __post_init__(self) -> None:
         super().__post_init__()

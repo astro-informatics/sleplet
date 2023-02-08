@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -11,7 +10,7 @@ _file_location = Path(__file__).resolve()
 _matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
 
 
-def create_flm(L: int, *, smoothing: Optional[int] = None) -> np.ndarray:
+def create_flm(L: int, *, smoothing: int | None = None) -> np.ndarray:
     """
     creates the flm for the whole Earth
     """

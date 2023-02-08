@@ -1,6 +1,5 @@
 from dataclasses import KW_ONLY, field
 from pathlib import Path
-from typing import Optional
 
 import cmocean
 import numpy as np
@@ -42,12 +41,12 @@ class Plot:
     L: int
     filename: str
     _: KW_ONLY
-    amplitude: Optional[float] = None
+    amplitude: float | None = None
     annotations: list[dict] = field(default_factory=list)
     normalise: bool = True
     plot_type: str = "real"
     reality: bool = False
-    region: Optional[Region] = None
+    region: Region | None = None
     spin: int = 0
     upsample: bool = True
 
@@ -119,8 +118,8 @@ class Plot:
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
-        parametric_scaling: Optional[list[float]] = None,
-        color_range: Optional[list[float]] = None,
+        parametric_scaling: list[float] | None = None,
+        color_range: list[float] | None = None,
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot

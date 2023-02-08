@@ -1,5 +1,3 @@
-from typing import Optional
-
 from plotly.graph_objs import Layout
 from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
@@ -34,9 +32,7 @@ def create_camera(
     )
 
 
-def create_layout(
-    camera: Camera, *, annotations: Optional[list[dict]] = None
-) -> Layout:
+def create_layout(camera: Camera, *, annotations: list[dict] | None = None) -> Layout:
     """
     default plotly layout
     """
@@ -56,7 +52,7 @@ def create_layout(
 
 
 def create_tick_mark(
-    fmin: float, fmax: float, *, amplitude: Optional[float] = None
+    fmin: float, fmax: float, *, amplitude: float | None = None
 ) -> float:
     """
     creates tick mark to use when using a non-normalised plot

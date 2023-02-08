@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -21,7 +20,7 @@ class F_LM(Coefficients):
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
 
-    def _add_noise_to_signal(self) -> Optional[float]:
+    def _add_noise_to_signal(self) -> float | None:
         """
         adds Gaussian white noise to the signal
         """

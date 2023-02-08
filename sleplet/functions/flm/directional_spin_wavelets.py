@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 import pyssht as ssht
 from pydantic import validator
@@ -20,7 +18,7 @@ from sleplet.utils.validation import Validation
 class DirectionalSpinWavelets(F_LM):
     B: int = 3
     j_min: int = 2
-    j: Optional[int] = None
+    j: int | None = None
     N: int = 2
     spin: int = 0
 

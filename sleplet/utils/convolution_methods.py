@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 
 
@@ -7,7 +5,7 @@ def sifting_convolution(
     f_coefficient: np.ndarray,
     g_coefficient: np.ndarray,
     *,
-    shannon: Optional[int] = None,
+    shannon: int | None = None,
 ) -> np.ndarray:
     """
     computes the sifting convolution between two multipoles

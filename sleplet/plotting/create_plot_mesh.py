@@ -1,6 +1,5 @@
 from dataclasses import KW_ONLY
 from pathlib import Path
-from typing import Optional
 
 import cmocean
 import numpy as np
@@ -34,7 +33,7 @@ class Plot:
     filename: str
     f: np.ndarray
     _: KW_ONLY
-    amplitude: Optional[float] = None
+    amplitude: float | None = None
     colour: LinearSegmentedColormap = cmocean.cm.ice
     normalise: bool = True
     region: bool = False

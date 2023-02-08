@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from typing import Optional
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -15,7 +14,7 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation, kw_only=True)
 class F_P(Coefficients):
-    region: Optional[Region] = None
+    region: Region | None = None
 
     def __post_init__(self) -> None:
         self.region = (
@@ -32,7 +31,7 @@ class F_P(Coefficients):
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
-    def _add_noise_to_signal(self) -> Optional[float]:
+    def _add_noise_to_signal(self) -> float | None:
         """
         adds Gaussian white noise converted to Slepian space
         """

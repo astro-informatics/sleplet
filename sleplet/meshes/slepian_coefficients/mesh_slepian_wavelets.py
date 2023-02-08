@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -16,7 +14,7 @@ from sleplet.utils.wavelet_methods import create_kappas
 class MeshSlepianWavelets(MeshSlepianCoefficients):
     B: int = 3
     j_min: int = 2
-    j: Optional[int] = None
+    j: int | None = None
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -50,7 +48,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         return create_kappas(self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min)
 
     @validator("j")
-    def check_j(cls, v, values) -> Optional[int]:
+    def check_j(cls, v, values) -> int | None:
         cls.j_max = pys2let_j_max(
             values["B"], values["mesh"].mesh_eigenvalues.shape[0], values["j_min"]
         )

@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from dataclasses import KW_ONLY
-from typing import Optional
 
 import numpy as np
 from pydantic import validator
@@ -18,8 +17,8 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 class MeshCoefficients:
     mesh: Mesh
     _: KW_ONLY
-    extra_args: Optional[list[int]] = None
-    noise: Optional[float] = None
+    extra_args: list[int] | None = None
+    noise: float | None = None
     region: bool = False
 
     def __post_init__(self) -> None:
@@ -50,7 +49,7 @@ class MeshCoefficients:
         return v
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> Optional[float]:
+    def _add_noise_to_signal(self) -> float | None:
         """
         adds Gaussian white noise to the signal
         """

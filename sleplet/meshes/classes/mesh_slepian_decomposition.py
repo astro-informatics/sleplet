@@ -1,5 +1,4 @@
 from dataclasses import KW_ONLY
-from typing import Optional
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -19,8 +18,8 @@ class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: KW_ONLY
     mask: bool = False
-    u_i: Optional[np.ndarray] = None
-    u: Optional[np.ndarray] = None
+    u_i: np.ndarray | None = None
+    u: np.ndarray | None = None
 
     def __post_init__(self) -> None:
         """ """

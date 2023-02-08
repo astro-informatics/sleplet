@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 from multiprocess import Pool
@@ -135,7 +134,7 @@ class MeshSlepian:
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: tuple[Any, ...]
+        eigendecomposition: tuple,
     ) -> tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format

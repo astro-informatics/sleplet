@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 import pyssht as ssht
 from numpy.random import default_rng
@@ -39,7 +37,7 @@ def compute_sigma_noise(
     signal: np.ndarray,
     snr_in: float,
     *,
-    denominator: Optional[int] = None,
+    denominator: int | None = None,
 ) -> float:
     """
     compute the std dev of the noise

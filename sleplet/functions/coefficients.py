@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from dataclasses import KW_ONLY
-from typing import Optional
 
 import numpy as np
 from pydantic import validator
@@ -19,10 +18,10 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 class Coefficients:
     L: int
     _: KW_ONLY
-    smoothing: Optional[int] = None
-    noise: Optional[float] = None
-    region: Optional[Region] = None
-    extra_args: Optional[list[int]] = None
+    smoothing: int | None = None
+    noise: float | None = None
+    region: Region | None = None
+    extra_args: list[int] | None = None
 
     def __post_init__(self) -> None:
         self._setup_args()
@@ -34,7 +33,7 @@ class Coefficients:
         self.snr = self._add_noise_to_signal()
 
     def translate(
-        self, alpha: float, beta: float, *, shannon: Optional[int] = None
+        self, alpha: float, beta: float, *, shannon: int | None = None
     ) -> np.ndarray:
         g_coefficients = self._translation_helper(alpha, beta)
         return (
@@ -48,7 +47,7 @@ class Coefficients:
         f_coefficient: np.ndarray,
         g_coefficient: np.ndarray,
         *,
-        shannon: Optional[int] = None,
+        shannon: int | None = None,
     ) -> np.ndarray:
         # translation/convolution are not real for general function
         self.reality = False
@@ -100,7 +99,7 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> Optional[float]:
+    def _add_noise_to_signal(self) -> float | None:
         """
         adds Gaussian white noise to the signal
         """

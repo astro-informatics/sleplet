@@ -1,6 +1,5 @@
 from dataclasses import KW_ONLY
 from pathlib import Path
-from typing import Optional
 
 import gmpy2 as gp
 import numpy as np
@@ -36,7 +35,7 @@ class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     _: KW_ONLY
     gap: bool = False
-    order: Optional[int | np.ndarray] = None
+    order: int | np.ndarray | None = None
 
     def __post_init__(self) -> None:
         super().__post_init__()

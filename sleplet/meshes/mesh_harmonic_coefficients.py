@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from typing import Optional
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -14,7 +13,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _add_noise_to_signal(self) -> Optional[float]:
+    def _add_noise_to_signal(self) -> float | None:
         """
         adds Gaussian white noise to the signal
         """

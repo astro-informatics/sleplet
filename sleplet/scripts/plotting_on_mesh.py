@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 import numpy as np
 
@@ -89,7 +88,7 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients, normalise: bool, amplitude: Optional[float]) -> None:
+def plot(f: MeshCoefficients, normalise: bool, amplitude: float | None) -> None:
     """
     master plotting method
     """
@@ -115,7 +114,7 @@ def _coefficients_to_field(f: MeshCoefficients, coefficients: np.ndarray) -> np.
     )
 
 
-def _compute_amplitude_for_noisy_plots(f: MeshCoefficients) -> Optional[float]:
+def _compute_amplitude_for_noisy_plots(f: MeshCoefficients) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """

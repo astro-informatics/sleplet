@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 from box import Box
@@ -64,7 +63,7 @@ def mesh_eigendecomposition(
     vertices: np.ndarray,
     faces: np.ndarray,
     *,
-    number_basis_functions: Optional[int] = None,
+    number_basis_functions: int | None = None,
 ) -> tuple[np.ndarray, np.ndarray, int]:
     """
     computes the eigendecomposition of the mesh represented

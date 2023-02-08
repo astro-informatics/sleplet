@@ -1,5 +1,4 @@
 from dataclasses import KW_ONLY
-from typing import Optional
 
 import numpy as np
 import pyssht as ssht
@@ -21,9 +20,9 @@ class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
     _: KW_ONLY
-    f: Optional[np.ndarray] = None
-    flm: Optional[np.ndarray] = None
-    mask: Optional[np.ndarray] = None
+    f: np.ndarray | None = None
+    flm: np.ndarray | None = None
+    mask: np.ndarray | None = None
 
     def __post_init__(self) -> None:
         self._detect_method()
