@@ -25,8 +25,8 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
             f"slepian_{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
     def _set_spin(self) -> int:
         return 0

@@ -37,8 +37,8 @@ class Slepian(F_P):
         logger.info(f"Shannon number: {self.slepian.N}")
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
     def _set_spin(self) -> int:
         return 0

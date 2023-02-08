@@ -39,7 +39,7 @@ class F_LM(Coefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _set_reality(self) -> None:
+    def _set_reality(self) -> bool:
         raise NotImplementedError
 
     @abstractmethod

@@ -53,7 +53,7 @@ class F_P(Coefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _set_reality(self) -> None:
+    def _set_reality(self) -> bool:
         raise NotImplementedError
 
     @abstractmethod

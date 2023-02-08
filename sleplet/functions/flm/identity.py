@@ -17,8 +17,8 @@ class Identity(F_LM):
     def _create_name(self) -> None:
         self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
 
-    def _set_reality(self) -> None:
-        self.reality = True
+    def _set_reality(self) -> bool:
+        return True
 
     def _set_spin(self) -> int:
         return 0

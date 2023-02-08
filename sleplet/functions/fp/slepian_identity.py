@@ -20,8 +20,8 @@ class SlepianIdentity(F_P):
             f"_{self.slepian.region.name_ending}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
     def _set_spin(self) -> int:
         return 0

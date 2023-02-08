@@ -24,8 +24,8 @@ class SphericalHarmonic(F_LM):
             f"{filename_args(self.m, 'm')}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
     def _set_spin(self) -> int:
         return 0

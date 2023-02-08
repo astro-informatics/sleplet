@@ -28,7 +28,7 @@ class Coefficients:
         self._setup_args()
         self._create_name()
         self.spin = self._set_spin()
-        self._set_reality()
+        self.reality = self._set_reality()
         self._create_coefficients()
         self._add_details_to_name()
         self._add_noise_to_signal()
@@ -121,7 +121,7 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _set_reality(self) -> None:
+    def _set_reality(self) -> bool:
         """
         sets the reality flag to speed up computations
         """

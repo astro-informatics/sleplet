@@ -44,8 +44,8 @@ class SlepianWaveletCoefficientsAfrica(F_P):
             f"{wavelet_ending(self.j_min, self.j)}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
     def _set_spin(self) -> int:
         return 0

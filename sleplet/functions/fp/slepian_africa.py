@@ -22,8 +22,8 @@ class SlepianAfrica(F_P):
     def _create_name(self) -> None:
         self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
     def _set_spin(self) -> int:
         return 0

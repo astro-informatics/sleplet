@@ -28,8 +28,8 @@ class ElongatedGaussian(F_LM):
             f"{filename_args(self.p_sigma, 'psig')}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = True
+    def _set_reality(self) -> bool:
+        return True
 
     def _set_spin(self) -> int:
         return 0

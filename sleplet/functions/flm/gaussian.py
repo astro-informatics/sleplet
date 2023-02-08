@@ -27,8 +27,8 @@ class Gaussian(F_LM):
             f"{filename_args(self.sigma, 'sig')}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = True
+    def _set_reality(self) -> bool:
+        return True
 
     def _set_spin(self) -> int:
         return 0
