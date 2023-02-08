@@ -20,16 +20,17 @@ class F_LM(Coefficients):
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
 
-    def _add_noise_to_signal(self) -> float | None:
+    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
         """
         adds Gaussian white noise to the signal
         """
         if self.noise is not None:
-            self.unnoised_coefficients = self.coefficients.copy()
+            unnoised_coefficients = self.coefficients.copy()
             nlm = create_noise(self.L, self.coefficients, self.noise)
+            snr = compute_snr(self.coefficients, nlm, "Harmonic")
             self.coefficients += nlm
-            return compute_snr(self.coefficients, nlm, "Harmonic")
-        return None
+            return unnoised_coefficients, snr
+        return None, None
 
     @abstractmethod
     def _create_coefficients(self) -> np.ndarray:

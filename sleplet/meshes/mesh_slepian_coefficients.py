@@ -15,18 +15,19 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self.mesh_slepian = MeshSlepian(self.mesh)
         super().__post_init__()
 
-    def _add_noise_to_signal(self) -> float | None:
+    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
         """
         adds Gaussian white noise converted to Slepian space
         """
         if self.noise is not None:
-            self.unnoised_coefficients = self.coefficients.copy()
+            unnoised_coefficients = self.coefficients.copy()
             n_p = create_slepian_mesh_noise(
                 self.mesh_slepian, self.coefficients, self.noise
             )
+            snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
-            return compute_snr(self.coefficients, n_p, "Slepian")
-        return None
+            return unnoised_coefficients, snr
+        return None, None
 
     @abstractmethod
     def _create_coefficients(self) -> np.ndarray:
