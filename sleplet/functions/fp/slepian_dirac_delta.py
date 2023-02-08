@@ -30,8 +30,8 @@ class SlepianDiracDelta(F_P):
     def _set_reality(self) -> None:
         self.reality = False
 
-    def _set_spin(self) -> None:
-        self.spin = 0
+    def _set_spin(self) -> int:
+        return 0
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):

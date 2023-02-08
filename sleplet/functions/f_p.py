@@ -57,7 +57,7 @@ class F_P(Coefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _set_spin(self) -> None:
+    def _set_spin(self) -> int:
         raise NotImplementedError
 
     @abstractmethod

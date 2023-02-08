@@ -43,7 +43,7 @@ class F_LM(Coefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _set_spin(self) -> None:
+    def _set_spin(self) -> int:
         raise NotImplementedError
 
     @abstractmethod

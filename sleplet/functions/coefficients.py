@@ -27,7 +27,7 @@ class Coefficients:
     def __post_init__(self) -> None:
         self._setup_args()
         self._create_name()
-        self._set_spin()
+        self.spin = self._set_spin()
         self._set_reality()
         self._create_coefficients()
         self._add_details_to_name()
@@ -128,7 +128,7 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _set_spin(self) -> None:
+    def _set_spin(self) -> int:
         """
         sets the spin value in computations
         """
