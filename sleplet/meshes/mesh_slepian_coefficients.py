@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from typing import Optional
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -15,7 +16,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self.mesh_slepian = MeshSlepian(self.mesh)
         super().__post_init__()
 
-    def _add_noise_to_signal(self) -> None:
+    def _add_noise_to_signal(self) -> Optional[float]:
         """
         adds Gaussian white noise converted to Slepian space
         """
@@ -24,8 +25,9 @@ class MeshSlepianCoefficients(MeshCoefficients):
             n_p = create_slepian_mesh_noise(
                 self.mesh_slepian, self.coefficients, self.noise
             )
-            self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
+            return compute_snr(self.coefficients, n_p, "Slepian")
+        return None
 
     @abstractmethod
     def _create_coefficients(self) -> np.ndarray:

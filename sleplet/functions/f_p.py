@@ -32,7 +32,7 @@ class F_P(Coefficients):
     def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
-    def _add_noise_to_signal(self) -> None:
+    def _add_noise_to_signal(self) -> Optional[float]:
         """
         adds Gaussian white noise converted to Slepian space
         """
@@ -41,8 +41,9 @@ class F_P(Coefficients):
             n_p = create_slepian_noise(
                 self.L, self.coefficients, self.slepian, self.noise
             )
-            self.snr = compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients += n_p
+            return compute_snr(self.coefficients, n_p, "Slepian")
+        return None
 
     @abstractmethod
     def _create_coefficients(self) -> np.ndarray:

@@ -31,7 +31,7 @@ class Coefficients:
         self.reality = self._set_reality()
         self.coefficients = self._create_coefficients()
         self._add_details_to_name()
-        self._add_noise_to_signal()
+        self.snr = self._add_noise_to_signal()
 
     def translate(
         self, alpha: float, beta: float, *, shannon: Optional[int] = None
@@ -100,7 +100,7 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> None:
+    def _add_noise_to_signal(self) -> Optional[float]:
         """
         adds Gaussian white noise to the signal
         """

@@ -14,6 +14,7 @@ def test_denoising_earth_axisymmetric_wavelets() -> None:
     fun_noised = Earth(L_LARGE, noise=SNR_IN)
     aw = AxisymmetricWavelets(L_LARGE, B=B, j_min=J_MIN)
     _, noised_snr, denoised_snr = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
+    assert isinstance(noised_snr, float)
     assert_array_less(noised_snr, denoised_snr)
 
 

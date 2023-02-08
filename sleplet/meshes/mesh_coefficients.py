@@ -27,7 +27,7 @@ class MeshCoefficients:
         self.name = self._create_name()
         self.coefficients = self._create_coefficients()
         self._add_details_to_name()
-        self._add_noise_to_signal()
+        self.snr = self._add_noise_to_signal()
 
     def _add_details_to_name(self) -> None:
         """
@@ -50,7 +50,7 @@ class MeshCoefficients:
         return v
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> None:
+    def _add_noise_to_signal(self) -> Optional[float]:
         """
         adds Gaussian white noise to the signal
         """

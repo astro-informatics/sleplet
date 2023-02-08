@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 import pyssht as ssht
 
@@ -38,7 +40,7 @@ def denoising_axisym(
     n_sigma: int,
     *,
     rotate_to_south_america: bool = False,
-) -> tuple[np.ndarray, float, float]:
+) -> tuple[np.ndarray, Optional[float], float]:
     """
     reproduce the denoising demo from s2let paper
     """
