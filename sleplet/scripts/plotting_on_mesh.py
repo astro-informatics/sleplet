@@ -5,7 +5,7 @@ import numpy as np
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.utils.class_lists import MESH_COEFFICIENTS, MESHES
 from sleplet.utils.harmonic_methods import mesh_inverse
@@ -99,7 +99,7 @@ def plot(f: MeshCoefficients, normalise: bool, amplitude: float | None) -> None:
         field,
         amplitude=amplitude,
         normalise=normalise,
-        region=not isinstance(f, MeshHarmonicCoefficients),
+        region=isinstance(f, MeshSlepianCoefficients),
     ).execute()
 
 
@@ -108,9 +108,9 @@ def _coefficients_to_field(f: MeshCoefficients, coefficients: np.ndarray) -> np.
     computes the field over the whole mesh from the harmonic/Slepian coefficients
     """
     return (
-        mesh_inverse(f.mesh, coefficients)
-        if isinstance(f, MeshHarmonicCoefficients)
-        else slepian_mesh_inverse(f.mesh_slepian, coefficients)
+        slepian_mesh_inverse(f.mesh_slepian, coefficients)
+        if isinstance(f, MeshSlepianCoefficients)
+        else mesh_inverse(f.mesh, coefficients)
     )
 
 
