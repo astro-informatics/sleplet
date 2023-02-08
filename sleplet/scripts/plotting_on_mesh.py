@@ -118,10 +118,9 @@ def _compute_amplitude_for_noisy_plots(f: MeshCoefficients) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """
-    assert isinstance(f.unnoised_coefficients, np.ndarray)
     return (
         np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
-        if f.noise is not None
+        if f.unnoised_coefficients is not None
         else None
     )
 
