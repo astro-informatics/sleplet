@@ -48,7 +48,7 @@ class DirectionalSpinWavelets(F_LM):
         self.reality = self.j is None or self.spin == 0
 
     def _set_spin(self) -> int:
-        pass
+        return self.spin
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
