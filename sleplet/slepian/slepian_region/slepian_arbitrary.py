@@ -64,32 +64,33 @@ class SlepianArbitrary(SlepianFunctions):
     def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info("binaries found - loading...")
-            return np.load(eval_loc), np.load(evec_loc)
-        else:
-            D = self._create_D_matrix()
+        if not eval_loc.exists() or not evec_loc.exists():
+            return self._solve_D_matrix(eval_loc, evec_loc)
 
-            # check whether the large job has been split up
-            if (
-                self.L_min != L_MIN_DEFAULT or self.L_max != self.L
-            ) and settings.SAVE_MATRICES:
-                logger.info("large job has been used, saving intermediate matrix")
-                inter_loc = (
-                    self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
-                )
-                np.save(inter_loc, D)
-                raise RuntimeError("Large job detected, exiting")
+        logger.info("binaries found - loading...")
+        return np.load(eval_loc), np.load(evec_loc)
 
-            # fill in remaining triangle section
-            fill_upper_triangle_of_hermitian_matrix(D)
+    def _solve_D_matrix(self, eval_loc, evec_loc):
+        D = self._create_D_matrix()
 
-            # solve eigenproblem
-            eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
-            if settings.SAVE_MATRICES:
-                np.save(eval_loc, eigenvalues)
-                np.save(evec_loc, eigenvectors[: self.N])
-            return eigenvalues, eigenvectors
+        # check whether the large job has been split up
+        if (
+            self.L_min != L_MIN_DEFAULT or self.L_max != self.L
+        ) and settings.SAVE_MATRICES:
+            logger.info("large job has been used, saving intermediate matrix")
+            inter_loc = self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
+            np.save(inter_loc, D)
+            raise RuntimeError("Large job detected, exiting")
+
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
+        # solve eigenproblem
+        eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
+        if settings.SAVE_MATRICES:
+            np.save(eval_loc, eigenvalues)
+            np.save(evec_loc, eigenvectors[: self.N])
+        return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> np.ndarray:
         """

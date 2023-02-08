@@ -89,26 +89,26 @@ class SlepianPolarCap(SlepianFunctions):
         """
         if isinstance(self.order, int):
             return self._solve_eigenproblem_order(self.order)
-        else:
-            evals_all = np.empty(0)
-            evecs_all = np.empty((0, self.L**2), dtype=np.complex_)
-            emm = np.empty(0, dtype=int)
-            for m in range(-(self.L - 1), self.L):
-                evals_m, evecs_m = self._solve_eigenproblem_order(m)
-                evals_all = np.append(evals_all, evals_m)
-                evecs_all = np.concatenate((evecs_all, evecs_m))
-                emm = np.append(emm, [m] * len(evals_m))
-            (
-                eigenvalues,
-                eigenvectors,
-                self.order,
-            ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
-            if settings.SAVE_MATRICES:
-                limit = self.N if self.L > L_SAVE_ALL else None
-                np.save(eval_loc, eigenvalues)
-                np.save(evec_loc, eigenvectors[:limit])
-                np.save(order_loc, self.order)
-            return eigenvalues, eigenvectors
+
+        evals_all = np.empty(0)
+        evecs_all = np.empty((0, self.L**2), dtype=np.complex_)
+        emm = np.empty(0, dtype=int)
+        for m in range(-(self.L - 1), self.L):
+            evals_m, evecs_m = self._solve_eigenproblem_order(m)
+            evals_all = np.append(evals_all, evals_m)
+            evecs_all = np.concatenate((evecs_all, evecs_m))
+            emm = np.append(emm, [m] * len(evals_m))
+        (
+            eigenvalues,
+            eigenvectors,
+            self.order,
+        ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
+        if settings.SAVE_MATRICES:
+            limit = self.N if self.L > L_SAVE_ALL else None
+            np.save(eval_loc, eigenvalues)
+            np.save(evec_loc, eigenvectors[:limit])
+            np.save(order_loc, self.order)
+        return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
         """
