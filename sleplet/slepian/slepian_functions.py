@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from pathlib import Path
 
 import numpy as np
 from pydantic.dataclasses import dataclass
@@ -17,7 +18,7 @@ class SlepianFunctions:
         area = self._calculate_area()
         self.N = round(area * self.L**2 / (4 * np.pi))
         logger.info(f"Shannon number N={self.N}")
-        self._create_matrix_location()
+        self.matrix_location = self._create_matrix_location()
         logger.info("start solving eigenproblem")
         self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
@@ -44,7 +45,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_matrix_location(self) -> None:
+    def _create_matrix_location(self) -> Path:
         """
         creates the name of the matrix binary
         """

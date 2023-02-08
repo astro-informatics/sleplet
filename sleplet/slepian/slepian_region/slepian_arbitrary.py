@@ -56,8 +56,8 @@ class SlepianArbitrary(SlepianFunctions):
         self.weight = calc_integration_weight(self.resolution)
         return (self.mask * self.weight).sum()
 
-    def _create_matrix_location(self) -> None:
-        self.matrix_location = (
+    def _create_matrix_location(self) -> Path:
+        return (
             _slepian_path / "eigensolutions" / f"D_{self.mask_name}_L{self.L}_N{self.N}"
         )
 

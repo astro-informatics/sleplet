@@ -52,10 +52,8 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.cos(self.theta_min) - np.cos(self.theta_max)
         )
 
-    def _create_matrix_location(self) -> None:
-        self.matrix_location = (
-            _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
-        )
+    def _create_matrix_location(self) -> Path:
+        return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
     def _solve_eigenproblem(self) -> None:
         eval_loc = self.matrix_location / "eigenvalues.npy"
