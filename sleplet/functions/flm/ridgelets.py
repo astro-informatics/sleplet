@@ -30,7 +30,7 @@ class Ridgelets(F_LM):
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelets")
-        self._create_wavelets()
+        self.wavelets = self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
@@ -57,17 +57,18 @@ class Ridgelets(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.spin, self.j = self.extra_args
 
-    def _create_wavelets(self) -> None:
+    def _create_wavelets(self) -> np.ndarray:
         """
         compute all wavelets
         """
         ring_lm = self._compute_ring()
         kappas = create_kappas(self.L, self.B, self.j_min)
-        self.wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
+        wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
-            self.wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
-            self.wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
+            wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
+            wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
+        return wavelets
 
     def _compute_ring(self) -> np.ndarray:
         """

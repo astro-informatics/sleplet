@@ -23,7 +23,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelets")
-        self._create_wavelets()
+        self.wavelets = self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
@@ -43,13 +43,11 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self) -> None:
+    def _create_wavelets(self) -> np.ndarray:
         """
         creates the Slepian wavelets of the mesh
         """
-        self.wavelets = create_kappas(
-            self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
-        )
+        return create_kappas(self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min)
 
     @validator("j")
     def check_j(cls, v, values) -> Optional[int]:

@@ -27,7 +27,7 @@ class AxisymmetricWavelets(F_LM):
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelets")
-        self._create_wavelets()
+        self.wavelets = self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
@@ -53,11 +53,11 @@ class AxisymmetricWavelets(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self) -> None:
+    def _create_wavelets(self) -> np.ndarray:
         """
         compute all wavelets
         """
-        self.wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
+        return create_axisymmetric_wavelets(self.L, self.B, self.j_min)
 
     @validator("j")
     def check_j(cls, v, values):
