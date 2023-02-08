@@ -20,12 +20,12 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        basis_function = self.mesh.basis_functions[self.rank]
-        return mesh_forward(self.mesh, basis_function)
         logger.info(
             f"Mesh eigenvalue {self.rank}: "
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}"
         )
+        basis_function = self.mesh.basis_functions[self.rank]
+        return mesh_forward(self.mesh, basis_function)
 
     def _create_name(self) -> str:
         return (

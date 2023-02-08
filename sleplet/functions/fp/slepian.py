@@ -32,11 +32,11 @@ class Slepian(F_P):
         )
 
     def _create_coefficients(self) -> np.ndarray:
+        logger.info(f"Shannon number: {self.slepian.N}")
+        logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
         return slepian_forward(
             self.L, self.slepian, flm=self.slepian.eigenvectors[self.rank]
         )
-        logger.info(f"Shannon number: {self.slepian.N}")
-        logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
 
     def _set_reality(self) -> bool:
         return False

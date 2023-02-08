@@ -19,14 +19,14 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         """
         compute field on the vertices of the mesh
         """
+        logger.info(
+            f"Slepian eigenvalue {self.rank}: "
+            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
+        )
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
         return slepian_mesh_forward(
             self.mesh_slepian,
             u_i=s_p_i,
-        )
-        logger.info(
-            f"Slepian eigenvalue {self.rank}: "
-            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
         )
 
     def _create_name(self) -> str:
