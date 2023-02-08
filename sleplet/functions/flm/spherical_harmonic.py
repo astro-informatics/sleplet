@@ -1,35 +1,35 @@
-from dataclasses import dataclass, field
-
+import numpy as np
 import pyssht as ssht
+from pydantic import validator
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.harmonic_methods import create_spherical_harmonic
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
+from sleplet.utils.validation import Validation
 
 
-@dataclass
+@dataclass(config=Validation, kw_only=True)
 class SphericalHarmonic(F_LM):
-    ell: int
-    m: int
-    _ell: int = field(default=0, init=False, repr=False)
-    _m: int = field(default=0, init=False, repr=False)
+    ell: int = 0
+    m: int = 0
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         ind = ssht.elm2ind(self.ell, self.m)
-        self.coefficients = create_spherical_harmonic(self.L, ind)
+        return create_spherical_harmonic(self.L, ind)
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.ell, 'l')}"
             f"{filename_args(self.m, 'm')}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
-    def _set_spin(self) -> None:
-        self.spin = 0
+    def _set_spin(self) -> int:
+        return 0
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
@@ -38,36 +38,20 @@ class SphericalHarmonic(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 
-    @property  # type:ignore
-    def ell(self) -> int:
-        return self._ell
-
-    @ell.setter
-    def ell(self, ell: int) -> None:
-        if isinstance(ell, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            ell = SphericalHarmonic._ell
-        if not isinstance(ell, int):
+    @validator("ell")
+    def check_ell(cls, v, values):
+        if not isinstance(v, int):
             raise TypeError("ell should be an integer")
-        if ell < 0:
+        if v < 0:
             raise ValueError("ell should be positive")
-        if ell >= self.L:
+        if v >= values["L"]:
             raise ValueError("ell should be less than or equal to L")
-        self._ell = ell
+        return v
 
-    @property  # type:ignore
-    def m(self) -> int:
-        return self._m
-
-    @m.setter
-    def m(self, m: int) -> None:
-        if isinstance(m, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            m = SphericalHarmonic._m
-        if not isinstance(m, int):
+    @validator("m")
+    def check_m(cls, v, values):
+        if not isinstance(v, int):
             raise TypeError("m should be an integer")
-        if abs(m) > self.ell:
+        if abs(v) > values["ell"]:
             raise ValueError("the magnitude of m should be less than ell")
-        self._m = m
+        return v

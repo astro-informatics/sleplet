@@ -1,8 +1,8 @@
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import KW_ONLY
 
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.integration_methods import (
@@ -11,23 +11,20 @@ from sleplet.utils.integration_methods import (
     integrate_whole_sphere,
 )
 from sleplet.utils.logger import logger
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 
-@dataclass
+@dataclass(config=Validation)
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
-    f: Optional[np.ndarray]
-    flm: Optional[np.ndarray]
-    mask: Optional[np.ndarray]
-    _f: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _flm: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _L: int = field(init=False, repr=False)
-    _mask: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _slepian: SlepianFunctions = field(init=False, repr=False)
+    _: KW_ONLY
+    f: np.ndarray | None = None
+    flm: np.ndarray | None = None
+    mask: np.ndarray | None = None
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._detect_method()
 
     def decompose(self, rank: int) -> complex:
@@ -62,6 +59,8 @@ class SlepianDecomposition:
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
+        assert isinstance(self.mask, np.ndarray)
+        assert isinstance(self.f, np.ndarray)
         s_p = ssht.inverse(
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
@@ -75,6 +74,7 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
+        assert isinstance(self.f, np.ndarray)
         s_p = ssht.inverse(
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
@@ -119,55 +119,3 @@ class SlepianDecomposition:
             raise ValueError("rank cannot be negative")
         if rank >= self.L**2:
             raise ValueError(f"rank should be less than {self.L**2}")
-
-    @property  # type:ignore
-    def f(self) -> Optional[np.ndarray]:
-        return self._f
-
-    @f.setter
-    def f(self, f: Optional[np.ndarray]) -> None:
-        if isinstance(f, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            f = SlepianDecomposition._f
-        self._f = f
-
-    @property  # type:ignore
-    def flm(self) -> Optional[np.ndarray]:
-        return self._flm
-
-    @flm.setter
-    def flm(self, flm: Optional[np.ndarray]) -> None:
-        if isinstance(flm, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            flm = SlepianDecomposition._flm
-        self._flm = flm
-
-    @property  # type:ignore
-    def L(self) -> int:
-        return self._L
-
-    @L.setter
-    def L(self, L: int) -> None:
-        self._L = L
-
-    @property  # type:ignore
-    def mask(self) -> Optional[np.ndarray]:
-        return self._mask
-
-    @mask.setter
-    def mask(self, mask: Optional[np.ndarray]) -> None:
-        if isinstance(mask, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            mask = SlepianDecomposition._mask
-        self._mask = mask
-
-    @property  # type:ignore
-    def slepian(self) -> int:
-        return self._slepian
-
-    @slepian.setter
-    def slepian(self, slepian: SlepianFunctions) -> None:
-        self._slepian = slepian

@@ -1,12 +1,13 @@
-from dataclasses import dataclass, field
+from dataclasses import KW_ONLY
 from pathlib import Path
-from typing import Optional
 
 import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
+from pydantic import validator
+from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.config import settings
@@ -21,6 +22,7 @@ from sleplet.utils.parallel_methods import (
     split_arr_into_chunks,
 )
 from sleplet.utils.region import Region
+from sleplet.utils.validation import Validation
 
 L_SAVE_ALL = 16
 
@@ -28,47 +30,44 @@ _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 
 
-@dataclass
+@dataclass(config=Validation)
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
-    order: Optional[int | np.ndarray]
-    gap: bool
-    _gap: bool = field(default=False, init=False, repr=False)
-    _order: Optional[int | np.ndarray] = field(default=None, init=False, repr=False)
-    _region: Region = field(init=False, repr=False)
-    _theta_max: float = field(init=False, repr=False)
+    _: KW_ONLY
+    gap: bool = False
+    order: int | np.ndarray | None = None
 
-    def __post_init__(self) -> None:
-        self.region = Region(gap=self.gap, theta_max=self.theta_max)
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
-    def _create_fn_name(self) -> None:
-        self.name = f"slepian_{self.region.name_ending}"
+    def _create_fn_name(self) -> str:
+        return f"slepian_{self.region.name_ending}"
 
-    def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self.region)
+    def _create_region(self) -> Region:
+        return Region(gap=self.gap, theta_max=self.theta_max)
 
-    def _calculate_area(self) -> None:
-        self.area = 2 * np.pi * (1 - np.cos(self.theta_max))
+    def _create_mask(self) -> np.ndarray:
+        return create_mask_region(self.L, self.region)
 
-    def _create_matrix_location(self) -> None:
-        self.matrix_location = (
-            _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
-        )
+    def _calculate_area(self) -> float:
+        return 2 * np.pi * (1 - np.cos(self.theta_max))
 
-    def _solve_eigenproblem(self) -> None:
+    def _create_matrix_location(self) -> Path:
+        return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
+
+    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         order_loc = self.matrix_location / "orders.npy"
         if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
             logger.info("binaries found - loading...")
-            self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
+            return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
         else:
-            self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
+            return self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
 
     def _solve_eigenproblem_from_files(
         self, eval_loc: Path, evec_loc: Path, order_loc: Path
-    ) -> None:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         solves eigenproblem with files already saved
         """
@@ -78,42 +77,39 @@ class SlepianPolarCap(SlepianFunctions):
 
         if self.order is not None:
             idx = np.where(orders == self.order)
-            self.eigenvalues = eigenvalues[idx]
-            self.eigenvectors = eigenvectors[idx]
+            return eigenvalues[idx], eigenvectors[idx]
         else:
-            self.eigenvalues = eigenvalues
-            self.eigenvectors = eigenvectors
             self.order = orders
+            return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_scratch(
         self, eval_loc: Path, evec_loc: Path, order_loc: Path
-    ) -> None:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         sovles eigenproblem from scratch and then saves the files
         """
         if isinstance(self.order, int):
-            self.eigenvalues, self.eigenvectors = self._solve_eigenproblem_order(
-                self.order
-            )
-        else:
-            evals_all = np.empty(0)
-            evecs_all = np.empty((0, self.L**2), dtype=np.complex_)
-            emm = np.empty(0, dtype=int)
-            for m in range(-(self.L - 1), self.L):
-                evals_m, evecs_m = self._solve_eigenproblem_order(m)
-                evals_all = np.append(evals_all, evals_m)
-                evecs_all = np.concatenate((evecs_all, evecs_m))
-                emm = np.append(emm, [m] * len(evals_m))
-            (
-                self.eigenvalues,
-                self.eigenvectors,
-                self.order,
-            ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
-            if settings.SAVE_MATRICES:
-                limit = self.N if self.L > L_SAVE_ALL else None
-                np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors[:limit])
-                np.save(order_loc, self.order)
+            return self._solve_eigenproblem_order(self.order)
+
+        evals_all = np.empty(0)
+        evecs_all = np.empty((0, self.L**2), dtype=np.complex_)
+        emm = np.empty(0, dtype=int)
+        for m in range(-(self.L - 1), self.L):
+            evals_m, evecs_m = self._solve_eigenproblem_order(m)
+            evals_all = np.append(evals_all, evals_m)
+            evecs_all = np.concatenate((evecs_all, evecs_m))
+            emm = np.append(emm, [m] * len(evals_m))
+        (
+            eigenvalues,
+            eigenvectors,
+            self.order,
+        ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
+        if settings.SAVE_MATRICES:
+            limit = self.N if self.L > L_SAVE_ALL else None
+            np.save(eval_loc, eigenvalues)
+            np.save(evec_loc, eigenvectors[:limit])
+            np.save(order_loc, self.order)
+        return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
         """
@@ -353,46 +349,14 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @property  # type:ignore
-    def gap(self) -> bool:
-        return self._gap
+    @validator("order")
+    def check_order(cls, v, values):
+        if v is not None and (np.abs(v) >= values["L"]).any():
+            raise ValueError(f"Order magnitude should be less than {values['L']}")
+        return v
 
-    @gap.setter
-    def gap(self, gap: bool) -> None:
-        if isinstance(gap, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            gap = SlepianPolarCap._gap
-        self._gap = gap
-
-    @property  # type:ignore
-    def order(self) -> Optional[int | np.ndarray]:
-        return self._order
-
-    @order.setter
-    def order(self, order: Optional[int | np.ndarray]) -> None:
-        if isinstance(order, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            order = SlepianPolarCap._order
-        if order is not None and (np.abs(order) >= self.L).any():
-            raise ValueError(f"Order magnitude should be less than {self.L}")
-        self._order = order
-
-    @property
-    def region(self) -> Region:
-        return self._region
-
-    @region.setter
-    def region(self, region: Region) -> None:
-        self._region = region
-
-    @property  # type:ignore
-    def theta_max(self) -> float:
-        return self._theta_max
-
-    @theta_max.setter
-    def theta_max(self, theta_max: float) -> None:
-        if theta_max == 0:
+    @validator("theta_max")
+    def check_theta_max(cls, v):
+        if v == 0:
             raise ValueError("theta_max cannot be zero")
-        self._theta_max = theta_max
+        return v

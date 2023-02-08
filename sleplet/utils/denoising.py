@@ -2,6 +2,7 @@ import numpy as np
 import pyssht as ssht
 
 from sleplet.functions.coefficients import Coefficients
+from sleplet.functions.f_p import F_P
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
@@ -34,11 +35,11 @@ def denoising_axisym(
     signal: Coefficients,
     noised_signal: Coefficients,
     axisymmetric_wavelets: AxisymmetricWavelets,
-    snr_in: int,
+    snr_in: float,
     n_sigma: int,
     *,
     rotate_to_south_america: bool = False,
-) -> tuple[np.ndarray, float, float]:
+) -> tuple[np.ndarray, float | None, float]:
     """
     reproduce the denoising demo from s2let paper
     """
@@ -78,7 +79,7 @@ def denoising_slepian_wavelet(
     signal: Coefficients,
     noised_signal: Coefficients,
     slepian_wavelets: SlepianWavelets,
-    snr_in: int,
+    snr_in: float,
     n_sigma: int,
 ) -> np.ndarray:
     """
@@ -117,9 +118,9 @@ def denoising_slepian_wavelet(
 
 
 def denoising_slepian_function(
-    signal: Coefficients,
-    noised_signal: Coefficients,
-    snr_in: int,
+    signal: F_P,
+    noised_signal: F_P,
+    snr_in: float,
     n_sigma: int,
 ) -> np.ndarray:
     """
@@ -145,7 +146,7 @@ def denoising_mesh_slepian(
     signal: MeshCoefficients,
     noised_signal: MeshCoefficients,
     mesh_slepian_wavelets: MeshSlepianWavelets,
-    snr_in: int,
+    snr_in: float,
     n_sigma: int,
 ) -> np.ndarray:
     """

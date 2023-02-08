@@ -1,11 +1,10 @@
-from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 import pyssht as ssht
 from numba import njit, prange
 from numpy import linalg as LA
+from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -13,6 +12,7 @@ from sleplet.utils.config import settings
 from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -24,59 +24,51 @@ _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
 
 
-@dataclass
+@dataclass(config=Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
-    theta_min: float
-    theta_max: float
-    phi_min: float
-    phi_max: float
-    _N: int = field(init=False, repr=False)
-    _phi_max: float = field(default=PHI_MAX_DEFAULT, init=False, repr=False)
-    _phi_min: float = field(default=PHI_MIN_DEFAULT, init=False, repr=False)
-    _region: Region = field(init=False, repr=False)
-    _theta_max: float = field(default=THETA_MAX_DEFAULT, init=False, repr=False)
-    _theta_min: float = field(default=THETA_MIN_DEFAULT, init=False, repr=False)
+    phi_max: float = PHI_MAX_DEFAULT
+    phi_min: float = PHI_MIN_DEFAULT
+    theta_max: float = THETA_MAX_DEFAULT
+    theta_min: float = THETA_MIN_DEFAULT
 
-    def __post_init__(self) -> None:
-        self.region = Region(
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
+
+    def _create_fn_name(self) -> str:
+        return f"slepian_{self.region.name_ending}"
+
+    def _create_region(self) -> Region:
+        return Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
             phi_min=self.phi_min,
             phi_max=self.phi_max,
         )
-        super().__post_init__()
 
-    def _create_fn_name(self) -> None:
-        self.name = f"slepian_{self.region.name_ending}"
+    def _create_mask(self) -> np.ndarray:
+        return create_mask_region(self.L, self.region)
 
-    def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.L, self.region)
-
-    def _calculate_area(self) -> None:
-        self.area = (self.phi_max - self.phi_min) * (
+    def _calculate_area(self) -> float:
+        return (self.phi_max - self.phi_min) * (
             np.cos(self.theta_min) - np.cos(self.theta_max)
         )
 
-    def _create_matrix_location(self) -> None:
-        self.matrix_location = (
-            _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
-        )
+    def _create_matrix_location(self) -> Path:
+        return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
-    def _solve_eigenproblem(self) -> None:
+    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         if eval_loc.exists() and evec_loc.exists():
             logger.info("binaries found - loading...")
-            self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = np.load(evec_loc)
+            return np.load(eval_loc), np.load(evec_loc)
         else:
             K = self._create_K_matrix()
-            self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
-                LA.eigh(K)
-            )
+            eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors[: self.N])
+                np.save(eval_loc, eigenvalues)
+                np.save(evec_loc, eigenvectors[: self.N])
+            return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> np.ndarray:
         """
@@ -201,7 +193,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: tuple[Any, ...]
+        eigendecomposition: tuple,
     ) -> tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
@@ -221,59 +213,3 @@ class SlepianLimitLatLon(SlepianFunctions):
         eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
         return eigenvalues, eigenvectors
-
-    @property  # type:ignore
-    def phi_max(self) -> float:
-        return self._phi_max
-
-    @phi_max.setter
-    def phi_max(self, phi_max: float) -> None:
-        if isinstance(phi_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            phi_max = SlepianLimitLatLon._phi_max
-        self._phi_max = phi_max
-
-    @property  # type:ignore
-    def phi_min(self) -> float:
-        return self._phi_min
-
-    @phi_min.setter
-    def phi_min(self, phi_min: float) -> None:
-        if isinstance(phi_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            phi_min = SlepianLimitLatLon._phi_min
-        self._phi_min = phi_min
-
-    @property
-    def region(self) -> Region:
-        return self._region
-
-    @region.setter
-    def region(self, region: Region) -> None:
-        self._region = region
-
-    @property  # type:ignore
-    def theta_max(self) -> float:
-        return self._theta_max
-
-    @theta_max.setter
-    def theta_max(self, theta_max: float) -> None:
-        if isinstance(theta_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            theta_max = SlepianLimitLatLon._theta_max
-        self._theta_max = theta_max
-
-    @property  # type:ignore
-    def theta_min(self) -> float:
-        return self._theta_min
-
-    @theta_min.setter
-    def theta_min(self, theta_min: float) -> None:
-        if isinstance(theta_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            theta_min = SlepianLimitLatLon._theta_min
-        self._theta_min = theta_min

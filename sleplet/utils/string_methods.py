@@ -1,6 +1,5 @@
 import re
 from fractions import Fraction
-from typing import Any, Optional
 
 import numpy as np
 
@@ -82,7 +81,7 @@ def angle_as_degree(radian: float) -> int:
     return round(np.rad2deg(radian))
 
 
-def wavelet_ending(j_min: int, j: Optional[int]) -> str:
+def wavelet_ending(j_min: int, j: int | None) -> str:
     """
     the ending name of the given wavelet
     """
@@ -97,7 +96,7 @@ def convert_camel_case_to_snake_case(name: str) -> str:
 
 
 def convert_classes_list_to_snake_case(
-    classes: list[Any], *, word_to_remove: str = ""
+    classes: list, *, word_to_remove: str = ""
 ) -> list[str]:
     """
     converts a list of classes to snake case

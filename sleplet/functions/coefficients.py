@@ -1,46 +1,39 @@
 from abc import abstractmethod
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import KW_ONLY
 
 import numpy as np
+from pydantic import validator
+from pydantic.dataclasses import dataclass
 
 from sleplet.utils.convolution_methods import sifting_convolution
 from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import filename_args
+from sleplet.utils.validation import Validation
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@dataclass  # type:ignore
+@dataclass(config=Validation)
 class Coefficients:
     L: int
-    extra_args: Optional[list[int]]
-    region: Optional[Region]
-    noise: Optional[float]
-    smoothing: Optional[int]
-    _coefficients: np.ndarray = field(init=False, repr=False)
-    _extra_args: Optional[list[int]] = field(default=None, init=False, repr=False)
-    _L: int = field(init=False, repr=False)
-    _name: str = field(init=False, repr=False)
-    _reality: bool = field(default=False, init=False, repr=False)
-    _region: Optional[Region] = field(default=None, init=False, repr=False)
-    _noise: Optional[float] = field(default=None, init=False, repr=False)
-    _smoothing: Optional[int] = field(default=None, init=False, repr=False)
-    _spin: int = field(default=0, init=False, repr=False)
-    _unnoised_coefficients: Optional[np.ndarray] = field(default=None, repr=False)
+    _: KW_ONLY
+    extra_args: list[int] | None = None
+    noise: float | None = None
+    region: Region | None = None
+    smoothing: int | None = None
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._setup_args()
-        self._create_name()
-        self._set_spin()
-        self._set_reality()
-        self._create_coefficients()
+        self.name = self._create_name()
+        self.spin = self._set_spin()
+        self.reality = self._set_reality()
+        self.coefficients = self._create_coefficients()
         self._add_details_to_name()
-        self._add_noise_to_signal()
+        self.unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def translate(
-        self, alpha: float, beta: float, *, shannon: Optional[int] = None
+        self, alpha: float, beta: float, *, shannon: int | None = None
     ) -> np.ndarray:
         g_coefficients = self._translation_helper(alpha, beta)
         return (
@@ -54,7 +47,7 @@ class Coefficients:
         f_coefficient: np.ndarray,
         g_coefficient: np.ndarray,
         *,
-        shannon: Optional[int] = None,
+        shannon: int | None = None,
     ) -> np.ndarray:
         # translation/convolution are not real for general function
         self.reality = False
@@ -76,118 +69,20 @@ class Coefficients:
             self.name += f"{filename_args(self.smoothing, 'smoothed')}"
         self.name += f"_L{self.L}"
 
-    @property
-    def coefficients(self) -> np.ndarray:
-        return self._coefficients
-
-    @coefficients.setter
-    def coefficients(self, coefficients: np.ndarray) -> None:
+    @validator("coefficients", check_fields=False)
+    def check_coefficients(cls, v, values):
         if (
-            isinstance(self.region, Region)
-            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
+            values["region"]
+            and not set(values["name"].split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
-            coefficients = ensure_masked_flm_bandlimited(
-                coefficients, self.L, self.region, self.reality, self.spin
+            v = ensure_masked_flm_bandlimited(
+                v,
+                values["L"],
+                values["region"],
+                values["reality"],
+                values["spin"],
             )
-        self._coefficients = coefficients
-
-    @property  # type:ignore
-    def extra_args(self) -> Optional[list[int]]:
-        return self._extra_args
-
-    @extra_args.setter
-    def extra_args(self, extra_args: Optional[list[int]]) -> None:
-        if isinstance(extra_args, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            extra_args = Coefficients._extra_args
-        self._extra_args = extra_args
-
-    @property  # type:ignore
-    def L(self) -> int:
-        return self._L
-
-    @L.setter
-    def L(self, L: int) -> None:
-        self._L = L
-
-    @property
-    def name(self) -> str:
-        return self._name
-
-    @name.setter
-    def name(self, name: str) -> None:
-        self._name = name
-
-    @property  # type:ignore
-    def noise(self) -> Optional[float]:
-        return self._noise
-
-    @noise.setter
-    def noise(self, noise: Optional[float]) -> None:
-        if isinstance(noise, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            noise = Coefficients._noise
-        self._noise = noise
-
-    @property
-    def reality(self) -> bool:
-        return self._reality
-
-    @reality.setter
-    def reality(self, reality: bool) -> None:
-        self._reality = reality
-
-    @property  # type:ignore
-    def region(self) -> Optional[Region]:
-        return self._region
-
-    @region.setter
-    def region(self, region: Optional[Region]) -> None:
-        if isinstance(region, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            region = Coefficients._region
-        self._region = region
-
-    @property  # type:ignore
-    def smoothing(self) -> Optional[int]:
-        return self._smoothing
-
-    @smoothing.setter
-    def smoothing(self, smoothing: Optional[int]) -> None:
-        if isinstance(smoothing, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            smoothing = Coefficients._smoothing
-        self._smoothing = smoothing
-
-    @property
-    def spin(self) -> int:
-        return self._spin
-
-    @spin.setter
-    def spin(self, spin: int) -> None:
-        if isinstance(spin, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            spin = Coefficients._spin
-        self._spin = spin
-
-    @property
-    def unnoised_coefficients(self) -> Optional[np.ndarray]:
-        return self._unnoised_coefficients
-
-    @unnoised_coefficients.setter
-    def unnoised_coefficients(
-        self, unnoised_coefficients: Optional[np.ndarray]
-    ) -> None:
-        if isinstance(unnoised_coefficients, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            unnoised_coefficients = Coefficients._unnoised_coefficients
-        self._unnoised_coefficients = unnoised_coefficients
+        return v
 
     @abstractmethod
     def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
@@ -204,35 +99,35 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> None:
+    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
         """
         adds Gaussian white noise to the signal
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         """
         creates the flm on the north pole
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         """
         creates the name of the function
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _set_reality(self) -> None:
+    def _set_reality(self) -> bool:
         """
         sets the reality flag to speed up computations
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _set_spin(self) -> None:
+    def _set_spin(self) -> int:
         """
         sets the spin value in computations
         """

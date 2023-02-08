@@ -1,6 +1,5 @@
-from dataclasses import dataclass, field
+from dataclasses import KW_ONLY
 from pathlib import Path
-from typing import Optional
 
 import cmocean
 import numpy as np
@@ -8,6 +7,7 @@ import plotly.offline as py
 from matplotlib.colors import LinearSegmentedColormap
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.config import settings
@@ -20,23 +20,25 @@ from sleplet.utils.plotly_methods import (
     create_layout,
     create_tick_mark,
 )
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
 
 _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
 
 
-@dataclass
+@dataclass(config=Validation)
 class Plot:
     mesh: Mesh
     filename: str
-    f: np.ndarray = field(repr=False)
-    amplitude: Optional[float] = field(default=None, repr=False)
-    colour: LinearSegmentedColormap = field(default=cmocean.cm.ice, repr=False)
-    normalise: bool = field(default=True, repr=False)
-    region: bool = field(default=False, repr=False)
+    f: np.ndarray
+    _: KW_ONLY
+    amplitude: float | None = None
+    colour: LinearSegmentedColormap = cmocean.cm.ice
+    normalise: bool = True
+    region: bool = False
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         if self.normalise:
             self.filename += "_norm"
 

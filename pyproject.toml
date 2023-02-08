@@ -19,6 +19,7 @@ dependencies = [
   "plotly==5.13.0",
   "pre-commit==3.0.4",
   "psutil==5.9.4",
+  "pydantic==1.10.4",
   "pys2let==2.2.4",
   "pyssht==1.5.1",
   "pytest==7.2.1",
@@ -42,7 +43,7 @@ sphere = "sleplet.scripts.plotting_on_sphere:main"
 profile = "black"
 
 [tool.mypy]
-plugins = "numpy.typing.mypy_plugin"
+plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
 
 [tool.ruff]
 fix = true

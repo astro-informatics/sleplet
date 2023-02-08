@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 import pyssht as ssht
 
@@ -39,6 +37,9 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
             logger.info("mask specified in file detected")
             return SlepianArbitrary(L, region.mask_name)
 
+        case _:
+            raise ValueError(f"{region.region_type} is an invalid region type")
+
 
 def slepian_inverse(f_p: np.ndarray, L: int, slepian: SlepianFunctions) -> np.ndarray:
     """
@@ -53,10 +54,10 @@ def slepian_forward(
     L: int,
     slepian: SlepianFunctions,
     *,
-    f: Optional[np.ndarray] = None,
-    flm: Optional[np.ndarray] = None,
-    mask: Optional[np.ndarray] = None,
-    n_coeffs: Optional[int] = None,
+    f: np.ndarray | None = None,
+    flm: np.ndarray | None = None,
+    mask: np.ndarray | None = None,
+    n_coeffs: int | None = None,
 ) -> np.ndarray:
     """
     computes the Slepian forward transform for all coefficients
@@ -81,7 +82,7 @@ def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> np.ndarray:
 
 def compute_s_p_omega_prime(
     L: int, alpha: float, beta: float, slepian: SlepianFunctions
-) -> complex:
+) -> np.ndarray:
     """
     method to pick out the desired angle from Sp(omega)
     """
@@ -97,10 +98,10 @@ def compute_s_p_omega_prime(
 def slepian_mesh_forward(
     mesh_slepian: MeshSlepian,
     *,
-    u: Optional[np.ndarray] = None,
-    u_i: Optional[np.ndarray] = None,
+    u: np.ndarray | None = None,
+    u_i: np.ndarray | None = None,
     mask: bool = False,
-    n_coeffs: Optional[int] = None,
+    n_coeffs: int | None = None,
 ) -> np.ndarray:
     """
     computes the Slepian forward transform for all coefficients

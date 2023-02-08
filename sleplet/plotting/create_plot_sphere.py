@@ -1,6 +1,5 @@
-from dataclasses import dataclass, field
+from dataclasses import KW_ONLY, field
 from pathlib import Path
-from typing import Optional
 
 import cmocean
 import numpy as np
@@ -8,6 +7,7 @@ import plotly.offline as py
 import pyssht as ssht
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
+from pydantic.dataclasses import dataclass
 
 from sleplet.utils.config import settings
 from sleplet.utils.logger import logger
@@ -26,6 +26,7 @@ from sleplet.utils.plotly_methods import (
     create_tick_mark,
 )
 from sleplet.utils.region import Region
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 
 MW_POLE_LENGTH = 2
@@ -34,21 +35,22 @@ _file_location = Path(__file__).resolve()
 _fig_path = _file_location.parents[1] / "figures"
 
 
-@dataclass
+@dataclass(config=Validation)
 class Plot:
-    f: np.ndarray = field(repr=False)
+    f: np.ndarray
     L: int
     filename: str
-    amplitude: Optional[float] = field(default=None, repr=False)
-    plot_type: str = field(default="real", repr=False)
-    annotations: list[dict] = field(default_factory=list, repr=False)
-    normalise: bool = field(default=True, repr=False)
-    reality: bool = field(default=False, repr=False)
-    region: Optional[Region] = field(default=None, repr=False)
-    spin: int = field(default=0, repr=False)
-    upsample: bool = field(default=True, repr=False)
+    _: KW_ONLY
+    amplitude: float | None = None
+    annotations: list[dict] = field(default_factory=list)
+    normalise: bool = True
+    plot_type: str = "real"
+    reality: bool = False
+    region: Region | None = None
+    spin: int = 0
+    upsample: bool = True
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.resolution = calc_plot_resolution(self.L) if self.upsample else self.L
         if self.upsample:
             self.filename += f"_res{self.resolution}"
@@ -116,8 +118,8 @@ class Plot:
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
-        parametric_scaling: Optional[list[float]] = None,
-        color_range: Optional[list[float]] = None,
+        parametric_scaling: list[float] | None = None,
+        color_range: list[float] | None = None,
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot

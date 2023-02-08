@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
-from typing import Optional
 
 import numpy as np
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.utils.class_lists import MESH_COEFFICIENTS, MESHES
 from sleplet.utils.harmonic_methods import mesh_inverse
@@ -89,7 +88,7 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients, normalise: bool, amplitude: Optional[float]) -> None:
+def plot(f: MeshCoefficients, normalise: bool, amplitude: float | None) -> None:
     """
     master plotting method
     """
@@ -100,7 +99,7 @@ def plot(f: MeshCoefficients, normalise: bool, amplitude: Optional[float]) -> No
         field,
         amplitude=amplitude,
         normalise=normalise,
-        region=not isinstance(f, MeshHarmonicCoefficients),
+        region=isinstance(f, MeshSlepianCoefficients),
     ).execute()
 
 
@@ -109,19 +108,19 @@ def _coefficients_to_field(f: MeshCoefficients, coefficients: np.ndarray) -> np.
     computes the field over the whole mesh from the harmonic/Slepian coefficients
     """
     return (
-        mesh_inverse(f.mesh, coefficients)
-        if isinstance(f, MeshHarmonicCoefficients)
-        else slepian_mesh_inverse(f.mesh_slepian, coefficients)
+        slepian_mesh_inverse(f.mesh_slepian, coefficients)
+        if isinstance(f, MeshSlepianCoefficients)
+        else mesh_inverse(f.mesh, coefficients)
     )
 
 
-def _compute_amplitude_for_noisy_plots(f: MeshCoefficients) -> Optional[float]:
+def _compute_amplitude_for_noisy_plots(f: MeshCoefficients) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """
     return (
         np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
-        if f.noise is not None
+        if f.unnoised_coefficients is not None
         else None
     )
 

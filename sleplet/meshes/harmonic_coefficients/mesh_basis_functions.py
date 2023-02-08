@@ -1,32 +1,34 @@
-from dataclasses import dataclass, field
+import numpy as np
+from pydantic import validator
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from sleplet.utils.harmonic_methods import mesh_forward
 from sleplet.utils.logger import logger
+from sleplet.utils.validation import Validation
 
 
-@dataclass
+@dataclass(config=Validation, kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
-    rank: int
-    _rank: int = field(default=0, init=False, repr=False)
+    rank: int = 0
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._validate_rank()
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         """
         compute field on the vertices of the mesh
         """
-        basis_function = self.mesh.basis_functions[self.rank]
-        self.coefficients = mesh_forward(self.mesh, basis_function)
         logger.info(
             f"Mesh eigenvalue {self.rank}: "
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}"
         )
+        basis_function = self.mesh.basis_functions[self.rank]
+        return mesh_forward(self.mesh, basis_function)
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             (
                 f"{self.mesh.name}_rank{self.rank}_"
                 f"lam{self.mesh.mesh_eigenvalues[self.rank]:e}"
@@ -53,18 +55,10 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             if self.extra_args[0] > limit:
                 raise ValueError(f"rank should be less than or equal to {limit}")
 
-    @property  # type:ignore
-    def rank(self) -> int:
-        return self._rank
-
-    @rank.setter
-    def rank(self, rank: int) -> None:
-        if isinstance(rank, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            rank = MeshBasisFunctions._rank
-        if not isinstance(rank, int):
+    @validator("rank")
+    def check_rank(cls, v):
+        if not isinstance(v, int):
             raise TypeError("rank should be an integer")
-        if rank < 0:
+        if v < 0:
             raise ValueError("rank cannot be negative")
-        self._rank = rank
+        return v

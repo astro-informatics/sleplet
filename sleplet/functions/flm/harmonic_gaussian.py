@@ -1,43 +1,41 @@
-from dataclasses import dataclass, field
-
 import numpy as np
 import pyssht as ssht
+from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
+from sleplet.utils.validation import Validation
 
 
-@dataclass
+@dataclass(config=Validation, kw_only=True)
 class HarmonicGaussian(F_LM):
-    l_sigma: float
-    m_sigma: float
-    _l_sigma: float = field(default=10, init=False, repr=False)
-    _m_sigma: float = field(default=10, init=False, repr=False)
+    l_sigma: float = 10
+    m_sigma: float = 10
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
-        self.coefficients = flm
+        return flm
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.l_sigma, 'lsig')}"
             f"{filename_args(self.m_sigma, 'msig')}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = False
+    def _set_reality(self) -> bool:
+        return False
 
-    def _set_spin(self) -> None:
-        self.spin = 0
+    def _set_spin(self) -> int:
+        return 0
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
@@ -47,27 +45,3 @@ class HarmonicGaussian(F_LM):
             self.l_sigma, self.m_sigma = [
                 np.float_power(10, x) for x in self.extra_args
             ]
-
-    @property  # type:ignore
-    def l_sigma(self) -> float:
-        return self._l_sigma
-
-    @l_sigma.setter
-    def l_sigma(self, l_sigma: float) -> None:
-        if isinstance(l_sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            l_sigma = HarmonicGaussian._l_sigma
-        self._l_sigma = l_sigma
-
-    @property  # type:ignore
-    def m_sigma(self) -> float:
-        return self._m_sigma
-
-    @m_sigma.setter
-    def m_sigma(self, m_sigma: float) -> None:
-        if isinstance(m_sigma, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            m_sigma = HarmonicGaussian._m_sigma
-        self._m_sigma = m_sigma

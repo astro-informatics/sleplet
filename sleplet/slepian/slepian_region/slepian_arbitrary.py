@@ -1,10 +1,12 @@
-from dataclasses import dataclass, field
+from dataclasses import KW_ONLY
 from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
+from pydantic import validator
+from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -25,72 +27,72 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
+from sleplet.utils.validation import Validation
 from sleplet.utils.vars import L_MAX_DEFAULT, L_MIN_DEFAULT
 
 _file_location = Path(__file__).resolve()
 _slepian_path = _file_location.parents[2] / "data" / "slepian"
 
 
-@dataclass
+@dataclass(config=Validation)
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
-    L_min: int
-    L_max: int
-    _mask_name: str = field(init=False, repr=False)
-    _L_max: int = field(default=settings.L_MAX, init=False, repr=False)
-    _L_min: int = field(default=settings.L_MIN, init=False, repr=False)
-    _region: Region = field(init=False, repr=False)
-    _weight: np.ndarray = field(init=False, repr=False)
+    _: KW_ONLY
+    L_max: int = settings.L_MAX
+    L_min: int = settings.L_MIN
 
-    def __post_init__(self) -> None:
-        self.region = Region(mask_name=self.mask_name)
+    def __post_init_post_parse__(self) -> None:
         self.resolution = settings.SAMPLES * self.L
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
-    def _create_fn_name(self) -> None:
-        self.name = f"slepian_{self.mask_name}"
+    def _create_fn_name(self) -> str:
+        return f"slepian_{self.mask_name}"
 
-    def _create_mask(self) -> None:
-        self.mask = create_mask_region(self.resolution, self.region)
+    def _create_region(self) -> Region:
+        return Region(mask_name=self.mask_name)
 
-    def _calculate_area(self) -> None:
+    def _create_mask(self) -> np.ndarray:
+        return create_mask_region(self.resolution, self.region)
+
+    def _calculate_area(self) -> float:
         self.weight = calc_integration_weight(self.resolution)
-        self.area = (self.mask * self.weight).sum()
+        return (self.mask * self.weight).sum()
 
-    def _create_matrix_location(self) -> None:
-        self.matrix_location = (
+    def _create_matrix_location(self) -> Path:
+        return (
             _slepian_path / "eigensolutions" / f"D_{self.mask_name}_L{self.L}_N{self.N}"
         )
 
-    def _solve_eigenproblem(self) -> None:
+    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info("binaries found - loading...")
-            self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = np.load(evec_loc)
-        else:
-            D = self._create_D_matrix()
+        if not eval_loc.exists() or not evec_loc.exists():
+            return self._solve_D_matrix(eval_loc, evec_loc)
 
-            # check whether the large job has been split up
-            if (
-                self.L_min != L_MIN_DEFAULT or self.L_max != self.L
-            ) and settings.SAVE_MATRICES:
-                logger.info("large job has been used, saving intermediate matrix")
-                inter_loc = (
-                    self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
-                )
-                np.save(inter_loc, D)
-                return
+        logger.info("binaries found - loading...")
+        return np.load(eval_loc), np.load(evec_loc)
 
-            # fill in remaining triangle section
-            fill_upper_triangle_of_hermitian_matrix(D)
+    def _solve_D_matrix(self, eval_loc, evec_loc):
+        D = self._create_D_matrix()
 
-            # solve eigenproblem
-            self.eigenvalues, self.eigenvectors = clean_evals_and_evecs(LA.eigh(D))
-            if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors[: self.N])
+        # check whether the large job has been split up
+        if (
+            self.L_min != L_MIN_DEFAULT or self.L_max != self.L
+        ) and settings.SAVE_MATRICES:
+            logger.info("large job has been used, saving intermediate matrix")
+            inter_loc = self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
+            np.save(inter_loc, D)
+            raise RuntimeError("Large job detected, exiting")
+
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
+        # solve eigenproblem
+        eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
+        if settings.SAVE_MATRICES:
+            np.save(eval_loc, eigenvalues)
+            np.save(evec_loc, eigenvectors[: self.N])
+        return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> np.ndarray:
         """
@@ -183,58 +185,18 @@ class SlepianArbitrary(SlepianFunctions):
             self.mask, self.weight, self._fields[i], self._fields[j].conj()
         )
 
-    @property  # type:ignore
-    def mask_name(self) -> str:
-        return self._mask_name
-
-    @mask_name.setter
-    def mask_name(self, mask_name: str) -> None:
-        self._mask_name = mask_name
-
-    @property  # type:ignore
-    def L_max(self) -> int:
-        return self._L_max
-
-    @L_max.setter
-    def L_max(self, L_max: int) -> None:
-        if isinstance(L_max, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            L_max = SlepianArbitrary._L_max
-        if L_max > self.L:
-            raise ValueError(f"L_max cannot be greater than L: {self.L}")
-        if not isinstance(L_max, int):
+    @validator("L_max")
+    def check_L_max(cls, v, values):
+        if v > values["L"]:
+            raise ValueError(f"L_max cannot be greater than L: {values['L']}")
+        if not isinstance(v, int):
             raise TypeError("L_max must be an integer")
-        self._L_max = L_max if L_max != L_MAX_DEFAULT else self.L
+        return v if v != L_MAX_DEFAULT else values["L"]
 
-    @property  # type:ignore
-    def L_min(self) -> int:
-        return self._L_min
-
-    @L_min.setter
-    def L_min(self, L_min: int) -> None:
-        if isinstance(L_min, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            L_min = SlepianArbitrary._L_min
-        if L_min < 0:
+    @validator("L_min")
+    def check_L_min(cls, v):
+        if v < 0:
             raise ValueError("L_min cannot be negative")
-        if not isinstance(L_min, int):
+        if not isinstance(v, int):
             raise TypeError("L_min must be an integer")
-        self._L_min = L_min
-
-    @property
-    def region(self) -> Region:
-        return self._region
-
-    @region.setter
-    def region(self, region: Region) -> None:
-        self._region = region
-
-    @property
-    def weight(self) -> np.ndarray:
-        return self._weight
-
-    @weight.setter
-    def weight(self, weight: np.ndarray) -> None:
-        self._weight = weight
+        return v

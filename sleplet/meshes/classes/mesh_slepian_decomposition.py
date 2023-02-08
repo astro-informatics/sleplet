@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import KW_ONLY
 
 import numpy as np
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.utils.harmonic_methods import mesh_inverse
@@ -10,20 +10,18 @@ from sleplet.utils.integration_methods import (
     integrate_whole_mesh,
 )
 from sleplet.utils.logger import logger
+from sleplet.utils.validation import Validation
 
 
-@dataclass
+@dataclass(config=Validation)
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
-    u: Optional[np.ndarray]
-    u_i: Optional[np.ndarray]
-    mask: bool
-    _mask: bool = field(default=False, init=False, repr=False)
-    _slepian_mesh: MeshSlepian = field(init=False, repr=False)
-    _u: Optional[np.ndarray] = field(default=None, init=False, repr=False)
-    _u_i: Optional[np.ndarray] = field(default=None, init=False, repr=False)
+    _: KW_ONLY
+    mask: bool = False
+    u_i: np.ndarray | None = None
+    u: np.ndarray | None = None
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         """ """
         self._detect_method()
 
@@ -59,6 +57,7 @@ class MeshSlepianDecomposition:
         \int\limits_{R} \dd{x}
         f(x) \overline{S_{p}(x)}
         """
+        assert isinstance(self.u, np.ndarray)
         s_p = mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
@@ -78,6 +77,7 @@ class MeshSlepianDecomposition:
         \int\limits_{x} \dd{x}
         f(x) \overline{S_{p}(x)}
         """
+        assert isinstance(self.u, np.ndarray)
         s_p = mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
@@ -117,6 +117,7 @@ class MeshSlepianDecomposition:
         """
         checks the requested rank is valid
         """
+        assert isinstance(self.mesh_slepian.mesh.number_basis_functions, int)
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:
@@ -126,47 +127,3 @@ class MeshSlepianDecomposition:
                 "rank should be less than "
                 f"{self.mesh_slepian.mesh.number_basis_functions}"
             )
-
-    @property  # type:ignore
-    def mask(self) -> bool:
-        return self._mask
-
-    @mask.setter
-    def mask(self, mask: bool) -> None:
-        if isinstance(mask, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            mask = MeshSlepianDecomposition._mask
-        self._mask = mask
-
-    @property  # type:ignore
-    def mesh_slepian(self) -> MeshSlepian:
-        return self._slepian_mesh
-
-    @mesh_slepian.setter
-    def mesh_slepian(self, mesh_slepian: MeshSlepian) -> None:
-        self._slepian_mesh = mesh_slepian
-
-    @property  # type:ignore
-    def u(self) -> Optional[np.ndarray]:
-        return self._u
-
-    @u.setter
-    def u(self, u: Optional[np.ndarray]) -> None:
-        if isinstance(u, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            u = MeshSlepianDecomposition._u
-        self._u = u
-
-    @property  # type:ignore
-    def u_i(self) -> Optional[np.ndarray]:
-        return self._u_i
-
-    @u_i.setter
-    def u_i(self, u_i: Optional[np.ndarray]) -> None:
-        if isinstance(u_i, property):
-            # initial value not specified, use default
-            # https://stackoverflow.com/a/61480946/7359333
-            u_i = MeshSlepianDecomposition._u_i
-        self._u_i = u_i

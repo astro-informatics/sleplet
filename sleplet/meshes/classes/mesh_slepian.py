@@ -1,10 +1,9 @@
-from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 from multiprocess import Pool
 from numpy import linalg as LA
+from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -19,20 +18,17 @@ from sleplet.utils.parallel_methods import (
     split_arr_into_chunks,
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
+from sleplet.utils.validation import Validation
 
 _file_location = Path(__file__).resolve()
 _meshes_path = _file_location.parents[2] / "data" / "meshes"
 
 
-@dataclass
+@dataclass(config=Validation)
 class MeshSlepian:
     mesh: Mesh
-    _mesh: Mesh = field(init=False, repr=False)
-    _N: int = field(init=False, repr=False)
-    _slepian_eigenvalues: np.ndarray = field(init=False, repr=False)
-    _slepian_functions: np.ndarray = field(init=False, repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.N = compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 
@@ -138,7 +134,7 @@ class MeshSlepian:
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: tuple[Any, ...]
+        eigendecomposition: tuple,
     ) -> tuple[np.ndarray, np.ndarray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
@@ -151,35 +147,3 @@ class MeshSlepian:
         eigenvalues = eigenvalues[idx]
         eigenvectors = eigenvectors[:, idx].T
         return eigenvalues, eigenvectors
-
-    @property  # type:ignore
-    def mesh(self) -> Mesh:
-        return self._mesh
-
-    @mesh.setter
-    def mesh(self, mesh: Mesh) -> None:
-        self._mesh = mesh
-
-    @property
-    def N(self) -> int:
-        return self._N
-
-    @N.setter
-    def N(self, N: int) -> None:
-        self._N = N
-
-    @property
-    def slepian_eigenvalues(self) -> np.ndarray:
-        return self._slepian_eigenvalues
-
-    @slepian_eigenvalues.setter
-    def slepian_eigenvalues(self, slepian_eigenvalues: np.ndarray) -> None:
-        self._slepian_eigenvalues = slepian_eigenvalues
-
-    @property
-    def slepian_functions(self) -> np.ndarray:
-        return self._slepian_functions
-
-    @slepian_functions.setter
-    def slepian_functions(self, slepian_functions: np.ndarray) -> None:
-        self._slepian_functions = slepian_functions
