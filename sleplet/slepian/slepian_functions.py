@@ -14,9 +14,9 @@ class SlepianFunctions:
     L: int
 
     def __post_init__(self) -> None:
+        self.region = self._create_region()
         self.mask = self._create_mask()
         self.name = self._create_fn_name()
-        self.region = self._create_region()
         area = self._calculate_area()
         self.N = round(area * self.L**2 / (4 * np.pi))
         logger.info(f"Shannon number N={self.N}")
