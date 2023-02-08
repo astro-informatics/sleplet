@@ -73,12 +73,11 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
 
     @validator("j")
     def check_j(cls, v, values):
-        cls.j_max = pys2let_j_max(values["B"], values["L"] ** 2, values["j_min"])
+        j_max = pys2let_j_max(values["B"], values["L"] ** 2, values["j_min"])
         if v is not None and v < 0:
             raise ValueError("j should be positive")
-        if v is not None and v > cls.j_max - values["j_min"]:
+        if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                "j should be less than j_max - j_min: "
-                f"{cls.j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
             )
         return v
