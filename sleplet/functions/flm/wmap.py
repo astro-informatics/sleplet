@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.data.other.wmap.create_wmap_flm import create_flm
@@ -12,7 +12,7 @@ class Wmap(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         return create_flm(self.L)
 
     def _create_name(self) -> str:

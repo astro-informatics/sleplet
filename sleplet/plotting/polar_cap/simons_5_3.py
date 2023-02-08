@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+from numpy import typing as npt
 
 from sleplet.plotting.inputs import TEXT_BOX
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -31,7 +32,7 @@ def main() -> None:
     save_plot(fig_path, "simons_5_3")
 
 
-def _create_plot(ax: np.ndarray, position: tuple[int, int], theta_max: int) -> None:
+def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> None:
     """
     helper method which actually makes the plot
     """

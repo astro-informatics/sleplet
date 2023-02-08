@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
@@ -23,7 +23,7 @@ class SlepianWavelets(F_P):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
         logger.info("finish computing wavelets")
@@ -52,7 +52,7 @@ class SlepianWavelets(F_P):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self) -> np.ndarray:
+    def _create_wavelets(self) -> npt.NDArray:
         """
         computes wavelets in Slepian space
         """

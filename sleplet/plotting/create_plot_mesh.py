@@ -5,6 +5,7 @@ import cmocean
 import numpy as np
 import plotly.offline as py
 from matplotlib.colors import LinearSegmentedColormap
+from numpy import typing as npt
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
@@ -31,7 +32,7 @@ _fig_path = _file_location.parents[1] / "figures"
 class Plot:
     mesh: Mesh
     filename: str
-    f: np.ndarray
+    f: npt.NDArray
     _: KW_ONLY
     amplitude: float | None = None
     colour: LinearSegmentedColormap = cmocean.cm.ice
@@ -98,7 +99,7 @@ class Plot:
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
                 fig.write_image(filename, engine="kaleido")
 
-    def _prepare_field(self, f: np.ndarray) -> np.ndarray:
+    def _prepare_field(self, f: npt.NDArray) -> npt.NDArray:
         """
         scales the field before plotting
         """
@@ -106,7 +107,7 @@ class Plot:
             average_functions_on_vertices_to_faces(self.mesh.faces, f), self.normalise
         )
 
-    def _set_outside_region_to_minimum(self, f: np.ndarray) -> np.ndarray:
+    def _set_outside_region_to_minimum(self, f: npt.NDArray) -> npt.NDArray:
         """
         for the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region

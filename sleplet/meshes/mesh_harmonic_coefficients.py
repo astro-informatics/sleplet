@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
@@ -13,7 +13,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
+    def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:
         """
         adds Gaussian white noise to the signal
         """
@@ -26,7 +26,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
         return None, None
 
     @abstractmethod
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         raise NotImplementedError
 
     @abstractmethod

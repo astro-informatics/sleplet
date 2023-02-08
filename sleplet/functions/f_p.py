@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.coefficients import Coefficients
@@ -23,13 +23,13 @@ class F_P(Coefficients):
         self.slepian = choose_slepian_method(self.L, self.region)
         super().__post_init_post_parse__()
 
-    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
+    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> npt.NDArray:
         raise NotImplementedError("Slepian rotation is not defined")
 
-    def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
+    def _translation_helper(self, alpha: float, beta: float) -> npt.NDArray:
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
-    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
+    def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:
         """
         adds Gaussian white noise converted to Slepian space
         """
@@ -44,7 +44,7 @@ class F_P(Coefficients):
         return None, None
 
     @abstractmethod
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         raise NotImplementedError
 
     @abstractmethod

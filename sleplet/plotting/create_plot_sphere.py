@@ -5,6 +5,7 @@ import cmocean
 import numpy as np
 import plotly.offline as py
 import pyssht as ssht
+from numpy import typing as npt
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
@@ -37,7 +38,7 @@ _fig_path = _file_location.parents[1] / "figures"
 
 @dataclass(config=Validation)
 class Plot:
-    f: np.ndarray
+    f: npt.NDArray
     L: int
     filename: str
     _: KW_ONLY
@@ -113,14 +114,14 @@ class Plot:
 
     @staticmethod
     def _setup_plot(
-        f: np.ndarray,
+        f: npt.NDArray,
         resolution: int,
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: list[float] | None = None,
         color_range: list[float] | None = None,
-    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, float, float]:
+    ) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray, float, float]:
         """
         function which creates the data for the matplotlib/plotly plot
         """
@@ -180,7 +181,7 @@ class Plot:
 
         return x, y, z, f_plot, vmin, vmax
 
-    def _prepare_field(self, f: np.ndarray) -> np.ndarray:
+    def _prepare_field(self, f: npt.NDArray) -> npt.NDArray:
         """
         boosts, forces plot type and then scales the field before plotting
         """

@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 from box import Box
 from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
+from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse
 
 from sleplet.utils.config import settings
@@ -14,9 +15,9 @@ _meshes_path = _file_location.parents[1] / "data" / "meshes"
 
 
 def average_functions_on_vertices_to_faces(
-    faces: np.ndarray,
-    functions_on_vertices: np.ndarray,
-) -> np.ndarray:
+    faces: npt.NDArray,
+    functions_on_vertices: npt.NDArray,
+) -> npt.NDArray:
     """
     the integrals require all functions to be defined on faces
     this method handles an arbitrary number of functions
@@ -37,7 +38,7 @@ def average_functions_on_vertices_to_faces(
     return functions_on_faces
 
 
-def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
+def create_mesh_region(mesh_config: Box, vertices: npt.NDArray) -> npt.NDArray:
     """
     creates the boolean region for the given mesh
     """
@@ -60,11 +61,11 @@ def extract_mesh_config(mesh_name: str) -> Box:
 
 def mesh_eigendecomposition(
     name: str,
-    vertices: np.ndarray,
-    faces: np.ndarray,
+    vertices: npt.NDArray,
+    faces: npt.NDArray,
     *,
     number_basis_functions: int | None = None,
-) -> tuple[np.ndarray, np.ndarray, int]:
+) -> tuple[npt.NDArray, npt.NDArray, int]:
     """
     computes the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data
@@ -104,7 +105,7 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors, number_basis_functions
 
 
-def read_mesh(mesh_config: Box) -> tuple[np.ndarray, np.ndarray]:
+def read_mesh(mesh_config: Box) -> tuple[npt.NDArray, npt.NDArray]:
     """
     reads in the given mesh
     """
@@ -114,7 +115,7 @@ def read_mesh(mesh_config: Box) -> tuple[np.ndarray, np.ndarray]:
     return upsample(vertices, faces, number_of_subdivs=mesh_config.UPSAMPLE)
 
 
-def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
+def _mesh_laplacian(vertices: npt.NDArray, faces: npt.NDArray) -> npt.NDArray:
     """
     computes the cotagent mesh laplacian
     """
@@ -122,8 +123,8 @@ def _mesh_laplacian(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
 
 
 def _orthonormalise_basis_functions(
-    vertices: np.ndarray, faces: np.ndarray, basis_functions: np.ndarray
-) -> np.ndarray:
+    vertices: npt.NDArray, faces: npt.NDArray, basis_functions: npt.NDArray
+) -> npt.NDArray:
     """
     for computing the Slepian D matrix the basis functions must be orthonormal
     """

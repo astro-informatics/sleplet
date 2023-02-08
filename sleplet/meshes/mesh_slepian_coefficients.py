@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
@@ -15,7 +15,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self.mesh_slepian = MeshSlepian(self.mesh)
         super().__post_init_post_parse__()
 
-    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
+    def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:
         """
         adds Gaussian white noise converted to Slepian space
         """
@@ -30,7 +30,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
         return None, None
 
     @abstractmethod
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         raise NotImplementedError
 
     @abstractmethod

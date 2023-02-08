@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
@@ -12,7 +12,7 @@ class MeshSlepianField(MeshSlepianCoefficients):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         """
         compute field on the vertices of the mesh
         """

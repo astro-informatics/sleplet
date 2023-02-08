@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 from box import Box
+from numpy import typing as npt
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
@@ -14,7 +15,7 @@ _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[1] / "data" / "slepian" / "masks"
 
 
-def create_mask_region(L: int, region: Region) -> np.ndarray:
+def create_mask_region(L: int, region: Region) -> npt.NDArray:
     """
     creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
@@ -53,7 +54,7 @@ def create_mask_region(L: int, region: Region) -> np.ndarray:
     return mask
 
 
-def _load_mask(mask_name: str) -> np.ndarray:
+def _load_mask(mask_name: str) -> npt.NDArray:
     """
     attempts to read the mask from the config file
     """
@@ -67,8 +68,8 @@ def _load_mask(mask_name: str) -> np.ndarray:
 
 
 def ensure_masked_flm_bandlimited(
-    flm: np.ndarray, L: int, region: Region, reality: bool, spin: int
-) -> np.ndarray:
+    flm: npt.NDArray, L: int, region: Region, reality: bool, spin: int
+) -> npt.NDArray:
     """
     ensures the coefficients is bandlimited for a given region
     """
@@ -92,7 +93,7 @@ def create_default_region(settings: Box) -> Region:
     )
 
 
-def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
+def create_mesh_region(mesh_config: Box, vertices: npt.NDArray) -> npt.NDArray:
     """
     creates the boolean region for the given mesh
     """
@@ -106,7 +107,7 @@ def create_mesh_region(mesh_config: Box, vertices: np.ndarray) -> np.ndarray:
     )
 
 
-def ensure_masked_bandlimit_mesh_signal(mesh: Mesh, u_i: np.ndarray) -> np.ndarray:
+def ensure_masked_bandlimit_mesh_signal(mesh: Mesh, u_i: npt.NDArray) -> npt.NDArray:
     """
     ensures that signal in pixel space is bandlimited
     """
@@ -115,7 +116,7 @@ def ensure_masked_bandlimit_mesh_signal(mesh: Mesh, u_i: np.ndarray) -> np.ndarr
     return mesh_forward(mesh, masked_field)
 
 
-def convert_region_on_vertices_to_faces(mesh: Mesh) -> np.ndarray:
+def convert_region_on_vertices_to_faces(mesh: Mesh) -> npt.NDArray:
     """
     converts the region on vertices to faces
     """

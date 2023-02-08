@@ -2,6 +2,7 @@
 from argparse import ArgumentParser, Namespace
 
 import numpy as np
+from numpy import typing as npt
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
@@ -103,7 +104,9 @@ def plot(f: MeshCoefficients, normalise: bool, amplitude: float | None) -> None:
     ).execute()
 
 
-def _coefficients_to_field(f: MeshCoefficients, coefficients: np.ndarray) -> np.ndarray:
+def _coefficients_to_field(
+    f: MeshCoefficients, coefficients: npt.NDArray
+) -> npt.NDArray:
     """
     computes the field over the whole mesh from the harmonic/Slepian coefficients
     """

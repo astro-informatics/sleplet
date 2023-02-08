@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
-import numpy as np
+from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -34,7 +34,7 @@ class Coefficients:
 
     def translate(
         self, alpha: float, beta: float, *, shannon: int | None = None
-    ) -> np.ndarray:
+    ) -> npt.NDArray:
         g_coefficients = self._translation_helper(alpha, beta)
         return (
             g_coefficients
@@ -44,11 +44,11 @@ class Coefficients:
 
     def convolve(
         self,
-        f_coefficient: np.ndarray,
-        g_coefficient: np.ndarray,
+        f_coefficient: npt.NDArray,
+        g_coefficient: npt.NDArray,
         *,
         shannon: int | None = None,
-    ) -> np.ndarray:
+    ) -> npt.NDArray:
         # translation/convolution are not real for general function
         self.reality = False
         return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
@@ -85,28 +85,28 @@ class Coefficients:
         return v
 
     @abstractmethod
-    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
+    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> npt.NDArray:
         """
         rotates given flm on the sphere by alpha/beta/gamma
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _translation_helper(self, alpha: float, beta: float) -> np.ndarray:
+    def _translation_helper(self, alpha: float, beta: float) -> npt.NDArray:
         """
         compute the basis function at omega' for translation
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
+    def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:
         """
         adds Gaussian white noise to the signal
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         """
         creates the flm on the north pole
         """

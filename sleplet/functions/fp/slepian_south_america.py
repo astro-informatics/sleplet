@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
@@ -19,7 +19,7 @@ class SlepianSouthAmerica(F_P):
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         sa = SouthAmerica(self.L, smoothing=self.smoothing)
         return slepian_forward(self.L, self.slepian, flm=sa.coefficients)
 

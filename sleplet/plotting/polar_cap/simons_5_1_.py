@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+from numpy import typing as npt
 
 from sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -47,10 +48,10 @@ def main() -> None:
 
 
 def _helper(
-    ax: np.ndarray,
+    ax: npt.NDArray,
     slepian: SlepianPolarCap,
     resolution: int,
-    x: np.ndarray,
+    x: npt.NDArray,
     i: int,
     order: int,
     rank: int,

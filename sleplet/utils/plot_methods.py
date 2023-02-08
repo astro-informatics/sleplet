@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from matplotlib import colors
 from matplotlib import pyplot as plt
+from numpy import typing as npt
 
 from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.config import settings
@@ -112,7 +113,7 @@ def find_max_amplitude(
     return np.abs(create_plot_type(boosted_field, plot_type)).max()
 
 
-def create_plot_type(field: np.ndarray, plot_type: str) -> np.ndarray:
+def create_plot_type(field: npt.NDArray, plot_type: str) -> npt.NDArray:
     """
     gets the given plot type of the field
     """
@@ -124,8 +125,8 @@ def create_plot_type(field: np.ndarray, plot_type: str) -> np.ndarray:
 
 
 def set_outside_region_to_minimum(
-    f_plot: np.ndarray, L: int, region: Region
-) -> np.ndarray:
+    f_plot: npt.NDArray, L: int, region: Region
+) -> npt.NDArray:
     """
     for the Slepian region set the outisde area to negative infinity
     hence it is clear we are only interested in the coloured region
@@ -141,7 +142,7 @@ def set_outside_region_to_minimum(
     return np.where(closed_mask, f_plot, SPHERE_UNSEEN)
 
 
-def rotate_earth_to_south_america(earth_flm: np.ndarray, L: int) -> np.ndarray:
+def rotate_earth_to_south_america(earth_flm: npt.NDArray, L: int) -> npt.NDArray:
     """
     rotates the flms of the Earth to a view centered on South America
     """
@@ -150,14 +151,14 @@ def rotate_earth_to_south_america(earth_flm: np.ndarray, L: int) -> np.ndarray:
     )
 
 
-def rotate_earth_to_africa(earth_flm: np.ndarray, L: int) -> np.ndarray:
+def rotate_earth_to_africa(earth_flm: npt.NDArray, L: int) -> npt.NDArray:
     """
     rotates the flms of the Earth to a view centered on Africa
     """
     return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)
 
 
-def normalise_function(f: np.ndarray, normalise: bool) -> np.ndarray:
+def normalise_function(f: npt.NDArray, normalise: bool) -> npt.NDArray:
     """
     normalise function between 0 and 1 for visualisation
     """
@@ -175,8 +176,13 @@ def normalise_function(f: np.ndarray, normalise: bool) -> np.ndarray:
 
 
 def boost_field(
-    field: np.ndarray, L: int, resolution: int, reality: bool, spin: int, upsample: bool
-) -> np.ndarray:
+    field: npt.NDArray,
+    L: int,
+    resolution: int,
+    reality: bool,
+    spin: int,
+    upsample: bool,
+) -> npt.NDArray:
     """
     inverts and then boosts the field before plotting
     """

@@ -1,5 +1,6 @@
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
@@ -26,7 +27,7 @@ class Ridgelets(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
         logger.info("finish computing wavelets")
@@ -55,7 +56,7 @@ class Ridgelets(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.spin, self.j = self.extra_args
 
-    def _create_wavelets(self) -> np.ndarray:
+    def _create_wavelets(self) -> npt.NDArray:
         """
         compute all wavelets
         """
@@ -68,7 +69,7 @@ class Ridgelets(F_LM):
             wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
         return wavelets
 
-    def _compute_ring(self) -> np.ndarray:
+    def _compute_ring(self) -> npt.NDArray:
         """
         compute ring in harmonic space
         """

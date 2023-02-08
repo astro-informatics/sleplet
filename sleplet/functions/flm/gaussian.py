@@ -1,5 +1,6 @@
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
@@ -14,7 +15,7 @@ class Gaussian(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)

@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from scipy import io as sio
 
 from sleplet.utils.smoothing import apply_gaussian_smoothing
@@ -10,7 +11,7 @@ _file_location = Path(__file__).resolve()
 _matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
 
 
-def create_flm(L: int, *, smoothing: int | None = None) -> np.ndarray:
+def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray:
     """
     creates the flm for the whole Earth
     """
@@ -35,7 +36,7 @@ def create_flm(L: int, *, smoothing: int | None = None) -> np.ndarray:
     return flm
 
 
-def _load_flm() -> np.ndarray:
+def _load_flm() -> npt.NDArray:
     """
     load coefficients from file
     """

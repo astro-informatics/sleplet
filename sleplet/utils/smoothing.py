@@ -1,12 +1,13 @@
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 
 from sleplet.utils.logger import logger
 
 
 def apply_gaussian_smoothing(
-    flm: np.ndarray, L: int, smoothing_factor: int
-) -> np.ndarray:
+    flm: npt.NDArray, L: int, smoothing_factor: int
+) -> npt.NDArray:
     """
     applies Gaussian smoothing to the given signal
 

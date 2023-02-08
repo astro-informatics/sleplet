@@ -1,12 +1,13 @@
 import numpy as np
 from multiprocess.shared_memory import SharedMemory
+from numpy import typing as npt
 
 from sleplet.utils.vars import L_MIN_DEFAULT
 
 
 def split_arr_into_chunks(
     arr_max: int, ncpu: int, *, arr_min: int = L_MIN_DEFAULT
-) -> list[np.ndarray]:
+) -> list[npt.NDArray]:
     """
     split L into a list of arrays for parallelism
     """
@@ -16,23 +17,23 @@ def split_arr_into_chunks(
     return [np.sort(arr[i::ncpu]) for i in range(ncpu)]
 
 
-def create_shared_memory_array(array: np.ndarray) -> tuple[np.ndarray, SharedMemory]:
+def create_shared_memory_array(array: npt.NDArray) -> tuple[npt.NDArray, SharedMemory]:
     """
     creates a shared memory array to be used in a parallel function
     """
-    array_ext: np.ndarray
+    array_ext: npt.NDArray
     ext_shared_memory = SharedMemory(create=True, size=array.nbytes)
     array_ext = np.ndarray(array.shape, dtype=array.dtype, buffer=ext_shared_memory.buf)
     return array_ext, ext_shared_memory
 
 
 def attach_to_shared_memory_block(
-    array: np.ndarray, ext_shared_memory: SharedMemory
-) -> tuple[np.ndarray, SharedMemory]:
+    array: npt.NDArray, ext_shared_memory: SharedMemory
+) -> tuple[npt.NDArray, SharedMemory]:
     """
     used within the parallel function to attach an array to the shared memory
     """
-    array_int: np.ndarray
+    array_int: npt.NDArray
     int_shared_memory = SharedMemory(name=ext_shared_memory.name)
     array_int = np.ndarray(array.shape, dtype=array.dtype, buffer=int_shared_memory.buf)
     return array_int, int_shared_memory

@@ -5,6 +5,7 @@ import numpy as np
 import pyssht as ssht
 from multiprocess import Pool
 from numpy import linalg as LA
+from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -51,7 +52,7 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_region(self) -> Region:
         return Region(mask_name=self.mask_name)
 
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self) -> npt.NDArray:
         return create_mask_region(self.resolution, self.region)
 
     def _calculate_area(self) -> float:
@@ -63,7 +64,7 @@ class SlepianArbitrary(SlepianFunctions):
             _slepian_path / "eigensolutions" / f"D_{self.mask_name}_L{self.L}_N{self.N}"
         )
 
-    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(self) -> tuple[npt.NDArray, npt.NDArray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         if not eval_loc.exists() or not evec_loc.exists():
@@ -94,12 +95,12 @@ class SlepianArbitrary(SlepianFunctions):
             np.save(evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
-    def _create_D_matrix(self) -> np.ndarray:
+    def _create_D_matrix(self) -> npt.NDArray:
         """
         computes the D matrix in parallel
         """
         # create dictionary for the integrals
-        self._fields: dict[int, np.ndarray] = {}
+        self._fields: dict[int, npt.NDArray] = {}
 
         # initialise real and imaginary matrices
         D_r = np.zeros((self.L**2, self.L**2))
@@ -139,7 +140,7 @@ class SlepianArbitrary(SlepianFunctions):
         release_shared_memory(shm_r_ext, shm_i_ext)
         return D
 
-    def _matrix_helper(self, D_r: np.ndarray, D_i: np.ndarray, i: int) -> None:
+    def _matrix_helper(self, D_r: npt.NDArray, D_i: npt.NDArray, i: int) -> None:
         """
         used in both serial and parallel calculations
 

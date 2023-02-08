@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
@@ -21,7 +21,7 @@ class SlepianNoiseSouthAmerica(F_P):
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
         noise = create_slepian_noise(self.L, sa.coefficients, self.slepian, self.SNR)
         compute_snr(sa.coefficients, noise, "Slepian")

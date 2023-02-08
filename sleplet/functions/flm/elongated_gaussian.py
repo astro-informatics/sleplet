@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
@@ -16,7 +17,7 @@ class ElongatedGaussian(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray:
         return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)
 
     def _create_name(self) -> str:
@@ -41,7 +42,7 @@ class ElongatedGaussian(F_LM):
                 np.float_power(10, x) for x in self.extra_args
             ]
 
-    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
+    def _grid_fun(self, theta: npt.NDArray, phi: npt.NDArray) -> npt.NDArray:
         """
         function on the grid
         """

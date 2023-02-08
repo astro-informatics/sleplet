@@ -3,6 +3,7 @@ from argparse import ArgumentParser, Namespace
 
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 
 from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.f_p import F_P
@@ -245,7 +246,7 @@ def _rotation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     gamma_pi_frac: float,
-) -> tuple[np.ndarray, str]:
+) -> tuple[npt.NDArray, str]:
     """
     performs the rotation specific steps
     """
@@ -270,7 +271,7 @@ def _translation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     shannon: int | None,
-) -> tuple[np.ndarray, str, dict]:
+) -> tuple[npt.NDArray, str, dict]:
     """
     performs the translation specific steps
     """
@@ -296,10 +297,10 @@ def _translation_helper(
 def _convolution_helper(
     f: Coefficients,
     g: Coefficients,
-    coefficients: np.ndarray,
+    coefficients: npt.NDArray,
     shannon: int | None,
     filename: str,
-) -> tuple[np.ndarray, str]:
+) -> tuple[npt.NDArray, str]:
     """
     performs the convolution specific steps
     """
@@ -314,7 +315,7 @@ def _convolution_helper(
     return coefficients, filename
 
 
-def _coefficients_to_field(f: Coefficients, coefficients: np.ndarray) -> np.ndarray:
+def _coefficients_to_field(f: Coefficients, coefficients: npt.NDArray) -> npt.NDArray:
     """
     computes the field over the samples from the harmonic/Slepian coefficients
     """
