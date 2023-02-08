@@ -24,8 +24,8 @@ class MeshCoefficients:
 
     def __post_init__(self) -> None:
         self._setup_args()
-        self._create_name()
-        self._create_coefficients()
+        self.name = self._create_name()
+        self.coefficients = self._create_coefficients()
         self._add_details_to_name()
         self._add_noise_to_signal()
 

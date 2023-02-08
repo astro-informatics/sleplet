@@ -46,8 +46,8 @@ class SlepianArbitrary(SlepianFunctions):
         self.resolution = settings.SAMPLES * self.L
         super().__post_init__()
 
-    def _create_fn_name(self) -> None:
-        self.name = f"slepian_{self.mask_name}"
+    def _create_fn_name(self) -> str:
+        return f"slepian_{self.mask_name}"
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.resolution, self.region)

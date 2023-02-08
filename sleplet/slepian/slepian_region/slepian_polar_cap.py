@@ -42,8 +42,8 @@ class SlepianPolarCap(SlepianFunctions):
         self.region = Region(gap=self.gap, theta_max=self.theta_max)
         super().__post_init__()
 
-    def _create_fn_name(self) -> None:
-        self.name = f"slepian_{self.region.name_ending}"
+    def _create_fn_name(self) -> str:
+        return f"slepian_{self.region.name_ending}"
 
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.L, self.region)

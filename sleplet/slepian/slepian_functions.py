@@ -13,7 +13,7 @@ class SlepianFunctions:
 
     def __post_init__(self) -> None:
         self._create_mask()
-        self._create_fn_name()
+        self.name = self._create_fn_name()
         self._calculate_area()
         self.N = round(self.area * self.L**2 / (4 * np.pi))
         logger.info(f"Shannon number N={self.N}")
@@ -23,7 +23,7 @@ class SlepianFunctions:
         logger.info("finished solving eigenproblem")
 
     @abstractmethod
-    def _create_fn_name(self) -> None:
+    def _create_fn_name(self) -> str:
         """
         creates the name for plotting
         """
