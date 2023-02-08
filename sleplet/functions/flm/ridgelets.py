@@ -47,8 +47,8 @@ class Ridgelets(F_LM):
     def _set_reality(self) -> bool:
         return False
 
-    def _set_spin(self) -> None:
-        self.spin = self.spin
+    def _set_spin(self) -> int:
+        return self.spin
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):

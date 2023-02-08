@@ -44,8 +44,8 @@ class DirectionalSpinWavelets(F_LM):
             f"{wavelet_ending(self.j_min, self.j)}"
         )
 
-    def _set_reality(self) -> None:
-        self.reality = self.j is None or self.spin == 0
+    def _set_reality(self) -> bool:
+        return self.j is None or self.spin == 0
 
     def _set_spin(self) -> int:
         return self.spin
