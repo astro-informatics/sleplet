@@ -10,7 +10,7 @@ from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 
-@dataclass(config=Validation, kw_only=True)
+@dataclass(config=Validation)
 class SlepianDiracDelta(F_P):
     def __post_init__(self) -> None:
         super().__post_init__()

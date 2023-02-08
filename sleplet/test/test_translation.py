@@ -37,7 +37,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     alpha, beta = calc_nearest_grid_point(L_LARGE, alpha_pi_frac, beta_pi_frac)
     dd_rot = dd.rotate(alpha, beta)
     dd_trans = dd.translate(alpha, beta)
-    assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=1e-16)
+    assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=0)
 
 
 def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) -> None:

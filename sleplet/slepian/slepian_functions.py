@@ -7,7 +7,7 @@ from sleplet.utils.logger import logger
 from sleplet.utils.validation import Validation
 
 
-@dataclass(config=Validation, kw_only=True)
+@dataclass(config=Validation)
 class SlepianFunctions:
     L: int
 
@@ -15,7 +15,7 @@ class SlepianFunctions:
         self._create_mask()
         self._create_fn_name()
         self._calculate_area()
-        self.N = np.round(self.area * self.L**2 / (4 * np.pi))
+        self.N = round(self.area * self.L**2 / (4 * np.pi))
         logger.info(f"Shannon number N={self.N}")
         self._create_matrix_location()
         logger.info("start solving eigenproblem")

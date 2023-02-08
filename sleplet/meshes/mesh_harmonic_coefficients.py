@@ -7,7 +7,7 @@ from sleplet.utils.noise import compute_snr, create_mesh_noise
 from sleplet.utils.validation import Validation
 
 
-@dataclass(config=Validation, kw_only=True)
+@dataclass(config=Validation)
 class MeshHarmonicCoefficients(MeshCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()

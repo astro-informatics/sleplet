@@ -6,7 +6,7 @@ from sleplet.utils.harmonic_methods import mesh_forward
 from sleplet.utils.validation import Validation
 
 
-@dataclass(config=Validation, kw_only=True)
+@dataclass(config=Validation)
 class MeshField(MeshHarmonicCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
