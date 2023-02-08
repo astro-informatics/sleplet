@@ -20,10 +20,8 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
         compute_snr(smf.coefficients, noise, "Slepian")
         self.coefficients = noise
 
-    def _create_name(self) -> None:
-        self.name = (
-            f"slepian_{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"
-        )
+    def _create_name(self) -> str:
+        return f"slepian_{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"
 
     def _set_reality(self) -> bool:
         return False

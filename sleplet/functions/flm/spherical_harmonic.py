@@ -17,8 +17,8 @@ class SphericalHarmonic(F_LM):
         ind = ssht.elm2ind(self.ell, self.m)
         self.coefficients = create_spherical_harmonic(self.L, ind)
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.ell, 'l')}"
             f"{filename_args(self.m, 'm')}"

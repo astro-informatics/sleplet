@@ -24,8 +24,8 @@ class HarmonicGaussian(F_LM):
                 flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
         self.coefficients = flm
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.l_sigma, 'lsig')}"
             f"{filename_args(self.m_sigma, 'msig')}"

@@ -19,8 +19,8 @@ class SlepianAfrica(F_P):
         a = Africa(self.L, smoothing=self.smoothing)
         self.coefficients = slepian_forward(self.L, self.slepian, flm=a.coefficients)
 
-    def _create_name(self) -> None:
-        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
+    def _create_name(self) -> str:
+        return convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> bool:
         return False

@@ -20,8 +20,8 @@ class MeshNoiseField(MeshHarmonicCoefficients):
         compute_snr(mf.coefficients, noise, "Harmonic")
         self.coefficients = noise
 
-    def _create_name(self) -> None:
-        self.name = f"{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"
+    def _create_name(self) -> str:
+        return f"{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"
 
     def _set_reality(self) -> bool:
         return True

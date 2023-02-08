@@ -21,8 +21,8 @@ class ElongatedGaussian(F_LM):
             self._grid_fun, self.L, self.reality, self.spin
         )
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.t_sigma, 'tsig')}"
             f"{filename_args(self.p_sigma, 'psig')}"

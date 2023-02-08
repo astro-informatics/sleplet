@@ -26,7 +26,7 @@ class Coefficients:
 
     def __post_init__(self) -> None:
         self._setup_args()
-        self._create_name()
+        self.name = self._create_name()
         self.spin = self._set_spin()
         self.reality = self._set_reality()
         self._create_coefficients()
@@ -114,7 +114,7 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         """
         creates the name of the function
         """

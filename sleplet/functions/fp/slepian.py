@@ -15,13 +15,13 @@ class Slepian(F_P):
         self._validate_rank()
         super().__post_init__()
 
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         order = (
             f"_m{self.slepian.order[self.rank]}"
             if hasattr(self.slepian, "order")
             else ""
         )
-        self.name = (
+        return (
             (
                 f"{self.slepian.name}{order}_rank{self.rank}"
                 f"_lam{self.slepian.eigenvalues[self.rank]:e}"

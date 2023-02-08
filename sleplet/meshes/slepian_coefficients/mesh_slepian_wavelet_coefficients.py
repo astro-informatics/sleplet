@@ -31,8 +31,8 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
         jth = 0 if self.j is None else self.j + 1
         self.coefficients = self.wavelet_coefficients[jth]
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"slepian_wavelet_coefficients_{self.mesh.name}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"

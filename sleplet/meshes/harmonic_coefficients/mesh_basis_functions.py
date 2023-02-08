@@ -26,8 +26,8 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}"
         )
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             (
                 f"{self.mesh.name}_rank{self.rank}_"
                 f"lam{self.mesh.mesh_eigenvalues[self.rank]:e}"

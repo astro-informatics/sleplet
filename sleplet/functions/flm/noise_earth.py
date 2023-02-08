@@ -20,8 +20,8 @@ class NoiseEarth(F_LM):
         compute_snr(earth.coefficients, noise, "Harmonic")
         self.coefficients = noise
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.SNR, 'snr')}"
         )

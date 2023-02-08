@@ -63,7 +63,7 @@ class MeshCoefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         """
         creates the name of the function
         """

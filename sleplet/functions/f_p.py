@@ -49,7 +49,7 @@ class F_P(Coefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         raise NotImplementedError
 
     @abstractmethod

@@ -35,8 +35,8 @@ class Ridgelets(F_LM):
         jth = 0 if self.j is None else self.j + 1
         self.coefficients = self.wavelets[jth]
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"

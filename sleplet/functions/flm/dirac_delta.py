@@ -19,8 +19,8 @@ class DiracDelta(F_LM):
             flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
         self.coefficients = flm
 
-    def _create_name(self) -> None:
-        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
+    def _create_name(self) -> str:
+        return convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> bool:
         return True

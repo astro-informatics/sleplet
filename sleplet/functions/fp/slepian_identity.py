@@ -14,8 +14,8 @@ class SlepianIdentity(F_P):
     def _create_coefficients(self) -> None:
         self.coefficients = np.ones(self.L**2, dtype=np.complex_)
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"_{self.slepian.region.name_ending}"
         )

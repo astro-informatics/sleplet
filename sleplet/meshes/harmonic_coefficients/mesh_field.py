@@ -18,8 +18,8 @@ class MeshField(MeshHarmonicCoefficients):
         field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
         self.coefficients = mesh_forward(self.mesh, field)
 
-    def _create_name(self) -> None:
-        self.name = f"{self.mesh.name}_field"
+    def _create_name(self) -> str:
+        return f"{self.mesh.name}_field"
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):

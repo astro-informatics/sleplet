@@ -26,8 +26,8 @@ class Africa(F_LM):
             self._grid_fun, self.L, self.reality, self.spin
         )
 
-    def _create_name(self) -> None:
-        self.name = convert_camel_case_to_snake_case(self.__class__.__name__)
+    def _create_name(self) -> str:
+        return convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> bool:
         return True

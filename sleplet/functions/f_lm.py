@@ -35,7 +35,7 @@ class F_LM(Coefficients):
         raise NotImplementedError
 
     @abstractmethod
-    def _create_name(self) -> None:
+    def _create_name(self) -> str:
         raise NotImplementedError
 
     @abstractmethod

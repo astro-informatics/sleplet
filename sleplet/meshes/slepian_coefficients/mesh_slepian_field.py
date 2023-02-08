@@ -21,8 +21,8 @@ class MeshSlepianField(MeshSlepianCoefficients):
             u_i=mf.coefficients,
         )
 
-    def _create_name(self) -> None:
-        self.name = f"slepian_{self.mesh.name}_field"
+    def _create_name(self) -> str:
+        return f"slepian_{self.mesh.name}_field"
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):

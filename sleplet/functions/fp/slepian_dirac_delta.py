@@ -21,8 +21,8 @@ class SlepianDiracDelta(F_P):
             self.L, self.alpha, self.beta, self.slepian
         ).conj()
 
-    def _create_name(self) -> None:
-        self.name = (
+    def _create_name(self) -> str:
+        return (
             f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"_{self.slepian.region.name_ending}"
         )
