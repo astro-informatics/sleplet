@@ -42,7 +42,7 @@ class MeshCoefficients:
     @validator("coefficients", check_fields=False)
     def check_coefficients(cls, v, values):
         if (
-            "region" in values
+            values["region"]
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
             v = ensure_masked_bandlimit_mesh_signal(values["mesh"], v)

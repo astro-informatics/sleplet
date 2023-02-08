@@ -72,7 +72,7 @@ class Coefficients:
     @validator("coefficients", check_fields=False)
     def check_coefficients(cls, v, values):
         if (
-            "region" in values
+            values["region"]
             and not set(values["name"].split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
             v = ensure_masked_flm_bandlimited(
