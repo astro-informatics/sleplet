@@ -21,7 +21,7 @@ class MeshSlepianDecomposition:
     u_i: np.ndarray | None = None
     u: np.ndarray | None = None
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         """ """
         self._detect_method()
 

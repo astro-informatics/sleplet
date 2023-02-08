@@ -24,7 +24,7 @@ class SlepianDecomposition:
     flm: np.ndarray | None = None
     mask: np.ndarray | None = None
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._detect_method()
 
     def decompose(self, rank: int) -> complex:

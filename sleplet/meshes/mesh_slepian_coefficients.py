@@ -11,9 +11,9 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation)
 class MeshSlepianCoefficients(MeshCoefficients):
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.mesh_slepian = MeshSlepian(self.mesh)
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
     def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
         """

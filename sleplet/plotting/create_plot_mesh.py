@@ -38,7 +38,7 @@ class Plot:
     normalise: bool = True
     region: bool = False
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         if self.normalise:
             self.filename += "_norm"
 

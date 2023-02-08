@@ -31,8 +31,8 @@ class SlepianLimitLatLon(SlepianFunctions):
     theta_max: float = THETA_MAX_DEFAULT
     theta_min: float = THETA_MIN_DEFAULT
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"

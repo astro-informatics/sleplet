@@ -41,9 +41,9 @@ class SlepianArbitrary(SlepianFunctions):
     L_max: int = settings.L_MAX
     L_min: int = settings.L_MIN
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.resolution = settings.SAMPLES * self.L
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"

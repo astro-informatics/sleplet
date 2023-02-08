@@ -11,8 +11,8 @@ from sleplet.utils.validation import Validation
 class Gaussian(F_LM):
     sigma: float = 10
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> np.ndarray:
         flm = np.zeros(self.L**2, dtype=np.complex_)

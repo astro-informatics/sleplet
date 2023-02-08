@@ -19,7 +19,7 @@ class Mesh:
     number_basis_functions: int | None = None
     zoom: bool = False
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         mesh_config = extract_mesh_config(self.name)
         self.camera_view = create_camera(
             mesh_config.CAMERA_X,

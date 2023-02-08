@@ -11,8 +11,8 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation)
 class F_LM(Coefficients):
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)

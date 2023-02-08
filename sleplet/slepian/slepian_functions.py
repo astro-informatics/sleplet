@@ -13,7 +13,7 @@ from sleplet.utils.validation import Validation
 class SlepianFunctions:
     L: int
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.region = self._create_region()
         self.mask = self._create_mask()
         self.name = self._create_fn_name()

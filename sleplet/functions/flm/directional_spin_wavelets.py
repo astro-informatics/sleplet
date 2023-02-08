@@ -22,8 +22,8 @@ class DirectionalSpinWavelets(F_LM):
     N: int = 2
     spin: int = 0
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelets")

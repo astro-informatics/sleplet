@@ -12,9 +12,9 @@ from sleplet.utils.validation import Validation
 class Slepian(F_P):
     rank: int = 0
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._validate_rank()
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
     def _create_name(self) -> str:
         order = (

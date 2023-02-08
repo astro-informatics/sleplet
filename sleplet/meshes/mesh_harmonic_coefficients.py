@@ -10,8 +10,8 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation)
 class MeshHarmonicCoefficients(MeshCoefficients):
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
         """

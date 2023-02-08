@@ -28,7 +28,7 @@ _meshes_path = _file_location.parents[2] / "data" / "meshes"
 class MeshSlepian:
     mesh: Mesh
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.N = compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 

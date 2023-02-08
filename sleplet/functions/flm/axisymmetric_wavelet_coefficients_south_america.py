@@ -24,8 +24,8 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(F_LM):
     j_min: int = 2
     j: int | None = None
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelet coefficients")

@@ -23,7 +23,7 @@ class Coefficients:
     region: Region | None = None
     smoothing: int | None = None
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.spin = self._set_spin()

@@ -12,8 +12,8 @@ from sleplet.utils.vars import SAMPLING_SCHEME
 
 @dataclass(config=Validation)
 class SlepianDiracDelta(F_P):
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> np.ndarray:
         self._compute_angles()

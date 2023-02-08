@@ -13,8 +13,8 @@ class SquashedGaussian(F_LM):
     freq: float = 0.1
     t_sigma: float = 1
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> np.ndarray:
         return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)

@@ -18,8 +18,8 @@ _mask_path = _file_location.parents[2] / "data" / "slepian" / "masks"
 
 @dataclass(config=Validation)
 class Africa(F_LM):
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> np.ndarray:
         return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)

@@ -50,7 +50,7 @@ class Plot:
     spin: int = 0
     upsample: bool = True
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.resolution = calc_plot_resolution(self.L) if self.upsample else self.L
         if self.upsample:
             self.filename += f"_res{self.resolution}"

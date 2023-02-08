@@ -9,8 +9,8 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation)
 class MeshField(MeshHarmonicCoefficients):
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> np.ndarray:
         """

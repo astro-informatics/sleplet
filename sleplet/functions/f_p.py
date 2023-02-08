@@ -14,14 +14,14 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation)
 class F_P(Coefficients):
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.region = (
             self.region
             if isinstance(self.region, Region)
             else create_default_region(settings)
         )
         self.slepian = choose_slepian_method(self.L, self.region)
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
     def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> np.ndarray:
         raise NotImplementedError("Slepian rotation is not defined")
