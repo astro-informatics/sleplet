@@ -1,6 +1,3 @@
-from dataclasses import field
-
-import numpy as np
 from igl import per_vertex_normals
 from pydantic.dataclasses import dataclass
 
@@ -11,8 +8,6 @@ from sleplet.utils.validation import Validation
 
 @dataclass(config=Validation, kw_only=True)
 class MeshField(MeshHarmonicCoefficients):
-    coefficients: np.ndarray = field(init=False, repr=False)
-
     def __post_init__(self) -> None:
         super().__post_init__()
 

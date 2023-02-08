@@ -1,24 +1,15 @@
 from abc import abstractmethod
-from dataclasses import KW_ONLY, field
 
 import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.utils.logger import logger
-from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
 
 
-@dataclass(config=Validation)
+@dataclass(config=Validation, kw_only=True)
 class SlepianFunctions:
     L: int
-    _: KW_ONLY
-    area: np.ndarray = field(default=np.array([0]), init=False, repr=False)
-    eigenvalues: np.ndarray = field(init=False, repr=False)
-    eigenvectors: np.ndarray = field(init=False, repr=False)
-    mask: np.ndarray = field(init=False, repr=False)
-    name: str = field(init=False, repr=False)
-    region: Region = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._create_mask()

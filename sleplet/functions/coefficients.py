@@ -1,12 +1,11 @@
 from abc import abstractmethod
-from dataclasses import KW_ONLY, field
+from dataclasses import KW_ONLY
 from typing import Optional
 
 import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.convolution_methods import sifting_convolution
 from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from sleplet.utils.region import Region
@@ -20,14 +19,6 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 class Coefficients:
     L: int
     _: KW_ONLY
-    coefficients: np.ndarray = field(init=False, repr=False)
-    name: str = field(init=False, repr=False)
-    slepian: SlepianFunctions = field(init=False, repr=False)
-    snr: float = field(default=0, init=False, repr=False)
-    spin: int = field(init=False, repr=False)
-    unnoised_coefficients: np.ndarray = field(
-        default=np.array([0]), init=False, repr=False
-    )
     smoothing: Optional[int] = None
     noise: Optional[float] = None
     region: Optional[Region] = None
@@ -79,7 +70,7 @@ class Coefficients:
             self.name += f"{filename_args(self.smoothing, 'smoothed')}"
         self.name += f"_L{self.L}"
 
-    @validator("coefficients")
+    @validator("coefficients", check_fields=False)
     def check_coefficients(cls, v, values):
         if (
             "region" in values

@@ -1,4 +1,3 @@
-from dataclasses import field
 from typing import Optional
 
 import numpy as np
@@ -24,7 +23,6 @@ class DirectionalSpinWavelets(F_LM):
     j: Optional[int] = None
     N: int = 2
     spin: int = 0
-    wavelet_coefficients: np.ndarray = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()

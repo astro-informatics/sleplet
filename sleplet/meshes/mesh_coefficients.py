@@ -1,13 +1,11 @@
 from abc import abstractmethod
-from dataclasses import KW_ONLY, field
+from dataclasses import KW_ONLY
 from typing import Optional
 
-import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
-from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
 from sleplet.utils.string_methods import filename_args
 from sleplet.utils.validation import Validation
@@ -19,12 +17,6 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 class MeshCoefficients:
     mesh: Mesh
     _: KW_ONLY
-    coefficients: np.ndarray = field(init=False, repr=False)
-    mesh_slepian: MeshSlepian = field(init=False, repr=False)
-    name: str = field(init=False, repr=False)
-    unnoised_coefficients: np.ndarray = field(
-        default=np.array([0]), init=False, repr=False
-    )
     extra_args: Optional[list[int]] = None
     noise: Optional[float] = None
     region: bool = False
@@ -47,7 +39,7 @@ class MeshCoefficients:
         if self.mesh.zoom:
             self.name += "_zoom"
 
-    @validator("coefficients")
+    @validator("coefficients", check_fields=False)
     def check_coefficients(cls, v, values):
         if (
             "region" in values
