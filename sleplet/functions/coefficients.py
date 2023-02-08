@@ -18,10 +18,10 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 class Coefficients:
     L: int
     _: KW_ONLY
-    smoothing: int | None = None
+    extra_args: list[int] | None = None
     noise: float | None = None
     region: Region | None = None
-    extra_args: list[int] | None = None
+    smoothing: int | None = None
 
     def __post_init__(self) -> None:
         self._setup_args()

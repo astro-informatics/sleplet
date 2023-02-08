@@ -12,10 +12,8 @@ from sleplet.utils.slepian_methods import choose_slepian_method, compute_s_p_ome
 from sleplet.utils.validation import Validation
 
 
-@dataclass(config=Validation, kw_only=True)
+@dataclass(config=Validation)
 class F_P(Coefficients):
-    region: Region | None = None
-
     def __post_init__(self) -> None:
         self.region = (
             self.region

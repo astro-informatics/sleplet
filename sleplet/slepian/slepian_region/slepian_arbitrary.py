@@ -38,8 +38,8 @@ _slepian_path = _file_location.parents[2] / "data" / "slepian"
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY
-    L_min: int = settings.L_MIN
     L_max: int = settings.L_MAX
+    L_min: int = settings.L_MIN
 
     def __post_init__(self) -> None:
         self.resolution = settings.SAMPLES * self.L
