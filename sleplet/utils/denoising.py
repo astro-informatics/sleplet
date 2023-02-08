@@ -2,6 +2,7 @@ import numpy as np
 import pyssht as ssht
 
 from sleplet.functions.coefficients import Coefficients
+from sleplet.functions.f_p import F_P
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
@@ -117,8 +118,8 @@ def denoising_slepian_wavelet(
 
 
 def denoising_slepian_function(
-    signal: Coefficients,
-    noised_signal: Coefficients,
+    signal: F_P,
+    noised_signal: F_P,
     snr_in: float,
     n_sigma: int,
 ) -> np.ndarray:
