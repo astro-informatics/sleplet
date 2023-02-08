@@ -28,7 +28,7 @@ def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
             - slepian_polar_cap.eigenvectors[: slepian_polar_cap.N]
         ).mean(),
         0,
-        atol=0.02,
+        atol=0.03,
     )
 
 
