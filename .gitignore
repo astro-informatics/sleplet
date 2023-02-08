@@ -1,6 +1,7 @@
 __pycache__
 .coverage
 .DS_Store
+.envrc
 .hypothesis
 .mypy_cache
 .pytest_cache
