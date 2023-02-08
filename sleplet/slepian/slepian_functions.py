@@ -14,8 +14,8 @@ class SlepianFunctions:
     def __post_init__(self) -> None:
         self._create_mask()
         self.name = self._create_fn_name()
-        self._calculate_area()
-        self.N = round(self.area * self.L**2 / (4 * np.pi))
+        area = self._calculate_area()
+        self.N = round(area * self.L**2 / (4 * np.pi))
         logger.info(f"Shannon number N={self.N}")
         self._create_matrix_location()
         logger.info("start solving eigenproblem")
@@ -37,7 +37,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _calculate_area(self) -> None:
+    def _calculate_area(self) -> float:
         """
         calculates area of region
         """

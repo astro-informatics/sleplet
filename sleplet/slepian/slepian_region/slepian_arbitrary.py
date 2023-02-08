@@ -52,9 +52,9 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.resolution, self.region)
 
-    def _calculate_area(self) -> None:
+    def _calculate_area(self) -> float:
         self.weight = calc_integration_weight(self.resolution)
-        self.area = (self.mask * self.weight).sum()
+        return (self.mask * self.weight).sum()
 
     def _create_matrix_location(self) -> None:
         self.matrix_location = (

@@ -47,8 +47,8 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _create_mask(self) -> None:
         self.mask = create_mask_region(self.L, self.region)
 
-    def _calculate_area(self) -> None:
-        self.area = (self.phi_max - self.phi_min) * (
+    def _calculate_area(self) -> float:
+        return (self.phi_max - self.phi_min) * (
             np.cos(self.theta_min) - np.cos(self.theta_max)
         )
 
