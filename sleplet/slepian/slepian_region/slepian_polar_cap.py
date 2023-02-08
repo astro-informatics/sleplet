@@ -54,19 +54,19 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_matrix_location(self) -> Path:
         return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
-    def _solve_eigenproblem(self) -> None:
+    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         order_loc = self.matrix_location / "orders.npy"
         if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
             logger.info("binaries found - loading...")
-            self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
+            return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
         else:
-            self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
+            return self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
 
     def _solve_eigenproblem_from_files(
         self, eval_loc: Path, evec_loc: Path, order_loc: Path
-    ) -> None:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         solves eigenproblem with files already saved
         """
@@ -76,23 +76,19 @@ class SlepianPolarCap(SlepianFunctions):
 
         if self.order is not None:
             idx = np.where(orders == self.order)
-            self.eigenvalues = eigenvalues[idx]
-            self.eigenvectors = eigenvectors[idx]
+            return eigenvalues[idx], eigenvectors[idx]
         else:
-            self.eigenvalues = eigenvalues
-            self.eigenvectors = eigenvectors
             self.order = orders
+            return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_scratch(
         self, eval_loc: Path, evec_loc: Path, order_loc: Path
-    ) -> None:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         sovles eigenproblem from scratch and then saves the files
         """
         if isinstance(self.order, int):
-            self.eigenvalues, self.eigenvectors = self._solve_eigenproblem_order(
-                self.order
-            )
+            return self._solve_eigenproblem_order(self.order)
         else:
             evals_all = np.empty(0)
             evecs_all = np.empty((0, self.L**2), dtype=np.complex_)
@@ -103,15 +99,16 @@ class SlepianPolarCap(SlepianFunctions):
                 evecs_all = np.concatenate((evecs_all, evecs_m))
                 emm = np.append(emm, [m] * len(evals_m))
             (
-                self.eigenvalues,
-                self.eigenvectors,
+                eigenvalues,
+                eigenvectors,
                 self.order,
             ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
             if settings.SAVE_MATRICES:
                 limit = self.N if self.L > L_SAVE_ALL else None
-                np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors[:limit])
+                np.save(eval_loc, eigenvalues)
+                np.save(evec_loc, eigenvectors[:limit])
                 np.save(order_loc, self.order)
+            return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
         """

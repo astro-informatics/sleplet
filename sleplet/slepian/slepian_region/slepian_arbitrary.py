@@ -61,13 +61,12 @@ class SlepianArbitrary(SlepianFunctions):
             _slepian_path / "eigensolutions" / f"D_{self.mask_name}_L{self.L}_N{self.N}"
         )
 
-    def _solve_eigenproblem(self) -> None:
+    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         if eval_loc.exists() and evec_loc.exists():
             logger.info("binaries found - loading...")
-            self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = np.load(evec_loc)
+            return np.load(eval_loc), np.load(evec_loc)
         else:
             D = self._create_D_matrix()
 
@@ -80,16 +79,17 @@ class SlepianArbitrary(SlepianFunctions):
                     self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
                 )
                 np.save(inter_loc, D)
-                return
+                raise RuntimeError("Large job detected, exiting")
 
             # fill in remaining triangle section
             fill_upper_triangle_of_hermitian_matrix(D)
 
             # solve eigenproblem
-            self.eigenvalues, self.eigenvectors = clean_evals_and_evecs(LA.eigh(D))
+            eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors[: self.N])
+                np.save(eval_loc, eigenvalues)
+                np.save(evec_loc, eigenvectors[: self.N])
+            return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> np.ndarray:
         """

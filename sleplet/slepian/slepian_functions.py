@@ -20,7 +20,7 @@ class SlepianFunctions:
         logger.info(f"Shannon number N={self.N}")
         self.matrix_location = self._create_matrix_location()
         logger.info("start solving eigenproblem")
-        self._solve_eigenproblem()
+        self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
         logger.info("finished solving eigenproblem")
 
     @abstractmethod
@@ -52,7 +52,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _solve_eigenproblem(self) -> None:
+    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         """
         solves the eigenproblem for the given function
         """

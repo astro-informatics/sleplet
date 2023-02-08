@@ -55,21 +55,19 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _create_matrix_location(self) -> Path:
         return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
-    def _solve_eigenproblem(self) -> None:
+    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         if eval_loc.exists() and evec_loc.exists():
             logger.info("binaries found - loading...")
-            self.eigenvalues = np.load(eval_loc)
-            self.eigenvectors = np.load(evec_loc)
+            return np.load(eval_loc), np.load(evec_loc)
         else:
             K = self._create_K_matrix()
-            self.eigenvalues, self.eigenvectors = self._clean_evals_and_evecs(
-                LA.eigh(K)
-            )
+            eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
             if settings.SAVE_MATRICES:
-                np.save(eval_loc, self.eigenvalues)
-                np.save(evec_loc, self.eigenvectors[: self.N])
+                np.save(eval_loc, eigenvalues)
+                np.save(evec_loc, eigenvectors[: self.N])
+            return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> np.ndarray:
         """
