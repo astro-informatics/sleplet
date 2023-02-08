@@ -31,7 +31,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelet coefficients")
-        self._create_wavelet_coefficients()
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelet_coefficients[jth]
@@ -57,15 +57,16 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelet_coefficients(self) -> None:
+    def _create_wavelet_coefficients(self) -> tuple[np.ndarray, np.ndarray]:
         """
         computes wavelet coefficients of the Earth
         """
-        self.wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
+        wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
         self.earth = Earth(self.L, smoothing=self.smoothing)
-        self.wavelet_coefficients = axisymmetric_wavelet_forward(
-            self.L, self.earth.coefficients, self.wavelets
+        wavelet_coefficients = axisymmetric_wavelet_forward(
+            self.L, self.earth.coefficients, wavelets
         )
+        return wavelets, wavelet_coefficients
 
     @validator("j")
     def check_j(cls, v, values):

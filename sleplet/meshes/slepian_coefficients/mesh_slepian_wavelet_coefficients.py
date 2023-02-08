@@ -27,7 +27,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelet coefficients")
-        self._create_wavelet_coefficients()
+        self.wavelet_coefficients = self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelet_coefficients[jth]
@@ -47,17 +47,19 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelet_coefficients(self) -> None:
+    def _create_wavelet_coefficients(self) -> tuple[np.ndarray, np.ndarray]:
         """
         computes wavelet coefficients in Slepian space
         """
         smw = MeshSlepianWavelets(self.mesh, B=self.B, j_min=self.j_min)
         smf = MeshSlepianField(self.mesh)
-        self.wavelet_coefficients = slepian_wavelet_forward(
+        wavelets = smw.wavelets
+        wavelet_coefficients = slepian_wavelet_forward(
             smf.coefficients,
-            smw.wavelets,
+            wavelets,
             self.mesh_slepian.N,
         )
+        return wavelets, wavelet_coefficients
 
     @validator("j")
     def check_j(cls, v, values):

@@ -32,7 +32,7 @@ class SlepianWaveletCoefficientsAfrica(F_P):
 
     def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelet coefficients")
-        self._create_wavelet_coefficients()
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelet_coefficients[jth]
@@ -58,16 +58,17 @@ class SlepianWaveletCoefficientsAfrica(F_P):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelet_coefficients(self) -> None:
+    def _create_wavelet_coefficients(self) -> tuple[np.ndarray, np.ndarray]:
         """
         computes wavelet coefficients in Slepian space
         """
         sw = SlepianWavelets(self.L, B=self.B, j_min=self.j_min, region=self.region)
         sa = SlepianAfrica(self.L, region=self.region, smoothing=self.smoothing)
-        self.wavelets = sw.wavelets
-        self.wavelet_coefficients = slepian_wavelet_forward(
-            sa.coefficients, self.wavelets, self.slepian.N
+        wavelets = sw.wavelets
+        wavelet_coefficients = slepian_wavelet_forward(
+            sa.coefficients, wavelets, self.slepian.N
         )
+        return wavelets, wavelet_coefficients
 
     @validator("j")
     def check_j(cls, v, values):

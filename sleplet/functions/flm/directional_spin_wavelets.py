@@ -32,7 +32,7 @@ class DirectionalSpinWavelets(F_LM):
         self.wavelets = self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
-        return self.wavelet_coefficients[jth]
+        return self.wavelets[jth]
 
     def _create_name(self) -> str:
         return (
