@@ -31,7 +31,7 @@ class F_LM(Coefficients):
             self.coefficients += nlm
 
     @abstractmethod
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         raise NotImplementedError
 
     @abstractmethod

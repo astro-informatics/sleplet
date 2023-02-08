@@ -12,12 +12,12 @@ class DiracDelta(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
             flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
-        self.coefficients = flm
+        return flm
 
     def _create_name(self) -> str:
         return convert_camel_case_to_snake_case(self.__class__.__name__)

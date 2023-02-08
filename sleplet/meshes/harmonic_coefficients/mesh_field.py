@@ -1,3 +1,4 @@
+import numpy as np
 from igl import per_vertex_normals
 from pydantic.dataclasses import dataclass
 
@@ -11,12 +12,12 @@ class MeshField(MeshHarmonicCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         """
         compute field on the vertices of the mesh
         """
         field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
-        self.coefficients = mesh_forward(self.mesh, field)
+        return mesh_forward(self.mesh, field)
 
     def _create_name(self) -> str:
         return f"{self.mesh.name}_field"

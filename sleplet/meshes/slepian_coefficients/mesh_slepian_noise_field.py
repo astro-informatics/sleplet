@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
@@ -14,11 +15,11 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         smf = MeshSlepianField(self.mesh, region=True)
         noise = create_slepian_mesh_noise(self.mesh_slepian, smf.coefficients, self.SNR)
         compute_snr(smf.coefficients, noise, "Slepian")
-        self.coefficients = noise
+        return noise
 
     def _create_name(self) -> str:
         return f"slepian_{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"

@@ -29,7 +29,7 @@ class Coefficients:
         self.name = self._create_name()
         self.spin = self._set_spin()
         self.reality = self._set_reality()
-        self._create_coefficients()
+        self.coefficients = self._create_coefficients()
         self._add_details_to_name()
         self._add_noise_to_signal()
 
@@ -107,7 +107,7 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         """
         creates the flm on the north pole
         """

@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
@@ -14,11 +15,11 @@ class NoiseEarth(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         earth = Earth(self.L, smoothing=self.smoothing)
         noise = create_noise(self.L, earth.coefficients, self.SNR)
         compute_snr(earth.coefficients, noise, "Harmonic")
-        self.coefficients = noise
+        return noise
 
     def _create_name(self) -> str:
         return (

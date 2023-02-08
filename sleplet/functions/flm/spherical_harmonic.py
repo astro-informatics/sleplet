@@ -1,3 +1,4 @@
+import numpy as np
 import pyssht as ssht
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -13,9 +14,9 @@ class SphericalHarmonic(F_LM):
     ell: int = 0
     m: int = 0
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         ind = ssht.elm2ind(self.ell, self.m)
-        self.coefficients = create_spherical_harmonic(self.L, ind)
+        return create_spherical_harmonic(self.L, ind)
 
     def _create_name(self) -> str:
         return (

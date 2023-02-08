@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -15,12 +16,12 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         self._validate_rank()
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         """
         compute field on the vertices of the mesh
         """
         basis_function = self.mesh.basis_functions[self.rank]
-        self.coefficients = mesh_forward(self.mesh, basis_function)
+        return mesh_forward(self.mesh, basis_function)
         logger.info(
             f"Mesh eigenvalue {self.rank}: "
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}"

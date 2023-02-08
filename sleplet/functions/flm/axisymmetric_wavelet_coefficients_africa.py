@@ -1,5 +1,6 @@
 from typing import Optional
 
+import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
@@ -28,12 +29,12 @@ class AxisymmetricWaveletCoefficientsAfrica(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelet coefficients")
         self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
-        self.coefficients = self.wavelet_coefficients[jth]
+        return self.wavelet_coefficients[jth]
 
     def _create_name(self) -> str:
         return (

@@ -15,14 +15,14 @@ class HarmonicGaussian(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
                 ind = ssht.elm2ind(ell, m)
                 flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
-        self.coefficients = flm
+        return flm
 
     def _create_name(self) -> str:
         return (

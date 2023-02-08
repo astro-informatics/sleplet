@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
@@ -15,9 +16,9 @@ class SlepianAfrica(F_P):
         if isinstance(self.region, Region) and self.region.name_ending != "africa":
             raise RuntimeError("Slepian region selected must be 'africa'")
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         a = Africa(self.L, smoothing=self.smoothing)
-        self.coefficients = slepian_forward(self.L, self.slepian, flm=a.coefficients)
+        return slepian_forward(self.L, self.slepian, flm=a.coefficients)
 
     def _create_name(self) -> str:
         return convert_camel_case_to_snake_case(self.__class__.__name__)

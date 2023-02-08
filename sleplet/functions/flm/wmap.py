@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.data.other.wmap.create_wmap_flm import create_flm
@@ -11,8 +12,8 @@ class Wmap(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
-        self.coefficients = create_flm(self.L)
+    def _create_coefficients(self) -> np.ndarray:
+        return create_flm(self.L)
 
     def _create_name(self) -> str:
         return convert_camel_case_to_snake_case(self.__class__.__name__)

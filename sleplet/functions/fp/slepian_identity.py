@@ -11,8 +11,8 @@ class SlepianIdentity(F_P):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
-        self.coefficients = np.ones(self.L**2, dtype=np.complex_)
+    def _create_coefficients(self) -> np.ndarray:
+        return np.ones(self.L**2, dtype=np.complex_)
 
     def _create_name(self) -> str:
         return (

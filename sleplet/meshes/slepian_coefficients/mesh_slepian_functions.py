@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -14,12 +15,12 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         """
         compute field on the vertices of the mesh
         """
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
-        self.coefficients = slepian_mesh_forward(
+        return slepian_mesh_forward(
             self.mesh_slepian,
             u_i=s_p_i,
         )

@@ -28,12 +28,12 @@ class Ridgelets(F_LM):
     def __post_init__(self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         logger.info("start computing wavelets")
         self._create_wavelets()
         logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
-        self.coefficients = self.wavelets[jth]
+        return self.wavelets[jth]
 
     def _create_name(self) -> str:
         return (

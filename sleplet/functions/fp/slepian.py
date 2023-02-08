@@ -1,3 +1,4 @@
+import numpy as np
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -30,8 +31,8 @@ class Slepian(F_P):
             .replace("+", "")
         )
 
-    def _create_coefficients(self) -> None:
-        self.coefficients = slepian_forward(
+    def _create_coefficients(self) -> np.ndarray:
+        return slepian_forward(
             self.L, self.slepian, flm=self.slepian.eigenvectors[self.rank]
         )
         logger.info(f"Shannon number: {self.slepian.N}")

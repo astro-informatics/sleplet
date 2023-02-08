@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
@@ -27,7 +28,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
             self.coefficients += n_p
 
     @abstractmethod
-    def _create_coefficients(self) -> None:
+    def _create_coefficients(self) -> np.ndarray:
         raise NotImplementedError
 
     @abstractmethod
