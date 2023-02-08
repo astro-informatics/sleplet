@@ -5,6 +5,7 @@ import numpy as np
 from pydantic.dataclasses import dataclass
 
 from sleplet.utils.logger import logger
+from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
 
 
@@ -15,6 +16,7 @@ class SlepianFunctions:
     def __post_init__(self) -> None:
         self.mask = self._create_mask()
         self.name = self._create_fn_name()
+        self.region = self._create_region()
         area = self._calculate_area()
         self.N = round(area * self.L**2 / (4 * np.pi))
         logger.info(f"Shannon number N={self.N}")
@@ -27,6 +29,13 @@ class SlepianFunctions:
     def _create_fn_name(self) -> str:
         """
         creates the name for plotting
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _create_region(self) -> Region:
+        """
+        creates a region object for area of interest
         """
         raise NotImplementedError
 

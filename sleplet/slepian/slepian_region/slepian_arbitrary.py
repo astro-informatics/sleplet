@@ -42,12 +42,14 @@ class SlepianArbitrary(SlepianFunctions):
     L_max: int = settings.L_MAX
 
     def __post_init__(self) -> None:
-        self.region = Region(mask_name=self.mask_name)
         self.resolution = settings.SAMPLES * self.L
         super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"
+
+    def _create_region(self) -> Region:
+        return Region(mask_name=self.mask_name)
 
     def _create_mask(self) -> np.ndarray:
         return create_mask_region(self.resolution, self.region)

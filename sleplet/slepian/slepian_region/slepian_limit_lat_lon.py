@@ -33,16 +33,18 @@ class SlepianLimitLatLon(SlepianFunctions):
     theta_min: float = THETA_MIN_DEFAULT
 
     def __post_init__(self) -> None:
-        self.region = Region(
+        super().__post_init__()
+
+    def _create_fn_name(self) -> str:
+        return f"slepian_{self.region.name_ending}"
+
+    def _create_region(self) -> Region:
+        return Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
             phi_min=self.phi_min,
             phi_max=self.phi_max,
         )
-        super().__post_init__()
-
-    def _create_fn_name(self) -> str:
-        return f"slepian_{self.region.name_ending}"
 
     def _create_mask(self) -> np.ndarray:
         return create_mask_region(self.L, self.region)
