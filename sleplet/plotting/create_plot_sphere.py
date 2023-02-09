@@ -181,7 +181,7 @@ class Plot:
 
         return x, y, z, f_plot, vmin, vmax
 
-    def _prepare_field(self, f: npt.NDArray) -> npt.NDArray:
+    def _prepare_field(self, f: npt.NDArray[np.complex_ | np.float_]) -> npt.NDArray:
         """
         boosts, forces plot type and then scales the field before plotting
         """

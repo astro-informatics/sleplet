@@ -19,8 +19,8 @@ class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: KW_ONLY
     mask: bool = False
-    u_i: npt.NDArray | None = None
-    u: npt.NDArray | None = None
+    u_i: npt.NDArray[np.complex_ | np.float_] | None = None
+    u: npt.NDArray[np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
         """ """
@@ -42,7 +42,7 @@ class MeshSlepianDecomposition:
             case _:
                 raise ValueError(f"'{self.method}' is not a valid method")
 
-    def decompose_all(self, n_coefficients: int) -> npt.NDArray:
+    def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.float_]:
         """
         decompose all ranks of the Slepian coefficients
         """

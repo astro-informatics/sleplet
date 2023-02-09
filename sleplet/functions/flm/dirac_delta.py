@@ -13,7 +13,7 @@ class DiracDelta(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)

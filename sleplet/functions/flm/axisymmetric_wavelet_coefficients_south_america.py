@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -27,7 +28,7 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
         logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")
@@ -55,7 +56,9 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelet_coefficients(self) -> tuple[npt.NDArray, npt.NDArray]:
+    def _create_wavelet_coefficients(
+        self,
+    ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
         """
         computes wavelet coefficients of South America
         """

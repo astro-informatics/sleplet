@@ -1,4 +1,5 @@
 from functools import reduce
+from typing import Any
 
 import numpy as np
 import pyssht as ssht
@@ -7,7 +8,7 @@ from numpy import typing as npt
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 
-def calc_integration_weight(L: int) -> npt.NDArray:
+def calc_integration_weight(L: int) -> npt.NDArray[np.float_]:
     """
     computes the spherical Jacobian for the integration
     """
@@ -17,7 +18,9 @@ def calc_integration_weight(L: int) -> npt.NDArray:
     return np.sin(thetas) * delta_theta * delta_phi
 
 
-def integrate_whole_sphere(weight: npt.NDArray, *functions: npt.NDArray) -> complex:
+def integrate_whole_sphere(
+    weight: npt.NDArray[np.float_], *functions: npt.NDArray[np.complex_]
+) -> complex:
     """
     computes the integration for the whole sphere
     """
@@ -26,7 +29,9 @@ def integrate_whole_sphere(weight: npt.NDArray, *functions: npt.NDArray) -> comp
 
 
 def integrate_region_sphere(
-    mask: npt.NDArray, weight: npt.NDArray, *functions: npt.NDArray
+    mask: npt.NDArray[np.float_],
+    weight: npt.NDArray[np.float_],
+    *functions: npt.NDArray[np.complex_],
 ) -> complex:
     """
     computes the integration for a region of the sphere
@@ -36,7 +41,9 @@ def integrate_region_sphere(
 
 
 def integrate_whole_mesh(
-    vertices: npt.NDArray, faces: npt.NDArray, *functions: npt.NDArray
+    vertices: npt.NDArray[np.float_],
+    faces: npt.NDArray[np.int_],
+    *functions: npt.NDArray[np.float_],
 ) -> float:
     """
     computes the integral of functions on the vertices
@@ -46,10 +53,10 @@ def integrate_whole_mesh(
 
 
 def integrate_region_mesh(
-    mask: npt.NDArray,
-    vertices: npt.NDArray,
-    faces: npt.NDArray,
-    *functions: npt.NDArray,
+    mask: npt.NDArray[np.bool_],
+    vertices: npt.NDArray[np.float_],
+    faces: npt.NDArray[np.int_],
+    *functions: npt.NDArray[np.float_],
 ) -> float:
     """
     computes the integral of a region of functions on the vertices
@@ -58,7 +65,7 @@ def integrate_region_mesh(
     return (multiplied_inputs * mask).sum()
 
 
-def _multiply_args(*args: npt.NDArray) -> npt.NDArray:
+def _multiply_args(*args: npt.NDArray[Any]) -> npt.NDArray:
     """
     method to multiply an unknown number of arguments
     """

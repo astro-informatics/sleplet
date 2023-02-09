@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
@@ -14,10 +15,14 @@ class F_LM(Coefficients):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> npt.NDArray:
+    def rotate(
+        self, alpha: float, beta: float, *, gamma: float = 0
+    ) -> npt.NDArray[np.complex_]:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
-    def _translation_helper(self, alpha: float, beta: float) -> npt.NDArray:
+    def _translation_helper(
+        self, alpha: float, beta: float
+    ) -> npt.NDArray[np.complex_]:
         return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
 
     def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:

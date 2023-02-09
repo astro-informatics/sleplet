@@ -11,7 +11,7 @@ from sleplet.utils.vars import RANDOM_SEED
 _file_location = Path(__file__).resolve()
 
 
-def create_flm(L: int) -> npt.NDArray:
+def create_flm(L: int) -> npt.NDArray[np.complex_]:
     """
     creates the flm for the whole CMB
     """

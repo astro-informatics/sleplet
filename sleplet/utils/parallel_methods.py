@@ -17,7 +17,9 @@ def split_arr_into_chunks(
     return [np.sort(arr[i::ncpu]) for i in range(ncpu)]
 
 
-def create_shared_memory_array(array: npt.NDArray) -> tuple[npt.NDArray, SharedMemory]:
+def create_shared_memory_array(
+    array: npt.NDArray[np.float_],
+) -> tuple[npt.NDArray, SharedMemory]:
     """
     creates a shared memory array to be used in a parallel function
     """

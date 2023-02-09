@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
+import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -34,7 +35,7 @@ class Coefficients:
 
     def translate(
         self, alpha: float, beta: float, *, shannon: int | None = None
-    ) -> npt.NDArray:
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         g_coefficients = self._translation_helper(alpha, beta)
         return (
             g_coefficients
@@ -44,11 +45,11 @@ class Coefficients:
 
     def convolve(
         self,
-        f_coefficient: npt.NDArray,
-        g_coefficient: npt.NDArray,
+        f_coefficient: npt.NDArray[np.complex_ | np.float_],
+        g_coefficient: npt.NDArray[np.complex_ | np.float_],
         *,
         shannon: int | None = None,
-    ) -> npt.NDArray:
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         # translation/convolution are not real for general function
         self.reality = False
         return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
@@ -85,14 +86,18 @@ class Coefficients:
         return v
 
     @abstractmethod
-    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> npt.NDArray:
+    def rotate(
+        self, alpha: float, beta: float, *, gamma: float = 0
+    ) -> npt.NDArray[np.complex_]:
         """
         rotates given flm on the sphere by alpha/beta/gamma
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _translation_helper(self, alpha: float, beta: float) -> npt.NDArray:
+    def _translation_helper(
+        self, alpha: float, beta: float
+    ) -> npt.NDArray[np.complex_]:
         """
         compute the basis function at omega' for translation
         """

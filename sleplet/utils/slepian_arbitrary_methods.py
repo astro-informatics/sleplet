@@ -9,7 +9,9 @@ from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 MACHINE_EPSILON = 1e-14
 
 
-def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> npt.NDArray:
+def calculate_high_L_matrix(
+    file_loc: Path, L: int, L_ranges: list[int]
+) -> npt.NDArray[np.complex_]:
     """
     splits up and calculates intermediate matrices for higher L
     """
@@ -25,7 +27,9 @@ def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> npt.
     return D
 
 
-def clean_evals_and_evecs(eigendecomposition: tuple) -> tuple[npt.NDArray, npt.NDArray]:
+def clean_evals_and_evecs(
+    eigendecomposition: tuple,
+) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
     """
     need eigenvalues and eigenvectors to be in a certain format
     """

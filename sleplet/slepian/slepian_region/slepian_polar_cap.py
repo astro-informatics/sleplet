@@ -47,7 +47,7 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_region(self) -> Region:
         return Region(gap=self.gap, theta_max=self.theta_max)
 
-    def _create_mask(self) -> npt.NDArray:
+    def _create_mask(self) -> npt.NDArray[np.float_]:
         return create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -> float:
@@ -134,7 +134,9 @@ class SlepianPolarCap(SlepianFunctions):
         orders = orders[idx]
         return eigenvalues, eigenvectors, orders
 
-    def _create_Dm_matrix(self, m: int, emm: npt.NDArray) -> npt.NDArray:
+    def _create_Dm_matrix(
+        self, m: int, emm: npt.NDArray[np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         Syntax:
         Dm = _create_Dm_matrix(m, P)
@@ -188,8 +190,8 @@ class SlepianPolarCap(SlepianFunctions):
         return Dm
 
     def _create_legendre_polynomials_table(
-        self, emm: npt.NDArray
-    ) -> tuple[npt.NDArray, npt.NDArray]:
+        self, emm: npt.NDArray[np.float_]
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
         """
         create Legendre polynomials table for matrix calculation
         """
@@ -201,7 +203,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _dm_matrix_helper(
         self,
-        Dm: npt.NDArray,
+        Dm: npt.NDArray[np.float_],
         i: int,
         m: int,
         lvec: npt.NDArray,
@@ -322,14 +324,15 @@ class SlepianPolarCap(SlepianFunctions):
         return 1 + self.gap * (-1) ** (ell1 + ell2)
 
     def _clean_evals_and_evecs(
-        self, eigenvalues: npt.NDArray, gl: npt.NDArray, emm: npt.NDArray, m: int
-    ) -> tuple[npt.NDArray, npt.NDArray]:
+        self,
+        eigenvalues: npt.NDArray[np.float_],
+        gl: npt.NDArray,
+        emm: npt.NDArray,
+        m: int,
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]

@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
@@ -16,7 +17,7 @@ class SlepianAfrica(F_P):
         if isinstance(self.region, Region) and self.region.name_ending != "africa":
             raise RuntimeError("Slepian region selected must be 'africa'")
 
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
         a = Africa(self.L, smoothing=self.smoothing)
         return slepian_forward(self.L, self.slepian, flm=a.coefficients)
 

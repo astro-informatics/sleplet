@@ -52,7 +52,7 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_region(self) -> Region:
         return Region(mask_name=self.mask_name)
 
-    def _create_mask(self) -> npt.NDArray:
+    def _create_mask(self) -> npt.NDArray[np.float_]:
         return create_mask_region(self.resolution, self.region)
 
     def _calculate_area(self) -> float:

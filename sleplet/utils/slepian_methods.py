@@ -42,7 +42,9 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
             raise ValueError(f"{region.region_type} is an invalid region type")
 
 
-def slepian_inverse(f_p: npt.NDArray, L: int, slepian: SlepianFunctions) -> npt.NDArray:
+def slepian_inverse(
+    f_p: npt.NDArray, L: int, slepian: SlepianFunctions
+) -> npt.NDArray[np.complex_]:
     """
     computes the Slepian inverse transform up to the Shannon number
     """
@@ -59,7 +61,7 @@ def slepian_forward(
     flm: npt.NDArray | None = None,
     mask: npt.NDArray | None = None,
     n_coeffs: int | None = None,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_]:
     """
     computes the Slepian forward transform for all coefficients
     """
@@ -68,7 +70,7 @@ def slepian_forward(
     return sd.decompose_all(n_coeffs)
 
 
-def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray:
+def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray[np.complex_]:
     """
     method to calculate Sp(omega) for a given region
     """
@@ -83,7 +85,7 @@ def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray:
 
 def compute_s_p_omega_prime(
     L: int, alpha: float, beta: float, slepian: SlepianFunctions
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_]:
     """
     method to pick out the desired angle from Sp(omega)
     """
@@ -99,11 +101,11 @@ def compute_s_p_omega_prime(
 def slepian_mesh_forward(
     mesh_slepian: MeshSlepian,
     *,
-    u: npt.NDArray | None = None,
-    u_i: npt.NDArray | None = None,
+    u: npt.NDArray[np.float_] | None = None,
+    u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
     mask: bool = False,
     n_coeffs: int | None = None,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the Slepian forward transform for all coefficients
     """
@@ -129,7 +131,7 @@ def slepian_mesh_inverse(
     return (f_p_reshape * s_p).sum(axis=0)
 
 
-def compute_mesh_s_p_pixel(mesh_slepian: MeshSlepian) -> npt.NDArray:
+def compute_mesh_s_p_pixel(mesh_slepian: MeshSlepian) -> npt.NDArray[np.float_]:
     """
     method to calculate Sp(omega) for a given region
     """

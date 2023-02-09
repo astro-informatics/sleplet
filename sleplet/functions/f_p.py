@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
@@ -23,10 +24,14 @@ class F_P(Coefficients):
         self.slepian = choose_slepian_method(self.L, self.region)
         super().__post_init_post_parse__()
 
-    def rotate(self, alpha: float, beta: float, *, gamma: float = 0) -> npt.NDArray:
+    def rotate(
+        self, alpha: float, beta: float, *, gamma: float = 0
+    ) -> npt.NDArray[np.complex_]:
         raise NotImplementedError("Slepian rotation is not defined")
 
-    def _translation_helper(self, alpha: float, beta: float) -> npt.NDArray:
+    def _translation_helper(
+        self, alpha: float, beta: float
+    ) -> npt.NDArray[np.complex_]:
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
     def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:

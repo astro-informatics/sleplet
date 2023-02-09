@@ -1,8 +1,10 @@
+from typing import Any
+
 import numpy as np
 from numpy import typing as npt
 
 
-def fill_upper_triangle_of_hermitian_matrix(matrix: npt.NDArray) -> None:
+def fill_upper_triangle_of_hermitian_matrix(matrix: npt.NDArray[Any]) -> None:
     """
     using Hermitian matrix symmetry can avoid repeated calculations
     """

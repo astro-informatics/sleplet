@@ -113,7 +113,7 @@ def find_max_amplitude(
     return np.abs(create_plot_type(boosted_field, plot_type)).max()
 
 
-def create_plot_type(field: npt.NDArray, plot_type: str) -> npt.NDArray:
+def create_plot_type(field: npt.NDArray, plot_type: str) -> npt.NDArray[np.float_]:
     """
     gets the given plot type of the field
     """
@@ -142,7 +142,9 @@ def set_outside_region_to_minimum(
     return np.where(closed_mask, f_plot, SPHERE_UNSEEN)
 
 
-def rotate_earth_to_south_america(earth_flm: npt.NDArray, L: int) -> npt.NDArray:
+def rotate_earth_to_south_america(
+    earth_flm: npt.NDArray[np.complex_], L: int
+) -> npt.NDArray[np.complex_]:
     """
     rotates the flms of the Earth to a view centered on South America
     """
@@ -151,14 +153,18 @@ def rotate_earth_to_south_america(earth_flm: npt.NDArray, L: int) -> npt.NDArray
     )
 
 
-def rotate_earth_to_africa(earth_flm: npt.NDArray, L: int) -> npt.NDArray:
+def rotate_earth_to_africa(
+    earth_flm: npt.NDArray[np.complex_], L: int
+) -> npt.NDArray[np.complex_]:
     """
     rotates the flms of the Earth to a view centered on Africa
     """
     return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)
 
 
-def normalise_function(f: npt.NDArray, normalise: bool) -> npt.NDArray:
+def normalise_function(
+    f: npt.NDArray[np.float_], normalise: bool
+) -> npt.NDArray[np.float_]:
     """
     normalise function between 0 and 1 for visualisation
     """

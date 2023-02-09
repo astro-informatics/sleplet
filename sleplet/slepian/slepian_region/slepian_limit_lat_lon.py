@@ -46,7 +46,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_max=self.phi_max,
         )
 
-    def _create_mask(self) -> npt.NDArray:
+    def _create_mask(self) -> npt.NDArray[np.float_]:
         return create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -> float:
@@ -85,7 +85,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         return K
 
-    def _slepian_integral(self) -> npt.NDArray:
+    def _slepian_integral(self) -> npt.NDArray[np.complex_]:
         """
         Syntax:
         G = _slepian_integral()
@@ -144,7 +144,9 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @staticmethod
     @njit(parallel=True, fastmath=True)
-    def _slepian_matrix(dl: npt.NDArray, L: int, N: int, G: npt.NDArray) -> npt.NDArray:
+    def _slepian_matrix(
+        dl: npt.NDArray, L: int, N: int, G: npt.NDArray[np.complex_]
+    ) -> npt.NDArray[np.complex_]:
         """
         Syntax:
         K = _slepian_matrix(dl, L, N, G)

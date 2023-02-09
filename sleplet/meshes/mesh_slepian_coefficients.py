@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
@@ -30,7 +31,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
         return None, None
 
     @abstractmethod
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
     @abstractmethod

@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
+import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -56,7 +57,7 @@ class MeshCoefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """
         creates the flm on the north pole
         """

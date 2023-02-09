@@ -18,14 +18,18 @@ from sleplet.utils.slepian_methods import (
 from sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 
 
-def _signal_power(signal: npt.NDArray) -> float:
+def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:
     """
     computes the power of the signal
     """
     return (np.abs(signal) ** 2).sum()
 
 
-def compute_snr(signal: npt.NDArray, noise: npt.NDArray, signal_type: str) -> float:
+def compute_snr(
+    signal: npt.NDArray[np.complex_ | np.float_],
+    noise: npt.NDArray[np.complex_ | np.float_],
+    signal_type: str,
+) -> float:
     """
     computes the signal to noise ratio
     """
@@ -48,7 +52,9 @@ def compute_sigma_noise(
     return np.sqrt(10 ** (-snr_in / 10) * _signal_power(signal) / denominator)
 
 
-def create_noise(L: int, signal: npt.NDArray, snr_in: float) -> npt.NDArray:
+def create_noise(
+    L: int, signal: npt.NDArray, snr_in: float
+) -> npt.NDArray[np.complex_]:
     """
     computes Gaussian white noise
     """
@@ -79,7 +85,7 @@ def create_noise(L: int, signal: npt.NDArray, snr_in: float) -> npt.NDArray:
 
 def create_slepian_noise(
     L: int, slepian_signal: npt.NDArray, slepian: SlepianFunctions, snr_in: float
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_]:
     """
     computes Gaussian white noise in Slepian space
     """
@@ -178,7 +184,9 @@ def compute_slepian_sigma_j(
     return sigma_noise * np.sqrt(wavelet_power)
 
 
-def create_mesh_noise(u_i: npt.NDArray, snr_in: float) -> npt.NDArray:
+def create_mesh_noise(
+    u_i: npt.NDArray, snr_in: float
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes Gaussian white noise
     """
@@ -201,7 +209,7 @@ def create_slepian_mesh_noise(
     mesh_slepian: MeshSlepian,
     slepian_signal: npt.NDArray,
     snr_in: float,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes Gaussian white noise in Slepian space
     """

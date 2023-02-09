@@ -22,7 +22,7 @@ class SouthAmerica(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
         return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)
 
     def _create_name(self) -> str:
@@ -40,7 +40,9 @@ class SouthAmerica(F_LM):
                 f"{self.__class__.__name__} does not support extra arguments"
             )
 
-    def _grid_fun(self, theta: npt.NDArray, phi: npt.NDArray) -> npt.NDArray:
+    def _grid_fun(
+        self, theta: npt.NDArray[np.float_], phi: npt.NDArray[np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         function on the grid
         """

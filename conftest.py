@@ -133,7 +133,7 @@ def slepian_wavelets_lim_lat_lon(slepian_lim_lat_lon) -> SlepianWavelets:
 
 
 @pytest.fixture(scope="session")
-def random_flm() -> npt.NDArray:
+def random_flm() -> npt.NDArray[np.complex_]:
     """
     creates random flm
     """

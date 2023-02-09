@@ -246,7 +246,7 @@ def _rotation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     gamma_pi_frac: float,
-) -> tuple[npt.NDArray, str]:
+) -> tuple[npt.NDArray[np.complex_], str]:
     """
     performs the rotation specific steps
     """
@@ -315,7 +315,9 @@ def _convolution_helper(
     return coefficients, filename
 
 
-def _coefficients_to_field(f: Coefficients, coefficients: npt.NDArray) -> npt.NDArray:
+def _coefficients_to_field(
+    f: Coefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray:
     """
     computes the field over the samples from the harmonic/Slepian coefficients
     """

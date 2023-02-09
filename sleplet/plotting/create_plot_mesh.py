@@ -99,7 +99,7 @@ class Plot:
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
                 fig.write_image(filename, engine="kaleido")
 
-    def _prepare_field(self, f: npt.NDArray) -> npt.NDArray:
+    def _prepare_field(self, f: npt.NDArray[np.float_]) -> npt.NDArray[np.float_]:
         """
         scales the field before plotting
         """
@@ -107,7 +107,7 @@ class Plot:
             average_functions_on_vertices_to_faces(self.mesh.faces, f), self.normalise
         )
 
-    def _set_outside_region_to_minimum(self, f: npt.NDArray) -> npt.NDArray:
+    def _set_outside_region_to_minimum(self, f: npt.NDArray[np.float_]) -> npt.NDArray:
         """
         for the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region

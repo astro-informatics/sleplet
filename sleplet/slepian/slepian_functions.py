@@ -41,7 +41,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_mask(self) -> npt.NDArray:
+    def _create_mask(self) -> npt.NDArray[np.float_]:
         """
         creates a mask of the region of interest
         """

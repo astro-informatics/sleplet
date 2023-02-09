@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
@@ -12,7 +13,7 @@ class Earth(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
         return create_flm(self.L, smoothing=self.smoothing)
 
     def _create_name(self) -> str:

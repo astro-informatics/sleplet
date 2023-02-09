@@ -3,11 +3,11 @@ from numpy import typing as npt
 
 
 def sifting_convolution(
-    f_coefficient: npt.NDArray,
-    g_coefficient: npt.NDArray,
+    f_coefficient: npt.NDArray[np.complex_ | np.float_],
+    g_coefficient: npt.NDArray[np.complex_ | np.float_],
     *,
     shannon: int | None = None,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the sifting convolution between two multipoles
     """

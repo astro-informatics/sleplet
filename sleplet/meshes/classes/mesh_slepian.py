@@ -73,7 +73,7 @@ class MeshSlepian:
                 np.save(eval_loc, self.slepian_eigenvalues)
                 np.save(evec_loc, self.slepian_functions[: self.N])
 
-    def _create_D_matrix(self) -> npt.NDArray:
+    def _create_D_matrix(self) -> npt.NDArray[np.float_]:
         """
         computes the D matrix for the mesh eigenfunctions
         """

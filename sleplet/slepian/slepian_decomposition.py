@@ -44,7 +44,7 @@ class SlepianDecomposition:
             case _:
                 raise ValueError(f"'{self.method}' is not a valid method")
 
-    def decompose_all(self, n_coefficients: int) -> npt.NDArray:
+    def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.complex_]:
         """
         decompose all ranks of the Slepian coefficients
         """

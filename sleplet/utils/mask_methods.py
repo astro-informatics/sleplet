@@ -15,7 +15,7 @@ _file_location = Path(__file__).resolve()
 _mask_path = _file_location.parents[1] / "data" / "slepian" / "masks"
 
 
-def create_mask_region(L: int, region: Region) -> npt.NDArray:
+def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
     """
     creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
@@ -50,11 +50,11 @@ def create_mask_region(L: int, region: Region) -> npt.NDArray:
             mask = thetas <= region.theta_max
             if region.gap:
                 logger.info("creating polar gap mask")
-                mask |= thetas >= np.pi - region.theta_max
+                mask += thetas >= np.pi - region.theta_max
     return mask
 
 
-def _load_mask(mask_name: str) -> npt.NDArray:
+def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
     """
     attempts to read the mask from the config file
     """
@@ -69,7 +69,7 @@ def _load_mask(mask_name: str) -> npt.NDArray:
 
 def ensure_masked_flm_bandlimited(
     flm: npt.NDArray, L: int, region: Region, reality: bool, spin: int
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_]:
     """
     ensures the coefficients is bandlimited for a given region
     """
@@ -93,7 +93,9 @@ def create_default_region(settings: Box) -> Region:
     )
 
 
-def create_mesh_region(mesh_config: Box, vertices: npt.NDArray) -> npt.NDArray:
+def create_mesh_region(
+    mesh_config: Box, vertices: npt.NDArray[np.float_]
+) -> npt.NDArray[np.bool_]:
     """
     creates the boolean region for the given mesh
     """
@@ -107,7 +109,9 @@ def create_mesh_region(mesh_config: Box, vertices: npt.NDArray) -> npt.NDArray:
     )
 
 
-def ensure_masked_bandlimit_mesh_signal(mesh: Mesh, u_i: npt.NDArray) -> npt.NDArray:
+def ensure_masked_bandlimit_mesh_signal(
+    mesh: Mesh, u_i: npt.NDArray[np.float_]
+) -> npt.NDArray:
     """
     ensures that signal in pixel space is bandlimited
     """

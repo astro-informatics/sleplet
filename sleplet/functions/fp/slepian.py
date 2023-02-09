@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -31,7 +32,7 @@ class Slepian(F_P):
             .replace("+", "")
         )
 
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
         logger.info(f"Shannon number: {self.slepian.N}")
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
         return slepian_forward(

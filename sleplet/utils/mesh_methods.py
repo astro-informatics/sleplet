@@ -15,9 +15,9 @@ _meshes_path = _file_location.parents[1] / "data" / "meshes"
 
 
 def average_functions_on_vertices_to_faces(
-    faces: npt.NDArray,
-    functions_on_vertices: npt.NDArray,
-) -> npt.NDArray:
+    faces: npt.NDArray[np.int_],
+    functions_on_vertices: npt.NDArray[np.float_],
+) -> npt.NDArray[np.float_]:
     """
     the integrals require all functions to be defined on faces
     this method handles an arbitrary number of functions
@@ -38,7 +38,9 @@ def average_functions_on_vertices_to_faces(
     return functions_on_faces
 
 
-def create_mesh_region(mesh_config: Box, vertices: npt.NDArray) -> npt.NDArray:
+def create_mesh_region(
+    mesh_config: Box, vertices: npt.NDArray[np.float_]
+) -> npt.NDArray[np.bool_]:
     """
     creates the boolean region for the given mesh
     """
@@ -61,8 +63,8 @@ def extract_mesh_config(mesh_name: str) -> Box:
 
 def mesh_eigendecomposition(
     name: str,
-    vertices: npt.NDArray,
-    faces: npt.NDArray,
+    vertices: npt.NDArray[np.float_],
+    faces: npt.NDArray[np.int_],
     *,
     number_basis_functions: int | None = None,
 ) -> tuple[npt.NDArray, npt.NDArray, int]:
@@ -105,7 +107,7 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors, number_basis_functions
 
 
-def read_mesh(mesh_config: Box) -> tuple[npt.NDArray, npt.NDArray]:
+def read_mesh(mesh_config: Box) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
     """
     reads in the given mesh
     """
@@ -115,7 +117,9 @@ def read_mesh(mesh_config: Box) -> tuple[npt.NDArray, npt.NDArray]:
     return upsample(vertices, faces, number_of_subdivs=mesh_config.UPSAMPLE)
 
 
-def _mesh_laplacian(vertices: npt.NDArray, faces: npt.NDArray) -> npt.NDArray:
+def _mesh_laplacian(
+    vertices: npt.NDArray[np.float_], faces: npt.NDArray
+) -> npt.NDArray[np.float_]:
     """
     computes the cotagent mesh laplacian
     """
@@ -123,7 +127,9 @@ def _mesh_laplacian(vertices: npt.NDArray, faces: npt.NDArray) -> npt.NDArray:
 
 
 def _orthonormalise_basis_functions(
-    vertices: npt.NDArray, faces: npt.NDArray, basis_functions: npt.NDArray
+    vertices: npt.NDArray[np.float_],
+    faces: npt.NDArray[np.int_],
+    basis_functions: npt.NDArray,
 ) -> npt.NDArray:
     """
     for computing the Slepian D matrix the basis functions must be orthonormal

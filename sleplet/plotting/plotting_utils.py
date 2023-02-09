@@ -6,7 +6,9 @@ from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 
 
-def earth_region_harmonic_coefficients(L: int, theta_max: int) -> npt.NDArray:
+def earth_region_harmonic_coefficients(
+    L: int, theta_max: int
+) -> npt.NDArray[np.float_]:
     """
     harmonic coefficients of the Earth for the polar cap region
     """
@@ -17,7 +19,7 @@ def earth_region_harmonic_coefficients(L: int, theta_max: int) -> npt.NDArray:
     return coefficients
 
 
-def earth_region_slepian_coefficients(L: int, theta_max: int) -> npt.NDArray:
+def earth_region_slepian_coefficients(L: int, theta_max: int) -> npt.NDArray[np.float_]:
     """
     computes the Slepian coefficients
     """

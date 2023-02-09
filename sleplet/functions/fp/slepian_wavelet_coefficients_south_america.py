@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -31,7 +32,7 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")
@@ -59,7 +60,9 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelet_coefficients(self) -> tuple[npt.NDArray, npt.NDArray]:
+    def _create_wavelet_coefficients(
+        self,
+    ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_ | np.float_]]:
         """
         computes wavelet coefficients in Slepian space
         """
