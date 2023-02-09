@@ -1,10 +1,10 @@
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path
 
 import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
-from multiprocess import Pool
 from numpy import linalg as LA
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -175,8 +175,8 @@ class SlepianPolarCap(SlepianFunctions):
         chunks = split_arr_into_chunks(self.L - m, settings.NCPU)
 
         # initialise pool and apply function
-        with Pool(processes=settings.NCPU) as p:
-            p.map(func, chunks)
+        with ThreadPoolExecutor(max_workers=settings.NCPU) as e:
+            e.map(func, chunks)
 
         # retrieve from parallel function
         Dm = Dm_ext * (-1) ** m / 2
