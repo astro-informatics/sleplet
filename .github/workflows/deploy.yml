@@ -30,7 +30,7 @@ jobs:
             sleplet-${{ env.PY }}
 
       - name: Pip install modules
-        run: pip install .
+        run: pip install -e .[dev]
 
       - name: Pull LFS files
         run: |
