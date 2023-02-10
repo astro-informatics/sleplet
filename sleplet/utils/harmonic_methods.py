@@ -19,7 +19,7 @@ def create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
     return flm
 
 
-def boost_coefficient_resolution(flm: npt.NDArray[Any], boost: int) -> npt.NDArray:
+def boost_coefficient_resolution(flm: npt.NDArray[Any], boost: int) -> npt.NDArray[Any]:
     """
     calculates a boost in resolution for given flm
     """
@@ -87,7 +87,9 @@ def compute_random_signal(
     )
 
 
-def mesh_forward(mesh: Mesh, u: npt.NDArray[np.float_]) -> npt.NDArray[np.float_]:
+def mesh_forward(
+    mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray[np.float_]:
     """
     computes the mesh forward transform from real space to harmonic space
     """
@@ -97,7 +99,9 @@ def mesh_forward(mesh: Mesh, u: npt.NDArray[np.float_]) -> npt.NDArray[np.float_
     return u_i
 
 
-def mesh_inverse(mesh: Mesh, u_i: npt.NDArray[np.float_]) -> npt.NDArray[np.float_]:
+def mesh_inverse(
+    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the mesh inverse transform from harmonic space to real space
     """

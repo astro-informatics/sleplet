@@ -36,7 +36,7 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
     return flm
 
 
-def _load_flm() -> npt.NDArray:
+def _load_flm() -> npt.NDArray[np.complex_]:
     """
     load coefficients from file
     """

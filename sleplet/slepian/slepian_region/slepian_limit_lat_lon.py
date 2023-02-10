@@ -57,7 +57,9 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _create_matrix_location(self) -> Path:
         return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
-    def _solve_eigenproblem(self) -> tuple[npt.NDArray, npt.NDArray]:
+    def _solve_eigenproblem(
+        self,
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         if eval_loc.exists() and evec_loc.exists():
@@ -71,7 +73,7 @@ class SlepianLimitLatLon(SlepianFunctions):
                 np.save(evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
 
-    def _create_K_matrix(self) -> npt.NDArray:
+    def _create_K_matrix(self) -> npt.NDArray[np.complex_]:
         """
         computes the K matrix
         """
@@ -145,7 +147,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     @staticmethod
     @njit(parallel=True, fastmath=True)
     def _slepian_matrix(
-        dl: npt.NDArray, L: int, N: int, G: npt.NDArray[np.complex_]
+        dl: npt.NDArray[np.float_], L: int, N: int, G: npt.NDArray[np.complex_]
     ) -> npt.NDArray[np.complex_]:
         """
         Syntax:
@@ -197,7 +199,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     @staticmethod
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
-    ) -> tuple[npt.NDArray, npt.NDArray]:
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """

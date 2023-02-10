@@ -271,7 +271,7 @@ def _translation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     shannon: int | None,
-) -> tuple[npt.NDArray, str, dict]:
+) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
     """
     performs the translation specific steps
     """
@@ -297,10 +297,10 @@ def _translation_helper(
 def _convolution_helper(
     f: Coefficients,
     g: Coefficients,
-    coefficients: npt.NDArray,
+    coefficients: npt.NDArray[np.complex_ | np.float_],
     shannon: int | None,
     filename: str,
-) -> tuple[npt.NDArray, str]:
+) -> tuple[npt.NDArray[np.complex_ | np.float_], str]:
     """
     performs the convolution specific steps
     """
@@ -317,7 +317,7 @@ def _convolution_helper(
 
 def _coefficients_to_field(
     f: Coefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the field over the samples from the harmonic/Slepian coefficients
     """

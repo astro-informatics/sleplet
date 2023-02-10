@@ -104,14 +104,16 @@ class Coefficients:
         raise NotImplementedError
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:
+    def _add_noise_to_signal(
+        self,
+    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """
         adds Gaussian white noise to the signal
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """
         creates the flm on the north pole
         """

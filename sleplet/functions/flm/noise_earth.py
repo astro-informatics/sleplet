@@ -16,7 +16,7 @@ class NoiseEarth(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         earth = Earth(self.L, smoothing=self.smoothing)
         noise = create_noise(self.L, earth.coefficients, self.SNR)
         compute_snr(earth.coefficients, noise, "Harmonic")

@@ -68,7 +68,7 @@ def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
 
 
 def ensure_masked_flm_bandlimited(
-    flm: npt.NDArray, L: int, region: Region, reality: bool, spin: int
+    flm: npt.NDArray[np.complex_], L: int, region: Region, reality: bool, spin: int
 ) -> npt.NDArray[np.complex_]:
     """
     ensures the coefficients is bandlimited for a given region
@@ -111,7 +111,7 @@ def create_mesh_region(
 
 def ensure_masked_bandlimit_mesh_signal(
     mesh: Mesh, u_i: npt.NDArray[np.float_]
-) -> npt.NDArray:
+) -> npt.NDArray[np.float_]:
     """
     ensures that signal in pixel space is bandlimited
     """
@@ -120,7 +120,7 @@ def ensure_masked_bandlimit_mesh_signal(
     return mesh_forward(mesh, masked_field)
 
 
-def convert_region_on_vertices_to_faces(mesh: Mesh) -> npt.NDArray:
+def convert_region_on_vertices_to_faces(mesh: Mesh) -> npt.NDArray[np.float_]:
     """
     converts the region on vertices to faces
     """

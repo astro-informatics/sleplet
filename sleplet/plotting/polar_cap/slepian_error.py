@@ -49,7 +49,10 @@ def main() -> None:
 
 
 def _helper_sphere(
-    L: int, slepian: SlepianFunctions, f: npt.NDArray, flm: npt.NDArray
+    L: int,
+    slepian: SlepianFunctions,
+    f: npt.NDArray[np.complex_],
+    flm: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
     the difference in Slepian coefficients by integration of whole sphere
@@ -62,9 +65,9 @@ def _helper_sphere(
 def _helper_region(
     L: int,
     slepian: SlepianFunctions,
-    f: npt.NDArray,
-    flm: npt.NDArray,
-    mask: npt.NDArray,
+    f: npt.NDArray[np.complex_],
+    flm: npt.NDArray[np.complex_ | np.float_],
+    mask: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.float_]:
     """
     the difference in Slepian coefficients by integration of region on the sphere

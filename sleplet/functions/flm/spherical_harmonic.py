@@ -15,7 +15,7 @@ class SphericalHarmonic(F_LM):
     ell: int = 0
     m: int = 0
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         ind = ssht.elm2ind(self.ell, self.m)
         return create_spherical_harmonic(self.L, ind)
 

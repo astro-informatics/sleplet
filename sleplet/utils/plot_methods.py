@@ -113,7 +113,9 @@ def find_max_amplitude(
     return np.abs(create_plot_type(boosted_field, plot_type)).max()
 
 
-def create_plot_type(field: npt.NDArray, plot_type: str) -> npt.NDArray[np.float_]:
+def create_plot_type(
+    field: npt.NDArray[np.complex_ | np.float_], plot_type: str
+) -> npt.NDArray[np.float_]:
     """
     gets the given plot type of the field
     """
@@ -125,8 +127,8 @@ def create_plot_type(field: npt.NDArray, plot_type: str) -> npt.NDArray[np.float
 
 
 def set_outside_region_to_minimum(
-    f_plot: npt.NDArray, L: int, region: Region
-) -> npt.NDArray:
+    f_plot: npt.NDArray[np.float_], L: int, region: Region
+) -> npt.NDArray[np.float_]:
     """
     for the Slepian region set the outisde area to negative infinity
     hence it is clear we are only interested in the coloured region
@@ -143,7 +145,7 @@ def set_outside_region_to_minimum(
 
 
 def rotate_earth_to_south_america(
-    earth_flm: npt.NDArray[np.complex_], L: int
+    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
 ) -> npt.NDArray[np.complex_]:
     """
     rotates the flms of the Earth to a view centered on South America
@@ -154,7 +156,7 @@ def rotate_earth_to_south_america(
 
 
 def rotate_earth_to_africa(
-    earth_flm: npt.NDArray[np.complex_], L: int
+    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
 ) -> npt.NDArray[np.complex_]:
     """
     rotates the flms of the Earth to a view centered on Africa
@@ -182,13 +184,13 @@ def normalise_function(
 
 
 def boost_field(
-    field: npt.NDArray,
+    field: npt.NDArray[np.complex_ | np.float_],
     L: int,
     resolution: int,
     reality: bool,
     spin: int,
     upsample: bool,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     inverts and then boosts the field before plotting
     """

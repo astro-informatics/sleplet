@@ -25,7 +25,9 @@ class F_LM(Coefficients):
     ) -> npt.NDArray[np.complex_]:
         return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
 
-    def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:
+    def _add_noise_to_signal(
+        self,
+    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """
         adds Gaussian white noise to the signal
         """
@@ -33,12 +35,12 @@ class F_LM(Coefficients):
             unnoised_coefficients = self.coefficients.copy()
             nlm = create_noise(self.L, self.coefficients, self.noise)
             snr = compute_snr(self.coefficients, nlm, "Harmonic")
-            self.coefficients += nlm
+            self.coefficients = self.coefficients + nlm
             return unnoised_coefficients, snr
         return None, None
 
     @abstractmethod
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
     @abstractmethod

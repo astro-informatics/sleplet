@@ -52,7 +52,7 @@ def main() -> None:
 def _helper(
     ax: plt.Axes,
     slepian: SlepianPolarCap,
-    x: npt.NDArray,
+    x: npt.NDArray[np.float_],
     i: int,
     rank: int,
 ) -> None:

@@ -24,7 +24,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
             unnoised_coefficients = self.coefficients.copy()
             nlm = create_mesh_noise(self.coefficients, self.noise)
             snr = compute_snr(self.coefficients, nlm, "Harmonic")
-            self.coefficients += nlm
+            self.coefficients = self.coefficients + nlm
             return unnoised_coefficients, snr
         return None, None
 

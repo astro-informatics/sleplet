@@ -142,7 +142,7 @@ def random_flm() -> npt.NDArray[np.complex_]:
 
 
 @pytest.fixture(scope="session")
-def random_nd_flm() -> npt.NDArray:
+def random_nd_flm() -> npt.NDArray[np.complex_]:
     """
     creates multiple random flm
     """

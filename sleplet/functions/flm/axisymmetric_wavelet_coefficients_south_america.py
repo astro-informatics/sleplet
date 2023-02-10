@@ -28,7 +28,7 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")

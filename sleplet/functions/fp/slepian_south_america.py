@@ -20,7 +20,7 @@ class SlepianSouthAmerica(F_P):
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         sa = SouthAmerica(self.L, smoothing=self.smoothing)
         return slepian_forward(self.L, self.slepian, flm=sa.coefficients)
 

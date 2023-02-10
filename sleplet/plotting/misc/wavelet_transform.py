@@ -30,7 +30,7 @@ def main() -> None:
     save_plot(fig_path, "ricker_wavelets")
 
 
-def _ricker(freq: float) -> npt.NDArray:
+def _ricker(freq: float) -> npt.NDArray[np.float_]:
     """
     creates a Ricker wavelet
     """

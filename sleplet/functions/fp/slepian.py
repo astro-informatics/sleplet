@@ -32,7 +32,7 @@ class Slepian(F_P):
             .replace("+", "")
         )
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         logger.info(f"Shannon number: {self.slepian.N}")
         logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
         return slepian_forward(

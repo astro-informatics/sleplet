@@ -105,8 +105,8 @@ def plot(f: MeshCoefficients, normalise: bool, amplitude: float | None) -> None:
 
 
 def _coefficients_to_field(
-    f: MeshCoefficients, coefficients: npt.NDArray
-) -> npt.NDArray:
+    f: MeshCoefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the field over the whole mesh from the harmonic/Slepian coefficients
     """

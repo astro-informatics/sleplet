@@ -51,7 +51,7 @@ def _helper(
     ax: npt.NDArray,
     slepian: SlepianPolarCap,
     resolution: int,
-    x: npt.NDArray,
+    x: npt.NDArray[np.float_],
     i: int,
     order: int,
     rank: int,

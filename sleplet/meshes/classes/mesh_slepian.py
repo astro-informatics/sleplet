@@ -113,7 +113,7 @@ class MeshSlepian:
         release_shared_memory(shm_ext)
         return D
 
-    def _fill_D_elements(self, D: npt.NDArray, i: int) -> None:
+    def _fill_D_elements(self, D: npt.NDArray[np.float_], i: int) -> None:
         """
         fill in the D matrix elements using symmetries
         """
@@ -136,7 +136,7 @@ class MeshSlepian:
     @staticmethod
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
-    ) -> tuple[npt.NDArray, npt.NDArray]:
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """

@@ -34,7 +34,9 @@ class F_P(Coefficients):
     ) -> npt.NDArray[np.complex_]:
         return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
-    def _add_noise_to_signal(self) -> tuple[npt.NDArray | None, float | None]:
+    def _add_noise_to_signal(
+        self,
+    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """
         adds Gaussian white noise converted to Slepian space
         """
@@ -44,12 +46,12 @@ class F_P(Coefficients):
                 self.L, self.coefficients, self.slepian, self.noise
             )
             snr = compute_snr(self.coefficients, n_p, "Slepian")
-            self.coefficients += n_p
+            self.coefficients = self.coefficients + n_p
             return unnoised_coefficients, snr
         return None, None
 
     @abstractmethod
-    def _create_coefficients(self) -> npt.NDArray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
     @abstractmethod

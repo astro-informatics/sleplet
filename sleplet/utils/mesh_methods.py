@@ -67,7 +67,7 @@ def mesh_eigendecomposition(
     faces: npt.NDArray[np.int_],
     *,
     number_basis_functions: int | None = None,
-) -> tuple[npt.NDArray, npt.NDArray, int]:
+) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_], int]:
     """
     computes the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data
@@ -129,8 +129,8 @@ def _mesh_laplacian(
 def _orthonormalise_basis_functions(
     vertices: npt.NDArray[np.float_],
     faces: npt.NDArray[np.int_],
-    basis_functions: npt.NDArray,
-) -> npt.NDArray:
+    basis_functions: npt.NDArray[np.float_],
+) -> npt.NDArray[np.float_]:
     """
     for computing the Slepian D matrix the basis functions must be orthonormal
     """

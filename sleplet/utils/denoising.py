@@ -1,3 +1,4 @@
+import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
@@ -39,7 +40,7 @@ def denoising_axisym(
     n_sigma: int,
     *,
     rotate_to_south_america: bool = False,
-) -> tuple[npt.NDArray, float | None, float]:
+) -> tuple[npt.NDArray[np.complex_], float | None, float]:
     """
     reproduce the denoising demo from s2let paper
     """
@@ -81,7 +82,7 @@ def denoising_slepian_wavelet(
     slepian_wavelets: SlepianWavelets,
     snr_in: float,
     n_sigma: int,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_]:
     """
     denoising demo using Slepian wavelets
     """
@@ -122,7 +123,7 @@ def denoising_slepian_function(
     noised_signal: F_P,
     snr_in: float,
     n_sigma: int,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_]:
     """
     denoising demo using Slepian function
     """
@@ -148,7 +149,7 @@ def denoising_mesh_slepian(
     mesh_slepian_wavelets: MeshSlepianWavelets,
     snr_in: float,
     n_sigma: int,
-) -> npt.NDArray:
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     denoising demo using Slepian wavelets
     """

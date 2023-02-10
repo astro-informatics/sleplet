@@ -38,7 +38,7 @@ _fig_path = _file_location.parents[1] / "figures"
 
 @dataclass(config=Validation)
 class Plot:
-    f: npt.NDArray
+    f: npt.NDArray[np.complex_ | np.float_]
     L: int
     filename: str
     _: KW_ONLY
@@ -114,14 +114,21 @@ class Plot:
 
     @staticmethod
     def _setup_plot(
-        f: npt.NDArray,
+        f: npt.NDArray[np.float_],
         resolution: int,
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: list[float] | None = None,
         color_range: list[float] | None = None,
-    ) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray, float, float]:
+    ) -> tuple[
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_],
+        float,
+        float,
+    ]:
         """
         function which creates the data for the matplotlib/plotly plot
         """
@@ -181,7 +188,9 @@ class Plot:
 
         return x, y, z, f_plot, vmin, vmax
 
-    def _prepare_field(self, f: npt.NDArray[np.complex_ | np.float_]) -> npt.NDArray:
+    def _prepare_field(
+        self, f: npt.NDArray[np.complex_ | np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         boosts, forces plot type and then scales the field before plotting
         """

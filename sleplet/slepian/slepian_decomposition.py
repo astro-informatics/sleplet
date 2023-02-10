@@ -21,9 +21,9 @@ class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
     _: KW_ONLY
-    f: npt.NDArray | None = None
-    flm: npt.NDArray | None = None
-    mask: npt.NDArray | None = None
+    f: npt.NDArray[np.complex_] | None = None
+    flm: npt.NDArray[np.complex_ | np.float_] | None = None
+    mask: npt.NDArray[np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
         self._detect_method()

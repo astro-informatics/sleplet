@@ -16,7 +16,7 @@ class SlepianDiracDelta(F_P):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
         return compute_s_p_omega_prime(
             self.L, self.alpha, self.beta, self.slepian

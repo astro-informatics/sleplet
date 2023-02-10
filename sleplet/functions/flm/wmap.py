@@ -13,7 +13,7 @@ class Wmap(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return create_flm(self.L)
 
     def _create_name(self) -> str:

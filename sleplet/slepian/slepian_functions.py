@@ -62,7 +62,9 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _solve_eigenproblem(self) -> tuple[npt.NDArray, npt.NDArray]:
+    def _solve_eigenproblem(
+        self,
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         solves the eigenproblem for the given function
         """

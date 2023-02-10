@@ -31,7 +31,7 @@ def integrate_whole_sphere(
 def integrate_region_sphere(
     mask: npt.NDArray[np.float_],
     weight: npt.NDArray[np.float_],
-    *functions: npt.NDArray[np.complex_],
+    *functions: npt.NDArray[np.complex_ | np.float_],
 ) -> complex:
     """
     computes the integration for a region of the sphere
@@ -43,7 +43,7 @@ def integrate_region_sphere(
 def integrate_whole_mesh(
     vertices: npt.NDArray[np.float_],
     faces: npt.NDArray[np.int_],
-    *functions: npt.NDArray[np.float_],
+    *functions: npt.NDArray[np.complex_ | np.float_],
 ) -> float:
     """
     computes the integral of functions on the vertices
@@ -56,7 +56,7 @@ def integrate_region_mesh(
     mask: npt.NDArray[np.bool_],
     vertices: npt.NDArray[np.float_],
     faces: npt.NDArray[np.int_],
-    *functions: npt.NDArray[np.float_],
+    *functions: npt.NDArray[np.complex_ | np.float_],
 ) -> float:
     """
     computes the integral of a region of functions on the vertices
@@ -65,7 +65,7 @@ def integrate_region_mesh(
     return (multiplied_inputs * mask).sum()
 
 
-def _multiply_args(*args: npt.NDArray[Any]) -> npt.NDArray:
+def _multiply_args(*args: npt.NDArray[Any]) -> npt.NDArray[Any]:
     """
     method to multiply an unknown number of arguments
     """

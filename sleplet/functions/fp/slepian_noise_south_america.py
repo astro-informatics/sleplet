@@ -22,7 +22,7 @@ class SlepianNoiseSouthAmerica(F_P):
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_]:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         sa = SlepianSouthAmerica(self.L, region=self.region, smoothing=self.smoothing)
         noise = create_slepian_noise(self.L, sa.coefficients, self.slepian, self.SNR)
         compute_snr(sa.coefficients, noise, "Slepian")

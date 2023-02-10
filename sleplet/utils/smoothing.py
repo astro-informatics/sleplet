@@ -6,7 +6,7 @@ from sleplet.utils.logger import logger
 
 
 def apply_gaussian_smoothing(
-    flm: npt.NDArray, L: int, smoothing_factor: int
+    flm: npt.NDArray[np.complex_], L: int, smoothing_factor: int
 ) -> npt.NDArray[np.complex_]:
     """
     applies Gaussian smoothing to the given signal
