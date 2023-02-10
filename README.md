@@ -6,12 +6,22 @@
 
 ## Installation
 
+Run
+
 ```{sh}
 pip install .
 ```
 
 ### Developer Installation
 
+Run
+
 ```{sh}
 pip install -e .[dev]
+```
+
+then
+
+```{sh}
+pre-commit install
 ```
