@@ -1,9 +1,9 @@
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
-from multiprocess import Pool
 from numpy import linalg as LA
 from numpy import typing as npt
 from pydantic import validator
@@ -131,8 +131,8 @@ class SlepianArbitrary(SlepianFunctions):
         )
 
         # initialise pool and apply function
-        with Pool(processes=settings.NCPU) as p:
-            p.map(func, chunks)
+        with ThreadPoolExecutor(max_workers=settings.NCPU) as e:
+            e.map(func, chunks)
 
         # retrieve from parallel function
         D = D_r_ext + 1j * D_i_ext
