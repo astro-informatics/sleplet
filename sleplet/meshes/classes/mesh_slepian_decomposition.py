@@ -20,7 +20,7 @@ class MeshSlepianDecomposition:
     _: KW_ONLY
     mask: bool = False
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None
-    u: npt.NDArray[np.complex_ | np.float_] | None = None
+    u: npt.NDArray[np.complex_] | None = None
 
     def __post_init_post_parse__(self) -> None:
         """ """

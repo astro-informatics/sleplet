@@ -180,7 +180,7 @@ def compute_sigma_j(
 def compute_slepian_sigma_j(
     L: int,
     signal: npt.NDArray[np.complex_ | np.float_],
-    psi_j: npt.NDArray[np.complex_ | np.float_],
+    psi_j: npt.NDArray[np.float_],
     snr_in: float,
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.float_]:

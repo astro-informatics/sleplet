@@ -101,7 +101,7 @@ def compute_s_p_omega_prime(
 def slepian_mesh_forward(
     mesh_slepian: MeshSlepian,
     *,
-    u: npt.NDArray[np.complex_ | np.float_] | None = None,
+    u: npt.NDArray[np.complex_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
     mask: bool = False,
     n_coeffs: int | None = None,
