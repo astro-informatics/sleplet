@@ -53,11 +53,11 @@ class SlepianWavelets(F_P):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self) -> npt.NDArray[np.complex_]:
+    def _create_wavelets(self) -> npt.NDArray[np.float_]:
         """
         computes wavelets in Slepian space
         """
-        return create_kappas(self.L**2, self.B, self.j_min).astype(complex)
+        return create_kappas(self.L**2, self.B, self.j_min)
 
     @validator("j")
     def check_j(cls, v, values):
