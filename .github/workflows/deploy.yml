@@ -26,9 +26,8 @@ jobs:
         with:
           path: |
             ${{ env.pythonLocation }}
-             ~/.cache/pip
           key: |
-            pip-${{ env.PY }}-${{ hashFiles('pyproject.toml') }}
+            sleplet-${{ env.PY }}
 
       - name: Pip install modules
         run: pip install .
@@ -44,4 +43,4 @@ jobs:
           git lfs pull
 
       - name: Test with pytest
-        run: pytest --color=yes --runslow -v
+        run: pytest -v --runslow --color=yes --cov=sleplet
