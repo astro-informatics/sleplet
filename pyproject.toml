@@ -56,6 +56,8 @@ select = [
   "E",
   # pyflakes
   "F",
+  # isort
+  "I",
   # pylint
   "PLE",
   "PLR",
