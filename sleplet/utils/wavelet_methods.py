@@ -10,7 +10,7 @@ from sleplet.utils.slepian_methods import compute_s_p_omega
 
 def slepian_wavelet_forward(
     f_p: npt.NDArray[np.complex_ | np.float_],
-    wavelets: npt.NDArray[np.complex_ | np.float_],
+    wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
@@ -23,7 +23,7 @@ def slepian_wavelet_forward(
 
 def slepian_wavelet_inverse(
     wav_coeffs: npt.NDArray[np.complex_ | np.float_],
-    wavelets: npt.NDArray[np.complex_ | np.float_],
+    wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
