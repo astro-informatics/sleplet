@@ -31,7 +31,7 @@ def integrate_whole_sphere(
 def integrate_region_sphere(
     mask: npt.NDArray[np.float_],
     weight: npt.NDArray[np.float_],
-    *functions: npt.NDArray[np.complex_ | np.float_],
+    *functions: npt.NDArray[np.complex_],
 ) -> complex:
     """
     computes the integration for a region of the sphere
