@@ -83,7 +83,7 @@ def compute_wavelet_covariance(
 
 def compute_slepian_wavelet_covariance(
     L: int,
-    wavelets: npt.NDArray[np.complex_],
+    wavelets: npt.NDArray[np.float_],
     slepian: SlepianFunctions,
     *,
     var_signal: float,

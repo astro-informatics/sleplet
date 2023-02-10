@@ -32,7 +32,7 @@ _fig_path = _file_location.parents[1] / "figures"
 class Plot:
     mesh: Mesh
     filename: str
-    f: npt.NDArray
+    f: npt.NDArray[np.complex_ | np.float_]
     _: KW_ONLY
     amplitude: float | None = None
     colour: LinearSegmentedColormap = cmocean.cm.ice
@@ -99,7 +99,9 @@ class Plot:
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
                 fig.write_image(filename, engine="kaleido")
 
-    def _prepare_field(self, f: npt.NDArray[np.float_]) -> npt.NDArray[np.float_]:
+    def _prepare_field(
+        self, f: npt.NDArray[np.complex_ | np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         scales the field before plotting
         """

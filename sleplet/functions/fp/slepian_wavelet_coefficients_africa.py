@@ -59,7 +59,7 @@ class SlepianWaveletCoefficientsAfrica(F_P):
 
     def _create_wavelet_coefficients(
         self,
-    ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_ | np.float_]]:
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
         """
         computes wavelet coefficients in Slepian space
         """

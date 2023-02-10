@@ -16,7 +16,7 @@ _meshes_path = _file_location.parents[1] / "data" / "meshes"
 
 def average_functions_on_vertices_to_faces(
     faces: npt.NDArray[np.int_],
-    functions_on_vertices: npt.NDArray[np.float_],
+    functions_on_vertices: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
     the integrals require all functions to be defined on faces
@@ -118,7 +118,7 @@ def read_mesh(mesh_config: Box) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.
 
 
 def _mesh_laplacian(
-    vertices: npt.NDArray[np.float_], faces: npt.NDArray
+    vertices: npt.NDArray[np.float_], faces: npt.NDArray[np.int_]
 ) -> npt.NDArray[np.float_]:
     """
     computes the cotagent mesh laplacian

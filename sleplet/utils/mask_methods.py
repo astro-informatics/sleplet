@@ -110,7 +110,7 @@ def create_mesh_region(
 
 
 def ensure_masked_bandlimit_mesh_signal(
-    mesh: Mesh, u_i: npt.NDArray[np.float_]
+    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.float_]:
     """
     ensures that signal in pixel space is bandlimited
