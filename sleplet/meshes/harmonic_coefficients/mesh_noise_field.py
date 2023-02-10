@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
@@ -15,7 +16,7 @@ class MeshNoiseField(MeshHarmonicCoefficients):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         mf = MeshField(self.mesh)
         noise = create_mesh_noise(mf.coefficients, self.SNR)
         compute_snr(mf.coefficients, noise, "Harmonic")

@@ -1,5 +1,6 @@
 import numpy as np
 from igl import per_vertex_normals
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
@@ -12,7 +13,7 @@ class MeshField(MeshHarmonicCoefficients):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """
         compute field on the vertices of the mesh
         """

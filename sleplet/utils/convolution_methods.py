@@ -1,12 +1,13 @@
 import numpy as np
+from numpy import typing as npt
 
 
 def sifting_convolution(
-    f_coefficient: np.ndarray,
-    g_coefficient: np.ndarray,
+    f_coefficient: npt.NDArray[np.complex_ | np.float_],
+    g_coefficient: npt.NDArray[np.complex_ | np.float_],
     *,
     shannon: int | None = None,
-) -> np.ndarray:
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the sifting convolution between two multipoles
     """

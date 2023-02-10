@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+from numpy import typing as npt
 
 from sleplet.utils.plot_methods import save_plot
 
@@ -29,7 +30,7 @@ def main() -> None:
     save_plot(fig_path, "ricker_wavelets")
 
 
-def _ricker(freq: float) -> np.ndarray:
+def _ricker(freq: float) -> npt.NDArray[np.float_]:
     """
     creates a Ricker wavelet
     """

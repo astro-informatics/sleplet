@@ -2,6 +2,7 @@ from abc import abstractmethod
 from dataclasses import KW_ONLY
 
 import numpy as np
+from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -49,14 +50,16 @@ class MeshCoefficients:
         return v
 
     @abstractmethod
-    def _add_noise_to_signal(self) -> tuple[np.ndarray | None, float | None]:
+    def _add_noise_to_signal(
+        self,
+    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """
         adds Gaussian white noise to the signal
         """
         raise NotImplementedError
 
     @abstractmethod
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """
         creates the flm on the north pole
         """

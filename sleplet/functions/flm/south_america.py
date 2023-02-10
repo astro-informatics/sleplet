@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.data.other.earth.create_earth_flm import create_flm
@@ -21,7 +22,7 @@ class SouthAmerica(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)
 
     def _create_name(self) -> str:
@@ -39,7 +40,9 @@ class SouthAmerica(F_LM):
                 f"{self.__class__.__name__} does not support extra arguments"
             )
 
-    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
+    def _grid_fun(
+        self, theta: npt.NDArray[np.float_], phi: npt.NDArray[np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         function on the grid
         """

@@ -2,6 +2,7 @@ from dataclasses import KW_ONLY
 
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
@@ -20,9 +21,9 @@ class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
     _: KW_ONLY
-    f: np.ndarray | None = None
-    flm: np.ndarray | None = None
-    mask: np.ndarray | None = None
+    f: npt.NDArray[np.complex_] | None = None
+    flm: npt.NDArray[np.complex_ | np.float_] | None = None
+    mask: npt.NDArray[np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
         self._detect_method()
@@ -43,7 +44,7 @@ class SlepianDecomposition:
             case _:
                 raise ValueError(f"'{self.method}' is not a valid method")
 
-    def decompose_all(self, n_coefficients: int) -> np.ndarray:
+    def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.complex_]:
         """
         decompose all ranks of the Slepian coefficients
         """

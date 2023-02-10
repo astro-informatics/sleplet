@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from numpy import typing as npt
 from numpy.random import default_rng
 
 from sleplet.functions.flm.earth import Earth
@@ -132,7 +133,7 @@ def slepian_wavelets_lim_lat_lon(slepian_lim_lat_lon) -> SlepianWavelets:
 
 
 @pytest.fixture(scope="session")
-def random_flm() -> np.ndarray:
+def random_flm() -> npt.NDArray[np.complex_]:
     """
     creates random flm
     """
@@ -141,7 +142,7 @@ def random_flm() -> np.ndarray:
 
 
 @pytest.fixture(scope="session")
-def random_nd_flm() -> np.ndarray:
+def random_nd_flm() -> npt.NDArray[np.complex_]:
     """
     creates multiple random flm
     """

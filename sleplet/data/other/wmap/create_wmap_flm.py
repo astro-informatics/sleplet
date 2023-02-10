@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from numpy.random import default_rng
 from scipy import io as sio
 
@@ -10,7 +11,7 @@ from sleplet.utils.vars import RANDOM_SEED
 _file_location = Path(__file__).resolve()
 
 
-def create_flm(L: int) -> np.ndarray:
+def create_flm(L: int) -> npt.NDArray[np.complex_]:
     """
     creates the flm for the whole CMB
     """
@@ -38,7 +39,9 @@ def create_flm(L: int) -> np.ndarray:
     return flm
 
 
-def _load_cl(*, file_ending: str = "_lcdm_pl_model_wmap7baoh0") -> np.ndarray:
+def _load_cl(
+    *, file_ending: str = "_lcdm_pl_model_wmap7baoh0"
+) -> npt.NDArray[np.float_]:
     """
     pick coefficients from file options are:
     * _lcdm_pl_model_yr1_v1.mat

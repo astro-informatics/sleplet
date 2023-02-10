@@ -1,7 +1,8 @@
-from collections.abc import Callable
+from typing import Any, Callable
 
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from numpy.random import Generator
 
 from sleplet.meshes.classes.mesh import Mesh
@@ -9,7 +10,7 @@ from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 
-def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
+def create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
     """
     create a spherical harmonic in harmonic space for the given index
     """
@@ -18,7 +19,7 @@ def create_spherical_harmonic(L: int, ind: int) -> np.ndarray:
     return flm
 
 
-def boost_coefficient_resolution(flm: np.ndarray, boost: int) -> np.ndarray:
+def boost_coefficient_resolution(flm: npt.NDArray[Any], boost: int) -> npt.NDArray[Any]:
     """
     calculates a boost in resolution for given flm
     """
@@ -26,8 +27,13 @@ def boost_coefficient_resolution(flm: np.ndarray, boost: int) -> np.ndarray:
 
 
 def invert_flm_boosted(
-    flm: np.ndarray, L: int, resolution: int, *, reality: bool = False, spin: int = 0
-) -> np.ndarray:
+    flm: npt.NDArray[np.complex_],
+    L: int,
+    resolution: int,
+    *,
+    reality: bool = False,
+    spin: int = 0,
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     performs the inverse harmonic transform
     """
@@ -39,11 +45,13 @@ def invert_flm_boosted(
 
 
 def ensure_f_bandlimited(
-    grid_fun: Callable[[np.ndarray, np.ndarray], np.ndarray],
+    grid_fun: Callable[
+        [npt.NDArray[np.float_], npt.NDArray[np.float_]], npt.NDArray[np.float_]
+    ],
     L: int,
     reality: bool,
     spin: int,
-) -> np.ndarray:
+) -> npt.NDArray[np.complex_]:
     """
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it
@@ -53,7 +61,7 @@ def ensure_f_bandlimited(
     return ssht.forward(f, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
-def create_emm_vector(L: int) -> np.ndarray:
+def create_emm_vector(L: int) -> npt.NDArray[np.float_]:
     """
     create vector of m values for a given L
     """
@@ -67,7 +75,9 @@ def create_emm_vector(L: int) -> np.ndarray:
     return emm
 
 
-def compute_random_signal(L: int, rng: Generator, *, var_signal: float) -> np.ndarray:
+def compute_random_signal(
+    L: int, rng: Generator, *, var_signal: float
+) -> npt.NDArray[np.complex_]:
     """
     generates a normally distributed random signal of a
     complex signal with mean 0 and variance 1
@@ -77,7 +87,9 @@ def compute_random_signal(L: int, rng: Generator, *, var_signal: float) -> np.nd
     )
 
 
-def mesh_forward(mesh: Mesh, u: np.ndarray) -> np.ndarray:
+def mesh_forward(
+    mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray[np.float_]:
     """
     computes the mesh forward transform from real space to harmonic space
     """
@@ -87,7 +99,9 @@ def mesh_forward(mesh: Mesh, u: np.ndarray) -> np.ndarray:
     return u_i
 
 
-def mesh_inverse(mesh: Mesh, u_i: np.ndarray) -> np.ndarray:
+def mesh_inverse(
+    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the mesh inverse transform from harmonic space to real space
     """

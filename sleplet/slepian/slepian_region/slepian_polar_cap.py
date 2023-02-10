@@ -6,6 +6,7 @@ import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
 from numpy import linalg as LA
+from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -35,7 +36,7 @@ class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     _: KW_ONLY
     gap: bool = False
-    order: int | np.ndarray | None = None
+    order: int | npt.NDArray[np.int_] | None = None
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -46,7 +47,7 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_region(self) -> Region:
         return Region(gap=self.gap, theta_max=self.theta_max)
 
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self) -> npt.NDArray[np.float_]:
         return create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -> float:
@@ -55,7 +56,9 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_matrix_location(self) -> Path:
         return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
-    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(
+        self,
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         eval_loc = self.matrix_location / "eigenvalues.npy"
         evec_loc = self.matrix_location / "eigenvectors.npy"
         order_loc = self.matrix_location / "orders.npy"
@@ -67,7 +70,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _solve_eigenproblem_from_files(
         self, eval_loc: Path, evec_loc: Path, order_loc: Path
-    ) -> tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         solves eigenproblem with files already saved
         """
@@ -84,7 +87,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _solve_eigenproblem_from_scratch(
         self, eval_loc: Path, evec_loc: Path, order_loc: Path
-    ) -> tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         sovles eigenproblem from scratch and then saves the files
         """
@@ -111,7 +114,9 @@ class SlepianPolarCap(SlepianFunctions):
             np.save(order_loc, self.order)
         return eigenvalues, eigenvectors
 
-    def _solve_eigenproblem_order(self, m: int) -> tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem_order(
+        self, m: int
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         solves the eigenproblem for a given order 'm;
         """
@@ -122,8 +127,11 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _sort_all_evals_and_evecs(
-        self, eigenvalues: np.ndarray, eigenvectors: np.ndarray, orders: np.ndarray
-    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        self,
+        eigenvalues: npt.NDArray[np.float_],
+        eigenvectors: npt.NDArray[np.complex_],
+        orders: npt.NDArray[np.int_],
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_], npt.NDArray[np.int_]]:
         """
         sorts all eigenvalues and eigenvectors for all orders
         """
@@ -133,7 +141,9 @@ class SlepianPolarCap(SlepianFunctions):
         orders = orders[idx]
         return eigenvalues, eigenvectors, orders
 
-    def _create_Dm_matrix(self, m: int, emm: np.ndarray) -> np.ndarray:
+    def _create_Dm_matrix(
+        self, m: int, emm: npt.NDArray[np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         Syntax:
         Dm = _create_Dm_matrix(m, P)
@@ -187,8 +197,8 @@ class SlepianPolarCap(SlepianFunctions):
         return Dm
 
     def _create_legendre_polynomials_table(
-        self, emm: np.ndarray
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self, emm: npt.NDArray[np.float_]
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
         """
         create Legendre polynomials table for matrix calculation
         """
@@ -200,12 +210,12 @@ class SlepianPolarCap(SlepianFunctions):
 
     def _dm_matrix_helper(
         self,
-        Dm: np.ndarray,
+        Dm: npt.NDArray[np.float_],
         i: int,
         m: int,
-        lvec: np.ndarray,
-        Pl: np.ndarray,
-        ell: np.ndarray,
+        lvec: npt.NDArray[np.int_],
+        Pl: npt.NDArray[np.float_],
+        ell: npt.NDArray[np.int_],
     ) -> None:
         """
         used in both serial and parallel calculations
@@ -321,14 +331,15 @@ class SlepianPolarCap(SlepianFunctions):
         return 1 + self.gap * (-1) ** (ell1 + ell2)
 
     def _clean_evals_and_evecs(
-        self, eigenvalues: np.ndarray, gl: np.ndarray, emm: np.ndarray, m: int
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self,
+        eigenvalues: npt.NDArray[np.float_],
+        gl: npt.NDArray[np.float_],
+        emm: npt.NDArray[np.float_],
+        m: int,
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]

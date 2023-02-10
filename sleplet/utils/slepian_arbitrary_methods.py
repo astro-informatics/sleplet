@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import numpy as np
+from numpy import typing as npt
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
@@ -8,7 +9,9 @@ from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 MACHINE_EPSILON = 1e-14
 
 
-def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.ndarray:
+def calculate_high_L_matrix(
+    file_loc: Path, L: int, L_ranges: list[int]
+) -> npt.NDArray[np.complex_]:
     """
     splits up and calculates intermediate matrices for higher L
     """
@@ -24,7 +27,9 @@ def calculate_high_L_matrix(file_loc: Path, L: int, L_ranges: list[int]) -> np.n
     return D
 
 
-def clean_evals_and_evecs(eigendecomposition: tuple) -> tuple[np.ndarray, np.ndarray]:
+def clean_evals_and_evecs(
+    eigendecomposition: tuple,
+) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
     """
     need eigenvalues and eigenvectors to be in a certain format
     """

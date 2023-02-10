@@ -2,6 +2,7 @@ from abc import abstractmethod
 from pathlib import Path
 
 import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.utils.logger import logger
@@ -40,7 +41,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_mask(self) -> np.ndarray:
+    def _create_mask(self) -> npt.NDArray[np.float_]:
         """
         creates a mask of the region of interest
         """
@@ -61,7 +62,9 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _solve_eigenproblem(self) -> tuple[np.ndarray, np.ndarray]:
+    def _solve_eigenproblem(
+        self,
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         solves the eigenproblem for the given function
         """

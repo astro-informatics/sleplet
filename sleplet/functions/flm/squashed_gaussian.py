@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
@@ -16,7 +17,7 @@ class SquashedGaussian(F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def _create_coefficients(self) -> np.ndarray:
+    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)
 
     def _create_name(self) -> str:
@@ -39,7 +40,9 @@ class SquashedGaussian(F_LM):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.t_sigma, self.freq = [np.float_power(10, x) for x in self.extra_args]
 
-    def _grid_fun(self, theta: np.ndarray, phi: np.ndarray) -> np.ndarray:
+    def _grid_fun(
+        self, theta: npt.NDArray[np.float_], phi: npt.NDArray[np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         function on the grid
         """

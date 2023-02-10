@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 from numpy import linalg as LA
+from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
@@ -72,7 +73,7 @@ class MeshSlepian:
                 np.save(eval_loc, self.slepian_eigenvalues)
                 np.save(evec_loc, self.slepian_functions[: self.N])
 
-    def _create_D_matrix(self) -> np.ndarray:
+    def _create_D_matrix(self) -> npt.NDArray[np.float_]:
         """
         computes the D matrix for the mesh eigenfunctions
         """
@@ -112,7 +113,7 @@ class MeshSlepian:
         release_shared_memory(shm_ext)
         return D
 
-    def _fill_D_elements(self, D: np.ndarray, i: int) -> None:
+    def _fill_D_elements(self, D: npt.NDArray[np.float_], i: int) -> None:
         """
         fill in the D matrix elements using symmetries
         """
@@ -135,7 +136,7 @@ class MeshSlepian:
     @staticmethod
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
-    ) -> tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
         """
         need eigenvalues and eigenvectors to be in a certain format
         """

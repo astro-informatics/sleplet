@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
+from numpy import typing as npt
 
 from sleplet.functions.flm.earth import Earth
 from sleplet.plotting.inputs import THETA_MAX
@@ -48,8 +49,11 @@ def main() -> None:
 
 
 def _helper_sphere(
-    L: int, slepian: SlepianFunctions, f: np.ndarray, flm: np.ndarray
-) -> np.ndarray:
+    L: int,
+    slepian: SlepianFunctions,
+    f: npt.NDArray[np.complex_],
+    flm: npt.NDArray[np.complex_ | np.float_],
+) -> npt.NDArray[np.float_]:
     """
     the difference in Slepian coefficients by integration of whole sphere
     """
@@ -59,8 +63,12 @@ def _helper_sphere(
 
 
 def _helper_region(
-    L: int, slepian: SlepianFunctions, f: np.ndarray, flm: np.ndarray, mask: np.ndarray
-) -> np.ndarray:
+    L: int,
+    slepian: SlepianFunctions,
+    f: npt.NDArray[np.complex_],
+    flm: npt.NDArray[np.complex_ | np.float_],
+    mask: npt.NDArray[np.float_],
+) -> npt.NDArray[np.float_]:
     """
     the difference in Slepian coefficients by integration of region on the sphere
     """
