@@ -52,6 +52,9 @@ profile = "black"
 [tool.mypy]
 plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
 
+[tool.pytest.ini_options]
+addopts = "--color=yes -v"
+
 [tool.ruff]
 fix = true
 force-exclude = true
