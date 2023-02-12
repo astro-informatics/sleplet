@@ -38,8 +38,7 @@ dev = [
   "black",
   "mypy",
   "pre-commit",
-  "pytest",
-  "pytest-cov",
+  "tox",
 ]
 
 [project.scripts]
@@ -51,6 +50,9 @@ profile = "black"
 
 [tool.mypy]
 plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
+
+[tool.pytest.ini_options]
+addopts = "--color=yes -v"
 
 [tool.ruff]
 fix = true
@@ -82,3 +84,23 @@ max-complexity = 18
 [tool.tomlsort]
 all = true
 trailing_comma_inline_array = true
+
+[tool.tox]
+legacy_tox_ini = """
+    [gh-actions]
+    python =
+        3.10: py310
+
+    [testenv]
+    commands =
+        pytest \
+        --cov=sleplet \
+        --runslow
+    deps =
+        pytest
+        pytest-cov
+
+    [tox]
+    env_list =
+        py310
+"""

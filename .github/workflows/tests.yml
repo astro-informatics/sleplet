@@ -1,0 +1,40 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Retrieve LFS files
+        run: |
+          git lfs ls-files -I \
+          bird_b697,\
+          EGM2008_Topography_flms_L2190.mat,\
+          theta30-60_phi30-60_L32.npy \
+          -l | cut -d' ' -f1 | sort > .lfs-assets-id
+          git lfs pull
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install tox tox-gh-actions
+
+      - name: Cache tox
+        uses: actions/cache@v3
+        with:
+          path: .tox
+          key: tox-${{ hashFiles('pyproject.toml') }}
+
+      - name: Test with tox
+        run: tox
