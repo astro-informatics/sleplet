@@ -52,7 +52,7 @@ profile = "black"
 plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
 
 [tool.pytest.ini_options]
-addopts = "--color=yes -v"
+addopts = "--color=yes --strict-markers -v"
 
 [tool.ruff]
 fix = true
@@ -95,10 +95,11 @@ legacy_tox_ini = """
     commands =
         pytest \
         --cov=sleplet \
-        --runslow
+        --slow
     deps =
         pytest
         pytest-cov
+        pytest-skip-slow
 
     [tox]
     env_list =
