@@ -6,7 +6,7 @@ requires = ["setuptools", "setuptools-scm"]
 authors = [{email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"}]
 classifiers = ["Programming Language :: Python :: 3"]
 dependencies = [
-  "cmocean @ https://github.com/matplotlib/cmocean/archive/refs/heads/main.zip",
+  "cmocean==2.0.0",
   "gmpy2==2.1.5",
   "hypothesis==6.67.1",
   "kaleido==0.2.1",
