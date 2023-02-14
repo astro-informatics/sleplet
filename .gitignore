@@ -5,6 +5,7 @@ __pycache__
 .hypothesis
 .mypy_cache
 .pytest_cache
+.tox
 .vscode
 *.c
 *.egg-info
@@ -20,5 +21,4 @@ default.profraw
 dist
 EGM2008_to2190_TideFree
 EGM2008_to2190_ZeroTide
-htmlcov
 sleplet-*
