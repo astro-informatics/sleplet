@@ -49,6 +49,7 @@ sphere = "sleplet.scripts.plotting_on_sphere:main"
 profile = "black"
 
 [tool.mypy]
+explicit_package_bases = true
 plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
 
 [tool.pytest.ini_options]
