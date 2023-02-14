@@ -1,6 +1,6 @@
 # SLEPLET
 
-[![DOI](https://zenodo.org/badge/306052936.svg)](https://zenodo.org/badge/latestdoi/306052936)
+[![SLEPLET](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
 [![tests](https://github.com/astro-informatics/sleplet/actions/workflows/tests.yml/badge.svg)](https://github.com/astro-informatics/sleplet/actions/workflows/tests.yml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
