@@ -165,3 +165,77 @@ done
 ### Slepian Scale-Discretised Wavelets on Manifolds
 
 [![Slepian Scale-Discretised Wavelets on Manifolds](https://img.shields.io/badge/DOI-10.48550/arXiv.2302.06006-pink.svg)](https://doi.org/10.48550/arXiv.2302.06006)
+
+#### Fig. 2
+
+```{sh}
+for r in $(seq 2 9); do
+    mesh homer -e ${r} -u
+done
+```
+
+#### Fig. 4
+
+```{sh}
+python -m sleplet.plotting.mesh.mesh_tiling homer
+```
+
+#### Fig. 5
+
+```{sh}
+python -m sleplet.plotting.mesh.mesh_region homer
+```
+
+#### Fig. 6
+
+```{sh}
+for p in 0 9 24 49 99 199; do
+    mesh homer -m slepian_functions -e ${p} -u -z
+done
+```
+
+#### Fig. 7
+
+```{sh}
+python -m sleplet.plotting.mesh.mesh_slepian_eigenvalues homer
+```
+
+#### Fig. 8
+
+```{sh}
+mesh homer -m slepian_wavelets -u -z
+for j in $(seq 0 4); do
+    mesh homer -e 3 2 ${j} -m slepian_wavelets -u -z
+done
+```
+
+#### Fig. 9
+
+```{sh}
+mesh homer -m field -u
+```
+
+#### Fig. 10
+
+```{sh}
+mesh homer -m slepian_wavelet_coefficients -u -z
+for j in $(seq 0 4); do
+    mesh homer -e 3 2 ${j} -m slepian_wavelet_coefficients -u -z
+done
+```
+
+#### Fig. 11
+
+```{sh}
+mesh homer -m slepian_field -u -z
+mesh homer -m slepian_field -n -5 -u -z
+python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 1
+```
+
+#### Fig. 12
+
+```{sh}
+for f in bird cheetah cube dragonteapot; do
+    python -m sleplet.plotting.mesh.mesh_region ${f}
+done
+```
