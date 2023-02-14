@@ -1,0 +1,9 @@
+include *.cff
+include *.yaml
+recursive-include paper *.bib
+recursive-include paper *.md
+recursive-include src *.mat
+recursive-include src *.npy
+recursive-include src *.off
+recursive-include src *.toml
+recursive-include tests *.py

@@ -82,9 +82,6 @@ select = [
 [tool.ruff.mccabe]
 max-complexity = 18
 
-[tool.setuptools.packages.find]
-where = ["sleplet"]
-
 [tool.setuptools_scm]
 
 [tool.tomlsort]
@@ -100,7 +97,7 @@ legacy_tox_ini = """
     [testenv]
     commands =
         pytest \
-        --cov=sleplet \
+        --cov=. \
         --slow
     deps =
         pytest
