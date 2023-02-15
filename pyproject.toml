@@ -64,10 +64,6 @@ run = {branch = true, parallel = true, source = ["sleplet"]}
 paths.source = [
     "src",
     ".tox*/*/lib/python*/site-packages",
-    ".tox*/pypy*/site-packages",
-    ".tox*\\*\\Lib\\site-packages",
-    "*/src",
-    "*\\src",
 ]
 
 [tool.mypy]
