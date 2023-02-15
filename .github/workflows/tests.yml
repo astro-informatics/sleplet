@@ -18,7 +18,11 @@ jobs:
       - name: Checkout code
         uses: nschloe/action-cached-lfs-checkout@v1
         with:
-          include: "EGM2008_Topography_flms_L2190.mat"
+          include: |
+            EGM2008_Topography_flms_L2190.mat,\
+            mesh/basis_functions/bird_b697,\
+            polar40_L32.npy,\
+            theta30-60_phi30-60_L32.npy
 
       - name: Set up python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
