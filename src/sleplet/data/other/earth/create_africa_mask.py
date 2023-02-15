@@ -30,7 +30,7 @@ def create_mask(L: int) -> None:
 if __name__ == "__main__":
     parser = ArgumentParser(description="create the Africa region mask")
     parser.add_argument(
-        "--bandlimit", "-L", type=int, default=settings.L, help="bandlimit"
+        "--bandlimit", "-L", type=int, default=settings["L"], help="bandlimit"
     )
     args = parser.parse_args()
     create_mask(args.bandlimit)

@@ -67,7 +67,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         else:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            if settings.SAVE_MATRICES:
+            if settings["SAVE_MATRICES"]:
                 np.save(eval_loc, eigenvalues)
                 np.save(evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
