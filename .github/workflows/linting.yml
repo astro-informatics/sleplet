@@ -29,3 +29,6 @@ jobs:
         uses: sourcery-ai/action@v1
         with:
           token: ${{ secrets.SOURCERY_TOKEN }}
+
+      - name: check-manifest
+        uses: tj-actions/check-manifest@v1
