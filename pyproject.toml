@@ -60,6 +60,7 @@ urls.homepage = "https://github.com/astro-informatics/sleplet"
 report = {skip_covered = true, sort = "cover"}
 run = {branch = true, source = ["src"]}
 paths.source = [
+  "*/src",
   ".tox*/*/lib/python*/site-packages",
   "src",
 ]
