@@ -60,12 +60,12 @@ urls.homepage = "https://github.com/astro-informatics/sleplet"
 report = {skip_covered = true, sort = "cover"}
 run = {branch = true, parallel = true, source = ["sleplet"]}
 paths.source = [
-    "*/src",
-    "*\\src",
+    "src",
     ".tox*/*/lib/python*/site-packages",
     ".tox*/pypy*/site-packages",
     ".tox*\\*\\Lib\\site-packages",
-    "src",
+    "*/src",
+    "*\\src",
 ]
 
 [tool.mypy]
@@ -113,7 +113,7 @@ mccabe.max-complexity = 18
 [tool.setuptools_scm]
 
 [tool.tomlsort]
-all = true
+sort_inline_arrays = false
 spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
 
