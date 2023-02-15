@@ -68,7 +68,7 @@ class MeshSlepian:
                 self.slepian_eigenvalues,
                 self.slepian_functions,
             ) = self._clean_evals_and_evecs(LA.eigh(D))
-            if settings.SAVE_MATRICES:
+            if settings["SAVE_MATRICES"]:
                 np.save(eval_loc, self.slepian_eigenvalues)
                 np.save(evec_loc, self.slepian_functions[: self.N])
 
@@ -97,11 +97,11 @@ class MeshSlepian:
 
         # split up L range to maximise effiency
         chunks = split_arr_into_chunks(
-            self.mesh.mesh_eigenvalues.shape[0], settings.NCPU
+            self.mesh.mesh_eigenvalues.shape[0], settings["NCPU"]
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings.NCPU) as e:
+        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

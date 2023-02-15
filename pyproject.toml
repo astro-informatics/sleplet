@@ -10,7 +10,9 @@ authors = [
     {email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"},
 ]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
 ]
 dependencies = [
     "cmocean==2.0.0",
@@ -24,13 +26,12 @@ dependencies = [
     "numpy==1.23.5",
     "pandas==1.5.3",
     "plotly==5.13.0",
-    "psutil==5.9.4",
     "pydantic==1.10.4",
     "pys2let==2.2.4",
     "pyssht==1.5.1",
-    "python-box[toml]==7.0.0",
     "scipy==1.10.0",
     "seaborn==0.12.2",
+    "tomli==2.0.1",
 ]
 description = "Slepian Scale-Discretised Wavelets"
 dynamic = [
@@ -60,12 +61,8 @@ urls.homepage = "https://github.com/astro-informatics/sleplet"
 report = {skip_covered = true, sort = "cover"}
 run = {branch = true, parallel = true, source = ["sleplet"]}
 paths.source = [
-    "*/src",
-    "*\\src",
-    ".tox*/*/lib/python*/site-packages",
-    ".tox*/pypy*/site-packages",
-    ".tox*\\*\\Lib\\site-packages",
     "src",
+    ".tox*/*/lib/python*/site-packages",
 ]
 
 [tool.mypy]
@@ -113,7 +110,7 @@ mccabe.max-complexity = 18
 [tool.setuptools_scm]
 
 [tool.tomlsort]
-all = true
+sort_inline_arrays = false
 spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
 
