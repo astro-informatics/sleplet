@@ -28,10 +28,6 @@ then
 pre-commit install
 ```
 
-### Testing
-
-Install [tox](https://tox.wiki/) and then run `tox`.
-
 ## Paper Figures
 
 ### Sifting Convolution on the Sphere
