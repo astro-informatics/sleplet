@@ -38,11 +38,11 @@ _slepian_path = _file_location.parents[2] / "data" / "slepian"
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY
-    L_max: int = settings.L_MAX
-    L_min: int = settings.L_MIN
+    L_max: int = settings["L_MAX"]
+    L_min: int = settings["L_MIN"]
 
     def __post_init_post_parse__(self) -> None:
-        self.resolution = settings.SAMPLES * self.L
+        self.resolution = settings["SAMPLES"] * self.L
         super().__post_init_post_parse__()
 
     def _create_fn_name(self) -> str:
@@ -78,9 +78,9 @@ class SlepianArbitrary(SlepianFunctions):
         D = self._create_D_matrix()
 
         # check whether the large job has been split up
-        if (
-            self.L_min != L_MIN_DEFAULT or self.L_max != self.L
-        ) and settings.SAVE_MATRICES:
+        if (self.L_min != L_MIN_DEFAULT or self.L_max != self.L) and settings[
+            "SAVE_MATRICES"
+        ]:
             logger.info("large job has been used, saving intermediate matrix")
             inter_loc = self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
             np.save(inter_loc, D)
@@ -91,7 +91,7 @@ class SlepianArbitrary(SlepianFunctions):
 
         # solve eigenproblem
         eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
-        if settings.SAVE_MATRICES:
+        if settings["SAVE_MATRICES"]:
             np.save(eval_loc, eigenvalues)
             np.save(evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
@@ -126,11 +126,11 @@ class SlepianArbitrary(SlepianFunctions):
 
         # split up L range to maximise effiency
         chunks = split_arr_into_chunks(
-            self.L_max**2, settings.NCPU, arr_min=self.L_min**2
+            self.L_max**2, settings["NCPU"], arr_min=self.L_min**2
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings.NCPU) as e:
+        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

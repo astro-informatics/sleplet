@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import numpy as np
-from box import Box
+import tomli
 from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
 from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse
@@ -38,26 +38,27 @@ def average_functions_on_vertices_to_faces(
 
 
 def create_mesh_region(
-    mesh_config: Box, vertices: npt.NDArray[np.float_]
+    mesh_config: dict, vertices: npt.NDArray[np.float_]
 ) -> npt.NDArray[np.bool_]:
     """
     creates the boolean region for the given mesh
     """
     return (
-        (vertices[:, 0] >= mesh_config.XMIN)
-        & (vertices[:, 0] <= mesh_config.XMAX)
-        & (vertices[:, 1] >= mesh_config.YMIN)
-        & (vertices[:, 1] <= mesh_config.YMAX)
-        & (vertices[:, 2] >= mesh_config.ZMIN)
-        & (vertices[:, 2] <= mesh_config.ZMAX)
+        (vertices[:, 0] >= mesh_config["XMIN"])
+        & (vertices[:, 0] <= mesh_config["XMAX"])
+        & (vertices[:, 1] >= mesh_config["YMIN"])
+        & (vertices[:, 1] <= mesh_config["YMAX"])
+        & (vertices[:, 2] >= mesh_config["ZMIN"])
+        & (vertices[:, 2] <= mesh_config["ZMAX"])
     )
 
 
-def extract_mesh_config(mesh_name: str) -> Box:
+def extract_mesh_config(mesh_name: str) -> dict:
     """
     reads in the given mesh region settings file
     """
-    return Box.from_toml(filename=_meshes_path / "regions" / f"{mesh_name}.toml")
+    with open(_meshes_path / "regions" / f"{mesh_name}.toml", "rb") as f:
+        return tomli.load(f)
 
 
 def mesh_eigendecomposition(
@@ -99,21 +100,21 @@ def mesh_eigendecomposition(
             laplacian, k=number_basis_functions, which="LM", sigma=0
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
-        if settings.SAVE_MATRICES:
+        if settings["SAVE_MATRICES"]:
             logger.info("saving binaries...")
             np.save(eval_loc, eigenvalues)
             np.save(evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
 
 
-def read_mesh(mesh_config: Box) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
+def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
     """
     reads in the given mesh
     """
     vertices, faces = read_triangle_mesh(
-        str(_meshes_path / "polygons" / mesh_config.FILENAME)
+        str(_meshes_path / "polygons" / mesh_config["FILENAME"])
     )
-    return upsample(vertices, faces, number_of_subdivs=mesh_config.UPSAMPLE)
+    return upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
 
 
 def _mesh_laplacian(

@@ -21,18 +21,18 @@ class Mesh:
     def __post_init_post_parse__(self) -> None:
         mesh_config = extract_mesh_config(self.name)
         self.camera_view = create_camera(
-            mesh_config.CAMERA_X,
-            mesh_config.CAMERA_Y,
-            mesh_config.CAMERA_Z,
-            mesh_config.REGION_ZOOM if self.zoom else mesh_config.DEFAULT_ZOOM,
-            x_center=mesh_config.CENTER_X if self.zoom else 0,
-            y_center=mesh_config.CENTER_Y if self.zoom else 0,
-            z_center=mesh_config.CENTER_Z if self.zoom else 0,
+            mesh_config["CAMERA_X"],
+            mesh_config["CAMERA_Y"],
+            mesh_config["CAMERA_Z"],
+            mesh_config["REGION_ZOOM"] if self.zoom else mesh_config["DEFAULT_ZOOM"],
+            x_center=mesh_config["CENTER_X"] if self.zoom else 0,
+            y_center=mesh_config["CENTER_Y"] if self.zoom else 0,
+            z_center=mesh_config["CENTER_Z"] if self.zoom else 0,
         )
         self.colourbar_pos = (
-            mesh_config.REGION_COLOURBAR_POS
+            mesh_config["REGION_COLOURBAR_POS"]
             if self.zoom
-            else mesh_config.DEFAULT_COLOURBAR_POS
+            else mesh_config["DEFAULT_COLOURBAR_POS"]
         )
         self.vertices, self.faces = read_mesh(mesh_config)
         self.region = create_mesh_region(mesh_config, self.vertices)

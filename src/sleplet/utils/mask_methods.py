@@ -2,7 +2,6 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
-from box import Box
 from numpy import typing as npt
 
 from sleplet.meshes.classes.mesh import Mesh
@@ -79,33 +78,33 @@ def ensure_masked_flm_bandlimited(
     return ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
-def create_default_region(settings: Box) -> Region:
+def create_default_region(settings: dict) -> Region:
     """
     creates default region from settings object
     """
     return Region(
-        gap=settings.POLAR_GAP,
-        mask_name=settings.SLEPIAN_MASK,
-        phi_max=np.deg2rad(settings.PHI_MAX),
-        phi_min=np.deg2rad(settings.PHI_MIN),
-        theta_max=np.deg2rad(settings.THETA_MAX),
-        theta_min=np.deg2rad(settings.THETA_MIN),
+        gap=settings["POLAR_GAP"],
+        mask_name=settings["SLEPIAN_MASK"],
+        phi_max=np.deg2rad(settings["PHI_MAX"]),
+        phi_min=np.deg2rad(settings["PHI_MIN"]),
+        theta_max=np.deg2rad(settings["THETA_MAX"]),
+        theta_min=np.deg2rad(settings["THETA_MIN"]),
     )
 
 
 def create_mesh_region(
-    mesh_config: Box, vertices: npt.NDArray[np.float_]
+    mesh_config: dict, vertices: npt.NDArray[np.float_]
 ) -> npt.NDArray[np.bool_]:
     """
     creates the boolean region for the given mesh
     """
     return (
-        (vertices[:, 0] >= mesh_config.XMIN)
-        & (vertices[:, 0] <= mesh_config.XMAX)
-        & (vertices[:, 1] >= mesh_config.YMIN)
-        & (vertices[:, 1] <= mesh_config.YMAX)
-        & (vertices[:, 2] >= mesh_config.ZMIN)
-        & (vertices[:, 2] <= mesh_config.ZMAX)
+        (vertices[:, 0] >= mesh_config["XMIN"])
+        & (vertices[:, 0] <= mesh_config["XMAX"])
+        & (vertices[:, 1] >= mesh_config["YMIN"])
+        & (vertices[:, 1] <= mesh_config["YMAX"])
+        & (vertices[:, 2] >= mesh_config["ZMIN"])
+        & (vertices[:, 2] <= mesh_config["ZMAX"])
     )
 
 

@@ -89,10 +89,10 @@ class Plot:
         # create html and open if auto_open is true
         html_filename = str(_fig_path / "html" / f"{self.filename}.html")
 
-        py.plot(fig, filename=html_filename, auto_open=settings.AUTO_OPEN)
+        py.plot(fig, filename=html_filename, auto_open=settings["AUTO_OPEN"])
 
         # if save_fig is true then create png and pdf in their directories
-        if settings.SAVE_FIG:
+        if settings["SAVE_FIG"]:
             for file_type in {"png", "pdf"}:
                 logger.info(f"saving {file_type}")
                 filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")

@@ -8,17 +8,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
-      - name: Retrieve LFS files
-        run: |
-          git lfs ls-files -I \
-          bird_b697,\
-          EGM2008_Topography_flms_L2190.mat,\
-          theta30-60_phi30-60_L32.npy \
-          -l | cut -d' ' -f1 | sort > .lfs-assets-id
-          git lfs pull
+      - name: Checkout code
+        uses: nschloe/action-cached-lfs-checkout@v1
+        with:
+          include: |
+            bird_b697_N194,\
+            bird_b697,\
+            D_polar40_L16_N30,\
+            D_south_america_L16_N10,\
+            EGM2008_Topography_flms_L2190.mat,\
+            polar40_L32.npy,\
+            south_america_L16.npy,\
+            south_america_L32.npy,\
+            theta30-60_phi30-60_L32.npy
 
       - name: Set up python
         uses: actions/setup-python@v4

@@ -106,7 +106,7 @@ class SlepianPolarCap(SlepianFunctions):
             eigenvectors,
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
-        if settings.SAVE_MATRICES:
+        if settings["SAVE_MATRICES"]:
             limit = self.N if self.L > L_SAVE_ALL else None
             np.save(eval_loc, eigenvalues)
             np.save(evec_loc, eigenvectors[:limit])
@@ -181,10 +181,10 @@ class SlepianPolarCap(SlepianFunctions):
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L - m, settings.NCPU)
+        chunks = split_arr_into_chunks(self.L - m, settings["NCPU"])
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings.NCPU) as e:
+        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
