@@ -1,47 +1,47 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-  "setuptools",
-  "setuptools-scm",
+    "setuptools",
+    "setuptools-scm",
 ]
 
 [project]
 authors = [
-  {email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"},
+    {email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"},
 ]
 classifiers = [
-  "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3",
 ]
 dependencies = [
-  "cmocean==2.0.0",
-  "gmpy2==2.1.5",
-  "hypothesis==6.67.1",
-  "kaleido==0.2.1",
-  "libigl==2.4.1",
-  "matplotlib==3.6.3",
-  "multiprocess==0.70.14",
-  "numba==0.56.4",
-  "numpy==1.23.5",
-  "pandas==1.5.3",
-  "plotly==5.13.0",
-  "psutil==5.9.4",
-  "pydantic==1.10.4",
-  "pys2let==2.2.4",
-  "pyssht==1.5.1",
-  "python-box[toml]==7.0.0",
-  "scipy==1.10.0",
-  "seaborn==0.12.2",
+    "cmocean==2.0.0",
+    "gmpy2==2.1.5",
+    "hypothesis==6.67.1",
+    "kaleido==0.2.1",
+    "libigl==2.4.1",
+    "matplotlib==3.6.3",
+    "multiprocess==0.70.14",
+    "numba==0.56.4",
+    "numpy==1.23.5",
+    "pandas==1.5.3",
+    "plotly==5.13.0",
+    "psutil==5.9.4",
+    "pydantic==1.10.4",
+    "pys2let==2.2.4",
+    "pyssht==1.5.1",
+    "python-box[toml]==7.0.0",
+    "scipy==1.10.0",
+    "seaborn==0.12.2",
 ]
 description = "Slepian Scale-Discretised Wavelets"
 dynamic = [
-  "version",
+    "version",
 ]
 keywords = [
-  "manifolds",
-  "python",
-  "slepian-functions",
-  "sphere",
-  "wavelets",
+    "manifolds",
+    "python",
+    "slepian-functions",
+    "sphere",
+    "wavelets",
 ]
 name = "sleplet"
 readme = "README.md"
@@ -49,60 +49,60 @@ requires-python = "~=3.10"
 scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scripts.plotting_on_sphere:main"}
 license.text = "BSD-3-Clause"
 optional-dependencies.dev = [
-  "black",
-  "mypy",
-  "pre-commit",
-  "tox",
+    "black",
+    "mypy",
+    "pre-commit",
+    "tox",
 ]
 urls.homepage = "https://github.com/astro-informatics/sleplet"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
-run = {branch = true, source = ["src"]}
+run = {branch = true, parallel = true, source = ["sleplet"]}
 paths.source = [
-  ".tox/*/lib/python*/site-packages",
-  "src",
+    ".tox/**/site-packages",
+    "src",
 ]
 
 [tool.mypy]
 explicit_package_bases = true
 plugins = [
-  "numpy.typing.mypy_plugin",
-  "pydantic.mypy",
+    "numpy.typing.mypy_plugin",
+    "pydantic.mypy",
 ]
 
 [tool.pytest.ini_options]
 addopts = "--color=yes -v"
 testpaths = [
-  "tests",
+    "tests",
 ]
 
 [tool.ruff]
 fix = true
 force-exclude = true
 ignore = [
-  "E741",
-  "PLR0913",
-  "W605",
+    "E741",
+    "PLR0913",
+    "W605",
 ]
 select = [
-  # flake8-bugbear
-  "B",
-  # pycodestyle
-  "E",
-  # pyflakes
-  "F",
-  # isort
-  "I",
-  # pylint
-  "PLE",
-  "PLR",
-  "PLW",
-  # flake8-quotes
-  "Q",
-  "W",
-  # flake8-2020
-  "YTT",
+    # flake8-bugbear
+    "B",
+    # pycodestyle
+    "E",
+    # pyflakes
+    "F",
+    # isort
+    "I",
+    # pylint
+    "PLE",
+    "PLR",
+    "PLW",
+    # flake8-quotes
+    "Q",
+    "W",
+    # flake8-2020
+    "YTT",
 ]
 mccabe.max-complexity = 18
 
@@ -110,6 +110,7 @@ mccabe.max-complexity = 18
 
 [tool.tomlsort]
 all = true
+spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
 
 [tool.tox]
@@ -120,7 +121,7 @@ legacy_tox_ini = """
 
     [testenv]
     commands =
-        pytest --cov {envsitepackagesdir}/sleplet --slow
+        pytest --cov --slow
     deps =
         pytest
         pytest-cov
