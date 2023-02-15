@@ -1,5 +1,4 @@
 __pycache__
-_version.py
 .coverage*
 .DS_Store
 .envrc
@@ -22,4 +21,3 @@ default.profraw
 dist
 EGM2008_to2190_TideFree
 EGM2008_to2190_ZeroTide
-sleplet-*

@@ -45,6 +45,17 @@ dev = [
 mesh = "sleplet.scripts.plotting_on_mesh:main"
 sphere = "sleplet.scripts.plotting_on_sphere:main"
 
+[tool.coverage.paths]
+source = ["*/site-packages", "src"]
+
+[tool.coverage.report]
+skip_covered = true
+sort = "cover"
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
 [tool.isort]
 profile = "black"
 
@@ -96,9 +107,7 @@ legacy_tox_ini = """
 
     [testenv]
     commands =
-        pytest \
-        --cov=. \
-        --slow
+        pytest tests --cov --slow
     deps =
         pytest
         pytest-cov
