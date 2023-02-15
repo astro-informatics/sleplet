@@ -45,14 +45,26 @@ dev = [
 mesh = "sleplet.scripts.plotting_on_mesh:main"
 sphere = "sleplet.scripts.plotting_on_sphere:main"
 
+[tool.coverage.paths]
+source = ["*/site-packages", "src"]
+
+[tool.coverage.report]
+skip_covered = true
+sort = "cover"
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
 [tool.isort]
 profile = "black"
 
 [tool.mypy]
+explicit_package_bases = true
 plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
 
 [tool.pytest.ini_options]
-addopts = "--color=yes --strict-markers -v"
+addopts = "--color=yes -v"
 
 [tool.ruff]
 fix = true
@@ -82,7 +94,6 @@ select = [
 max-complexity = 18
 
 [tool.setuptools_scm]
-write_to = "sleplet/_version.py"
 
 [tool.tomlsort]
 all = true
@@ -96,9 +107,7 @@ legacy_tox_ini = """
 
     [testenv]
     commands =
-        pytest \
-        --cov=sleplet \
-        --slow
+        pytest tests --cov --slow
     deps =
         pytest
         pytest-cov
