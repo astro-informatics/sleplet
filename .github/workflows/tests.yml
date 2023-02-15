@@ -6,7 +6,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+        python-version: ["3.10"]
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -20,10 +25,10 @@ jobs:
           -l | cut -d' ' -f1 | sort > .lfs-assets-id
           git lfs pull
 
-      - name: Set up python
+      - name: Set up python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: |
@@ -38,3 +43,5 @@ jobs:
 
       - name: Test with tox
         run: tox
+        env:
+          PLATFORM: ${{ matrix.platform }}

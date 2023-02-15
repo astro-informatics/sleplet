@@ -121,6 +121,12 @@ legacy_tox_ini = """
     python =
         3.10: py310
 
+    [gh-actions:env]
+    PLATFORM =
+        macos-latest: macos
+        ubuntu-latest: linux
+        windows-latest: windows
+
     [testenv]
     commands =
         pytest --cov --slow
