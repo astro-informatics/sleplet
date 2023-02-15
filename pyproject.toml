@@ -1,10 +1,17 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "setuptools-scm"]
+requires = [
+  "setuptools",
+  "setuptools-scm",
+]
 
 [project]
-authors = [{email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"}]
-classifiers = ["Programming Language :: Python :: 3"]
+authors = [
+  {email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"},
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+]
 dependencies = [
   "cmocean==2.0.0",
   "gmpy2==2.1.5",
@@ -26,50 +33,58 @@ dependencies = [
   "seaborn==0.12.2",
 ]
 description = "Slepian Scale-Discretised Wavelets"
-dynamic = ["version"]
-keywords = ["manifolds", "python", "slepian-functions", "sphere", "wavelets"]
-license = {text = "BSD-3-Clause"}
+dynamic = [
+  "version",
+]
+keywords = [
+  "manifolds",
+  "python",
+  "slepian-functions",
+  "sphere",
+  "wavelets",
+]
 name = "sleplet"
 readme = "README.md"
 requires-python = "~=3.10"
-
-[project.optional-dependencies]
-dev = [
+scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scripts.plotting_on_sphere:main"}
+license.text = "BSD-3-Clause"
+optional-dependencies.dev = [
   "black",
   "mypy",
   "pre-commit",
   "tox",
 ]
+urls.homepage = "https://github.com/astro-informatics/sleplet"
 
-[project.scripts]
-mesh = "sleplet.scripts.plotting_on_mesh:main"
-sphere = "sleplet.scripts.plotting_on_sphere:main"
-
-[tool.coverage.paths]
-source = ["src", ".tox*/*/lib/python*/site-packages"]
-
-[tool.coverage.report]
-skip_covered = true
-sort = "cover"
-
-[tool.coverage.run]
-branch = true
-source = ["src"]
-
-[tool.isort]
-profile = "black"
+[tool.coverage]
+report = {skip_covered = true, sort = "cover"}
+run = {branch = true, source = ["src"]}
+paths.source = [
+  ".tox*/*/lib/python*/site-packages",
+  "src",
+]
 
 [tool.mypy]
 explicit_package_bases = true
-plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
+plugins = [
+  "numpy.typing.mypy_plugin",
+  "pydantic.mypy",
+]
 
 [tool.pytest.ini_options]
 addopts = "--color=yes -v"
+testpaths = [
+  "tests",
+]
 
 [tool.ruff]
 fix = true
 force-exclude = true
-ignore = ["E741", "PLR0913", "W605"]
+ignore = [
+  "E741",
+  "PLR0913",
+  "W605",
+]
 select = [
   # flake8-bugbear
   "B",
@@ -89,9 +104,7 @@ select = [
   # flake8-2020
   "YTT",
 ]
-
-[tool.ruff.mccabe]
-max-complexity = 18
+mccabe.max-complexity = 18
 
 [tool.setuptools_scm]
 
@@ -107,7 +120,7 @@ legacy_tox_ini = """
 
     [testenv]
     commands =
-        pytest tests --cov {envsitepackagesdir}/sleplet --slow
+        pytest --cov {envsitepackagesdir}/sleplet --slow
     deps =
         pytest
         pytest-cov
