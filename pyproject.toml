@@ -11,8 +11,6 @@ authors = [
 ]
 classifiers = [
     "License :: OSI Approved :: BSD License",
-    "Operating System :: MacOS",
-    "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3 :: Only",
     "Typing :: Typed",
 ]
@@ -120,11 +118,6 @@ legacy_tox_ini = """
     [gh-actions]
     python =
         3.10: py310
-
-    [gh-actions:env]
-    PLATFORM =
-        macos-latest: macos
-        ubuntu-latest: linux
 
     [testenv]
     commands =
