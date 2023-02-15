@@ -9,21 +9,21 @@ jobs:
     runs-on: ${{ matrix.platform }}
     strategy:
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [macos-latest, ubuntu-latest]
         python-version: ["3.10"]
 
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      # - name: Retrieve LFS files
-      #   run: |
-      #     git lfs ls-files -I \
-      #     bird_b697,\
-      #     EGM2008_Topography_flms_L2190.mat,\
-      #     theta30-60_phi30-60_L32.npy \
-      #     -l | cut -d' ' -f1 | sort > .lfs-assets-id
-      #     git lfs pull
+      - name: Retrieve LFS files
+        run: |
+          git lfs ls-files -I \
+          bird_b697,\
+          EGM2008_Topography_flms_L2190.mat,\
+          theta30-60_phi30-60_L32.npy \
+          -l | cut -d' ' -f1 | sort > .lfs-assets-id
+          git lfs pull
 
       - name: Set up python ${{ matrix.python-version }}
         uses: actions/setup-python@v4

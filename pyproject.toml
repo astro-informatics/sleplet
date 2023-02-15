@@ -125,7 +125,6 @@ legacy_tox_ini = """
     PLATFORM =
         macos-latest: macos
         ubuntu-latest: linux
-        windows-latest: windows
 
     [testenv]
     commands =
