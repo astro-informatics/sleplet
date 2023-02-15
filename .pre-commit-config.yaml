@@ -35,9 +35,3 @@ repos:
     rev: 23.1.0
     hooks:
       - id: black
-  - repo: https://github.com/mgedmin/check-manifest
-    rev: "0.49"
-    hooks:
-      - id: check-manifest
-        args: [--no-build-isolation]
-        additional_dependencies: [setuptools-scm]
