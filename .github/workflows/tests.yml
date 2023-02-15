@@ -12,14 +12,7 @@ jobs:
         uses: nschloe/action-cached-lfs-checkout@v1
         with:
           include: |
-            bird_b697_N194,\
-            bird_b697,\
-            D_polar40_L16_N30,\
-            D_south_america_L16_N10,\
-            EGM2008_Topography_flms_L2190.mat,\
-            polar40_L32.npy,\
-            south_america_L32.npy,\
-            theta30-60_phi30-60_L32.npy
+            EGM2008_Topography_flms_L2190.mat
 
       - name: Set up python
         uses: actions/setup-python@v4
