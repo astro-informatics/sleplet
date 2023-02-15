@@ -46,7 +46,7 @@ mesh = "sleplet.scripts.plotting_on_mesh:main"
 sphere = "sleplet.scripts.plotting_on_sphere:main"
 
 [tool.coverage.paths]
-source = ["*/site-packages", "src"]
+source = ["src", ".tox*/*/lib/python*/site-packages"]
 
 [tool.coverage.report]
 skip_covered = true
@@ -107,7 +107,7 @@ legacy_tox_ini = """
 
     [testenv]
     commands =
-        pytest tests --cov --slow
+        pytest tests --cov {envsitepackagesdir}/sleplet --slow
     deps =
         pytest
         pytest-cov
