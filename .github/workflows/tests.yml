@@ -7,27 +7,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]
-
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
       - name: Checkout code
         uses: nschloe/action-cached-lfs-checkout@v1
         with:
           include: |
             EGM2008_Topography_flms_L2190.mat,\
-            mesh/basis_functions/bird_b697,\
+            bird_b697,\
             polar40_L32.npy,\
+            south_america_L32.npy,\
             theta30-60_phi30-60_L32.npy
 
-      - name: Set up python ${{ matrix.python-version }}
+      - name: Set up python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
