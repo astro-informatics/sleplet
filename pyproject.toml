@@ -10,7 +10,11 @@ authors = [
     {email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"},
 ]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
 ]
 dependencies = [
     "cmocean==2.0.0",
