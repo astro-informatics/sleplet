@@ -19,6 +19,8 @@ bibliography: paper.bib
 
 # Summary
 
+Wavelets are also widely used in various disciplines to analyse signals both in space and scale. Whilst many fields measure data on manifolds (i.e. the sphere), often data are only observed on a partial region of the manifold. Wavelets are a typical approach to data of this form, but the wavelet coefficients which overlap with the boundary become contaminated and must be removed for accurate analysis. Another approach is to estimate the region of missing data and to use existing whole-manifold methods for analysis. However, both approaches introduce uncertainty into any analysis. Slepian wavelets enable one to work directly with only the data present, thus avoiding the problems discussed above. Possible applications of Slepian wavelets to areas of research measuring data on the partial sphere include: gravitational/magnetic fields in geodesy; ground-based measurements in astronomy; measurements of whole-planet properties in planetary science; geomagnetism of the Earth; and in analyses of the cosmic microwave background.
+
 # Statement of Need
 
 # Research Based on SLEPLET
