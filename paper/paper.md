@@ -23,11 +23,12 @@ bibliography: paper.bib
 
 # Research Based on SLEPLET
 
-[@Roddy2021], [@Roddy2022], [@Roddy2023]
+`SLEPLET` has been used in the development of the sifting convolution [@Roddy2021], and Slepian scale-discretised wavelets on the sphere [@Roddy2022] and manifolds [@Roddy2023].
 
 # Acknowledgements
 
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+The author would like to thank Jason D. McEwen for their advice and guidance on the mathematics behind `SLEPLET`.
+
+`SLEPLET` makes use of several libraries the author would like to acknowledge, in particular `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013], and `libigl` [@Libigl2017].
 
 # References
