@@ -11,10 +11,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - uses: FantasticFiasco/action-update-license-year@v2
         with:
           path: LICENSE.md
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Merge pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
