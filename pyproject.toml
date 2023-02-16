@@ -7,7 +7,7 @@ requires = [
 
 [project]
 authors = [
-    {email = "patrickjamesroddy@gmail.com", name = "Patrick Roddy"},
+    {email = "patrickjamesroddy@gmail.com", name = "Patrick J. Roddy"},
 ]
 classifiers = [
     "License :: OSI Approved :: BSD License",
@@ -15,25 +15,25 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "cmocean==2.0.0",
-    "gmpy2==2.1.5",
-    "hypothesis==6.67.1",
-    "kaleido==0.2.1",
-    "libigl==2.4.1",
-    "matplotlib==3.6.3",
-    "multiprocess==0.70.14",
-    "numba==0.56.4",
-    "numpy==1.23.5",
-    "pandas==1.5.3",
-    "plotly==5.13.0",
-    "pydantic==1.10.4",
-    "pys2let==2.2.4",
-    "pyssht==1.5.1",
-    "scipy==1.10.0",
-    "seaborn==0.12.2",
-    "tomli==2.0.1",
+    "cmocean>=2.0.0",
+    "gmpy2>=2.1.5",
+    "hypothesis>=6.67.1",
+    "kaleido>=0.2.1",
+    "libigl>=2.4.1",
+    "matplotlib>=3.6.3",
+    "multiprocess>=0.70.14",
+    "numba>=0.56.4",
+    "numpy>=1.23.5",
+    "pandas>=1.5.3",
+    "plotly>=5.13.0",
+    "pydantic>=1.10.4",
+    "pys2let>=2.2.4",
+    "pyssht>=1.5.1",
+    "scipy>=1.10.0",
+    "seaborn>=0.12.2",
+    "tomli>=2.0.1",
 ]
-description = "Slepian Scale-Discretised Wavelets"
+description = "Slepian scale-discretised wavelets in Python"
 dynamic = [
     "version",
 ]
@@ -46,7 +46,7 @@ keywords = [
 ]
 name = "sleplet"
 readme = "README.md"
-requires-python = "~=3.10"
+requires-python = ">=3.10"
 scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scripts.plotting_on_sphere:main"}
 license.text = "BSD-3-Clause"
 optional-dependencies.dev = [
