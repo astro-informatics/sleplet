@@ -11,6 +11,12 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
+      - name: Cache pre-commit
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: tox-${{ hashFiles('.pre-commit-config.yaml') }}
+
       - name: Set up python
         uses: actions/setup-python@v4
         with:
