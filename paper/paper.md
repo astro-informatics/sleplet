@@ -23,6 +23,8 @@ Wavelets are also widely used in various disciplines to analyse signals both in 
 
 # Statement of Need
 
+[@Wieczorek2018] [@Simons2020]
+
 # Research Based on SLEPLET
 
 `SLEPLET` has been used in the development of the sifting convolution [@Roddy2021], and Slepian scale-discretised wavelets on the sphere [@Roddy2022] and manifolds [@Roddy2023].
