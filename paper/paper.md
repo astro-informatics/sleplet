@@ -23,7 +23,7 @@ bibliography: paper.bib
 
 # Research Based on SLEPLET
 
-[@Roddy2021], [Roddy2022], [Roddy2023]
+[@Roddy2021], [@Roddy2022], [@Roddy2023]
 
 # Acknowledgements
 
