@@ -11,8 +11,7 @@ authors:
     orcid: 0000-0002-6271-1700
     affiliation: 1
 affiliations:
-  - name: Advanced Research Computing, University
-College London, UK
+  - name: Advanced Research Computing, University College London, UK
     index: 1
 date: 16 February 2023
 bibliography: paper.bib
