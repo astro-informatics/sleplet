@@ -30,8 +30,6 @@ Wavelets are also widely used in various disciplines to analyse signals both in 
 # Acknowledgements
 
 The author would like to thank Jason D. McEwen for their advice and guidance on the mathematics behind `SLEPLET`. Further, the author would like to thank Zubair Khalid for providing their `MATLAB` implementation to compute the Slepian functions of a polar cap region, as well as the formulation
-for a limited colatitude-longitude region.
-
-`SLEPLET` makes use of several libraries the author would like to acknowledge, in particular `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013], and `libigl` [@Libigl2017].
+for a limited colatitude-longitude region. `SLEPLET` makes use of several libraries the author would like to acknowledge, in particular `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013], and `libigl` [@Libigl2017].
 
 # References
