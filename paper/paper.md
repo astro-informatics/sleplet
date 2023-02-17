@@ -27,7 +27,7 @@ Both `SHTools` [@Wieczorek2018] and `slepian_alpha` [@Simons2020] are examples o
 
 # Research Based on SLEPLET
 
-`SLEPLET` has been used in the development of [@Roddy2021], [@Roddy2022], [@Roddy2023].
+`SLEPLET` has been used in the development of [@Roddy2021], [@Roddy2022] and [@Roddy2023].
 
 # Acknowledgements
 
