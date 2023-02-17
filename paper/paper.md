@@ -23,11 +23,11 @@ Wavelets are also widely used in various disciplines to analyse signals both in 
 
 # Statement of Need
 
-[@Wieczorek2018] [@Simons2020]
+Both `SHTools` [@Wieczorek2018] and `slepian_alpha` [@Simons2020] are examples of codes which allow one to compute Slepian functions on the sphere. In conjunction with `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013] may be used to develop scale-discretised wavelets on the sphere. To the author's knowledge there is no known software which allows one to compute Slepian wavelets on the sphere or general manifolds/meshes.
 
 # Research Based on SLEPLET
 
-`SLEPLET` has been used in the development of [@Roddy2021,@Roddy2022,@Roddy2023].
+`SLEPLET` has been used in the development of [@Roddy2021], [@Roddy2022], [@Roddy2023].
 
 # Acknowledgements
 
