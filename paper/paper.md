@@ -31,12 +31,12 @@ To the author's knowledge, there is no public software which allows one to compu
 
 # Demonstration
 
-The following two methods are equivalent. This example leverages `plotly` to display the first Slepian wavelet of a South America region on a dataset of the topography of the Earth - as seen in [@Roddy2022].
+This example leverages `plotly` to display the first Slepian wavelet of a South America region on a dataset of the topography of the Earth - as seen in [@Roddy2022]. The following methods are equivalent.
 
 ## Command Line Interface
 
 ```sh
-sphere slepian_wavelets -e 3 2 0 -L 128 -u
+sphere slepian_wavelets -e 3 2 0 -L 128 -u # defaults to the South America mask
 ```
 
 ## API
