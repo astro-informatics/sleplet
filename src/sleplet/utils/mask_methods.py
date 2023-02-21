@@ -3,7 +3,6 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
-
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from sleplet.utils.logger import logger
@@ -25,7 +24,7 @@ def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
     """
     thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
 
-    match region.region_type:  # noqa: E999
+    match region.region_type:
         case "arbitrary":
             logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
