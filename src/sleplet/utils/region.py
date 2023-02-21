@@ -1,5 +1,6 @@
 from pydantic import validator
 from pydantic.dataclasses import dataclass
+
 from sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
 from sleplet.utils.validation import Validation

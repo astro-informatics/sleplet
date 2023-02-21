@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.testing import assert_equal
+
 from sleplet.utils.region import Region
 
 MASK = "south_america"

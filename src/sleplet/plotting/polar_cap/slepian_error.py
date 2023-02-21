@@ -5,6 +5,7 @@ import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
+
 from sleplet.functions.flm.earth import Earth
 from sleplet.plotting.inputs import THETA_MAX
 from sleplet.slepian.slepian_functions import SlepianFunctions

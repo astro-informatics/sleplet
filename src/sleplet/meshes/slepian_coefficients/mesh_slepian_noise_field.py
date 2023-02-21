@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise

@@ -1,4 +1,5 @@
 from numpy.testing import assert_array_equal, assert_array_less, assert_raises
+
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.functions.flm.earth import Earth
 from sleplet.utils.denoising import denoising_axisym

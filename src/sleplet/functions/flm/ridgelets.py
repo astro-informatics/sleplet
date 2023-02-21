@@ -5,6 +5,7 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 from scipy.special import gammaln
+
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.logger import logger
 from sleplet.utils.string_methods import (

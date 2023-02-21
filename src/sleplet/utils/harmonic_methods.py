@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import Generator
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.vars import SAMPLING_SCHEME

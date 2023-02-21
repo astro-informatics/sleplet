@@ -2,6 +2,7 @@ import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
+
 from sleplet.functions.f_p import F_P
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_forward

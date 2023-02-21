@@ -4,6 +4,7 @@ from argparse import ArgumentParser, Namespace
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
+
 from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.f_p import F_P
 from sleplet.plotting.create_plot_sphere import Plot

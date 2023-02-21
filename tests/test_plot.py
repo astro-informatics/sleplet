@@ -1,6 +1,7 @@
 import cmocean
 import numpy as np
 from numpy.testing import assert_equal
+
 from sleplet.utils.plot_methods import (
     calc_nearest_grid_point,
     calc_plot_resolution,

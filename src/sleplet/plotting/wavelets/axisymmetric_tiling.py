@@ -4,6 +4,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
+
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.wavelet_methods import create_kappas
 

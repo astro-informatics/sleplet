@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+
 from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.config import settings

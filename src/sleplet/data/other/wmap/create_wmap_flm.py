@@ -5,6 +5,7 @@ import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import default_rng
 from scipy import io as sio
+
 from sleplet.utils.vars import RANDOM_SEED
 
 _file_location = Path(__file__).resolve()

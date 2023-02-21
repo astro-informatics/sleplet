@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case

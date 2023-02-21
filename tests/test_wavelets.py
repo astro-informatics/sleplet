@@ -2,6 +2,7 @@ import numpy as np
 import pyssht as ssht
 from numpy.testing import assert_allclose, assert_array_equal, assert_equal
 from pys2let import pys2let_j_max
+
 from sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
 )

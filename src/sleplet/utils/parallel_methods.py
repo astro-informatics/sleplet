@@ -1,6 +1,7 @@
 import numpy as np
 from multiprocess.shared_memory import SharedMemory
 from numpy import typing as npt
+
 from sleplet.utils.vars import L_MIN_DEFAULT
 
 

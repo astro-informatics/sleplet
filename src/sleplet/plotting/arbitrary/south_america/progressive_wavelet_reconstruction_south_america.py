@@ -1,4 +1,5 @@
 import numpy as np
+
 from sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
 )

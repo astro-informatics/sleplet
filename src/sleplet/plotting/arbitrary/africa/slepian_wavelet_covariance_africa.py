@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.random import default_rng
+
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.harmonic_methods import compute_random_signal

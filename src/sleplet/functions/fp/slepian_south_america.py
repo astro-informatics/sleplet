@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.functions.f_p import F_P
 from sleplet.functions.flm.south_america import SouthAmerica
 from sleplet.utils.region import Region
