@@ -46,7 +46,7 @@ def filename_angle(
     beta_num, beta_den = _get_angle_num_dem(beta_pi_fraction)
     gamma_num, gamma_den = _get_angle_num_dem(gamma_pi_fraction)
 
-    match (alpha_num, beta_num):  # noqa: E999
+    match (alpha_num, beta_num):
         case (0, 0):
             filename = "alpha0_beta0"
         case (0, _):

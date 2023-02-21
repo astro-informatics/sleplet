@@ -1,7 +1,6 @@
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
-
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.meshes.classes.mesh_slepian_decomposition import MeshSlepianDecomposition
 from sleplet.slepian.slepian_decomposition import SlepianDecomposition
@@ -19,7 +18,7 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
     """
     initialise Slepian object depending on input
     """
-    match region.region_type:  # noqa: E999
+    match region.region_type:
         case "polar":
             logger.info("polar cap region detected")
             return SlepianPolarCap(L, region.theta_max, gap=region.gap)

@@ -4,7 +4,6 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
-
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.integration_methods import (
     calc_integration_weight,
@@ -34,7 +33,7 @@ class SlepianDecomposition:
         """
         self._validate_rank(rank)
 
-        match self.method:  # noqa: E999
+        match self.method:
             case "harmonic_sum":
                 return self._harmonic_sum(rank)
             case "integrate_sphere":
