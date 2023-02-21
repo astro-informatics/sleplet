@@ -33,7 +33,7 @@ To the author's knowledge there is no public software which allows one to comput
 
 # Demonstration
 
-The following two methods are equivalent. This example leverages `plotly` to display the first Slepian wavelet of a South America region on a dataset of the topography of the Earth (as seen in [@Roddy2022]).
+The following two methods are equivalent. This example leverages `plotly` to display the first Slepian wavelet of a South America region on a dataset of the topography of the Earth - as seen in [@Roddy2022].
 
 ## Command Line Interface
 
@@ -53,14 +53,15 @@ B = 3 # wavelet parameter
 J_MIN = 2 # minimum wavelet scale
 J = 0 # wavelet scale
 L = 128 # bandlimit
+MASK = "south_america" # mask name
 
-region = Region(mask_name="south_america")
+region = Region(mask_name=MASK)
 f = SlepianWavelets(L, region=region, j=J)
 f_sphere = slepian_inverse(f.coefficients, L, f.slepian)
 Plot(
     f_sphere,
     L,
-    f"slepian_wavelets_south_america_{B}B_{J_MIN}jmin_{J_MIN+J}j_L{128}",
+    f"slepian_wavelets_{MASK}_{B}B_{J_MIN}jmin_{J_MIN+J}j_L{128}",
     normalise=False,
     region=region
 ).execute()
