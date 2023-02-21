@@ -47,19 +47,13 @@ from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
-B = 3  # wavelet parameter
-J_MIN = 2  # minimum wavelet scale
-J = 0  # wavelet scale
-L = 128  # bandlimit
-MASK = "south_america"  # mask name
-
-region = Region(mask_name=MASK)
-f = SlepianWavelets(L, region=region, j=J)
-f_sphere = slepian_inverse(f.coefficients, L, f.slepian)
+region = Region(mask_name="south_america")
+f = SlepianWavelets(L=128, region=region, j=0)
+f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
 Plot(
     f_sphere,
-    L,
-    f"slepian_wavelets_{MASK}_{B}B_{J_MIN}jmin_{J_MIN+J}j_L{128}",
+    f.L,
+    f"slepian_wavelets_{region.mask_name}_3{f.B}_{f.j_min}jmin_{f.j_min+f.j}j_L{f.L}",
     normalise=False,
     region=region,
 ).execute()
