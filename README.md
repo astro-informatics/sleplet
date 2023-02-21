@@ -9,7 +9,7 @@
 
 Run
 
-```{sh}
+```sh
 pip install .
 ```
 
@@ -19,13 +19,13 @@ This will install two scripts `sphere` and `mesh` which can be used to generate 
 
 Run
 
-```{sh}
+```sh
 pip install -e .[dev]
 ```
 
 then
 
-```{sh}
+```sh
 pre-commit install
 ```
 
@@ -37,7 +37,7 @@ pre-commit install
 
 #### Fig. 1
 
-```{sh}
+```sh
 for ell in $(seq 2 -1 1); do
     sphere harmonic_gaussian -a 0.75 -b 0.125 -e ${ell} 1 -L 128 -m translate -o
 done
@@ -45,13 +45,13 @@ done
 
 #### Fig. 2
 
-```{sh}
+```sh
 sphere earth -L 128
 ```
 
 #### Fig. 3
 
-```{bash}
+```sh
 for ell in $(seq 2 -1 1); do
     sphere harmonic_gaussian -c earth -e ${ell} 1 -L 128
 done
@@ -63,20 +63,20 @@ done
 
 #### Fig. 2
 
-```{sh}
+```sh
 python -m sleplet.plotting.arbitrary.south_america.tiling_south_america
 ```
 
 #### Fig. 3
 
-```{sh}
+```sh
 sphere earth -L 128 -s 2 -u
 sphere slepian_south_america -L 128 -s 2 -u
 ```
 
 #### Fig. 4
 
-```{sh}
+```sh
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
 done
@@ -84,13 +84,13 @@ done
 
 #### Fig. 5
 
-```{sh}
+```sh
 python -m sleplet.plotting.arbitrary.south_america.eigenvalues_south_america
 ```
 
 #### Fig. 6
 
-```{sh}
+```sh
 sphere slepian_wavelets -L 128 -u
 for j in $(seq 0 4); do
     sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
@@ -99,7 +99,7 @@ done
 
 #### Fig. 7
 
-```{sh}
+```sh
 sphere slepian_wavelet_coefficients_south_america -L 128 -s 2 -u
 for j in $(seq 0 4); do
     sphere slepian_wavelet_coefficients_south_america -e 3 2 ${j} -L 128 -s 2 -u
@@ -108,7 +108,7 @@ done
 
 #### Fig. 8
 
-```{sh}
+```sh
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
 for s in 2 3 5; do
     python -m sleplet.plotting.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
@@ -117,20 +117,20 @@ done
 
 #### Fig. 9
 
-```{sh}
+```sh
 sphere earth -L 128 -s 2 -u -v africa
 sphere slepian_africa -L 128 -s 2 -u
 ```
 
 #### Fig. 10
 
-```{sh}
+```sh
 python -m sleplet.plotting.arbitrary.africa.eigenvalues_africa
 ```
 
 #### Fig. 11
 
-```{sh}
+```sh
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
 done
@@ -138,7 +138,7 @@ done
 
 #### Fig. 12
 
-```{sh}
+```sh
 sphere slepian_wavelets -L 128 -u
 for j in $(seq 0 5); do
     sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
@@ -147,7 +147,7 @@ done
 
 #### Fig. 13
 
-```{sh}
+```sh
 sphere slepian_wavelet_coefficients_africa -L 128 -s 2 -u
 for j in $(seq 0 5); do
     sphere slepian_wavelet_coefficients_africa -e 3 2 ${j} -L 128 -s 2 -u
@@ -156,7 +156,7 @@ done
 
 #### Fig. 14
 
-```{sh}
+```sh
 sphere slepian_africa -L 128 -n -10 -s 2 -u
 for s in 2 3 5; do
     python -m sleplet.plotting.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
@@ -169,7 +169,7 @@ done
 
 #### Fig. 2
 
-```{sh}
+```sh
 for r in $(seq 2 9); do
     mesh homer -e ${r} -u
 done
@@ -177,19 +177,19 @@ done
 
 #### Fig. 4
 
-```{sh}
+```sh
 python -m sleplet.plotting.mesh.mesh_tiling homer
 ```
 
 #### Fig. 5
 
-```{sh}
+```sh
 python -m sleplet.plotting.mesh.mesh_region homer
 ```
 
 #### Fig. 6
 
-```{sh}
+```sh
 for p in 0 9 24 49 99 199; do
     mesh homer -m slepian_functions -e ${p} -u -z
 done
@@ -197,13 +197,13 @@ done
 
 #### Fig. 7
 
-```{sh}
+```sh
 python -m sleplet.plotting.mesh.mesh_slepian_eigenvalues homer
 ```
 
 #### Fig. 8
 
-```{sh}
+```sh
 mesh homer -m slepian_wavelets -u -z
 for j in $(seq 0 4); do
     mesh homer -e 3 2 ${j} -m slepian_wavelets -u -z
@@ -212,13 +212,13 @@ done
 
 #### Fig. 9
 
-```{sh}
+```sh
 mesh homer -m field -u
 ```
 
 #### Fig. 10
 
-```{sh}
+```sh
 mesh homer -m slepian_wavelet_coefficients -u -z
 for j in $(seq 0 4); do
     mesh homer -e 3 2 ${j} -m slepian_wavelet_coefficients -u -z
@@ -227,7 +227,7 @@ done
 
 #### Fig. 11
 
-```{sh}
+```sh
 mesh homer -m slepian_field -u -z
 mesh homer -m slepian_field -n -5 -u -z
 python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 1
@@ -235,7 +235,7 @@ python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 1
 
 #### Fig. 12
 
-```{sh}
+```sh
 for f in bird cheetah cube dragonteapot; do
     python -m sleplet.plotting.mesh.mesh_region ${f}
 done
