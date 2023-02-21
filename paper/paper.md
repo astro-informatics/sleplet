@@ -31,6 +31,41 @@ To the author's knowledge there is no public software which allows one to comput
 
 `SLEPLET` has been used in the development of [@Roddy2021; @Roddy2022; @Roddy2022a; @Roddy2023].
 
+# Demonstration
+
+The following two methods are equivalent. This example leverages `plotly` to display the first Slepian wavelet of a South America region on a dataset of the topography of the Earth (as seen in [@Roddy2022]).
+
+## Command Line Interface
+
+```sh
+sphere slepian_wavelets -e 3 2 0 -L 128 -u
+```
+
+## API
+
+```python
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
+
+B = 3 # wavelet parameter
+J_MIN = 2 # minimum wavelet scale
+J = 0 # wavelet scale
+L = 128 # bandlimit
+
+region = Region(mask_name="south_america")
+f = SlepianWavelets(L, region=region, j=J)
+f_sphere = slepian_inverse(f.coefficients, L, f.slepian)
+Plot(
+    f_sphere,
+    L,
+    f"slepian_wavelets_south_america_{B}B_{J_MIN}jmin_{J_MIN+J}j_L{128}",
+    normalise=False,
+    region=region
+).execute()
+```
+
 # Conclusions
 
 Slepian wavelets have many potential applications in analyses of manifolds where data are only observed over a partial region. One such application is in CMB analyses, where observations are inherently made on the celestial sphere, and foreground emissions mask the centre of the data. In fields such as astrophysics and cosmology, datasets are increasingly large and thus require analysis at high resolutions for accurate predictions. Whilst Slepian wavelets may be trivially computed from a set of Slepian functions, the computation of the spherical Slepian functions themselves are computationally complex, where the matrix scales as $\mathcal{O}(L^{4})$. Although symmetries of this matrix and the spherical harmonics have been exploited, filling in this matrix is inherently slow due to the many integrals performed. The matrix is filled in parallel in `Python` using `concurrent.futures`, and the spherical harmonic transforms are computed in `C` using `SSHT`. This may be sped up further by utilising the new `ducc0` backend for `SSHT`, which may allow for a multithreaded solution. Ultimately, the eigenproblem must be solved to compute the Slepian functions, requiring sophisticated algorithms to balance speed and accuracy. Therefore, to work with high-resolution data such as these, one requires HPC methods on supercomputers with massive memory and storage. To this end, Slepian wavelets may be exploited at present at low resolutions, but further work is required for them to be fully scalable.
