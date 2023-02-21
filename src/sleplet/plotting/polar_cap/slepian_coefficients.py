@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+
 from sleplet.plotting.inputs import THETA_MAX
 from sleplet.plotting.plotting_utils import (
     earth_region_harmonic_coefficients,

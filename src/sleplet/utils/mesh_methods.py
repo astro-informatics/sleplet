@@ -5,6 +5,7 @@ import tomli
 from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
 from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse
+
 from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.logger import logger

@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 from numpy import typing as npt
 from numpy.random import default_rng
+
 from sleplet.functions.flm.earth import Earth
 from sleplet.functions.flm.south_america import SouthAmerica
 from sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta

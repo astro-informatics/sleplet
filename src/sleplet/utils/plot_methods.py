@@ -5,6 +5,7 @@ import pyssht as ssht
 from matplotlib import colors
 from matplotlib import pyplot as plt
 from numpy import typing as npt
+
 from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import invert_flm_boosted

@@ -1,6 +1,7 @@
 from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass
+
 from sleplet.utils.mesh_methods import (
     create_mesh_region,
     extract_mesh_config,

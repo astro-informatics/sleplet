@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 from numpy import typing as npt
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 

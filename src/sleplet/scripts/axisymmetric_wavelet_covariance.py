@@ -1,6 +1,7 @@
 import numpy as np
 import pyssht as ssht
 from numpy.random import default_rng
+
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.utils.bool_methods import is_ergodic
 from sleplet.utils.harmonic_methods import compute_random_signal

@@ -1,5 +1,6 @@
 import pyssht as ssht
 from numpy.testing import assert_equal
+
 from sleplet.utils.harmonic_methods import (
     boost_coefficient_resolution,
     invert_flm_boosted,

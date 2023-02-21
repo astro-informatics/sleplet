@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
+
 from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.utils.plot_methods import rotate_earth_to_south_america
 from sleplet.utils.vars import SAMPLING_SCHEME, SOUTH_AMERICA_RANGE

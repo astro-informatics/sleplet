@@ -9,6 +9,7 @@ from numpy import typing as npt
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.config import settings
 from sleplet.utils.logger import logger

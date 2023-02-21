@@ -6,6 +6,7 @@ from numba import njit, prange
 from numpy import linalg as LA
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings

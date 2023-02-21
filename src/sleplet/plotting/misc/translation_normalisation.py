@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
+
 from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.utils.logger import logger
 from sleplet.utils.plot_methods import save_plot

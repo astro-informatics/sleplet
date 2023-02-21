@@ -5,6 +5,7 @@ import numpy as np
 from numpy import linalg as LA
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings

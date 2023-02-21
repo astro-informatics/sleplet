@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.testing import assert_equal
+
 from sleplet.utils.string_methods import (
     angle_as_degree,
     filename_angle,

@@ -2,6 +2,7 @@ import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
+
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from sleplet.utils.harmonic_methods import mesh_forward
 from sleplet.utils.logger import logger

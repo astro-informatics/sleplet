@@ -1,4 +1,5 @@
 import numpy as np
+
 from sleplet.functions.fp.slepian import Slepian
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.plotting.inputs import THETA_MAX

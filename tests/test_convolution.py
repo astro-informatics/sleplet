@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.testing import assert_allclose, assert_array_equal
+
 from sleplet.functions.flm.earth import Earth
 from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.functions.flm.identity import Identity

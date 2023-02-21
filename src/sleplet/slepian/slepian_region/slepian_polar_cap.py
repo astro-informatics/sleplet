@@ -9,6 +9,7 @@ from numpy import linalg as LA
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
+
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_emm_vector

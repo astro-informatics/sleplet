@@ -2,6 +2,7 @@ import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
+
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_mesh_forward

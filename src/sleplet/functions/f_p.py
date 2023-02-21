@@ -3,6 +3,7 @@ from abc import abstractmethod
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.config import settings
 from sleplet.utils.mask_methods import create_default_region

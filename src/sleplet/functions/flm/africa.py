@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.harmonic_methods import ensure_f_bandlimited

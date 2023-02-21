@@ -2,6 +2,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import default_rng
+
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.harmonic_methods import mesh_forward

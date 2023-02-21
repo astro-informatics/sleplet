@@ -9,6 +9,7 @@ from numpy import typing as npt
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
+
 from sleplet.utils.config import settings
 from sleplet.utils.logger import logger
 from sleplet.utils.plot_methods import (

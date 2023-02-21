@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.testing import assert_array_equal
+
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
 

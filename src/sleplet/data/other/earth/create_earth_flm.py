@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from scipy import io as sio
+
 from sleplet.utils.smoothing import apply_gaussian_smoothing
 
 _file_location = Path(__file__).resolve()

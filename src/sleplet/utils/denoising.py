@@ -1,6 +1,7 @@
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
+
 from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.f_p import F_P
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets

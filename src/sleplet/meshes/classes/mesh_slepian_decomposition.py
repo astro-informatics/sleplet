@@ -3,6 +3,7 @@ from dataclasses import KW_ONLY
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.utils.harmonic_methods import mesh_inverse
 from sleplet.utils.integration_methods import (

@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.noise import compute_snr, create_noise
 from sleplet.utils.validation import Validation

@@ -3,6 +3,7 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
+
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.harmonic_methods import create_spherical_harmonic
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args

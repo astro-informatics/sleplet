@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 
 import numpy as np
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
