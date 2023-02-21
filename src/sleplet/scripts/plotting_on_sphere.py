@@ -4,7 +4,6 @@ from argparse import ArgumentParser, Namespace
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
-
 from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.f_p import F_P
 from sleplet.plotting.create_plot_sphere import Plot
@@ -193,7 +192,7 @@ def plot(
     shannon = f.slepian.N if isinstance(f, F_P) else None
 
     logger.info(f"plotting method: '{method}'")
-    match method:  # noqa: E999
+    match method:
         case "rotate":
             coefficients, filename = _rotation_helper(
                 f, filename, alpha_pi_frac, beta_pi_frac, gamma_pi_frac
@@ -214,7 +213,7 @@ def plot(
 
     # rotate plot of Earth
     if "earth" in filename:
-        match earth_view:  # noqa: E999
+        match earth_view:
             case "africa":
                 coefficients = rotate_earth_to_africa(coefficients, f.L)
                 filename += "_africa"
