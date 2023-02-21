@@ -131,6 +131,7 @@ python -m sleplet.plotting.arbitrary.africa.eigenvalues_africa
 #### Fig. 11
 
 ```sh
+sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
 done
@@ -139,6 +140,7 @@ done
 #### Fig. 12
 
 ```sh
+sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
 sphere slepian_wavelets -L 128 -u
 for j in $(seq 0 5); do
     sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
