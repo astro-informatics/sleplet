@@ -4,6 +4,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
+
 from sleplet.plotting.inputs import TEXT_BOX
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.logger import logger

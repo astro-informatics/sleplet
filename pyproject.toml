@@ -105,6 +105,7 @@ select = [
     # flake8-2020
     "YTT",
 ]
+isort.known-first-party = ["sleplet"]
 mccabe.max-complexity = 18
 
 [tool.setuptools_scm]

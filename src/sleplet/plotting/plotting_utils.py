@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import typing as npt
+
 from sleplet.functions.flm.earth import Earth
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward

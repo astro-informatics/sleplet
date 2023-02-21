@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+
 from sleplet.functions.flm.axisymmetric_wavelet_coefficients_africa import (
     AxisymmetricWaveletCoefficientsAfrica,
 )

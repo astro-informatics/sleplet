@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.functions.f_lm import F_LM
 from sleplet.functions.flm.earth import Earth
 from sleplet.utils.noise import compute_snr, create_noise

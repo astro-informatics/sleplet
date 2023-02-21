@@ -3,6 +3,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
+
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets

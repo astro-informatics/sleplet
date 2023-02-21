@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from sleplet.utils.logger import logger

@@ -3,6 +3,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
+
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (

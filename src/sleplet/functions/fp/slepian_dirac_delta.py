@@ -2,6 +2,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.functions.f_p import F_P
 from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import compute_s_p_omega_prime

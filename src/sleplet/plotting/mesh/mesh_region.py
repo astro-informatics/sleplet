@@ -3,6 +3,7 @@ from pathlib import Path
 
 import cmocean
 import numpy as np
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.scripts.plotting_on_mesh import valid_meshes

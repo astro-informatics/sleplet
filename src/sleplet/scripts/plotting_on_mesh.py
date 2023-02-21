@@ -3,6 +3,7 @@ from argparse import ArgumentParser, Namespace
 
 import numpy as np
 from numpy import typing as npt
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients

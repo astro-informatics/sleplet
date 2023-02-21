@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.scripts.plotting_on_mesh import valid_meshes

@@ -3,6 +3,7 @@ from abc import abstractmethod
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
+
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.utils.noise import compute_snr, create_mesh_noise
 from sleplet.utils.validation import Validation

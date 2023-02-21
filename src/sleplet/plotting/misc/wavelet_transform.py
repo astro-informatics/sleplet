@@ -4,6 +4,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
+
 from sleplet.utils.plot_methods import save_plot
 
 file_location = Path(__file__).resolve()

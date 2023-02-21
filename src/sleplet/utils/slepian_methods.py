@@ -1,6 +1,7 @@
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
+
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.meshes.classes.mesh_slepian_decomposition import MeshSlepianDecomposition
 from sleplet.slepian.slepian_decomposition import SlepianDecomposition

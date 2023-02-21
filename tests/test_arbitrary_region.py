@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 from numpy.testing import assert_allclose
+
 from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 
 
