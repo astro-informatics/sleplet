@@ -13,7 +13,7 @@ authors:
 affiliations:
   - name: Advanced Research Computing, University College London, UK
     index: 1
-date: 16 February 2023
+date: "`r format(Sys.time(), '%d %B %Y')`"
 bibliography: paper.bib
 ---
 
