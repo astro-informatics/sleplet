@@ -53,7 +53,8 @@ f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
 Plot(
     f_sphere,
     f.L,
-    f"slepian_wavelets_{region.mask_name}_{f.B}B_{f.j_min}jmin_{f.j_min+f.j}j_L{f.L}",
+    f"slepian_wavelets_{region.mask_name}_"
+    f"{f.B}B_{f.j_min}jmin_{f.j_min+f.j}j_L{f.L}",
     normalise=False,
     region=region,
 ).execute()
