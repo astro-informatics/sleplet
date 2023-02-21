@@ -48,13 +48,12 @@ from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
 region = Region(mask_name="south_america")
-f = SlepianWavelets(L=128, region=region, j=0)
+f = SlepianWavelets(L=128, region=region, B=3, j_min=2, j=0)
 f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
 Plot(
     f_sphere,
     f.L,
-    f"slepian_wavelets_{region.mask_name}_"
-    f"{f.B}B_{f.j_min}jmin_{f.j_min+f.j}j_L{f.L}",
+    f.name,
     normalise=False,
     region=region,
 ).execute()
