@@ -35,7 +35,7 @@ Slepian wavelets have many potential applications in analyses of manifolds where
 
 # Research Based on SLEPLET
 
-`SLEPLET` has been used in the development of [@Roddy2021; @Roddy2022; @Roddy2023].
+`SLEPLET` has been used in the development of [@Roddy2021; @Roddy2022; @Roddy2022a; @Roddy2023].
 
 # Acknowledgements
 
