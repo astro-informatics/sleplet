@@ -10,24 +10,11 @@
 Run
 
 ```sh
-pip install .
+pip install -e .
 ```
 
-This will install two scripts `sphere` and `mesh` which can be used to generate the figures in [the following section](#paper-figures).
-
-### Developer Installation
-
-Run
-
-```sh
-pip install -e .[dev]
-```
-
-then
-
-```sh
-pre-commit install
-```
+This will install two scripts `sphere` and `mesh` which can be used to generate
+the figures in [the following section](#paper-figures).
 
 ## Paper Figures
 

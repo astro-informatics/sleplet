@@ -54,6 +54,7 @@ optional-dependencies.dev = [
     "mypy",
     "pre-commit",
     "ruff",
+    "rundoc",
     "tox",
 ]
 urls.homepage = "https://github.com/astro-informatics/sleplet"
