@@ -199,10 +199,9 @@ class Plot:
             f,
             self.L,
             self.resolution,
-            self.reality,
             reality=self.reality,
             spin=self.spin,
-            updample=self.upsample,
+            upsample=self.upsample,
         )
         field_space = create_plot_type(boosted_field, self.plot_type)
         return normalise_function(field_space, normalise=self.normalise)
