@@ -555,7 +555,7 @@ Plot(
 #### Fig. 12
 
 ```sh
-for f in bird cheetah cube dragon teapot; do
+for f in cheetah dragon bird teapot cube; do
     python -m sleplet.plotting.mesh.mesh_region ${f}
 done
 ```
