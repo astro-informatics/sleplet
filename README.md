@@ -298,7 +298,7 @@ region = Region(mask_name="africa")
 for p in [0, 9, 24, 49, 99, 199]:
     f = Slepian(L=128, region=region, rank=p)
     f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    Plot(f_sphere, f.L, "fig_11", normalise=False, region=f.region).execute()
+    Plot(f_sphere, f.L, f"fig_11_p{p}", normalise=False, region=f.region).execute()
 ```
 
 #### Fig. 12
