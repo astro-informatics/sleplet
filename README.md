@@ -31,6 +31,10 @@ pre-commit install
 
 ## Paper Figures
 
+To recreate the figures from below papers one may use the CLI or API methods.
+For those which don't use the `mesh` or `sphere` CLIs the relevant API code
+isn't provided as it is contained within the source code.
+
 ### Sifting Convolution on the Sphere
 
 [![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://dx.doi.org/10.1109/LSP.2021.3050961)
@@ -82,6 +86,25 @@ for p in 0 9 24 49 99 199; do
 done
 ```
 
+```python
+from sleplet.functions.fp.slepian import Slepian
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
+
+region = Region(mask_name="south_america")
+for p in [0, 9, 24, 49, 99, 199]:
+    f = Slepian(L=128, region=region, rank=p)
+    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
+    Plot(
+        f_sphere,
+        f.L,
+        f.name,
+        normalise=False,
+        region=region,
+    ).execute()
+```
+
 #### Fig. 5
 
 ```sh
@@ -95,6 +118,25 @@ sphere slepian_wavelets -L 128 -u
 for j in $(seq 0 4); do
     sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
 done
+```
+
+```python
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
+
+region = Region(mask_name="south_america")
+for j in [None] + list(range(5)):
+    f = SlepianWavelets(L=128, region=region, B=3, j_min=2, j=j)
+    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
+    Plot(
+        f_sphere,
+        f.L,
+        f.name,
+        normalise=False,
+        region=region,
+    ).execute()
 ```
 
 #### Fig. 7
@@ -137,6 +179,25 @@ for p in 0 9 24 49 99 199; do
 done
 ```
 
+```python
+from sleplet.functions.fp.slepian import Slepian
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
+
+region = Region(mask_name="africa")
+for p in [0, 9, 24, 49, 99, 199]:
+    f = Slepian(L=128, region=region, rank=p)
+    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
+    Plot(
+        f_sphere,
+        f.L,
+        f.name,
+        normalise=False,
+        region=region,
+    ).execute()
+```
+
 #### Fig. 12
 
 ```sh
@@ -145,6 +206,25 @@ sphere slepian_wavelets -L 128 -u
 for j in $(seq 0 5); do
     sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
 done
+```
+
+```python
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils.region import Region
+from sleplet.utils.slepian_methods import slepian_inverse
+
+region = Region(mask_name="africa")
+for j in [None] + list(range(5)):
+    f = SlepianWavelets(L=128, region=region, B=3, j_min=2, j=j)
+    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
+    Plot(
+        f_sphere,
+        f.L,
+        f.name,
+        normalise=False,
+        region=region,
+    ).execute()
 ```
 
 #### Fig. 13
