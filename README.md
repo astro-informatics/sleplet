@@ -18,8 +18,8 @@ the figures in [the following section](#paper-figures).
 
 ## Paper Figures
 
-To recreate the figures from below papers one may use the CLI or API methods.
-For those which don't use the `mesh` or `sphere` CLIs the relevant API code
+To recreate the figures from the below papers, one may use the CLI or the API.
+For those which don't use the `mesh` or `sphere` CLIs, the relevant API code
 isn't provided as it is contained within the source code.
 
 ### Sifting Convolution on the Sphere
