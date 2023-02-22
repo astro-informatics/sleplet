@@ -8,7 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v3
+        uses: nschloe/action-cached-lfs-checkout@v1
+        with:
+          include: |
+            EGM2008_Topography_flms_L2190.mat
 
       - name: Set up python
         uses: actions/setup-python@v4
