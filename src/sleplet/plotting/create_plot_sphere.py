@@ -200,8 +200,8 @@ class Plot:
             self.L,
             self.resolution,
             self.reality,
-            self.spin,
             reality=self.reality,
+            spin=self.spin,
             updample=self.upsample,
         )
         field_space = create_plot_type(boosted_field, self.plot_type)

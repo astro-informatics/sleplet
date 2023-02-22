@@ -109,8 +109,8 @@ def find_max_amplitude(
         field,
         function.L,
         resolution,
-        function.spin,
         reality=function.reality,
+        spin=function.spin,
         upsample=upsample,
     )
 
@@ -195,8 +195,8 @@ def boost_field(
     field: npt.NDArray[np.complex_ | np.float_],
     L: int,
     resolution: int,
-    spin: int,
     *,
+    spin: int,
     reality: bool,
     upsample: bool,
 ) -> npt.NDArray[np.complex_ | np.float_]:
