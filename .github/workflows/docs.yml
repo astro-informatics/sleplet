@@ -13,6 +13,7 @@ jobs:
           include: |
             D_south_america_L128_N690,\
             EGM2008_Topography_flms_L2190.mat,\
+            south_america_L128.npy,\
             south_america_L256.npy
 
       - name: Set up python
