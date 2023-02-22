@@ -394,6 +394,19 @@ for r in $(seq 2 9); do
 done
 ```
 
+```python
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.harmonic_coefficients.mesh_basis_functions import MeshBasisFunctions
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.utils.harmonic_methods import mesh_inverse
+
+mesh = Mesh("homer")
+for r in range(2, 10):
+    f = MeshBasisFunctions(mesh, rank=r)
+    f_mesh = mesh_inverse(f.mesh, f.coefficients)
+    Plot(mesh, f"fig_2_r_{r}", f_mesh, normalise=False).execute()
+```
+
 #### Fig. 4
 
 ```sh
@@ -414,6 +427,21 @@ for p in 0 9 24 49 99 199; do
 done
 ```
 
+```python
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.slepian_coefficients.mesh_slepian_functions import (
+    MeshSlepianFunctions,
+)
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.utils.slepian_methods import slepian_mesh_inverse
+
+mesh = Mesh("homer", zoom=True)
+for p in [0, 9, 24, 49, 99, 199]:
+    f = MeshSlepianFunctions(mesh, rank=p)
+    f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
+    Plot(mesh, f"fig_6_p_{p}", f_mesh, normalise=False, region=True).execute()
+```
+
 #### Fig. 7
 
 ```sh
@@ -431,10 +459,37 @@ for j in $(seq 0 4); do
 done
 ```
 
+```python
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+    MeshSlepianWavelets,
+)
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.utils.slepian_methods import slepian_mesh_inverse
+
+mesh = Mesh("homer", zoom=True)
+for j in [None, *list(range(5))]:
+    f = MeshSlepianWavelets(mesh, B=3, j_min=2, j=j)
+    f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
+    Plot(mesh, f"fig_8_j_{j}", f_mesh, normalise=False, region=True).execute()
+```
+
 #### Fig. 9
 
 ```sh
 mesh homer -m field -u
+```
+
+```python
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.utils.harmonic_methods import mesh_inverse
+
+mesh = Mesh("homer")
+f = MeshField(mesh)
+f_mesh = mesh_inverse(f.mesh, f.coefficients)
+Plot(mesh, "fig_9", f_mesh, normalise=False).execute()
 ```
 
 #### Fig. 10
@@ -448,6 +503,21 @@ for j in $(seq 0 4); do
 done
 ```
 
+```python
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients import (
+    MeshSlepianWaveletCoefficients,
+)
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.utils.slepian_methods import slepian_mesh_inverse
+
+mesh = Mesh("homer", zoom=True)
+for j in [None, *list(range(5))]:
+    f = MeshSlepianWaveletCoefficients(mesh, B=3, j_min=2, j=j)
+    f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
+    Plot(mesh, f"fig_10_j_{j}", f_mesh, normalise=False, region=True).execute()
+```
+
 #### Fig. 11
 
 ```sh
@@ -459,10 +529,33 @@ mesh homer -m slepian_field -n -5 -u -z
 python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 1
 ```
 
+```python
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.slepian_coefficients.mesh_slepian_field import (
+    MeshSlepianField,
+)
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.scripts.plotting_on_mesh import _compute_amplitude_for_noisy_plots
+from sleplet.utils.slepian_methods import slepian_mesh_inverse
+
+mesh = Mesh("homer", zoom=True)
+# a
+f = MeshSlepianField(mesh)
+f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
+Plot(mesh, "fig_11_a", f_mesh, normalise=False, region=True).execute()
+# b
+g = MeshSlepianField(mesh, noise=-5)
+g_mesh = slepian_mesh_inverse(g.mesh_slepian, g.coefficients)
+amplitude = _compute_amplitude_for_noisy_plots(g)
+Plot(
+    mesh, "fig_11_b", g_mesh, amplitude=amplitude, normalise=False, region=True
+).execute()
+```
+
 #### Fig. 12
 
 ```sh
-for f in bird cheetah cube dragonteapot; do
+for f in bird cheetah cube dragon teapot; do
     python -m sleplet.plotting.mesh.mesh_region ${f}
 done
 ```
