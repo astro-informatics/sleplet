@@ -45,7 +45,7 @@ for ell in range(2, 0, -1):
     f = HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
     flm = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
     f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
-    Plot(f_sphere, f.L, f"fig_1_ell_{ell}", annotations=False).execute()
+    Plot(f_sphere, f.L, f"fig_1_ell_{ell}", annotations=[]).execute()
 ```
 
 #### Fig. 2
