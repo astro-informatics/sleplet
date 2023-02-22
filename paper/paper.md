@@ -66,7 +66,6 @@ sphere slepian_wavelets -e 3 2 0 -L 128 -u
 ```python
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
 f = SlepianWavelets(L=128, B=3, j_min=2, j=0)
