@@ -210,7 +210,7 @@ from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.slepian_methods import slepian_inverse
 
 for j in [None, *list(range(5))]:
-    f = SlepianWaveletCoefficientsSouthAmerica(L=128, B=3, j_min=2, j=j)
+    f = SlepianWaveletCoefficientsSouthAmerica(L=128, B=3, j_min=2, j=j, smoothing=2)
     f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
     Plot(f_sphere, f.L, f"fig_7_j_{j}", normalise=False, region=f.region).execute()
 ```
@@ -298,7 +298,7 @@ region = Region(mask_name="africa")
 for p in [0, 9, 24, 49, 99, 199]:
     f = Slepian(L=128, region=region, rank=p)
     f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    Plot(f_sphere, f.L, f.name, normalise=False, region=f.region).execute()
+    Plot(f_sphere, f.L, "fig_11", normalise=False, region=f.region).execute()
 ```
 
 #### Fig. 12
@@ -323,7 +323,7 @@ region = Region(mask_name="africa")
 for j in [None, *list(range(6))]:
     f = SlepianWavelets(L=128, region=region, B=3, j_min=2, j=j)
     f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    Plot(f_sphere, f.L, f.name, normalise=False, region=f.region).execute()
+    Plot(f_sphere, f.L, f"fig_12_j_{j}", normalise=False, region=f.region).execute()
 ```
 
 #### Fig. 13
@@ -350,7 +350,7 @@ region = Region(mask_name="africa")
 for j in [None, *list(range(6))]:
     f = SlepianWaveletCoefficientsAfrica(L=128, B=3, j_min=2, j=j)
     f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    Plot(f_sphere, f.L, f.name, normalise=False, region=f.region).execute()
+    Plot(f_sphere, f.L, f"fig_13_j_{j}", normalise=False, region=f.region).execute()
 ```
 
 #### Fig. 14
