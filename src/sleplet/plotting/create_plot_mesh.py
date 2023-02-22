@@ -72,7 +72,7 @@ class Plot:
                 cmin=0 if self.normalise else -tick_mark,
                 colorbar=create_colour_bar(
                     tick_mark,
-                    self.normalise,
+                    normalise=self.normalise,
                     bar_len=MESH_CBAR_LEN,
                     bar_pos=self.mesh.colourbar_pos,
                     font_size=MESH_CBAR_FONT_SIZE,
@@ -106,7 +106,8 @@ class Plot:
         scales the field before plotting
         """
         return normalise_function(
-            average_functions_on_vertices_to_faces(self.mesh.faces, f), self.normalise
+            average_functions_on_vertices_to_faces(self.mesh.faces, f),
+            normalise=self.normalise,
         )
 
     def _set_outside_region_to_minimum(

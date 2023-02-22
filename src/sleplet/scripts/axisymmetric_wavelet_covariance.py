@@ -42,7 +42,7 @@ def axisymmetric_wavelet_covariance(
     covar_theory = compute_wavelet_covariance(L, aw.wavelets, var_signal=var_flm)
 
     # initialise matrix
-    covar_runs_shape = (runs,) + covar_theory.shape
+    covar_runs_shape = (runs, *covar_theory.shape)
     covar_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed

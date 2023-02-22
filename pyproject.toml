@@ -82,27 +82,42 @@ testpaths = [
 fix = true
 force-exclude = true
 ignore = [
-    "E741",
+    "EM101",
+    "EM102",
+    "N801",
+    "N802",
+    "N803",
+    "N805",
+    "N806",
+    "N812",
     "PLR0913",
-    "W605",
+    "S101",
 ]
 select = [
-    # flake8-bugbear
+    "A",
     "B",
-    # pycodestyle
+    "C",
+    "DTZ",
     "E",
-    # pyflakes
+    "EM",
     "F",
-    # isort
+    "FBT",
     "I",
-    # pylint
+    "ICN",
+    "ISC",
+    "N",
+    "PLC",
     "PLE",
     "PLR",
     "PLW",
-    # flake8-quotes
     "Q",
+    "RUF",
+    "S",
+    "SIM",
+    "T",
+    "TID",
+    "UP",
     "W",
-    # flake8-2020
     "YTT",
 ]
 isort.known-first-party = ["sleplet"]

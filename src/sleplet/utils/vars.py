@@ -6,9 +6,14 @@ AFRICA_GAMMA: float = np.deg2rad(341)
 AFRICA_RANGE: int = np.deg2rad(41)
 ALPHA_DEFAULT: float = 0.75
 ANNOTATION_COLOUR: str = "gold"
-ARROW_STYLE: dict = dict(
-    arrowhead=0, arrowside="start", ax=4, ay=4, startarrowsize=0.5, startarrowhead=6
-)
+ARROW_STYLE: dict = {
+    "arrowhead": 0,
+    "arrowside": "start",
+    "ax": 4,
+    "ay": 4,
+    "startarrowsize": 0.5,
+    "startarrowhead": 6,
+}
 BETA_DEFAULT: float = 0.125
 SOUTH_AMERICA_ALPHA: float = np.deg2rad(54)
 SOUTH_AMERICA_BETA: float = np.deg2rad(108)

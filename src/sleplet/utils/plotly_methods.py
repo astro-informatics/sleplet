@@ -3,14 +3,14 @@ from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
 from plotly.graph_objs.layout.scene.camera import Center, Eye
 
-_axis = dict(
-    title="",
-    showgrid=False,
-    zeroline=False,
-    ticks="",
-    showticklabels=False,
-    showbackground=False,
-)
+_axis = {
+    "title": "",
+    "showgrid": False,
+    "zeroline": False,
+    "ticks": "",
+    "showticklabels": False,
+    "showbackground": False,
+}
 
 
 def create_camera(
@@ -62,8 +62,8 @@ def create_tick_mark(
 
 def create_colour_bar(
     tick_mark: float,
-    normalise: bool,
     *,
+    normalise: bool,
     bar_len: float = 0.94,
     bar_pos: float = 0.97,
     font_size: int = 38,
@@ -71,12 +71,12 @@ def create_colour_bar(
     """
     default plotly colour bar
     """
-    return dict(
-        x=bar_pos,
-        len=bar_len,
-        nticks=2 if normalise else None,
-        tickfont=dict(color="#666666", size=font_size),
-        tickformat=None if normalise else "+.1e",
-        tick0=None if normalise else -tick_mark,
-        dtick=None if normalise else tick_mark,
-    )
+    return {
+        "x": bar_pos,
+        "len": bar_len,
+        "nticks": 2 if normalise else None,
+        "tickfont": {"color": "#666666", "size": font_size},
+        "tickformat": None if normalise else "+.1e",
+        "tick0": None if normalise else -tick_mark,
+        "dtick": None if normalise else tick_mark,
+    }

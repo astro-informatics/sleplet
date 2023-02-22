@@ -61,7 +61,7 @@ def _plot_axisymmetric_coefficients(shannon: int) -> None:
         plt.plot(w_j[:shannon], "--", label=rf"$|W^{{\phi^{j+J_MIN}}}_{{\ell m}}|$")
 
 
-def main(limit: bool) -> None:
+def main(*, limit: bool) -> None:
     """
     Plot a comparison of the absolute values of the wavelet coefficients
     compared to the Slepian coefficients. Expect the Slepian coefficients to
@@ -88,4 +88,4 @@ if __name__ == "__main__":
         help="flag which limits the region of the plot",
     )
     args = parser.parse_args()
-    main(args.limit)
+    main(limit=args.limit)

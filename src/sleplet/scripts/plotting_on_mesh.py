@@ -89,7 +89,7 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients, normalise: bool, amplitude: float | None) -> None:
+def plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> None:
     """
     master plotting method
     """
@@ -149,7 +149,7 @@ def main() -> None:
     amplitude = _compute_amplitude_for_noisy_plots(f)
 
     # perform plot
-    plot(f, not args.unnormalise, amplitude)
+    plot(f, normalise=not args.unnormalise, amplitude=amplitude)
 
 
 if __name__ == "__main__":

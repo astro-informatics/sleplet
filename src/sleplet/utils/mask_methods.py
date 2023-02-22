@@ -67,7 +67,7 @@ def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
 
 
 def ensure_masked_flm_bandlimited(
-    flm: npt.NDArray[np.complex_], L: int, region: Region, reality: bool, spin: int
+    flm: npt.NDArray[np.complex_], L: int, region: Region, *, reality: bool, spin: int
 ) -> npt.NDArray[np.complex_]:
     """
     ensures the coefficients is bandlimited for a given region

@@ -168,6 +168,7 @@ def read_args() -> Namespace:
 def plot(
     f: Coefficients,
     g: Coefficients | None,
+    *,
     alpha_pi_frac: float,
     beta_pi_frac: float,
     gamma_pi_frac: float,
@@ -288,7 +289,7 @@ def _translation_helper(
     # annotate translation point
     x, y, z = ssht.s2_to_cart(beta, alpha)
     annotation = {
-        **dict(x=x, y=y, z=z, arrowcolor=ANNOTATION_COLOUR),
+        **{"x": x, "y": y, "z": z, "arrowcolor": ANNOTATION_COLOUR},
         **ARROW_STYLE,
     }
     return coefficients, filename, annotation
@@ -370,16 +371,16 @@ def main() -> None:
     plot(
         f,
         g,
-        args.alpha,
-        args.beta,
-        args.gamma,
-        args.outline,
-        not args.unnormalise,
-        args.method,
-        args.type,
-        not args.unzeropad,
-        args.view,
-        amplitude,
+        alpha_pi_frac=args.alpha,
+        beta_pi_frac=args.beta,
+        gamma_pi_frac=args.gamma,
+        annotations=args.outline,
+        normalise=not args.unnormalise,
+        method=args.method,
+        plot_type=args.type,
+        upsample=not args.unzeropad,
+        earth_view=args.view,
+        amplitude=amplitude,
     )
 
 
