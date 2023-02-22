@@ -49,7 +49,7 @@ def _helper(df: pd.DataFrame, filename: str) -> None:
 
     filename = f"EGM2008_{filename}_L{L}.mat"
     flm = np.array(df_sorted["flm"])
-    mat = dict(L=L, flm=flm)
+    mat = {"L": L, "flm": flm}
     sio.savemat(_data_path / filename, mat, oned_as="column")
 
 
@@ -69,7 +69,7 @@ def create_matfile(filename: str) -> None:
 
     # read the data and drop error columns
     col_names = ["ell", "m", "real", "imag", "error_real", "error_imag"]
-    df = pd.read_csv(_data_path / filename, delimiter="\s+", names=col_names)
+    df = pd.read_csv(_data_path / filename, delimiter="\\s+", names=col_names)
     df.drop(columns=["error_real", "error_imag"], inplace=True)
 
     output = outputs[inputs.index(filename)]

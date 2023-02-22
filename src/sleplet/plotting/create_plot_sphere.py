@@ -89,7 +89,7 @@ class Plot:
                 cmax=1 if self.normalise else tick_mark,
                 cmid=0.5 if self.normalise else 0,
                 cmin=0 if self.normalise else -tick_mark,
-                colorbar=create_colour_bar(tick_mark, self.normalise),
+                colorbar=create_colour_bar(tick_mark, normalise=self.normalise),
                 colorscale=convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
@@ -116,6 +116,7 @@ class Plot:
     def _setup_plot(
         f: npt.NDArray[np.float_],
         resolution: int,
+        *,
         method: str = "MW",
         close: bool = True,
         parametric: bool = False,
@@ -195,7 +196,13 @@ class Plot:
         boosts, forces plot type and then scales the field before plotting
         """
         boosted_field = boost_field(
-            f, self.L, self.resolution, self.reality, self.spin, self.upsample
+            f,
+            self.L,
+            self.resolution,
+            self.reality,
+            self.spin,
+            reality=self.reality,
+            updample=self.upsample,
         )
         field_space = create_plot_type(boosted_field, self.plot_type)
-        return normalise_function(field_space, self.normalise)
+        return normalise_function(field_space, normalise=self.normalise)

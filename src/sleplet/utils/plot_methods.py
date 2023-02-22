@@ -35,7 +35,7 @@ def calc_plot_resolution(L: int) -> int:
         (
             L * 2**exponent
             for log_bandlimit, exponent in res_dict.items()
-            if L < 2**log_bandlimit
+            if 2**log_bandlimit > L
         ),
         L,
     )
@@ -106,7 +106,12 @@ def find_max_amplitude(
 
     # boost field to match final plot
     boosted_field = boost_field(
-        field, function.L, resolution, function.reality, function.spin, upsample
+        field,
+        function.L,
+        resolution,
+        function.spin,
+        reality=function.reality,
+        upsample=upsample,
     )
 
     # find maximum absolute value for given plot type
@@ -120,9 +125,12 @@ def create_plot_type(
     gets the given plot type of the field
     """
     logger.info(f"plotting type: '{plot_type}'")
-    plot_dict = dict(
-        abs=np.abs(field), imag=field.imag, real=field.real, sum=field.real + field.imag
-    )
+    plot_dict = {
+        "abs": np.abs(field),
+        "imag": field.imag,
+        "real": field.real,
+        "sum": field.real + field.imag,
+    }
     return plot_dict[plot_type]
 
 
@@ -165,7 +173,7 @@ def rotate_earth_to_africa(
 
 
 def normalise_function(
-    f: npt.NDArray[np.float_], normalise: bool
+    f: npt.NDArray[np.float_], *, normalise: bool = True
 ) -> npt.NDArray[np.float_]:
     """
     normalise function between 0 and 1 for visualisation
@@ -187,8 +195,9 @@ def boost_field(
     field: npt.NDArray[np.complex_ | np.float_],
     L: int,
     resolution: int,
-    reality: bool,
     spin: int,
+    *,
+    reality: bool,
     upsample: bool,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
