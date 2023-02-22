@@ -58,7 +58,7 @@ The following methods are equivalent.
 ## Command Line Interface
 
 ```sh
-sphere slepian_wavelets -e 3 2 0 -L 128 -u # defaults to the South America mask
+sphere slepian_wavelets -e 3 2 0 -L 128 -u
 ```
 
 ## API
@@ -69,15 +69,14 @@ from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
-region = Region(mask_name="south_america")
-f = SlepianWavelets(L=128, region=region, B=3, j_min=2, j=0)
+f = SlepianWavelets(L=128, B=3, j_min=2, j=0)
 f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
 Plot(
     f_sphere,
     f.L,
     f.name,
     normalise=False,
-    region=region,
+    region=f.region,
 ).execute()
 ```
 
