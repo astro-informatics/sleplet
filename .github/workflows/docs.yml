@@ -12,7 +12,8 @@ jobs:
         with:
           include: |
             D_south_america_L128_N690,\
-            EGM2008_Topography_flms_L2190.mat
+            EGM2008_Topography_flms_L2190.mat,\
+            south_america_L256.npy
 
       - name: Set up python
         uses: actions/setup-python@v4
