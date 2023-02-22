@@ -244,7 +244,7 @@ Plot(
 #### Fig. 9
 
 ```sh
-sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
+# Need to change SLEPIAN_MASK in sleplet/config/settings.toml to "africa"
 # a
 sphere earth -L 128 -s 2 -u -v africa
 # b
@@ -282,7 +282,7 @@ python -m sleplet.plotting.arbitrary.africa.eigenvalues_africa
 #### Fig. 11
 
 ```sh
-sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
+# Need to change SLEPIAN_MASK in sleplet/config/settings.toml to "africa"
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
 done
@@ -304,7 +304,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 #### Fig. 12
 
 ```sh
-sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
+# Need to change SLEPIAN_MASK in sleplet/config/settings.toml to "africa"
 # a
 sphere slepian_wavelets -L 128 -u
 # b
@@ -329,7 +329,7 @@ for j in [None, *list(range(6))]:
 #### Fig. 13
 
 ```sh
-sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
+# Need to change SLEPIAN_MASK in sleplet/config/settings.toml to "africa"
 # a
 sphere slepian_wavelet_coefficients_africa -L 128 -s 2 -u
 # b
@@ -356,7 +356,7 @@ for j in [None, *list(range(6))]:
 #### Fig. 14
 
 ```sh
-sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
+# Need to change SLEPIAN_MASK in sleplet/config/settings.toml to "africa"
 # a
 sphere slepian_africa -L 128 -n -10 -s 2 -u
 # b-d
