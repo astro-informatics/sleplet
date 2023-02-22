@@ -26,7 +26,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         logger.info("start computing wavelet coefficients")
-        self.wavelet_coefficients = self._create_wavelet_coefficients()
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelet_coefficients[jth]
