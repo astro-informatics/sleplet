@@ -10,7 +10,7 @@
 Run
 
 ```sh
-pip install -e .
+pip install .
 ```
 
 This will install two scripts `sphere` and `mesh` which can be used to generate
