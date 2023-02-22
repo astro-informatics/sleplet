@@ -173,7 +173,7 @@ def rotate_earth_to_africa(
 
 
 def normalise_function(
-    f: npt.NDArray[np.float_], *, normalise: bool = True
+    f: npt.NDArray[np.float_], *, normalise: bool
 ) -> npt.NDArray[np.float_]:
     """
     normalise function between 0 and 1 for visualisation
@@ -196,8 +196,8 @@ def boost_field(
     L: int,
     resolution: int,
     *,
-    spin: int,
     reality: bool,
+    spin: int,
     upsample: bool,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """

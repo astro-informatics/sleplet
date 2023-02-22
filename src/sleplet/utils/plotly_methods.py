@@ -63,7 +63,7 @@ def create_tick_mark(
 def create_colour_bar(
     tick_mark: float,
     *,
-    normalise: bool = True,
+    normalise: bool,
     bar_len: float = 0.94,
     bar_pos: float = 0.97,
     font_size: int = 38,
