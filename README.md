@@ -74,7 +74,9 @@ python -m sleplet.plotting.arbitrary.south_america.tiling_south_america
 #### Fig. 3
 
 ```sh
+# a
 sphere earth -L 128 -s 2 -u
+# b
 sphere slepian_south_america -L 128 -s 2 -u
 ```
 
@@ -114,7 +116,9 @@ python -m sleplet.plotting.arbitrary.south_america.eigenvalues_south_america
 #### Fig. 6
 
 ```sh
+# a
 sphere slepian_wavelets -L 128 -u
+# b-f
 for j in $(seq 0 4); do
     sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
 done
@@ -142,7 +146,9 @@ for j in [None] + list(range(5)):
 #### Fig. 7
 
 ```sh
+# a
 sphere slepian_wavelet_coefficients_south_america -L 128 -s 2 -u
+# b-f
 for j in $(seq 0 4); do
     sphere slepian_wavelet_coefficients_south_america -e 3 2 ${j} -L 128 -s 2 -u
 done
@@ -151,7 +157,9 @@ done
 #### Fig. 8
 
 ```sh
+# a
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
+# b-d
 for s in 2 3 5; do
     python -m sleplet.plotting.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
 done
@@ -160,7 +168,9 @@ done
 #### Fig. 9
 
 ```sh
+# a
 sphere earth -L 128 -s 2 -u -v africa
+# b
 sphere slepian_africa -L 128 -s 2 -u
 ```
 
@@ -202,7 +212,9 @@ for p in [0, 9, 24, 49, 99, 199]:
 
 ```sh
 sed -i 's/south_america/africa/g' src/sleplet/config/settings.toml
+# a
 sphere slepian_wavelets -L 128 -u
+# b
 for j in $(seq 0 5); do
     sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
 done
@@ -230,7 +242,9 @@ for j in [None] + list(range(5)):
 #### Fig. 13
 
 ```sh
+# a
 sphere slepian_wavelet_coefficients_africa -L 128 -s 2 -u
+# b
 for j in $(seq 0 5); do
     sphere slepian_wavelet_coefficients_africa -e 3 2 ${j} -L 128 -s 2 -u
 done
@@ -239,7 +253,9 @@ done
 #### Fig. 14
 
 ```sh
+# a
 sphere slepian_africa -L 128 -n -10 -s 2 -u
+# b-d
 for s in 2 3 5; do
     python -m sleplet.plotting.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
 done
@@ -286,7 +302,9 @@ python -m sleplet.plotting.mesh.mesh_slepian_eigenvalues homer
 #### Fig. 8
 
 ```sh
+# a
 mesh homer -m slepian_wavelets -u -z
+# b-f
 for j in $(seq 0 4); do
     mesh homer -e 3 2 ${j} -m slepian_wavelets -u -z
 done
@@ -301,7 +319,9 @@ mesh homer -m field -u
 #### Fig. 10
 
 ```sh
+# a
 mesh homer -m slepian_wavelet_coefficients -u -z
+# b-f
 for j in $(seq 0 4); do
     mesh homer -e 3 2 ${j} -m slepian_wavelet_coefficients -u -z
 done
@@ -310,8 +330,11 @@ done
 #### Fig. 11
 
 ```sh
+# a
 mesh homer -m slepian_field -u -z
+# b
 mesh homer -m slepian_field -n -5 -u -z
+# c
 python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 1
 ```
 
