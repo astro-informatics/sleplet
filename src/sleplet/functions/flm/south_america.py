@@ -23,7 +23,9 @@ class SouthAmerica(F_LM):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)
+        return ensure_f_bandlimited(
+            self._grid_fun, self.L, reality=self.reality, spin=self.spin
+        )
 
     def _create_name(self) -> str:
         return convert_camel_case_to_snake_case(self.__class__.__name__)

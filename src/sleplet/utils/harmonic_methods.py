@@ -1,4 +1,5 @@
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 import numpy as np
 import pyssht as ssht
@@ -49,6 +50,7 @@ def ensure_f_bandlimited(
         [npt.NDArray[np.float_], npt.NDArray[np.float_]], npt.NDArray[np.float_]
     ],
     L: int,
+    *,
     reality: bool,
     spin: int,
 ) -> npt.NDArray[np.complex_]:
@@ -68,9 +70,9 @@ def create_emm_vector(L: int) -> npt.NDArray[np.float_]:
     emm = np.zeros(2 * L * 2 * L)
     k = 0
 
-    for l in range(2 * L):
-        M = 2 * l + 1
-        emm[k : k + M] = np.arange(-l, l + 1)
+    for ell in range(2 * L):
+        M = 2 * ell + 1
+        emm[k : k + M] = np.arange(-ell, ell + 1)
         k += M
     return emm
 

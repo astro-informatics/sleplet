@@ -18,7 +18,9 @@ class SquashedGaussian(F_LM):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return ensure_f_bandlimited(self._grid_fun, self.L, self.reality, self.spin)
+        return ensure_f_bandlimited(
+            self._grid_fun, self.L, reality=self.reality, spin=self.spin
+        )
 
     def _create_name(self) -> str:
         return (
@@ -38,7 +40,7 @@ class SquashedGaussian(F_LM):
             num_args = 2
             if len(self.extra_args) != num_args:
                 raise ValueError(f"The number of extra arguments should be {num_args}")
-            self.t_sigma, self.freq = [np.float_power(10, x) for x in self.extra_args]
+            self.t_sigma, self.freq = (np.float_power(10, x) for x in self.extra_args)
 
     def _grid_fun(
         self, theta: npt.NDArray[np.float_], phi: npt.NDArray[np.float_]

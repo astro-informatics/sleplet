@@ -37,7 +37,7 @@ def main() -> None:
     )
 
     # initialise matrix
-    covar_runs_shape = (RUNS,) + covar_theory.shape
+    covar_runs_shape = (RUNS, *covar_theory.shape)
     covar_data_runs = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed

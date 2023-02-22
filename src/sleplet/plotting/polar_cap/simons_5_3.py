@@ -42,7 +42,7 @@ def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> 
     legend = "full" if position == LEGEND_POS else False
     assert isinstance(slepian.order, np.ndarray)
     orders = np.abs(slepian.order[:RANKS])
-    labels = np.array([f"$\pm${m}" if m != 0 else m for m in orders])
+    labels = np.array([f"$\\pm${m}" if m != 0 else m for m in orders])
     idx = np.argsort(orders)
     sns.scatterplot(
         x=range(RANKS),
@@ -63,7 +63,7 @@ def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> 
         annotation_clip=False,
     )
     if position[1] == 0:
-        axs.set_ylabel("$\mu$")
+        axs.set_ylabel("$\\mu$")
     if position[0] == 1:
         axs.set_xlabel("$p$")
     axs.text(

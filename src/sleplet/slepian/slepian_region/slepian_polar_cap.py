@@ -204,9 +204,9 @@ class SlepianPolarCap(SlepianFunctions):
         """
         Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
         ind = emm == 0
-        l = np.arange(2 * self.L)[np.newaxis]
-        Pl = np.sqrt((4 * np.pi) / (2 * l + 1)) * Plm[ind]
-        return Pl, l
+        ell = np.arange(2 * self.L)[np.newaxis]
+        Pl = np.sqrt((4 * np.pi) / (2 * ell + 1)) * Plm[ind]
+        return Pl, ell
 
     def _dm_matrix_helper(
         self,
@@ -220,20 +220,20 @@ class SlepianPolarCap(SlepianFunctions):
         """
         used in both serial and parallel calculations
         """
-        l = int(lvec[i])
+        el = int(lvec[i])
         for j in range(i, self.L - m):
             p = int(lvec[j])
             c = 0
-            for n in range(abs(l - p), l + p + 1):
+            for n in range(abs(el - p), el + p + 1):
                 A = Pl[ell == n - 1] if n != 0 else 1
                 c += (
-                    self._wigner3j(l, n, p, 0, 0, 0)
-                    * self._wigner3j(l, n, p, m, 0, -m)
+                    self._wigner3j(el, n, p, 0, 0, 0)
+                    * self._wigner3j(el, n, p, m, 0, -m)
                     * (A - Pl[ell == n + 1])
                 )
             Dm[i, j] = (
-                self._polar_gap_modification(l, p)
-                * np.sqrt((2 * l + 1) * (2 * p + 1))
+                self._polar_gap_modification(el, p)
+                * np.sqrt((2 * el + 1) * (2 * p + 1))
                 * c
             )
             Dm[j, i] = Dm[i, j]

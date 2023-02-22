@@ -168,12 +168,12 @@ class SlepianLimitLatLon(SlepianFunctions):
         """
         K = np.zeros((L**2, L**2), dtype=np.complex_)
 
-        for l in prange(L):
-            for p in range(l + 1):
-                C1 = np.sqrt((2 * l + 1) * (2 * p + 1)) / (4 * np.pi)
+        for ell in prange(L):
+            for p in range(ell + 1):
+                C1 = np.sqrt((2 * ell + 1) * (2 * p + 1)) / (4 * np.pi)
 
-                for m in range(-l, l + 1):
-                    ind_lm = l * (l + 1) + m
+                for m in range(-ell, ell + 1):
+                    ind_lm = ell * (ell + 1) + m
 
                     for q in range(-p, p + 1):
                         ind_pq = p * (p + 1) + q
@@ -181,8 +181,8 @@ class SlepianLimitLatLon(SlepianFunctions):
                         C2 = (-1j) ** row
                         ind_r = 2 * N + row
 
-                        for mp in range(-l, l + 1):
-                            C3 = dl[l, N + mp, N + m] * dl[l, N + mp, N]
+                        for mp in range(-ell, ell + 1):
+                            C3 = dl[ell, N + mp, N + m] * dl[ell, N + mp, N]
                             S1 = 0
 
                             for qp in range(-p, p + 1):
