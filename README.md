@@ -532,7 +532,7 @@ mesh homer -m slepian_field -u -z
 # b
 mesh homer -m slepian_field -n -5 -u -z
 # c
-python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 1
+python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 2
 ```
 
 ```python
