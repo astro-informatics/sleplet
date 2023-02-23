@@ -44,10 +44,10 @@ In conjunction with `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013] may be used to
 
 `SLEPLET` [@RoddySLEPLET] is a Python package for the construction of Slepian wavelets in the spherical and manifold (via meshes) settings.
 The API of `SLEPLET` has been designed in an object-orientated manner and is easily extendible.
-Upon installation, `SLEPLET` comes with two command line interfaces `sphere` and `mesh` which allows one to easily generate plots on the sphere and a set of meshes using `plotly`.
+Upon installation, `SLEPLET` comes with two command line interfaces - `sphere` and `mesh` - which allows one to easily generate plots on the sphere and a set of meshes using `plotly`.
 Whilst these scripts are the primary intended use, `SLEPLET` may be used directly to generate the Slepian coefficients in the spherical/manifold setting and use methods to convert these into real space for visualisation or other intended purposes.
 The construction of the sifting convolution [@Roddy2021] was required to create Slepian wavelets.
-As a result, there are also many classes in harmonic space (rather than Slepian) which were used to demonstrate its effectiveness.
+As a result, there are also many examples of functions on the sphere in harmonic space (rather than Slepian) which were used to demonstrate its effectiveness.
 `SLEPLET` has been used in the development of [@Roddy2021; @Roddy2022; @Roddy2022a; @Roddy2023].
 
 # Demonstration
@@ -82,20 +82,20 @@ Plot(
 # Conclusions
 
 Slepian wavelets have many potential applications in analyses of manifolds where data are only observed over a partial region.
-One such application is in CMB analyses, where observations are inherently made on the celestial sphere, and foreground emissions mask the centre of the data.
+One such application is in cosmic microwave background analyses, where observations are inherently made on the celestial sphere, and foreground emissions mask the centre of the data.
 In fields such as astrophysics and cosmology, datasets are increasingly large and thus require analysis at high resolutions for accurate predictions.
 Whilst Slepian wavelets may be trivially computed from a set of Slepian functions, the computation of the spherical Slepian functions themselves are computationally complex, where the matrix scales as $\mathcal{O}(L^{4})$.
 Although symmetries of this matrix and the spherical harmonics have been exploited, filling in this matrix is inherently slow due to the many integrals performed.
 The matrix is filled in parallel in `Python` using `concurrent.futures`, and the spherical harmonic transforms are computed in `C` using `SSHT`.
 This may be sped up further by utilising the new `ducc0` backend for `SSHT`, which may allow for a multithreaded solution.
 Ultimately, the eigenproblem must be solved to compute the Slepian functions, requiring sophisticated algorithms to balance speed and accuracy.
-Therefore, to work with high-resolution data such as these, one requires HPC methods on supercomputers with massive memory and storage.
+Therefore, to work with high-resolution data such as these, one requires high performance computing methods on supercomputers with massive memory and storage.
 To this end, Slepian wavelets may be exploited at present at low resolutions, but further work is required for them to be fully scalable.
 
 # Acknowledgements
 
-The author would like to thank Jason D. McEwen for their advice and guidance on the mathematics behind `SLEPLET`.
-Further, the author would like to thank Zubair Khalid for providing their `MATLAB` implementation to compute the Slepian functions of a polar cap region, as well as the formulation
+The author would like to thank Jason D. McEwen for his advice and guidance on the mathematics behind `SLEPLET`.
+Further, the author would like to thank Zubair Khalid for providing his `MATLAB` implementation to compute the Slepian functions of a polar cap region, as well as the formulation
 for a limited colatitude-longitude region.
 `SLEPLET` makes use of several libraries the author would like to acknowledge, in particular `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013], and `libigl` [@Libigl2017].
 
