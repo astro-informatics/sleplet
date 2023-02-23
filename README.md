@@ -343,7 +343,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
+from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
     SlepianWaveletCoefficientsAfrica,
 )
 from sleplet.plotting.create_plot_sphere import Plot
@@ -352,7 +352,9 @@ from sleplet.utils.slepian_methods import slepian_inverse
 
 region = Region(mask_name="africa")
 for j in [None, *list(range(6))]:
-    f = SlepianWaveletCoefficientsAfrica(L=128, region=region, B=3, j_min=2, j=j, smoothing=2)
+    f = SlepianWaveletCoefficientsAfrica(
+        L=128, region=region, B=3, j_min=2, j=j, smoothing=2
+    )
     f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
     Plot(f_sphere, f.L, f"fig_13_j_{j}", normalise=False, region=f.region).execute()
 ```
