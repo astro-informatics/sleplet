@@ -565,3 +565,9 @@ for f in cheetah dragon bird teapot cube; do
     python -m sleplet.plotting.mesh.mesh_region ${f}
 done
 ```
+
+#### Tab. 1
+
+```sh
+python -m sleplet.plotting.mesh.produce_table
+```
