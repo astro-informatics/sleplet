@@ -9,7 +9,7 @@ MESH_SNR_DICT = {
     "cube": -7.33,
     "homer": -5,
 }
-SIGMA = 1
+SIGMA = 2
 
 if __name__ == "__main__":
     for mesh, snr in MESH_SNR_DICT.items():

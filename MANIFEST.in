@@ -1,8 +1,0 @@
-exclude *.cff
-exclude *.yaml
-prune paper
-prune tests
-recursive-include src *.mat
-recursive-include src *.npy
-recursive-include src *.off
-recursive-include src *.toml
