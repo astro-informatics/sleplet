@@ -7,7 +7,7 @@ L_SMALL = 16
 NCPU = 4
 
 
-def test_split_L_into_chunks() -> None:
+def test_split_L_into_chunks() -> None:  # noqa: N802
     """
     ensure vector L split into appropriate number of chunks
     """
@@ -18,7 +18,7 @@ def test_split_L_into_chunks() -> None:
         assert_allclose(len(chunk), chunk_length, atol=0)
 
 
-def test_split_L_into_chunks_Lmin_Lmax() -> None:
+def test_split_L_into_chunks_Lmin_Lmax() -> None:  # noqa: N802
     """
     ensure vector L split into appropriate number of chunks with L_min
     """

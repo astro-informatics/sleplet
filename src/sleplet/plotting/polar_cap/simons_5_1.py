@@ -47,7 +47,7 @@ def main() -> None:
     save_plot(fig_path, "slepian_colatitude")
 
 
-def _helper(
+def _helper(  # noqa: PLR0913
     ax: npt.NDArray,
     slepian: SlepianPolarCap,
     resolution: int,

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import numpy as np
-from numpy import linalg as LA
+from numpy import linalg as LA  # noqa: N812
 from numpy.testing import assert_equal
 
 from sleplet.utils.slepian_arbitrary_methods import (
@@ -13,7 +13,7 @@ _file_location = Path(__file__).resolve()
 _eigen_path = _file_location.parents[1] / "data" / "slepian" / "eigensolutions"
 
 
-def compute_large_D_matrix(
+def compute_large_D_matrix(  # noqa: N802
     mask_name: str, L: int, L_ranges: list[int], shannon: int
 ) -> None:
     """

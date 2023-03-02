@@ -30,7 +30,7 @@ def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
             logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
             mask = _load_mask(name)
-            assert mask.shape == thetas.shape, (
+            assert mask.shape == thetas.shape, (  # noqa: S101
                 f"mask {name} has shape {mask.shape} which does not match "
                 f"the provided L={L}, the shape should be {thetas.shape}"
             )
