@@ -2,7 +2,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import numpy as np
-from numpy import linalg as LA
+from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
@@ -73,7 +73,7 @@ class MeshSlepian:
                 np.save(eval_loc, self.slepian_eigenvalues)
                 np.save(evec_loc, self.slepian_functions[: self.N])
 
-    def _create_D_matrix(self) -> npt.NDArray[np.float_]:
+    def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
         """
         computes the D matrix for the mesh eigenfunctions
         """
@@ -113,7 +113,7 @@ class MeshSlepian:
         release_shared_memory(shm_ext)
         return D
 
-    def _fill_D_elements(self, D: npt.NDArray[np.float_], i: int) -> None:
+    def _fill_D_elements(self, D: npt.NDArray[np.float_], i: int) -> None:  # noqa: N802
         """
         fill in the D matrix elements using symmetries
         """

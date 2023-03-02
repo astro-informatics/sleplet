@@ -16,16 +16,18 @@ def test_bool_polar_cap() -> None:
     """
     verifies that one is case is a polar cap and one isn't
     """
-    assert is_polar_cap(PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, THETA_MAX)
-    assert not is_polar_cap(PHI_0, PHI_1, THETA_0, THETA_1)
+    assert is_polar_cap(  # noqa: S101
+        PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, THETA_MAX
+    )
+    assert not is_polar_cap(PHI_0, PHI_1, THETA_0, THETA_1)  # noqa: S101
 
 
 def test_bool_lim_lat_lon() -> None:
     """
     verifies that one is case is a polar cap and one isn't
     """
-    assert is_limited_lat_lon(PHI_0, PHI_1, THETA_0, THETA_1)
-    assert not is_limited_lat_lon(
+    assert is_limited_lat_lon(PHI_0, PHI_1, THETA_0, THETA_1)  # noqa: S101
+    assert not is_limited_lat_lon(  # noqa: S101
         PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, THETA_MAX
     )
 
@@ -34,5 +36,5 @@ def test_bool_erodicity() -> None:
     """
     verifies that a function follows ergodicity
     """
-    assert not is_ergodic(J_MIN)
-    assert is_ergodic(J_MIN, j=J)
+    assert not is_ergodic(J_MIN)  # noqa: S101
+    assert is_ergodic(J_MIN, j=J)  # noqa: S101

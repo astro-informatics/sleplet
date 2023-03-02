@@ -5,7 +5,7 @@ from pathlib import Path
 import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
-from numpy import linalg as LA
+from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -141,7 +141,7 @@ class SlepianPolarCap(SlepianFunctions):
         orders = orders[idx]
         return eigenvalues, eigenvectors, orders
 
-    def _create_Dm_matrix(
+    def _create_Dm_matrix(  # noqa: N802
         self, m: int, emm: npt.NDArray[np.float_]
     ) -> npt.NDArray[np.float_]:
         """
@@ -208,7 +208,7 @@ class SlepianPolarCap(SlepianFunctions):
         Pl = np.sqrt((4 * np.pi) / (2 * ell + 1)) * Plm[ind]
         return Pl, ell
 
-    def _dm_matrix_helper(
+    def _dm_matrix_helper(  # noqa: PLR0913
         self,
         Dm: npt.NDArray[np.float_],
         i: int,
@@ -239,7 +239,9 @@ class SlepianPolarCap(SlepianFunctions):
             Dm[j, i] = Dm[i, j]
 
     @staticmethod
-    def _wigner3j(l1: int, l2: int, l3: int, m1: int, m2: int, m3: int) -> float:
+    def _wigner3j(  # noqa: PLR0913
+        l1: int, l2: int, l3: int, m1: int, m2: int, m3: int
+    ) -> float:
         """
         Syntax:
         s = _wigner3j (l1, l2, l3, m1, m2, m3)

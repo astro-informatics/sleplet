@@ -60,8 +60,8 @@ class SlepianDecomposition:
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        assert isinstance(self.mask, np.ndarray)
-        assert isinstance(self.f, np.ndarray)
+        assert isinstance(self.mask, np.ndarray)  # noqa: S101
+        assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = ssht.inverse(
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )
@@ -75,7 +75,7 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}
         """
-        assert isinstance(self.f, np.ndarray)
+        assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = ssht.inverse(
             self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
         )

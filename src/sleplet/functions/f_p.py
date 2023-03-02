@@ -14,7 +14,7 @@ from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation)
-class F_P(Coefficients):
+class F_P(Coefficients):  # noqa: N801
     def __post_init_post_parse__(self) -> None:
         self.region: Region | None = (
             self.region

@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pyssht as ssht
 from numba import njit, prange
-from numpy import linalg as LA
+from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
@@ -73,7 +73,7 @@ class SlepianLimitLatLon(SlepianFunctions):
                 np.save(evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
 
-    def _create_K_matrix(self) -> npt.NDArray[np.complex_]:
+    def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
         """
         computes the K matrix
         """
