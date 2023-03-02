@@ -9,7 +9,7 @@ from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 MACHINE_EPSILON = 1e-14
 
 
-def calculate_high_L_matrix(
+def calculate_high_L_matrix(  # noqa: N802
     file_loc: Path, L: int, L_ranges: list[int]
 ) -> npt.NDArray[np.complex_]:
     """

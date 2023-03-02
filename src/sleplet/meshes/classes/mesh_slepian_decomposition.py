@@ -58,7 +58,7 @@ class MeshSlepianDecomposition:
         \int\limits_{R} \dd{x}
         f(x) \overline{S_{p}(x)}
         """
-        assert isinstance(self.u, np.ndarray)
+        assert isinstance(self.u, np.ndarray)  # noqa: S101
         s_p = mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
@@ -78,7 +78,7 @@ class MeshSlepianDecomposition:
         \int\limits_{x} \dd{x}
         f(x) \overline{S_{p}(x)}
         """
-        assert isinstance(self.u, np.ndarray)
+        assert isinstance(self.u, np.ndarray)  # noqa: S101
         s_p = mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
@@ -118,7 +118,9 @@ class MeshSlepianDecomposition:
         """
         checks the requested rank is valid
         """
-        assert isinstance(self.mesh_slepian.mesh.number_basis_functions, int)
+        assert isinstance(  # noqa: S101
+            self.mesh_slepian.mesh.number_basis_functions, int
+        )
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:

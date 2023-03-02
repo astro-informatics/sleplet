@@ -86,14 +86,8 @@ force-exclude = true
 ignore = [
     "EM101",
     "EM102",
-    "N801",
-    "N802",
     "N803",
-    "N805",
     "N806",
-    "N812",
-    "PLR0913",
-    "S101",
 ]
 select = [
     "A",
@@ -124,6 +118,7 @@ select = [
 ]
 isort.known-first-party = ["sleplet"]
 mccabe.max-complexity = 18
+pep8-naming.classmethod-decorators = ["classmethod", "pydantic.validator"]
 
 [tool.setuptools_scm]
 

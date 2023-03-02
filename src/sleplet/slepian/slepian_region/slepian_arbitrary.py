@@ -4,7 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
-from numpy import linalg as LA
+from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -75,7 +75,7 @@ class SlepianArbitrary(SlepianFunctions):
         logger.info("binaries found - loading...")
         return np.load(eval_loc), np.load(evec_loc)
 
-    def _solve_D_matrix(self, eval_loc, evec_loc):
+    def _solve_D_matrix(self, eval_loc, evec_loc):  # noqa: N802
         D = self._create_D_matrix()
 
         # check whether the large job has been split up
@@ -97,7 +97,7 @@ class SlepianArbitrary(SlepianFunctions):
             np.save(evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
-    def _create_D_matrix(self) -> npt.NDArray[np.complex_]:
+    def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
         """
         computes the D matrix in parallel
         """
@@ -191,7 +191,7 @@ class SlepianArbitrary(SlepianFunctions):
         )
 
     @validator("L_max")
-    def check_L_max(cls, v, values):
+    def check_L_max(cls, v, values):  # noqa: N802
         if v > values["L"]:
             raise ValueError(f"L_max cannot be greater than L: {values['L']}")
         if not isinstance(v, int):
@@ -199,7 +199,7 @@ class SlepianArbitrary(SlepianFunctions):
         return v if v != L_MAX_DEFAULT else values["L"]
 
     @validator("L_min")
-    def check_L_min(cls, v):
+    def check_L_min(cls, v):  # noqa: N802
         if v < 0:
             raise ValueError("L_min cannot be negative")
         if not isinstance(v, int):
