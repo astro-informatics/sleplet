@@ -89,6 +89,9 @@ ignore = [
     "N803",
     "N806",
 ]
+per-file-ignores = {"tests/*" = [
+    "S101",
+]}
 select = [
     "A",
     "B",
@@ -116,9 +119,6 @@ select = [
     "W",
     "YTT",
 ]
-per-file-ignores = {"tests/*" = [
-    "S101",
-]}
 isort.known-first-party = ["sleplet"]
 mccabe.max-complexity = 18
 pep8-naming.classmethod-decorators = [
