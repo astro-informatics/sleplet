@@ -48,7 +48,7 @@ name = "sleplet"
 readme = "README.md"
 requires-python = ">=3.10"
 scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scripts.plotting_on_sphere:main"}
-license.text = "BSD-3-Clause"
+license.file = "LICENCE.md"
 optional-dependencies.dev = [
     "black",
     "mypy",
