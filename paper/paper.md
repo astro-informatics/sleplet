@@ -26,6 +26,9 @@ Another approach is to estimate the region of missing data and to use existing w
 However, both approaches introduce uncertainty into any analysis.
 Slepian wavelets enable one to work directly with only the data present, thus avoiding the problems discussed above.
 Possible applications of Slepian wavelets to areas of research measuring data on the partial sphere include: gravitational/magnetic fields in geodesy; ground-based measurements in astronomy; measurements of whole-planet properties in planetary science; geomagnetism of the Earth; and in analyses of the cosmic microwave background.
+Slepian wavelets have many potential applications in analyses of manifolds where data are only observed over a partial region.
+One such application is in cosmic microwave background analyses, where observations are inherently made on the celestial sphere, and foreground emissions mask the centre of the data.
+In fields such as astrophysics and cosmology, datasets are increasingly large and thus require analysis at high resolutions for accurate predictions.
 
 # Statement of Need
 
@@ -50,11 +53,6 @@ The construction of the sifting convolution [@Roddy2021] was required to create 
 As a result, there are also many examples of functions on the sphere in harmonic space (rather than Slepian) which were used to demonstrate its effectiveness.
 `SLEPLET` has been used in the development of [@Roddy2021; @Roddy2022; @Roddy2022a; @Roddy2023].
 
-# Conclusions
-
-Slepian wavelets have many potential applications in analyses of manifolds where data are only observed over a partial region.
-One such application is in cosmic microwave background analyses, where observations are inherently made on the celestial sphere, and foreground emissions mask the centre of the data.
-In fields such as astrophysics and cosmology, datasets are increasingly large and thus require analysis at high resolutions for accurate predictions.
 Whilst Slepian wavelets may be trivially computed from a set of Slepian functions, the computation of the spherical Slepian functions themselves are computationally complex, where the matrix scales as $\mathcal{O}(L^{4})$.
 Although symmetries of this matrix and the spherical harmonics have been exploited, filling in this matrix is inherently slow due to the many integrals performed.
 The matrix is filled in parallel in `Python` using `concurrent.futures`, and the spherical harmonic transforms are computed in `C` using `SSHT`.
