@@ -50,35 +50,6 @@ The construction of the sifting convolution [@Roddy2021] was required to create 
 As a result, there are also many examples of functions on the sphere in harmonic space (rather than Slepian) which were used to demonstrate its effectiveness.
 `SLEPLET` has been used in the development of [@Roddy2021; @Roddy2022; @Roddy2022a; @Roddy2023].
 
-# Demonstration
-
-This example leverages `plotly` to display the first Slepian wavelet of a South America region on a dataset of the topography of the Earth - as seen in [@Roddy2022].
-The following methods are equivalent.
-
-## Command Line Interface
-
-```sh
-sphere slepian_wavelets -e 3 2 0 -L 128 -u
-```
-
-## API
-
-```python
-from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.slepian_methods import slepian_inverse
-
-f = SlepianWavelets(L=128, B=3, j_min=2, j=0)
-f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-Plot(
-    f_sphere,
-    f.L,
-    f.name,
-    normalise=False,
-    region=f.region,
-).execute()
-```
-
 # Conclusions
 
 Slepian wavelets have many potential applications in analyses of manifolds where data are only observed over a partial region.
