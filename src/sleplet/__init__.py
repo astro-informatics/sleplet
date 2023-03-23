@@ -5,4 +5,6 @@ designed in an object-orientated manner and is easily extendible. Upon
 installation, `SLEPLET` comes with two command line interfaces - `sphere` and
 `mesh` - which allows one to easily generate plots on the sphere and a set of
 meshes using `plotly`.
+
+.. include:: ../../README.md
 """
