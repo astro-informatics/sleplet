@@ -26,7 +26,7 @@ jobs:
           python -m pip install pdoc3
 
       - name: Create documentation
-        run: pdoc --html pdoc
+        run: pdoc --html src/sleplet
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
