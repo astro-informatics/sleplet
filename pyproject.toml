@@ -52,6 +52,7 @@ license.file = "LICENCE.md"
 optional-dependencies.dev = [
     "black",
     "mypy",
+    "pod3",
     "pre-commit",
     "ruff",
     "rundoc",
