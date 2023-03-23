@@ -52,11 +52,13 @@ license.file = "LICENCE.md"
 optional-dependencies.dev = [
     "black",
     "mypy",
-    "pod3",
     "pre-commit",
     "ruff",
     "rundoc",
     "tox",
+]
+optional-dependencies.docs = [
+    "pdoc3",
 ]
 urls.homepage = "https://github.com/astro-informatics/sleplet"
 
