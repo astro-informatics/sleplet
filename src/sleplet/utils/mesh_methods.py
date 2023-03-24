@@ -10,8 +10,7 @@ from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.logger import logger
 
-_file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[1] / "data" / "meshes"
+_data_path = Path(__file__).resolve().parents[1] / "data"
 
 
 def average_functions_on_vertices_to_faces(
@@ -58,7 +57,7 @@ def extract_mesh_config(mesh_name: str) -> dict:
     """
     reads in the given mesh region settings file
     """
-    with open(_meshes_path / "regions" / f"{mesh_name}.toml", "rb") as f:
+    with open(_data_path / f"meshes_regions_{mesh_name}.toml", "rb") as f:
         return tomli.load(f)
 
 
@@ -83,13 +82,11 @@ def mesh_eigendecomposition(
 
     # create filenames
     eigd_loc = (
-        _meshes_path
-        / "laplacians"
-        / "basis_functions"
-        / f"{name}_b{number_basis_functions}"
+        _data_path
+        / f"meshes_laplacians_basis_functions_{name}_b{number_basis_functions}"
     )
-    eval_loc = eigd_loc / "eigenvalues.npy"
-    evec_loc = eigd_loc / "eigenvectors.npy"
+    eval_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvalues.npy")
+    evec_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvectors.npy")
 
     if eval_loc.exists() and evec_loc.exists():
         logger.info("binaries found - loading...")
@@ -113,7 +110,7 @@ def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np
     reads in the given mesh
     """
     vertices, faces = read_triangle_mesh(
-        str(_meshes_path / "polygons" / mesh_config["FILENAME"])
+        str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}")
     )
     return upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
 

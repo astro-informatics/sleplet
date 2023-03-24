@@ -11,7 +11,7 @@ from sleplet.utils.region import Region
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 _file_location = Path(__file__).resolve()
-_mask_path = _file_location.parents[1] / "data" / "slepian" / "masks"
+_data_path = _file_location.parents[1] / "data"
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
@@ -57,7 +57,7 @@ def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
     """
     attempts to read the mask from the config file
     """
-    location = _mask_path / mask_name
+    location = _data_path / f"slepian_masks_{mask_name}"
     try:
         mask = np.load(location)
     except FileNotFoundError:

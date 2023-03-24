@@ -7,8 +7,8 @@ from scipy import io as sio
 
 from sleplet.utils.smoothing import apply_gaussian_smoothing
 
-_file_location = Path(__file__).resolve()
-_matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
+_data_path = Path(__file__).resolve().parents[3] / "data"
+_matfile = _data_path / "EGM2008_Topography_flms_L2190.mat"
 
 
 def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex_]:

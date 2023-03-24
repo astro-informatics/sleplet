@@ -9,8 +9,7 @@ from sleplet.utils.slepian_arbitrary_methods import (
     clean_evals_and_evecs,
 )
 
-_file_location = Path(__file__).resolve()
-_eigen_path = _file_location.parents[1] / "data" / "slepian" / "eigensolutions"
+_data_path = Path(__file__).resolve().parents[1] / "data"
 
 
 def compute_large_D_matrix(  # noqa: N802
@@ -20,12 +19,12 @@ def compute_large_D_matrix(  # noqa: N802
     checks that the split up D matrix has the same eigenvalues
     & eigenvectors as the computation of the whole D matrix in one step
     """
-    slepian_loc = _eigen_path / f"D_{mask_name}_L{L}_N{shannon}"
+    slepian_loc = _data_path / f"slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}"
     D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 
-    eval_loc = slepian_loc / "eigenvalues.npy"
-    evec_loc = slepian_loc / "eigenvectors.npy"
+    eval_loc = slepian_loc.with_name(f"{slepian_loc.stem}_eigenvalues.npy")
+    evec_loc = slepian_loc.with_name(f"{slepian_loc.stem}_eigenvectors.npy")
     if eval_loc.exists() and evec_loc.exists():
         eigenvalues = np.load(eval_loc)
         eigenvectors = np.load(evec_loc)
