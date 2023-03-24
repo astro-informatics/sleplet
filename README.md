@@ -18,7 +18,6 @@ meshes using `plotly`.
 Run
 
 ```sh
-git lfs pull
 pip install -e .
 ```
 
