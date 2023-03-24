@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -11,6 +13,8 @@ from sleplet.utils.plot_methods import rotate_earth_to_africa
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
+
+_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -49,5 +53,10 @@ class Africa(F_LM):
         earth_f = ssht.inverse(
             rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
         )
-        mask = np.load(POOCH.fetch(f"slepian_masks_{self.name}_L{self.L}.npy"))
+        mask_name = f"slepian_masks_{self.name}_L{self.L}.npy"
+        mask = np.load(
+            POOCH.fetch(mask_name)
+            if mask_name in POOCH.registry
+            else _data_path / mask_name
+        )
         return np.where(mask, earth_f, 0)
