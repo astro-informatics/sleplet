@@ -39,6 +39,7 @@ jobs:
         run: |
           import pooch
           print(pooch.os_cache("sleplet"))
+          print("~/.cache/sleplet")
         shell: python
 
       - name: Test with tox
