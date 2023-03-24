@@ -21,6 +21,7 @@ jobs:
         with:
           path: |
             .tox
+            ~/.cache/sleplet
           key: tox-${{ hashFiles('pyproject.toml') }}
 
       - name: Set up python
@@ -34,13 +35,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install pooch tox tox-gh-actions
-
-      - name: Display the path
-        run: |
-          import pooch
-          print(pooch.os_cache("sleplet"))
-          print("~/.cache/sleplet")
-        shell: python
 
       - name: Test with tox
         run: tox
