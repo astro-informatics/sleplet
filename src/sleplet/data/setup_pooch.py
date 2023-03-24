@@ -5,6 +5,8 @@ import pooch
 
 from sleplet.utils.vars import ZENODO_DATA_DOI
 
+_data_path = Path(__file__).resolve().parent
+
 POOCH = pooch.create(
     path=pooch.os_cache("sleplet"),
     # Use the figshare DOI
@@ -14,8 +16,10 @@ POOCH = pooch.create(
 POOCH.load_registry_from_doi()
 
 
-def find_on_pooch_then_local(data_path: Path, filename: str) -> os.PathLike:
+def find_on_pooch_then_local(filename: str) -> os.PathLike:
     """
     find a file on POOCH first and if not look in data folder
     """
-    return POOCH.fetch(filename) if filename in POOCH.registry else data_path / filename
+    return (
+        POOCH.fetch(filename) if filename in POOCH.registry else _data_path / filename
+    )
