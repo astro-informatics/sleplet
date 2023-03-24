@@ -1,13 +1,10 @@
-from pathlib import Path
-
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from scipy import io as sio
 
+from sleplet.data.setup_pooch import POOCH
 from sleplet.utils.smoothing import apply_gaussian_smoothing
-
-_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex_]:
@@ -39,5 +36,5 @@ def _load_flm() -> npt.NDArray[np.complex_]:
     """
     load coefficients from file
     """
-    mat_contents = sio.loadmat(str(_data_path / "EGM2008_Topography_flms_L2190.mat"))
+    mat_contents = sio.loadmat(POOCH.fetch("EGM2008_Topography_flms_L2190.mat"))
     return np.ascontiguousarray(mat_contents["flm"][:, 0])
