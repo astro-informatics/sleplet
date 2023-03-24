@@ -83,7 +83,7 @@ def _find_p_value(rank: int, shannon: int) -> int:
     """
     orders = np.load(
         POOCH.fetch(
-            "slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy"
+            f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy"
         )
     )
     return np.where(orders == ORDER)[0][rank]

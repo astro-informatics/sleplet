@@ -1,11 +1,11 @@
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
 
 import numpy as np
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import POOCH
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -20,8 +20,6 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils.validation import Validation
-
-_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -39,17 +37,17 @@ class MeshSlepian:
         logger.info("computing slepian functions of mesh")
 
         # create filenames
-        eigd_loc = _data_path / (
+        eigd_loc = (
             f"meshes_laplacians_slepian_functions_{self.mesh.name}_"
             f"b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
         )
-        eval_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvalues.npy")
-        evec_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvectors.npy")
+        eval_loc = f"{eigd_loc}_eigenvalues.npy"
+        evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
-        if eval_loc.exists() and evec_loc.exists():
+        if eval_loc in POOCH.registry and evec_loc in POOCH.registry:
             logger.info("binaries found - loading...")
-            self.slepian_eigenvalues = np.load(eval_loc)
-            self.slepian_functions = np.load(evec_loc)
+            self.slepian_eigenvalues = np.load(POOCH.fetch(eval_loc))
+            self.slepian_functions = np.load(POOCH.fetch(evec_loc))
         else:
             D = self._create_D_matrix()
             logger.info(

@@ -6,6 +6,7 @@ from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
 from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
+from sleplet.data.setup_pooch import POOCH
 from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.logger import logger
@@ -81,17 +82,14 @@ def mesh_eigendecomposition(
     )
 
     # create filenames
-    eigd_loc = (
-        _data_path
-        / f"meshes_laplacians_basis_functions_{name}_b{number_basis_functions}"
-    )
-    eval_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvalues.npy")
-    evec_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvectors.npy")
+    eigd_loc = f"meshes_laplacians_basis_functions_{name}_b{number_basis_functions}"
+    eval_loc = f"{eigd_loc}_eigenvalues.npy"
+    evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
-    if eval_loc.exists() and evec_loc.exists():
+    if eval_loc in POOCH.registry and evec_loc in POOCH.registry:
         logger.info("binaries found - loading...")
-        eigenvalues = np.load(eval_loc)
-        eigenvectors = np.load(evec_loc)
+        eigenvalues = np.load(POOCH.fetch(eval_loc))
+        eigenvectors = np.load(POOCH.fetch(evec_loc))
     else:
         laplacian = _mesh_laplacian(vertices, faces)
         eigenvalues, eigenvectors = LA_sparse.eigsh(
@@ -100,8 +98,8 @@ def mesh_eigendecomposition(
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         if settings["SAVE_MATRICES"]:
             logger.info("saving binaries...")
-            np.save(eval_loc, eigenvalues)
-            np.save(evec_loc, eigenvectors)
+            np.save(_data_path / eval_loc, eigenvalues)
+            np.save(_data_path / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
 
 
@@ -110,7 +108,7 @@ def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np
     reads in the given mesh
     """
     vertices, faces = read_triangle_mesh(
-        str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}")
+        POOCH.fetch(f"meshes_polygons_{mesh_config['FILENAME']}")
     )
     return upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
 

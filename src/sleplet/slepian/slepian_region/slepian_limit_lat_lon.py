@@ -7,6 +7,7 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import POOCH
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -62,15 +63,11 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location.with_name(
-            f"{self.matrix_location.stem}_eigenvalues.npy"
-        )
-        evec_loc = self.matrix_location.with_name(
-            f"{self.matrix_location.stem}_eigenvectors.npy"
-        )
-        if eval_loc.exists() and evec_loc.exists():
+        eval_loc = f"{self.matrix_location}_eigenvalues.npy"
+        evec_loc = f"{self.matrix_location}_eigenvectors.npy"
+        if eval_loc in POOCH.registry and evec_loc in POOCH.registry:
             logger.info("binaries found - loading...")
-            return np.load(eval_loc), np.load(evec_loc)
+            return np.load(POOCH.fetch(eval_loc)), np.load(POOCH.fetch(evec_loc))
         else:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))

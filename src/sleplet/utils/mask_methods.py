@@ -56,7 +56,7 @@ def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
     """
     attempts to read the mask from the config file
     """
-    location = _data_path / f"slepian_masks_{mask_name}"
+    location = f"slepian_masks_{mask_name}"
     try:
         mask = np.load(location)
     except FileNotFoundError:

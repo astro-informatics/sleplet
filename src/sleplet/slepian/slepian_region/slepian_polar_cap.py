@@ -10,6 +10,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import POOCH
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_emm_vector
@@ -52,39 +53,33 @@ class SlepianPolarCap(SlepianFunctions):
     def _calculate_area(self) -> float:
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
-    def _create_matrix_location(self) -> Path:
-        return (
-            _data_path
-            / f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
-        )
+    def _create_matrix_location(self) -> str:
+        return f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location.with_name(
-            f"{self.matrix_location.stem}_eigenvalues.npy"
-        )
-        evec_loc = self.matrix_location.with_name(
-            f"{self.matrix_location.stem}_eigenvectors.npy"
-        )
-        order_loc = self.matrix_location.with_name(
-            f"{self.matrix_location.stem}_orders.npy"
-        )
-        if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
+        eval_loc = f"{self.matrix_location}_eigenvalues.npy"
+        evec_loc = f"{self.matrix_location}_eigenvectors.npy"
+        order_loc = f"{self.matrix_location}_orders.npy"
+        if (
+            eval_loc not in POOCH.registry
+            or evec_loc not in POOCH.registry
+            or order_loc not in POOCH.registry
+        ):
             logger.info("binaries found - loading...")
-            return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
-        else:
             return self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
+        return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
 
     def _solve_eigenproblem_from_files(
-        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+        self, eval_loc: str, evec_loc: str, order_loc: str
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         solves eigenproblem with files already saved
         """
-        eigenvalues = np.load(eval_loc)
-        eigenvectors = np.load(evec_loc)
-        orders = np.load(order_loc)
+        eigenvalues = np.load(POOCH.fetch(eval_loc))
+        eigenvectors = np.load(POOCH.fetch(evec_loc))
+        orders = np.load(POOCH.fetch(order_loc))
 
         if self.order is not None:
             idx = np.where(orders == self.order)
@@ -94,7 +89,7 @@ class SlepianPolarCap(SlepianFunctions):
             return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_scratch(
-        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+        self, eval_loc: str, evec_loc: str, order_loc: str
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         sovles eigenproblem from scratch and then saves the files
@@ -117,9 +112,9 @@ class SlepianPolarCap(SlepianFunctions):
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
         if settings["SAVE_MATRICES"]:
             limit = self.N if self.L > L_SAVE_ALL else None
-            np.save(eval_loc, eigenvalues)
-            np.save(evec_loc, eigenvectors[:limit])
-            np.save(order_loc, self.order)
+            np.save(_data_path / eval_loc, eigenvalues)
+            np.save(_data_path / evec_loc, eigenvectors[:limit])
+            np.save(_data_path / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(

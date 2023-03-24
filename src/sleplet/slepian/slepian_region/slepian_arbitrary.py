@@ -9,6 +9,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import POOCH
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -58,26 +59,19 @@ class SlepianArbitrary(SlepianFunctions):
         self.weight = calc_integration_weight(self.resolution)
         return (self.mask * self.weight).sum()
 
-    def _create_matrix_location(self) -> Path:
-        return (
-            _data_path
-            / f"slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}"
-        )
+    def _create_matrix_location(self) -> str:
+        return f"slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}"
 
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location.with_name(
-            f"{self.matrix_location.name}_eigenvalues.npy"
-        )
-        evec_loc = self.matrix_location.with_name(
-            f"{self.matrix_location.name}_eigenvectors.npy"
-        )
-        if not eval_loc.exists() or not evec_loc.exists():
+        eval_loc = f"{self.matrix_location}_eigenvalues.npy"
+        evec_loc = f"{self.matrix_location}_eigenvectors.npy"
+        if eval_loc not in POOCH.registry or evec_loc not in POOCH.registry:
             return self._solve_D_matrix(eval_loc, evec_loc)
 
         logger.info("binaries found - loading...")
-        return np.load(eval_loc), np.load(evec_loc)
+        return np.load(POOCH.fetch(eval_loc)), np.load(POOCH.fetch(evec_loc))
 
     def _solve_D_matrix(self, eval_loc, evec_loc):  # noqa: N802
         D = self._create_D_matrix()
@@ -97,8 +91,8 @@ class SlepianArbitrary(SlepianFunctions):
         # solve eigenproblem
         eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
         if settings["SAVE_MATRICES"]:
-            np.save(eval_loc, eigenvalues)
-            np.save(evec_loc, eigenvectors[: self.N])
+            np.save(_data_path / eval_loc, eigenvalues)
+            np.save(_data_path / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
