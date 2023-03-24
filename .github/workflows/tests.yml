@@ -19,7 +19,8 @@ jobs:
       - name: Cache tox
         uses: actions/cache@v3
         with:
-          path: .tox
+          path: |
+            .tox
           key: tox-${{ hashFiles('pyproject.toml') }}
 
       - name: Set up python
@@ -29,16 +30,16 @@ jobs:
           cache: "pip"
           cache-dependency-path: "pyproject.toml"
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pooch tox tox-gh-actions
+
       - name: Display the path
         run: |
           import pooch
           print(pooch.os_cache("sleplet"))
         shell: python
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install tox tox-gh-actions
 
       - name: Test with tox
         run: tox
