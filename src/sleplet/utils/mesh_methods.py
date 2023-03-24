@@ -87,9 +87,13 @@ def mesh_eigendecomposition(
     evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
     if eval_loc in POOCH.registry and evec_loc in POOCH.registry:
-        logger.info("binaries found - loading...")
+        logger.info("binaries found in zenodo - loading...")
         eigenvalues = np.load(POOCH.fetch(eval_loc))
         eigenvectors = np.load(POOCH.fetch(evec_loc))
+    elif (_data_path / eval_loc).exists() and (_data_path / evec_loc).exists():
+        logger.info("binaries found locally - loading...")
+        eigenvalues = np.load(_data_path / eval_loc)
+        eigenvectors = np.load(_data_path / evec_loc)
     else:
         laplacian = _mesh_laplacian(vertices, faces)
         eigenvalues, eigenvectors = LA_sparse.eigsh(
