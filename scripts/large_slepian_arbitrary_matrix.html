@@ -37,8 +37,7 @@ from sleplet.utils.slepian_arbitrary_methods import (
     clean_evals_and_evecs,
 )
 
-_file_location = Path(__file__).resolve()
-_eigen_path = _file_location.parents[1] / &#34;data&#34; / &#34;slepian&#34; / &#34;eigensolutions&#34;
+_data_path = Path(__file__).resolve().parents[1] / &#34;data&#34;
 
 
 def compute_large_D_matrix(  # noqa: N802
@@ -48,12 +47,12 @@ def compute_large_D_matrix(  # noqa: N802
     checks that the split up D matrix has the same eigenvalues
     &amp; eigenvectors as the computation of the whole D matrix in one step
     &#34;&#34;&#34;
-    slepian_loc = _eigen_path / f&#34;D_{mask_name}_L{L}_N{shannon}&#34;
+    slepian_loc = _data_path / f&#34;slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}&#34;
     D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 
-    eval_loc = slepian_loc / &#34;eigenvalues.npy&#34;
-    evec_loc = slepian_loc / &#34;eigenvectors.npy&#34;
+    eval_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvalues.npy&#34;)
+    evec_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvectors.npy&#34;)
     if eval_loc.exists() and evec_loc.exists():
         eigenvalues = np.load(eval_loc)
         eigenvectors = np.load(evec_loc)
@@ -94,12 +93,12 @@ if __name__ == &#34;__main__&#34;:
     checks that the split up D matrix has the same eigenvalues
     &amp; eigenvectors as the computation of the whole D matrix in one step
     &#34;&#34;&#34;
-    slepian_loc = _eigen_path / f&#34;D_{mask_name}_L{L}_N{shannon}&#34;
+    slepian_loc = _data_path / f&#34;slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}&#34;
     D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 
-    eval_loc = slepian_loc / &#34;eigenvalues.npy&#34;
-    evec_loc = slepian_loc / &#34;eigenvectors.npy&#34;
+    eval_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvalues.npy&#34;)
+    evec_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvectors.npy&#34;)
     if eval_loc.exists() and evec_loc.exists():
         eigenvalues = np.load(eval_loc)
         eigenvectors = np.load(evec_loc)

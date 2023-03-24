@@ -35,8 +35,7 @@ from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.utils.plot_methods import rotate_earth_to_south_america
 from sleplet.utils.vars import SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
 
-_file_location = Path(__file__).resolve()
-_mask_path = _file_location.parents[3] / &#34;data&#34; / &#34;slepian&#34; / &#34;masks&#34;
+_data_path = Path(__file__).resolve().parents[3] / &#34;data&#34;
 
 
 def create_mask(L: int) -&gt; None:
@@ -48,7 +47,7 @@ def create_mask(L: int) -&gt; None:
     earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
     thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     mask = (thetas &lt;= SOUTH_AMERICA_RANGE) &amp; (earth_f &gt;= 0)
-    np.save(_mask_path / f&#34;south_america_L{L}.npy&#34;, mask)
+    np.save(_data_path / f&#34;slepian_masks_south_america_L{L}.npy&#34;, mask)
 
 
 if __name__ == &#34;__main__&#34;:
@@ -80,7 +79,7 @@ if __name__ == &#34;__main__&#34;:
     earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
     thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
     mask = (thetas &lt;= SOUTH_AMERICA_RANGE) &amp; (earth_f &gt;= 0)
-    np.save(_mask_path / f&#34;south_america_L{L}.npy&#34;, mask)</code></pre>
+    np.save(_data_path / f&#34;slepian_masks_south_america_L{L}.npy&#34;, mask)</code></pre>
 </details>
 </dd>
 </dl>

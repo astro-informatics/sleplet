@@ -51,7 +51,7 @@ SIGNS = [1, -1, 1, -1, 1, -1]
 
 file_location = Path(__file__).resolve()
 fig_path = file_location.parents[2] / &#34;figures&#34;
-data_path = file_location.parents[2] / &#34;data&#34; / &#34;slepian&#34; / &#34;eigensolutions&#34;
+data_path = file_location.parents[2] / &#34;data&#34;
 sns.set(context=&#34;paper&#34;)
 
 
@@ -108,7 +108,10 @@ def _find_p_value(rank: int, shannon: int) -&gt; int:
     &#34;&#34;&#34;
     method to find the effective p rank of the Slepian function
     &#34;&#34;&#34;
-    orders = np.load(data_path / f&#34;D_polar{THETA_MAX}_L{L}_N{shannon}&#34; / &#34;orders.npy&#34;)
+    orders = np.load(
+        data_path
+        / f&#34;slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy&#34;
+    )
     return np.where(orders == ORDER)[0][rank]
 
 

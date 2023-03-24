@@ -55,8 +55,7 @@ from sleplet.utils.validation import Validation
 
 L_SAVE_ALL = 16
 
-_file_location = Path(__file__).resolve()
-_eigen_path = _file_location.parents[2] / &#34;data&#34; / &#34;slepian&#34; / &#34;eigensolutions&#34;
+_data_path = Path(__file__).resolve().parents[2] / &#34;data&#34;
 
 
 @dataclass(config=Validation)
@@ -82,14 +81,23 @@ class SlepianPolarCap(SlepianFunctions):
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
     def _create_matrix_location(self) -&gt; Path:
-        return _eigen_path / f&#34;D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
+        return (
+            _data_path
+            / f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
+        )
 
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location / &#34;eigenvalues.npy&#34;
-        evec_loc = self.matrix_location / &#34;eigenvectors.npy&#34;
-        order_loc = self.matrix_location / &#34;orders.npy&#34;
+        eval_loc = self.matrix_location.with_name(
+            f&#34;{self.matrix_location.stem}_eigenvalues.npy&#34;
+        )
+        evec_loc = self.matrix_location.with_name(
+            f&#34;{self.matrix_location.stem}_eigenvectors.npy&#34;
+        )
+        order_loc = self.matrix_location.with_name(
+            f&#34;{self.matrix_location.stem}_orders.npy&#34;
+        )
         if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
             logger.info(&#34;binaries found - loading...&#34;)
             return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
@@ -445,14 +453,23 @@ class SlepianPolarCap(SlepianFunctions):
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
     def _create_matrix_location(self) -&gt; Path:
-        return _eigen_path / f&#34;D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
+        return (
+            _data_path
+            / f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
+        )
 
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location / &#34;eigenvalues.npy&#34;
-        evec_loc = self.matrix_location / &#34;eigenvectors.npy&#34;
-        order_loc = self.matrix_location / &#34;orders.npy&#34;
+        eval_loc = self.matrix_location.with_name(
+            f&#34;{self.matrix_location.stem}_eigenvalues.npy&#34;
+        )
+        evec_loc = self.matrix_location.with_name(
+            f&#34;{self.matrix_location.stem}_eigenvectors.npy&#34;
+        )
+        order_loc = self.matrix_location.with_name(
+            f&#34;{self.matrix_location.stem}_orders.npy&#34;
+        )
         if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
             logger.info(&#34;binaries found - loading...&#34;)
             return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)

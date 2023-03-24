@@ -49,8 +49,7 @@ from sleplet.utils.parallel_methods import (
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils.validation import Validation
 
-_file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[2] / &#34;data&#34; / &#34;meshes&#34;
+_data_path = Path(__file__).resolve().parents[2] / &#34;data&#34;
 
 
 @dataclass(config=Validation)
@@ -68,14 +67,12 @@ class MeshSlepian:
         logger.info(&#34;computing slepian functions of mesh&#34;)
 
         # create filenames
-        eigd_loc = (
-            _meshes_path
-            / &#34;laplacians&#34;
-            / &#34;slepian_functions&#34;
-            / f&#34;{self.mesh.name}_b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}&#34;
+        eigd_loc = _data_path / (
+            f&#34;meshes_laplacians_slepian_functions_{self.mesh.name}_&#34;
+            f&#34;b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}&#34;
         )
-        eval_loc = eigd_loc / &#34;eigenvalues.npy&#34;
-        evec_loc = eigd_loc / &#34;eigenvectors.npy&#34;
+        eval_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvalues.npy&#34;)
+        evec_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvectors.npy&#34;)
 
         if eval_loc.exists() and evec_loc.exists():
             logger.info(&#34;binaries found - loading...&#34;)
@@ -212,14 +209,12 @@ class MeshSlepian:
         logger.info(&#34;computing slepian functions of mesh&#34;)
 
         # create filenames
-        eigd_loc = (
-            _meshes_path
-            / &#34;laplacians&#34;
-            / &#34;slepian_functions&#34;
-            / f&#34;{self.mesh.name}_b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}&#34;
+        eigd_loc = _data_path / (
+            f&#34;meshes_laplacians_slepian_functions_{self.mesh.name}_&#34;
+            f&#34;b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}&#34;
         )
-        eval_loc = eigd_loc / &#34;eigenvalues.npy&#34;
-        evec_loc = eigd_loc / &#34;eigenvectors.npy&#34;
+        eval_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvalues.npy&#34;)
+        evec_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvectors.npy&#34;)
 
         if eval_loc.exists() and evec_loc.exists():
             logger.info(&#34;binaries found - loading...&#34;)
