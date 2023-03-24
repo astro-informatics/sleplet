@@ -61,10 +61,10 @@ def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
     if location in POOCH.registry:
         mask = POOCH.fetch(location)
     elif (_data_path / location).exists():
-        mask = np.load(location)
+        mask = _data_path / location
     else:
         raise FileNotFoundError(f"can not find the file: '{mask_name}'")
-    return mask
+    return np.load(mask)
 
 
 def ensure_masked_flm_bandlimited(

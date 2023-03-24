@@ -6,7 +6,7 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.data.other.earth.create_earth_flm import create_flm
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.harmonic_methods import ensure_f_bandlimited
 from sleplet.utils.plot_methods import rotate_earth_to_south_america
@@ -53,10 +53,7 @@ class SouthAmerica(F_LM):
         earth_f = ssht.inverse(
             rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
         )
-        mask_name = f"slepian_masks_{self.name}_L{self.L}.npy"
         mask = np.load(
-            POOCH.fetch(mask_name)
-            if mask_name in POOCH.registry
-            else _data_path / mask_name
+            find_on_pooch_then_local(f"slepian_masks_{self.name}_L{self.L}.npy")
         )
         return np.where(mask, earth_f, 0)
