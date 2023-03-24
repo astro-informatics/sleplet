@@ -29,6 +29,12 @@ jobs:
           cache: "pip"
           cache-dependency-path: "pyproject.toml"
 
+      - name: Display the path
+        run: |
+          import pooch
+          print(pooch.os_cache("sleplet"))
+        shell: python
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
