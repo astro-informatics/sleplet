@@ -4,6 +4,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
+from sleplet.data.setup_pooch import POOCH
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from sleplet.utils.logger import logger
@@ -57,11 +58,12 @@ def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
     attempts to read the mask from the config file
     """
     location = f"slepian_masks_{mask_name}"
-    try:
+    if location in POOCH.registry:
+        mask = POOCH.fetch(location)
+    elif (_data_path / location).exists():
         mask = np.load(location)
-    except FileNotFoundError:
-        logger.error(f"can not find the file: '{mask_name}'")
-        raise
+    else:
+        raise FileNotFoundError(f"can not find the file: '{mask_name}'")
     return mask
 
 
