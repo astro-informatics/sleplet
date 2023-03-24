@@ -10,8 +10,7 @@ from sleplet.utils.logger import logger
 from sleplet.utils.region import Region
 from sleplet.utils.vars import SAMPLING_SCHEME
 
-_file_location = Path(__file__).resolve()
-_data_path = _file_location.parents[1] / "data"
+_data_path = Path(__file__).resolve().parents[1] / "data"
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:

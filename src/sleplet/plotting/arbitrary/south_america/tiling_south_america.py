@@ -9,8 +9,7 @@ from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.wavelet_methods import create_kappas
 
-file_location = Path(__file__).resolve()
-fig_path = file_location.parents[3] / "figures"
+fig_path = Path(__file__).resolve().parents[3] / "figures"
 sns.set(context="paper")
 
 B = 3

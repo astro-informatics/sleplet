@@ -8,8 +8,7 @@ from scipy import io as sio
 
 from sleplet.utils.vars import RANDOM_SEED
 
-_file_location = Path(__file__).resolve()
-_data_path = _file_location.parents[3] / "data"
+_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:

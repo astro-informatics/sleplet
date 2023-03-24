@@ -58,10 +58,10 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 
-_data_location = Path(__file__).resolve().parents[1] / "data"
+_data_path = Path(__file__).resolve().parents[1] / "data"
 MESHES: list[str] = [
     Path(x).stem.removeprefix("meshes_regions_")
-    for x in glob(str(_data_location / "*.toml"))
+    for x in glob(str(_data_path / "*.toml"))
 ]
 
 FLM: list[type[Coefficients]] = [
