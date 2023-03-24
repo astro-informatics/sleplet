@@ -108,7 +108,7 @@ def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np
     reads in the given mesh
     """
     vertices, faces = read_triangle_mesh(
-        POOCH.fetch(f"meshes_polygons_{mesh_config['FILENAME']}")
+        str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}")
     )
     return upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
 
