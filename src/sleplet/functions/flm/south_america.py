@@ -13,8 +13,7 @@ from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
 
-_file_location = Path(__file__).resolve()
-_mask_path = _file_location.parents[2] / "data" / "slepian" / "masks"
+_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -53,5 +52,5 @@ class SouthAmerica(F_LM):
         earth_f = ssht.inverse(
             rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
         )
-        mask = np.load(_mask_path / f"{self.name}_L{self.L}.npy")
+        mask = np.load(_data_path / f"slepian_masks_{self.name}_L{self.L}.npy")
         return np.where(mask, earth_f, 0)

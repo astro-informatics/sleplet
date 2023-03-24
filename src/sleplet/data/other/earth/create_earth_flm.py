@@ -7,8 +7,7 @@ from scipy import io as sio
 
 from sleplet.utils.smoothing import apply_gaussian_smoothing
 
-_file_location = Path(__file__).resolve()
-_matfile = _file_location.parent / "EGM2008_Topography_flms_L2190.mat"
+_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex_]:
@@ -40,5 +39,5 @@ def _load_flm() -> npt.NDArray[np.complex_]:
     """
     load coefficients from file
     """
-    mat_contents = sio.loadmat(str(_matfile))
+    mat_contents = sio.loadmat(str(_data_path / "EGM2008_Topography_flms_L2190.mat"))
     return np.ascontiguousarray(mat_contents["flm"][:, 0])

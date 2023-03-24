@@ -15,8 +15,7 @@ LEGEND_POS = (0, 0)
 RANKS = 60
 THETA_RANGE = {10: (0, 0), 20: (0, 1), 30: (1, 0), 40: (1, 1)}
 
-file_location = Path(__file__).resolve()
-fig_path = file_location.parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "figures"
 sns.set(context="paper")
 
 

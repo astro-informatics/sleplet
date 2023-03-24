@@ -24,8 +24,7 @@ from sleplet.utils.plotly_methods import (
 from sleplet.utils.validation import Validation
 from sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
 
-_file_location = Path(__file__).resolve()
-_fig_path = _file_location.parents[1] / "figures"
+_fig_path = Path(__file__).resolve().parents[1] / "figures"
 
 
 @dataclass(config=Validation)

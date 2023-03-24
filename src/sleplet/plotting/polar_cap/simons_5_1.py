@@ -20,8 +20,7 @@ RESOLUTION = calc_plot_resolution(L)
 SIGNS = [[1, -1, 1], [-1, -1, -1], [1, 1, 1], [1, 1, -1]]
 
 
-file_location = Path(__file__).resolve()
-fig_path = file_location.parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "figures"
 sns.set(context="paper")
 
 

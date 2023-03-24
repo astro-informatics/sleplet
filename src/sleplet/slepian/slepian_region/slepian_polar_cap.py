@@ -27,8 +27,7 @@ from sleplet.utils.validation import Validation
 
 L_SAVE_ALL = 16
 
-_file_location = Path(__file__).resolve()
-_eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
+_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -54,14 +53,23 @@ class SlepianPolarCap(SlepianFunctions):
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
     def _create_matrix_location(self) -> Path:
-        return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
+        return (
+            _data_path
+            / f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
+        )
 
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = self.matrix_location / "eigenvectors.npy"
-        order_loc = self.matrix_location / "orders.npy"
+        eval_loc = self.matrix_location.with_name(
+            f"{self.matrix_location.stem}_eigenvalues.npy"
+        )
+        evec_loc = self.matrix_location.with_name(
+            f"{self.matrix_location.stem}_eigenvectors.npy"
+        )
+        order_loc = self.matrix_location.with_name(
+            f"{self.matrix_location.stem}_orders.npy"
+        )
         if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
             logger.info("binaries found - loading...")
             return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)

@@ -7,8 +7,7 @@ from numpy import typing as npt
 
 from sleplet.utils.plot_methods import save_plot
 
-file_location = Path(__file__).resolve()
-fig_path = file_location.parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "figures"
 sns.set(context="paper")
 
 DELTA_T = 0.001

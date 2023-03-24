@@ -32,8 +32,7 @@ from sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 
 MW_POLE_LENGTH = 2
 
-_file_location = Path(__file__).resolve()
-_fig_path = _file_location.parents[1] / "figures"
+_fig_path = Path(__file__).resolve().parents[1] / "figures"
 
 
 @dataclass(config=Validation)

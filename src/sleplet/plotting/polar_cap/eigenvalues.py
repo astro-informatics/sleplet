@@ -10,8 +10,7 @@ from sleplet.utils.plot_methods import save_plot
 L = 16
 THETA_MAX = 40
 
-file_location = Path(__file__).resolve()
-fig_path = file_location.parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "figures"
 sns.set(context="paper")
 
 

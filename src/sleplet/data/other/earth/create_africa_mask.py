@@ -10,8 +10,7 @@ from sleplet.utils.config import settings
 from sleplet.utils.plot_methods import rotate_earth_to_africa
 from sleplet.utils.vars import AFRICA_RANGE, SAMPLING_SCHEME
 
-_file_location = Path(__file__).resolve()
-_mask_path = _file_location.parents[3] / "data" / "slepian" / "masks"
+_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def create_mask(L: int) -> None:
@@ -25,7 +24,7 @@ def create_mask(L: int) -> None:
     mask = (thetas <= AFRICA_RANGE) & (earth_f >= 0)
     filename = f"africa_L{L}"
     Plot(mask.astype(np.complex_), L, f"mask_{filename}").execute()
-    np.save(_mask_path / f"{filename}.npy", mask)
+    np.save(_data_path / f"slepian_masks_{filename}.npy", mask)
 
 
 if __name__ == "__main__":

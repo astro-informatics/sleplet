@@ -9,8 +9,7 @@ from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.class_lists import MESHES
 
-file_location = Path(__file__).resolve()
-fig_path = file_location.parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "figures"
 
 
 def main(mesh_name: str) -> None:

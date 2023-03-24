@@ -21,8 +21,7 @@ from sleplet.utils.parallel_methods import (
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils.validation import Validation
 
-_file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[2] / "data" / "meshes"
+_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -40,14 +39,12 @@ class MeshSlepian:
         logger.info("computing slepian functions of mesh")
 
         # create filenames
-        eigd_loc = (
-            _meshes_path
-            / "laplacians"
-            / "slepian_functions"
-            / f"{self.mesh.name}_b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
+        eigd_loc = _data_path / (
+            f"meshes_laplacians_slepian_functions_{self.mesh.name}_"
+            f"b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
         )
-        eval_loc = eigd_loc / "eigenvalues.npy"
-        evec_loc = eigd_loc / "eigenvectors.npy"
+        eval_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvalues.npy")
+        evec_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvectors.npy")
 
         if eval_loc.exists() and evec_loc.exists():
             logger.info("binaries found - loading...")

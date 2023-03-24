@@ -8,7 +8,7 @@ from scipy import io as sio
 
 from sleplet.utils.vars import RANDOM_SEED
 
-_file_location = Path(__file__).resolve()
+_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:
@@ -48,6 +48,6 @@ def _load_cl(
     * _tt_spectrum_7yr_v4p1.mat
     * _lcdm_pl_model_wmap7baoh0.mat
     """
-    matfile = str(_file_location.parent / f"wmap{file_ending}.mat")
+    matfile = str(_data_path / f"wmap{file_ending}.mat")
     mat_contents = sio.loadmat(matfile)
     return np.ascontiguousarray(mat_contents["cl"][:, 0])

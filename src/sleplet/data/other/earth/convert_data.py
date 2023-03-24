@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 import scipy.io as sio
 
-_file_location = Path(__file__).resolve()
-_data_path = _file_location.parent
+_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def _add_missing_data(df: pd.DataFrame) -> pd.DataFrame:
