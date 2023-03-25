@@ -11,7 +11,12 @@ authors = [
 ]
 classifiers = [
     "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX",
     "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
     "Typing :: Typed",
 ]
 dependencies = [
