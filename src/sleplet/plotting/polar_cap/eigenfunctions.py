@@ -5,11 +5,11 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
+from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.harmonic_methods import invert_flm_boosted
-from sleplet.utils.logger import logger
 from sleplet.utils.plot_methods import calc_plot_resolution, save_plot
 from sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 

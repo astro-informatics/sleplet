@@ -1,9 +1,9 @@
 import numpy as np
 
+from sleplet import logger
 from sleplet.functions.fp.slepian import Slepian
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.plotting.inputs import THETA_MAX
-from sleplet.utils.logger import logger
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
