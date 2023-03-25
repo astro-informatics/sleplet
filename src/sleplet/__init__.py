@@ -2,6 +2,4 @@
 .. include:: ../../README.md
 """
 
-from sleplet._version import version
-
-__version__ = version
+from sleplet._version import __version__  # noqa: F401
