@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 import numpy as np
 from numpy import linalg as LA  # noqa: N812
@@ -20,6 +21,8 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils.validation import Validation
+
+_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -64,8 +67,8 @@ class MeshSlepian:
                 self.slepian_functions,
             ) = self._clean_evals_and_evecs(LA.eigh(D))
             if settings["SAVE_MATRICES"]:
-                np.save(eval_loc, self.slepian_eigenvalues)
-                np.save(evec_loc, self.slepian_functions[: self.N])
+                np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+                np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
         """

@@ -84,7 +84,7 @@ class SlepianArbitrary(SlepianFunctions):
         ]:
             logger.info("large job has been used, saving intermediate matrix")
             inter_loc = f"{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy"
-            np.save(inter_loc, D)
+            np.save(_data_path / inter_loc, D)
             raise RuntimeError("Large job detected, exiting")
 
         # fill in remaining triangle section
