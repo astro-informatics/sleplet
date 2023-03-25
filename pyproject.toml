@@ -93,7 +93,7 @@ ignore = [
     "N803",
     "N806",
 ]
-per-file-ignores = {"tests/*" = [
+per-file-ignores = {"test_*" = [
     "S101",
 ]}
 select = [
