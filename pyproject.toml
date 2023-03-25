@@ -131,6 +131,7 @@ pep8-naming.classmethod-decorators = [
 ]
 
 [tool.setuptools_scm]
+write_to = "src/sleplet/_version.py"
 
 [tool.tomlsort]
 all = true
