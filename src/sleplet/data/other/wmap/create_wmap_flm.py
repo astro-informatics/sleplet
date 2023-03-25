@@ -1,14 +1,11 @@
-from pathlib import Path
-
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import default_rng
 from scipy import io as sio
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.utils.vars import RANDOM_SEED
-
-_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:
@@ -48,6 +45,5 @@ def _load_cl(
     * _tt_spectrum_7yr_v4p1.mat
     * _lcdm_pl_model_wmap7baoh0.mat
     """
-    matfile = str(_data_path / f"wmap{file_ending}.mat")
-    mat_contents = sio.loadmat(matfile)
+    mat_contents = sio.loadmat(find_on_pooch_then_local(f"wmap{file_ending}.mat"))
     return np.ascontiguousarray(mat_contents["cl"][:, 0])

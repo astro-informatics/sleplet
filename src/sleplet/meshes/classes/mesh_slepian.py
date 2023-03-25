@@ -6,6 +6,7 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -39,18 +40,17 @@ class MeshSlepian:
         logger.info("computing slepian functions of mesh")
 
         # create filenames
-        eigd_loc = _data_path / (
+        eigd_loc = (
             f"meshes_laplacians_slepian_functions_{self.mesh.name}_"
             f"b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
         )
-        eval_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvalues.npy")
-        evec_loc = eigd_loc.with_name(f"{eigd_loc.stem}_eigenvectors.npy")
+        eval_loc = f"{eigd_loc}_eigenvalues.npy"
+        evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info("binaries found - loading...")
-            self.slepian_eigenvalues = np.load(eval_loc)
-            self.slepian_functions = np.load(evec_loc)
-        else:
+        try:
+            self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+            self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
+        except TypeError:
             D = self._create_D_matrix()
             logger.info(
                 f"Shannon number from vertices: {self.N}, "
@@ -67,8 +67,8 @@ class MeshSlepian:
                 self.slepian_functions,
             ) = self._clean_evals_and_evecs(LA.eigh(D))
             if settings["SAVE_MATRICES"]:
-                np.save(eval_loc, self.slepian_eigenvalues)
-                np.save(evec_loc, self.slepian_functions[: self.N])
+                np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+                np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
         """

@@ -1,16 +1,13 @@
-from pathlib import Path
-
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from sleplet.utils.logger import logger
 from sleplet.utils.region import Region
 from sleplet.utils.vars import SAMPLING_SCHEME
-
-_data_path = Path(__file__).resolve().parents[1] / "data"
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
@@ -56,13 +53,10 @@ def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
     """
     attempts to read the mask from the config file
     """
-    location = _data_path / f"slepian_masks_{mask_name}"
-    try:
-        mask = np.load(location)
-    except FileNotFoundError:
-        logger.error(f"can not find the file: '{mask_name}'")
-        raise
-    return mask
+    mask = find_on_pooch_then_local(f"slepian_masks_{mask_name}")
+    if mask is None:
+        raise FileNotFoundError(f"can not find the file: '{mask_name}'")
+    return np.load(mask)
 
 
 def ensure_masked_flm_bandlimited(

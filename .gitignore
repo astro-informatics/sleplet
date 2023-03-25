@@ -10,6 +10,8 @@ __pycache__
 *.c
 *.egg-info
 *.html
+*.mat
+*.npy
 *.pdf
 *.png
 *.pyc

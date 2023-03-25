@@ -34,3 +34,4 @@ SPHERE_UNSEEN: float = -1.56e30
 THETA_0: float = 0.0
 THETA_MIN_DEFAULT: float = 0
 THETA_MAX_DEFAULT: float = np.pi
+ZENODO_DATA_DOI: str = "10.5281/zenodo.7767698"

@@ -14,22 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: nschloe/action-cached-lfs-checkout@v1
-        with:
-          include: |
-            *D_polar40_L16_N30*,\
-            *D_south_america_L16_N10*,\
-            EGM2008_Topography_flms_L2190.mat,\
-            meshes_laplacians_*bird_b697*,\
-            slepian_masks_polar40_L32*,\
-            slepian_masks_south_america_L16*,\
-            slepian_masks_south_america_L32*,\
-            slepian_masks_theta30-60_phi30-60_L32*
+        uses: actions/checkout@v3
 
       - name: Cache tox
         uses: actions/cache@v3
         with:
-          path: .tox
+          path: |
+            .tox
+            ~/.cache/sleplet
           key: tox-${{ hashFiles('pyproject.toml') }}
 
       - name: Set up python
