@@ -61,7 +61,11 @@ optional-dependencies.dev = [
 optional-dependencies.docs = [
     "pdoc3",
 ]
-urls.homepage = "https://github.com/astro-informatics/sleplet"
+urls.Homepage = "https://github.com/astro-informatics/sleplet"
+urls.Download = "https://pypi.org/project/sleplet"
+urls."Bug Tracker" = "https://github.com/astro-informatics/sleplet/issues"
+urls.Documentation = "https://astro-informatics.github.io/sleplet"
+urls."Source Code" = "https://github.com/astro-informatics/sleplet"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
@@ -138,6 +142,7 @@ write_to = "src/sleplet/_version.py"
 all = true
 spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
+overrides."project.urls".table_keys = false
 overrides."tool.coverage.paths.source".inline_arrays = false
 
 [tool.tox]
