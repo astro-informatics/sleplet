@@ -75,7 +75,9 @@ class SlepianArbitrary(SlepianFunctions):
         except TypeError:
             return self._solve_D_matrix(eval_loc, evec_loc)
 
-    def _solve_D_matrix(self, eval_loc, evec_loc):  # noqa: N802
+    def _solve_D_matrix(  # noqa: N802
+        self, eval_loc, evec_loc
+    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
 
         # check whether the large job has been split up

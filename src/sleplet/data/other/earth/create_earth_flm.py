@@ -3,7 +3,7 @@ import pyssht as ssht
 from numpy import typing as npt
 from scipy import io as sio
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.utils.smoothing import apply_gaussian_smoothing
 
 
@@ -36,5 +36,7 @@ def _load_flm() -> npt.NDArray[np.complex_]:
     """
     load coefficients from file
     """
-    mat_contents = sio.loadmat(POOCH.fetch("EGM2008_Topography_flms_L2190.mat"))
+    mat_contents = sio.loadmat(
+        find_on_pooch_then_local("EGM2008_Topography_flms_L2190.mat")
+    )
     return np.ascontiguousarray(mat_contents["flm"][:, 0])

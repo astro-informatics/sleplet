@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 from numpy import typing as npt
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
@@ -19,7 +20,7 @@ def calculate_high_L_matrix(  # noqa: N802
     for i in range(len(L_ranges) - 1):
         L_min = L_ranges[i]
         L_max = L_ranges[i + 1]
-        x = np.load(file_loc / f"D_min{L_min}_max{L_max}.npy")
+        x = np.load(find_on_pooch_then_local(file_loc / f"D_min{L_min}_max{L_max}.npy"))
         D += x
 
     # fill in remaining triangle section

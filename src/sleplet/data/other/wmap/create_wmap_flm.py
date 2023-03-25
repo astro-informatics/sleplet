@@ -4,7 +4,7 @@ from numpy import typing as npt
 from numpy.random import default_rng
 from scipy import io as sio
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.utils.vars import RANDOM_SEED
 
 
@@ -45,5 +45,5 @@ def _load_cl(
     * _tt_spectrum_7yr_v4p1.mat
     * _lcdm_pl_model_wmap7baoh0.mat
     """
-    mat_contents = sio.loadmat(POOCH.fetch(f"wmap{file_ending}.mat"))
+    mat_contents = sio.loadmat(find_on_pooch_then_local(f"wmap{file_ending}.mat"))
     return np.ascontiguousarray(mat_contents["cl"][:, 0])
