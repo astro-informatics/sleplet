@@ -20,10 +20,10 @@ def compute_large_D_matrix(  # noqa: N802
     checks that the split up D matrix has the same eigenvalues
     & eigenvectors as the computation of the whole D matrix in one step
     """
-    slepian_loc = f"slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}"
-    D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
+    D = calculate_high_L_matrix(L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 
+    slepian_loc = f"slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}"
     eval_loc = f"{slepian_loc}_eigenvalues.npy"
     evec_loc = f"{slepian_loc}_eigenvectors.npy"
     try:

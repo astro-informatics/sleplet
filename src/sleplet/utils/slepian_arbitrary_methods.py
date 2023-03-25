@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 from numpy import typing as npt
 
@@ -11,7 +9,7 @@ MACHINE_EPSILON = 1e-14
 
 
 def calculate_high_L_matrix(  # noqa: N802
-    file_loc: Path, L: int, L_ranges: list[int]
+    L: int, L_ranges: list[int]
 ) -> npt.NDArray[np.complex_]:
     """
     splits up and calculates intermediate matrices for higher L
@@ -20,7 +18,7 @@ def calculate_high_L_matrix(  # noqa: N802
     for i in range(len(L_ranges) - 1):
         L_min = L_ranges[i]
         L_max = L_ranges[i + 1]
-        x = np.load(find_on_pooch_then_local(file_loc / f"D_min{L_min}_max{L_max}.npy"))
+        x = np.load(find_on_pooch_then_local(f"D_min{L_min}_max{L_max}.npy"))
         D += x
 
     # fill in remaining triangle section
