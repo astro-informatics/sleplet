@@ -3,6 +3,7 @@ import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
+from sleplet.data.other.earth.create_masks import create_mask
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
@@ -25,7 +26,7 @@ def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
         case "arbitrary":
             logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
-            mask = _load_mask(name)
+            mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
                 f"mask {name} has shape {mask.shape} which does not match "
                 f"the provided L={L}, the shape should be {thetas.shape}"
@@ -49,14 +50,12 @@ def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
     return mask
 
 
-def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
+def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
     """
     attempts to read the mask from the config file
     """
     mask = find_on_pooch_then_local(f"slepian_masks_{mask_name}")
-    if mask is None:
-        raise FileNotFoundError(f"can not find the file: '{mask_name}'")
-    return np.load(mask)
+    return create_mask(L, mask_name) if mask is None else np.load(mask)
 
 
 def ensure_masked_flm_bandlimited(
