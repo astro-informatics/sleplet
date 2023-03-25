@@ -4,7 +4,7 @@
 
 import logging
 
-from sleplet._version import __version__  # noqa: F401
+from sleplet._version import __version__
 
 logging.basicConfig(
     format="[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",
