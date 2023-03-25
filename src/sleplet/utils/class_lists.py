@@ -1,7 +1,7 @@
 from glob import glob
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.flm.africa import Africa
 from sleplet.functions.flm.axisymmetric_wavelet_coefficients_africa import (
     AxisymmetricWaveletCoefficientsAfrica,
@@ -43,7 +43,6 @@ from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.meshes.harmonic_coefficients.mesh_basis_functions import MeshBasisFunctions
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from sleplet.meshes.harmonic_coefficients.mesh_noise_field import MeshNoiseField
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from sleplet.meshes.slepian_coefficients.mesh_slepian_functions import (
     MeshSlepianFunctions,
@@ -57,6 +56,10 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients impor
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
+
+if TYPE_CHECKING:
+    from sleplet.functions.coefficients import Coefficients
+    from sleplet.meshes.mesh_coefficients import MeshCoefficients
 
 _data_path = Path(__file__).resolve().parents[1] / "data"
 MESHES: list[str] = [

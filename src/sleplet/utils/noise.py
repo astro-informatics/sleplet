@@ -1,11 +1,11 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import default_rng
 
 from sleplet import logger
-from sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.harmonic_methods import mesh_forward
 from sleplet.utils.slepian_methods import (
     compute_mesh_s_p_pixel,
@@ -16,6 +16,10 @@ from sleplet.utils.slepian_methods import (
     slepian_mesh_inverse,
 )
 from sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
+
+if TYPE_CHECKING:
+    from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+    from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
 def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:
