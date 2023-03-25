@@ -102,7 +102,9 @@ ignore = [
     "N803",
     "N806",
 ]
-per-file-ignores = {"test_*" = [
+per-file-ignores = {"__init__.py" = [
+    "F401",
+], "test_*" = [
     "S101",
 ]}
 select = [
