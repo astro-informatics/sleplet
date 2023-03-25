@@ -16,10 +16,13 @@ POOCH = pooch.create(
 POOCH.load_registry_from_doi()
 
 
-def find_on_pooch_then_local(filename: str) -> os.PathLike:
+def find_on_pooch_then_local(filename: str) -> os.PathLike | None:
     """
     find a file on POOCH first and if not look in data folder
     """
-    return (
-        POOCH.fetch(filename) if filename in POOCH.registry else _data_path / filename
-    )
+    if filename in POOCH.registry:
+        return POOCH.fetch(filename)
+    elif (_data_path / filename).exists():
+        return _data_path / filename
+    else:
+        return None

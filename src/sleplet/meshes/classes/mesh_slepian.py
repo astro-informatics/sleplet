@@ -5,7 +5,7 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -44,11 +44,10 @@ class MeshSlepian:
         eval_loc = f"{eigd_loc}_eigenvalues.npy"
         evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
-        if eval_loc in POOCH.registry and evec_loc in POOCH.registry:
-            logger.info("binaries found - loading...")
-            self.slepian_eigenvalues = np.load(POOCH.fetch(eval_loc))
-            self.slepian_functions = np.load(POOCH.fetch(evec_loc))
-        else:
+        try:
+            self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+            self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
+        except TypeError:
             D = self._create_D_matrix()
             logger.info(
                 f"Shannon number from vertices: {self.N}, "

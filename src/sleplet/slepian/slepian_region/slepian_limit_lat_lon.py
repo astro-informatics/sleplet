@@ -7,11 +7,10 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
-from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
@@ -54,21 +53,19 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.cos(self.theta_min) - np.cos(self.theta_max)
         )
 
-    def _create_matrix_location(self) -> Path:
-        return (
-            _data_path
-            / f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
-        )
+    def _create_matrix_location(self) -> str:
+        return f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
-        if eval_loc in POOCH.registry and evec_loc in POOCH.registry:
-            logger.info("binaries found - loading...")
-            return np.load(POOCH.fetch(eval_loc)), np.load(POOCH.fetch(evec_loc))
-        else:
+        try:
+            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
+                find_on_pooch_then_local(evec_loc)
+            )
+        except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
             if settings["SAVE_MATRICES"]:

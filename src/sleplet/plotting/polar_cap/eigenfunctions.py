@@ -5,7 +5,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.harmonic_methods import invert_flm_boosted
@@ -82,7 +82,7 @@ def _find_p_value(rank: int, shannon: int) -> int:
     method to find the effective p rank of the Slepian function
     """
     orders = np.load(
-        POOCH.fetch(
+        find_on_pooch_then_local(
             f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy"
         )
     )

@@ -9,7 +9,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -67,11 +67,13 @@ class SlepianArbitrary(SlepianFunctions):
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
-        if eval_loc not in POOCH.registry or evec_loc not in POOCH.registry:
-            return self._solve_D_matrix(eval_loc, evec_loc)
 
-        logger.info("binaries found - loading...")
-        return np.load(POOCH.fetch(eval_loc)), np.load(POOCH.fetch(evec_loc))
+        try:
+            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
+                find_on_pooch_then_local(evec_loc)
+            )
+        except TypeError:
+            return self._solve_D_matrix(eval_loc, evec_loc)
 
     def _solve_D_matrix(self, eval_loc, evec_loc):  # noqa: N802
         D = self._create_D_matrix()
@@ -81,7 +83,7 @@ class SlepianArbitrary(SlepianFunctions):
             "SAVE_MATRICES"
         ]:
             logger.info("large job has been used, saving intermediate matrix")
-            inter_loc = self.matrix_location / f"D_min{self.L_min}_max{self.L_max}.npy"
+            inter_loc = f"{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy"
             np.save(inter_loc, D)
             raise RuntimeError("Large job detected, exiting")
 

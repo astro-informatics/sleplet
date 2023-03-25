@@ -6,7 +6,7 @@ from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
 from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.logger import logger
@@ -86,15 +86,10 @@ def mesh_eigendecomposition(
     eval_loc = f"{eigd_loc}_eigenvalues.npy"
     evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
-    if eval_loc in POOCH.registry and evec_loc in POOCH.registry:
-        logger.info("binaries found in zenodo - loading...")
-        eigenvalues = np.load(POOCH.fetch(eval_loc))
-        eigenvectors = np.load(POOCH.fetch(evec_loc))
-    elif (_data_path / eval_loc).exists() and (_data_path / evec_loc).exists():
-        logger.info("binaries found locally - loading...")
-        eigenvalues = np.load(_data_path / eval_loc)
-        eigenvectors = np.load(_data_path / evec_loc)
-    else:
+    try:
+        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
+    except TypeError:
         laplacian = _mesh_laplacian(vertices, faces)
         eigenvalues, eigenvectors = LA_sparse.eigsh(
             laplacian, k=number_basis_functions, which="LM", sigma=0

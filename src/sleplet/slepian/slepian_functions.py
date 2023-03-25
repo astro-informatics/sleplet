@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from pathlib import Path
 
 import numpy as np
 from numpy import typing as npt
@@ -55,7 +54,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_matrix_location(self) -> Path:
+    def _create_matrix_location(self) -> str:
         """
         creates the name of the matrix binary
         """

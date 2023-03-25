@@ -10,7 +10,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.data.setup_pooch import POOCH
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_emm_vector
@@ -62,14 +62,10 @@ class SlepianPolarCap(SlepianFunctions):
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
         order_loc = f"{self.matrix_location}_orders.npy"
-        if (
-            eval_loc not in POOCH.registry
-            or evec_loc not in POOCH.registry
-            or order_loc not in POOCH.registry
-        ):
-            logger.info("binaries found - loading...")
+        try:
+            return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
+        except TypeError:
             return self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
-        return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
 
     def _solve_eigenproblem_from_files(
         self, eval_loc: str, evec_loc: str, order_loc: str
@@ -77,9 +73,9 @@ class SlepianPolarCap(SlepianFunctions):
         """
         solves eigenproblem with files already saved
         """
-        eigenvalues = np.load(POOCH.fetch(eval_loc))
-        eigenvectors = np.load(POOCH.fetch(evec_loc))
-        orders = np.load(POOCH.fetch(order_loc))
+        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
+        orders = np.load(find_on_pooch_then_local(order_loc))
 
         if self.order is not None:
             idx = np.where(orders == self.order)
