@@ -10,9 +10,9 @@ from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
 
+from sleplet import logger
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.config import settings
-from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
 from sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
 from sleplet.utils.plot_methods import convert_colourscale, normalise_function

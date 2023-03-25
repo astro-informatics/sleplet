@@ -1,9 +1,9 @@
 from argparse import ArgumentParser
 
+from sleplet import logger
 from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.denoising import denoising_slepian_function
-from sleplet.utils.logger import logger
 from sleplet.utils.plot_methods import find_max_amplitude
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import filename_args
