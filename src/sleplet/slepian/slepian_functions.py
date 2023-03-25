@@ -4,7 +4,7 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.utils.logger import logger
+from sleplet import logger
 from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
 

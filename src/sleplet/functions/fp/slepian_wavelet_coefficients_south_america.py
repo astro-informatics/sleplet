@@ -4,10 +4,10 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
+from sleplet import logger
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from sleplet.utils.logger import logger
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,

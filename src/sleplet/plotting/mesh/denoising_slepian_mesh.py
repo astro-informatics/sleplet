@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 
 import numpy as np
 
+from sleplet import logger
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
@@ -11,7 +12,6 @@ from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.class_lists import MESHES
 from sleplet.utils.denoising import denoising_mesh_slepian
-from sleplet.utils.logger import logger
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
 from sleplet.utils.string_methods import filename_args
 

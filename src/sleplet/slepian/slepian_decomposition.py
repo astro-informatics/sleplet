@@ -5,13 +5,13 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet import logger
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
     integrate_whole_sphere,
 )
-from sleplet.utils.logger import logger
 from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
 
