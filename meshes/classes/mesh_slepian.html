@@ -34,6 +34,7 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -67,18 +68,17 @@ class MeshSlepian:
         logger.info(&#34;computing slepian functions of mesh&#34;)
 
         # create filenames
-        eigd_loc = _data_path / (
+        eigd_loc = (
             f&#34;meshes_laplacians_slepian_functions_{self.mesh.name}_&#34;
             f&#34;b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}&#34;
         )
-        eval_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvalues.npy&#34;)
-        evec_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvectors.npy&#34;)
+        eval_loc = f&#34;{eigd_loc}_eigenvalues.npy&#34;
+        evec_loc = f&#34;{eigd_loc}_eigenvectors.npy&#34;
 
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info(&#34;binaries found - loading...&#34;)
-            self.slepian_eigenvalues = np.load(eval_loc)
-            self.slepian_functions = np.load(evec_loc)
-        else:
+        try:
+            self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+            self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
+        except TypeError:
             D = self._create_D_matrix()
             logger.info(
                 f&#34;Shannon number from vertices: {self.N}, &#34;
@@ -95,8 +95,8 @@ class MeshSlepian:
                 self.slepian_functions,
             ) = self._clean_evals_and_evecs(LA.eigh(D))
             if settings[&#34;SAVE_MATRICES&#34;]:
-                np.save(eval_loc, self.slepian_eigenvalues)
-                np.save(evec_loc, self.slepian_functions[: self.N])
+                np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+                np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.float_]:  # noqa: N802
         &#34;&#34;&#34;
@@ -209,18 +209,17 @@ class MeshSlepian:
         logger.info(&#34;computing slepian functions of mesh&#34;)
 
         # create filenames
-        eigd_loc = _data_path / (
+        eigd_loc = (
             f&#34;meshes_laplacians_slepian_functions_{self.mesh.name}_&#34;
             f&#34;b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}&#34;
         )
-        eval_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvalues.npy&#34;)
-        evec_loc = eigd_loc.with_name(f&#34;{eigd_loc.stem}_eigenvectors.npy&#34;)
+        eval_loc = f&#34;{eigd_loc}_eigenvalues.npy&#34;
+        evec_loc = f&#34;{eigd_loc}_eigenvectors.npy&#34;
 
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info(&#34;binaries found - loading...&#34;)
-            self.slepian_eigenvalues = np.load(eval_loc)
-            self.slepian_functions = np.load(evec_loc)
-        else:
+        try:
+            self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+            self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
+        except TypeError:
             D = self._create_D_matrix()
             logger.info(
                 f&#34;Shannon number from vertices: {self.N}, &#34;
@@ -237,8 +236,8 @@ class MeshSlepian:
                 self.slepian_functions,
             ) = self._clean_evals_and_evecs(LA.eigh(D))
             if settings[&#34;SAVE_MATRICES&#34;]:
-                np.save(eval_loc, self.slepian_eigenvalues)
-                np.save(evec_loc, self.slepian_functions[: self.N])
+                np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+                np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.float_]:  # noqa: N802
         &#34;&#34;&#34;

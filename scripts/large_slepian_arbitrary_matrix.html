@@ -32,6 +32,7 @@ import numpy as np
 from numpy import linalg as LA  # noqa: N812
 from numpy.testing import assert_equal
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.utils.slepian_arbitrary_methods import (
     calculate_high_L_matrix,
     clean_evals_and_evecs,
@@ -47,20 +48,20 @@ def compute_large_D_matrix(  # noqa: N802
     checks that the split up D matrix has the same eigenvalues
     &amp; eigenvectors as the computation of the whole D matrix in one step
     &#34;&#34;&#34;
-    slepian_loc = _data_path / f&#34;slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}&#34;
-    D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
+    D = calculate_high_L_matrix(L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 
-    eval_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvalues.npy&#34;)
-    evec_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvectors.npy&#34;)
-    if eval_loc.exists() and evec_loc.exists():
-        eigenvalues = np.load(eval_loc)
-        eigenvectors = np.load(evec_loc)
+    slepian_loc = f&#34;slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}&#34;
+    eval_loc = f&#34;{slepian_loc}_eigenvalues.npy&#34;
+    evec_loc = f&#34;{slepian_loc}_eigenvectors.npy&#34;
+    try:
+        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
         assert_equal(eigenvalues_split, eigenvalues)
         assert_equal(eigenvectors_split, eigenvectors)
-    else:
-        np.save(eval_loc, eigenvalues_split)
-        np.save(evec_loc, eigenvectors_split[:shannon])
+    except TypeError:
+        np.save(_data_path / eval_loc, eigenvalues_split)
+        np.save(_data_path / evec_loc, eigenvectors_split[:shannon])
 
 
 if __name__ == &#34;__main__&#34;:
@@ -93,20 +94,20 @@ if __name__ == &#34;__main__&#34;:
     checks that the split up D matrix has the same eigenvalues
     &amp; eigenvectors as the computation of the whole D matrix in one step
     &#34;&#34;&#34;
-    slepian_loc = _data_path / f&#34;slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}&#34;
-    D = calculate_high_L_matrix(slepian_loc, L, L_ranges)
+    D = calculate_high_L_matrix(L, L_ranges)
     eigenvalues_split, eigenvectors_split = clean_evals_and_evecs(LA.eigh(D))
 
-    eval_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvalues.npy&#34;)
-    evec_loc = slepian_loc.with_name(f&#34;{slepian_loc.stem}_eigenvectors.npy&#34;)
-    if eval_loc.exists() and evec_loc.exists():
-        eigenvalues = np.load(eval_loc)
-        eigenvectors = np.load(evec_loc)
+    slepian_loc = f&#34;slepian_eigensolutions_D_{mask_name}_L{L}_N{shannon}&#34;
+    eval_loc = f&#34;{slepian_loc}_eigenvalues.npy&#34;
+    evec_loc = f&#34;{slepian_loc}_eigenvectors.npy&#34;
+    try:
+        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
         assert_equal(eigenvalues_split, eigenvalues)
         assert_equal(eigenvectors_split, eigenvectors)
-    else:
-        np.save(eval_loc, eigenvalues_split)
-        np.save(evec_loc, eigenvectors_split[:shannon])</code></pre>
+    except TypeError:
+        np.save(_data_path / eval_loc, eigenvalues_split)
+        np.save(_data_path / evec_loc, eigenvectors_split[:shannon])</code></pre>
 </details>
 </dd>
 </dl>

@@ -37,6 +37,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
@@ -86,28 +87,25 @@ class SlepianArbitrary(SlepianFunctions):
         self.weight = calc_integration_weight(self.resolution)
         return (self.mask * self.weight).sum()
 
-    def _create_matrix_location(self) -&gt; Path:
-        return (
-            _data_path
-            / f&#34;slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}&#34;
-        )
+    def _create_matrix_location(self) -&gt; str:
+        return f&#34;slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}&#34;
 
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.name}_eigenvalues.npy&#34;
-        )
-        evec_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.name}_eigenvectors.npy&#34;
-        )
-        if not eval_loc.exists() or not evec_loc.exists():
+        eval_loc = f&#34;{self.matrix_location}_eigenvalues.npy&#34;
+        evec_loc = f&#34;{self.matrix_location}_eigenvectors.npy&#34;
+
+        try:
+            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
+                find_on_pooch_then_local(evec_loc)
+            )
+        except TypeError:
             return self._solve_D_matrix(eval_loc, evec_loc)
 
-        logger.info(&#34;binaries found - loading...&#34;)
-        return np.load(eval_loc), np.load(evec_loc)
-
-    def _solve_D_matrix(self, eval_loc, evec_loc):  # noqa: N802
+    def _solve_D_matrix(  # noqa: N802
+        self, eval_loc, evec_loc
+    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
 
         # check whether the large job has been split up
@@ -115,8 +113,8 @@ class SlepianArbitrary(SlepianFunctions):
             &#34;SAVE_MATRICES&#34;
         ]:
             logger.info(&#34;large job has been used, saving intermediate matrix&#34;)
-            inter_loc = self.matrix_location / f&#34;D_min{self.L_min}_max{self.L_max}.npy&#34;
-            np.save(inter_loc, D)
+            inter_loc = f&#34;{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy&#34;
+            np.save(_data_path / inter_loc, D)
             raise RuntimeError(&#34;Large job detected, exiting&#34;)
 
         # fill in remaining triangle section
@@ -125,8 +123,8 @@ class SlepianArbitrary(SlepianFunctions):
         # solve eigenproblem
         eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
         if settings[&#34;SAVE_MATRICES&#34;]:
-            np.save(eval_loc, eigenvalues)
-            np.save(evec_loc, eigenvectors[: self.N])
+            np.save(_data_path / eval_loc, eigenvalues)
+            np.save(_data_path / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
@@ -282,28 +280,25 @@ class SlepianArbitrary(SlepianFunctions):
         self.weight = calc_integration_weight(self.resolution)
         return (self.mask * self.weight).sum()
 
-    def _create_matrix_location(self) -&gt; Path:
-        return (
-            _data_path
-            / f&#34;slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}&#34;
-        )
+    def _create_matrix_location(self) -&gt; str:
+        return f&#34;slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}&#34;
 
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.name}_eigenvalues.npy&#34;
-        )
-        evec_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.name}_eigenvectors.npy&#34;
-        )
-        if not eval_loc.exists() or not evec_loc.exists():
+        eval_loc = f&#34;{self.matrix_location}_eigenvalues.npy&#34;
+        evec_loc = f&#34;{self.matrix_location}_eigenvectors.npy&#34;
+
+        try:
+            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
+                find_on_pooch_then_local(evec_loc)
+            )
+        except TypeError:
             return self._solve_D_matrix(eval_loc, evec_loc)
 
-        logger.info(&#34;binaries found - loading...&#34;)
-        return np.load(eval_loc), np.load(evec_loc)
-
-    def _solve_D_matrix(self, eval_loc, evec_loc):  # noqa: N802
+    def _solve_D_matrix(  # noqa: N802
+        self, eval_loc, evec_loc
+    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
 
         # check whether the large job has been split up
@@ -311,8 +306,8 @@ class SlepianArbitrary(SlepianFunctions):
             &#34;SAVE_MATRICES&#34;
         ]:
             logger.info(&#34;large job has been used, saving intermediate matrix&#34;)
-            inter_loc = self.matrix_location / f&#34;D_min{self.L_min}_max{self.L_max}.npy&#34;
-            np.save(inter_loc, D)
+            inter_loc = f&#34;{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy&#34;
+            np.save(_data_path / inter_loc, D)
             raise RuntimeError(&#34;Large job detected, exiting&#34;)
 
         # fill in remaining triangle section
@@ -321,8 +316,8 @@ class SlepianArbitrary(SlepianFunctions):
         # solve eigenproblem
         eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
         if settings[&#34;SAVE_MATRICES&#34;]:
-            np.save(eval_loc, eigenvalues)
-            np.save(evec_loc, eigenvectors[: self.N])
+            np.save(_data_path / eval_loc, eigenvalues)
+            np.save(_data_path / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802

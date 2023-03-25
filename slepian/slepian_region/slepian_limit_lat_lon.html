@@ -35,10 +35,10 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.config import settings
-from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
@@ -81,30 +81,24 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.cos(self.theta_min) - np.cos(self.theta_max)
         )
 
-    def _create_matrix_location(self) -&gt; Path:
-        return (
-            _data_path
-            / f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
-        )
+    def _create_matrix_location(self) -&gt; str:
+        return f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
 
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.stem}_eigenvalues.npy&#34;
-        )
-        evec_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.stem}_eigenvectors.npy&#34;
-        )
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info(&#34;binaries found - loading...&#34;)
-            return np.load(eval_loc), np.load(evec_loc)
-        else:
+        eval_loc = f&#34;{self.matrix_location}_eigenvalues.npy&#34;
+        evec_loc = f&#34;{self.matrix_location}_eigenvectors.npy&#34;
+        try:
+            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
+                find_on_pooch_then_local(evec_loc)
+            )
+        except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
             if settings[&#34;SAVE_MATRICES&#34;]:
-                np.save(eval_loc, eigenvalues)
-                np.save(evec_loc, eigenvectors[: self.N])
+                np.save(_data_path / eval_loc, eigenvalues)
+                np.save(_data_path / evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
@@ -302,30 +296,24 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.cos(self.theta_min) - np.cos(self.theta_max)
         )
 
-    def _create_matrix_location(self) -&gt; Path:
-        return (
-            _data_path
-            / f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
-        )
+    def _create_matrix_location(self) -&gt; str:
+        return f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
 
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.stem}_eigenvalues.npy&#34;
-        )
-        evec_loc = self.matrix_location.with_name(
-            f&#34;{self.matrix_location.stem}_eigenvectors.npy&#34;
-        )
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info(&#34;binaries found - loading...&#34;)
-            return np.load(eval_loc), np.load(evec_loc)
-        else:
+        eval_loc = f&#34;{self.matrix_location}_eigenvalues.npy&#34;
+        evec_loc = f&#34;{self.matrix_location}_eigenvectors.npy&#34;
+        try:
+            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
+                find_on_pooch_then_local(evec_loc)
+            )
+        except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
             if settings[&#34;SAVE_MATRICES&#34;]:
-                np.save(eval_loc, eigenvalues)
-                np.save(evec_loc, eigenvectors[: self.N])
+                np.save(_data_path / eval_loc, eigenvalues)
+                np.save(_data_path / evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802

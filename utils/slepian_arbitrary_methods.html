@@ -26,11 +26,10 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from pathlib import Path
-
-import numpy as np
+<pre><code class="python">import numpy as np
 from numpy import typing as npt
 
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
@@ -38,7 +37,7 @@ MACHINE_EPSILON = 1e-14
 
 
 def calculate_high_L_matrix(  # noqa: N802
-    file_loc: Path, L: int, L_ranges: list[int]
+    L: int, L_ranges: list[int]
 ) -&gt; npt.NDArray[np.complex_]:
     &#34;&#34;&#34;
     splits up and calculates intermediate matrices for higher L
@@ -47,7 +46,7 @@ def calculate_high_L_matrix(  # noqa: N802
     for i in range(len(L_ranges) - 1):
         L_min = L_ranges[i]
         L_max = L_ranges[i + 1]
-        x = np.load(file_loc / f&#34;D_min{L_min}_max{L_max}.npy&#34;)
+        x = np.load(find_on_pooch_then_local(f&#34;D_min{L_min}_max{L_max}.npy&#34;))
         D += x
 
     # fill in remaining triangle section
@@ -100,7 +99,7 @@ def compute_mesh_shannon(mesh: Mesh) -&gt; int:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sleplet.utils.slepian_arbitrary_methods.calculate_high_L_matrix"><code class="name flex">
-<span>def <span class="ident">calculate_high_L_matrix</span></span>(<span>file_loc: pathlib.Path, L: int, L_ranges: list[int]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">calculate_high_L_matrix</span></span>(<span>L: int, L_ranges: list[int]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>splits up and calculates intermediate matrices for higher L</p></div>
@@ -109,7 +108,7 @@ def compute_mesh_shannon(mesh: Mesh) -&gt; int:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calculate_high_L_matrix(  # noqa: N802
-    file_loc: Path, L: int, L_ranges: list[int]
+    L: int, L_ranges: list[int]
 ) -&gt; npt.NDArray[np.complex_]:
     &#34;&#34;&#34;
     splits up and calculates intermediate matrices for higher L
@@ -118,7 +117,7 @@ def compute_mesh_shannon(mesh: Mesh) -&gt; int:
     for i in range(len(L_ranges) - 1):
         L_min = L_ranges[i]
         L_max = L_ranges[i + 1]
-        x = np.load(file_loc / f&#34;D_min{L_min}_max{L_max}.npy&#34;)
+        x = np.load(find_on_pooch_then_local(f&#34;D_min{L_min}_max{L_max}.npy&#34;))
         D += x
 
     # fill in remaining triangle section
