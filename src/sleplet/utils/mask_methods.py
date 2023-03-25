@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -5,10 +7,12 @@ from numpy import typing as npt
 from sleplet import logger
 from sleplet.data.other.earth.create_masks import create_mask
 from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
 from sleplet.utils.region import Region
 from sleplet.utils.vars import SAMPLING_SCHEME
+
+if TYPE_CHECKING:
+    from sleplet.meshes.classes.mesh import Mesh
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:

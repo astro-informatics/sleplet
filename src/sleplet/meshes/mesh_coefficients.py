@@ -1,15 +1,18 @@
 from abc import abstractmethod
 from dataclasses import KW_ONLY
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
 from sleplet.utils.string_methods import filename_args
 from sleplet.utils.validation import Validation
+
+if TYPE_CHECKING:
+    from sleplet.meshes.classes.mesh import Mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 

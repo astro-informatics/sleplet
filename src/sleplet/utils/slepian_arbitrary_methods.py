@@ -1,9 +1,14 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 from numpy import typing as npt
 
 from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
+
+if TYPE_CHECKING:
+    from sleplet.meshes.classes.mesh import Mesh
+
 
 MACHINE_EPSILON = 1e-14
 

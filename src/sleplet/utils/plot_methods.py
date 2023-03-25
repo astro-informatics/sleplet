@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pyssht as ssht
@@ -7,11 +8,9 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.functions.coefficients import Coefficients
 from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import invert_flm_boosted
 from sleplet.utils.mask_methods import create_mask_region
-from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 from sleplet.utils.vars import (
     AFRICA_ALPHA,
@@ -23,6 +22,10 @@ from sleplet.utils.vars import (
     SOUTH_AMERICA_GAMMA,
     SPHERE_UNSEEN,
 )
+
+if TYPE_CHECKING:
+    from sleplet.functions.coefficients import Coefficients
+    from sleplet.utils.region import Region
 
 
 def calc_plot_resolution(L: int) -> int:
