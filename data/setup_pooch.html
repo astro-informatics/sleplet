@@ -31,6 +31,7 @@ from pathlib import Path
 
 import pooch
 
+from sleplet import logger
 from sleplet.utils.vars import ZENODO_DATA_DOI
 
 _data_path = Path(__file__).resolve().parent
@@ -49,10 +50,13 @@ def find_on_pooch_then_local(filename: str) -&gt; os.PathLike | None:
     find a file on POOCH first and if not look in data folder
     &#34;&#34;&#34;
     if filename in POOCH.registry:
+        logger.info(f&#34;Found {filename} at https://doi.org/{ZENODO_DATA_DOI}&#34;)
         return POOCH.fetch(filename)
     elif (_data_path / filename).exists():
+        logger.info(f&#34;Found {filename} at {_data_path / filename}&#34;)
         return _data_path / filename
     else:
+        logger.info(f&#34;No {filename} found, calculating...&#34;)
         return None</code></pre>
 </details>
 </section>
@@ -77,10 +81,13 @@ def find_on_pooch_then_local(filename: str) -&gt; os.PathLike | None:
     find a file on POOCH first and if not look in data folder
     &#34;&#34;&#34;
     if filename in POOCH.registry:
+        logger.info(f&#34;Found {filename} at https://doi.org/{ZENODO_DATA_DOI}&#34;)
         return POOCH.fetch(filename)
     elif (_data_path / filename).exists():
+        logger.info(f&#34;Found {filename} at {_data_path / filename}&#34;)
         return _data_path / filename
     else:
+        logger.info(f&#34;No {filename} found, calculating...&#34;)
         return None</code></pre>
 </details>
 </dd>

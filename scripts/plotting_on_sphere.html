@@ -33,12 +33,12 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
+from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.f_p import F_P
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils.config import settings
-from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import create_default_region
 from sleplet.utils.plot_methods import (
     calc_nearest_grid_point,
