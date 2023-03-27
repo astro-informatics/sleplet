@@ -1,29 +1,9 @@
 import numpy as np
 from numpy import typing as npt
 
-from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 
 MACHINE_EPSILON = 1e-14
-
-
-def calculate_high_L_matrix(  # noqa: N802
-    L: int, L_ranges: list[int]
-) -> npt.NDArray[np.complex_]:
-    """
-    splits up and calculates intermediate matrices for higher L
-    """
-    D = np.zeros((L**2, L**2), dtype=np.complex_)
-    for i in range(len(L_ranges) - 1):
-        L_min = L_ranges[i]
-        L_max = L_ranges[i + 1]
-        x = np.load(find_on_pooch_then_local(f"D_min{L_min}_max{L_max}.npy"))
-        D += x
-
-    # fill in remaining triangle section
-    fill_upper_triangle_of_hermitian_matrix(D)
-    return D
 
 
 def clean_evals_and_evecs(

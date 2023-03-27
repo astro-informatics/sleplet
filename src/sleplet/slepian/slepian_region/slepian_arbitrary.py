@@ -6,14 +6,12 @@ import numpy as np
 import pyssht as ssht
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
-from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.integration_methods import (
     calc_integration_weight,
@@ -30,7 +28,7 @@ from sleplet.utils.parallel_methods import (
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet.utils.validation import Validation
-from sleplet.utils.vars import L_MAX_DEFAULT, L_MIN_DEFAULT
+from sleplet.utils.vars import NCPU, SAMPLES
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 
@@ -39,11 +37,9 @@ _data_path = Path(__file__).resolve().parents[2] / "data"
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY
-    L_max: int = settings["L_MAX"]
-    L_min: int = settings["L_MIN"]
 
     def __post_init_post_parse__(self) -> None:
-        self.resolution = settings["SAMPLES"] * self.L
+        self.resolution = SAMPLES * self.L
         super().__post_init_post_parse__()
 
     def _create_fn_name(self) -> str:
@@ -79,13 +75,6 @@ class SlepianArbitrary(SlepianFunctions):
         self, eval_loc, evec_loc
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
-
-        # check whether the large job has been split up
-        if self.L_min != L_MIN_DEFAULT or self.L_max != self.L:
-            logger.info("large job has been used, saving intermediate matrix")
-            inter_loc = f"{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy"
-            np.save(_data_path / inter_loc, D)
-            raise RuntimeError("Large job detected, exiting")
 
         # fill in remaining triangle section
         fill_upper_triangle_of_hermitian_matrix(D)
@@ -125,12 +114,10 @@ class SlepianArbitrary(SlepianFunctions):
             free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(
-            self.L_max**2, settings["NCPU"], arr_min=self.L_min**2
-        )
+        chunks = split_arr_into_chunks(self.L**2, NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
@@ -188,19 +175,3 @@ class SlepianArbitrary(SlepianFunctions):
         return integrate_region_sphere(
             self.mask, self.weight, self._fields[i], self._fields[j].conj()
         )
-
-    @validator("L_max")
-    def check_L_max(cls, v, values):  # noqa: N802
-        if v > values["L"]:
-            raise ValueError(f"L_max cannot be greater than L: {values['L']}")
-        if not isinstance(v, int):
-            raise TypeError("L_max must be an integer")
-        return v if v != L_MAX_DEFAULT else values["L"]
-
-    @validator("L_min")
-    def check_L_min(cls, v):  # noqa: N802
-        if v < 0:
-            raise ValueError("L_min cannot be negative")
-        if not isinstance(v, int):
-            raise TypeError("L_min must be an integer")
-        return v
