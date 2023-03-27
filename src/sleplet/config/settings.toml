@@ -1,8 +1,0 @@
-AUTO_OPEN = true
-NCPU = 4
-PHI_MAX = 360
-PHI_MIN = 0
-POLAR_GAP = false
-SLEPIAN_MASK = "south_america"
-THETA_MAX = 180
-THETA_MIN = 0

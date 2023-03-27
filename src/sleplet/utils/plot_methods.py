@@ -8,7 +8,6 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import invert_flm_boosted
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
@@ -74,11 +73,10 @@ def save_plot(path: Path, name: str) -> None:
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
-        logger.info(f"saving {file_type}")
         filename = path / file_type / f"{name}.{file_type}"
+        logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
-    if settings["AUTO_OPEN"]:
-        plt.show()
+    plt.show()
 
 
 def find_max_amplitude(

@@ -12,7 +12,6 @@ from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.integration_methods import (
     calc_integration_weight,
@@ -29,7 +28,7 @@ from sleplet.utils.parallel_methods import (
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet.utils.validation import Validation
-from sleplet.utils.vars import SAMPLES
+from sleplet.utils.vars import NCPU, SAMPLES
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 
@@ -115,10 +114,10 @@ class SlepianArbitrary(SlepianFunctions):
             free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L**2, settings["NCPU"])
+        chunks = split_arr_into_chunks(self.L**2, NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

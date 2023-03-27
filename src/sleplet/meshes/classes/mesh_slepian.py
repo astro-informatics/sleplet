@@ -10,7 +10,6 @@ from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_region_mesh
 from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
@@ -21,6 +20,7 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils.validation import Validation
+from sleplet.utils.vars import NCPU
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 
@@ -96,12 +96,10 @@ class MeshSlepian:
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(
-            self.mesh.mesh_eigenvalues.shape[0], settings["NCPU"]
-        )
+        chunks = split_arr_into_chunks(self.mesh.mesh_eigenvalues.shape[0], NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

@@ -5,7 +5,6 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.coefficients import Coefficients
-from sleplet.utils.config import settings
 from sleplet.utils.mask_methods import create_default_region
 from sleplet.utils.noise import compute_snr, create_slepian_noise
 from sleplet.utils.region import Region
@@ -17,9 +16,7 @@ from sleplet.utils.validation import Validation
 class F_P(Coefficients):  # noqa: N801
     def __post_init_post_parse__(self) -> None:
         self.region: Region | None = (
-            self.region
-            if isinstance(self.region, Region)
-            else create_default_region(settings)
+            self.region if isinstance(self.region, Region) else create_default_region()
         )
         self.slepian = choose_slepian_method(self.L, self.region)
         super().__post_init_post_parse__()

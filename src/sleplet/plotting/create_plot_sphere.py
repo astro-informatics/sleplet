@@ -11,7 +11,6 @@ from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
-from sleplet.utils.config import settings
 from sleplet.utils.plot_methods import (
     boost_field,
     calc_plot_resolution,
@@ -99,14 +98,13 @@ class Plot:
 
         fig = Figure(data=data, layout=layout)
 
-        # create html and open if auto_open is true
         html_filename = str(_fig_path / "html" / f"{self.filename}.html")
 
-        py.plot(fig, filename=html_filename, auto_open=settings["AUTO_OPEN"])
+        py.plot(fig, filename=html_filename)
 
         for file_type in {"png", "pdf"}:
-            logger.info(f"saving {file_type}")
             filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
+            logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     @staticmethod
