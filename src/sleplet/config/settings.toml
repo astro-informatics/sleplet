@@ -1,6 +1,4 @@
 AUTO_OPEN = true
-L_MAX = -1
-L_MIN = 0
 NCPU = 4
 PHI_MAX = 360
 PHI_MIN = 0

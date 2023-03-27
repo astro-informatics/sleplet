@@ -51,23 +51,26 @@ class MeshSlepian:
             self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
             self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
         except TypeError:
-            D = self._create_D_matrix()
-            logger.info(
-                f"Shannon number from vertices: {self.N}, "
-                f"Trace of D matrix: {round(D.trace())}, "
-                f"difference: {round(np.abs(self.N - D.trace()))}"
-            )
+            self._compute_slepian_functions_from_scratch(eval_loc, evec_loc)
 
-            # fill in remaining triangle section
-            fill_upper_triangle_of_hermitian_matrix(D)
+    def _compute_slepian_functions_from_scratch(self, eval_loc, evec_loc):
+        D = self._create_D_matrix()
+        logger.info(
+            f"Shannon number from vertices: {self.N}, "
+            f"Trace of D matrix: {round(D.trace())}, "
+            f"difference: {round(np.abs(self.N - D.trace()))}"
+        )
 
-            # solve eigenproblem
-            (
-                self.slepian_eigenvalues,
-                self.slepian_functions,
-            ) = self._clean_evals_and_evecs(LA.eigh(D))
-            np.save(_data_path / eval_loc, self.slepian_eigenvalues)
-            np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
+        # solve eigenproblem
+        (
+            self.slepian_eigenvalues,
+            self.slepian_functions,
+        ) = self._clean_evals_and_evecs(LA.eigh(D))
+        np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+        np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
         """
