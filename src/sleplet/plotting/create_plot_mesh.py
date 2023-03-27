@@ -91,12 +91,10 @@ class Plot:
 
         py.plot(fig, filename=html_filename, auto_open=settings["AUTO_OPEN"])
 
-        # if save_fig is true then create png and pdf in their directories
-        if settings["SAVE_FIG"]:
-            for file_type in {"png", "pdf"}:
-                logger.info(f"saving {file_type}")
-                filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-                fig.write_image(filename, engine="kaleido")
+        for file_type in {"png", "pdf"}:
+            logger.info(f"saving {file_type}")
+            filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
+            fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(
         self, f: npt.NDArray[np.complex_ | np.float_]
