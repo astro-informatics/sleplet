@@ -15,7 +15,15 @@ meshes using `plotly`.
 
 ## Installation
 
-Run
+The recommended way to install `SLEPLET` is via
+[pip](https://pypi.org/project/pip/)
+
+```sh
+pip install sleplet
+```
+
+To install the latest development version of `SLEPLET` clone this repository
+and run
 
 ```sh
 pip install -e .
