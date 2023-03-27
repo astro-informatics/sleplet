@@ -22,7 +22,18 @@ pip install -e .
 ```
 
 This will install two scripts `sphere` and `mesh` which can be used to generate
-the figures in [the following section](#paper-figures).
+the figures in [the figure section](#paper-figures).
+
+## Bandlimit
+
+The bandlimit is set as `L` throughout the code and the CLIs. The default value
+is set to `L=16` and the figures created in [the figure section](#paper-figures)
+all use `L=128`. The pre-computed data exists on
+[Zenodo](https://doi.org/10.5281/zenodo.7767698) for powers of two up to `L=128`.
+Other values will be computed when running the appropriate code (and saved for
+future use). Note that beyond `L=32` the code can be slow due to the
+difficulties of computing the Slepian matrix prior to the eigendecomposition, as
+such it is recommended to stick to the powers of two up to `L=128`.
 
 ## Environment Variables
 
@@ -39,11 +50,11 @@ default region is the `south_america` arbitrary region.
 - `THETA_MAX`
   - for a Slepian `polar cap region`, when set without the other `PHI`/`THETA` variables
   - for a Slepian `limited latitude longitude region`
+- `THETA_MIN`
+  - for a Slepian `limited latitude longitude region`
 - `PHI_MAX`
   - for a Slepian `limited latitude longitude region`
 - `PHI_MIN`
-  - for a Slepian `limited latitude longitude region`
-- `THETA_MIN`
   - for a Slepian `limited latitude longitude region`
 - `SLEPIAN_MASK`
   - for an arbitrary Slepian region, currently `africa`/`south_america` supported
