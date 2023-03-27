@@ -27,7 +27,7 @@ from sleplet.utils.vars import (
     MESH_UNSEEN,
 )
 
-_fig_path = Path(__file__).resolve().parents[1] / "figures"
+_fig_path = Path(__file__).resolve().parents[3] / "figures"
 
 
 @dataclass(config=Validation)

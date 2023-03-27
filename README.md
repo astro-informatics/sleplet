@@ -131,7 +131,7 @@ for ell in range(2, 0, -1):
 #### Fig. 2
 
 ```sh
-python -m sleplet.plotting.arbitrary.south_america.tiling_south_america
+python -m examples.arbitrary.south_america.tiling_south_america
 ```
 
 #### Fig. 3
@@ -191,7 +191,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 #### Fig. 5
 
 ```sh
-python -m sleplet.plotting.arbitrary.south_america.eigenvalues_south_america
+python -m examples.arbitrary.south_america.eigenvalues_south_america
 ```
 
 #### Fig. 6
@@ -256,7 +256,7 @@ export SLEPIAN_MASK = "south_america"
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
 # b-d
 for s in 2 3 5; do
-    python -m sleplet.plotting.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
+    python -m examples.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
 done
 ```
 
@@ -312,7 +312,7 @@ Plot(g_sphere, g.L, "fig_9_b", normalise=False, region=g.region).execute()
 #### Fig. 10
 
 ```sh
-python -m sleplet.plotting.arbitrary.africa.eigenvalues_africa
+python -m examples.arbitrary.africa.eigenvalues_africa
 ```
 
 #### Fig. 11
@@ -399,7 +399,7 @@ export SLEPIAN_MASK = "africa"
 sphere slepian_africa -L 128 -n -10 -s 2 -u
 # b-d
 for s in 2 3 5; do
-    python -m sleplet.plotting.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
+    python -m examples.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
 done
 ```
 
@@ -448,13 +448,13 @@ for r in range(2, 10):
 #### Fig. 4
 
 ```sh
-python -m sleplet.plotting.mesh.mesh_tiling homer
+python -m examples.mesh.mesh_tiling homer
 ```
 
 #### Fig. 5
 
 ```sh
-python -m sleplet.plotting.mesh.mesh_region homer
+python -m examples.mesh.mesh_region homer
 ```
 
 #### Fig. 6
@@ -483,7 +483,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 #### Fig. 7
 
 ```sh
-python -m sleplet.plotting.mesh.mesh_slepian_eigenvalues homer
+python -m examples.mesh.mesh_slepian_eigenvalues homer
 ```
 
 #### Fig. 8
@@ -564,7 +564,7 @@ mesh homer -m slepian_field -u -z
 # b
 mesh homer -m slepian_field -n -5 -u -z
 # c
-python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 2
+python -m examples.mesh.denoising_slepian_mesh homer -n -5 -s 2
 ```
 
 ```python
@@ -594,12 +594,12 @@ Plot(
 
 ```sh
 for f in cheetah dragon bird teapot cube; do
-    python -m sleplet.plotting.mesh.mesh_region ${f}
+    python -m examples.mesh.mesh_region ${f}
 done
 ```
 
 #### Tab. 1
 
 ```sh
-python -m sleplet.plotting.mesh.produce_table
+python -m examples.mesh.produce_table
 ```
