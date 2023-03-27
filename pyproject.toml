@@ -58,20 +58,24 @@ scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scr
 license.file = "LICENCE.md"
 optional-dependencies.dev = [
     "black",
+    "build",
     "mypy",
     "pre-commit",
     "ruff",
-    "rundoc",
     "tox",
+    "twine",
 ]
 optional-dependencies.docs = [
     "pdoc3",
+    "rundoc",
 ]
-urls."Bug Tracker" = "https://github.com/astro-informatics/sleplet/issues"
-urls.Documentation = "https://astro-informatics.github.io/sleplet"
-urls.Download = "https://pypi.org/project/sleplet"
-urls.Homepage = "https://github.com/astro-informatics/sleplet"
-urls."Source Code" = "https://github.com/astro-informatics/sleplet"
+
+[project.urls]
+Homepage = "https://github.com/astro-informatics/sleplet"
+Download = "https://pypi.org/project/sleplet"
+"Bug Tracker" = "https://github.com/astro-informatics/sleplet/issues"
+Documentation = "https://astro-informatics.github.io/sleplet"
+"Source Code" = "https://github.com/astro-informatics/sleplet"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
@@ -150,6 +154,7 @@ write_to = "src/sleplet/_version.py"
 all = true
 spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
+overrides."project.urls".table_keys = false
 overrides."tool.coverage.paths.source".inline_arrays = false
 
 [tool.tox]
