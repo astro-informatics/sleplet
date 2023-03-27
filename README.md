@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/pyversions/sleplet)](https://pypi.org/project/sleplet/)
 [![Documentation](https://github.com/astro-informatics/sleplet/actions/workflows/documentation.yml/badge.svg)](https://astro-informatics.github.io/sleplet)
-[![SLEPLET](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
 [![Test](https://github.com/astro-informatics/sleplet/actions/workflows/test.yml/badge.svg)](https://github.com/astro-informatics/sleplet/actions/workflows/test.yml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
