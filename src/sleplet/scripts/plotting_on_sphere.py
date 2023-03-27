@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-
-
 from argparse import ArgumentParser, Namespace
 
 import numpy as np
