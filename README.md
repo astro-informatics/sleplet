@@ -1,5 +1,6 @@
 # SLEPLET
 
+![PyPI](https://img.shields.io/pypi/v/sleplet?label=pypi%20package)
 [![SLEPLET](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
 [![Python](https://img.shields.io/badge/python-3.10-orange.svg)](https://www.python.org/downloads/release/python-3100/)
 [![Documentation](https://github.com/astro-informatics/sleplet/actions/workflows/documentation.yml/badge.svg)](https://astro-informatics.github.io/sleplet)
