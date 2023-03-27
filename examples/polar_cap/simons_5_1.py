@@ -21,7 +21,7 @@ TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_MAX = 40
 
 
-fig_path = Path(__file__).resolve().parents[3] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "figures"
 sns.set(context="paper")
 
 

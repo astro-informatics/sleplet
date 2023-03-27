@@ -14,7 +14,7 @@ from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 L = 16
 THETA_MAX = 40
 
-fig_path = Path(__file__).resolve().parents[3] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "figures"
 sns.set(context="paper")
 
 
