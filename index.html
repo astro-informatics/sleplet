@@ -23,10 +23,11 @@
 </header>
 <section id="section-intro">
 <h1 id="sleplet">SLEPLET</h1>
-<p><a href="https://doi.org/10.5281/zenodo.7268074"><img alt="SLEPLET" src="https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg"></a>
+<p><img alt="PyPI" src="https://img.shields.io/pypi/v/sleplet?label=pypi%20package">
+<a href="https://doi.org/10.5281/zenodo.7268074"><img alt="SLEPLET" src="https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg"></a>
 <a href="https://www.python.org/downloads/release/python-3100/"><img alt="Python" src="https://img.shields.io/badge/python-3.10-orange.svg"></a>
 <a href="https://astro-informatics.github.io/sleplet"><img alt="Documentation" src="https://github.com/astro-informatics/sleplet/actions/workflows/documentation.yml/badge.svg"></a>
-<a href="https://github.com/astro-informatics/sleplet/actions/workflows/tests.yml"><img alt="tests" src="https://github.com/astro-informatics/sleplet/actions/workflows/tests.yml/badge.svg"></a>
+<a href="https://github.com/astro-informatics/sleplet/actions/workflows/test.yml"><img alt="Test" src="https://github.com/astro-informatics/sleplet/actions/workflows/test.yml/badge.svg"></a>
 <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white"></a></p>
 <p><code>SLEPLET</code> is a Python package for the construction of Slepian wavelets in the
 spherical and manifold (via meshes) settings. The API of <code>SLEPLET</code> has been
@@ -35,7 +36,12 @@ installation, <code>SLEPLET</code> comes with two command line interfaces - <cod
 <code>mesh</code> - which allows one to easily generate plots on the sphere and a set of
 meshes using <code>plotly</code>.</p>
 <h2 id="installation">Installation</h2>
-<p>Run</p>
+<p>The recommended way to install <code>SLEPLET</code> is via
+<a href="https://pypi.org/project/pip/">pip</a></p>
+<pre><code class="language-sh">pip install sleplet
+</code></pre>
+<p>To install the latest development version of <code>SLEPLET</code> clone this repository
+and run</p>
 <pre><code class="language-sh">pip install -e .
 </code></pre>
 <p>This will install two scripts <code>sphere</code> and <code>mesh</code> which can be used to generate
