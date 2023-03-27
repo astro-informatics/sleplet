@@ -38,7 +38,6 @@ from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_region_mesh
 from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
@@ -49,6 +48,7 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils.validation import Validation
+from sleplet.utils.vars import NCPU
 
 _data_path = Path(__file__).resolve().parents[2] / &#34;data&#34;
 
@@ -79,23 +79,26 @@ class MeshSlepian:
             self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
             self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
         except TypeError:
-            D = self._create_D_matrix()
-            logger.info(
-                f&#34;Shannon number from vertices: {self.N}, &#34;
-                f&#34;Trace of D matrix: {round(D.trace())}, &#34;
-                f&#34;difference: {round(np.abs(self.N - D.trace()))}&#34;
-            )
+            self._compute_slepian_functions_from_scratch(eval_loc, evec_loc)
 
-            # fill in remaining triangle section
-            fill_upper_triangle_of_hermitian_matrix(D)
+    def _compute_slepian_functions_from_scratch(self, eval_loc, evec_loc):
+        D = self._create_D_matrix()
+        logger.info(
+            f&#34;Shannon number from vertices: {self.N}, &#34;
+            f&#34;Trace of D matrix: {round(D.trace())}, &#34;
+            f&#34;difference: {round(np.abs(self.N - D.trace()))}&#34;
+        )
 
-            # solve eigenproblem
-            (
-                self.slepian_eigenvalues,
-                self.slepian_functions,
-            ) = self._clean_evals_and_evecs(LA.eigh(D))
-            np.save(_data_path / eval_loc, self.slepian_eigenvalues)
-            np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
+        # solve eigenproblem
+        (
+            self.slepian_eigenvalues,
+            self.slepian_functions,
+        ) = self._clean_evals_and_evecs(LA.eigh(D))
+        np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+        np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.float_]:  # noqa: N802
         &#34;&#34;&#34;
@@ -121,12 +124,10 @@ class MeshSlepian:
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(
-            self.mesh.mesh_eigenvalues.shape[0], settings[&#34;NCPU&#34;]
-        )
+        chunks = split_arr_into_chunks(self.mesh.mesh_eigenvalues.shape[0], NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings[&#34;NCPU&#34;]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
@@ -219,23 +220,26 @@ class MeshSlepian:
             self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
             self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
         except TypeError:
-            D = self._create_D_matrix()
-            logger.info(
-                f&#34;Shannon number from vertices: {self.N}, &#34;
-                f&#34;Trace of D matrix: {round(D.trace())}, &#34;
-                f&#34;difference: {round(np.abs(self.N - D.trace()))}&#34;
-            )
+            self._compute_slepian_functions_from_scratch(eval_loc, evec_loc)
 
-            # fill in remaining triangle section
-            fill_upper_triangle_of_hermitian_matrix(D)
+    def _compute_slepian_functions_from_scratch(self, eval_loc, evec_loc):
+        D = self._create_D_matrix()
+        logger.info(
+            f&#34;Shannon number from vertices: {self.N}, &#34;
+            f&#34;Trace of D matrix: {round(D.trace())}, &#34;
+            f&#34;difference: {round(np.abs(self.N - D.trace()))}&#34;
+        )
 
-            # solve eigenproblem
-            (
-                self.slepian_eigenvalues,
-                self.slepian_functions,
-            ) = self._clean_evals_and_evecs(LA.eigh(D))
-            np.save(_data_path / eval_loc, self.slepian_eigenvalues)
-            np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
+        # solve eigenproblem
+        (
+            self.slepian_eigenvalues,
+            self.slepian_functions,
+        ) = self._clean_evals_and_evecs(LA.eigh(D))
+        np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+        np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.float_]:  # noqa: N802
         &#34;&#34;&#34;
@@ -261,12 +265,10 @@ class MeshSlepian:
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(
-            self.mesh.mesh_eigenvalues.shape[0], settings[&#34;NCPU&#34;]
-        )
+        chunks = split_arr_into_chunks(self.mesh.mesh_eigenvalues.shape[0], NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings[&#34;NCPU&#34;]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

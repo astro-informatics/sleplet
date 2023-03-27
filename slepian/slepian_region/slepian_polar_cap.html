@@ -41,7 +41,6 @@ from pydantic.dataclasses import dataclass
 from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_emm_vector
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.parallel_methods import (
@@ -53,6 +52,7 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
+from sleplet.utils.vars import NCPU
 
 L_SAVE_ALL = 16
 
@@ -208,10 +208,10 @@ class SlepianPolarCap(SlepianFunctions):
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L - m, settings[&#34;NCPU&#34;])
+        chunks = split_arr_into_chunks(self.L - m, NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings[&#34;NCPU&#34;]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
@@ -569,10 +569,10 @@ class SlepianPolarCap(SlepianFunctions):
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L - m, settings[&#34;NCPU&#34;])
+        chunks = split_arr_into_chunks(self.L - m, NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings[&#34;NCPU&#34;]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

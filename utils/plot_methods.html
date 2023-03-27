@@ -36,7 +36,6 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import invert_flm_boosted
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
@@ -101,13 +100,11 @@ def save_plot(path: Path, name: str) -&gt; None:
     helper method to save plots
     &#34;&#34;&#34;
     plt.tight_layout()
-    if settings[&#34;SAVE_FIG&#34;]:
-        for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
-            logger.info(f&#34;saving {file_type}&#34;)
-            filename = path / file_type / f&#34;{name}.{file_type}&#34;
-            plt.savefig(filename, bbox_inches=&#34;tight&#34;)
-    if settings[&#34;AUTO_OPEN&#34;]:
-        plt.show()
+    for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+        filename = path / file_type / f&#34;{name}.{file_type}&#34;
+        logger.info(f&#34;saving {filename}&#34;)
+        plt.savefig(filename, bbox_inches=&#34;tight&#34;)
+    plt.show()
 
 
 def find_max_amplitude(
@@ -431,13 +428,11 @@ given plot type such that plots can have the same scale as the input</p></div>
     helper method to save plots
     &#34;&#34;&#34;
     plt.tight_layout()
-    if settings[&#34;SAVE_FIG&#34;]:
-        for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
-            logger.info(f&#34;saving {file_type}&#34;)
-            filename = path / file_type / f&#34;{name}.{file_type}&#34;
-            plt.savefig(filename, bbox_inches=&#34;tight&#34;)
-    if settings[&#34;AUTO_OPEN&#34;]:
-        plt.show()</code></pre>
+    for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+        filename = path / file_type / f&#34;{name}.{file_type}&#34;
+        logger.info(f&#34;saving {filename}&#34;)
+        plt.savefig(filename, bbox_inches=&#34;tight&#34;)
+    plt.show()</code></pre>
 </details>
 </dd>
 <dt id="sleplet.utils.plot_methods.set_outside_region_to_minimum"><code class="name flex">

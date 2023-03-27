@@ -37,7 +37,6 @@ from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
@@ -96,9 +95,7 @@ def read_args() -&gt; Namespace:
         default=ALPHA_DEFAULT,
         help=f&#34;alpha/phi pi fraction - defaults to {ALPHA_DEFAULT}&#34;,
     )
-    parser.add_argument(
-        &#34;--bandlimit&#34;, &#34;-L&#34;, type=int, default=settings[&#34;L&#34;], help=&#34;bandlimit&#34;
-    )
+    parser.add_argument(&#34;--bandlimit&#34;, &#34;-L&#34;, type=int, default=16, help=&#34;bandlimit&#34;)
     parser.add_argument(
         &#34;--beta&#34;,
         &#34;-b&#34;,
@@ -149,7 +146,7 @@ def read_args() -&gt; Namespace:
         &#34;--region&#34;,
         &#34;-r&#34;,
         action=&#34;store_true&#34;,
-        help=&#34;flag which masks the function for a region (based on settings.toml)&#34;,
+        help=&#34;flag which masks the function for a region&#34;,
     )
     parser.add_argument(
         &#34;--smoothing&#34;,
@@ -372,7 +369,7 @@ def compute_amplitude_for_noisy_plots(f: Coefficients) -&gt; float | None:
 def main() -&gt; None:
     args = read_args()
 
-    mask = create_default_region(settings) if args.region else None
+    mask = create_default_region() if args.region else None
 
     f = COEFFICIENTS[
         convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)
@@ -454,7 +451,7 @@ if __name__ == &#34;__main__&#34;:
 <pre><code class="python">def main() -&gt; None:
     args = read_args()
 
-    mask = create_default_region(settings) if args.region else None
+    mask = create_default_region() if args.region else None
 
     f = COEFFICIENTS[
         convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)
@@ -605,9 +602,7 @@ if __name__ == &#34;__main__&#34;:
         default=ALPHA_DEFAULT,
         help=f&#34;alpha/phi pi fraction - defaults to {ALPHA_DEFAULT}&#34;,
     )
-    parser.add_argument(
-        &#34;--bandlimit&#34;, &#34;-L&#34;, type=int, default=settings[&#34;L&#34;], help=&#34;bandlimit&#34;
-    )
+    parser.add_argument(&#34;--bandlimit&#34;, &#34;-L&#34;, type=int, default=16, help=&#34;bandlimit&#34;)
     parser.add_argument(
         &#34;--beta&#34;,
         &#34;-b&#34;,
@@ -658,7 +653,7 @@ if __name__ == &#34;__main__&#34;:
         &#34;--region&#34;,
         &#34;-r&#34;,
         action=&#34;store_true&#34;,
-        help=&#34;flag which masks the function for a region (based on settings.toml)&#34;,
+        help=&#34;flag which masks the function for a region&#34;,
     )
     parser.add_argument(
         &#34;--smoothing&#34;,

@@ -30,16 +30,12 @@
 from multiprocess.shared_memory import SharedMemory
 from numpy import typing as npt
 
-from sleplet.utils.vars import L_MIN_DEFAULT
 
-
-def split_arr_into_chunks(
-    arr_max: int, ncpu: int, *, arr_min: int = L_MIN_DEFAULT
-) -&gt; list[npt.NDArray[np.int_]]:
+def split_arr_into_chunks(arr_max: int, ncpu: int) -&gt; list[npt.NDArray[np.int_]]:
     &#34;&#34;&#34;
     split L into a list of arrays for parallelism
     &#34;&#34;&#34;
-    arr = np.arange(arr_min, arr_max)
+    arr = np.arange(arr_max)
     size = len(arr)
     arr[size // 2 : size] = arr[size // 2 : size][::-1]
     return [np.sort(arr[i::ncpu]) for i in range(ncpu)]
@@ -173,7 +169,7 @@ def release_shared_memory(*shared_memory: SharedMemory) -&gt; None:
 </details>
 </dd>
 <dt id="sleplet.utils.parallel_methods.split_arr_into_chunks"><code class="name flex">
-<span>def <span class="ident">split_arr_into_chunks</span></span>(<span>arr_max: int, ncpu: int, *, arr_min: int = 0) ‑> list[numpy.ndarray[typing.Any, numpy.dtype[numpy.int64]]]</span>
+<span>def <span class="ident">split_arr_into_chunks</span></span>(<span>arr_max: int, ncpu: int) ‑> list[numpy.ndarray[typing.Any, numpy.dtype[numpy.int64]]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>split L into a list of arrays for parallelism</p></div>
@@ -181,13 +177,11 @@ def release_shared_memory(*shared_memory: SharedMemory) -&gt; None:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def split_arr_into_chunks(
-    arr_max: int, ncpu: int, *, arr_min: int = L_MIN_DEFAULT
-) -&gt; list[npt.NDArray[np.int_]]:
+<pre><code class="python">def split_arr_into_chunks(arr_max: int, ncpu: int) -&gt; list[npt.NDArray[np.int_]]:
     &#34;&#34;&#34;
     split L into a list of arrays for parallelism
     &#34;&#34;&#34;
-    arr = np.arange(arr_min, arr_max)
+    arr = np.arange(arr_max)
     size = len(arr)
     arr[size // 2 : size] = arr[size // 2 : size][::-1]
     return [np.sort(arr[i::ncpu]) for i in range(ncpu)]</code></pre>

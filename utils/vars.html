@@ -26,15 +26,17 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import numpy as np
+<pre><code class="python">import os
 
-AFRICA_ALPHA: float = np.deg2rad(44)
-AFRICA_BETA: float = np.deg2rad(87)
-AFRICA_GAMMA: float = np.deg2rad(341)
-AFRICA_RANGE: int = np.deg2rad(41)
-ALPHA_DEFAULT: float = 0.75
-ANNOTATION_COLOUR: str = &#34;gold&#34;
-ARROW_STYLE: dict = {
+import numpy as np
+
+AFRICA_ALPHA = np.deg2rad(44)
+AFRICA_BETA = np.deg2rad(87)
+AFRICA_GAMMA = np.deg2rad(341)
+AFRICA_RANGE = np.deg2rad(41)
+ALPHA_DEFAULT = 0.75
+ANNOTATION_COLOUR = &#34;gold&#34;
+ARROW_STYLE = {
     &#34;arrowhead&#34;: 0,
     &#34;arrowside&#34;: &#34;start&#34;,
     &#34;ax&#34;: 4,
@@ -42,27 +44,33 @@ ARROW_STYLE: dict = {
     &#34;startarrowsize&#34;: 0.5,
     &#34;startarrowhead&#34;: 6,
 }
-BETA_DEFAULT: float = 0.125
-SOUTH_AMERICA_ALPHA: float = np.deg2rad(54)
-SOUTH_AMERICA_BETA: float = np.deg2rad(108)
-SOUTH_AMERICA_GAMMA: float = np.deg2rad(63)
-L_MAX_DEFAULT: int = -1
-L_MIN_DEFAULT: int = 0
-MESH_CBAR_FONT_SIZE: int = 32
-MESH_CBAR_LEN: float = 0.95
-MESH_UNSEEN: float = -1e5  # kaleido bug
-PHI_0: float = np.pi
-PHI_MIN_DEFAULT: float = 0.0
-PHI_MAX_DEFAULT: float = 2 * np.pi
-RANDOM_SEED: int = 30
-SAMPLING_SCHEME: str = &#34;MWSS&#34;
-SMOOTHING: int = 2
-SOUTH_AMERICA_RANGE: int = np.deg2rad(40)
-SPHERE_UNSEEN: float = -1.56e30
-THETA_0: float = 0.0
-THETA_MIN_DEFAULT: float = 0
-THETA_MAX_DEFAULT: float = np.pi
-ZENODO_DATA_DOI: str = &#34;10.5281/zenodo.7767698&#34;</code></pre>
+BETA_DEFAULT = 0.125
+MESH_CBAR_FONT_SIZE = 32
+MESH_CBAR_LEN = 0.95
+MESH_UNSEEN = -1e5  # kaleido bug
+NCPU = int(os.getenv(&#34;NCPU&#34;, &#34;4&#34;))
+PHI_0 = np.pi
+PHI_MAX_DEFAULT = 2 * np.pi
+PHI_MAX = int(os.getenv(&#34;PHI_MAX&#34;, &#34;360&#34;))
+PHI_MIN_DEFAULT = 0.0
+PHI_MIN = int(os.getenv(&#34;PHI_MIN&#34;, &#34;0&#34;))
+POLAR_GAP = os.getenv(&#34;POLAR_GAP&#34;, &#34;False&#34;).lower() == &#34;true&#34;
+RANDOM_SEED = 30
+SAMPLES = 2
+SAMPLING_SCHEME = &#34;MWSS&#34;
+SLEPIAN_MASK = os.getenv(&#34;SLEPIAN_MASK&#34;, &#34;south_america&#34;)
+SMOOTHING = 2
+SOUTH_AMERICA_ALPHA = np.deg2rad(54)
+SOUTH_AMERICA_BETA = np.deg2rad(108)
+SOUTH_AMERICA_GAMMA = np.deg2rad(63)
+SOUTH_AMERICA_RANGE = np.deg2rad(40)
+SPHERE_UNSEEN = -1.56e30
+THETA_0 = 0.0
+THETA_MAX_DEFAULT = np.pi
+THETA_MAX = int(os.getenv(&#34;THETA_MAX&#34;, &#34;180&#34;))
+THETA_MIN_DEFAULT = 0
+THETA_MIN = int(os.getenv(&#34;THETA_MIN&#34;, &#34;0&#34;))
+ZENODO_DATA_DOI = &#34;10.5281/zenodo.7767698&#34;</code></pre>
 </details>
 </section>
 <section>

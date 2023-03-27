@@ -34,14 +34,12 @@ import numpy as np
 import pyssht as ssht
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
-from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.integration_methods import (
     calc_integration_weight,
@@ -58,7 +56,7 @@ from sleplet.utils.parallel_methods import (
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet.utils.validation import Validation
-from sleplet.utils.vars import L_MAX_DEFAULT, L_MIN_DEFAULT
+from sleplet.utils.vars import NCPU, SAMPLES
 
 _data_path = Path(__file__).resolve().parents[2] / &#34;data&#34;
 
@@ -67,11 +65,9 @@ _data_path = Path(__file__).resolve().parents[2] / &#34;data&#34;
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY
-    L_max: int = settings[&#34;L_MAX&#34;]
-    L_min: int = settings[&#34;L_MIN&#34;]
 
     def __post_init_post_parse__(self) -&gt; None:
-        self.resolution = settings[&#34;SAMPLES&#34;] * self.L
+        self.resolution = SAMPLES * self.L
         super().__post_init_post_parse__()
 
     def _create_fn_name(self) -&gt; str:
@@ -107,13 +103,6 @@ class SlepianArbitrary(SlepianFunctions):
         self, eval_loc, evec_loc
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
-
-        # check whether the large job has been split up
-        if self.L_min != L_MIN_DEFAULT or self.L_max != self.L:
-            logger.info(&#34;large job has been used, saving intermediate matrix&#34;)
-            inter_loc = f&#34;{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy&#34;
-            np.save(_data_path / inter_loc, D)
-            raise RuntimeError(&#34;Large job detected, exiting&#34;)
 
         # fill in remaining triangle section
         fill_upper_triangle_of_hermitian_matrix(D)
@@ -153,12 +142,10 @@ class SlepianArbitrary(SlepianFunctions):
             free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(
-            self.L_max**2, settings[&#34;NCPU&#34;], arr_min=self.L_min**2
-        )
+        chunks = split_arr_into_chunks(self.L**2, NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings[&#34;NCPU&#34;]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
@@ -215,23 +202,7 @@ class SlepianArbitrary(SlepianFunctions):
             )
         return integrate_region_sphere(
             self.mask, self.weight, self._fields[i], self._fields[j].conj()
-        )
-
-    @validator(&#34;L_max&#34;)
-    def check_L_max(cls, v, values):  # noqa: N802
-        if v &gt; values[&#34;L&#34;]:
-            raise ValueError(f&#34;L_max cannot be greater than L: {values[&#39;L&#39;]}&#34;)
-        if not isinstance(v, int):
-            raise TypeError(&#34;L_max must be an integer&#34;)
-        return v if v != L_MAX_DEFAULT else values[&#34;L&#34;]
-
-    @validator(&#34;L_min&#34;)
-    def check_L_min(cls, v):  # noqa: N802
-        if v &lt; 0:
-            raise ValueError(&#34;L_min cannot be negative&#34;)
-        if not isinstance(v, int):
-            raise TypeError(&#34;L_min must be an integer&#34;)
-        return v</code></pre>
+        )</code></pre>
 </details>
 </section>
 <section>
@@ -245,10 +216,10 @@ class SlepianArbitrary(SlepianFunctions):
 <dl>
 <dt id="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary"><code class="flex name class">
 <span>class <span class="ident">SlepianArbitrary</span></span>
-<span>(</span><span>L: int, mask_name: str, *, L_max: int = -1, L_min: int = 0)</span>
+<span>(</span><span>L: int, mask_name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>SlepianArbitrary(L: int, mask_name: str, *, L_max: int = -1, L_min: int = 0)</p></div>
+<div class="desc"><p>SlepianArbitrary(L: int, mask_name: str)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -257,11 +228,9 @@ class SlepianArbitrary(SlepianFunctions):
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY
-    L_max: int = settings[&#34;L_MAX&#34;]
-    L_min: int = settings[&#34;L_MIN&#34;]
 
     def __post_init_post_parse__(self) -&gt; None:
-        self.resolution = settings[&#34;SAMPLES&#34;] * self.L
+        self.resolution = SAMPLES * self.L
         super().__post_init_post_parse__()
 
     def _create_fn_name(self) -&gt; str:
@@ -297,13 +266,6 @@ class SlepianArbitrary(SlepianFunctions):
         self, eval_loc, evec_loc
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
-
-        # check whether the large job has been split up
-        if self.L_min != L_MIN_DEFAULT or self.L_max != self.L:
-            logger.info(&#34;large job has been used, saving intermediate matrix&#34;)
-            inter_loc = f&#34;{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy&#34;
-            np.save(_data_path / inter_loc, D)
-            raise RuntimeError(&#34;Large job detected, exiting&#34;)
 
         # fill in remaining triangle section
         fill_upper_triangle_of_hermitian_matrix(D)
@@ -343,12 +305,10 @@ class SlepianArbitrary(SlepianFunctions):
             free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(
-            self.L_max**2, settings[&#34;NCPU&#34;], arr_min=self.L_min**2
-        )
+        chunks = split_arr_into_chunks(self.L**2, NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings[&#34;NCPU&#34;]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
@@ -405,23 +365,7 @@ class SlepianArbitrary(SlepianFunctions):
             )
         return integrate_region_sphere(
             self.mask, self.weight, self._fields[i], self._fields[j].conj()
-        )
-
-    @validator(&#34;L_max&#34;)
-    def check_L_max(cls, v, values):  # noqa: N802
-        if v &gt; values[&#34;L&#34;]:
-            raise ValueError(f&#34;L_max cannot be greater than L: {values[&#39;L&#39;]}&#34;)
-        if not isinstance(v, int):
-            raise TypeError(&#34;L_max must be an integer&#34;)
-        return v if v != L_MAX_DEFAULT else values[&#34;L&#34;]
-
-    @validator(&#34;L_min&#34;)
-    def check_L_min(cls, v):  # noqa: N802
-        if v &lt; 0:
-            raise ValueError(&#34;L_min cannot be negative&#34;)
-        if not isinstance(v, int):
-            raise TypeError(&#34;L_min must be an integer&#34;)
-        return v</code></pre>
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -429,56 +373,9 @@ class SlepianArbitrary(SlepianFunctions):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.L_max"><code class="name">var <span class="ident">L_max</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.L_min"><code class="name">var <span class="ident">L_min</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.mask_name"><code class="name">var <span class="ident">mask_name</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.check_L_max"><code class="name flex">
-<span>def <span class="ident">check_L_max</span></span>(<span>v, values)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;L_max&#34;)
-def check_L_max(cls, v, values):  # noqa: N802
-    if v &gt; values[&#34;L&#34;]:
-        raise ValueError(f&#34;L_max cannot be greater than L: {values[&#39;L&#39;]}&#34;)
-    if not isinstance(v, int):
-        raise TypeError(&#34;L_max must be an integer&#34;)
-    return v if v != L_MAX_DEFAULT else values[&#34;L&#34;]</code></pre>
-</details>
-</dd>
-<dt id="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.check_L_min"><code class="name flex">
-<span>def <span class="ident">check_L_min</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;L_min&#34;)
-def check_L_min(cls, v):  # noqa: N802
-    if v &lt; 0:
-        raise ValueError(&#34;L_min cannot be negative&#34;)
-    if not isinstance(v, int):
-        raise TypeError(&#34;L_min must be an integer&#34;)
-    return v</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -501,10 +398,6 @@ def check_L_min(cls, v):  # noqa: N802
 <li>
 <h4><code><a title="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary" href="#sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary">SlepianArbitrary</a></code></h4>
 <ul class="">
-<li><code><a title="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.L_max" href="#sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.L_max">L_max</a></code></li>
-<li><code><a title="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.L_min" href="#sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.L_min">L_min</a></code></li>
-<li><code><a title="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.check_L_max" href="#sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.check_L_max">check_L_max</a></code></li>
-<li><code><a title="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.check_L_min" href="#sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.check_L_min">check_L_min</a></code></li>
 <li><code><a title="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.mask_name" href="#sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary.mask_name">mask_name</a></code></li>
 </ul>
 </li>

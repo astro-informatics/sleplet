@@ -43,7 +43,17 @@ from sleplet.utils.harmonic_methods import (
     rotate_earth_to_south_america,
 )
 from sleplet.utils.region import Region
-from sleplet.utils.vars import AFRICA_RANGE, SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
+from sleplet.utils.vars import (
+    AFRICA_RANGE,
+    PHI_MAX,
+    PHI_MIN,
+    POLAR_GAP,
+    SAMPLING_SCHEME,
+    SLEPIAN_MASK,
+    SOUTH_AMERICA_RANGE,
+    THETA_MAX,
+    THETA_MIN,
+)
 
 _data_path = Path(__file__).resolve().parents[1] / &#34;data&#34;
 
@@ -107,17 +117,17 @@ def ensure_masked_flm_bandlimited(
     return ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
-def create_default_region(settings: dict) -&gt; Region:
+def create_default_region() -&gt; Region:
     &#34;&#34;&#34;
-    creates default region from settings object
+    creates default region
     &#34;&#34;&#34;
     return Region(
-        gap=settings[&#34;POLAR_GAP&#34;],
-        mask_name=settings[&#34;SLEPIAN_MASK&#34;],
-        phi_max=np.deg2rad(settings[&#34;PHI_MAX&#34;]),
-        phi_min=np.deg2rad(settings[&#34;PHI_MIN&#34;]),
-        theta_max=np.deg2rad(settings[&#34;THETA_MAX&#34;]),
-        theta_min=np.deg2rad(settings[&#34;THETA_MIN&#34;]),
+        gap=POLAR_GAP,
+        mask_name=SLEPIAN_MASK,
+        phi_max=np.deg2rad(PHI_MAX),
+        phi_min=np.deg2rad(PHI_MIN),
+        theta_max=np.deg2rad(THETA_MAX),
+        theta_min=np.deg2rad(THETA_MIN),
     )
 
 
@@ -226,25 +236,25 @@ def create_mask(L: int, mask_name: str) -&gt; npt.NDArray[np.float_]:
 </details>
 </dd>
 <dt id="sleplet.utils.mask_methods.create_default_region"><code class="name flex">
-<span>def <span class="ident">create_default_region</span></span>(<span>settings: dict) ‑> <a title="sleplet.utils.region.Region" href="region.html#sleplet.utils.region.Region">Region</a></span>
+<span>def <span class="ident">create_default_region</span></span>(<span>) ‑> <a title="sleplet.utils.region.Region" href="region.html#sleplet.utils.region.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>creates default region from settings object</p></div>
+<div class="desc"><p>creates default region</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def create_default_region(settings: dict) -&gt; Region:
+<pre><code class="python">def create_default_region() -&gt; Region:
     &#34;&#34;&#34;
-    creates default region from settings object
+    creates default region
     &#34;&#34;&#34;
     return Region(
-        gap=settings[&#34;POLAR_GAP&#34;],
-        mask_name=settings[&#34;SLEPIAN_MASK&#34;],
-        phi_max=np.deg2rad(settings[&#34;PHI_MAX&#34;]),
-        phi_min=np.deg2rad(settings[&#34;PHI_MIN&#34;]),
-        theta_max=np.deg2rad(settings[&#34;THETA_MAX&#34;]),
-        theta_min=np.deg2rad(settings[&#34;THETA_MIN&#34;]),
+        gap=POLAR_GAP,
+        mask_name=SLEPIAN_MASK,
+        phi_max=np.deg2rad(PHI_MAX),
+        phi_min=np.deg2rad(PHI_MIN),
+        theta_max=np.deg2rad(THETA_MAX),
+        theta_min=np.deg2rad(THETA_MIN),
     )</code></pre>
 </details>
 </dd>

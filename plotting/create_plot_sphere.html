@@ -39,7 +39,6 @@ from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
-from sleplet.utils.config import settings
 from sleplet.utils.plot_methods import (
     boost_field,
     calc_plot_resolution,
@@ -127,17 +126,14 @@ class Plot:
 
         fig = Figure(data=data, layout=layout)
 
-        # create html and open if auto_open is true
         html_filename = str(_fig_path / &#34;html&#34; / f&#34;{self.filename}.html&#34;)
 
-        py.plot(fig, filename=html_filename, auto_open=settings[&#34;AUTO_OPEN&#34;])
+        py.plot(fig, filename=html_filename)
 
-        # if save_fig is true then create png and pdf in their directories
-        if settings[&#34;SAVE_FIG&#34;]:
-            for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
-                logger.info(f&#34;saving {file_type}&#34;)
-                filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
-                fig.write_image(filename, engine=&#34;kaleido&#34;)
+        for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+            filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
+            logger.info(f&#34;saving {filename}&#34;)
+            fig.write_image(filename, engine=&#34;kaleido&#34;)
 
     @staticmethod
     def _setup_plot(
@@ -317,17 +313,14 @@ class Plot:
 
         fig = Figure(data=data, layout=layout)
 
-        # create html and open if auto_open is true
         html_filename = str(_fig_path / &#34;html&#34; / f&#34;{self.filename}.html&#34;)
 
-        py.plot(fig, filename=html_filename, auto_open=settings[&#34;AUTO_OPEN&#34;])
+        py.plot(fig, filename=html_filename)
 
-        # if save_fig is true then create png and pdf in their directories
-        if settings[&#34;SAVE_FIG&#34;]:
-            for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
-                logger.info(f&#34;saving {file_type}&#34;)
-                filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
-                fig.write_image(filename, engine=&#34;kaleido&#34;)
+        for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+            filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
+            logger.info(f&#34;saving {filename}&#34;)
+            fig.write_image(filename, engine=&#34;kaleido&#34;)
 
     @staticmethod
     def _setup_plot(
@@ -522,17 +515,14 @@ class Plot:
 
     fig = Figure(data=data, layout=layout)
 
-    # create html and open if auto_open is true
     html_filename = str(_fig_path / &#34;html&#34; / f&#34;{self.filename}.html&#34;)
 
-    py.plot(fig, filename=html_filename, auto_open=settings[&#34;AUTO_OPEN&#34;])
+    py.plot(fig, filename=html_filename)
 
-    # if save_fig is true then create png and pdf in their directories
-    if settings[&#34;SAVE_FIG&#34;]:
-        for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
-            logger.info(f&#34;saving {file_type}&#34;)
-            filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
-            fig.write_image(filename, engine=&#34;kaleido&#34;)</code></pre>
+    for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+        filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
+        logger.info(f&#34;saving {filename}&#34;)
+        fig.write_image(filename, engine=&#34;kaleido&#34;)</code></pre>
 </details>
 </dd>
 </dl>
