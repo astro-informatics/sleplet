@@ -239,7 +239,7 @@ done
 ```python
 from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.scripts.plotting_on_sphere import _compute_amplitude_for_noisy_plots
+from sleplet.scripts.plotting_on_sphere import compute_amplitude_for_noisy_plots
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
@@ -247,7 +247,7 @@ from sleplet.utils.slepian_methods import slepian_inverse
 region = Region(mask_name="south_america")
 f = SlepianSouthAmerica(L=128, region=region, noise=-10, smoothing=2)
 f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-amplitude = _compute_amplitude_for_noisy_plots(f)
+amplitude = compute_amplitude_for_noisy_plots(f)
 Plot(
     f_sphere, f.L, "fig_8_a", amplitude=amplitude, normalise=False, region=f.region
 ).execute()
@@ -382,7 +382,7 @@ done
 ```python
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.scripts.plotting_on_sphere import _compute_amplitude_for_noisy_plots
+from sleplet.scripts.plotting_on_sphere import compute_amplitude_for_noisy_plots
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
@@ -390,7 +390,7 @@ from sleplet.utils.slepian_methods import slepian_inverse
 region = Region(mask_name="africa")
 f = SlepianAfrica(L=128, region=region, noise=-10, smoothing=2)
 f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-amplitude = _compute_amplitude_for_noisy_plots(f)
+amplitude = compute_amplitude_for_noisy_plots(f)
 Plot(
     f_sphere, f.L, "fig_14_a", amplitude=amplitude, normalise=False, region=f.region
 ).execute()
@@ -549,7 +549,7 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_field import (
     MeshSlepianField,
 )
 from sleplet.plotting.create_plot_mesh import Plot
-from sleplet.scripts.plotting_on_mesh import _compute_amplitude_for_noisy_plots
+from sleplet.scripts.plotting_on_mesh import compute_amplitude_for_noisy_plots
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
 
 mesh = Mesh("homer", zoom=True)
@@ -560,7 +560,7 @@ Plot(mesh, "fig_11_a", f_mesh, normalise=False, region=True).execute()
 # b
 g = MeshSlepianField(mesh, noise=-5)
 g_mesh = slepian_mesh_inverse(g.mesh_slepian, g.coefficients)
-amplitude = _compute_amplitude_for_noisy_plots(g)
+amplitude = compute_amplitude_for_noisy_plots(g)
 Plot(
     mesh, "fig_11_b", g_mesh, amplitude=amplitude, normalise=False, region=True
 ).execute()

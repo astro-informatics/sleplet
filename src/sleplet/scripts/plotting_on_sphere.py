@@ -330,7 +330,7 @@ def _coefficients_to_field(
     )
 
 
-def _compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
+def compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """
@@ -365,7 +365,7 @@ def main() -> None:
     )
 
     # custom amplitude for noisy plots
-    amplitude = _compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_plots(f)
 
     plot(
         f,
