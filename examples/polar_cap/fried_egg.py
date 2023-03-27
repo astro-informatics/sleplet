@@ -3,13 +3,13 @@ import numpy as np
 from sleplet import logger
 from sleplet.functions.fp.slepian import Slepian
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.plotting.inputs import THETA_MAX
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
 L = 16
 NORMALISE = False
 RANKS = 16
+THETA_MAX = 40
 
 
 def main() -> None:

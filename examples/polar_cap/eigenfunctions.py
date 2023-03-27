@@ -6,18 +6,21 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.harmonic_methods import invert_flm_boosted
 from sleplet.utils.plot_methods import calc_plot_resolution, save_plot
 from sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
+COLUMNS = 3
 L = 16
-ORDERS = 4
+ORDER = 0
 PHI_IDX = 0
-RANKS = 3
+ROWS = 2
 RESOLUTION = calc_plot_resolution(L)
-SIGNS = [[1, -1, 1], [-1, -1, -1], [1, 1, 1], [1, 1, -1]]
+SIGNS = [1, -1, 1, -1, 1, -1]
+TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
+THETA_MAX = 40
 
 
 fig_path = Path(__file__).resolve().parents[2] / "figures"
@@ -30,7 +33,8 @@ def main() -> None:
     """
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
     i = (x < THETA_MAX).sum()
-    _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
+    _, ax = plt.subplots(ROWS, COLUMNS, sharex="col", sharey="row")
+    axes = ax.flatten()
     plt.setp(
         ax,
         xlim=[0, 180],
@@ -39,40 +43,49 @@ def main() -> None:
         ylim=[-3, 3],
         yticks=[-2, 0, 2],
     )
-    for order in range(ORDERS):
-        slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
-        for rank in range(RANKS):
-            _helper(ax, slepian, RESOLUTION, x, i, order, rank)
+    slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER)
+    for rank in range(ROWS * COLUMNS):
+        _helper(axes[rank], slepian, x, i, rank)
     save_plot(fig_path, "slepian_colatitude")
 
 
-def _helper(  # noqa: PLR0913
-    ax: npt.NDArray,
+def _helper(
+    ax: plt.Axes,
     slepian: SlepianPolarCap,
-    resolution: int,
     x: npt.NDArray[np.float_],
     i: int,
-    order: int,
     rank: int,
 ) -> None:
     """
     helper which plots the required order and specified ranks
     """
-    logger.info(f"plotting order={order}, rank={rank}")
-    axs = ax[order, rank]
-    flm = slepian.eigenvectors[rank] * SIGNS[order][rank]
+    logger.info(f"plotting rank={rank}")
+    flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
-    f = invert_flm_boosted(flm, L, resolution).real
-    if rank == 0:
-        axs.set_ylabel(rf"$m={{{order}}}$")
-    if order == 0:
-        axs.set_title(rf"$\alpha={{{rank+1}}}$")
-    if order == ORDERS - 1:
-        axs.set_xlabel("colatitude")
-    axs.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])
-    axs.text(
-        0.45, 0.81, rf"$\mu={{{lam:.6f}}}$", transform=axs.transAxes, bbox=TEXT_BOX
+    f = invert_flm_boosted(flm, L, RESOLUTION).real
+    if rank > COLUMNS - 1:
+        ax.set_xlabel(r"colatitude $\theta$")
+    ax.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])
+    p = _find_p_value(rank, slepian.N)
+    ax.text(
+        0.39,
+        0.92,
+        rf"$\mu_{{{p+1}}}={{{lam:.6f}}}$",
+        transform=ax.transAxes,
+        bbox=TEXT_BOX,
     )
+
+
+def _find_p_value(rank: int, shannon: int) -> int:
+    """
+    method to find the effective p rank of the Slepian function
+    """
+    orders = np.load(
+        find_on_pooch_then_local(
+            f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy"
+        )
+    )
+    return np.where(orders == ORDER)[0][rank]
 
 
 if __name__ == "__main__":
