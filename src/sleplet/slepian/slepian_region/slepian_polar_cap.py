@@ -106,11 +106,10 @@ class SlepianPolarCap(SlepianFunctions):
             eigenvectors,
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
-        if settings["SAVE_MATRICES"]:
-            limit = self.N if self.L > L_SAVE_ALL else None
-            np.save(_data_path / eval_loc, eigenvalues)
-            np.save(_data_path / evec_loc, eigenvectors[:limit])
-            np.save(_data_path / order_loc, self.order)
+        limit = self.N if self.L > L_SAVE_ALL else None
+        np.save(_data_path / eval_loc, eigenvalues)
+        np.save(_data_path / evec_loc, eigenvectors[:limit])
+        np.save(_data_path / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(

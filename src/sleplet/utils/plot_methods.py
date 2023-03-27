@@ -14,13 +14,7 @@ from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 from sleplet.utils.vars import (
-    AFRICA_ALPHA,
-    AFRICA_BETA,
-    AFRICA_GAMMA,
     SAMPLING_SCHEME,
-    SOUTH_AMERICA_ALPHA,
-    SOUTH_AMERICA_BETA,
-    SOUTH_AMERICA_GAMMA,
     SPHERE_UNSEEN,
 )
 
@@ -150,26 +144,6 @@ def set_outside_region_to_minimum(
 
     # set values outside mask to negative infinity
     return np.where(closed_mask, f_plot, SPHERE_UNSEEN)
-
-
-def rotate_earth_to_south_america(
-    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
-) -> npt.NDArray[np.complex_]:
-    """
-    rotates the flms of the Earth to a view centered on South America
-    """
-    return ssht.rotate_flms(
-        earth_flm, SOUTH_AMERICA_ALPHA, SOUTH_AMERICA_BETA, SOUTH_AMERICA_GAMMA, L
-    )
-
-
-def rotate_earth_to_africa(
-    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
-) -> npt.NDArray[np.complex_]:
-    """
-    rotates the flms of the Earth to a view centered on Africa
-    """
-    return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)
 
 
 def normalise_function(

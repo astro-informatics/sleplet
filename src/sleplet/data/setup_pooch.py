@@ -23,7 +23,7 @@ def find_on_pooch_then_local(filename: str) -> os.PathLike | None:
     """
     if filename in POOCH.registry:
         logger.info(f"Found {filename} at https://doi.org/{ZENODO_DATA_DOI}")
-        return POOCH.fetch(filename)
+        return POOCH.fetch(filename, progressbar=True)
     elif (_data_path / filename).exists():
         logger.info(f"Found {filename} at {_data_path / filename}")
         return _data_path / filename
