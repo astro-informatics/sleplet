@@ -26,16 +26,26 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import numpy as np
+<pre><code class="python">from pathlib import Path
+
+import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
+from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
+from sleplet.utils.harmonic_methods import (
+    mesh_forward,
+    mesh_inverse,
+    rotate_earth_to_africa,
+    rotate_earth_to_south_america,
+)
 from sleplet.utils.region import Region
-from sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.vars import AFRICA_RANGE, SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
+
+_data_path = Path(__file__).resolve().parents[1] / &#34;data&#34;
 
 
 def create_mask_region(L: int, region: Region) -&gt; npt.NDArray[np.float_]:
@@ -53,7 +63,7 @@ def create_mask_region(L: int, region: Region) -&gt; npt.NDArray[np.float_]:
         case &#34;arbitrary&#34;:
             logger.info(&#34;loading and checking shape of provided mask&#34;)
             name = f&#34;{region.mask_name}_L{L}.npy&#34;
-            mask = _load_mask(name)
+            mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
                 f&#34;mask {name} has shape {mask.shape} which does not match &#34;
                 f&#34;the provided L={L}, the shape should be {thetas.shape}&#34;
@@ -77,14 +87,12 @@ def create_mask_region(L: int, region: Region) -&gt; npt.NDArray[np.float_]:
     return mask
 
 
-def _load_mask(mask_name: str) -&gt; npt.NDArray[np.float_]:
+def _load_mask(L: int, mask_name: str) -&gt; npt.NDArray[np.float_]:
     &#34;&#34;&#34;
     attempts to read the mask from the config file
     &#34;&#34;&#34;
     mask = find_on_pooch_then_local(f&#34;slepian_masks_{mask_name}&#34;)
-    if mask is None:
-        raise FileNotFoundError(f&#34;can not find the file: &#39;{mask_name}&#39;&#34;)
-    return np.load(mask)
+    return create_mask(L, mask_name) if mask is None else np.load(mask)
 
 
 def ensure_masked_flm_bandlimited(
@@ -148,7 +156,46 @@ def convert_region_on_vertices_to_faces(mesh: Mesh) -&gt; npt.NDArray[np.float_]
     faces_in_region = np.isin(mesh.faces, region_reshape).all(axis=1)
     region_on_faces = np.zeros(mesh.faces.shape[0])
     region_on_faces[faces_in_region] = 1
-    return region_on_faces</code></pre>
+    return region_on_faces
+
+
+def _create_africa_mask(
+    L: int, earth_flm: npt.NDArray[np.complex_]
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    creates the Africa region mask
+    &#34;&#34;&#34;
+    rot_flm = rotate_earth_to_africa(earth_flm, L)
+    earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    return (thetas &lt;= AFRICA_RANGE) &amp; (earth_f &gt;= 0)
+
+
+def _create_south_america_mask(
+    L: int, earth_flm: npt.NDArray[np.complex_]
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    creates the Africa region mask
+    &#34;&#34;&#34;
+    rot_flm = rotate_earth_to_south_america(earth_flm, L)
+    earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    return (thetas &lt;= SOUTH_AMERICA_RANGE) &amp; (earth_f &gt;= 0)
+
+
+def create_mask(L: int, mask_name: str) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    creates the South America region mask
+    &#34;&#34;&#34;
+    earth_flm = create_flm(L)
+    if mask_name == f&#34;africa_L{L}.npy&#34;:
+        mask = _create_africa_mask(L, earth_flm)
+    elif mask_name == f&#34;south_america_L{L}.npy&#34;:
+        mask = _create_south_america_mask(L, earth_flm)
+    else:
+        raise ValueError(f&#34;Mask name {mask_name} not recognised&#34;)
+    np.save(_data_path / f&#34;slepian_masks_{mask_name}&#34;, mask)
+    return mask</code></pre>
 </details>
 </section>
 <section>
@@ -201,6 +248,30 @@ def convert_region_on_vertices_to_faces(mesh: Mesh) -&gt; npt.NDArray[np.float_]
     )</code></pre>
 </details>
 </dd>
+<dt id="sleplet.utils.mask_methods.create_mask"><code class="name flex">
+<span>def <span class="ident">create_mask</span></span>(<span>L: int, mask_name: str) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>creates the South America region mask</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_mask(L: int, mask_name: str) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    creates the South America region mask
+    &#34;&#34;&#34;
+    earth_flm = create_flm(L)
+    if mask_name == f&#34;africa_L{L}.npy&#34;:
+        mask = _create_africa_mask(L, earth_flm)
+    elif mask_name == f&#34;south_america_L{L}.npy&#34;:
+        mask = _create_south_america_mask(L, earth_flm)
+    else:
+        raise ValueError(f&#34;Mask name {mask_name} not recognised&#34;)
+    np.save(_data_path / f&#34;slepian_masks_{mask_name}&#34;, mask)
+    return mask</code></pre>
+</details>
+</dd>
 <dt id="sleplet.utils.mask_methods.create_mask_region"><code class="name flex">
 <span>def <span class="ident">create_mask_region</span></span>(<span>L: int, region: <a title="sleplet.utils.region.Region" href="region.html#sleplet.utils.region.Region">Region</a>) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
 </code></dt>
@@ -230,7 +301,7 @@ phi_min or phi_max is provided
         case &#34;arbitrary&#34;:
             logger.info(&#34;loading and checking shape of provided mask&#34;)
             name = f&#34;{region.mask_name}_L{L}.npy&#34;
-            mask = _load_mask(name)
+            mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
                 f&#34;mask {name} has shape {mask.shape} which does not match &#34;
                 f&#34;the provided L={L}, the shape should be {thetas.shape}&#34;
@@ -340,6 +411,7 @@ phi_min or phi_max is provided
 <ul class="">
 <li><code><a title="sleplet.utils.mask_methods.convert_region_on_vertices_to_faces" href="#sleplet.utils.mask_methods.convert_region_on_vertices_to_faces">convert_region_on_vertices_to_faces</a></code></li>
 <li><code><a title="sleplet.utils.mask_methods.create_default_region" href="#sleplet.utils.mask_methods.create_default_region">create_default_region</a></code></li>
+<li><code><a title="sleplet.utils.mask_methods.create_mask" href="#sleplet.utils.mask_methods.create_mask">create_mask</a></code></li>
 <li><code><a title="sleplet.utils.mask_methods.create_mask_region" href="#sleplet.utils.mask_methods.create_mask_region">create_mask_region</a></code></li>
 <li><code><a title="sleplet.utils.mask_methods.create_mesh_region" href="#sleplet.utils.mask_methods.create_mesh_region">create_mesh_region</a></code></li>
 <li><code><a title="sleplet.utils.mask_methods.ensure_masked_bandlimit_mesh_signal" href="#sleplet.utils.mask_methods.ensure_masked_bandlimit_mesh_signal">ensure_masked_bandlimit_mesh_signal</a></code></li>

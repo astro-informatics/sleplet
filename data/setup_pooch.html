@@ -51,7 +51,7 @@ def find_on_pooch_then_local(filename: str) -&gt; os.PathLike | None:
     &#34;&#34;&#34;
     if filename in POOCH.registry:
         logger.info(f&#34;Found {filename} at https://doi.org/{ZENODO_DATA_DOI}&#34;)
-        return POOCH.fetch(filename)
+        return POOCH.fetch(filename, progressbar=True)
     elif (_data_path / filename).exists():
         logger.info(f&#34;Found {filename} at {_data_path / filename}&#34;)
         return _data_path / filename
@@ -82,7 +82,7 @@ def find_on_pooch_then_local(filename: str) -&gt; os.PathLike | None:
     &#34;&#34;&#34;
     if filename in POOCH.registry:
         logger.info(f&#34;Found {filename} at https://doi.org/{ZENODO_DATA_DOI}&#34;)
-        return POOCH.fetch(filename)
+        return POOCH.fetch(filename, progressbar=True)
     elif (_data_path / filename).exists():
         logger.info(f&#34;Found {filename} at {_data_path / filename}&#34;)
         return _data_path / filename

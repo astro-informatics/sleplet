@@ -35,16 +35,15 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
-from sleplet.functions.f_p import F_P
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils.config import settings
-from sleplet.utils.mask_methods import create_default_region
-from sleplet.utils.plot_methods import (
-    calc_nearest_grid_point,
+from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
+from sleplet.utils.mask_methods import create_default_region
+from sleplet.utils.plot_methods import calc_nearest_grid_point
 from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from sleplet.utils.string_methods import (
     convert_classes_list_to_snake_case,
@@ -219,7 +218,7 @@ def plot(
     annotation = []
 
     # Shannon number for Slepian coefficients
-    shannon = f.slepian.N if isinstance(f, F_P) else None
+    shannon = f.slepian.N if hasattr(f, &#34;slepian&#34;) else None
 
     logger.info(f&#34;plotting method: &#39;{method}&#39;&#34;)
     match method:
@@ -236,7 +235,7 @@ def plot(
             if annotations:
                 annotation.append(trans_annotation)
 
-    if isinstance(g, Coefficients):
+    if g is not None:
         coefficients, filename = _convolution_helper(
             f, g, coefficients, shannon, filename
         )
@@ -263,7 +262,7 @@ def plot(
         normalise=normalise,
         plot_type=plot_type,
         reality=f.reality,
-        region=f.region if isinstance(f, F_P) else None,
+        region=f.region if hasattr(f, &#34;slepian&#34;) else None,
         spin=f.spin,
         upsample=upsample,
     ).execute()
@@ -335,7 +334,7 @@ def _convolution_helper(
     &#34;&#34;&#34;
     g_coefficients = (
         slepian_forward(f.L, f.slepian, flm=g.coefficients)
-        if isinstance(f, F_P)
+        if hasattr(f, &#34;slepian&#34;)
         else g.coefficients
     )
     coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
@@ -352,14 +351,14 @@ def _coefficients_to_field(
     &#34;&#34;&#34;
     return (
         slepian_inverse(coefficients, f.L, f.slepian)
-        if isinstance(f, F_P)
+        if hasattr(f, &#34;slepian&#34;)
         else ssht.inverse(
             coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
         )
     )
 
 
-def _compute_amplitude_for_noisy_plots(f: Coefficients) -&gt; float | None:
+def compute_amplitude_for_noisy_plots(f: Coefficients) -&gt; float | None:
     &#34;&#34;&#34;
     for the noised plots fix the amplitude to the initial data
     &#34;&#34;&#34;
@@ -394,7 +393,7 @@ def main() -&gt; None:
     )
 
     # custom amplitude for noisy plots
-    amplitude = _compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_plots(f)
 
     plot(
         f,
@@ -423,6 +422,26 @@ if __name__ == &#34;__main__&#34;:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="sleplet.scripts.plotting_on_sphere.compute_amplitude_for_noisy_plots"><code class="name flex">
+<span>def <span class="ident">compute_amplitude_for_noisy_plots</span></span>(<span>f: <a title="sleplet.functions.coefficients.Coefficients" href="../functions/coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a>) ‑> float | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>for the noised plots fix the amplitude to the initial data</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_amplitude_for_noisy_plots(f: Coefficients) -&gt; float | None:
+    &#34;&#34;&#34;
+    for the noised plots fix the amplitude to the initial data
+    &#34;&#34;&#34;
+    return (
+        np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
+        if f.unnoised_coefficients is not None
+        else None
+    )</code></pre>
+</details>
+</dd>
 <dt id="sleplet.scripts.plotting_on_sphere.main"><code class="name flex">
 <span>def <span class="ident">main</span></span>(<span>) ‑> None</span>
 </code></dt>
@@ -456,7 +475,7 @@ if __name__ == &#34;__main__&#34;:
     )
 
     # custom amplitude for noisy plots
-    amplitude = _compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_plots(f)
 
     plot(
         f,
@@ -509,7 +528,7 @@ if __name__ == &#34;__main__&#34;:
     annotation = []
 
     # Shannon number for Slepian coefficients
-    shannon = f.slepian.N if isinstance(f, F_P) else None
+    shannon = f.slepian.N if hasattr(f, &#34;slepian&#34;) else None
 
     logger.info(f&#34;plotting method: &#39;{method}&#39;&#34;)
     match method:
@@ -526,7 +545,7 @@ if __name__ == &#34;__main__&#34;:
             if annotations:
                 annotation.append(trans_annotation)
 
-    if isinstance(g, Coefficients):
+    if g is not None:
         coefficients, filename = _convolution_helper(
             f, g, coefficients, shannon, filename
         )
@@ -553,7 +572,7 @@ if __name__ == &#34;__main__&#34;:
         normalise=normalise,
         plot_type=plot_type,
         reality=f.reality,
-        region=f.region if isinstance(f, F_P) else None,
+        region=f.region if hasattr(f, &#34;slepian&#34;) else None,
         spin=f.spin,
         upsample=upsample,
     ).execute()</code></pre>
@@ -738,6 +757,7 @@ if __name__ == &#34;__main__&#34;:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="sleplet.scripts.plotting_on_sphere.compute_amplitude_for_noisy_plots" href="#sleplet.scripts.plotting_on_sphere.compute_amplitude_for_noisy_plots">compute_amplitude_for_noisy_plots</a></code></li>
 <li><code><a title="sleplet.scripts.plotting_on_sphere.main" href="#sleplet.scripts.plotting_on_sphere.main">main</a></code></li>
 <li><code><a title="sleplet.scripts.plotting_on_sphere.plot" href="#sleplet.scripts.plotting_on_sphere.plot">plot</a></code></li>
 <li><code><a title="sleplet.scripts.plotting_on_sphere.read_args" href="#sleplet.scripts.plotting_on_sphere.read_args">read_args</a></code></li>

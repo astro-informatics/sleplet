@@ -36,7 +36,6 @@ from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_whole_mesh
 
 _data_path = Path(__file__).resolve().parents[1] / &#34;data&#34;
@@ -123,10 +122,9 @@ def mesh_eigendecomposition(
             laplacian, k=number_basis_functions, which=&#34;LM&#34;, sigma=0
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
-        if settings[&#34;SAVE_MATRICES&#34;]:
-            logger.info(&#34;saving binaries...&#34;)
-            np.save(_data_path / eval_loc, eigenvalues)
-            np.save(_data_path / evec_loc, eigenvectors)
+        logger.info(&#34;saving binaries...&#34;)
+        np.save(_data_path / eval_loc, eigenvalues)
+        np.save(_data_path / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
 
 
@@ -291,10 +289,9 @@ as a graph if already computed then it loads the data</p></div>
             laplacian, k=number_basis_functions, which=&#34;LM&#34;, sigma=0
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
-        if settings[&#34;SAVE_MATRICES&#34;]:
-            logger.info(&#34;saving binaries...&#34;)
-            np.save(_data_path / eval_loc, eigenvalues)
-            np.save(_data_path / evec_loc, eigenvectors)
+        logger.info(&#34;saving binaries...&#34;)
+        np.save(_data_path / eval_loc, eigenvalues)
+        np.save(_data_path / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions</code></pre>
 </details>
 </dd>

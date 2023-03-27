@@ -145,7 +145,7 @@ def _coefficients_to_field(
     )
 
 
-def _compute_amplitude_for_noisy_plots(f: MeshCoefficients) -&gt; float | None:
+def compute_amplitude_for_noisy_plots(f: MeshCoefficients) -&gt; float | None:
     &#34;&#34;&#34;
     for the noised plots fix the amplitude to the initial data
     &#34;&#34;&#34;
@@ -174,7 +174,7 @@ def main() -&gt; None:
     )
 
     # custom amplitude for noisy plots
-    amplitude = _compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_plots(f)
 
     # perform plot
     plot(f, normalise=not args.unnormalise, amplitude=amplitude)
@@ -191,6 +191,26 @@ if __name__ == &#34;__main__&#34;:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="sleplet.scripts.plotting_on_mesh.compute_amplitude_for_noisy_plots"><code class="name flex">
+<span>def <span class="ident">compute_amplitude_for_noisy_plots</span></span>(<span>f: <a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="../meshes/mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a>) ‑> float | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>for the noised plots fix the amplitude to the initial data</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_amplitude_for_noisy_plots(f: MeshCoefficients) -&gt; float | None:
+    &#34;&#34;&#34;
+    for the noised plots fix the amplitude to the initial data
+    &#34;&#34;&#34;
+    return (
+        np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
+        if f.unnoised_coefficients is not None
+        else None
+    )</code></pre>
+</details>
+</dd>
 <dt id="sleplet.scripts.plotting_on_mesh.main"><code class="name flex">
 <span>def <span class="ident">main</span></span>(<span>) ‑> None</span>
 </code></dt>
@@ -218,7 +238,7 @@ if __name__ == &#34;__main__&#34;:
     )
 
     # custom amplitude for noisy plots
-    amplitude = _compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_plots(f)
 
     # perform plot
     plot(f, normalise=not args.unnormalise, amplitude=amplitude)</code></pre>
@@ -367,6 +387,7 @@ if __name__ == &#34;__main__&#34;:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="sleplet.scripts.plotting_on_mesh.compute_amplitude_for_noisy_plots" href="#sleplet.scripts.plotting_on_mesh.compute_amplitude_for_noisy_plots">compute_amplitude_for_noisy_plots</a></code></li>
 <li><code><a title="sleplet.scripts.plotting_on_mesh.main" href="#sleplet.scripts.plotting_on_mesh.main">main</a></code></li>
 <li><code><a title="sleplet.scripts.plotting_on_mesh.plot" href="#sleplet.scripts.plotting_on_mesh.plot">plot</a></code></li>
 <li><code><a title="sleplet.scripts.plotting_on_mesh.read_args" href="#sleplet.scripts.plotting_on_mesh.read_args">read_args</a></code></li>
