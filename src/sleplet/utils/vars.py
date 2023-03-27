@@ -25,6 +25,7 @@ PHI_0: float = np.pi
 PHI_MIN_DEFAULT: float = 0.0
 PHI_MAX_DEFAULT: float = 2 * np.pi
 RANDOM_SEED: int = 30
+SAMPLES: int = 2
 SAMPLING_SCHEME: str = "MWSS"
 SMOOTHING: int = 2
 SOUTH_AMERICA_RANGE: int = np.deg2rad(40)

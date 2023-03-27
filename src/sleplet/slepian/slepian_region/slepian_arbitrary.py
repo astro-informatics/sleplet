@@ -29,6 +29,7 @@ from sleplet.utils.parallel_methods import (
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet.utils.validation import Validation
+from sleplet.utils.vars import SAMPLES
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 
@@ -39,7 +40,7 @@ class SlepianArbitrary(SlepianFunctions):
     _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:
-        self.resolution = settings["SAMPLES"] * self.L
+        self.resolution = SAMPLES * self.L
         super().__post_init_post_parse__()
 
     def _create_fn_name(self) -> str:
