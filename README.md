@@ -1,10 +1,10 @@
 # SLEPLET
 
-[![PyPI](https://img.shields.io/pypi/v/sleplet?label=pypi%20package)](https://pypi.org/project/sleplet/)
-[![Python](https://img.shields.io/badge/python-3.10-orange.svg)](https://www.python.org/downloads/release/python-3100/)
+[![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
+[![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org)
+[![Documentation](https://github.com/astro-informatics/sleplet/actions/workflows/documentation.yml/badge.svg)](https://astro-informatics.github.io/sleplet)
 [![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
-[![Documentation](https://github.com/astro-informatics/sleplet/actions/workflows/documentation.yml/badge.svg)](https://astro-informatics.github.io/sleplet)
 [![Test](https://github.com/astro-informatics/sleplet/actions/workflows/test.yml/badge.svg)](https://github.com/astro-informatics/sleplet/actions/workflows/test.yml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
