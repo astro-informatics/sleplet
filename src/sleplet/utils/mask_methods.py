@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -7,14 +8,21 @@ import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.data.other.earth.create_masks import create_mask
+from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
+from sleplet.utils.plot_methods import (
+    rotate_earth_to_africa,
+    rotate_earth_to_south_america,
+)
 from sleplet.utils.region import Region
-from sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.vars import AFRICA_RANGE, SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
 
 if TYPE_CHECKING:
     from sleplet.meshes.classes.mesh import Mesh
+
+
+_data_path = Path(__file__).resolve().parents[3] / "data"
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
@@ -126,3 +134,43 @@ def convert_region_on_vertices_to_faces(mesh: Mesh) -> npt.NDArray[np.float_]:
     region_on_faces = np.zeros(mesh.faces.shape[0])
     region_on_faces[faces_in_region] = 1
     return region_on_faces
+
+
+def _create_africa_mask(
+    L: int, earth_flm: npt.NDArray[np.complex_]
+) -> npt.NDArray[np.float_]:
+    """
+    creates the Africa region mask
+    """
+    rot_flm = rotate_earth_to_africa(earth_flm, L)
+    earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    return (thetas <= AFRICA_RANGE) & (earth_f >= 0)
+
+
+def _create_south_america_mask(
+    L: int, earth_flm: npt.NDArray[np.complex_]
+) -> npt.NDArray[np.float_]:
+    """
+    creates the Africa region mask
+    """
+    rot_flm = rotate_earth_to_south_america(earth_flm, L)
+    earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    return (thetas <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
+
+
+def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
+    """
+    creates the South America region mask
+    """
+    earth_flm = create_flm(L)
+    match mask_name:
+        case "africa":
+            mask = _create_africa_mask(L, earth_flm)
+        case "south_america":
+            mask = _create_south_america_mask(L, earth_flm)
+        case _:
+            raise ValueError(f"Mask name {mask_name} not recognised")
+    np.save(_data_path / f"slepian_masks_{mask_name}_L{L}.npy", mask)
+    return mask
