@@ -1,5 +1,6 @@
+from denoising_slepian_mesh import main
+
 from sleplet import logger
-from sleplet.plotting.mesh.denoising_slepian_mesh import main
 
 MESH_SNR_DICT = {
     "cheetah": -8.64,

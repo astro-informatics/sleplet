@@ -7,7 +7,6 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet.functions.flm.earth import Earth
-from sleplet.plotting.inputs import THETA_MAX
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.plot_methods import save_plot
@@ -16,8 +15,9 @@ from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 from sleplet.utils.vars import SAMPLING_SCHEME
 
 L = 16
+THETA_MAX = 40
 
-fig_path = Path(__file__).resolve().parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 

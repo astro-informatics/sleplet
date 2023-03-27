@@ -7,6 +7,7 @@ from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils.harmonic_methods import ensure_f_bandlimited, rotate_earth_to_africa
+from sleplet.utils.mask_methods import create_mask
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
@@ -48,7 +49,11 @@ class Africa(F_LM):
         earth_f = ssht.inverse(
             rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
         )
-        mask = np.load(
-            find_on_pooch_then_local(f"slepian_masks_{self.name}_L{self.L}.npy")
+        mask_name = f"{self.name}_L{self.L}.npy"
+        mask_location = find_on_pooch_then_local(f"slepian_masks_{mask_name}")
+        mask = (
+            create_mask(self.L, mask_name)
+            if mask_location is None
+            else np.load(mask_location)
         )
         return np.where(mask, earth_f, 0)

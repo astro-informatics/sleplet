@@ -11,7 +11,7 @@ from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.class_lists import MESHES
 from sleplet.utils.plot_methods import save_plot
 
-fig_path = Path(__file__).resolve().parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 

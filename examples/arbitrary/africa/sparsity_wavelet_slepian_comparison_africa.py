@@ -14,7 +14,7 @@ from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.region import Region
 
-fig_path = Path(__file__).resolve().parents[3] / "figures"
+fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 B = 3

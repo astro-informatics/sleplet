@@ -6,16 +6,16 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.plotting.inputs import TEXT_BOX
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.plot_methods import save_plot
 
 L = 16
 LEGEND_POS = (0, 0)
 RANKS = 60
+TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_RANGE = {10: (0, 0), 20: (0, 1), 30: (1, 0), 40: (1, 1)}
 
-fig_path = Path(__file__).resolve().parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 

@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.plotting.inputs import TEXT_BOX, THETA_MAX
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.harmonic_methods import invert_flm_boosted
 from sleplet.utils.plot_methods import calc_plot_resolution, save_plot
@@ -18,9 +17,11 @@ PHI_IDX = 0
 RANKS = 3
 RESOLUTION = calc_plot_resolution(L)
 SIGNS = [[1, -1, 1], [-1, -1, -1], [1, 1, 1], [1, 1, -1]]
+TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
+THETA_MAX = 40
 
 
-fig_path = Path(__file__).resolve().parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 

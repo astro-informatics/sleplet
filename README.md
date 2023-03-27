@@ -22,7 +22,18 @@ pip install -e .
 ```
 
 This will install two scripts `sphere` and `mesh` which can be used to generate
-the figures in [the following section](#paper-figures).
+the figures in [the figure section](#paper-figures).
+
+## Bandlimit
+
+The bandlimit is set as `L` throughout the code and the CLIs. The default value
+is set to `L=16` and the figures created in [the figure section](#paper-figures)
+all use `L=128`. The pre-computed data exists on
+[Zenodo](https://doi.org/10.5281/zenodo.7767698) for powers of two up to `L=128`.
+Other values will be computed when running the appropriate code (and saved for
+future use). Note that beyond `L=32` the code can be slow due to the
+difficulties of computing the Slepian matrix prior to the eigendecomposition, as
+such it is recommended to stick to the powers of two up to `L=128`.
 
 ## Environment Variables
 
@@ -39,11 +50,11 @@ default region is the `south_america` arbitrary region.
 - `THETA_MAX`
   - for a Slepian `polar cap region`, when set without the other `PHI`/`THETA` variables
   - for a Slepian `limited latitude longitude region`
+- `THETA_MIN`
+  - for a Slepian `limited latitude longitude region`
 - `PHI_MAX`
   - for a Slepian `limited latitude longitude region`
 - `PHI_MIN`
-  - for a Slepian `limited latitude longitude region`
-- `THETA_MIN`
   - for a Slepian `limited latitude longitude region`
 - `SLEPIAN_MASK`
   - for an arbitrary Slepian region, currently `africa`/`south_america` supported
@@ -52,7 +63,7 @@ default region is the `south_america` arbitrary region.
 
 To recreate the figures from the below papers, one may use the CLI or the API.
 For those which don't use the `mesh` or `sphere` CLIs, the relevant API code
-isn't provided as it is contained within the source code.
+isn't provided as it is contained within the [examples folder](./examples).
 
 ### Sifting Convolution on the Sphere
 
@@ -131,7 +142,7 @@ for ell in range(2, 0, -1):
 #### Fig. 2
 
 ```sh
-python -m sleplet.plotting.arbitrary.south_america.tiling_south_america
+python -m examples.arbitrary.south_america.tiling_south_america
 ```
 
 #### Fig. 3
@@ -191,7 +202,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 #### Fig. 5
 
 ```sh
-python -m sleplet.plotting.arbitrary.south_america.eigenvalues_south_america
+python -m examples.arbitrary.south_america.eigenvalues_south_america
 ```
 
 #### Fig. 6
@@ -256,7 +267,7 @@ export SLEPIAN_MASK = "south_america"
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
 # b-d
 for s in 2 3 5; do
-    python -m sleplet.plotting.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
+    python -m examples.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
 done
 ```
 
@@ -312,7 +323,7 @@ Plot(g_sphere, g.L, "fig_9_b", normalise=False, region=g.region).execute()
 #### Fig. 10
 
 ```sh
-python -m sleplet.plotting.arbitrary.africa.eigenvalues_africa
+python -m examples.arbitrary.africa.eigenvalues_africa
 ```
 
 #### Fig. 11
@@ -399,7 +410,7 @@ export SLEPIAN_MASK = "africa"
 sphere slepian_africa -L 128 -n -10 -s 2 -u
 # b-d
 for s in 2 3 5; do
-    python -m sleplet.plotting.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
+    python -m examples.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
 done
 ```
 
@@ -448,13 +459,13 @@ for r in range(2, 10):
 #### Fig. 4
 
 ```sh
-python -m sleplet.plotting.mesh.mesh_tiling homer
+python -m examples.mesh.mesh_tiling homer
 ```
 
 #### Fig. 5
 
 ```sh
-python -m sleplet.plotting.mesh.mesh_region homer
+python -m examples.mesh.mesh_region homer
 ```
 
 #### Fig. 6
@@ -483,7 +494,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 #### Fig. 7
 
 ```sh
-python -m sleplet.plotting.mesh.mesh_slepian_eigenvalues homer
+python -m examples.mesh.mesh_slepian_eigenvalues homer
 ```
 
 #### Fig. 8
@@ -564,7 +575,7 @@ mesh homer -m slepian_field -u -z
 # b
 mesh homer -m slepian_field -n -5 -u -z
 # c
-python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 2
+python -m examples.mesh.denoising_slepian_mesh homer -n -5 -s 2
 ```
 
 ```python
@@ -594,12 +605,12 @@ Plot(
 
 ```sh
 for f in cheetah dragon bird teapot cube; do
-    python -m sleplet.plotting.mesh.mesh_region ${f}
+    python -m examples.mesh.mesh_region ${f}
 done
 ```
 
 #### Tab. 1
 
 ```sh
-python -m sleplet.plotting.mesh.produce_table
+python -m examples.mesh.produce_table
 ```

@@ -4,28 +4,27 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from sleplet.utils.plot_methods import save_plot
 
-L = 16
-THETA_MAX = 40
-
-fig_path = Path(__file__).resolve().parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
+
+L = 128
 
 
 def main() -> None:
     """
-    creates a plot of Slepian eigenvalues against rank
+    plots the tiling of the Slepian line
     """
-    slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX))
+    slepian = SlepianArbitrary(L, "south_america")
     p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")
-    plt.axvline(x=slepian.N, c="k", ls="--", alpha=0.5)
+    plt.axvline(slepian.N, c="k", ls="--", alpha=0.8)
     plt.annotate(
         f"N={slepian.N}",
         xy=(slepian.N, 1),
-        xytext=(0, 15),
+        xytext=(17, 3),
         ha="center",
         textcoords="offset points",
         annotation_clip=False,
@@ -34,7 +33,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(fig_path, "polar_cap_eigenvalues")
+    save_plot(fig_path, f"south_america_eigenvalues_L{L}")
 
 
 if __name__ == "__main__":
