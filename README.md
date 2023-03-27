@@ -31,7 +31,8 @@ the figures in [the following section](#paper-figures).
 When it comes to selecting a Slepian region the order precedence is
 [polar cap region](https://doi.org/10.1111/j.1365-246X.2006.03065.x) >
 [limited latitude longitude region](doi.org/10.1109/TSP.2016.2646668) >
-arbitrary region, [as seen in the code](src/sleplet/utils/region.py).
+arbitrary region, [as seen in the code](src/sleplet/utils/region.py). The
+default region is the `south_america` arbitrary region.
 
 - `POLAR_GAP`
   - for a Slepian `polar cap region`, when set in conjunction with `THETA_MAX` but without the other `PHI`/`THETA` variables
