@@ -1,5 +1,6 @@
 """
-API Documentation of the `SLEPLET` package.\n
+API Documentation of the `SLEPLET` package.
+
 [![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 """
 
