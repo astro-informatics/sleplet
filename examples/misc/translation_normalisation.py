@@ -10,7 +10,7 @@ from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.vars import ALPHA_DEFAULT, SAMPLING_SCHEME
 
-fig_path = Path(__file__).resolve().parents[2] / "figures"
+fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 L = 128
