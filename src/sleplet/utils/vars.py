@@ -2,6 +2,8 @@ import os
 
 import numpy as np
 
+from sleplet import logger
+
 AFRICA_ALPHA = np.deg2rad(44)
 AFRICA_BETA = np.deg2rad(87)
 AFRICA_GAMMA = np.deg2rad(341)
@@ -43,3 +45,14 @@ THETA_MAX = int(os.getenv("THETA_MAX", "180"))
 THETA_MIN_DEFAULT = 0
 THETA_MIN = int(os.getenv("THETA_MIN", "0"))
 ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
+
+logger.info(
+    "Environment variables set as "
+    f"NCPU={NCPU}, "
+    f"POLAR_GAP={POLAR_GAP}, "
+    f"THETA_MAX={THETA_MAX}, "
+    f"THETA_MIN={THETA_MIN}, "
+    f"PHI_MAX={PHI_MAX}, "
+    f"PHI_MIN={PHI_MIN}, "
+    f"SLEPIAN_MASK={SLEPIAN_MASK}."
+)
