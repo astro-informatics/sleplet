@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.functions.coefficients import Coefficients
-from sleplet.functions.f_p import F_P
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils.config import settings
@@ -29,6 +28,9 @@ from sleplet.utils.vars import (
     BETA_DEFAULT,
     SAMPLING_SCHEME,
 )
+
+if TYPE_CHECKING:
+    from sleplet.functions.coefficients import Coefficients
 
 
 def valid_maps(map_name: str) -> str:
@@ -191,7 +193,7 @@ def plot(
     annotation = []
 
     # Shannon number for Slepian coefficients
-    shannon = f.slepian.N if isinstance(f, F_P) else None
+    shannon = f.slepian.N if hasattr(f, "slepian") else None
 
     logger.info(f"plotting method: '{method}'")
     match method:
@@ -208,7 +210,7 @@ def plot(
             if annotations:
                 annotation.append(trans_annotation)
 
-    if isinstance(g, Coefficients):
+    if g is not None:
         coefficients, filename = _convolution_helper(
             f, g, coefficients, shannon, filename
         )
@@ -235,7 +237,7 @@ def plot(
         normalise=normalise,
         plot_type=plot_type,
         reality=f.reality,
-        region=f.region if isinstance(f, F_P) else None,
+        region=f.region if hasattr(f, "slepian") else None,
         spin=f.spin,
         upsample=upsample,
     ).execute()
@@ -307,7 +309,7 @@ def _convolution_helper(
     """
     g_coefficients = (
         slepian_forward(f.L, f.slepian, flm=g.coefficients)
-        if isinstance(f, F_P)
+        if hasattr(f, "slepian")
         else g.coefficients
     )
     coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
@@ -324,7 +326,7 @@ def _coefficients_to_field(
     """
     return (
         slepian_inverse(coefficients, f.L, f.slepian)
-        if isinstance(f, F_P)
+        if hasattr(f, "slepian")
         else ssht.inverse(
             coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
         )
