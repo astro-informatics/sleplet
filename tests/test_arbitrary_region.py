@@ -43,16 +43,14 @@ def test_equality_to_lim_lat_lon_method(slepian_lim_lat_lon) -> None:
     assert_allclose(np.abs(slepian_lim_lat_lon.N - slepian.N), 0, atol=1)
     assert_allclose(
         np.abs(
-            slepian.eigenvalues[: slepian_lim_lat_lon.N]
-            - slepian_lim_lat_lon.eigenvalues[: slepian_lim_lat_lon.N]
+            slepian.eigenvalues[: slepian.N]
+            - slepian_lim_lat_lon.eigenvalues[: slepian.N]
         ).mean(),
         0,
-        atol=0.7,
+        atol=0.03,
     )
     assert_allclose(
-        np.abs(slepian.eigenvectors - slepian_lim_lat_lon.eigenvectors)[
-            : slepian_lim_lat_lon.N
-        ].mean(),
+        np.abs(slepian.eigenvectors - slepian.eigenvectors)[: slepian.N].mean(),
         0,
-        atol=0.05,
+        atol=0.0,
     )

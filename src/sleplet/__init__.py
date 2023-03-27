@@ -1,8 +1,14 @@
 """
-`SLEPLET` is a Python package for the construction of Slepian wavelets in the
-spherical and manifold (via meshes) settings. The API of `SLEPLET` has been
-designed in an object-orientated manner and is easily extendible. Upon
-installation, `SLEPLET` comes with two command line interfaces - `sphere` and
-`mesh` - which allows one to easily generate plots on the sphere and a set of
-meshes using `plotly`.
+.. include:: ../../README.md
 """
+
+import logging
+
+from sleplet._version import __version__
+
+logging.basicConfig(
+    format="[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.INFO,
+)
+logger = logging.getLogger(__name__)

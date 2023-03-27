@@ -1,4 +1,5 @@
 __pycache__
+_version.py
 .coverage*
 .DS_Store
 .envrc
@@ -10,6 +11,8 @@ __pycache__
 *.c
 *.egg-info
 *.html
+*.mat
+*.npy
 *.pdf
 *.png
 *.pyc

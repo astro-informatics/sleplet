@@ -1,11 +1,10 @@
 from abc import abstractmethod
-from pathlib import Path
 
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.utils.logger import logger
+from sleplet import logger
 from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
 
@@ -55,7 +54,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_matrix_location(self) -> Path:
+    def _create_matrix_location(self) -> str:
         """
         creates the name of the matrix binary
         """

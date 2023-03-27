@@ -10,10 +10,10 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
+from sleplet import logger
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import create_emm_vector
-from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
@@ -24,11 +24,11 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
+from sleplet.utils.vars import NCPU
 
 L_SAVE_ALL = 16
 
-_file_location = Path(__file__).resolve()
-_eigen_path = _file_location.parents[2] / "data" / "slepian" / "eigensolutions"
+_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -53,30 +53,29 @@ class SlepianPolarCap(SlepianFunctions):
     def _calculate_area(self) -> float:
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
-    def _create_matrix_location(self) -> Path:
-        return _eigen_path / f"D_{self.region.name_ending}_L{self.L}_N{self.N}"
+    def _create_matrix_location(self) -> str:
+        return f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
 
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = self.matrix_location / "eigenvalues.npy"
-        evec_loc = self.matrix_location / "eigenvectors.npy"
-        order_loc = self.matrix_location / "orders.npy"
-        if eval_loc.exists() and evec_loc.exists() and order_loc.exists():
-            logger.info("binaries found - loading...")
+        eval_loc = f"{self.matrix_location}_eigenvalues.npy"
+        evec_loc = f"{self.matrix_location}_eigenvectors.npy"
+        order_loc = f"{self.matrix_location}_orders.npy"
+        try:
             return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
-        else:
+        except TypeError:
             return self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
 
     def _solve_eigenproblem_from_files(
-        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+        self, eval_loc: str, evec_loc: str, order_loc: str
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         solves eigenproblem with files already saved
         """
-        eigenvalues = np.load(eval_loc)
-        eigenvectors = np.load(evec_loc)
-        orders = np.load(order_loc)
+        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
+        orders = np.load(find_on_pooch_then_local(order_loc))
 
         if self.order is not None:
             idx = np.where(orders == self.order)
@@ -86,7 +85,7 @@ class SlepianPolarCap(SlepianFunctions):
             return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_scratch(
-        self, eval_loc: Path, evec_loc: Path, order_loc: Path
+        self, eval_loc: str, evec_loc: str, order_loc: str
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """
         sovles eigenproblem from scratch and then saves the files
@@ -107,11 +106,10 @@ class SlepianPolarCap(SlepianFunctions):
             eigenvectors,
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
-        if settings["SAVE_MATRICES"]:
-            limit = self.N if self.L > L_SAVE_ALL else None
-            np.save(eval_loc, eigenvalues)
-            np.save(evec_loc, eigenvectors[:limit])
-            np.save(order_loc, self.order)
+        limit = self.N if self.L > L_SAVE_ALL else None
+        np.save(_data_path / eval_loc, eigenvalues)
+        np.save(_data_path / evec_loc, eigenvectors[:limit])
+        np.save(_data_path / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(
@@ -182,10 +180,10 @@ class SlepianPolarCap(SlepianFunctions):
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L - m, settings["NCPU"])
+        chunks = split_arr_into_chunks(self.L - m, NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

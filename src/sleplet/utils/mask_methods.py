@@ -4,14 +4,30 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
+from sleplet import logger
+from sleplet.data.other.earth.create_earth_flm import create_flm
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
-from sleplet.utils.logger import logger
+from sleplet.utils.harmonic_methods import (
+    mesh_forward,
+    mesh_inverse,
+    rotate_earth_to_africa,
+    rotate_earth_to_south_america,
+)
 from sleplet.utils.region import Region
-from sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.vars import (
+    AFRICA_RANGE,
+    PHI_MAX,
+    PHI_MIN,
+    POLAR_GAP,
+    SAMPLING_SCHEME,
+    SLEPIAN_MASK,
+    SOUTH_AMERICA_RANGE,
+    THETA_MAX,
+    THETA_MIN,
+)
 
-_file_location = Path(__file__).resolve()
-_mask_path = _file_location.parents[1] / "data" / "slepian" / "masks"
+_data_path = Path(__file__).resolve().parents[1] / "data"
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
@@ -29,7 +45,7 @@ def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
         case "arbitrary":
             logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
-            mask = _load_mask(name)
+            mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
                 f"mask {name} has shape {mask.shape} which does not match "
                 f"the provided L={L}, the shape should be {thetas.shape}"
@@ -53,17 +69,12 @@ def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
     return mask
 
 
-def _load_mask(mask_name: str) -> npt.NDArray[np.float_]:
+def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
     """
     attempts to read the mask from the config file
     """
-    location = _mask_path / mask_name
-    try:
-        mask = np.load(location)
-    except FileNotFoundError:
-        logger.error(f"can not find the file: '{mask_name}'")
-        raise
-    return mask
+    mask = find_on_pooch_then_local(f"slepian_masks_{mask_name}")
+    return create_mask(L, mask_name) if mask is None else np.load(mask)
 
 
 def ensure_masked_flm_bandlimited(
@@ -78,17 +89,17 @@ def ensure_masked_flm_bandlimited(
     return ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
-def create_default_region(settings: dict) -> Region:
+def create_default_region() -> Region:
     """
-    creates default region from settings object
+    creates default region
     """
     return Region(
-        gap=settings["POLAR_GAP"],
-        mask_name=settings["SLEPIAN_MASK"],
-        phi_max=np.deg2rad(settings["PHI_MAX"]),
-        phi_min=np.deg2rad(settings["PHI_MIN"]),
-        theta_max=np.deg2rad(settings["THETA_MAX"]),
-        theta_min=np.deg2rad(settings["THETA_MIN"]),
+        gap=POLAR_GAP,
+        mask_name=SLEPIAN_MASK,
+        phi_max=np.deg2rad(PHI_MAX),
+        phi_min=np.deg2rad(PHI_MIN),
+        theta_max=np.deg2rad(THETA_MAX),
+        theta_min=np.deg2rad(THETA_MIN),
     )
 
 
@@ -128,3 +139,42 @@ def convert_region_on_vertices_to_faces(mesh: Mesh) -> npt.NDArray[np.float_]:
     region_on_faces = np.zeros(mesh.faces.shape[0])
     region_on_faces[faces_in_region] = 1
     return region_on_faces
+
+
+def _create_africa_mask(
+    L: int, earth_flm: npt.NDArray[np.complex_]
+) -> npt.NDArray[np.float_]:
+    """
+    creates the Africa region mask
+    """
+    rot_flm = rotate_earth_to_africa(earth_flm, L)
+    earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    return (thetas <= AFRICA_RANGE) & (earth_f >= 0)
+
+
+def _create_south_america_mask(
+    L: int, earth_flm: npt.NDArray[np.complex_]
+) -> npt.NDArray[np.float_]:
+    """
+    creates the Africa region mask
+    """
+    rot_flm = rotate_earth_to_south_america(earth_flm, L)
+    earth_f = ssht.inverse(rot_flm, L, Reality=True, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    return (thetas <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
+
+
+def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
+    """
+    creates the South America region mask
+    """
+    earth_flm = create_flm(L)
+    if mask_name == f"africa_L{L}.npy":
+        mask = _create_africa_mask(L, earth_flm)
+    elif mask_name == f"south_america_L{L}.npy":
+        mask = _create_south_america_mask(L, earth_flm)
+    else:
+        raise ValueError(f"Mask name {mask_name} not recognised")
+    np.save(_data_path / f"slepian_masks_{mask_name}", mask)
+    return mask

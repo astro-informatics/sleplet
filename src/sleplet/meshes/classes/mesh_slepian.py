@@ -6,11 +6,11 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet import logger
+from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils.config import settings
 from sleplet.utils.integration_methods import integrate_region_mesh
-from sleplet.utils.logger import logger
 from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
@@ -20,9 +20,9 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils.validation import Validation
+from sleplet.utils.vars import NCPU
 
-_file_location = Path(__file__).resolve()
-_meshes_path = _file_location.parents[2] / "data" / "meshes"
+_data_path = Path(__file__).resolve().parents[2] / "data"
 
 
 @dataclass(config=Validation)
@@ -41,37 +41,36 @@ class MeshSlepian:
 
         # create filenames
         eigd_loc = (
-            _meshes_path
-            / "laplacians"
-            / "slepian_functions"
-            / f"{self.mesh.name}_b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
+            f"meshes_laplacians_slepian_functions_{self.mesh.name}_"
+            f"b{self.mesh.mesh_eigenvalues.shape[0]}_N{self.N}"
         )
-        eval_loc = eigd_loc / "eigenvalues.npy"
-        evec_loc = eigd_loc / "eigenvectors.npy"
+        eval_loc = f"{eigd_loc}_eigenvalues.npy"
+        evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
-        if eval_loc.exists() and evec_loc.exists():
-            logger.info("binaries found - loading...")
-            self.slepian_eigenvalues = np.load(eval_loc)
-            self.slepian_functions = np.load(evec_loc)
-        else:
-            D = self._create_D_matrix()
-            logger.info(
-                f"Shannon number from vertices: {self.N}, "
-                f"Trace of D matrix: {round(D.trace())}, "
-                f"difference: {round(np.abs(self.N - D.trace()))}"
-            )
+        try:
+            self.slepian_eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
+            self.slepian_functions = np.load(find_on_pooch_then_local(evec_loc))
+        except TypeError:
+            self._compute_slepian_functions_from_scratch(eval_loc, evec_loc)
 
-            # fill in remaining triangle section
-            fill_upper_triangle_of_hermitian_matrix(D)
+    def _compute_slepian_functions_from_scratch(self, eval_loc, evec_loc):
+        D = self._create_D_matrix()
+        logger.info(
+            f"Shannon number from vertices: {self.N}, "
+            f"Trace of D matrix: {round(D.trace())}, "
+            f"difference: {round(np.abs(self.N - D.trace()))}"
+        )
 
-            # solve eigenproblem
-            (
-                self.slepian_eigenvalues,
-                self.slepian_functions,
-            ) = self._clean_evals_and_evecs(LA.eigh(D))
-            if settings["SAVE_MATRICES"]:
-                np.save(eval_loc, self.slepian_eigenvalues)
-                np.save(evec_loc, self.slepian_functions[: self.N])
+        # fill in remaining triangle section
+        fill_upper_triangle_of_hermitian_matrix(D)
+
+        # solve eigenproblem
+        (
+            self.slepian_eigenvalues,
+            self.slepian_functions,
+        ) = self._clean_evals_and_evecs(LA.eigh(D))
+        np.save(_data_path / eval_loc, self.slepian_eigenvalues)
+        np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
         """
@@ -97,12 +96,10 @@ class MeshSlepian:
             free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(
-            self.mesh.mesh_eigenvalues.shape[0], settings["NCPU"]
-        )
+        chunks = split_arr_into_chunks(self.mesh.mesh_eigenvalues.shape[0], NCPU)
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=settings["NCPU"]) as e:
+        with ThreadPoolExecutor(max_workers=NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

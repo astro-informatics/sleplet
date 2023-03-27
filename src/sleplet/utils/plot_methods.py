@@ -6,21 +6,14 @@ from matplotlib import colors
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
+from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import invert_flm_boosted
-from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 from sleplet.utils.vars import (
-    AFRICA_ALPHA,
-    AFRICA_BETA,
-    AFRICA_GAMMA,
     SAMPLING_SCHEME,
-    SOUTH_AMERICA_ALPHA,
-    SOUTH_AMERICA_BETA,
-    SOUTH_AMERICA_GAMMA,
     SPHERE_UNSEEN,
 )
 
@@ -79,13 +72,11 @@ def save_plot(path: Path, name: str) -> None:
     helper method to save plots
     """
     plt.tight_layout()
-    if settings["SAVE_FIG"]:
-        for file_type in {"png", "pdf"}:
-            logger.info(f"saving {file_type}")
-            filename = path / file_type / f"{name}.{file_type}"
-            plt.savefig(filename, bbox_inches="tight")
-    if settings["AUTO_OPEN"]:
-        plt.show()
+    for file_type in {"png", "pdf"}:
+        filename = path / file_type / f"{name}.{file_type}"
+        logger.info(f"saving {filename}")
+        plt.savefig(filename, bbox_inches="tight")
+    plt.show()
 
 
 def find_max_amplitude(
@@ -150,26 +141,6 @@ def set_outside_region_to_minimum(
 
     # set values outside mask to negative infinity
     return np.where(closed_mask, f_plot, SPHERE_UNSEEN)
-
-
-def rotate_earth_to_south_america(
-    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
-) -> npt.NDArray[np.complex_]:
-    """
-    rotates the flms of the Earth to a view centered on South America
-    """
-    return ssht.rotate_flms(
-        earth_flm, SOUTH_AMERICA_ALPHA, SOUTH_AMERICA_BETA, SOUTH_AMERICA_GAMMA, L
-    )
-
-
-def rotate_earth_to_africa(
-    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
-) -> npt.NDArray[np.complex_]:
-    """
-    rotates the flms of the Earth to a view centered on Africa
-    """
-    return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)
 
 
 def normalise_function(

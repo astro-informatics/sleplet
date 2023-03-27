@@ -3,6 +3,7 @@ build-backend = "setuptools.build_meta"
 requires = [
     "setuptools",
     "setuptools-scm",
+    "wheel",
 ]
 
 [project]
@@ -11,7 +12,12 @@ authors = [
 ]
 classifiers = [
     "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX",
     "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
     "Typing :: Typed",
 ]
 dependencies = [
@@ -26,12 +32,14 @@ dependencies = [
     "numpy>=1.23.5",
     "pandas>=1.5.3",
     "plotly>=5.13.0",
+    "pooch>=1.7.0",
     "pydantic>=1.10.4",
     "pys2let>=2.2.4",
     "pyssht>=1.5.1",
     "scipy>=1.10.0",
     "seaborn>=0.12.2",
     "tomli>=2.0.1",
+    "tqdm>=4.65.0",
 ]
 description = "Slepian scale-discretised wavelets in Python"
 dynamic = [
@@ -60,7 +68,11 @@ optional-dependencies.dev = [
 optional-dependencies.docs = [
     "pdoc3",
 ]
-urls.homepage = "https://github.com/astro-informatics/sleplet"
+urls."Bug Tracker" = "https://github.com/astro-informatics/sleplet/issues"
+urls.Documentation = "https://astro-informatics.github.io/sleplet"
+urls.Download = "https://pypi.org/project/sleplet"
+urls.Homepage = "https://github.com/astro-informatics/sleplet"
+urls."Source Code" = "https://github.com/astro-informatics/sleplet"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
@@ -92,7 +104,9 @@ ignore = [
     "N803",
     "N806",
 ]
-per-file-ignores = {"tests/*" = [
+per-file-ignores = {"__init__.py" = [
+    "F401",
+], "test_*" = [
     "S101",
 ]}
 select = [
@@ -130,6 +144,8 @@ pep8-naming.classmethod-decorators = [
 ]
 
 [tool.setuptools_scm]
+local_scheme = "no-local-version"
+write_to = "src/sleplet/_version.py"
 
 [tool.tomlsort]
 all = true

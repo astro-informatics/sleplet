@@ -10,9 +10,8 @@ from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
 
+from sleplet import logger
 from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.config import settings
-from sleplet.utils.logger import logger
 from sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
 from sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
 from sleplet.utils.plot_methods import convert_colourscale, normalise_function
@@ -22,10 +21,13 @@ from sleplet.utils.plotly_methods import (
     create_tick_mark,
 )
 from sleplet.utils.validation import Validation
-from sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
+from sleplet.utils.vars import (
+    MESH_CBAR_FONT_SIZE,
+    MESH_CBAR_LEN,
+    MESH_UNSEEN,
+)
 
-_file_location = Path(__file__).resolve()
-_fig_path = _file_location.parents[1] / "figures"
+_fig_path = Path(__file__).resolve().parents[1] / "figures"
 
 
 @dataclass(config=Validation)
@@ -87,17 +89,14 @@ class Plot:
 
         fig = Figure(data=data, layout=layout)
 
-        # create html and open if auto_open is true
         html_filename = str(_fig_path / "html" / f"{self.filename}.html")
 
-        py.plot(fig, filename=html_filename, auto_open=settings["AUTO_OPEN"])
+        py.plot(fig, filename=html_filename)
 
-        # if save_fig is true then create png and pdf in their directories
-        if settings["SAVE_FIG"]:
-            for file_type in {"png", "pdf"}:
-                logger.info(f"saving {file_type}")
-                filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-                fig.write_image(filename, engine="kaleido")
+        for file_type in {"png", "pdf"}:
+            filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
+            logger.info(f"saving {filename}")
+            fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(
         self, f: npt.NDArray[np.complex_ | np.float_]

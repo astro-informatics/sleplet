@@ -5,18 +5,16 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
+from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
-from sleplet.functions.f_p import F_P
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
-from sleplet.utils.config import settings
-from sleplet.utils.logger import logger
-from sleplet.utils.mask_methods import create_default_region
-from sleplet.utils.plot_methods import (
-    calc_nearest_grid_point,
+from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
+from sleplet.utils.mask_methods import create_default_region
+from sleplet.utils.plot_methods import calc_nearest_grid_point
 from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from sleplet.utils.string_methods import (
     convert_classes_list_to_snake_case,
@@ -69,9 +67,7 @@ def read_args() -> Namespace:
         default=ALPHA_DEFAULT,
         help=f"alpha/phi pi fraction - defaults to {ALPHA_DEFAULT}",
     )
-    parser.add_argument(
-        "--bandlimit", "-L", type=int, default=settings["L"], help="bandlimit"
-    )
+    parser.add_argument("--bandlimit", "-L", type=int, default=16, help="bandlimit")
     parser.add_argument(
         "--beta",
         "-b",
@@ -122,7 +118,7 @@ def read_args() -> Namespace:
         "--region",
         "-r",
         action="store_true",
-        help="flag which masks the function for a region (based on settings.toml)",
+        help="flag which masks the function for a region",
     )
     parser.add_argument(
         "--smoothing",
@@ -191,7 +187,7 @@ def plot(
     annotation = []
 
     # Shannon number for Slepian coefficients
-    shannon = f.slepian.N if isinstance(f, F_P) else None
+    shannon = f.slepian.N if hasattr(f, "slepian") else None
 
     logger.info(f"plotting method: '{method}'")
     match method:
@@ -208,7 +204,7 @@ def plot(
             if annotations:
                 annotation.append(trans_annotation)
 
-    if isinstance(g, Coefficients):
+    if g is not None:
         coefficients, filename = _convolution_helper(
             f, g, coefficients, shannon, filename
         )
@@ -235,7 +231,7 @@ def plot(
         normalise=normalise,
         plot_type=plot_type,
         reality=f.reality,
-        region=f.region if isinstance(f, F_P) else None,
+        region=f.region if hasattr(f, "slepian") else None,
         spin=f.spin,
         upsample=upsample,
     ).execute()
@@ -307,7 +303,7 @@ def _convolution_helper(
     """
     g_coefficients = (
         slepian_forward(f.L, f.slepian, flm=g.coefficients)
-        if isinstance(f, F_P)
+        if hasattr(f, "slepian")
         else g.coefficients
     )
     coefficients = f.convolve(g_coefficients, coefficients, shannon=shannon)
@@ -324,14 +320,14 @@ def _coefficients_to_field(
     """
     return (
         slepian_inverse(coefficients, f.L, f.slepian)
-        if isinstance(f, F_P)
+        if hasattr(f, "slepian")
         else ssht.inverse(
             coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
         )
     )
 
 
-def _compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
+def compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """
@@ -345,7 +341,7 @@ def _compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
 def main() -> None:
     args = read_args()
 
-    mask = create_default_region(settings) if args.region else None
+    mask = create_default_region() if args.region else None
 
     f = COEFFICIENTS[
         convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)
@@ -366,7 +362,7 @@ def main() -> None:
     )
 
     # custom amplitude for noisy plots
-    amplitude = _compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_plots(f)
 
     plot(
         f,
