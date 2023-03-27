@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import numpy as np
 from igl import per_vertex_normals
 from numpy import typing as npt

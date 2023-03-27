@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import numpy as np
 
 AFRICA_ALPHA: float = np.deg2rad(44)

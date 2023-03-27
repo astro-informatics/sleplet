@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from plotly.graph_objs import Layout
 from plotly.graph_objs.layout import Margin, Scene
 from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis

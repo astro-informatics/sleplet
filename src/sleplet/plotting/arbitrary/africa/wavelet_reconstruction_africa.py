@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
     SlepianWaveletCoefficientsAfrica,
 )

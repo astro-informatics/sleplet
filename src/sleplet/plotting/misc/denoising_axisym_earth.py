@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.functions.flm.earth import Earth
 from sleplet.plotting.create_plot_sphere import Plot

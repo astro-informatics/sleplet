@@ -1,6 +1,3 @@
-from __future__ import annotations
-
-
 class Validation:
     arbitrary_types_allowed = True
     smart_union = True

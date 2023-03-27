@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_0: int = 0
 THETA_1: int = 50

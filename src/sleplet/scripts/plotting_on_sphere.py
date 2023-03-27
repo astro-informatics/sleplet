@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 from typing import TYPE_CHECKING

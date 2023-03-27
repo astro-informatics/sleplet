@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
