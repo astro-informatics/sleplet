@@ -51,7 +51,7 @@ such it is recommended to stick to the powers of two up to `L=128`.
 When it comes to selecting a Slepian region the order precedence is
 [polar cap region](https://doi.org/10.1111/j.1365-246X.2006.03065.x) >
 [limited latitude longitude region](https://doi.org/10.1109/TSP.2016.2646668) >
-arbitrary region, [as seen in the code](src/sleplet/utils/region.py). The
+arbitrary region, [as seen in the code](https://github.com/astro-informatics/sleplet/blob/main/src/sleplet/utils/region.py). The
 default region is the `south_america` arbitrary region.
 
 - `POLAR_GAP`
@@ -72,7 +72,7 @@ default region is the `south_america` arbitrary region.
 
 To recreate the figures from the below papers, one may use the CLI or the API.
 For those which don't use the `mesh` or `sphere` CLIs, the relevant API code
-isn't provided as it is contained within the [examples folder](./examples).
+isn't provided as it is contained within the [examples folder](https://github.com/astro-informatics/sleplet/tree/main/examples).
 
 ### Sifting Convolution on the Sphere
 
