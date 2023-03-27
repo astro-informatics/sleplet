@@ -9,7 +9,6 @@ from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
-from sleplet.utils.config import settings
 from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
@@ -68,9 +67,7 @@ def read_args() -> Namespace:
         default=ALPHA_DEFAULT,
         help=f"alpha/phi pi fraction - defaults to {ALPHA_DEFAULT}",
     )
-    parser.add_argument(
-        "--bandlimit", "-L", type=int, default=settings["L"], help="bandlimit"
-    )
+    parser.add_argument("--bandlimit", "-L", type=int, default=16, help="bandlimit")
     parser.add_argument(
         "--beta",
         "-b",
@@ -121,7 +118,7 @@ def read_args() -> Namespace:
         "--region",
         "-r",
         action="store_true",
-        help="flag which masks the function for a region (based on settings.toml)",
+        help="flag which masks the function for a region",
     )
     parser.add_argument(
         "--smoothing",
@@ -344,7 +341,7 @@ def compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
 def main() -> None:
     args = read_args()
 
-    mask = create_default_region(settings) if args.region else None
+    mask = create_default_region() if args.region else None
 
     f = COEFFICIENTS[
         convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)

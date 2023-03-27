@@ -15,7 +15,17 @@ from sleplet.utils.harmonic_methods import (
     rotate_earth_to_south_america,
 )
 from sleplet.utils.region import Region
-from sleplet.utils.vars import AFRICA_RANGE, SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
+from sleplet.utils.vars import (
+    AFRICA_RANGE,
+    PHI_MAX,
+    PHI_MIN,
+    POLAR_GAP,
+    SAMPLING_SCHEME,
+    SLEPIAN_MASK,
+    SOUTH_AMERICA_RANGE,
+    THETA_MAX,
+    THETA_MIN,
+)
 
 _data_path = Path(__file__).resolve().parents[1] / "data"
 
@@ -79,17 +89,17 @@ def ensure_masked_flm_bandlimited(
     return ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
-def create_default_region(settings: dict) -> Region:
+def create_default_region() -> Region:
     """
-    creates default region from settings object
+    creates default region
     """
     return Region(
-        gap=settings["POLAR_GAP"],
-        mask_name=settings["SLEPIAN_MASK"],
-        phi_max=np.deg2rad(settings["PHI_MAX"]),
-        phi_min=np.deg2rad(settings["PHI_MIN"]),
-        theta_max=np.deg2rad(settings["THETA_MAX"]),
-        theta_min=np.deg2rad(settings["THETA_MIN"]),
+        gap=POLAR_GAP,
+        mask_name=SLEPIAN_MASK,
+        phi_max=np.deg2rad(PHI_MAX),
+        phi_min=np.deg2rad(PHI_MIN),
+        theta_max=np.deg2rad(THETA_MAX),
+        theta_min=np.deg2rad(THETA_MIN),
     )
 
 
