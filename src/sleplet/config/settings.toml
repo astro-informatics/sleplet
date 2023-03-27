@@ -1,5 +1,4 @@
 AUTO_OPEN = true
-L = 16
 L_MAX = -1
 L_MIN = 0
 NCPU = 4

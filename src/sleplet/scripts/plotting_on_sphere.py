@@ -68,9 +68,7 @@ def read_args() -> Namespace:
         default=ALPHA_DEFAULT,
         help=f"alpha/phi pi fraction - defaults to {ALPHA_DEFAULT}",
     )
-    parser.add_argument(
-        "--bandlimit", "-L", type=int, default=settings["L"], help="bandlimit"
-    )
+    parser.add_argument("--bandlimit", "-L", type=int, default=128, help="bandlimit")
     parser.add_argument(
         "--beta",
         "-b",
