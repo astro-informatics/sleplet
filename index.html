@@ -39,7 +39,16 @@ meshes using <code>plotly</code>.</p>
 <pre><code class="language-sh">pip install -e .
 </code></pre>
 <p>This will install two scripts <code>sphere</code> and <code>mesh</code> which can be used to generate
-the figures in <a href="#paper-figures">the following section</a>.</p>
+the figures in <a href="#paper-figures">the figure section</a>.</p>
+<h2 id="bandlimit">Bandlimit</h2>
+<p>The bandlimit is set as <code>L</code> throughout the code and the CLIs. The default value
+is set to <code>L=16</code> and the figures created in <a href="#paper-figures">the figure section</a>
+all use <code>L=128</code>. The pre-computed data exists on
+<a href="https://doi.org/10.5281/zenodo.7767698">Zenodo</a> for powers of two up to <code>L=128</code>.
+Other values will be computed when running the appropriate code (and saved for
+future use). Note that beyond <code>L=32</code> the code can be slow due to the
+difficulties of computing the Slepian matrix prior to the eigendecomposition, as
+such it is recommended to stick to the powers of two up to <code>L=128</code>.</p>
 <h2 id="environment-variables">Environment Variables</h2>
 <ul>
 <li><code>NCPU</code>: sets the number of cores to use</li>
@@ -55,11 +64,11 @@ default region is the <code>south_america</code> arbitrary region.</p>
 <li><code>THETA_MAX</code></li>
 <li>for a Slepian <code>polar cap region</code>, when set without the other <code>PHI</code>/<code>THETA</code> variables</li>
 <li>for a Slepian <code>limited latitude longitude region</code></li>
+<li><code>THETA_MIN</code></li>
+<li>for a Slepian <code>limited latitude longitude region</code></li>
 <li><code>PHI_MAX</code></li>
 <li>for a Slepian <code>limited latitude longitude region</code></li>
 <li><code>PHI_MIN</code></li>
-<li>for a Slepian <code>limited latitude longitude region</code></li>
-<li><code>THETA_MIN</code></li>
 <li>for a Slepian <code>limited latitude longitude region</code></li>
 <li><code>SLEPIAN_MASK</code></li>
 <li>for an arbitrary Slepian region, currently <code>africa</code>/<code>south_america</code> supported</li>
@@ -67,7 +76,7 @@ default region is the <code>south_america</code> arbitrary region.</p>
 <h2 id="paper-figures">Paper Figures</h2>
 <p>To recreate the figures from the below papers, one may use the CLI or the API.
 For those which don't use the <code>mesh</code> or <code>sphere</code> CLIs, the relevant API code
-isn't provided as it is contained within the source code.</p>
+isn't provided as it is contained within the <a href="./examples">examples folder</a>.</p>
 <h3 id="sifting-convolution-on-the-sphere">Sifting Convolution on the Sphere</h3>
 <p><a href="https://dx.doi.org/10.1109/LSP.2021.3050961"><img alt="Sifting Convolution on the Sphere" src="https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg"></a></p>
 <h4 id="fig-1">Fig. 1</h4>
@@ -124,7 +133,7 @@ for ell in range(2, 0, -1):
 <h3 id="slepian-scale-discretised-wavelets-on-the-sphere">Slepian Scale-Discretised Wavelets on the Sphere</h3>
 <p><a href="https://dx.doi.org/10.1109/TSP.2022.3233309"><img alt="Slepian Scale-Discretised Wavelets on the Sphere" src="https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg"></a></p>
 <h4 id="fig-2_1">Fig. 2</h4>
-<pre><code class="language-sh">python -m sleplet.plotting.arbitrary.south_america.tiling_south_america
+<pre><code class="language-sh">python -m examples.arbitrary.south_america.tiling_south_america
 </code></pre>
 <h4 id="fig-3_1">Fig. 3</h4>
 <pre><code class="language-sh">export SLEPIAN_MASK = &quot;south_america&quot;
@@ -171,7 +180,7 @@ for p in [0, 9, 24, 49, 99, 199]:
     Plot(f_sphere, f.L, f&quot;fig_4_p_{p}&quot;, normalise=False, region=f.region).execute()
 </code></pre>
 <h4 id="fig-5">Fig. 5</h4>
-<pre><code class="language-sh">python -m sleplet.plotting.arbitrary.south_america.eigenvalues_south_america
+<pre><code class="language-sh">python -m examples.arbitrary.south_america.eigenvalues_south_america
 </code></pre>
 <h4 id="fig-6">Fig. 6</h4>
 <pre><code class="language-sh">export SLEPIAN_MASK = &quot;south_america&quot;
@@ -223,7 +232,7 @@ for j in [None, *list(range(5))]:
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
 # b-d
 for s in 2 3 5; do
-    python -m sleplet.plotting.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
+    python -m examples.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
 done
 </code></pre>
 <pre><code class="language-python">from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
@@ -269,7 +278,7 @@ g_sphere = slepian_inverse(g.coefficients, g.L, g.slepian)
 Plot(g_sphere, g.L, &quot;fig_9_b&quot;, normalise=False, region=g.region).execute()
 </code></pre>
 <h4 id="fig-10">Fig. 10</h4>
-<pre><code class="language-sh">python -m sleplet.plotting.arbitrary.africa.eigenvalues_africa
+<pre><code class="language-sh">python -m examples.arbitrary.africa.eigenvalues_africa
 </code></pre>
 <h4 id="fig-11">Fig. 11</h4>
 <pre><code class="language-sh">export SLEPIAN_MASK = &quot;africa&quot;
@@ -338,7 +347,7 @@ for j in [None, *list(range(6))]:
 sphere slepian_africa -L 128 -n -10 -s 2 -u
 # b-d
 for s in 2 3 5; do
-    python -m sleplet.plotting.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
+    python -m examples.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
 done
 </code></pre>
 <pre><code class="language-python">from sleplet.functions.fp.slepian_africa import SlepianAfrica
@@ -375,10 +384,10 @@ for r in range(2, 10):
     Plot(mesh, f&quot;fig_2_r_{r}&quot;, f_mesh, normalise=False).execute()
 </code></pre>
 <h4 id="fig-4_1">Fig. 4</h4>
-<pre><code class="language-sh">python -m sleplet.plotting.mesh.mesh_tiling homer
+<pre><code class="language-sh">python -m examples.mesh.mesh_tiling homer
 </code></pre>
 <h4 id="fig-5_1">Fig. 5</h4>
-<pre><code class="language-sh">python -m sleplet.plotting.mesh.mesh_region homer
+<pre><code class="language-sh">python -m examples.mesh.mesh_region homer
 </code></pre>
 <h4 id="fig-6_1">Fig. 6</h4>
 <pre><code class="language-sh">for p in 0 9 24 49 99 199; do
@@ -399,7 +408,7 @@ for p in [0, 9, 24, 49, 99, 199]:
     Plot(mesh, f&quot;fig_6_p_{p}&quot;, f_mesh, normalise=False, region=True).execute()
 </code></pre>
 <h4 id="fig-7_1">Fig. 7</h4>
-<pre><code class="language-sh">python -m sleplet.plotting.mesh.mesh_slepian_eigenvalues homer
+<pre><code class="language-sh">python -m examples.mesh.mesh_slepian_eigenvalues homer
 </code></pre>
 <h4 id="fig-8_1">Fig. 8</h4>
 <pre><code class="language-sh"># a
@@ -462,7 +471,7 @@ mesh homer -m slepian_field -u -z
 # b
 mesh homer -m slepian_field -n -5 -u -z
 # c
-python -m sleplet.plotting.mesh.denoising_slepian_mesh homer -n -5 -s 2
+python -m examples.mesh.denoising_slepian_mesh homer -n -5 -s 2
 </code></pre>
 <pre><code class="language-python">from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import (
@@ -487,11 +496,11 @@ Plot(
 </code></pre>
 <h4 id="fig-12_1">Fig. 12</h4>
 <pre><code class="language-sh">for f in cheetah dragon bird teapot cube; do
-    python -m sleplet.plotting.mesh.mesh_region ${f}
+    python -m examples.mesh.mesh_region ${f}
 done
 </code></pre>
 <h4 id="tab-1">Tab. 1</h4>
-<pre><code class="language-sh">python -m sleplet.plotting.mesh.produce_table
+<pre><code class="language-sh">python -m examples.mesh.produce_table
 </code></pre>
 <details class="source">
 <summary>
@@ -559,6 +568,7 @@ logger = logging.getLogger(__name__)</code></pre>
 <ul>
 <li><a href="#sleplet">SLEPLET</a><ul>
 <li><a href="#installation">Installation</a></li>
+<li><a href="#bandlimit">Bandlimit</a></li>
 <li><a href="#environment-variables">Environment Variables</a></li>
 <li><a href="#paper-figures">Paper Figures</a><ul>
 <li><a href="#sifting-convolution-on-the-sphere">Sifting Convolution on the Sphere</a><ul>
