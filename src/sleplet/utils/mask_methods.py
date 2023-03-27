@@ -17,7 +17,7 @@ from sleplet.utils.harmonic_methods import (
 from sleplet.utils.region import Region
 from sleplet.utils.vars import AFRICA_RANGE, SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
 
-_data_path = Path(__file__).resolve().parents[3] / "data"
+_data_path = Path(__file__).resolve().parents[1] / "data"
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
@@ -160,12 +160,11 @@ def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
     creates the South America region mask
     """
     earth_flm = create_flm(L)
-    match mask_name:
-        case "africa":
-            mask = _create_africa_mask(L, earth_flm)
-        case "south_america":
-            mask = _create_south_america_mask(L, earth_flm)
-        case _:
-            raise ValueError(f"Mask name {mask_name} not recognised")
-    np.save(_data_path / f"slepian_masks_{mask_name}_L{L}.npy", mask)
+    if mask_name == f"africa_L{L}.npy":
+        mask = _create_africa_mask(L, earth_flm)
+    elif mask_name == f"south_america_L{L}.npy":
+        mask = _create_south_america_mask(L, earth_flm)
+    else:
+        raise ValueError(f"Mask name {mask_name} not recognised")
+    np.save(_data_path / f"slepian_masks_{mask_name}", mask)
     return mask

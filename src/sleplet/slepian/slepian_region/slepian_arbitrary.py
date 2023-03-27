@@ -81,9 +81,7 @@ class SlepianArbitrary(SlepianFunctions):
         D = self._create_D_matrix()
 
         # check whether the large job has been split up
-        if (self.L_min != L_MIN_DEFAULT or self.L_max != self.L) and settings[
-            "SAVE_MATRICES"
-        ]:
+        if self.L_min != L_MIN_DEFAULT or self.L_max != self.L:
             logger.info("large job has been used, saving intermediate matrix")
             inter_loc = f"{self.matrix_location}_D_min{self.L_min}_max{self.L_max}.npy"
             np.save(_data_path / inter_loc, D)
@@ -94,9 +92,8 @@ class SlepianArbitrary(SlepianFunctions):
 
         # solve eigenproblem
         eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
-        if settings["SAVE_MATRICES"]:
-            np.save(_data_path / eval_loc, eigenvalues)
-            np.save(_data_path / evec_loc, eigenvectors[: self.N])
+        np.save(_data_path / eval_loc, eigenvalues)
+        np.save(_data_path / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
