@@ -1,4 +1,4 @@
-name: Tests
+name: Test & Deploy
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - "paper/**"
 
 jobs:
-  tests:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -40,7 +40,7 @@ jobs:
         run: tox
 
   deploy:
-    needs: tests
+    needs: test
     runs-on: "ubuntu-latest"
     if: |
       github.event_name == 'push'
