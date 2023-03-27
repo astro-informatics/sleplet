@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-from __future__ import annotations
+
 
 from argparse import ArgumentParser, Namespace
-from typing import TYPE_CHECKING
 
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
+from sleplet.functions.coefficients import Coefficients
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils.config import settings
@@ -30,9 +30,6 @@ from sleplet.utils.vars import (
     BETA_DEFAULT,
     SAMPLING_SCHEME,
 )
-
-if TYPE_CHECKING:
-    from sleplet.functions.coefficients import Coefficients
 
 
 def valid_maps(map_name: str) -> str:

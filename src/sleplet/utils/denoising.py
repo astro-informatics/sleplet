@@ -1,11 +1,15 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
+from sleplet.functions.coefficients import Coefficients
+from sleplet.functions.f_p import F_P
+from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+    MeshSlepianWavelets,
+)
 from sleplet.utils.harmonic_methods import rotate_earth_to_south_america
 from sleplet.utils.noise import (
     compute_sigma_j,
@@ -26,16 +30,6 @@ from sleplet.utils.wavelet_methods import (
     slepian_wavelet_forward,
     slepian_wavelet_inverse,
 )
-
-if TYPE_CHECKING:
-    from sleplet.functions.coefficients import Coefficients
-    from sleplet.functions.f_p import F_P
-    from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-    from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-    from sleplet.meshes.mesh_coefficients import MeshCoefficients
-    from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
-        MeshSlepianWavelets,
-    )
 
 
 def denoising_axisym(

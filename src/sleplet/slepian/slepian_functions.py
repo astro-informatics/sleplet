@@ -1,17 +1,12 @@
-from __future__ import annotations
-
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
-
-if TYPE_CHECKING:
-    from sleplet.utils.region import Region
 
 
 @dataclass(config=Validation)

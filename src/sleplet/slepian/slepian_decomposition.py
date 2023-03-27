@@ -1,7 +1,4 @@
-from __future__ import annotations
-
 from dataclasses import KW_ONLY
-from typing import TYPE_CHECKING
 
 import numpy as np
 import pyssht as ssht
@@ -9,6 +6,7 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils.integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
@@ -16,9 +14,6 @@ from sleplet.utils.integration_methods import (
 )
 from sleplet.utils.validation import Validation
 from sleplet.utils.vars import SAMPLING_SCHEME
-
-if TYPE_CHECKING:
-    from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
 @dataclass(config=Validation)

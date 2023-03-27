@@ -1,8 +1,5 @@
-from __future__ import annotations
-
 from dataclasses import KW_ONLY
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import cmocean
 import numpy as np
@@ -14,6 +11,7 @@ from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.config import settings
 from sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
 from sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
@@ -25,9 +23,6 @@ from sleplet.utils.plotly_methods import (
 )
 from sleplet.utils.validation import Validation
 from sleplet.utils.vars import MESH_CBAR_FONT_SIZE, MESH_CBAR_LEN, MESH_UNSEEN
-
-if TYPE_CHECKING:
-    from sleplet.meshes.classes.mesh import Mesh
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
 

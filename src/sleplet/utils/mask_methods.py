@@ -1,7 +1,4 @@
-from __future__ import annotations
-
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import numpy as np
 import pyssht as ssht
@@ -10,6 +7,7 @@ from numpy import typing as npt
 from sleplet import logger
 from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
+from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import (
     mesh_forward,
     mesh_inverse,
@@ -18,10 +16,6 @@ from sleplet.utils.harmonic_methods import (
 )
 from sleplet.utils.region import Region
 from sleplet.utils.vars import AFRICA_RANGE, SAMPLING_SCHEME, SOUTH_AMERICA_RANGE
-
-if TYPE_CHECKING:
-    from sleplet.meshes.classes.mesh import Mesh
-
 
 _data_path = Path(__file__).resolve().parents[3] / "data"
 

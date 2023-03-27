@@ -1,7 +1,4 @@
-from __future__ import annotations
-
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import numpy as np
 import pyssht as ssht
@@ -11,15 +8,12 @@ from numpy import typing as npt
 
 from sleplet.functions.flm.earth import Earth
 from sleplet.plotting.inputs import THETA_MAX
+from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 from sleplet.utils.vars import SAMPLING_SCHEME
-
-if TYPE_CHECKING:
-    from sleplet.slepian.slepian_functions import SlepianFunctions
-
 
 L = 16
 

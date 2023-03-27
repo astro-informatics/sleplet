@@ -1,13 +1,12 @@
-from __future__ import annotations
-
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import Generator
 
+from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.integration_methods import integrate_whole_mesh
 from sleplet.utils.vars import (
     AFRICA_ALPHA,
@@ -18,9 +17,6 @@ from sleplet.utils.vars import (
     SOUTH_AMERICA_BETA,
     SOUTH_AMERICA_GAMMA,
 )
-
-if TYPE_CHECKING:
-    from sleplet.meshes.classes.mesh import Mesh
 
 
 def create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
