@@ -10,8 +10,9 @@ from numpy import typing as npt
 from sleplet import logger
 from sleplet.data.other.earth.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
-from sleplet.utils.plot_methods import (
+from sleplet.utils.harmonic_methods import (
+    mesh_forward,
+    mesh_inverse,
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )

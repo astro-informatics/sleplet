@@ -5,7 +5,7 @@ import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet.data.other.earth.create_earth_flm import create_flm
-from sleplet.utils.plot_methods import (
+from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )

@@ -10,12 +10,12 @@ from sleplet import logger
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils.config import settings
-from sleplet.utils.mask_methods import create_default_region
-from sleplet.utils.plot_methods import (
-    calc_nearest_grid_point,
+from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
+from sleplet.utils.mask_methods import create_default_region
+from sleplet.utils.plot_methods import calc_nearest_grid_point
 from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from sleplet.utils.string_methods import (
     convert_classes_list_to_snake_case,

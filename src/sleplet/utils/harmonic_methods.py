@@ -9,7 +9,15 @@ from numpy import typing as npt
 from numpy.random import Generator
 
 from sleplet.utils.integration_methods import integrate_whole_mesh
-from sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils.vars import (
+    AFRICA_ALPHA,
+    AFRICA_BETA,
+    AFRICA_GAMMA,
+    SAMPLING_SCHEME,
+    SOUTH_AMERICA_ALPHA,
+    SOUTH_AMERICA_BETA,
+    SOUTH_AMERICA_GAMMA,
+)
 
 if TYPE_CHECKING:
     from sleplet.meshes.classes.mesh import Mesh
@@ -112,3 +120,23 @@ def mesh_inverse(
     computes the mesh inverse transform from harmonic space to real space
     """
     return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)
+
+
+def rotate_earth_to_south_america(
+    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
+) -> npt.NDArray[np.complex_]:
+    """
+    rotates the flms of the Earth to a view centered on South America
+    """
+    return ssht.rotate_flms(
+        earth_flm, SOUTH_AMERICA_ALPHA, SOUTH_AMERICA_BETA, SOUTH_AMERICA_GAMMA, L
+    )
+
+
+def rotate_earth_to_africa(
+    earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
+) -> npt.NDArray[np.complex_]:
+    """
+    rotates the flms of the Earth to a view centered on Africa
+    """
+    return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)

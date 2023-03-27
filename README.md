@@ -67,7 +67,7 @@ import pyssht as ssht
 
 from sleplet.functions.flm.earth import Earth
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.plot_methods import rotate_earth_to_south_america
+from sleplet.utils.harmonic_methods import rotate_earth_to_south_america
 
 f = Earth(L=128)
 flm = rotate_earth_to_south_america(f.coefficients, f.L)
@@ -89,7 +89,7 @@ import pyssht as ssht
 from sleplet.functions.flm.earth import Earth
 from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.plot_methods import rotate_earth_to_south_america
+from sleplet.utils.harmonic_methods import rotate_earth_to_south_america
 
 for ell in range(2, 0, -1):
     f = HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
@@ -126,7 +126,7 @@ import pyssht as ssht
 from sleplet.functions.flm.earth import Earth
 from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.plot_methods import rotate_earth_to_south_america
+from sleplet.utils.harmonic_methods import rotate_earth_to_south_america
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 
@@ -269,7 +269,7 @@ import pyssht as ssht
 from sleplet.functions.flm.earth import Earth
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.plot_methods import rotate_earth_to_africa
+from sleplet.utils.harmonic_methods import rotate_earth_to_africa
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
 

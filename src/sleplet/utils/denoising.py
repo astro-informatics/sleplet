@@ -6,6 +6,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
+from sleplet.utils.harmonic_methods import rotate_earth_to_south_america
 from sleplet.utils.noise import (
     compute_sigma_j,
     compute_sigma_noise,
@@ -17,7 +18,6 @@ from sleplet.utils.noise import (
     slepian_mesh_hard_thresholding,
     slepian_wavelet_hard_thresholding,
 )
-from sleplet.utils.plot_methods import rotate_earth_to_south_america
 from sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
 from sleplet.utils.vars import SAMPLING_SCHEME
 from sleplet.utils.wavelet_methods import (
