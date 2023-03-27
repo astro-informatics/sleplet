@@ -1,5 +1,6 @@
 """
-.. include:: ../../README.md
+API Documentation of the `SLEPLET` package.\n
+[![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 """
 
 import logging
