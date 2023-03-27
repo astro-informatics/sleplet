@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.region import Region

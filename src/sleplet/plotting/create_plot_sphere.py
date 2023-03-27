@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import KW_ONLY, field
 from pathlib import Path
 

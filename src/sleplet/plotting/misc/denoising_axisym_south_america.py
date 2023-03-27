@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.functions.flm.south_america import SouthAmerica
 from sleplet.plotting.create_plot_sphere import Plot

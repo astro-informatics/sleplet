@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 from multiprocess.shared_memory import SharedMemory
 from numpy import typing as npt

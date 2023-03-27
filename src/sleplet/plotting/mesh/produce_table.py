@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sleplet import logger
 from sleplet.plotting.mesh.denoising_slepian_mesh import main
 

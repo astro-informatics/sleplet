@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sleplet.utils.vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,

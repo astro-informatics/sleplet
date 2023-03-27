@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import pyssht as ssht
 from numpy.random import default_rng
