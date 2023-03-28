@@ -7,8 +7,8 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils._mask_methods import ensure_masked_bandlimit_mesh_signal
 from sleplet.utils._validation import Validation
-from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
 from sleplet.utils.string_methods import filename_args
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"

@@ -5,8 +5,8 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.coefficients import Coefficients
+from sleplet.utils._mask_methods import create_default_region
 from sleplet.utils._validation import Validation
-from sleplet.utils.mask_methods import create_default_region
 from sleplet.utils.noise import compute_snr, create_slepian_noise
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, compute_s_p_omega_prime

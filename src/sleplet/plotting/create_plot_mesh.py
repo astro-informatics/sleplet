@@ -12,13 +12,13 @@ from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils._mask_methods import convert_region_on_vertices_to_faces
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import (
     MESH_CBAR_FONT_SIZE,
     MESH_CBAR_LEN,
     MESH_UNSEEN,
 )
-from sleplet.utils.mask_methods import convert_region_on_vertices_to_faces
 from sleplet.utils.mesh_methods import average_functions_on_vertices_to_faces
 from sleplet.utils.plot_methods import convert_colourscale, normalise_function
 from sleplet.utils.plotly_methods import (

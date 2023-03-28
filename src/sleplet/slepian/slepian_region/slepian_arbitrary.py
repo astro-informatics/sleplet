@@ -16,10 +16,10 @@ from sleplet.utils._integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
 )
+from sleplet.utils._mask_methods import create_mask_region
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU, SAMPLES
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
-from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
