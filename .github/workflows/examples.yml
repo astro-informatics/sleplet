@@ -23,8 +23,7 @@ jobs:
           python -m pip install -e .[docs]
 
       - name: Run rundoc on the README
-        run: rundoc run README.md
-        shell: bash
+        run: python -m rundoc run README.md
 
   examples:
     runs-on: ubuntu-latest
