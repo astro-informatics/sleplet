@@ -104,7 +104,9 @@ def save_plot(path: Path, name: str) -&gt; None:
         filename = path / file_type / f&#34;{name}.{file_type}&#34;
         logger.info(f&#34;saving {filename}&#34;)
         plt.savefig(filename, bbox_inches=&#34;tight&#34;)
-    plt.show()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 def find_max_amplitude(
@@ -432,7 +434,9 @@ given plot type such that plots can have the same scale as the input</p></div>
         filename = path / file_type / f&#34;{name}.{file_type}&#34;
         logger.info(f&#34;saving {filename}&#34;)
         plt.savefig(filename, bbox_inches=&#34;tight&#34;)
-    plt.show()</code></pre>
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()</code></pre>
 </details>
 </dd>
 <dt id="sleplet.utils.plot_methods.set_outside_region_to_minimum"><code class="name flex">
