@@ -23,7 +23,7 @@ jobs:
           python -m pip install -e .[readme]
 
       - name: Run examples in the README
-        run: pytest --codeblocks README.md
+        run: python -m pytest --codeblocks README.md
 
   examples:
     runs-on: ubuntu-latest
@@ -45,6 +45,8 @@ jobs:
 
       - name: Run examples in the examples folder
         run: |
-          find examples -name '*.py' \
-          -exec echo {} \; \
-          -exec python {} \;
+          find examples -name "*.py" \
+          -exec sh -c 'for f; \
+          do echo $f; \
+          python "$f" || exit 1\
+          ; done' sh {} +
