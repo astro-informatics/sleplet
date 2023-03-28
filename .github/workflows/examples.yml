@@ -20,10 +20,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install tox tox-gh-actions
+          python -m pip install -e .[readme]
 
       - name: Run examples in the README
-        run: tox -e py310-readme
+        run: pytest --codebase README.md
 
   examples:
     runs-on: ubuntu-latest
