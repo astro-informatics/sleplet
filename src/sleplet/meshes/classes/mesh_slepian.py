@@ -18,9 +18,9 @@ from sleplet.utils._parallel_methods import (
     release_shared_memory,
     split_arr_into_chunks,
 )
+from sleplet.utils._slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU
-from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 

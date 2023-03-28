@@ -24,11 +24,11 @@ from sleplet.utils._parallel_methods import (
     release_shared_memory,
     split_arr_into_chunks,
 )
+from sleplet.utils._slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU, SAMPLES
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.region import Region
-from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 
