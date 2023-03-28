@@ -3,7 +3,6 @@ build-backend = "setuptools.build_meta"
 requires = [
     "setuptools",
     "setuptools-scm",
-    "wheel",
 ]
 
 [project]
@@ -59,14 +58,16 @@ scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scr
 license.file = "LICENCE.md"
 optional-dependencies.dev = [
     "black",
+    "build",
     "mypy",
     "pre-commit",
     "ruff",
-    "rundoc",
     "tox",
+    "twine",
 ]
 optional-dependencies.docs = [
     "pdoc3",
+    "rundoc",
 ]
 urls."Bug Tracker" = "https://github.com/astro-informatics/sleplet/issues"
 urls.Documentation = "https://astro-informatics.github.io/sleplet"

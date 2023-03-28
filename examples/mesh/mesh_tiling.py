@@ -71,6 +71,9 @@ if __name__ == "__main__":
         type=valid_meshes,
         choices=MESHES,
         help="mesh to plot",
+        default="homer",
+        const="homer",
+        nargs="?",
     )
     args = parser.parse_args()
     main(args.function)
