@@ -17,16 +17,16 @@ from sleplet.utils._integration_methods import (
     integrate_region_sphere,
 )
 from sleplet.utils._mask_methods import create_mask_region
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import NCPU, SAMPLES
-from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
-from sleplet.utils.parallel_methods import (
+from sleplet.utils._parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
     split_arr_into_chunks,
 )
+from sleplet.utils._validation import Validation
+from sleplet.utils._vars import NCPU, SAMPLES
+from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
 
