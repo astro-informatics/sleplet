@@ -1,6 +1,7 @@
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
+from sleplet.utils._validation import Validation
 from sleplet.utils._vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -9,7 +10,6 @@ from sleplet.utils._vars import (
 )
 from sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
 from sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation, kw_only=True)

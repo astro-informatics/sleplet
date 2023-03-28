@@ -4,8 +4,8 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+from sleplet.utils._validation import Validation
 from sleplet.utils.harmonic_methods import mesh_forward
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation)

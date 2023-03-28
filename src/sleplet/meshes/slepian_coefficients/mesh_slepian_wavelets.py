@@ -6,8 +6,8 @@ from pys2let import pys2let_j_max
 
 from sleplet import logger
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.utils._validation import Validation
 from sleplet.utils.string_methods import filename_args, wavelet_ending
-from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import create_kappas
 
 

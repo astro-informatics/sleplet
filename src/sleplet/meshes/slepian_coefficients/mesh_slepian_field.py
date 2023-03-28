@@ -4,8 +4,8 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.utils._validation import Validation
 from sleplet.utils.slepian_methods import slepian_mesh_forward
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation)

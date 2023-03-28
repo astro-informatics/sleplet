@@ -3,10 +3,10 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
+from sleplet.utils._validation import Validation
 from sleplet.utils._vars import PHI_0, THETA_0
 from sleplet.utils.harmonic_methods import ensure_f_bandlimited
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation, kw_only=True)

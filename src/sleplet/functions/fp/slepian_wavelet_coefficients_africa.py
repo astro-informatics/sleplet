@@ -8,13 +8,13 @@ from sleplet import logger
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.utils._validation import Validation
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,
     filename_args,
     wavelet_ending,
 )
-from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 

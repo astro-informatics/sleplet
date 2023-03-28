@@ -6,12 +6,12 @@ from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from sleplet.utils._validation import Validation
 from sleplet.utils.harmonic_methods import mesh_inverse
 from sleplet.utils.integration_methods import (
     integrate_region_mesh,
     integrate_whole_mesh,
 )
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation)

@@ -12,6 +12,7 @@ from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU, SAMPLES
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.integration_methods import (
@@ -28,7 +29,6 @@ from sleplet.utils.parallel_methods import (
 )
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_arbitrary_methods import clean_evals_and_evecs
-from sleplet.utils.validation import Validation
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 

@@ -6,12 +6,12 @@ from pys2let import pys2let_j_max
 
 from sleplet import logger
 from sleplet.functions.f_p import F_P
+from sleplet.utils._validation import Validation
 from sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,
     filename_args,
     wavelet_ending,
 )
-from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import create_kappas
 
 

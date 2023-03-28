@@ -5,8 +5,8 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.utils._validation import Validation
 from sleplet.utils.noise import compute_snr, create_mesh_noise
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation)

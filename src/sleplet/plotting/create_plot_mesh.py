@@ -12,6 +12,7 @@ from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils._validation import Validation
 from sleplet.utils._vars import (
     MESH_CBAR_FONT_SIZE,
     MESH_CBAR_LEN,
@@ -25,7 +26,6 @@ from sleplet.utils.plotly_methods import (
     create_layout,
     create_tick_mark,
 )
-from sleplet.utils.validation import Validation
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
 

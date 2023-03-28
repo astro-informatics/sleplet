@@ -6,8 +6,8 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet.functions.coefficients import Coefficients
+from sleplet.utils._validation import Validation
 from sleplet.utils.noise import compute_snr, create_noise
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation)

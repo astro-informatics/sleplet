@@ -5,8 +5,8 @@ from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.utils._validation import Validation
 from sleplet.utils.slepian_methods import slepian_mesh_forward
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation, kw_only=True)

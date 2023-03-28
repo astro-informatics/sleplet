@@ -10,6 +10,7 @@ from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU
 from sleplet.utils.integration_methods import integrate_region_mesh
 from sleplet.utils.parallel_methods import (
@@ -20,7 +21,6 @@ from sleplet.utils.parallel_methods import (
     split_arr_into_chunks,
 )
 from sleplet.utils.slepian_arbitrary_methods import compute_mesh_shannon
-from sleplet.utils.validation import Validation
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 

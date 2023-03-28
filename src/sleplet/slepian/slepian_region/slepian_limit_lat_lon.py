@@ -10,6 +10,7 @@ from pydantic.dataclasses import dataclass
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet.utils._validation import Validation
 from sleplet.utils._vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
@@ -18,7 +19,6 @@ from sleplet.utils._vars import (
 )
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
-from sleplet.utils.validation import Validation
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 

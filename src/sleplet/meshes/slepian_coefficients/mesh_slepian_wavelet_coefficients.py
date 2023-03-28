@@ -10,8 +10,8 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianFi
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
+from sleplet.utils._validation import Validation
 from sleplet.utils.string_methods import filename_args, wavelet_ending
-from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 

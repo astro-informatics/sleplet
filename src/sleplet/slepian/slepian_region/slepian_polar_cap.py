@@ -13,6 +13,7 @@ from pydantic.dataclasses import dataclass
 from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU
 from sleplet.utils.harmonic_methods import create_emm_vector
 from sleplet.utils.mask_methods import create_mask_region
@@ -24,7 +25,6 @@ from sleplet.utils.parallel_methods import (
     split_arr_into_chunks,
 )
 from sleplet.utils.region import Region
-from sleplet.utils.validation import Validation
 
 L_SAVE_ALL = 16
 

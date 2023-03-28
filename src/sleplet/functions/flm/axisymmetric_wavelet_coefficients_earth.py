@@ -7,12 +7,12 @@ from pys2let import pys2let_j_max
 from sleplet import logger
 from sleplet.functions.f_lm import F_LM
 from sleplet.functions.flm.earth import Earth
+from sleplet.utils._validation import Validation
 from sleplet.utils.string_methods import (
     convert_camel_case_to_snake_case,
     filename_args,
     wavelet_ending,
 )
-from sleplet.utils.validation import Validation
 from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     create_axisymmetric_wavelets,

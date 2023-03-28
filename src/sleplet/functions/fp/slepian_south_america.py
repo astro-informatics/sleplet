@@ -4,10 +4,10 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
 from sleplet.functions.flm.south_america import SouthAmerica
+from sleplet.utils._validation import Validation
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_forward
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation)

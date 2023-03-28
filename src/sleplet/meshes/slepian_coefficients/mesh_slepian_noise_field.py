@@ -4,9 +4,9 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from sleplet.utils._validation import Validation
 from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
 from sleplet.utils.string_methods import filename_args
-from sleplet.utils.validation import Validation
 
 
 @dataclass(config=Validation, kw_only=True)
