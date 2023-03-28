@@ -47,4 +47,8 @@ jobs:
           python -m pip install -e .[docs]
 
       - name: Execute all examples in folders
-        run: find examples -name '*.py' -exec python {} \;
+        run: |
+          find examples -name '*.py'
+          -exec echo {} \;
+          -exec echo  \;
+          -exec python {} \;
