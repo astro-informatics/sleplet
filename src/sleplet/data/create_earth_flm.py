@@ -4,7 +4,7 @@ from numpy import typing as npt
 from scipy import io as sio
 
 from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.utils.smoothing import apply_gaussian_smoothing
+from sleplet.utils._smoothing import apply_gaussian_smoothing
 
 
 def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex_]:
