@@ -4,7 +4,6 @@ from numpy.random import default_rng
 
 from sleplet import logger
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from sleplet.utils.bool_methods import is_ergodic
 from sleplet.utils.harmonic_methods import compute_random_signal
 from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
@@ -16,6 +15,19 @@ J_MIN = 2
 L = 128
 RANDOM_SEED = 30
 SAMPLING_SCHEME = "MWSS"
+
+
+def _is_ergodic(j_min: int, *, j: int = 0) -> bool:
+    """
+    computes whether the function follows ergodicity
+
+    ergodicity fails for J_min = 0, because the scaling function will only
+    cover f00. Hence <flm flm*> will be 0 in that case and the scaling
+    coefficients will all be the same. So, if we do have J_min=0, we take the
+    variance over all realisations instead (of course, we then won't have a
+    standard deviation to compare it to the theoretical variance).
+    """
+    return j_min != 0 or j != 0
 
 
 def axisymmetric_wavelet_covariance(
@@ -62,7 +74,7 @@ def axisymmetric_wavelet_covariance(
         for j, coefficient in enumerate(wlm):
             f_wav_j = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME)
             covar_data[i, j] = (
-                f_wav_j.var() if is_ergodic(j_min, j=j) else f_wav_j[0, 0]
+                f_wav_j.var() if _is_ergodic(j_min, j=j) else f_wav_j[0, 0]
             )
 
     # compute mean and variance
@@ -70,7 +82,7 @@ def axisymmetric_wavelet_covariance(
     std_covar_data = covar_data.std(axis=0)
 
     # override for scaling function
-    if not is_ergodic(j_min):
+    if not _is_ergodic(j_min):
         mean_covar_data[0] = covar_data[0].var()
 
     # ensure reality
@@ -84,7 +96,7 @@ def axisymmetric_wavelet_covariance(
     for j in range(len(aw.wavelets)):
         message = (
             f"error in std: {error_in_std[j]:e}"
-            if is_ergodic(j_min, j=j)
+            if _is_ergodic(j_min, j=j)
             else f"absolute error: {error_absolute[j]:e}"
         )
         logger.info(f"axisymmetric wavelet covariance {j}: '{message}'")
