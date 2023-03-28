@@ -19,14 +19,14 @@ meshes using `plotly`.
 The recommended way to install `SLEPLET` is via
 [pip](https://pypi.org/project/pip/)
 
-```sh
+```bash
 pip install sleplet
 ```
 
 To install the latest development version of `SLEPLET` clone this repository
 and run
 
-```sh
+```bash
 pip install -e .
 ```
 
@@ -80,7 +80,7 @@ isn't provided as it is contained within the [examples folder](https://github.co
 
 #### Fig. 1
 
-```sh
+```bash
 for ell in $(seq 2 -1 1); do
     sphere harmonic_gaussian -a 0.75 -b 0.125 -e ${ell} 1 -L 128 -m translate -o
 done
@@ -102,7 +102,7 @@ for ell in range(2, 0, -1):
 
 #### Fig. 2
 
-```sh
+```bash
 sphere earth -L 128
 ```
 
@@ -121,7 +121,7 @@ Plot(f_sphere, f.L, "fig_2").execute()
 
 #### Fig. 3
 
-```sh
+```bash
 for ell in $(seq 2 -1 1); do
     sphere harmonic_gaussian -c earth -e ${ell} 1 -L 128
 done
@@ -150,13 +150,13 @@ for ell in range(2, 0, -1):
 
 #### Fig. 2
 
-```sh
+```bash
 python -m examples.arbitrary.south_america.tiling_south_america
 ```
 
 #### Fig. 3
 
-```sh
+```bash
 export SLEPIAN_MASK = "south_america"
 # a
 sphere earth -L 128 -s 2 -u
@@ -188,7 +188,7 @@ Plot(g_sphere, g.L, "fig_3_b", normalise=False, region=g.region).execute()
 
 #### Fig. 4
 
-```sh
+```bash
 export SLEPIAN_MASK = "south_america"
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
@@ -210,13 +210,13 @@ for p in [0, 9, 24, 49, 99, 199]:
 
 #### Fig. 5
 
-```sh
+```bash
 python -m examples.arbitrary.south_america.eigenvalues_south_america
 ```
 
 #### Fig. 6
 
-```sh
+```bash
 export SLEPIAN_MASK = "south_america"
 # a
 sphere slepian_wavelets -L 128 -u
@@ -241,7 +241,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 7
 
-```sh
+```bash
 export SLEPIAN_MASK = "south_america"
 # a
 sphere slepian_wavelet_coefficients_south_america -L 128 -s 2 -u
@@ -270,7 +270,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 8
 
-```sh
+```bash
 export SLEPIAN_MASK = "south_america"
 # a
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
@@ -299,7 +299,7 @@ Plot(
 
 #### Fig. 9
 
-```sh
+```bash
 export SLEPIAN_MASK = "africa"
 # a
 sphere earth -L 128 -s 2 -u -v africa
@@ -331,13 +331,13 @@ Plot(g_sphere, g.L, "fig_9_b", normalise=False, region=g.region).execute()
 
 #### Fig. 10
 
-```sh
+```bash
 python -m examples.arbitrary.africa.eigenvalues_africa
 ```
 
 #### Fig. 11
 
-```sh
+```bash
 export SLEPIAN_MASK = "africa"
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
@@ -359,7 +359,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 
 #### Fig. 12
 
-```sh
+```bash
 export SLEPIAN_MASK = "africa"
 # a
 sphere slepian_wavelets -L 128 -u
@@ -384,7 +384,7 @@ for j in [None, *list(range(6))]:
 
 #### Fig. 13
 
-```sh
+```bash
 export SLEPIAN_MASK = "africa"
 # a
 sphere slepian_wavelet_coefficients_africa -L 128 -s 2 -u
@@ -413,7 +413,7 @@ for j in [None, *list(range(6))]:
 
 #### Fig. 14
 
-```sh
+```bash
 export SLEPIAN_MASK = "africa"
 # a
 sphere slepian_africa -L 128 -n -10 -s 2 -u
@@ -446,7 +446,7 @@ Plot(
 
 #### Fig. 2
 
-```sh
+```bash
 for r in $(seq 2 9); do
     mesh homer -e ${r} -u
 done
@@ -467,19 +467,19 @@ for r in range(2, 10):
 
 #### Fig. 4
 
-```sh
+```bash
 python -m examples.mesh.mesh_tiling homer
 ```
 
 #### Fig. 5
 
-```sh
+```bash
 python -m examples.mesh.mesh_region homer
 ```
 
 #### Fig. 6
 
-```sh
+```bash
 for p in 0 9 24 49 99 199; do
     mesh homer -m slepian_functions -e ${p} -u -z
 done
@@ -502,13 +502,13 @@ for p in [0, 9, 24, 49, 99, 199]:
 
 #### Fig. 7
 
-```sh
+```bash
 python -m examples.mesh.mesh_slepian_eigenvalues homer
 ```
 
 #### Fig. 8
 
-```sh
+```bash
 # a
 mesh homer -m slepian_wavelets -u -z
 # b-f
@@ -534,7 +534,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 9
 
-```sh
+```bash
 mesh homer -m field -u
 ```
 
@@ -552,7 +552,7 @@ Plot(mesh, "fig_9", f_mesh, normalise=False).execute()
 
 #### Fig. 10
 
-```sh
+```bash
 # a
 mesh homer -m slepian_wavelet_coefficients -u -z
 # b-f
@@ -578,7 +578,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 11
 
-```sh
+```bash
 # a
 mesh homer -m slepian_field -u -z
 # b
@@ -612,7 +612,7 @@ Plot(
 
 #### Fig. 12
 
-```sh
+```bash
 for f in cheetah dragon bird teapot cube; do
     python -m examples.mesh.mesh_region ${f}
 done
@@ -620,6 +620,6 @@ done
 
 #### Tab. 1
 
-```sh
+```bash
 python -m examples.mesh.produce_table
 ```
