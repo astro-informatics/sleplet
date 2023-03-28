@@ -17,7 +17,7 @@ from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
-from sleplet.utils.plot_methods import calc_nearest_grid_point
+from sleplet.utils.plot_methods import _calc_nearest_grid_point
 from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from sleplet.utils.string_methods import (
     convert_classes_list_to_snake_case,
@@ -262,7 +262,7 @@ def _rotation_helper(
     filename += f"_rotate_{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
 
     # calculate angles
-    alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
+    alpha, beta = _calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
     gamma = gamma_pi_frac * np.pi
 
     # rotate by alpha, beta, gamma
@@ -285,7 +285,7 @@ def _translation_helper(
     filename += f"_translate_{filename_angle(alpha_pi_frac, beta_pi_frac)}"
 
     # calculate angles
-    alpha, beta = calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
+    alpha, beta = _calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
 
     # translate by alpha, beta
     coefficients = f.translate(alpha, beta, shannon=shannon)

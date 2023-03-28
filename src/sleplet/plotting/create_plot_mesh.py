@@ -20,7 +20,7 @@ from sleplet.utils._plotly_methods import (
     create_tick_mark,
 )
 from sleplet.utils._validation import Validation
-from sleplet.utils.plot_methods import convert_colourscale, normalise_function
+from sleplet.utils.plot_methods import _convert_colourscale, _normalise_function
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
 
@@ -78,7 +78,7 @@ class Plot:
                     bar_pos=self.mesh.colourbar_pos,
                     font_size=MESH_CBAR_FONT_SIZE,
                 ),
-                colorscale=convert_colourscale(self.colour),
+                colorscale=_convert_colourscale(self.colour),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
             )
@@ -103,7 +103,7 @@ class Plot:
         """
         scales the field before plotting
         """
-        return normalise_function(
+        return _normalise_function(
             average_functions_on_vertices_to_faces(self.mesh.faces, f),
             normalise=self.normalise,
         )

@@ -20,12 +20,12 @@ from sleplet.utils._plotly_methods import (
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 from sleplet.utils.plot_methods import (
-    boost_field,
+    _boost_field,
+    _convert_colourscale,
+    _create_plot_type,
+    _normalise_function,
+    _set_outside_region_to_minimum,
     calc_plot_resolution,
-    convert_colourscale,
-    create_plot_type,
-    normalise_function,
-    set_outside_region_to_minimum,
 )
 from sleplet.utils.region import Region
 
@@ -70,7 +70,9 @@ class Plot:
 
         if isinstance(self.region, Region):
             # make plot area clearer
-            f_plot = set_outside_region_to_minimum(f_plot, self.resolution, self.region)
+            f_plot = _set_outside_region_to_minimum(
+                f_plot, self.resolution, self.region
+            )
 
         # appropriate zoom in on north pole
         camera = create_camera(-0.1, -0.1, 10, 7.88)
@@ -88,7 +90,7 @@ class Plot:
                 cmid=0.5 if self.normalise else 0,
                 cmin=0 if self.normalise else -tick_mark,
                 colorbar=create_colour_bar(tick_mark, normalise=self.normalise),
-                colorscale=convert_colourscale(cmocean.cm.ice),
+                colorscale=_convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
             )
@@ -190,7 +192,7 @@ class Plot:
         """
         boosts, forces plot type and then scales the field before plotting
         """
-        boosted_field = boost_field(
+        boosted_field = _boost_field(
             f,
             self.L,
             self.resolution,
@@ -198,5 +200,5 @@ class Plot:
             spin=self.spin,
             upsample=self.upsample,
         )
-        field_space = create_plot_type(boosted_field, self.plot_type)
-        return normalise_function(field_space, normalise=self.normalise)
+        field_space = _create_plot_type(boosted_field, self.plot_type)
+        return _normalise_function(field_space, normalise=self.normalise)

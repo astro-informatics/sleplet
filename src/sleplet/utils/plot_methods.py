@@ -34,7 +34,7 @@ def calc_plot_resolution(L: int) -> int:
     )
 
 
-def convert_colourscale(
+def _convert_colourscale(
     cmap: colors, *, pl_entries: int = 255
 ) -> list[tuple[float, str]]:
     """
@@ -50,7 +50,7 @@ def convert_colourscale(
     return pl_colorscale
 
 
-def calc_nearest_grid_point(
+def _calc_nearest_grid_point(
     L: int, alpha_pi_fraction: float, beta_pi_fraction: float
 ) -> tuple[float, float]:
     """
@@ -98,7 +98,7 @@ def find_max_amplitude(
     resolution = calc_plot_resolution(function.L) if upsample else function.L
 
     # boost field to match final plot
-    boosted_field = boost_field(
+    boosted_field = _boost_field(
         field,
         function.L,
         resolution,
@@ -108,10 +108,10 @@ def find_max_amplitude(
     )
 
     # find maximum absolute value for given plot type
-    return np.abs(create_plot_type(boosted_field, plot_type)).max()
+    return np.abs(_create_plot_type(boosted_field, plot_type)).max()
 
 
-def create_plot_type(
+def _create_plot_type(
     field: npt.NDArray[np.complex_ | np.float_], plot_type: str
 ) -> npt.NDArray[np.float_]:
     """
@@ -127,7 +127,7 @@ def create_plot_type(
     return plot_dict[plot_type]
 
 
-def set_outside_region_to_minimum(
+def _set_outside_region_to_minimum(
     f_plot: npt.NDArray[np.float_], L: int, region: Region
 ) -> npt.NDArray[np.float_]:
     """
@@ -145,7 +145,7 @@ def set_outside_region_to_minimum(
     return np.where(closed_mask, f_plot, SPHERE_UNSEEN)
 
 
-def normalise_function(
+def _normalise_function(
     f: npt.NDArray[np.float_], *, normalise: bool
 ) -> npt.NDArray[np.float_]:
     """
@@ -164,7 +164,7 @@ def normalise_function(
         return (f - f.min()) / f.ptp()
 
 
-def boost_field(
+def _boost_field(
     field: npt.NDArray[np.complex_ | np.float_],
     L: int,
     resolution: int,
