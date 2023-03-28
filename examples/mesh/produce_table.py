@@ -1,4 +1,7 @@
-from denoising_slepian_mesh import main
+try:
+    from denoising_slepian_mesh import main
+except ModuleNotFoundError:
+    from .denoising_slepian_mesh import main
 
 from sleplet import logger
 
