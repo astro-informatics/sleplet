@@ -10,13 +10,20 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
 )
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.scripts.plotting_on_mesh import valid_meshes
-from sleplet.utils.class_lists import MESHES
 from sleplet.utils.denoising import denoising_mesh_slepian
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
 from sleplet.utils.string_methods import filename_args
 
 B = 3
 J_MIN = 2
+MESHES = [
+    "bird",
+    "cheetah",
+    "cube",
+    "dragon",
+    "homer",
+    "teapot",
+]
 N_SIGMA = 1
 NORMALISE = False
 SNR_IN = -5

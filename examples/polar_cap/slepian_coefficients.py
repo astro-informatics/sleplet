@@ -11,11 +11,11 @@ from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+sns.set(context="paper")
+
 L = 16
 THETA_MAX = 40
-
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
-sns.set(context="paper")
 
 
 def _earth_region_harmonic_coefficients(
@@ -55,7 +55,7 @@ def main() -> None:
     sns.scatterplot(x=range(N), y=flm, ax=ax, label="harmonic", linewidth=0, marker=".")
     ax.set_xlabel("coefficients")
     ax.set_ylabel("magnitude")
-    save_plot(fig_path, f"fp_earth_polar{THETA_MAX}_L{L}")
+    save_plot(_fig_path, f"fp_earth_polar{THETA_MAX}_L{L}")
 
 
 if __name__ == "__main__":

@@ -26,9 +26,9 @@ from sleplet.utils._vars import NCPU
 from sleplet.utils.harmonic_methods import create_emm_vector
 from sleplet.utils.region import Region
 
-L_SAVE_ALL = 16
-
 _data_path = Path(__file__).resolve().parents[2] / "data"
+
+L_SAVE_ALL = 16
 
 
 @dataclass(config=Validation)

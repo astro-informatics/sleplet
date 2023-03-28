@@ -14,7 +14,7 @@ from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.region import Region
 
-fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 B = 3
@@ -75,7 +75,7 @@ def main(*, limit: bool) -> None:
         plt.xlim(right=300)
         plt.ylim(top=50)
         filename += "_limit"
-    save_plot(fig_path, filename)
+    save_plot(_fig_path, filename)
 
 
 if __name__ == "__main__":

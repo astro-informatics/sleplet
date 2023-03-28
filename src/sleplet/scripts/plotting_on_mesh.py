@@ -9,7 +9,7 @@ from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.plotting.create_plot_mesh import Plot
-from sleplet.utils.class_lists import MESH_COEFFICIENTS, MESHES
+from sleplet.utils._class_lists import MESH_COEFFICIENTS, MESHES
 from sleplet.utils.harmonic_methods import mesh_inverse
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
 from sleplet.utils.string_methods import convert_classes_list_to_snake_case

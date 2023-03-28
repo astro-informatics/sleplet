@@ -1,5 +1,4 @@
 from argparse import ArgumentParser
-from pathlib import Path
 
 import cmocean
 import numpy as np
@@ -7,9 +6,15 @@ import numpy as np
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.scripts.plotting_on_mesh import valid_meshes
-from sleplet.utils.class_lists import MESHES
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+MESHES = [
+    "bird",
+    "cheetah",
+    "cube",
+    "dragon",
+    "homer",
+    "teapot",
+]
 
 
 def main(mesh_name: str) -> None:

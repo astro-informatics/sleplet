@@ -59,6 +59,7 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
 )
 
 _data_path = Path(__file__).resolve().parents[1] / "data"
+
 MESHES: list[str] = [
     Path(x).stem.removeprefix("meshes_regions_")
     for x in glob(str(_data_path / "*.toml"))

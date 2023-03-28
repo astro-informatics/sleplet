@@ -13,12 +13,12 @@ from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
 
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+sns.set(context="paper")
+
 L = 16
 SAMPLING_SCHEME = "MWSS"
 THETA_MAX = 40
-
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
-sns.set(context="paper")
 
 
 def main() -> None:
@@ -44,7 +44,7 @@ def main() -> None:
     ax.set_xlabel("coefficients")
     ax.set_ylabel("relative error")
     ax.set_yscale("log")
-    save_plot(fig_path, f"fp_error_earth_polar{THETA_MAX}_L{L}")
+    save_plot(_fig_path, f"fp_error_earth_polar{THETA_MAX}_L{L}")
 
 
 def _helper_sphere(

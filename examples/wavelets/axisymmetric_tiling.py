@@ -8,7 +8,7 @@ from scipy.interpolate import pchip
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.wavelet_methods import create_kappas
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 B = 3
@@ -35,7 +35,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$\ell$")
     plt.legend(loc=6)
-    save_plot(fig_path, f"axisymmetric_tiling_L{L}")
+    save_plot(_fig_path, f"axisymmetric_tiling_L{L}")
 
 
 if __name__ == "__main__":

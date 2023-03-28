@@ -29,9 +29,9 @@ from sleplet.utils.plot_methods import (
 )
 from sleplet.utils.region import Region
 
-MW_POLE_LENGTH = 2
-
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
+
+MW_POLE_LENGTH = 2
 
 
 @dataclass(config=Validation)

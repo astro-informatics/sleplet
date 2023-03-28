@@ -8,11 +8,19 @@ from matplotlib import pyplot as plt
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.scripts.plotting_on_mesh import valid_meshes
-from sleplet.utils.class_lists import MESHES
 from sleplet.utils.plot_methods import save_plot
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
+
+MESHES = [
+    "bird",
+    "cheetah",
+    "cube",
+    "dragon",
+    "homer",
+    "teapot",
+]
 
 
 def main(mesh_name: str, num_basis_fun: int) -> None:
@@ -39,7 +47,7 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     save_plot(
-        fig_path, f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
+        _fig_path, f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
     )
 
 

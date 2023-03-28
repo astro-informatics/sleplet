@@ -9,7 +9,7 @@ from sleplet import logger
 from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.utils.plot_methods import save_plot
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 ALPHA_DEFAULT = 0.75
@@ -33,7 +33,7 @@ def compute_translation_normalisation_theta() -> None:
     plt.ylabel(r"${\Vert f_{\ell m} Y_{\ell m}(\omega')\Vert}_{2}$")
     plt.xlim(0, 180)
     plt.ylim(0, np.ceil(norm.max()))
-    save_plot(fig_path, f"harmonic_gaussian_translation_normalisation_L{L}")
+    save_plot(_fig_path, f"harmonic_gaussian_translation_normalisation_L{L}")
 
 
 if __name__ == "__main__":

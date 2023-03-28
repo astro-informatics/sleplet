@@ -8,6 +8,7 @@ from numpy import typing as npt
 from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
 from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils._class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils._mask_methods import create_default_region
 from sleplet.utils._vars import (
     ALPHA_DEFAULT,
@@ -16,7 +17,6 @@ from sleplet.utils._vars import (
     BETA_DEFAULT,
     SAMPLING_SCHEME,
 )
-from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,

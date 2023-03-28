@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from sleplet.utils.plot_methods import save_plot
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 COLOURS = ["b", "k"]
@@ -46,7 +46,7 @@ def main() -> None:
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     plt.legend(loc=3)
-    save_plot(fig_path, f"combined_eigenvalues_L{L}")
+    save_plot(_fig_path, f"combined_eigenvalues_L{L}")
 
 
 if __name__ == "__main__":
