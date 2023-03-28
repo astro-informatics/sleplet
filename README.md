@@ -161,7 +161,7 @@ python -m examples.arbitrary.south_america.tiling_south_america
 #### Fig. 3
 
 ```sh
-export SLEPIAN_MASK = "south_america"
+export SLEPIAN_MASK="south_america"
 # a
 sphere earth -L 128 -s 2 -u
 # b
@@ -193,7 +193,7 @@ Plot(g_sphere, g.L, "fig_3_b", normalise=False, region=g.region).execute()
 #### Fig. 4
 
 ```sh
-export SLEPIAN_MASK = "south_america"
+export SLEPIAN_MASK="south_america"
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
 done
@@ -221,7 +221,7 @@ python -m examples.arbitrary.south_america.eigenvalues_south_america
 #### Fig. 6
 
 ```sh
-export SLEPIAN_MASK = "south_america"
+export SLEPIAN_MASK="south_america"
 # a
 sphere slepian_wavelets -L 128 -u
 # b-f
@@ -246,7 +246,7 @@ for j in [None, *list(range(5))]:
 #### Fig. 7
 
 ```sh
-export SLEPIAN_MASK = "south_america"
+export SLEPIAN_MASK="south_america"
 # a
 sphere slepian_wavelet_coefficients_south_america -L 128 -s 2 -u
 # b-f
@@ -275,7 +275,7 @@ for j in [None, *list(range(5))]:
 #### Fig. 8
 
 ```sh
-export SLEPIAN_MASK = "south_america"
+export SLEPIAN_MASK="south_america"
 # a
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
 # b-d
@@ -304,7 +304,7 @@ Plot(
 #### Fig. 9
 
 ```sh
-export SLEPIAN_MASK = "africa"
+export SLEPIAN_MASK="africa"
 # a
 sphere earth -L 128 -s 2 -u -v africa
 # b
@@ -342,7 +342,7 @@ python -m examples.arbitrary.africa.eigenvalues_africa
 #### Fig. 11
 
 ```sh
-export SLEPIAN_MASK = "africa"
+export SLEPIAN_MASK="africa"
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
 done
@@ -364,7 +364,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 #### Fig. 12
 
 ```sh
-export SLEPIAN_MASK = "africa"
+export SLEPIAN_MASK="africa"
 # a
 sphere slepian_wavelets -L 128 -u
 # b
@@ -389,7 +389,7 @@ for j in [None, *list(range(6))]:
 #### Fig. 13
 
 ```sh
-export SLEPIAN_MASK = "africa"
+export SLEPIAN_MASK="africa"
 # a
 sphere slepian_wavelet_coefficients_africa -L 128 -s 2 -u
 # b
@@ -418,7 +418,7 @@ for j in [None, *list(range(6))]:
 #### Fig. 14
 
 ```sh
-export SLEPIAN_MASK = "africa"
+export SLEPIAN_MASK="africa"
 # a
 sphere slepian_africa -L 128 -n -10 -s 2 -u
 # b-d
