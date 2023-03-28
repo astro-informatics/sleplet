@@ -11,8 +11,8 @@ from pydantic.dataclasses import dataclass
 from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils._vars import NCPU, SAMPLES
-from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.integration_methods import (
     calc_integration_weight,

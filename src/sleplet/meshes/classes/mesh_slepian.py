@@ -9,8 +9,8 @@ from pydantic.dataclasses import dataclass
 from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils._vars import NCPU
-from sleplet.utils.array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet.utils.integration_methods import integrate_region_mesh
 from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,
