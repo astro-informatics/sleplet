@@ -5,7 +5,7 @@ import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.data.other.earth.create_earth_flm import create_flm
+from sleplet.data.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils.harmonic_methods import (
