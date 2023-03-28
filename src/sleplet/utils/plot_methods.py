@@ -76,7 +76,9 @@ def save_plot(path: Path, name: str) -> None:
         filename = path / file_type / f"{name}.{file_type}"
         logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
-    plt.show()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 def find_max_amplitude(
