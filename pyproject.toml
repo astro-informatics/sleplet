@@ -67,13 +67,12 @@ optional-dependencies.dev = [
 ]
 optional-dependencies.docs = [
     "pdoc3",
-    "rundoc",
 ]
-urls."Bug Tracker" = "https://github.com/astro-informatics/sleplet/issues"
+urls.Code = "https://github.com/astro-informatics/sleplet"
 urls.Documentation = "https://astro-informatics.github.io/sleplet"
 urls.Download = "https://pypi.org/project/sleplet"
 urls.Homepage = "https://github.com/astro-informatics/sleplet"
-urls."Source Code" = "https://github.com/astro-informatics/sleplet"
+urls.Issues = "https://github.com/astro-informatics/sleplet/issues"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
@@ -92,9 +91,6 @@ plugins = [
 
 [tool.pytest.ini_options]
 addopts = "--color=yes -v"
-testpaths = [
-    "tests",
-]
 
 [tool.ruff]
 fix = true
@@ -158,17 +154,27 @@ overrides."tool.coverage.paths.source".inline_arrays = false
 legacy_tox_ini = """
     [gh-actions]
     python =
-        3.10: py310
+        3.10: py310, py310-readme
 
-    [testenv]
+    [testenv:py310]
     commands =
-        pytest --cov --slow
+        pytest --cov --slow {posargs:tests}
     deps =
-        pytest
         pytest-cov
         pytest-skip-slow
+    description =
+        run unit tests
+
+    [testenv:py310-readme]
+    commands =
+        pytest --codeblocks {posargs:README.md}
+    deps =
+        pytest-codeblocks
+    description =
+        run examples in README.md
 
     [tox]
     env_list =
-        py310
+        py310{,-readme}
+    isolated_build = True
 """

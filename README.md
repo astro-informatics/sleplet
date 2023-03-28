@@ -19,14 +19,14 @@ meshes using `plotly`.
 The recommended way to install `SLEPLET` is via
 [pip](https://pypi.org/project/pip/)
 
-```bash
+```sh
 pip install sleplet
 ```
 
 To install the latest development version of `SLEPLET` clone this repository
 and run
 
-```bash
+```sh
 pip install -e .
 ```
 
@@ -51,13 +51,15 @@ such it is recommended to stick to the powers of two up to `L=128`.
 When it comes to selecting a Slepian region the order precedence is
 [polar cap region](https://doi.org/10.1111/j.1365-246X.2006.03065.x) >
 [limited latitude longitude region](https://doi.org/10.1109/TSP.2016.2646668) >
-arbitrary region, [as seen in the code](https://github.com/astro-informatics/sleplet/blob/main/src/sleplet/utils/region.py). The
-default region is the `south_america` arbitrary region.
+arbitrary region,
+[as seen in the code](https://github.com/astro-informatics/sleplet/blob/main/src/sleplet/utils/region.py). The default region is the `south_america` arbitrary region.
 
 - `POLAR_GAP`
-  - for a Slepian `polar cap region`, when set in conjunction with `THETA_MAX` but without the other `PHI`/`THETA` variables
+  - for a Slepian `polar cap region`, when set in conjunction with `THETA_MAX`
+    but without the other `PHI`/`THETA` variables
 - `THETA_MAX`
-  - for a Slepian `polar cap region`, when set without the other `PHI`/`THETA` variables
+  - for a Slepian `polar cap region`, when set without the other `PHI`/`THETA`
+    variables
   - for a Slepian `limited latitude longitude region`
 - `THETA_MIN`
   - for a Slepian `limited latitude longitude region`
@@ -72,7 +74,8 @@ default region is the `south_america` arbitrary region.
 
 To recreate the figures from the below papers, one may use the CLI or the API.
 For those which don't use the `mesh` or `sphere` CLIs, the relevant API code
-isn't provided as it is contained within the [examples folder](https://github.com/astro-informatics/sleplet/tree/main/examples).
+isn't provided as it is contained within the
+[examples folder](https://github.com/astro-informatics/sleplet/tree/main/examples).
 
 ### Sifting Convolution on the Sphere
 
@@ -80,7 +83,7 @@ isn't provided as it is contained within the [examples folder](https://github.co
 
 #### Fig. 1
 
-```bash
+```sh
 for ell in $(seq 2 -1 1); do
     sphere harmonic_gaussian -a 0.75 -b 0.125 -e ${ell} 1 -L 128 -m translate -o
 done
@@ -102,7 +105,7 @@ for ell in range(2, 0, -1):
 
 #### Fig. 2
 
-```bash
+```sh
 sphere earth -L 128
 ```
 
@@ -121,7 +124,7 @@ Plot(f_sphere, f.L, "fig_2").execute()
 
 #### Fig. 3
 
-```bash
+```sh
 for ell in $(seq 2 -1 1); do
     sphere harmonic_gaussian -c earth -e ${ell} 1 -L 128
 done
@@ -150,13 +153,13 @@ for ell in range(2, 0, -1):
 
 #### Fig. 2
 
-```bash
+```sh
 python -m examples.arbitrary.south_america.tiling_south_america
 ```
 
 #### Fig. 3
 
-```bash
+```sh
 export SLEPIAN_MASK = "south_america"
 # a
 sphere earth -L 128 -s 2 -u
@@ -188,7 +191,7 @@ Plot(g_sphere, g.L, "fig_3_b", normalise=False, region=g.region).execute()
 
 #### Fig. 4
 
-```bash
+```sh
 export SLEPIAN_MASK = "south_america"
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
@@ -210,13 +213,13 @@ for p in [0, 9, 24, 49, 99, 199]:
 
 #### Fig. 5
 
-```bash
+```sh
 python -m examples.arbitrary.south_america.eigenvalues_south_america
 ```
 
 #### Fig. 6
 
-```bash
+```sh
 export SLEPIAN_MASK = "south_america"
 # a
 sphere slepian_wavelets -L 128 -u
@@ -241,7 +244,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 7
 
-```bash
+```sh
 export SLEPIAN_MASK = "south_america"
 # a
 sphere slepian_wavelet_coefficients_south_america -L 128 -s 2 -u
@@ -270,7 +273,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 8
 
-```bash
+```sh
 export SLEPIAN_MASK = "south_america"
 # a
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
@@ -299,7 +302,7 @@ Plot(
 
 #### Fig. 9
 
-```bash
+```sh
 export SLEPIAN_MASK = "africa"
 # a
 sphere earth -L 128 -s 2 -u -v africa
@@ -331,13 +334,13 @@ Plot(g_sphere, g.L, "fig_9_b", normalise=False, region=g.region).execute()
 
 #### Fig. 10
 
-```bash
+```sh
 python -m examples.arbitrary.africa.eigenvalues_africa
 ```
 
 #### Fig. 11
 
-```bash
+```sh
 export SLEPIAN_MASK = "africa"
 for p in 0 9 24 49 99 199; do
     sphere slepian -e ${p} -L 128 -u
@@ -359,7 +362,7 @@ for p in [0, 9, 24, 49, 99, 199]:
 
 #### Fig. 12
 
-```bash
+```sh
 export SLEPIAN_MASK = "africa"
 # a
 sphere slepian_wavelets -L 128 -u
@@ -384,7 +387,7 @@ for j in [None, *list(range(6))]:
 
 #### Fig. 13
 
-```bash
+```sh
 export SLEPIAN_MASK = "africa"
 # a
 sphere slepian_wavelet_coefficients_africa -L 128 -s 2 -u
@@ -413,7 +416,7 @@ for j in [None, *list(range(6))]:
 
 #### Fig. 14
 
-```bash
+```sh
 export SLEPIAN_MASK = "africa"
 # a
 sphere slepian_africa -L 128 -n -10 -s 2 -u
@@ -446,7 +449,7 @@ Plot(
 
 #### Fig. 2
 
-```bash
+```sh
 for r in $(seq 2 9); do
     mesh homer -e ${r} -u
 done
@@ -467,19 +470,19 @@ for r in range(2, 10):
 
 #### Fig. 4
 
-```bash
+```sh
 python -m examples.mesh.mesh_tiling homer
 ```
 
 #### Fig. 5
 
-```bash
+```sh
 python -m examples.mesh.mesh_region homer
 ```
 
 #### Fig. 6
 
-```bash
+```sh
 for p in 0 9 24 49 99 199; do
     mesh homer -m slepian_functions -e ${p} -u -z
 done
@@ -502,13 +505,13 @@ for p in [0, 9, 24, 49, 99, 199]:
 
 #### Fig. 7
 
-```bash
+```sh
 python -m examples.mesh.mesh_slepian_eigenvalues homer
 ```
 
 #### Fig. 8
 
-```bash
+```sh
 # a
 mesh homer -m slepian_wavelets -u -z
 # b-f
@@ -534,7 +537,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 9
 
-```bash
+```sh
 mesh homer -m field -u
 ```
 
@@ -552,7 +555,7 @@ Plot(mesh, "fig_9", f_mesh, normalise=False).execute()
 
 #### Fig. 10
 
-```bash
+```sh
 # a
 mesh homer -m slepian_wavelet_coefficients -u -z
 # b-f
@@ -578,7 +581,7 @@ for j in [None, *list(range(5))]:
 
 #### Fig. 11
 
-```bash
+```sh
 # a
 mesh homer -m slepian_field -u -z
 # b
@@ -612,7 +615,7 @@ Plot(
 
 #### Fig. 12
 
-```bash
+```sh
 for f in cheetah dragon bird teapot cube; do
     python -m examples.mesh.mesh_region ${f}
 done
@@ -620,6 +623,6 @@ done
 
 #### Tab. 1
 
-```bash
+```sh
 python -m examples.mesh.produce_table
 ```
