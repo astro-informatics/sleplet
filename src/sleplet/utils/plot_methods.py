@@ -8,14 +8,14 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
+from sleplet.utils._vars import (
+    SAMPLING_SCHEME,
+    SPHERE_UNSEEN,
+)
 from sleplet.utils.harmonic_methods import invert_flm_boosted
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
-from sleplet.utils.vars import (
-    SAMPLING_SCHEME,
-    SPHERE_UNSEEN,
-)
 
 
 def calc_plot_resolution(L: int) -> int:

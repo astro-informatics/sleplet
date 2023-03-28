@@ -7,7 +7,6 @@ from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils.harmonic_methods import compute_random_signal
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_inverse
-from sleplet.utils.vars import RANDOM_SEED
 from sleplet.utils.wavelet_methods import (
     compute_slepian_wavelet_covariance,
     find_non_zero_wavelet_coefficients,
@@ -18,6 +17,7 @@ B = 3
 J_MIN = 2
 L = 128
 NORMALISE = False
+RANDOM_SEED = 30
 RUNS = 10
 VAR_FP = 1
 

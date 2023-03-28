@@ -8,13 +8,13 @@ from sleplet.utils.denoising import denoising_slepian_wavelet
 from sleplet.utils.plot_methods import find_max_amplitude
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import filename_args
-from sleplet.utils.vars import SMOOTHING
 
 B = 3
 J_MIN = 2
 L = 128
 N_SIGMA = 2
 NORMALISE = False
+SMOOTHING = 2
 SNR_IN = -10
 
 

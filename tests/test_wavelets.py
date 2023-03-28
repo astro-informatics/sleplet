@@ -9,8 +9,8 @@ from sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
 from sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america import (
     AxisymmetricWaveletCoefficientsSouthAmerica,
 )
+from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.slepian_methods import slepian_forward
-from sleplet.utils.vars import SAMPLING_SCHEME
 from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_inverse,
     compute_slepian_wavelet_covariance,

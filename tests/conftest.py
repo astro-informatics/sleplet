@@ -16,8 +16,8 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
 from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.utils._vars import RANDOM_SEED
 from sleplet.utils.harmonic_methods import compute_random_signal
-from sleplet.utils.vars import RANDOM_SEED
 
 ARRAY_DIM = 10
 L = 16

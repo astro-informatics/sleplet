@@ -11,6 +11,7 @@ from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet.utils._vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 from sleplet.utils.plot_methods import (
     boost_field,
     calc_plot_resolution,
@@ -27,7 +28,6 @@ from sleplet.utils.plotly_methods import (
 )
 from sleplet.utils.region import Region
 from sleplet.utils.validation import Validation
-from sleplet.utils.vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 
 MW_POLE_LENGTH = 2
 

@@ -1,4 +1,4 @@
-from sleplet.utils.vars import (
+from sleplet.utils._vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,

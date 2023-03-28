@@ -8,14 +8,7 @@ from sleplet import logger
 from sleplet.data.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.harmonic_methods import (
-    mesh_forward,
-    mesh_inverse,
-    rotate_earth_to_africa,
-    rotate_earth_to_south_america,
-)
-from sleplet.utils.region import Region
-from sleplet.utils.vars import (
+from sleplet.utils._vars import (
     AFRICA_RANGE,
     PHI_MAX,
     PHI_MIN,
@@ -26,6 +19,13 @@ from sleplet.utils.vars import (
     THETA_MAX,
     THETA_MIN,
 )
+from sleplet.utils.harmonic_methods import (
+    mesh_forward,
+    mesh_inverse,
+    rotate_earth_to_africa,
+    rotate_earth_to_south_america,
+)
+from sleplet.utils.region import Region
 
 _data_path = Path(__file__).resolve().parents[1] / "data"
 

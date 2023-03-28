@@ -5,7 +5,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet.utils.vars import SAMPLING_SCHEME
+from sleplet.utils._vars import SAMPLING_SCHEME
 
 
 def calc_integration_weight(L: int) -> npt.NDArray[np.float_]:

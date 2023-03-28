@@ -10,7 +10,6 @@ from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.harmonic_methods import invert_flm_boosted
 from sleplet.utils.plot_methods import calc_plot_resolution, save_plot
-from sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
 
 COLUMNS = 3
 L = 16
@@ -21,6 +20,8 @@ RESOLUTION = calc_plot_resolution(L)
 SIGNS = [1, -1, 1, -1, 1, -1]
 TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_MAX = 40
+THETA_MAX_DEFAULT = np.pi
+THETA_MIN_DEFAULT = 0
 
 
 fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"

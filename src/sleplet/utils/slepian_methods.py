@@ -10,9 +10,9 @@ from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.harmonic_methods import boost_coefficient_resolution, mesh_inverse
 from sleplet.utils.region import Region
-from sleplet.utils.vars import SAMPLING_SCHEME
 
 
 def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:

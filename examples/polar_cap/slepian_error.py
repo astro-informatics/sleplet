@@ -12,9 +12,9 @@ from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import choose_slepian_method, slepian_forward
-from sleplet.utils.vars import SAMPLING_SCHEME
 
 L = 16
+SAMPLING_SCHEME = "MWSS"
 THETA_MAX = 40
 
 fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"

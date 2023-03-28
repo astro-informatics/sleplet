@@ -5,9 +5,9 @@ from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
 from sleplet.functions.flm.dirac_delta import DiracDelta
+from sleplet.utils._vars import RANDOM_SEED, SAMPLING_SCHEME
 from sleplet.utils.plot_methods import calc_nearest_grid_point
 from sleplet.utils.slepian_methods import slepian_inverse
-from sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 
 L = 128
 THETA_MAX = np.pi / 3

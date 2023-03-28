@@ -10,6 +10,7 @@ from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
+from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.harmonic_methods import rotate_earth_to_south_america
 from sleplet.utils.noise import (
     compute_sigma_j,
@@ -23,7 +24,6 @@ from sleplet.utils.noise import (
     slepian_wavelet_hard_thresholding,
 )
 from sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
-from sleplet.utils.vars import SAMPLING_SCHEME
 from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,

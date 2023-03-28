@@ -1,7 +1,7 @@
 from numpy.testing import assert_array_equal, assert_raises
 
 from sleplet.functions.flm.earth import Earth
-from sleplet.utils.vars import SMOOTHING
+from sleplet.utils._vars import SMOOTHING
 
 L = 128
 

@@ -8,12 +8,13 @@ from matplotlib import pyplot as plt
 from sleplet import logger
 from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.utils.plot_methods import save_plot
-from sleplet.utils.vars import ALPHA_DEFAULT, SAMPLING_SCHEME
 
 fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
+ALPHA_DEFAULT = 0.75
 L = 128
+SAMPLING_SCHEME = "MWSS"
 
 
 def compute_translation_normalisation_theta() -> None:

@@ -6,7 +6,6 @@ from sleplet import logger
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.utils.bool_methods import is_ergodic
 from sleplet.utils.harmonic_methods import compute_random_signal
-from sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
 from sleplet.utils.wavelet_methods import (
     axisymmetric_wavelet_forward,
     compute_wavelet_covariance,
@@ -15,6 +14,8 @@ from sleplet.utils.wavelet_methods import (
 B = 3
 J_MIN = 2
 L = 128
+RANDOM_SEED = 30
+SAMPLING_SCHEME = "MWSS"
 
 
 def axisymmetric_wavelet_covariance(

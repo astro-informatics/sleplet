@@ -4,7 +4,7 @@ from pathlib import Path
 import pooch
 
 from sleplet import logger
-from sleplet.utils.vars import ZENODO_DATA_DOI
+from sleplet.utils._vars import ZENODO_DATA_DOI
 
 _data_path = Path(__file__).resolve().parent
 

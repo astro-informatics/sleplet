@@ -6,6 +6,7 @@ from pydantic.dataclasses import dataclass
 from sleplet.data.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.functions.f_lm import F_LM
+from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.harmonic_methods import (
     ensure_f_bandlimited,
     rotate_earth_to_south_america,
@@ -13,7 +14,6 @@ from sleplet.utils.harmonic_methods import (
 from sleplet.utils.mask_methods import create_mask
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 from sleplet.utils.validation import Validation
-from sleplet.utils.vars import SAMPLING_SCHEME
 
 
 @dataclass(config=Validation)

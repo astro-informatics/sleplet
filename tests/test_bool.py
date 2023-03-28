@@ -1,7 +1,7 @@
 import numpy as np
 
+from sleplet.utils._vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
 from sleplet.utils.bool_methods import is_ergodic, is_limited_lat_lon, is_polar_cap
-from sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
 
 J = 2
 J_MIN = 0

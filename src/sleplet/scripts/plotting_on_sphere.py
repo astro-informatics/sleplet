@@ -8,6 +8,13 @@ from numpy import typing as npt
 from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
 from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.utils._vars import (
+    ALPHA_DEFAULT,
+    ANNOTATION_COLOUR,
+    ARROW_STYLE,
+    BETA_DEFAULT,
+    SAMPLING_SCHEME,
+)
 from sleplet.utils.class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
@@ -19,13 +26,6 @@ from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
 from sleplet.utils.string_methods import (
     convert_classes_list_to_snake_case,
     filename_angle,
-)
-from sleplet.utils.vars import (
-    ALPHA_DEFAULT,
-    ANNOTATION_COLOUR,
-    ARROW_STYLE,
-    BETA_DEFAULT,
-    SAMPLING_SCHEME,
 )
 
 
