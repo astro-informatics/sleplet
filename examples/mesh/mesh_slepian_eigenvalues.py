@@ -50,6 +50,9 @@ if __name__ == "__main__":
         type=valid_meshes,
         choices=MESHES,
         help="mesh to plot",
+        default="homer",
+        const="homer",
+        nargs="?",
     )
     parser.add_argument(
         "--basis",
