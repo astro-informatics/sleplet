@@ -9,8 +9,8 @@ from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils._vars import RANDOM_SEED, SAMPLING_SCHEME
 from sleplet.utils.harmonic_methods import mesh_forward
 from sleplet.utils.slepian_methods import (
-    compute_mesh_s_p_pixel,
-    compute_s_p_omega,
+    _compute_mesh_s_p_pixel,
+    _compute_s_p_omega,
     slepian_forward,
     slepian_inverse,
     slepian_mesh_forward,
@@ -188,7 +188,7 @@ def compute_slepian_sigma_j(
     compute sigma_j for wavelets used in denoising the signal
     """
     sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L**2)
-    s_p = compute_s_p_omega(L, slepian)
+    s_p = _compute_s_p_omega(L, slepian)
     psi_j_reshape = psi_j[:, : slepian.N, np.newaxis, np.newaxis]
     wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)
@@ -249,7 +249,7 @@ def compute_slepian_mesh_sigma_j(
     sigma_noise = compute_sigma_noise(
         signal, snr_in, denominator=mesh_slepian.slepian_eigenvalues.shape[0]
     )
-    s_p = compute_mesh_s_p_pixel(mesh_slepian)
+    s_p = _compute_mesh_s_p_pixel(mesh_slepian)
     psi_j_reshape = psi_j[:, : mesh_slepian.N, np.newaxis]
     wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)

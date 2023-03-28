@@ -49,7 +49,7 @@ def slepian_inverse(
     computes the Slepian inverse transform up to the Shannon number
     """
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
-    s_p = compute_s_p_omega(L, slepian)
+    s_p = _compute_s_p_omega(L, slepian)
     return (f_p_reshape * s_p).sum(axis=0)
 
 
@@ -70,7 +70,7 @@ def slepian_forward(
     return sd.decompose_all(n_coeffs)
 
 
-def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray[np.complex_]:
+def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray[np.complex_]:
     """
     method to calculate Sp(omega) for a given region
     """
@@ -83,13 +83,13 @@ def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray[np.compl
     return sp
 
 
-def compute_s_p_omega_prime(
+def _compute_s_p_omega_prime(
     L: int, alpha: float, beta: float, slepian: SlepianFunctions
 ) -> npt.NDArray[np.complex_]:
     """
     method to pick out the desired angle from Sp(omega)
     """
-    sp_omega = compute_s_p_omega(L, slepian)
+    sp_omega = _compute_s_p_omega(L, slepian)
     p = ssht.theta_to_index(beta, L, Method=SAMPLING_SCHEME)
     q = ssht.phi_to_index(alpha, L, Method=SAMPLING_SCHEME)
     sp_omega_prime = sp_omega[:, p, q]
@@ -127,11 +127,11 @@ def slepian_mesh_inverse(
     computes the Slepian inverse transform on the mesh up to the Shannon number
     """
     f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
-    s_p = compute_mesh_s_p_pixel(mesh_slepian)
+    s_p = _compute_mesh_s_p_pixel(mesh_slepian)
     return (f_p_reshape * s_p).sum(axis=0)
 
 
-def compute_mesh_s_p_pixel(mesh_slepian: MeshSlepian) -> npt.NDArray[np.float_]:
+def _compute_mesh_s_p_pixel(mesh_slepian: MeshSlepian) -> npt.NDArray[np.float_]:
     """
     method to calculate Sp(omega) for a given region
     """

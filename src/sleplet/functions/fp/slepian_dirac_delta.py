@@ -7,7 +7,7 @@ from sleplet import logger
 from sleplet.functions.f_p import F_P
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import SAMPLING_SCHEME
-from sleplet.utils.slepian_methods import compute_s_p_omega_prime
+from sleplet.utils.slepian_methods import _compute_s_p_omega_prime
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case
 
 
@@ -18,7 +18,7 @@ class SlepianDiracDelta(F_P):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
-        return compute_s_p_omega_prime(
+        return _compute_s_p_omega_prime(
             self.L, self.alpha, self.beta, self.slepian
         ).conj()
 

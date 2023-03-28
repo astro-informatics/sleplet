@@ -9,7 +9,10 @@ from sleplet.utils._mask_methods import create_default_region
 from sleplet.utils._noise import compute_snr, create_slepian_noise
 from sleplet.utils._validation import Validation
 from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import choose_slepian_method, compute_s_p_omega_prime
+from sleplet.utils.slepian_methods import (
+    _compute_s_p_omega_prime,
+    choose_slepian_method,
+)
 
 
 @dataclass(config=Validation)
@@ -29,7 +32,7 @@ class F_P(Coefficients):  # noqa: N801
     def _translation_helper(
         self, alpha: float, beta: float
     ) -> npt.NDArray[np.complex_]:
-        return compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
+        return _compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
 
     def _add_noise_to_signal(
         self,

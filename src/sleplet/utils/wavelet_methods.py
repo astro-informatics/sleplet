@@ -5,7 +5,7 @@ from pys2let import axisym_wav_l
 
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils._convolution_methods import sifting_convolution
-from sleplet.utils.slepian_methods import compute_s_p_omega
+from sleplet.utils.slepian_methods import _compute_s_p_omega
 
 
 def slepian_wavelet_forward(
@@ -91,7 +91,7 @@ def compute_slepian_wavelet_covariance(
     """
     computes the theoretical covariance of the wavelet coefficients
     """
-    s_p = compute_s_p_omega(L, slepian)
+    s_p = _compute_s_p_omega(L, slepian)
     wavelets_reshape = wavelets[:, : slepian.N, np.newaxis, np.newaxis]
     covar_theory = (np.abs(wavelets_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return covar_theory * var_signal
