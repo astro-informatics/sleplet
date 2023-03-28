@@ -57,7 +57,7 @@ class Region:
             )
 
     @validator("phi_max")
-    def check_phi_max(cls, v):
+    def _check_phi_max(cls, v):
         if v < PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
         if v > PHI_MAX_DEFAULT:
@@ -67,7 +67,7 @@ class Region:
         return v
 
     @validator("phi_min")
-    def check_phi_min(cls, v):
+    def _check_phi_min(cls, v):
         if v < PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
         if v > PHI_MAX_DEFAULT:
@@ -77,7 +77,7 @@ class Region:
         return v
 
     @validator("theta_max")
-    def check_theta_max(cls, v):
+    def _check_theta_max(cls, v):
         if v < THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
         if v > THETA_MAX_DEFAULT:
@@ -87,7 +87,7 @@ class Region:
         return v
 
     @validator("theta_min")
-    def check_theta_min(cls, v):
+    def _check_theta_min(cls, v):
         if v < THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
         if v > THETA_MAX_DEFAULT:
