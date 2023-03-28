@@ -9,14 +9,15 @@ from numpy.random import Generator
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils._integration_methods import integrate_whole_mesh
 from sleplet.utils._vars import (
-    AFRICA_ALPHA,
-    AFRICA_BETA,
-    AFRICA_GAMMA,
     SAMPLING_SCHEME,
-    SOUTH_AMERICA_ALPHA,
-    SOUTH_AMERICA_BETA,
-    SOUTH_AMERICA_GAMMA,
 )
+
+AFRICA_ALPHA = np.deg2rad(44)
+AFRICA_BETA = np.deg2rad(87)
+AFRICA_GAMMA = np.deg2rad(341)
+SOUTH_AMERICA_ALPHA = np.deg2rad(54)
+SOUTH_AMERICA_BETA = np.deg2rad(108)
+SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
 def create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:

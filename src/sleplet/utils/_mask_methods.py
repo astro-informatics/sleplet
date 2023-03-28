@@ -9,13 +9,11 @@ from sleplet.data.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils._vars import (
-    AFRICA_RANGE,
     PHI_MAX,
     PHI_MIN,
     POLAR_GAP,
     SAMPLING_SCHEME,
     SLEPIAN_MASK,
-    SOUTH_AMERICA_RANGE,
     THETA_MAX,
     THETA_MIN,
 )
@@ -28,6 +26,9 @@ from sleplet.utils.harmonic_methods import (
 from sleplet.utils.region import Region
 
 _data_path = Path(__file__).resolve().parents[1] / "data"
+
+AFRICA_RANGE = np.deg2rad(41)
+SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 
 def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:

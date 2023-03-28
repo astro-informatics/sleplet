@@ -20,14 +20,13 @@ from sleplet.utils._plotly_methods import (
     create_tick_mark,
 )
 from sleplet.utils._validation import Validation
-from sleplet.utils._vars import (
-    MESH_CBAR_FONT_SIZE,
-    MESH_CBAR_LEN,
-    MESH_UNSEEN,
-)
 from sleplet.utils.plot_methods import convert_colourscale, normalise_function
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
+
+MESH_CBAR_LEN = 0.95
+MESH_CBAR_FONT_SIZE = 32
+MESH_UNSEEN = -1e5  # kaleido bug
 
 
 @dataclass(config=Validation)

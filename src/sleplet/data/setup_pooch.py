@@ -4,10 +4,10 @@ from pathlib import Path
 import pooch
 
 from sleplet import logger
-from sleplet.utils._vars import ZENODO_DATA_DOI
 
 _data_path = Path(__file__).resolve().parent
 
+ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 POOCH = pooch.create(
     path=pooch.os_cache("sleplet"),
     # Use the figshare DOI

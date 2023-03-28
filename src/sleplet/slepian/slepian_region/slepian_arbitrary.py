@@ -26,11 +26,13 @@ from sleplet.utils._parallel_methods import (
 )
 from sleplet.utils._slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet.utils._validation import Validation
-from sleplet.utils._vars import NCPU, SAMPLES
+from sleplet.utils._vars import NCPU
 from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.region import Region
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
+
+SAMPLES = 2
 
 
 @dataclass(config=Validation)

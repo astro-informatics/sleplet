@@ -11,10 +11,6 @@ from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils._class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils._mask_methods import create_default_region
 from sleplet.utils._vars import (
-    ALPHA_DEFAULT,
-    ANNOTATION_COLOUR,
-    ARROW_STYLE,
-    BETA_DEFAULT,
     SAMPLING_SCHEME,
 )
 from sleplet.utils.harmonic_methods import (
@@ -27,6 +23,18 @@ from sleplet.utils.string_methods import (
     convert_classes_list_to_snake_case,
     filename_angle,
 )
+
+ALPHA_DEFAULT = 0.75
+ANNOTATION_COLOUR = "gold"
+ARROW_STYLE = {
+    "arrowhead": 0,
+    "arrowside": "start",
+    "ax": 4,
+    "ay": 4,
+    "startarrowsize": 0.5,
+    "startarrowhead": 6,
+}
+BETA_DEFAULT = 0.125
 
 
 def valid_maps(map_name: str) -> str:

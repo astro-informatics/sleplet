@@ -1,9 +1,9 @@
 from numpy.testing import assert_array_equal, assert_raises
 
 from sleplet.functions.flm.earth import Earth
-from sleplet.utils._vars import SMOOTHING
 
 L = 128
+SMOOTHING = 2
 
 
 def test_smoothing_changes_flm() -> None:
