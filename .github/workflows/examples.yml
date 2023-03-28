@@ -23,7 +23,7 @@ jobs:
           python -m pip install -e .[readme]
 
       - name: Run examples in the README
-        run: pytest --codebase README.md
+        run: pytest --codeblocks README.md
 
   examples:
     runs-on: ubuntu-latest
