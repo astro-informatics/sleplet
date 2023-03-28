@@ -14,8 +14,8 @@ from sleplet.utils.string_methods import (
     filename_args,
 )
 from sleplet.utils.wavelet_methods import (
+    _create_axisymmetric_wavelets,
     axisymmetric_wavelet_forward,
-    create_axisymmetric_wavelets,
 )
 
 
@@ -62,7 +62,7 @@ class AxisymmetricWaveletCoefficientsEarth(F_LM):
         """
         computes wavelet coefficients of the Earth
         """
-        wavelets = create_axisymmetric_wavelets(self.L, self.B, self.j_min)
+        wavelets = _create_axisymmetric_wavelets(self.L, self.B, self.j_min)
         self.earth = Earth(self.L, smoothing=self.smoothing)
         wavelet_coefficients = axisymmetric_wavelet_forward(
             self.L, self.earth.coefficients, wavelets

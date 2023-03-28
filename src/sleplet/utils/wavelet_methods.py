@@ -97,7 +97,7 @@ def compute_slepian_wavelet_covariance(
     return covar_theory * var_signal
 
 
-def create_axisymmetric_wavelets(
+def _create_axisymmetric_wavelets(
     L: int, B: int, j_min: int
 ) -> npt.NDArray[np.complex_]:
     """

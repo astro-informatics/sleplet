@@ -12,7 +12,7 @@ from sleplet.utils.string_methods import (
     _wavelet_ending,
     filename_args,
 )
-from sleplet.utils.wavelet_methods import create_axisymmetric_wavelets
+from sleplet.utils.wavelet_methods import _create_axisymmetric_wavelets
 
 
 @dataclass(config=Validation, kw_only=True)
@@ -56,7 +56,7 @@ class AxisymmetricWavelets(F_LM):
         """
         compute all wavelets
         """
-        return create_axisymmetric_wavelets(self.L, self.B, self.j_min)
+        return _create_axisymmetric_wavelets(self.L, self.B, self.j_min)
 
     @validator("j")
     def check_j(cls, v, values):
