@@ -69,7 +69,7 @@ optional-dependencies.docs = [
     "pdoc3",
 ]
 optional-dependencies.readme = [
-    "pytest-codebase",
+    "pytest-codeblocks",
 ]
 urls.Code = "https://github.com/astro-informatics/sleplet"
 urls.Documentation = "https://astro-informatics.github.io/sleplet"
