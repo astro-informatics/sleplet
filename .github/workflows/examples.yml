@@ -46,8 +46,7 @@ jobs:
 
       - name: Execute all examples in folders
         run: |
-          find examples -name '*.py'
-          -exec echo {} \;
-          -exec echo  \;
+          find examples -name '*.py' \
+          -exec echo {} \; \
+          -exec echo  \; \
           -exec python {} \;
-        shell: bash
