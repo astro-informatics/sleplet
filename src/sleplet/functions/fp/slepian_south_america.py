@@ -7,7 +7,7 @@ from sleplet.functions.flm.south_america import SouthAmerica
 from sleplet.utils._validation import Validation
 from sleplet.utils.region import Region
 from sleplet.utils.slepian_methods import slepian_forward
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.string_methods import _convert_camel_case_to_snake_case
 
 
 @dataclass(config=Validation)
@@ -25,7 +25,7 @@ class SlepianSouthAmerica(F_P):
         return slepian_forward(self.L, self.slepian, flm=sa.coefficients)
 
     def _create_name(self) -> str:
-        return convert_camel_case_to_snake_case(self.__class__.__name__)
+        return _convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> bool:
         return False

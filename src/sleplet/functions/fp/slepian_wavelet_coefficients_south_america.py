@@ -11,9 +11,9 @@ from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.utils._validation import Validation
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import (
-    convert_camel_case_to_snake_case,
+    _convert_camel_case_to_snake_case,
+    _wavelet_ending,
     filename_args,
-    wavelet_ending,
 )
 from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
@@ -41,10 +41,10 @@ class SlepianWaveletCoefficientsSouthAmerica(F_P):
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
-            f"{wavelet_ending(self.j_min, self.j)}"
+            f"{_wavelet_ending(self.j_min, self.j)}"
         )
 
     def _set_reality(self) -> bool:

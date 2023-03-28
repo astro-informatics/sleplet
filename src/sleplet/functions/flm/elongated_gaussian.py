@@ -6,7 +6,10 @@ from sleplet.functions.f_lm import F_LM
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import PHI_0, THETA_0
 from sleplet.utils.harmonic_methods import _ensure_f_bandlimited
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
+from sleplet.utils.string_methods import (
+    _convert_camel_case_to_snake_case,
+    filename_args,
+)
 
 
 @dataclass(config=Validation, kw_only=True)
@@ -24,7 +27,7 @@ class ElongatedGaussian(F_LM):
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.t_sigma, 'tsig')}"
             f"{filename_args(self.p_sigma, 'psig')}"
         )

@@ -10,7 +10,7 @@ from sleplet.utils._mask_methods import create_mask
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.harmonic_methods import _ensure_f_bandlimited, rotate_earth_to_africa
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.string_methods import _convert_camel_case_to_snake_case
 
 
 @dataclass(config=Validation)
@@ -24,7 +24,7 @@ class Africa(F_LM):
         )
 
     def _create_name(self) -> str:
-        return convert_camel_case_to_snake_case(self.__class__.__name__)
+        return _convert_camel_case_to_snake_case(self.__class__.__name__)
 
     def _set_reality(self) -> bool:
         return True

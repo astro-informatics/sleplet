@@ -9,7 +9,7 @@ from sleplet.utils._vars import (
     THETA_MAX_DEFAULT,
     THETA_MIN_DEFAULT,
 )
-from sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
+from sleplet.utils.string_methods import _angle_as_degree, _multiples_of_pi
 
 
 @dataclass(config=Validation, kw_only=True)
@@ -32,7 +32,7 @@ class Region:
             self.region_type = "polar"
             self.name_ending = (
                 f"polar{'_gap' if self.gap else ''}"
-                f"{angle_as_degree(self.theta_max)}"
+                f"{_angle_as_degree(self.theta_max)}"
             )
 
         elif is_limited_lat_lon(
@@ -40,10 +40,10 @@ class Region:
         ):
             self.region_type = "lim_lat_lon"
             self.name_ending = (
-                f"theta{angle_as_degree(self.theta_min)}"
-                f"-{angle_as_degree(self.theta_max)}"
-                f"_phi{angle_as_degree(self.phi_min)}"
-                f"-{angle_as_degree(self.phi_max)}"
+                f"theta{_angle_as_degree(self.theta_min)}"
+                f"-{_angle_as_degree(self.theta_max)}"
+                f"_phi{_angle_as_degree(self.phi_min)}"
+                f"-{_angle_as_degree(self.phi_max)}"
             )
 
         elif self.mask_name:
@@ -62,7 +62,7 @@ class Region:
             raise ValueError("phi_max cannot be negative")
         if v > PHI_MAX_DEFAULT:
             raise ValueError(
-                f"phi_max cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}"
+                f"phi_max cannot be greater than {_multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         return v
 
@@ -72,7 +72,7 @@ class Region:
             raise ValueError("phi_min cannot be negative")
         if v > PHI_MAX_DEFAULT:
             raise ValueError(
-                f"phi_min cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}"
+                f"phi_min cannot be greater than {_multiples_of_pi(PHI_MAX_DEFAULT)}"
             )
         return v
 
@@ -82,7 +82,8 @@ class Region:
             raise ValueError("theta_max cannot be negative")
         if v > THETA_MAX_DEFAULT:
             raise ValueError(
-                f"theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
+                "theta_max cannot be greater than "
+                f"{_multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
         return v
 
@@ -92,6 +93,7 @@ class Region:
             raise ValueError("theta_min cannot be negative")
         if v > THETA_MAX_DEFAULT:
             raise ValueError(
-                f"theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}"
+                "theta_min cannot be greater than "
+                f"{_multiples_of_pi(THETA_MAX_DEFAULT)}"
             )
         return v

@@ -12,7 +12,7 @@ from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.utils._class_lists import MESH_COEFFICIENTS, MESHES
 from sleplet.utils.harmonic_methods import mesh_inverse
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
-from sleplet.utils.string_methods import convert_classes_list_to_snake_case
+from sleplet.utils.string_methods import _convert_classes_list_to_snake_case
 
 
 def valid_meshes(mesh_name: str) -> str:
@@ -29,7 +29,7 @@ def valid_methods(method_name: str) -> str:
     """
     check if valid mesh name
     """
-    if method_name in convert_classes_list_to_snake_case(
+    if method_name in _convert_classes_list_to_snake_case(
         MESH_COEFFICIENTS, word_to_remove="Mesh"
     ):
         return method_name
@@ -62,7 +62,7 @@ def read_args() -> Namespace:
         nargs="?",
         default="basis_functions",
         const="basis_functions",
-        choices=convert_classes_list_to_snake_case(
+        choices=_convert_classes_list_to_snake_case(
             MESH_COEFFICIENTS, word_to_remove="Mesh"
         ),
         help="plotting routine: defaults to basis",
@@ -135,7 +135,7 @@ def main() -> None:
     # function to plot
     mesh = Mesh(args.function, zoom=args.zoom)
     f = MESH_COEFFICIENTS[
-        convert_classes_list_to_snake_case(
+        _convert_classes_list_to_snake_case(
             MESH_COEFFICIENTS, word_to_remove="Mesh"
         ).index(args.method)
     ](

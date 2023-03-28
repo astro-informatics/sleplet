@@ -6,7 +6,10 @@ from sleplet.functions.f_lm import F_LM
 from sleplet.functions.flm.earth import Earth
 from sleplet.utils._noise import compute_snr, create_noise
 from sleplet.utils._validation import Validation
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
+from sleplet.utils.string_methods import (
+    _convert_camel_case_to_snake_case,
+    filename_args,
+)
 
 
 @dataclass(config=Validation, kw_only=True)
@@ -24,7 +27,7 @@ class NoiseEarth(F_LM):
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.SNR, 'snr')}"
         )
 

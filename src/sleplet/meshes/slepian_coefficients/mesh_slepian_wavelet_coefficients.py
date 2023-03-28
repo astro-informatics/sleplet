@@ -11,7 +11,7 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 from sleplet.utils._validation import Validation
-from sleplet.utils.string_methods import filename_args, wavelet_ending
+from sleplet.utils.string_methods import _wavelet_ending, filename_args
 from sleplet.utils.wavelet_methods import slepian_wavelet_forward
 
 
@@ -36,7 +36,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
             f"slepian_wavelet_coefficients_{self.mesh.name}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
-            f"{wavelet_ending(self.j_min, self.j)}"
+            f"{_wavelet_ending(self.j_min, self.j)}"
         )
 
     def _setup_args(self) -> None:

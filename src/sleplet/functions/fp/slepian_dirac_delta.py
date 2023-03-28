@@ -8,7 +8,7 @@ from sleplet.functions.f_p import F_P
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.slepian_methods import _compute_s_p_omega_prime
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.string_methods import _convert_camel_case_to_snake_case
 
 
 @dataclass(config=Validation)
@@ -24,7 +24,7 @@ class SlepianDiracDelta(F_P):
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"_{self.slepian.region.name_ending}"
         )
 

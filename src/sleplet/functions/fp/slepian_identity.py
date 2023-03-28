@@ -4,7 +4,7 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
 from sleplet.utils._validation import Validation
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
+from sleplet.utils.string_methods import _convert_camel_case_to_snake_case
 
 
 @dataclass(config=Validation)
@@ -17,7 +17,7 @@ class SlepianIdentity(F_P):
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"_{self.slepian.region.name_ending}"
         )
 

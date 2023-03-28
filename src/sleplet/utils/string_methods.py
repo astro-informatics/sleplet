@@ -35,7 +35,7 @@ def filename_args(value: float, arg_name: str) -> str:
     return filename
 
 
-def filename_angle(
+def _filename_angle(
     alpha_pi_fraction: float, beta_pi_fraction: float, gamma_pi_fraction: float = 0
 ) -> str:
     """
@@ -65,7 +65,7 @@ def filename_angle(
     return filename
 
 
-def multiples_of_pi(angle: float) -> str:
+def _multiples_of_pi(angle: float) -> str:
     """
     prints the unicode pi with a prefix of the multiple unless it's 1
     i.e. pi, 2pi, 3pi
@@ -74,34 +74,34 @@ def multiples_of_pi(angle: float) -> str:
     return f"{multiple if multiple != 1 else ''}\u03C0"
 
 
-def angle_as_degree(radian: float) -> int:
+def _angle_as_degree(radian: float) -> int:
     """
     converts radian angle to integer degree
     """
     return round(np.rad2deg(radian))
 
 
-def wavelet_ending(j_min: int, j: int | None) -> str:
+def _wavelet_ending(j_min: int, j: int | None) -> str:
     """
     the ending name of the given wavelet
     """
     return "_scaling" if j is None else f"{filename_args(j + j_min, 'j')}"
 
 
-def convert_camel_case_to_snake_case(name: str) -> str:
+def _convert_camel_case_to_snake_case(name: str) -> str:
     """
     converts a string in camel case to snake case
     """
     return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
 
 
-def convert_classes_list_to_snake_case(
+def _convert_classes_list_to_snake_case(
     classes: list, *, word_to_remove: str = ""
 ) -> list[str]:
     """
     converts a list of classes to snake case
     """
     return [
-        convert_camel_case_to_snake_case(c.__name__.removeprefix(word_to_remove))
+        _convert_camel_case_to_snake_case(c.__name__.removeprefix(word_to_remove))
         for c in classes
     ]
