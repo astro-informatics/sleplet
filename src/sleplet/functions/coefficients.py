@@ -6,8 +6,8 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
+from sleplet.utils._convolution_methods import sifting_convolution
 from sleplet.utils._validation import Validation
-from sleplet.utils.convolution_methods import sifting_convolution
 from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import filename_args
