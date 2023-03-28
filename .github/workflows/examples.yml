@@ -24,6 +24,7 @@ jobs:
 
       - name: Run rundoc on the README
         run: rundoc run README.md
+        shell: bash
 
   examples:
     runs-on: ubuntu-latest
@@ -49,3 +50,4 @@ jobs:
           -exec echo {} \;
           -exec echo  \;
           -exec python {} \;
+        shell: bash
