@@ -100,7 +100,7 @@ def compute_random_signal(
     )
 
 
-def _mesh_forward(
+def mesh_forward(
     mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.float_]:
     """

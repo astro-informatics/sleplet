@@ -18,7 +18,7 @@ from sleplet.utils._vars import (
     THETA_MIN,
 )
 from sleplet.utils.harmonic_methods import (
-    _mesh_forward,
+    mesh_forward,
     mesh_inverse,
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
@@ -128,7 +128,7 @@ def ensure_masked_bandlimit_mesh_signal(
     """
     field = mesh_inverse(mesh, u_i)
     masked_field = np.where(mesh.region, field, 0)
-    return _mesh_forward(mesh, masked_field)
+    return mesh_forward(mesh, masked_field)
 
 
 def convert_region_on_vertices_to_faces(mesh: Mesh) -> npt.NDArray[np.float_]:

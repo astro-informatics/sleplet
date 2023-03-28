@@ -6,7 +6,7 @@ from pydantic.dataclasses import dataclass
 from sleplet import logger
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from sleplet.utils._validation import Validation
-from sleplet.utils.harmonic_methods import _mesh_forward
+from sleplet.utils.harmonic_methods import mesh_forward
 
 
 @dataclass(config=Validation, kw_only=True)
@@ -26,7 +26,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}"
         )
         basis_function = self.mesh.basis_functions[self.rank]
-        return _mesh_forward(self.mesh, basis_function)
+        return mesh_forward(self.mesh, basis_function)
 
     def _create_name(self) -> str:
         return (
