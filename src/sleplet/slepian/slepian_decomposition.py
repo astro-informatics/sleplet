@@ -7,13 +7,13 @@ from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import SAMPLING_SCHEME
-from sleplet.utils.integration_methods import (
+from sleplet.utils._integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
     integrate_whole_sphere,
 )
+from sleplet.utils._validation import Validation
+from sleplet.utils._vars import SAMPLING_SCHEME
 
 
 @dataclass(config=Validation)

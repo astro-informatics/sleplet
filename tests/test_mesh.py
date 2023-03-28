@@ -2,8 +2,8 @@ import numpy as np
 import pytest
 from numpy.testing import assert_allclose
 
+from sleplet.utils._integration_methods import integrate_whole_mesh
 from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
-from sleplet.utils.integration_methods import integrate_whole_mesh
 
 
 def test_inverse_forward_transform_recovery(mesh_field_region) -> None:

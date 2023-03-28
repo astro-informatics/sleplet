@@ -12,13 +12,13 @@ from sleplet import logger
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import NCPU, SAMPLES
-from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
-from sleplet.utils.integration_methods import (
+from sleplet.utils._integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
 )
+from sleplet.utils._validation import Validation
+from sleplet.utils._vars import NCPU, SAMPLES
+from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
 from sleplet.utils.mask_methods import create_mask_region
 from sleplet.utils.parallel_methods import (
     attach_to_shared_memory_block,

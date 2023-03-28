@@ -7,6 +7,7 @@ from numpy import typing as npt
 from numpy.random import Generator
 
 from sleplet.meshes.classes.mesh import Mesh
+from sleplet.utils._integration_methods import integrate_whole_mesh
 from sleplet.utils._vars import (
     AFRICA_ALPHA,
     AFRICA_BETA,
@@ -16,7 +17,6 @@ from sleplet.utils._vars import (
     SOUTH_AMERICA_BETA,
     SOUTH_AMERICA_GAMMA,
 )
-from sleplet.utils.integration_methods import integrate_whole_mesh
 
 
 def create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
