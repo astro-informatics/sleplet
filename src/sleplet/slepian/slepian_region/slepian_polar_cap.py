@@ -361,13 +361,13 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     @validator("order")
-    def check_order(cls, v, values):
+    def _check_order(cls, v, values):
         if v is not None and (np.abs(v) >= values["L"]).any():
             raise ValueError(f"Order magnitude should be less than {values['L']}")
         return v
 
     @validator("theta_max")
-    def check_theta_max(cls, v):
+    def _check_theta_max(cls, v):
         if v == 0:
             raise ValueError("theta_max cannot be zero")
         return v
