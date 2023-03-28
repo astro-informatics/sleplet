@@ -4,8 +4,8 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
+from sleplet.utils._noise import compute_snr, create_slepian_noise
 from sleplet.utils._validation import Validation
-from sleplet.utils.noise import compute_snr, create_slepian_noise
 from sleplet.utils.region import Region
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
