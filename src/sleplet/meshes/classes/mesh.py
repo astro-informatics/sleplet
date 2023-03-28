@@ -8,8 +8,8 @@ from sleplet.utils._mesh_methods import (
     mesh_eigendecomposition,
     read_mesh,
 )
+from sleplet.utils._plotly_methods import create_camera
 from sleplet.utils._validation import Validation
-from sleplet.utils.plotly_methods import create_camera
 
 
 @dataclass(config=Validation)

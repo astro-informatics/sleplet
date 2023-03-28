@@ -14,6 +14,11 @@ from sleplet import logger
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.utils._mask_methods import convert_region_on_vertices_to_faces
 from sleplet.utils._mesh_methods import average_functions_on_vertices_to_faces
+from sleplet.utils._plotly_methods import (
+    create_colour_bar,
+    create_layout,
+    create_tick_mark,
+)
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import (
     MESH_CBAR_FONT_SIZE,
@@ -21,11 +26,6 @@ from sleplet.utils._vars import (
     MESH_UNSEEN,
 )
 from sleplet.utils.plot_methods import convert_colourscale, normalise_function
-from sleplet.utils.plotly_methods import (
-    create_colour_bar,
-    create_layout,
-    create_tick_mark,
-)
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
 

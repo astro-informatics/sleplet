@@ -11,6 +11,12 @@ from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet.utils._plotly_methods import (
+    create_camera,
+    create_colour_bar,
+    create_layout,
+    create_tick_mark,
+)
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import SAMPLING_SCHEME, SPHERE_UNSEEN
 from sleplet.utils.plot_methods import (
@@ -20,12 +26,6 @@ from sleplet.utils.plot_methods import (
     create_plot_type,
     normalise_function,
     set_outside_region_to_minimum,
-)
-from sleplet.utils.plotly_methods import (
-    create_camera,
-    create_colour_bar,
-    create_layout,
-    create_tick_mark,
 )
 from sleplet.utils.region import Region
 
