@@ -11,7 +11,7 @@ from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.utils._vars import SAMPLING_SCHEME
-from sleplet.utils.harmonic_methods import boost_coefficient_resolution, mesh_inverse
+from sleplet.utils.harmonic_methods import _boost_coefficient_resolution, mesh_inverse
 from sleplet.utils.region import Region
 
 
@@ -95,7 +95,7 @@ def compute_s_p_omega_prime(
     sp_omega_prime = sp_omega[:, p, q]
     # pad with zeros so it has the expected shape
     boost = L**2 - slepian.N
-    return boost_coefficient_resolution(sp_omega_prime, boost)
+    return _boost_coefficient_resolution(sp_omega_prime, boost)
 
 
 def slepian_mesh_forward(

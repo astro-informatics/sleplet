@@ -5,7 +5,7 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 from sleplet.utils._validation import Validation
-from sleplet.utils.harmonic_methods import mesh_forward
+from sleplet.utils.harmonic_methods import _mesh_forward
 
 
 @dataclass(config=Validation)
@@ -18,7 +18,7 @@ class MeshField(MeshHarmonicCoefficients):
         compute field on the vertices of the mesh
         """
         field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
-        return mesh_forward(self.mesh, field)
+        return _mesh_forward(self.mesh, field)
 
     def _create_name(self) -> str:
         return f"{self.mesh.name}_field"

@@ -6,7 +6,7 @@ from pydantic.dataclasses import dataclass
 
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils._validation import Validation
-from sleplet.utils.harmonic_methods import create_spherical_harmonic
+from sleplet.utils.harmonic_methods import _create_spherical_harmonic
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
@@ -17,7 +17,7 @@ class SphericalHarmonic(F_LM):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         ind = ssht.elm2ind(self.ell, self.m)
-        return create_spherical_harmonic(self.L, ind)
+        return _create_spherical_harmonic(self.L, ind)
 
     def _create_name(self) -> str:
         return (

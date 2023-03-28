@@ -27,7 +27,10 @@ from sleplet.utils._parallel_methods import (
 from sleplet.utils._slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU
-from sleplet.utils.harmonic_methods import create_spherical_harmonic, invert_flm_boosted
+from sleplet.utils.harmonic_methods import (
+    _create_spherical_harmonic,
+    invert_flm_boosted,
+)
 from sleplet.utils.region import Region
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
@@ -168,11 +171,11 @@ class SlepianArbitrary(SlepianFunctions):
         """
         if i not in self._fields:
             self._fields[i] = invert_flm_boosted(
-                create_spherical_harmonic(self.L, i), self.L, self.resolution
+                _create_spherical_harmonic(self.L, i), self.L, self.resolution
             )
         if j not in self._fields:
             self._fields[j] = invert_flm_boosted(
-                create_spherical_harmonic(self.L, j), self.L, self.resolution
+                _create_spherical_harmonic(self.L, j), self.L, self.resolution
             )
         return integrate_region_sphere(
             self.mask, self.weight, self._fields[i], self._fields[j].conj()

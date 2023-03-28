@@ -7,7 +7,7 @@ from sleplet import logger
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.utils._vars import RANDOM_SEED, SAMPLING_SCHEME
-from sleplet.utils.harmonic_methods import mesh_forward
+from sleplet.utils.harmonic_methods import _mesh_forward
 from sleplet.utils.slepian_methods import (
     compute_mesh_s_p_pixel,
     compute_s_p_omega,
@@ -223,7 +223,7 @@ def create_slepian_mesh_noise(
     """
     computes Gaussian white noise in Slepian space
     """
-    u_i = mesh_forward(
+    u_i = _mesh_forward(
         mesh_slepian.mesh,
         slepian_mesh_inverse(
             mesh_slepian,

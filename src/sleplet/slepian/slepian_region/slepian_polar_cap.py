@@ -23,7 +23,7 @@ from sleplet.utils._parallel_methods import (
 )
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import NCPU
-from sleplet.utils.harmonic_methods import create_emm_vector
+from sleplet.utils.harmonic_methods import _create_emm_vector
 from sleplet.utils.region import Region
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
@@ -118,7 +118,7 @@ class SlepianPolarCap(SlepianFunctions):
         """
         solves the eigenproblem for a given order 'm;
         """
-        emm = create_emm_vector(self.L)
+        emm = _create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)

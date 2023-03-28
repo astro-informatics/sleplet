@@ -20,7 +20,7 @@ SOUTH_AMERICA_BETA = np.deg2rad(108)
 SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
-def create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
+def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
     """
     create a spherical harmonic in harmonic space for the given index
     """
@@ -29,7 +29,9 @@ def create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
     return flm
 
 
-def boost_coefficient_resolution(flm: npt.NDArray[Any], boost: int) -> npt.NDArray[Any]:
+def _boost_coefficient_resolution(
+    flm: npt.NDArray[Any], boost: int
+) -> npt.NDArray[Any]:
     """
     calculates a boost in resolution for given flm
     """
@@ -48,13 +50,13 @@ def invert_flm_boosted(
     performs the inverse harmonic transform
     """
     boost = resolution**2 - L**2
-    flm = boost_coefficient_resolution(flm, boost)
+    flm = _boost_coefficient_resolution(flm, boost)
     return ssht.inverse(
         flm, resolution, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME
     )
 
 
-def ensure_f_bandlimited(
+def _ensure_f_bandlimited(
     grid_fun: Callable[
         [npt.NDArray[np.float_], npt.NDArray[np.float_]], npt.NDArray[np.float_]
     ],
@@ -72,7 +74,7 @@ def ensure_f_bandlimited(
     return ssht.forward(f, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
 
 
-def create_emm_vector(L: int) -> npt.NDArray[np.float_]:
+def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
     """
     create vector of m values for a given L
     """
@@ -98,7 +100,7 @@ def compute_random_signal(
     )
 
 
-def mesh_forward(
+def _mesh_forward(
     mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.float_]:
     """

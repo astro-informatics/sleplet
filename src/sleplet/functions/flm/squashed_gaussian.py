@@ -5,7 +5,7 @@ from pydantic.dataclasses import dataclass
 from sleplet.functions.f_lm import F_LM
 from sleplet.utils._validation import Validation
 from sleplet.utils._vars import THETA_0
-from sleplet.utils.harmonic_methods import ensure_f_bandlimited
+from sleplet.utils.harmonic_methods import _ensure_f_bandlimited
 from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
 
 
@@ -18,7 +18,7 @@ class SquashedGaussian(F_LM):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return ensure_f_bandlimited(
+        return _ensure_f_bandlimited(
             self._grid_fun, self.L, reality=self.reality, spin=self.spin
         )
 

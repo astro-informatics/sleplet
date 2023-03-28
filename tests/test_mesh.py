@@ -3,7 +3,7 @@ import pytest
 from numpy.testing import assert_allclose
 
 from sleplet.utils._integration_methods import integrate_whole_mesh
-from sleplet.utils.harmonic_methods import mesh_forward, mesh_inverse
+from sleplet.utils.harmonic_methods import _mesh_forward, mesh_inverse
 
 
 def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
@@ -12,7 +12,7 @@ def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
     inverse and forward transform on the mesh
     """
     u = mesh_inverse(mesh_field_region.mesh, mesh_field_region.coefficients)
-    kernel_recov = mesh_forward(mesh_field_region.mesh, u)
+    kernel_recov = _mesh_forward(mesh_field_region.mesh, u)
     assert_allclose(
         np.abs(mesh_field_region.coefficients - kernel_recov).mean(), 0, atol=1e-14
     )

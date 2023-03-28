@@ -3,7 +3,7 @@ from numpy.testing import assert_equal
 
 from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.harmonic_methods import (
-    boost_coefficient_resolution,
+    _boost_coefficient_resolution,
     invert_flm_boosted,
 )
 
@@ -16,7 +16,7 @@ def test_harmonic_coefficients_padded(random_flm) -> None:
     tests that harmonic coefficients are zero padded for plotting
     """
     boost = L_LARGE**2 - L_SMALL**2
-    flm_boosted = boost_coefficient_resolution(random_flm, boost)
+    flm_boosted = _boost_coefficient_resolution(random_flm, boost)
     assert_equal(len(flm_boosted), L_LARGE**2)
 
 
