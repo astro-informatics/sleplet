@@ -2,7 +2,7 @@ import numpy as np
 import pyssht as ssht
 from numpy.testing import assert_allclose, assert_raises
 
-from sleplet.slepian.slepian_decomposition import SlepianDecomposition
+from sleplet.slepian._slepian_decomposition import SlepianDecomposition
 from sleplet.utils._mask_methods import create_mask_region
 from sleplet.utils._vars import SAMPLING_SCHEME
 from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse

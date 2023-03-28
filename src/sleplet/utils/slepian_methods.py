@@ -5,7 +5,7 @@ from numpy import typing as npt
 from sleplet import logger
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.meshes.classes.mesh_slepian_decomposition import MeshSlepianDecomposition
-from sleplet.slepian.slepian_decomposition import SlepianDecomposition
+from sleplet.slepian._slepian_decomposition import SlepianDecomposition
 from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
 from sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
