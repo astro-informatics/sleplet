@@ -8,7 +8,6 @@ from scipy.interpolate import pchip
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.plot_methods import save_plot
 from sleplet.utils.wavelet_methods import create_kappas
 
@@ -77,7 +76,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="mesh tiling")
     parser.add_argument(
         "function",
-        type=valid_meshes,
+        type=str,
         choices=MESHES,
         help="mesh to plot",
         default="homer",

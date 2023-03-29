@@ -9,7 +9,6 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 from sleplet.plotting.create_plot_mesh import Plot
-from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.denoising import denoising_mesh_slepian
 from sleplet.utils.slepian_methods import slepian_mesh_inverse
 from sleplet.utils.string_methods import filename_args
@@ -58,7 +57,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="denoising")
     parser.add_argument(
         "function",
-        type=valid_meshes,
+        type=str,
         choices=MESHES,
         help="mesh to plot",
         default="homer",

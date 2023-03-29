@@ -1,21 +1,20 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 
-import numpy as np
-from numpy import typing as npt
-
 from sleplet import logger
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.plotting.create_plot_mesh import Plot
 from sleplet.utils._class_lists import MESH_COEFFICIENTS, MESHES
-from sleplet.utils.harmonic_methods import mesh_inverse
-from sleplet.utils.slepian_methods import slepian_mesh_inverse
+from sleplet.utils.plot_methods import (
+    _coefficients_to_field_mesh,
+    compute_amplitude_for_noisy_mesh_plots,
+)
 from sleplet.utils.string_methods import _convert_classes_list_to_snake_case
 
 
-def valid_meshes(mesh_name: str) -> str:
+def _valid_meshes(mesh_name: str) -> str:
     """
     check if valid mesh name
     """
@@ -25,7 +24,7 @@ def valid_meshes(mesh_name: str) -> str:
         raise ValueError(f"'{mesh_name}' is not a valid mesh name to plot")
 
 
-def valid_methods(method_name: str) -> str:
+def _valid_methods(method_name: str) -> str:
     """
     check if valid mesh name
     """
@@ -37,14 +36,14 @@ def valid_methods(method_name: str) -> str:
         raise ValueError(f"'{method_name}' is not a valid method to plot")
 
 
-def read_args() -> Namespace:
+def _read_args() -> Namespace:
     """
     method to read args from the command line
     """
     parser = ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",
-        type=valid_meshes,
+        type=_valid_meshes,
         choices=MESHES,
         help="mesh to plot",
     )
@@ -58,7 +57,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "--method",
         "-m",
-        type=valid_methods,
+        type=_valid_methods,
         nargs="?",
         default="basis_functions",
         const="basis_functions",
@@ -89,11 +88,11 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> None:
+def _plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> None:
     """
     master plotting method
     """
-    field = _coefficients_to_field(f, f.coefficients)
+    field = _coefficients_to_field_mesh(f, f.coefficients)
     Plot(
         f.mesh,
         f.name,
@@ -104,32 +103,8 @@ def plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> No
     ).execute()
 
 
-def _coefficients_to_field(
-    f: MeshCoefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
-) -> npt.NDArray[np.complex_ | np.float_]:
-    """
-    computes the field over the whole mesh from the harmonic/Slepian coefficients
-    """
-    return (
-        slepian_mesh_inverse(f.mesh_slepian, coefficients)
-        if isinstance(f, MeshSlepianCoefficients)
-        else mesh_inverse(f.mesh, coefficients)
-    )
-
-
-def compute_amplitude_for_noisy_plots(f: MeshCoefficients) -> float | None:
-    """
-    for the noised plots fix the amplitude to the initial data
-    """
-    return (
-        np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
-        if f.unnoised_coefficients is not None
-        else None
-    )
-
-
 def main() -> None:
-    args = read_args()
+    args = _read_args()
     logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
@@ -146,10 +121,10 @@ def main() -> None:
     )
 
     # custom amplitude for noisy plots
-    amplitude = compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_mesh_plots(f)
 
     # perform plot
-    plot(f, normalise=not args.unnormalise, amplitude=amplitude)
+    _plot(f, normalise=not args.unnormalise, amplitude=amplitude)
 
 
 if __name__ == "__main__":

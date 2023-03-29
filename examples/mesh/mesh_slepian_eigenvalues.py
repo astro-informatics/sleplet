@@ -7,7 +7,6 @@ from matplotlib import pyplot as plt
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from sleplet.scripts.plotting_on_mesh import valid_meshes
 from sleplet.utils.plot_methods import save_plot
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
@@ -55,7 +54,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="mesh Slepian eigenvalues")
     parser.add_argument(
         "function",
-        type=valid_meshes,
+        type=str,
         choices=MESHES,
         help="mesh to plot",
         default="homer",

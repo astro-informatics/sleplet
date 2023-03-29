@@ -10,15 +10,16 @@ from sleplet.functions.coefficients import Coefficients
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.utils._class_lists import COEFFICIENTS, MAPS_LM
 from sleplet.utils._mask_methods import create_default_region
-from sleplet.utils._vars import (
-    SAMPLING_SCHEME,
-)
 from sleplet.utils.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
-from sleplet.utils.plot_methods import _calc_nearest_grid_point
-from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
+from sleplet.utils.plot_methods import (
+    _calc_nearest_grid_point,
+    _coefficients_to_field_sphere,
+    compute_amplitude_for_noisy_sphere_plots,
+)
+from sleplet.utils.slepian_methods import slepian_forward
 from sleplet.utils.string_methods import (
     _convert_classes_list_to_snake_case,
     _filename_angle,
@@ -227,7 +228,7 @@ def plot(
                 coefficients = rotate_earth_to_south_america(coefficients, f.L)
 
     # get field value
-    field = _coefficients_to_field(f, coefficients)
+    field = _coefficients_to_field_sphere(f, coefficients)
 
     # do plot
     Plot(
@@ -320,32 +321,6 @@ def _convolution_helper(
     return coefficients, filename
 
 
-def _coefficients_to_field(
-    f: Coefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
-) -> npt.NDArray[np.complex_ | np.float_]:
-    """
-    computes the field over the samples from the harmonic/Slepian coefficients
-    """
-    return (
-        slepian_inverse(coefficients, f.L, f.slepian)
-        if hasattr(f, "slepian")
-        else ssht.inverse(
-            coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
-        )
-    )
-
-
-def compute_amplitude_for_noisy_plots(f: Coefficients) -> float | None:
-    """
-    for the noised plots fix the amplitude to the initial data
-    """
-    return (
-        np.abs(_coefficients_to_field(f, f.unnoised_coefficients)).max()
-        if f.unnoised_coefficients is not None
-        else None
-    )
-
-
 def main() -> None:
     args = read_args()
 
@@ -370,7 +345,7 @@ def main() -> None:
     )
 
     # custom amplitude for noisy plots
-    amplitude = compute_amplitude_for_noisy_plots(f)
+    amplitude = compute_amplitude_for_noisy_sphere_plots(f)
 
     plot(
         f,

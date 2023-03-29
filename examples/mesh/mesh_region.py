@@ -5,7 +5,6 @@ import numpy as np
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.plotting.create_plot_mesh import Plot
-from sleplet.scripts.plotting_on_mesh import valid_meshes
 
 MESHES = [
     "bird",
@@ -36,7 +35,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="mesh tiling")
     parser.add_argument(
         "function",
-        type=valid_meshes,
+        type=str,
         choices=MESHES,
         help="mesh to plot",
         default="homer",

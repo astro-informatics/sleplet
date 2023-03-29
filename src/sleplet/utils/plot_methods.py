@@ -8,14 +8,16 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.functions.coefficients import Coefficients
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.utils._mask_methods import create_mask_region
 from sleplet.utils._vars import (
     SAMPLING_SCHEME,
     SPHERE_UNSEEN,
 )
-from sleplet.utils.harmonic_methods import invert_flm_boosted
+from sleplet.utils.harmonic_methods import invert_flm_boosted, mesh_inverse
 from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import slepian_inverse
+from sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -180,3 +182,53 @@ def _boost_field(
         return field
     flm = ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
     return invert_flm_boosted(flm, L, resolution, reality=reality, spin=spin)
+
+
+def compute_amplitude_for_noisy_mesh_plots(f: MeshCoefficients) -> float | None:
+    """
+    for the noised plots fix the amplitude to the initial data
+    """
+    return (
+        np.abs(_coefficients_to_field_mesh(f, f.unnoised_coefficients)).max()
+        if f.unnoised_coefficients is not None
+        else None
+    )
+
+
+def _coefficients_to_field_mesh(
+    f: MeshCoefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray[np.complex_ | np.float_]:
+    """
+    computes the field over the whole mesh from the harmonic/Slepian coefficients
+    """
+    return (
+        slepian_mesh_inverse(f.mesh_slepian, coefficients)
+        if isinstance(f, MeshSlepianCoefficients)
+        else mesh_inverse(f.mesh, coefficients)
+    )
+
+
+def compute_amplitude_for_noisy_sphere_plots(f: Coefficients) -> float | None:
+    """
+    for the noised plots fix the amplitude to the initial data
+    """
+    return (
+        np.abs(_coefficients_to_field_sphere(f, f.unnoised_coefficients)).max()
+        if f.unnoised_coefficients is not None
+        else None
+    )
+
+
+def _coefficients_to_field_sphere(
+    f: Coefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
+) -> npt.NDArray[np.complex_ | np.float_]:
+    """
+    computes the field over the samples from the harmonic/Slepian coefficients
+    """
+    return (
+        slepian_inverse(coefficients, f.L, f.slepian)
+        if hasattr(f, "slepian")
+        else ssht.inverse(
+            coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
+        )
+    )
