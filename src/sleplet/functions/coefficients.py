@@ -71,7 +71,7 @@ class Coefficients:
         self.name += f"_L{self.L}"
 
     @validator("coefficients", check_fields=False)
-    def check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):
         if (
             values["region"]
             and not set(values["name"].split("_")) & COEFFICIENTS_TO_NOT_MASK

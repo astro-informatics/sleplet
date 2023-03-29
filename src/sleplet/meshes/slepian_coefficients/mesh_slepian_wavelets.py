@@ -49,7 +49,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         return create_kappas(self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min)
 
     @validator("j")
-    def check_j(cls, v, values) -> int | None:
+    def _check_j(cls, v, values) -> int | None:
         j_max = pys2let_j_max(
             values["B"], values["mesh"].mesh_eigenvalues.shape[0], values["j_min"]
         )

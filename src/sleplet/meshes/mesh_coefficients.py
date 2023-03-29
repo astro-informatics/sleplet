@@ -41,7 +41,7 @@ class MeshCoefficients:
             self.name += "_zoom"
 
     @validator("coefficients", check_fields=False)
-    def check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):
         if (
             values["region"]
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()

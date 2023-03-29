@@ -63,7 +63,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
         return wavelets, wavelet_coefficients
 
     @validator("j")
-    def check_j(cls, v, values):
+    def _check_j(cls, v, values):
         j_max = pys2let_j_max(
             values["B"], values["mesh"].mesh_eigenvalues.shape[0], values["j_min"]
         )

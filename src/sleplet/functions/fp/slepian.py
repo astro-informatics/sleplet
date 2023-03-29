@@ -64,7 +64,7 @@ class Slepian(F_P):
                 raise ValueError(f"rank should be less than {limit}")
 
     @validator("rank")
-    def check_rank(cls, v):
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")
         if v < 0:

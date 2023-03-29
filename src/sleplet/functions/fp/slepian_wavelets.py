@@ -60,7 +60,7 @@ class SlepianWavelets(F_P):
         return create_kappas(self.L**2, self.B, self.j_min)
 
     @validator("j")
-    def check_j(cls, v, values):
+    def _check_j(cls, v, values):
         j_max = pys2let_j_max(values["B"], values["L"] ** 2, values["j_min"])
         if v is not None and v < 0:
             raise ValueError("j should be positive")

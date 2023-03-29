@@ -43,7 +43,7 @@ class SphericalHarmonic(F_LM):
             self.ell, self.m = self.extra_args
 
     @validator("ell")
-    def check_ell(cls, v, values):
+    def _check_ell(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("ell should be an integer")
         if v < 0:
@@ -53,7 +53,7 @@ class SphericalHarmonic(F_LM):
         return v
 
     @validator("m")
-    def check_m(cls, v, values):
+    def _check_m(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("m should be an integer")
         if abs(v) > values["ell"]:

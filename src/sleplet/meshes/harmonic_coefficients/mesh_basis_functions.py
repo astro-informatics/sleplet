@@ -57,7 +57,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
                 raise ValueError(f"rank should be less than or equal to {limit}")
 
     @validator("rank")
-    def check_rank(cls, v):
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")
         if v < 0:
