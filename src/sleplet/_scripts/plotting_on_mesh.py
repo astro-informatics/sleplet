@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 
 from sleplet import logger
 from sleplet._class_lists import MESH_COEFFICIENTS, MESHES
-from sleplet._string_methods import _convert_classes_list_to_snake_case
+from sleplet._string_methods import convert_classes_list_to_snake_case
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
@@ -28,7 +28,7 @@ def valid_methods(method_name: str) -> str:
     """
     check if valid mesh name
     """
-    if method_name in _convert_classes_list_to_snake_case(
+    if method_name in convert_classes_list_to_snake_case(
         MESH_COEFFICIENTS, word_to_remove="Mesh"
     ):
         return method_name
@@ -61,7 +61,7 @@ def read_args() -> Namespace:
         nargs="?",
         default="basis_functions",
         const="basis_functions",
-        choices=_convert_classes_list_to_snake_case(
+        choices=convert_classes_list_to_snake_case(
             MESH_COEFFICIENTS, word_to_remove="Mesh"
         ),
         help="plotting routine: defaults to basis",
@@ -110,7 +110,7 @@ def main() -> None:
     # function to plot
     mesh = Mesh(args.function, zoom=args.zoom)
     f = MESH_COEFFICIENTS[
-        _convert_classes_list_to_snake_case(
+        convert_classes_list_to_snake_case(
             MESH_COEFFICIENTS, word_to_remove="Mesh"
         ).index(args.method)
     ](

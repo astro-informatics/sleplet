@@ -7,8 +7,8 @@ from pys2let import pys2let_j_max
 from sleplet import logger
 from sleplet._string_methods import (
     _convert_camel_case_to_snake_case,
-    _wavelet_ending,
     filename_args,
+    wavelet_ending,
 )
 from sleplet._validation import Validation
 from sleplet.functions.f_lm import F_LM
@@ -36,7 +36,7 @@ class AxisymmetricWavelets(F_LM):
             f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
-            f"{_wavelet_ending(self.j_min, self.j)}"
+            f"{wavelet_ending(self.j_min, self.j)}"
         )
 
     def _set_reality(self) -> bool:

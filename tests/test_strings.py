@@ -2,11 +2,11 @@ import numpy as np
 from numpy.testing import assert_equal
 
 from sleplet._string_methods import (
-    _angle_as_degree,
-    _filename_angle,
-    _multiples_of_pi,
-    _wavelet_ending,
+    angle_as_degree,
+    filename_angle,
     filename_args,
+    multiples_of_pi,
+    wavelet_ending,
 )
 
 J_MIN = 0
@@ -38,7 +38,7 @@ def test_add_angle_to_filename() -> None:
         "alpha0_beta0",
     ]
     for c, (alpha, beta, gamma) in enumerate(arguments):
-        assert_equal(_filename_angle(alpha, beta, gamma), output[c])
+        assert_equal(filename_angle(alpha, beta, gamma), output[c])
 
 
 def test_print_multiple_of_pi() -> None:
@@ -48,7 +48,7 @@ def test_print_multiple_of_pi() -> None:
     arguments = [0, 1, 2, 2.5]
     output = ["0\u03C0", "\u03C0", "2\u03C0", "2\u03C0"]
     for c, arg in enumerate(arguments):
-        assert_equal(_multiples_of_pi(arg * np.pi), output[c])
+        assert_equal(multiples_of_pi(arg * np.pi), output[c])
 
 
 def test_convert_angle_to_degrees() -> None:
@@ -58,7 +58,7 @@ def test_convert_angle_to_degrees() -> None:
     arguments = [PHI_0, PHI_1, THETA_MAX]
     output = [30, 60, 40]
     for c, arg in enumerate(arguments):
-        assert_equal(_angle_as_degree(arg), output[c])
+        assert_equal(angle_as_degree(arg), output[c])
 
 
 def test_add_to_wavelet_name() -> None:
@@ -68,4 +68,4 @@ def test_add_to_wavelet_name() -> None:
     arguments = [None, 0, 1]
     output = ["_scaling", "_0j", "_1j"]
     for c, arg in enumerate(arguments):
-        assert_equal(_wavelet_ending(J_MIN, arg), output[c])
+        assert_equal(wavelet_ending(J_MIN, arg), output[c])

@@ -5,7 +5,7 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 from sleplet import logger
-from sleplet._string_methods import _wavelet_ending, filename_args
+from sleplet._string_methods import filename_args, wavelet_ending
 from sleplet._validation import Validation
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
@@ -36,7 +36,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
             f"slepian_wavelet_coefficients_{self.mesh.name}"
             f"{filename_args(self.B, 'B')}"
             f"{filename_args(self.j_min, 'jmin')}"
-            f"{_wavelet_ending(self.j_min, self.j)}"
+            f"{wavelet_ending(self.j_min, self.j)}"
         )
 
     def _setup_args(self) -> None:

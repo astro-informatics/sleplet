@@ -9,8 +9,8 @@ from sleplet import logger
 from sleplet._class_lists import COEFFICIENTS, MAPS_LM
 from sleplet._mask_methods import create_default_region
 from sleplet._string_methods import (
-    _convert_classes_list_to_snake_case,
-    _filename_angle,
+    convert_classes_list_to_snake_case,
+    filename_angle,
 )
 from sleplet.functions.coefficients import Coefficients
 from sleplet.harmonic_methods import (
@@ -42,7 +42,7 @@ def valid_maps(map_name: str) -> str:
     """
     check if valid map
     """
-    if map_name in _convert_classes_list_to_snake_case(MAPS_LM):
+    if map_name in convert_classes_list_to_snake_case(MAPS_LM):
         return map_name
     else:
         raise ValueError(f"{map_name} is not a valid map to convolve")
@@ -52,7 +52,7 @@ def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    if func_name in _convert_classes_list_to_snake_case(COEFFICIENTS):
+    if func_name in convert_classes_list_to_snake_case(COEFFICIENTS):
         return func_name
     else:
         raise ValueError(f"{func_name} is not a valid function to plot")
@@ -66,7 +66,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "function",
         type=valid_plotting,
-        choices=_convert_classes_list_to_snake_case(COEFFICIENTS),
+        choices=convert_classes_list_to_snake_case(COEFFICIENTS),
         help="function to plot on the sphere",
     )
     parser.add_argument(
@@ -89,7 +89,7 @@ def read_args() -> Namespace:
         "-c",
         type=valid_maps,
         default=None,
-        choices=_convert_classes_list_to_snake_case(MAPS_LM),
+        choices=convert_classes_list_to_snake_case(MAPS_LM),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -260,7 +260,7 @@ def _rotation_helper(
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
     )
-    filename += f"_rotate_{_filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
+    filename += f"_rotate_{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
 
     # calculate angles
     alpha, beta = _calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
@@ -283,7 +283,7 @@ def _translation_helper(
     """
     logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
-    filename += f"_translate_{_filename_angle(alpha_pi_frac, beta_pi_frac)}"
+    filename += f"_translate_{filename_angle(alpha_pi_frac, beta_pi_frac)}"
 
     # calculate angles
     alpha, beta = _calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
@@ -327,7 +327,7 @@ def main() -> None:
     mask = create_default_region() if args.region else None
 
     f = COEFFICIENTS[
-        _convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)
+        convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)
     ](
         args.bandlimit,
         extra_args=args.extra_args,
@@ -337,7 +337,7 @@ def main() -> None:
     )
 
     g = (
-        MAPS_LM[_convert_classes_list_to_snake_case(MAPS_LM).index(args.convolve)](
+        MAPS_LM[convert_classes_list_to_snake_case(MAPS_LM).index(args.convolve)](
             args.bandlimit
         )
         if isinstance(args.convolve, str)
