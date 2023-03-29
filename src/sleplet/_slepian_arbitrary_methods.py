@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 
 MACHINE_EPSILON = 1e-14
 

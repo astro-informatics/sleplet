@@ -31,7 +31,7 @@ from sleplet.harmonic_methods import (
     invert_flm_boosted,
 )
 from sleplet.region import Region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.slepian._slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[2] / "_data"
 

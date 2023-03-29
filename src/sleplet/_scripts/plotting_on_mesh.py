@@ -4,7 +4,7 @@ from argparse import ArgumentParser, Namespace
 from sleplet import logger
 from sleplet._class_lists import MESH_COEFFICIENTS, MESHES
 from sleplet._string_methods import convert_classes_list_to_snake_case
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.plot_methods import (

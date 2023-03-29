@@ -10,7 +10,7 @@ from sleplet._integration_methods import integrate_whole_mesh
 from sleplet._vars import (
     SAMPLING_SCHEME,
 )
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 
 AFRICA_ALPHA = np.deg2rad(44)
 AFRICA_BETA = np.deg2rad(87)

@@ -19,7 +19,7 @@ from sleplet._plotly_methods import (
     create_tick_mark,
 )
 from sleplet._validation import Validation
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.plot_methods import _convert_colourscale, _normalise_function
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"

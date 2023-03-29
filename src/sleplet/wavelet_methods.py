@@ -4,7 +4,7 @@ from numpy import typing as npt
 from pys2let import axisym_wav_l
 
 from sleplet._convolution_methods import sifting_convolution
-from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.slepian._slepian_functions import SlepianFunctions
 from sleplet.slepian_methods import _compute_s_p_omega
 
 

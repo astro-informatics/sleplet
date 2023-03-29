@@ -6,8 +6,8 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from sleplet.meshes.mesh import Mesh
+from sleplet.meshes.mesh_slepian import MeshSlepian
 from sleplet.plot_methods import save_plot
 from sleplet.wavelet_methods import create_kappas
 

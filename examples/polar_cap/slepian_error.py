@@ -9,7 +9,6 @@ from numpy import typing as npt
 from sleplet.functions.flm.earth import Earth
 from sleplet.plot_methods import save_plot
 from sleplet.region import Region
-from sleplet.slepian.slepian_functions import SlepianFunctions
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
 from sleplet.slepian_methods import choose_slepian_method, slepian_forward
 
@@ -27,12 +26,9 @@ def main() -> None:
     """
     region = Region(theta_max=np.deg2rad(THETA_MAX))
     earth = Earth(L, region=region)
-    slepian = choose_slepian_method(L, region)
     field = ssht.inverse(earth.coefficients, L, Method=SAMPLING_SCHEME)
-    integrate_region = _helper_region(
-        L, slepian, field, earth.coefficients, slepian.mask
-    )
-    integrate_sphere = _helper_sphere(L, slepian, field, earth.coefficients)
+    integrate_region = _helper_region(L, region, field, earth.coefficients)
+    integrate_sphere = _helper_sphere(L, region, field, earth.coefficients)
     N = SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     ax = plt.gca()
     sns.scatterplot(
@@ -49,13 +45,14 @@ def main() -> None:
 
 def _helper_sphere(
     L: int,
-    slepian: SlepianFunctions,
+    region: Region,
     f: npt.NDArray[np.complex_],
     flm: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
     the difference in Slepian coefficients by integration of whole sphere
     """
+    slepian = choose_slepian_method(L, region)
     output = np.abs(slepian_forward(L, slepian, f=f))
     desired = np.abs(slepian_forward(L, slepian, flm=flm))
     return np.abs(output - desired) / desired
@@ -63,15 +60,15 @@ def _helper_sphere(
 
 def _helper_region(
     L: int,
-    slepian: SlepianFunctions,
+    region: Region,
     f: npt.NDArray[np.complex_],
     flm: npt.NDArray[np.complex_ | np.float_],
-    mask: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.float_]:
     """
     the difference in Slepian coefficients by integration of region on the sphere
     """
-    output = np.abs(slepian_forward(L, slepian, f=f, mask=mask))
+    slepian = choose_slepian_method(L, region)
+    output = np.abs(slepian_forward(L, slepian, f=f, mask=slepian.mask))
     desired = np.abs(slepian_forward(L, slepian, flm=flm))
     return np.abs(output - desired) / desired
 

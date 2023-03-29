@@ -4,7 +4,7 @@ import numpy as np
 
 from sleplet import logger
 from sleplet.denoising import denoising_mesh_slepian
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,

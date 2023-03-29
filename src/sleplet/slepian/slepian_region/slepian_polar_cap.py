@@ -24,7 +24,7 @@ from sleplet._validation import Validation
 from sleplet._vars import NCPU
 from sleplet.harmonic_methods import _create_emm_vector
 from sleplet.region import Region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+from sleplet.slepian._slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[2] / "_data"
 

@@ -20,7 +20,7 @@ from sleplet._parallel_methods import (
 from sleplet._slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet._validation import Validation
 from sleplet._vars import NCPU
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 
 _data_path = Path(__file__).resolve().parents[2] / "_data"
 

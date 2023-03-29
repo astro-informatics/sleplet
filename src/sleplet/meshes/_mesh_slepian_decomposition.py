@@ -11,7 +11,7 @@ from sleplet._integration_methods import (
 )
 from sleplet._validation import Validation
 from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.classes.mesh_slepian import MeshSlepian
+from sleplet.meshes.mesh_slepian import MeshSlepian
 
 
 @dataclass(config=Validation)

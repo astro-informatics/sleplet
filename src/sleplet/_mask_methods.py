@@ -22,7 +22,7 @@ from sleplet.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.region import Region
 
 _data_path = Path(__file__).resolve().parent / "_data"

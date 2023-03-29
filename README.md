@@ -458,7 +458,7 @@ done
 
 ```python
 from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.harmonic_coefficients.mesh_basis_functions import MeshBasisFunctions
 from sleplet.plotting.create_plot_mesh import Plot
 
@@ -490,7 +490,7 @@ done
 ```
 
 ```python
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_functions import (
     MeshSlepianFunctions,
 )
@@ -522,7 +522,7 @@ done
 ```
 
 ```python
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
@@ -544,7 +544,7 @@ mesh homer -m field -u
 
 ```python
 from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from sleplet.plotting.create_plot_mesh import Plot
 
@@ -566,7 +566,7 @@ done
 ```
 
 ```python
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients import (
     MeshSlepianWaveletCoefficients,
 )
@@ -592,7 +592,7 @@ python -m examples.mesh.denoising_slepian_mesh homer -n -5 -s 2
 ```
 
 ```python
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import (
     MeshSlepianField,
 )

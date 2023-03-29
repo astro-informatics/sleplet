@@ -9,7 +9,7 @@ from pydantic.dataclasses import dataclass
 from sleplet._mask_methods import ensure_masked_bandlimit_mesh_signal
 from sleplet._string_methods import filename_args
 from sleplet._validation import Validation
-from sleplet.meshes.classes.mesh import Mesh
+from sleplet.meshes.mesh import Mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 

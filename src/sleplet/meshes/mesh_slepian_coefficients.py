@@ -6,8 +6,8 @@ from pydantic.dataclasses import dataclass
 
 from sleplet._noise import compute_snr, create_slepian_mesh_noise
 from sleplet._validation import Validation
-from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.meshes.mesh_slepian import MeshSlepian
 
 
 @dataclass(config=Validation)
