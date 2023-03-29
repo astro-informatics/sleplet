@@ -9,7 +9,7 @@ from numpy import typing as npt
 from sleplet.functions.flm import Earth
 from sleplet.plot_methods import save_plot
 from sleplet.region import Region
-from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
+from sleplet.slepian import SlepianPolarCap
 from sleplet.slepian_methods import choose_slepian_method, slepian_forward
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"

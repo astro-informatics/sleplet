@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from numpy.testing import assert_allclose
 
-from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
+from sleplet.slepian import SlepianArbitrary
 
 
 @pytest.mark.slow
