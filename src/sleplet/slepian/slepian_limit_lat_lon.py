@@ -18,7 +18,7 @@ from sleplet._vars import (
     THETA_MIN_DEFAULT,
 )
 from sleplet.region import Region
-from sleplet.slepian._slepian_functions import SlepianFunctions
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 

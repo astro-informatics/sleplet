@@ -13,7 +13,7 @@ from sleplet._integration_methods import (
 )
 from sleplet._validation import Validation
 from sleplet._vars import SAMPLING_SCHEME
-from sleplet.slepian._slepian_functions import SlepianFunctions
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
 @dataclass(config=Validation)
