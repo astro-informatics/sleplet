@@ -9,18 +9,9 @@ from matplotlib import colors
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet import logger
-from sleplet._mask_methods import create_mask_region
-from sleplet._vars import (
-    SAMPLING_SCHEME,
-    SPHERE_UNSEEN,
-)
-from sleplet.functions.coefficients import Coefficients
-from sleplet.harmonic_methods import invert_flm_boosted, mesh_inverse
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.region import Region
-from sleplet.slepian_methods import slepian_inverse, slepian_mesh_inverse
+import sleplet
+import sleplet.functions
+import sleplet.meshes
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -64,11 +55,11 @@ def _calc_nearest_grid_point(
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small
     """
-    thetas, phis = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(L, Method=sleplet._vars.SAMPLING_SCHEME)
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
-    logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
+    sleplet.logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
     return alpha, beta
 
 
@@ -79,7 +70,7 @@ def save_plot(path: Path, name: str) -> None:
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
         filename = path / file_type / f"{name}.{file_type}"
-        logger.info(f"saving {filename}")
+        sleplet.logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
     plt.show(block=False)
     plt.pause(3)
@@ -87,7 +78,10 @@ def save_plot(path: Path, name: str) -> None:
 
 
 def find_max_amplitude(
-    function: Coefficients, *, plot_type: str = "real", upsample: bool = True
+    function: sleplet.functions.Coefficients,
+    *,
+    plot_type: str = "real",
+    upsample: bool = True,
 ) -> float:
     """
     for a given set of coefficients it finds the largest absolute value for a
@@ -95,9 +89,13 @@ def find_max_amplitude(
     """
     # compute inverse transform
     if hasattr(function, "slepian"):
-        field = slepian_inverse(function.coefficients, function.L, function.slepian)
+        field = sleplet.slepian_methods.slepian_inverse(
+            function.coefficients, function.L, function.slepian
+        )
     else:
-        field = ssht.inverse(function.coefficients, function.L, Method=SAMPLING_SCHEME)
+        field = ssht.inverse(
+            function.coefficients, function.L, Method=sleplet._vars.SAMPLING_SCHEME
+        )
 
     # find resolution of final plot for boosting if necessary
     resolution = calc_plot_resolution(function.L) if upsample else function.L
@@ -122,7 +120,7 @@ def _create_plot_type(
     """
     gets the given plot type of the field
     """
-    logger.info(f"plotting type: '{plot_type}'")
+    sleplet.logger.info(f"plotting type: '{plot_type}'")
     plot_dict = {
         "abs": np.abs(field),
         "imag": field.imag,
@@ -133,21 +131,21 @@ def _create_plot_type(
 
 
 def _set_outside_region_to_minimum(
-    f_plot: npt.NDArray[np.float_], L: int, region: Region
+    f_plot: npt.NDArray[np.float_], L: int, region: sleplet.region.Region
 ) -> npt.NDArray[np.float_]:
     """
     for the Slepian region set the outisde area to negative infinity
     hence it is clear we are only interested in the coloured region
     """
     # create mask of interest
-    mask = create_mask_region(L, region)
+    mask = sleplet._mask_methods.create_mask_region(L, region)
 
     # adapt for closed plot
-    _, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
+    _, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     closed_mask = np.insert(mask, n_phi, mask[:, 0], axis=1)
 
     # set values outside mask to negative infinity
-    return np.where(closed_mask, f_plot, SPHERE_UNSEEN)
+    return np.where(closed_mask, f_plot, sleplet._vars.SPHERE_UNSEEN)
 
 
 def _normalise_function(
@@ -183,11 +181,17 @@ def _boost_field(
     """
     if not upsample:
         return field
-    flm = ssht.forward(field, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
-    return invert_flm_boosted(flm, L, resolution, reality=reality, spin=spin)
+    flm = ssht.forward(
+        field, L, Reality=reality, Spin=spin, Method=sleplet._vars.SAMPLING_SCHEME
+    )
+    return sleplet.harmonic_methods.invert_flm_boosted(
+        flm, L, resolution, reality=reality, spin=spin
+    )
 
 
-def compute_amplitude_for_noisy_mesh_plots(f: MeshCoefficients) -> float | None:
+def compute_amplitude_for_noisy_mesh_plots(
+    f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
+) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """
@@ -199,19 +203,24 @@ def compute_amplitude_for_noisy_mesh_plots(f: MeshCoefficients) -> float | None:
 
 
 def _coefficients_to_field_mesh(
-    f: MeshCoefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
+    f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
+    coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the field over the whole mesh from the harmonic/Slepian coefficients
     """
     return (
-        slepian_mesh_inverse(f.mesh_slepian, coefficients)
-        if isinstance(f, MeshSlepianCoefficients)
-        else mesh_inverse(f.mesh, coefficients)
+        sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, coefficients)
+        if isinstance(
+            f, sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+        )
+        else sleplet.harmonic_methods.mesh_inverse(f.mesh, coefficients)
     )
 
 
-def compute_amplitude_for_noisy_sphere_plots(f: Coefficients) -> float | None:
+def compute_amplitude_for_noisy_sphere_plots(
+    f: sleplet.functions.Coefficients,
+) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
     """
@@ -223,15 +232,20 @@ def compute_amplitude_for_noisy_sphere_plots(f: Coefficients) -> float | None:
 
 
 def _coefficients_to_field_sphere(
-    f: Coefficients, coefficients: npt.NDArray[np.complex_ | np.float_]
+    f: sleplet.functions.Coefficients,
+    coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the field over the samples from the harmonic/Slepian coefficients
     """
     return (
-        slepian_inverse(coefficients, f.L, f.slepian)
+        sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, "slepian")
         else ssht.inverse(
-            coefficients, f.L, Reality=f.reality, Spin=f.spin, Method=SAMPLING_SCHEME
+            coefficients,
+            f.L,
+            Reality=f.reality,
+            Spin=f.spin,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
     )

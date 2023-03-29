@@ -6,9 +6,8 @@ import pyssht as ssht
 from numpy import typing as npt
 from pys2let import axisym_wav_l
 
-from sleplet._convolution_methods import sifting_convolution
-from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.slepian_methods import _compute_s_p_omega
+import sleplet
+import sleplet.slepian
 
 
 def slepian_wavelet_forward(
@@ -20,7 +19,10 @@ def slepian_wavelet_forward(
     computes the coefficients of the given tiling function in Slepian space
     """
     return find_non_zero_wavelet_coefficients(
-        sifting_convolution(wavelets, f_p, shannon=shannon), axis=1
+        sleplet._convolution_methods.sifting_convolution(
+            wavelets, f_p, shannon=shannon
+        ),
+        axis=1,
     )
 
 
@@ -34,7 +36,7 @@ def slepian_wavelet_inverse(
     """
     # ensure wavelets are the same shape as the coefficients
     wavelets_shannon = wavelets[: len(wav_coeffs)]
-    wavelet_reconstruction = sifting_convolution(
+    wavelet_reconstruction = sleplet._convolution_methods.sifting_convolution(
         wavelets_shannon, wav_coeffs.T, shannon=shannon
     )
     return wavelet_reconstruction.sum(axis=0)
@@ -87,14 +89,14 @@ def compute_wavelet_covariance(
 def compute_slepian_wavelet_covariance(
     L: int,
     wavelets: npt.NDArray[np.float_],
-    slepian: SlepianFunctions,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
     *,
     var_signal: float,
 ) -> npt.NDArray[np.float_]:
     """
     computes the theoretical covariance of the wavelet coefficients
     """
-    s_p = _compute_s_p_omega(L, slepian)
+    s_p = sleplet.slepian_methods._compute_s_p_omega(L, slepian)
     wavelets_reshape = wavelets[:, : slepian.N, np.newaxis, np.newaxis]
     covar_theory = (np.abs(wavelets_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return covar_theory * var_signal

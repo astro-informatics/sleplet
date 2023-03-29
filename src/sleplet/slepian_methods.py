@@ -5,31 +5,27 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet import logger
-from sleplet._vars import SAMPLING_SCHEME
-from sleplet.harmonic_methods import _boost_coefficient_resolution, mesh_inverse
-from sleplet.meshes._mesh_slepian_decomposition import MeshSlepianDecomposition
-from sleplet.meshes.mesh_slepian import MeshSlepian
-from sleplet.region import Region
-from sleplet.slepian._slepian_decomposition import SlepianDecomposition
-from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
-from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.slepian.slepian_limit_lat_lon import SlepianLimitLatLon
-from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
+import sleplet
+import sleplet.meshes
+import sleplet.slepian
 
 
-def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
+def choose_slepian_method(
+    L: int, region: sleplet.region.Region
+) -> sleplet.slepian.slepian_functions.SlepianFunctions:
     """
     initialise Slepian object depending on input
     """
     match region.region_type:
         case "polar":
-            logger.info("polar cap region detected")
-            return SlepianPolarCap(L, region.theta_max, gap=region.gap)
+            sleplet.logger.info("polar cap region detected")
+            return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
+                L, region.theta_max, gap=region.gap
+            )
 
         case "lim_lat_lon":
-            logger.info("limited latitude longitude region detected")
-            return SlepianLimitLatLon(
+            sleplet.logger.info("limited latitude longitude region detected")
+            return sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon(
                 L,
                 theta_min=region.theta_min,
                 theta_max=region.theta_max,
@@ -38,15 +34,19 @@ def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
             )
 
         case "arbitrary":
-            logger.info("mask specified in file detected")
-            return SlepianArbitrary(L, region.mask_name)
+            sleplet.logger.info("mask specified in file detected")
+            return sleplet.slepian.slepian_arbitrary.SlepianArbitrary(
+                L, region.mask_name
+            )
 
         case _:
             raise ValueError(f"{region.region_type} is an invalid region type")
 
 
 def slepian_inverse(
-    f_p: npt.NDArray[np.complex_ | np.float_], L: int, slepian: SlepianFunctions
+    f_p: npt.NDArray[np.complex_ | np.float_],
+    L: int,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
     computes the Slepian inverse transform up to the Shannon number
@@ -58,7 +58,7 @@ def slepian_inverse(
 
 def slepian_forward(
     L: int,
-    slepian: SlepianFunctions,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
     *,
     f: npt.NDArray[np.complex_] | None = None,
     flm: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -68,41 +68,50 @@ def slepian_forward(
     """
     computes the Slepian forward transform for all coefficients
     """
-    sd = SlepianDecomposition(L, slepian, f=f, flm=flm, mask=mask)
+    sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
+        L, slepian, f=f, flm=flm, mask=mask
+    )
     n_coeffs = slepian.N if n_coeffs is None else n_coeffs
     return sd.decompose_all(n_coeffs)
 
 
-def _compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray[np.complex_]:
+def _compute_s_p_omega(
+    L: int, slepian: sleplet.slepian.slepian_functions.SlepianFunctions
+) -> npt.NDArray[np.complex_]:
     """
     method to calculate Sp(omega) for a given region
     """
-    n_theta, n_phi = ssht.sample_shape(L, Method=SAMPLING_SCHEME)
+    n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
     for p in range(slepian.N):
         if p % L == 0:
-            logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
-        sp[p] = ssht.inverse(slepian.eigenvectors[p], L, Method=SAMPLING_SCHEME)
+            sleplet.logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
+        sp[p] = ssht.inverse(
+            slepian.eigenvectors[p], L, Method=sleplet._vars.SAMPLING_SCHEME
+        )
     return sp
 
 
 def _compute_s_p_omega_prime(
-    L: int, alpha: float, beta: float, slepian: SlepianFunctions
+    L: int,
+    alpha: float,
+    beta: float,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
     method to pick out the desired angle from Sp(omega)
     """
     sp_omega = _compute_s_p_omega(L, slepian)
-    p = ssht.theta_to_index(beta, L, Method=SAMPLING_SCHEME)
-    q = ssht.phi_to_index(alpha, L, Method=SAMPLING_SCHEME)
+    p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
+    q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
     sp_omega_prime = sp_omega[:, p, q]
     # pad with zeros so it has the expected shape
     boost = L**2 - slepian.N
-    return _boost_coefficient_resolution(sp_omega_prime, boost)
+    return sleplet.harmonic_methods._boost_coefficient_resolution(sp_omega_prime, boost)
 
 
 def slepian_mesh_forward(
-    mesh_slepian: MeshSlepian,
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
     *,
     u: npt.NDArray[np.complex_ | np.float_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -112,7 +121,7 @@ def slepian_mesh_forward(
     """
     computes the Slepian forward transform for all coefficients
     """
-    sd = MeshSlepianDecomposition(
+    sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
         mesh_slepian,
         u=u,
         u_i=u_i,
@@ -123,7 +132,7 @@ def slepian_mesh_forward(
 
 
 def slepian_mesh_inverse(
-    mesh_slepian: MeshSlepian,
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
@@ -134,11 +143,15 @@ def slepian_mesh_inverse(
     return (f_p_reshape * s_p).sum(axis=0)
 
 
-def _compute_mesh_s_p_pixel(mesh_slepian: MeshSlepian) -> npt.NDArray[np.float_]:
+def _compute_mesh_s_p_pixel(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+) -> npt.NDArray[np.float_]:
     """
     method to calculate Sp(omega) for a given region
     """
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
     for p in range(mesh_slepian.N):
-        sp[p] = mesh_inverse(mesh_slepian.mesh, mesh_slepian.slepian_functions[p])
+        sp[p] = sleplet.harmonic_methods.mesh_inverse(
+            mesh_slepian.mesh, mesh_slepian.slepian_functions[p]
+        )
     return sp

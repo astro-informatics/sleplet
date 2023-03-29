@@ -5,14 +5,16 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet._vars import SAMPLING_SCHEME
+import sleplet
 
 
 def calc_integration_weight(L: int) -> npt.NDArray[np.float_]:
     """
     computes the spherical Jacobian for the integration
     """
-    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(
+        L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+    )
     delta_theta = np.ediff1d(thetas[:, 0]).mean()
     delta_phi = np.ediff1d(phis[0]).mean()
     return np.sin(thetas) * delta_theta * delta_phi

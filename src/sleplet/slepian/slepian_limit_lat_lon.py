@@ -10,28 +10,20 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
+import sleplet
 from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._mask_methods import create_mask_region
-from sleplet._validation import Validation
-from sleplet._vars import (
-    PHI_MAX_DEFAULT,
-    PHI_MIN_DEFAULT,
-    THETA_MAX_DEFAULT,
-    THETA_MIN_DEFAULT,
-)
-from sleplet.region import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 
-@dataclass(config=Validation, kw_only=True)
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
-    phi_max: float = PHI_MAX_DEFAULT
-    phi_min: float = PHI_MIN_DEFAULT
-    theta_max: float = THETA_MAX_DEFAULT
-    theta_min: float = THETA_MIN_DEFAULT
+    phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
+    phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
+    theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
+    theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -39,8 +31,8 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"
 
-    def _create_region(self) -> Region:
-        return Region(
+    def _create_region(self) -> sleplet.region.Region:
+        return sleplet.region.Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
             phi_min=self.phi_min,
@@ -84,7 +76,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         # Compute Slepian matrix
         dl_array = ssht.generate_dl(np.pi / 2, self.L)
         K = self._slepian_matrix(dl_array, self.L, self.L - 1, G)
-        fill_upper_triangle_of_hermitian_matrix(K)
+        sleplet._array_methods.fill_upper_triangle_of_hermitian_matrix(K)
 
         return K
 

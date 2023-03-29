@@ -9,11 +9,8 @@ import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import Generator
 
-from sleplet._integration_methods import integrate_whole_mesh
-from sleplet._vars import (
-    SAMPLING_SCHEME,
-)
-from sleplet.meshes.mesh import Mesh
+import sleplet
+import sleplet.meshes
 
 AFRICA_ALPHA = np.deg2rad(44)
 AFRICA_BETA = np.deg2rad(87)
@@ -55,7 +52,11 @@ def invert_flm_boosted(
     boost = resolution**2 - L**2
     flm = _boost_coefficient_resolution(flm, boost)
     return ssht.inverse(
-        flm, resolution, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME
+        flm,
+        resolution,
+        Reality=reality,
+        Spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
 
 
@@ -72,9 +73,13 @@ def _ensure_f_bandlimited(
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it
     """
-    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(
+        L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+    )
     f = grid_fun(thetas, phis)
-    return ssht.forward(f, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
+    return ssht.forward(
+        f, L, Reality=reality, Spin=spin, Method=sleplet._vars.SAMPLING_SCHEME
+    )
 
 
 def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
@@ -104,19 +109,21 @@ def compute_random_signal(
 
 
 def mesh_forward(
-    mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.Mesh, u: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.float_]:
     """
     computes the mesh forward transform from real space to harmonic space
     """
     u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
     for i, phi_i in enumerate(mesh.basis_functions):
-        u_i[i] = integrate_whole_mesh(mesh.vertices, mesh.faces, u, phi_i)
+        u_i[i] = sleplet._integration_methods.integrate_whole_mesh(
+            mesh.vertices, mesh.faces, u, phi_i
+        )
     return u_i
 
 
 def mesh_inverse(
-    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
     computes the mesh inverse transform from harmonic space to real space

@@ -8,7 +8,7 @@ the rest of the documentation.
 import logging
 import os
 
-from sleplet._version import __version__
+from ._version import __version__
 
 logging.basicConfig(
     format="[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",

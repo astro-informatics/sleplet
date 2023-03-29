@@ -6,9 +6,8 @@ from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
 from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
-from sleplet import logger
-from sleplet._data.setup_pooch import find_on_pooch_then_local
-from sleplet._integration_methods import integrate_whole_mesh
+import sleplet
+import sleplet._data
 
 _data_path = Path(__file__).resolve().parent / "_data"
 
@@ -21,7 +20,7 @@ def average_functions_on_vertices_to_faces(
     the integrals require all functions to be defined on faces
     this method handles an arbitrary number of functions
     """
-    logger.info("converting function on vertices to faces")
+    sleplet.logger.info("converting function on vertices to faces")
     # handle the case of a 1D array
     array_is_1d = len(functions_on_vertices.shape) == 1
     if array_is_1d:
@@ -75,7 +74,7 @@ def mesh_eigendecomposition(
     # determine number of basis functions
     if number_basis_functions is None:
         number_basis_functions = vertices.shape[0] // 4
-    logger.info(
+    sleplet.logger.info(
         f"finding {number_basis_functions}/{vertices.shape[0]} "
         f"basis functions of {name} mesh"
     )
@@ -86,15 +85,15 @@ def mesh_eigendecomposition(
     evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
     try:
-        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
-        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
+        eigenvalues = np.load(sleplet._data.find_on_pooch_then_local(eval_loc))
+        eigenvectors = np.load(sleplet._data.find_on_pooch_then_local(evec_loc))
     except TypeError:
         laplacian = _mesh_laplacian(vertices, faces)
         eigenvalues, eigenvectors = LA_sparse.eigsh(
             laplacian, k=number_basis_functions, which="LM", sigma=0
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
-        logger.info("saving binaries...")
+        sleplet.logger.info("saving binaries...")
         np.save(_data_path / eval_loc, eigenvalues)
         np.save(_data_path / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
@@ -127,9 +126,11 @@ def _orthonormalise_basis_functions(
     """
     for computing the Slepian D matrix the basis functions must be orthonormal
     """
-    logger.info("orthonormalising basis functions")
+    sleplet.logger.info("orthonormalising basis functions")
     factor = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
-        factor[i] = integrate_whole_mesh(vertices, faces, phi_i, phi_i)
+        factor[i] = sleplet._integration_methods.integrate_whole_mesh(
+            vertices, faces, phi_i, phi_i
+        )
     normalisation = np.sqrt(factor).reshape(-1, 1)
     return basis_functions / normalisation
