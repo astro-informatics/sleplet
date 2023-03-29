@@ -4,7 +4,7 @@ import numpy as np
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.meshes.mesh import Mesh
+from sleplet.meshes import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.slepian_coefficients import (
     MeshSlepianField,

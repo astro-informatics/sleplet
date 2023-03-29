@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 import cmocean
 import numpy as np
 
-from sleplet.meshes.mesh import Mesh
+from sleplet.meshes import Mesh
 from sleplet.plotting.create_plot_mesh import Plot
 
 MESHES = [

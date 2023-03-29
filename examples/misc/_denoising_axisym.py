@@ -2,7 +2,6 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet._vars import SAMPLING_SCHEME
 from sleplet.functions.coefficients import Coefficients
 from sleplet.functions.flm import AxisymmetricWavelets
 from sleplet.harmonic_methods import rotate_earth_to_south_america
@@ -15,6 +14,8 @@ from sleplet.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,
 )
+
+SAMPLING_SCHEME = "MWSS"
 
 
 def denoising_axisym(

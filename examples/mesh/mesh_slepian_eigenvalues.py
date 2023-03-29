@@ -5,8 +5,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.meshes.mesh import Mesh
-from sleplet.meshes.mesh_slepian import MeshSlepian
+from sleplet.meshes import Mesh, MeshSlepian
 from sleplet.plot_methods import save_plot
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"

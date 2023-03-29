@@ -13,3 +13,4 @@ from .slepian_wavelet_coefficients_africa import SlepianWaveletCoefficientsAfric
 from .slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
 )
+from .slepian_wavelets import SlepianWavelets
