@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 import sleplet
+import sleplet._mask_methods
 import sleplet.functions
 import sleplet.meshes
 
@@ -78,7 +79,7 @@ def save_plot(path: Path, name: str) -> None:
 
 
 def find_max_amplitude(
-    function: sleplet.functions.Coefficients,
+    function: sleplet.functions.coefficients.Coefficients,
     *,
     plot_type: str = "real",
     upsample: bool = True,
@@ -219,7 +220,7 @@ def _coefficients_to_field_mesh(
 
 
 def compute_amplitude_for_noisy_sphere_plots(
-    f: sleplet.functions.Coefficients,
+    f: sleplet.functions.coefficients.Coefficients,
 ) -> float | None:
     """
     for the noised plots fix the amplitude to the initial data
@@ -232,7 +233,7 @@ def compute_amplitude_for_noisy_sphere_plots(
 
 
 def _coefficients_to_field_sphere(
-    f: sleplet.functions.Coefficients,
+    f: sleplet.functions.coefficients.Coefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """

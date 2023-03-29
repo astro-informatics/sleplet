@@ -5,6 +5,7 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 import sleplet
+import sleplet._validation
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)

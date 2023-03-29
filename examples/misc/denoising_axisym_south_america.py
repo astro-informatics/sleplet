@@ -1,7 +1,8 @@
 import sys
 from pathlib import Path
 
-from sleplet.functions.flm import AxisymmetricWavelets, SouthAmerica
+from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from sleplet.functions.flm.south_america import SouthAmerica
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
 

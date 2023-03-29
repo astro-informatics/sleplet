@@ -5,17 +5,13 @@ from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass
 
-from sleplet._mesh_methods import (
-    create_mesh_region,
-    extract_mesh_config,
-    mesh_eigendecomposition,
-    read_mesh,
-)
-from sleplet._plotly_methods import create_camera
-from sleplet._validation import Validation
+import sleplet
+import sleplet._mesh_methods
+import sleplet._plotly_methods
+import sleplet._validation
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class Mesh:
     name: str
     _: KW_ONLY
@@ -23,8 +19,8 @@ class Mesh:
     zoom: bool = False
 
     def __post_init_post_parse__(self) -> None:
-        mesh_config = extract_mesh_config(self.name)
-        self.camera_view = create_camera(
+        mesh_config = sleplet._mesh_methods.extract_mesh_config(self.name)
+        self.camera_view = sleplet._plotly_methods.create_camera(
             mesh_config["CAMERA_X"],
             mesh_config["CAMERA_Y"],
             mesh_config["CAMERA_Z"],
@@ -38,13 +34,15 @@ class Mesh:
             if self.zoom
             else mesh_config["DEFAULT_COLOURBAR_POS"]
         )
-        self.vertices, self.faces = read_mesh(mesh_config)
-        self.region = create_mesh_region(mesh_config, self.vertices)
+        self.vertices, self.faces = sleplet._mesh_methods.read_mesh(mesh_config)
+        self.region = sleplet._mesh_methods.create_mesh_region(
+            mesh_config, self.vertices
+        )
         (
             self.mesh_eigenvalues,
             self.basis_functions,
             self.number_basis_functions,
-        ) = mesh_eigendecomposition(
+        ) = sleplet._mesh_methods.mesh_eigendecomposition(
             self.name,
             self.vertices,
             self.faces,

@@ -13,31 +13,16 @@ from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet._plotly_methods import (
-    create_camera,
-    create_colour_bar,
-    create_layout,
-    create_tick_mark,
-)
-from sleplet._validation import Validation
-from sleplet._vars import SAMPLING_SCHEME, SPHERE_UNSEEN
-from sleplet.plot_methods import (
-    _boost_field,
-    _convert_colourscale,
-    _create_plot_type,
-    _normalise_function,
-    _set_outside_region_to_minimum,
-    calc_plot_resolution,
-)
-from sleplet.region import Region
+import sleplet
+import sleplet._plotly_methods
+import sleplet._validation
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
 MW_POLE_LENGTH = 2
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class Plot:
     f: npt.NDArray[np.complex_ | np.float_]
     L: int
@@ -48,12 +33,16 @@ class Plot:
     normalise: bool = True
     plot_type: str = "real"
     reality: bool = False
-    region: Region | None = None
+    region: sleplet.region.Region | None = None
     spin: int = 0
     upsample: bool = True
 
     def __post_init_post_parse__(self) -> None:
-        self.resolution = calc_plot_resolution(self.L) if self.upsample else self.L
+        self.resolution = (
+            sleplet.plot_methods.calc_plot_resolution(self.L)
+            if self.upsample
+            else self.L
+        )
         if self.upsample:
             self.filename += f"_res{self.resolution}"
         self.filename += f"_{self.plot_type}"
@@ -68,20 +57,22 @@ class Plot:
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            f, self.resolution, method=SAMPLING_SCHEME
+            f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
         )
 
-        if isinstance(self.region, Region):
+        if isinstance(self.region, sleplet.region.Region):
             # make plot area clearer
-            f_plot = _set_outside_region_to_minimum(
+            f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
                 f_plot, self.resolution, self.region
             )
 
         # appropriate zoom in on north pole
-        camera = create_camera(-0.1, -0.1, 10, 7.88)
+        camera = sleplet._plotly_methods.create_camera(-0.1, -0.1, 10, 7.88)
 
         # pick largest tick max value
-        tick_mark = create_tick_mark(vmin, vmax, amplitude=self.amplitude)
+        tick_mark = sleplet._plotly_methods.create_tick_mark(
+            vmin, vmax, amplitude=self.amplitude
+        )
 
         data = [
             Surface(
@@ -92,14 +83,18 @@ class Plot:
                 cmax=1 if self.normalise else tick_mark,
                 cmid=0.5 if self.normalise else 0,
                 cmin=0 if self.normalise else -tick_mark,
-                colorbar=create_colour_bar(tick_mark, normalise=self.normalise),
-                colorscale=_convert_colourscale(cmocean.cm.ice),
+                colorbar=sleplet._plotly_methods.create_colour_bar(
+                    tick_mark, normalise=self.normalise
+                ),
+                colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
             )
         ]
 
-        layout = create_layout(camera, annotations=self.annotations)
+        layout = sleplet._plotly_methods.create_layout(
+            camera, annotations=self.annotations
+        )
 
         fig = Figure(data=data, layout=layout)
 
@@ -109,7 +104,7 @@ class Plot:
 
         for file_type in {"png", "pdf"}:
             filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-            logger.info(f"saving {filename}")
+            sleplet.logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     @staticmethod
@@ -159,7 +154,7 @@ class Plot:
             vmax = color_range[1]
             f_plot[f_plot < color_range[0]] = color_range[0]
             f_plot[f_plot > color_range[1]] = color_range[1]
-            f_plot[f_plot == SPHERE_UNSEEN] = np.nan
+            f_plot[f_plot == sleplet._vars.SPHERE_UNSEEN] = np.nan
 
         # Compute position scaling for parametric plot.
         f_normalised = (
@@ -195,7 +190,7 @@ class Plot:
         """
         boosts, forces plot type and then scales the field before plotting
         """
-        boosted_field = _boost_field(
+        boosted_field = sleplet.plot_methods._boost_field(
             f,
             self.L,
             self.resolution,
@@ -203,5 +198,9 @@ class Plot:
             spin=self.spin,
             upsample=self.upsample,
         )
-        field_space = _create_plot_type(boosted_field, self.plot_type)
-        return _normalise_function(field_space, normalise=self.normalise)
+        field_space = sleplet.plot_methods._create_plot_type(
+            boosted_field, self.plot_type
+        )
+        return sleplet.plot_methods._normalise_function(
+            field_space, normalise=self.normalise
+        )

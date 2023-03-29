@@ -11,37 +11,19 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet import NCPU, logger
-from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet._data.setup_pooch import find_on_pooch_then_local
-from sleplet._integration_methods import (
-    calc_integration_weight,
-    integrate_region_sphere,
-)
-from sleplet._mask_methods import create_mask_region
-from sleplet._parallel_methods import (
-    attach_to_shared_memory_block,
-    create_shared_memory_array,
-    free_shared_memory,
-    release_shared_memory,
-    split_arr_into_chunks,
-)
-from sleplet._slepian_arbitrary_methods import clean_evals_and_evecs
-from sleplet._validation import Validation
-from sleplet.harmonic_methods import (
-    _create_spherical_harmonic,
-    invert_flm_boosted,
-)
-from sleplet.region import Region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet
+import sleplet._mask_methods
+import sleplet._slepian_arbitrary_methods
+import sleplet._validation
+import sleplet.slepian.slepian_functions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 SAMPLES = 2
 
 
-@dataclass(config=Validation)
-class SlepianArbitrary(SlepianFunctions):
+@dataclass(config=sleplet._validation.Validation)
+class SlepianArbitrary(sleplet.slepian.slepian_functions.SlepianFunctions):
     mask_name: str
     _: KW_ONLY
 
@@ -52,14 +34,16 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"
 
-    def _create_region(self) -> Region:
-        return Region(mask_name=self.mask_name)
+    def _create_region(self) -> sleplet.region.Region:
+        return sleplet.region.Region(mask_name=self.mask_name)
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
-        return create_mask_region(self.resolution, self.region)
+        return sleplet._mask_methods.create_mask_region(self.resolution, self.region)
 
     def _calculate_area(self) -> float:
-        self.weight = calc_integration_weight(self.resolution)
+        self.weight = sleplet._integration_methods.calc_integration_weight(
+            self.resolution
+        )
         return (self.mask * self.weight).sum()
 
     def _create_matrix_location(self) -> str:
@@ -72,9 +56,9 @@ class SlepianArbitrary(SlepianFunctions):
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
 
         try:
-            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
-                find_on_pooch_then_local(evec_loc)
-            )
+            return np.load(
+                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+            ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
         except TypeError:
             return self._solve_D_matrix(eval_loc, evec_loc)
 
@@ -84,10 +68,13 @@ class SlepianArbitrary(SlepianFunctions):
         D = self._create_D_matrix()
 
         # fill in remaining triangle section
-        fill_upper_triangle_of_hermitian_matrix(D)
+        sleplet._array_methods.fill_upper_triangle_of_hermitian_matrix(D)
 
         # solve eigenproblem
-        eigenvalues, eigenvectors = clean_evals_and_evecs(LA.eigh(D))
+        (
+            eigenvalues,
+            eigenvectors,
+        ) = sleplet._slepian_arbitrary_methods.clean_evals_and_evecs(LA.eigh(D))
         np.save(_data_path / eval_loc, eigenvalues)
         np.save(_data_path / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
@@ -103,36 +90,44 @@ class SlepianArbitrary(SlepianFunctions):
         D_r = np.zeros((self.L**2, self.L**2))
         D_i = np.zeros((self.L**2, self.L**2))
 
-        D_r_ext, shm_r_ext = create_shared_memory_array(D_r)
-        D_i_ext, shm_i_ext = create_shared_memory_array(D_i)
+        D_r_ext, shm_r_ext = sleplet._parallel_methods.create_shared_memory_array(D_r)
+        D_i_ext, shm_i_ext = sleplet._parallel_methods.create_shared_memory_array(D_i)
 
         def func(chunk: list[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
-            D_r_int, shm_r_int = attach_to_shared_memory_block(D_r, shm_r_ext)
-            D_i_int, shm_i_int = attach_to_shared_memory_block(D_i, shm_i_ext)
+            (
+                D_r_int,
+                shm_r_int,
+            ) = sleplet._parallel_methods.attach_to_shared_memory_block(D_r, shm_r_ext)
+            (
+                D_i_int,
+                shm_i_int,
+            ) = sleplet._parallel_methods.attach_to_shared_memory_block(D_i, shm_i_ext)
 
             for i in chunk:
-                logger.info(f"start ell: {i}")
+                sleplet.logger.info(f"start ell: {i}")
                 self._matrix_helper(D_r_int, D_i_int, i)
-                logger.info(f"finish ell: {i}")
+                sleplet.logger.info(f"finish ell: {i}")
 
-            free_shared_memory(shm_r_int, shm_i_int)
+            sleplet._parallel_methods.free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L**2, NCPU)
+        chunks = sleplet._parallel_methods.split_arr_into_chunks(
+            self.L**2, sleplet.NCPU
+        )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=NCPU) as e:
+        with ThreadPoolExecutor(max_workers=sleplet.NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
         D = D_r_ext + 1j * D_i_ext
 
         # Free and release the shared memory block at the very end
-        free_shared_memory(shm_r_ext, shm_i_ext)
-        release_shared_memory(shm_r_ext, shm_i_ext)
+        sleplet._parallel_methods.free_shared_memory(shm_r_ext, shm_i_ext)
+        sleplet._parallel_methods.release_shared_memory(shm_r_ext, shm_i_ext)
         return D
 
     def _matrix_helper(
@@ -172,13 +167,17 @@ class SlepianArbitrary(SlepianFunctions):
         calculates the D integral between two spherical harmonics
         """
         if i not in self._fields:
-            self._fields[i] = invert_flm_boosted(
-                _create_spherical_harmonic(self.L, i), self.L, self.resolution
+            self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
+                sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),
+                self.L,
+                self.resolution,
             )
         if j not in self._fields:
-            self._fields[j] = invert_flm_boosted(
-                _create_spherical_harmonic(self.L, j), self.L, self.resolution
+            self._fields[j] = sleplet.harmonic_methods.invert_flm_boosted(
+                sleplet.harmonic_methods._create_spherical_harmonic(self.L, j),
+                self.L,
+                self.resolution,
             )
-        return integrate_region_sphere(
+        return sleplet._integration_methods.integrate_region_sphere(
             self.mask, self.weight, self._fields[i], self._fields[j].conj()
         )

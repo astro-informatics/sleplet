@@ -7,8 +7,8 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 import sleplet
-import sleplet.meshes
-import sleplet.slepian
+import sleplet.meshes.mesh_slepian
+import sleplet.slepian.slepian_functions
 
 
 def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:
@@ -215,7 +215,7 @@ def _create_mesh_noise(
 
 
 def _create_slepian_mesh_noise(
-    mesh_slepian: sleplet.meshes.MeshSlepian,
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
     slepian_signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
@@ -237,7 +237,7 @@ def _create_slepian_mesh_noise(
 
 
 def compute_slepian_mesh_sigma_j(
-    mesh_slepian: sleplet.meshes.MeshSlepian,
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
     signal: npt.NDArray[np.complex_ | np.float_],
     psi_j: npt.NDArray[np.float_],
     snr_in: float,
@@ -255,7 +255,7 @@ def compute_slepian_mesh_sigma_j(
 
 
 def slepian_mesh_hard_thresholding(
-    mesh_slepian: sleplet.meshes.MeshSlepian,
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
     wav_coeffs: npt.NDArray[np.complex_ | np.float_],
     sigma_j: npt.NDArray[np.float_],
     n_sigma: int,

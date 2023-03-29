@@ -4,8 +4,7 @@ from numpy import typing as npt
 from numpy.random import default_rng
 from scipy import io as sio
 
-from sleplet._data.setup_pooch import find_on_pooch_then_local
-from sleplet._vars import RANDOM_SEED
+import sleplet
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:
@@ -16,7 +15,7 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
     cl = _load_cl()
 
     # same random seed
-    rng = default_rng(RANDOM_SEED)
+    rng = default_rng(sleplet._vars.RANDOM_SEED)
 
     # Simulate CMB in harmonic space.
     flm = np.zeros(L**2, dtype=np.complex_)
@@ -45,5 +44,7 @@ def _load_cl(
     * _tt_spectrum_7yr_v4p1.mat
     * _lcdm_pl_model_wmap7baoh0.mat
     """
-    mat_contents = sio.loadmat(find_on_pooch_then_local(f"wmap{file_ending}.mat"))
+    mat_contents = sio.loadmat(
+        sleplet._data.setup_pooch.find_on_pooch_then_local(f"wmap{file_ending}.mat")
+    )
     return np.ascontiguousarray(mat_contents["cl"][:, 0])

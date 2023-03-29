@@ -11,15 +11,15 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet
-from sleplet._data.setup_pooch import find_on_pooch_then_local
-from sleplet._mask_methods import create_mask_region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet._mask_methods
+import sleplet._validation
+import sleplet.slepian.slepian_functions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianLimitLatLon(SlepianFunctions):
+class SlepianLimitLatLon(sleplet.slepian.slepian_functions.SlepianFunctions):
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
     phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
     theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
@@ -40,7 +40,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         )
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
-        return create_mask_region(self.L, self.region)
+        return sleplet._mask_methods.create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -> float:
         return (self.phi_max - self.phi_min) * (
@@ -56,9 +56,9 @@ class SlepianLimitLatLon(SlepianFunctions):
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
         try:
-            return np.load(find_on_pooch_then_local(eval_loc)), np.load(
-                find_on_pooch_then_local(evec_loc)
-            )
+            return np.load(
+                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+            ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
         except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))

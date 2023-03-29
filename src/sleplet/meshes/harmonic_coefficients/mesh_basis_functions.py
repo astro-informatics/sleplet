@@ -3,14 +3,13 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet._validation import Validation
-from sleplet.harmonic_methods import mesh_forward
-from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+import sleplet
+import sleplet._validation
+import sleplet.meshes.mesh_harmonic_coefficients
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshBasisFunctions(MeshHarmonicCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshBasisFunctions(sleplet.meshes.MeshHarmonicCoefficients):
     rank: int = 0
 
     def __post_init_post_parse__(self) -> None:
@@ -21,12 +20,12 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        logger.info(
+        sleplet.logger.info(
             f"Mesh eigenvalue {self.rank}: "
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}"
         )
         basis_function = self.mesh.basis_functions[self.rank]
-        return mesh_forward(self.mesh, basis_function)
+        return sleplet.harmonic_methods.mesh_forward(self.mesh, basis_function)
 
     def _create_name(self) -> str:
         return (

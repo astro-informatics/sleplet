@@ -1,24 +1,16 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 
-from sleplet import logger
-from sleplet._class_lists import MESH_COEFFICIENTS, MESHES
-from sleplet._string_methods import convert_classes_list_to_snake_case
-from sleplet.meshes.mesh import Mesh
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.plot_methods import (
-    _coefficients_to_field_mesh,
-    compute_amplitude_for_noisy_mesh_plots,
-)
-from sleplet.plotting.create_plot_mesh import Plot
+import sleplet
+import sleplet.meshes.mesh_slepian
+import sleplet.plotting
 
 
 def valid_meshes(mesh_name: str) -> str:
     """
     check if valid mesh name
     """
-    if mesh_name in MESHES:
+    if mesh_name in sleplet._class_lists.MESHES:
         return mesh_name
     else:
         raise ValueError(f"'{mesh_name}' is not a valid mesh name to plot")
@@ -28,8 +20,8 @@ def valid_methods(method_name: str) -> str:
     """
     check if valid mesh name
     """
-    if method_name in convert_classes_list_to_snake_case(
-        MESH_COEFFICIENTS, word_to_remove="Mesh"
+    if method_name in sleplet._string_methods.convert_classes_list_to_snake_case(
+        sleplet._class_lists.MESH_COEFFICIENTS, word_to_remove="Mesh"
     ):
         return method_name
     else:
@@ -44,7 +36,7 @@ def read_args() -> Namespace:
     parser.add_argument(
         "function",
         type=valid_meshes,
-        choices=MESHES,
+        choices=sleplet._class_lists.MESHES,
         help="mesh to plot",
     )
     parser.add_argument(
@@ -61,8 +53,8 @@ def read_args() -> Namespace:
         nargs="?",
         default="basis_functions",
         const="basis_functions",
-        choices=convert_classes_list_to_snake_case(
-            MESH_COEFFICIENTS, word_to_remove="Mesh"
+        choices=sleplet._string_methods.convert_classes_list_to_snake_case(
+            sleplet._class_lists.MESH_COEFFICIENTS, word_to_remove="Mesh"
         ),
         help="plotting routine: defaults to basis",
     )
@@ -88,30 +80,35 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> None:
+def plot(
+    f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
+    *,
+    normalise: bool,
+    amplitude: float | None,
+) -> None:
     """
     master plotting method
     """
-    field = _coefficients_to_field_mesh(f, f.coefficients)
-    Plot(
+    field = sleplet.plot_methods._coefficients_to_field_mesh(f, f.coefficients)
+    sleplet.plotting.create_plot_mesh.Plot(
         f.mesh,
         f.name,
         field,
         amplitude=amplitude,
         normalise=normalise,
-        region=isinstance(f, MeshSlepianCoefficients),
+        region=isinstance(f, sleplet.meshes.mesh_slepian.MeshSlepianCoefficients),
     ).execute()
 
 
 def main() -> None:
     args = read_args()
-    logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
+    sleplet.logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
-    mesh = Mesh(args.function, zoom=args.zoom)
-    f = MESH_COEFFICIENTS[
-        convert_classes_list_to_snake_case(
-            MESH_COEFFICIENTS, word_to_remove="Mesh"
+    mesh = sleplet.meshes.mesh.Mesh(args.function, zoom=args.zoom)
+    f = sleplet._class_lists.MESH_COEFFICIENTS[
+        sleplet._string_methods.convert_classes_list_to_snake_case(
+            sleplet._class_lists.MESH_COEFFICIENTS, word_to_remove="Mesh"
         ).index(args.method)
     ](
         mesh,
@@ -121,7 +118,7 @@ def main() -> None:
     )
 
     # custom amplitude for noisy plots
-    amplitude = compute_amplitude_for_noisy_mesh_plots(f)
+    amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_mesh_plots(f)
 
     # perform plot
     plot(f, normalise=not args.unnormalise, amplitude=amplitude)

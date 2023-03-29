@@ -3,7 +3,7 @@ import pyssht as ssht
 from numpy.random import default_rng
 
 from sleplet import logger
-from sleplet.functions.flm import AxisymmetricWavelets
+from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.harmonic_methods import compute_random_signal
 from sleplet.wavelet_methods import (
     axisymmetric_wavelet_forward,

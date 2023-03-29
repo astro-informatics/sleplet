@@ -7,24 +7,23 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._mask_methods import create_default_region
-from sleplet._validation import Validation
-from sleplet.functions.coefficients import Coefficients
-from sleplet.noise import _create_slepian_noise, compute_snr
-from sleplet.region import Region
-from sleplet.slepian_methods import (
-    _compute_s_p_omega_prime,
-    choose_slepian_method,
-)
+import sleplet
+import sleplet._mask_methods
+import sleplet._validation
+import sleplet.noise
 
 
-@dataclass(config=Validation)
-class F_P(Coefficients):  # noqa: N801
+@dataclass(config=sleplet._validation.Validation)
+class F_P(sleplet.functions.coefficients.Coefficients):  # noqa: N801
     def __post_init_post_parse__(self) -> None:
-        self.region: Region | None = (
-            self.region if isinstance(self.region, Region) else create_default_region()
+        self.region: sleplet.region.Region | None = (
+            self.region
+            if isinstance(self.region, sleplet.region.Region)
+            else sleplet._mask_methods.create_default_region()
         )
-        self.slepian = choose_slepian_method(self.L, self.region)
+        self.slepian = sleplet.slepian_methods.choose_slepian_method(
+            self.L, self.region
+        )
         super().__post_init_post_parse__()
 
     def rotate(
@@ -35,7 +34,9 @@ class F_P(Coefficients):  # noqa: N801
     def _translation_helper(
         self, alpha: float, beta: float
     ) -> npt.NDArray[np.complex_]:
-        return _compute_s_p_omega_prime(self.L, alpha, beta, self.slepian).conj()
+        return sleplet.slepian_methods._compute_s_p_omega_prime(
+            self.L, alpha, beta, self.slepian
+        ).conj()
 
     def _add_noise_to_signal(
         self,
@@ -46,10 +47,10 @@ class F_P(Coefficients):  # noqa: N801
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            n_p = _create_slepian_noise(
+            n_p = sleplet.noise._create_slepian_noise(
                 self.L, self.coefficients, self.slepian, self.noise
             )
-            snr = compute_snr(self.coefficients, n_p, "Slepian")
+            snr = sleplet.noise.compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients = self.coefficients + n_p
             return unnoised_coefficients, snr
         return None, None

@@ -6,8 +6,9 @@ import pyssht as ssht
 from numpy import typing as npt
 
 import sleplet
-import sleplet.meshes
-import sleplet.slepian
+import sleplet.meshes._mesh_slepian_decomposition
+import sleplet.meshes.mesh_slepian
+import sleplet.slepian.slepian_functions
 
 
 def choose_slepian_method(

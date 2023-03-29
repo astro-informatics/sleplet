@@ -5,25 +5,10 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet import logger
-from sleplet._class_lists import COEFFICIENTS, MAPS_LM
-from sleplet._mask_methods import create_default_region
-from sleplet._string_methods import (
-    convert_classes_list_to_snake_case,
-    filename_angle,
-)
-from sleplet.functions.coefficients import Coefficients
-from sleplet.harmonic_methods import (
-    rotate_earth_to_africa,
-    rotate_earth_to_south_america,
-)
-from sleplet.plot_methods import (
-    _calc_nearest_grid_point,
-    _coefficients_to_field_sphere,
-    compute_amplitude_for_noisy_sphere_plots,
-)
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.slepian_methods import slepian_forward
+import sleplet
+import sleplet._mask_methods
+import sleplet.functions
+import sleplet.plotting
 
 ALPHA_DEFAULT = 0.75
 ANNOTATION_COLOUR = "gold"
@@ -42,7 +27,9 @@ def valid_maps(map_name: str) -> str:
     """
     check if valid map
     """
-    if map_name in convert_classes_list_to_snake_case(MAPS_LM):
+    if map_name in sleplet._string_methods.convert_classes_list_to_snake_case(
+        sleplet._class_lists.MAPS_LM
+    ):
         return map_name
     else:
         raise ValueError(f"{map_name} is not a valid map to convolve")
@@ -52,7 +39,9 @@ def valid_plotting(func_name: str) -> str:
     """
     check if valid function
     """
-    if func_name in convert_classes_list_to_snake_case(COEFFICIENTS):
+    if func_name in sleplet._string_methods.convert_classes_list_to_snake_case(
+        sleplet._class_lists.COEFFICIENTS
+    ):
         return func_name
     else:
         raise ValueError(f"{func_name} is not a valid function to plot")
@@ -66,7 +55,9 @@ def read_args() -> Namespace:
     parser.add_argument(
         "function",
         type=valid_plotting,
-        choices=convert_classes_list_to_snake_case(COEFFICIENTS),
+        choices=sleplet._string_methods.convert_classes_list_to_snake_case(
+            sleplet._class_lists.COEFFICIENTS
+        ),
         help="function to plot on the sphere",
     )
     parser.add_argument(
@@ -89,7 +80,9 @@ def read_args() -> Namespace:
         "-c",
         type=valid_maps,
         default=None,
-        choices=convert_classes_list_to_snake_case(MAPS_LM),
+        choices=sleplet._string_methods.convert_classes_list_to_snake_case(
+            sleplet._class_lists.MAPS_LM
+        ),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
     parser.add_argument(
@@ -171,8 +164,8 @@ def read_args() -> Namespace:
 
 
 def plot(
-    f: Coefficients,
-    g: Coefficients | None,
+    f: sleplet.functions.coefficients.Coefficients,
+    g: sleplet.functions.coefficients.Coefficients | None,
     *,
     alpha_pi_frac: float,
     beta_pi_frac: float,
@@ -192,13 +185,13 @@ def plot(
     coefficients = f.coefficients
 
     # turn off annotation if needed
-    logger.info(f"annotations on: {annotations}")
+    sleplet.logger.info(f"annotations on: {annotations}")
     annotation = []
 
     # Shannon number for Slepian coefficients
     shannon = f.slepian.N if hasattr(f, "slepian") else None
 
-    logger.info(f"plotting method: '{method}'")
+    sleplet.logger.info(f"plotting method: '{method}'")
     match method:
         case "rotate":
             coefficients, filename = _rotation_helper(
@@ -222,16 +215,20 @@ def plot(
     if "earth" in filename:
         match earth_view:
             case "africa":
-                coefficients = rotate_earth_to_africa(coefficients, f.L)
+                coefficients = sleplet.harmonic_methods.rotate_earth_to_africa(
+                    coefficients, f.L
+                )
                 filename += "_africa"
             case "south_america":
-                coefficients = rotate_earth_to_south_america(coefficients, f.L)
+                coefficients = sleplet.harmonic_methods.rotate_earth_to_south_america(
+                    coefficients, f.L
+                )
 
     # get field value
-    field = _coefficients_to_field_sphere(f, coefficients)
+    field = sleplet.plot_methods._coefficients_to_field_sphere(f, coefficients)
 
     # do plot
-    Plot(
+    sleplet.plotting.create_plot_sphere.Plot(
         field,
         f.L,
         filename,
@@ -247,7 +244,7 @@ def plot(
 
 
 def _rotation_helper(
-    f: Coefficients,
+    f: sleplet.functions.coefficients.Coefficients,
     filename: str,
     alpha_pi_frac: float,
     beta_pi_frac: float,
@@ -256,14 +253,19 @@ def _rotation_helper(
     """
     performs the rotation specific steps
     """
-    logger.info(
+    sleplet.logger.info(
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
     )
-    filename += f"_rotate_{filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
+    filename += (
+        "_rotate_"
+        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"  # noqa: E501
+    )
 
     # calculate angles
-    alpha, beta = _calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
+    alpha, beta = sleplet.plot_methods._calc_nearest_grid_point(
+        f.L, alpha_pi_frac, beta_pi_frac
+    )
     gamma = gamma_pi_frac * np.pi
 
     # rotate by alpha, beta, gamma
@@ -272,7 +274,7 @@ def _rotation_helper(
 
 
 def _translation_helper(
-    f: Coefficients,
+    f: sleplet.functions.coefficients.Coefficients,
     filename: str,
     alpha_pi_frac: float,
     beta_pi_frac: float,
@@ -281,12 +283,17 @@ def _translation_helper(
     """
     performs the translation specific steps
     """
-    logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
+    sleplet.logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
-    filename += f"_translate_{filename_angle(alpha_pi_frac, beta_pi_frac)}"
+    filename += (
+        "_translate_"
+        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac)}"
+    )
 
     # calculate angles
-    alpha, beta = _calc_nearest_grid_point(f.L, alpha_pi_frac, beta_pi_frac)
+    alpha, beta = sleplet.plot_methods._calc_nearest_grid_point(
+        f.L, alpha_pi_frac, beta_pi_frac
+    )
 
     # translate by alpha, beta
     coefficients = f.translate(alpha, beta, shannon=shannon)
@@ -301,8 +308,8 @@ def _translation_helper(
 
 
 def _convolution_helper(
-    f: Coefficients,
-    g: Coefficients,
+    f: sleplet.functions.coefficients.Coefficients,
+    g: sleplet.functions.coefficients.Coefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
     shannon: int | None,
     filename: str,
@@ -311,7 +318,7 @@ def _convolution_helper(
     performs the convolution specific steps
     """
     g_coefficients = (
-        slepian_forward(f.L, f.slepian, flm=g.coefficients)
+        sleplet.slepian_methods.slepian_forward(f.L, f.slepian, flm=g.coefficients)
         if hasattr(f, "slepian")
         else g.coefficients
     )
@@ -324,10 +331,12 @@ def _convolution_helper(
 def main() -> None:
     args = read_args()
 
-    mask = create_default_region() if args.region else None
+    mask = sleplet._mask_methods.create_default_region() if args.region else None
 
-    f = COEFFICIENTS[
-        convert_classes_list_to_snake_case(COEFFICIENTS).index(args.function)
+    f = sleplet._class_lists.COEFFICIENTS[
+        sleplet.string_methods.convert_classes_list_to_snake_case(
+            sleplet._class_lists.COEFFICIENTS
+        ).index(args.function)
     ](
         args.bandlimit,
         extra_args=args.extra_args,
@@ -337,15 +346,17 @@ def main() -> None:
     )
 
     g = (
-        MAPS_LM[convert_classes_list_to_snake_case(MAPS_LM).index(args.convolve)](
-            args.bandlimit
-        )
+        sleplet._class_lists.MAPS_LM[
+            sleplet.string_methods.convert_classes_list_to_snake_case(
+                sleplet._class_lists.MAPS_LM
+            ).index(args.convolve)
+        ](args.bandlimit)
         if isinstance(args.convolve, str)
         else None
     )
 
     # custom amplitude for noisy plots
-    amplitude = compute_amplitude_for_noisy_sphere_plots(f)
+    amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(f)
 
     plot(
         f,

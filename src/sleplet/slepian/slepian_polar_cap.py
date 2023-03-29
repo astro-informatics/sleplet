@@ -13,28 +13,18 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import NCPU, logger
-from sleplet._data.setup_pooch import find_on_pooch_then_local
-from sleplet._mask_methods import create_mask_region
-from sleplet._parallel_methods import (
-    attach_to_shared_memory_block,
-    create_shared_memory_array,
-    free_shared_memory,
-    release_shared_memory,
-    split_arr_into_chunks,
-)
-from sleplet._validation import Validation
-from sleplet.harmonic_methods import _create_emm_vector
-from sleplet.region import Region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet
+import sleplet._mask_methods
+import sleplet._validation
+import sleplet.slepian.slepian_functions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 L_SAVE_ALL = 16
 
 
-@dataclass(config=Validation)
-class SlepianPolarCap(SlepianFunctions):
+@dataclass(config=sleplet._validation.Validation)
+class SlepianPolarCap(sleplet.slepian.slepian_functions.SlepianFunctions):
     theta_max: float
     _: KW_ONLY
     gap: bool = False
@@ -46,11 +36,11 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"
 
-    def _create_region(self) -> Region:
-        return Region(gap=self.gap, theta_max=self.theta_max)
+    def _create_region(self) -> sleplet.region.Region:
+        return sleplet.region.Region(gap=self.gap, theta_max=self.theta_max)
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
-        return create_mask_region(self.L, self.region)
+        return sleplet._mask_methods.create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -> float:
         return 2 * np.pi * (1 - np.cos(self.theta_max))
@@ -75,9 +65,13 @@ class SlepianPolarCap(SlepianFunctions):
         """
         solves eigenproblem with files already saved
         """
-        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
-        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
-        orders = np.load(find_on_pooch_then_local(order_loc))
+        eigenvalues = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+        )
+        eigenvectors = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc)
+        )
+        orders = np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(order_loc))
 
         if self.order is not None:
             idx = np.where(orders == self.order)
@@ -120,7 +114,7 @@ class SlepianPolarCap(SlepianFunctions):
         """
         solves the eigenproblem for a given order 'm;
         """
-        emm = _create_emm_vector(self.L)
+        emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)
@@ -165,35 +159,39 @@ class SlepianPolarCap(SlepianFunctions):
         Dm = np.zeros((self.L - m, self.L - m))
         lvec = np.arange(m, self.L)
 
-        Dm_ext, shm_ext = create_shared_memory_array(Dm)
+        Dm_ext, shm_ext = sleplet._parallel_methods.create_shared_memory_array(Dm)
 
         def func(chunk: list[int]) -> None:
             """
             calculate D matrix components for each chunk
             """
-            Dm_int, shm_int = attach_to_shared_memory_block(Dm, shm_ext)
+            Dm_int, shm_int = sleplet._parallel_methods.attach_to_shared_memory_block(
+                Dm, shm_ext
+            )
 
             # deal with chunk
             for i in chunk:
-                logger.info(f"start ell: {i}")
+                sleplet.logger.info(f"start ell: {i}")
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
-                logger.info(f"finish ell: {i}")
+                sleplet.logger.info(f"finish ell: {i}")
 
-            free_shared_memory(shm_int)
+            sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L - m, NCPU)
+        chunks = sleplet._parallel_methods.split_arr_into_chunks(
+            self.L - m, sleplet.NCPU
+        )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=NCPU) as e:
+        with ThreadPoolExecutor(max_workers=sleplet.NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
         Dm = Dm_ext * (-1) ** m / 2
 
         # Free and release the shared memory block at the very end
-        free_shared_memory(shm_ext)
-        release_shared_memory(shm_ext)
+        sleplet._parallel_methods.free_shared_memory(shm_ext)
+        sleplet._parallel_methods.release_shared_memory(shm_ext)
         return Dm
 
     def _create_legendre_polynomials_table(

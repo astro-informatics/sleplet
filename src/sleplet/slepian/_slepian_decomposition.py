@@ -5,21 +5,15 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet._integration_methods import (
-    calc_integration_weight,
-    integrate_region_sphere,
-    integrate_whole_sphere,
-)
-from sleplet._validation import Validation
-from sleplet._vars import SAMPLING_SCHEME
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet
+import sleplet._validation
+import sleplet.slepian.slepian_functions
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class SlepianDecomposition:
     L: int
-    slepian: SlepianFunctions
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions
     _: KW_ONLY
     f: npt.NDArray[np.complex_] | None = None
     flm: npt.NDArray[np.complex_ | np.float_] | None = None
@@ -63,10 +57,14 @@ class SlepianDecomposition:
         assert isinstance(self.mask, np.ndarray)  # noqa: S101
         assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = ssht.inverse(
-            self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
+            self.slepian.eigenvectors[rank],
+            self.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
-        weight = calc_integration_weight(self.L)
-        integration = integrate_region_sphere(self.mask, weight, self.f, s_p.conj())
+        weight = sleplet._integration_methods.calc_integration_weight(self.L)
+        integration = sleplet._integration_methods.integrate_region_sphere(
+            self.mask, weight, self.f, s_p.conj()
+        )
         return integration / self.slepian.eigenvalues[rank]
 
     def _integrate_sphere(self, rank: int) -> complex:
@@ -77,10 +75,14 @@ class SlepianDecomposition:
         """
         assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = ssht.inverse(
-            self.slepian.eigenvectors[rank], self.L, Method=SAMPLING_SCHEME
+            self.slepian.eigenvectors[rank],
+            self.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
-        weight = calc_integration_weight(self.L)
-        return integrate_whole_sphere(weight, self.f, s_p.conj())
+        weight = sleplet._integration_methods.calc_integration_weight(self.L)
+        return sleplet._integration_methods.integrate_whole_sphere(
+            weight, self.f, s_p.conj()
+        )
 
     def _harmonic_sum(self, rank: int) -> complex:
         r"""
@@ -96,13 +98,13 @@ class SlepianDecomposition:
         detects what method is used to perform the decomposition
         """
         if isinstance(self.flm, np.ndarray):
-            logger.info("harmonic sum method selected")
+            sleplet.logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
         elif isinstance(self.f, np.ndarray) and not isinstance(self.mask, np.ndarray):
-            logger.info("integrating the whole sphere method selected")
+            sleplet.logger.info("integrating the whole sphere method selected")
             self.method = "integrate_sphere"
         elif isinstance(self.f, np.ndarray):
-            logger.info("integrating a region on the sphere method selected")
+            sleplet.logger.info("integrating a region on the sphere method selected")
             self.method = "integrate_region"
         else:
             raise RuntimeError(

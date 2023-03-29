@@ -7,16 +7,16 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._validation import Validation
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.mesh_slepian import MeshSlepian
-from sleplet.noise import _create_slepian_mesh_noise, compute_snr
+import sleplet
+import sleplet._validation
+import sleplet.meshes.mesh_slepian
+import sleplet.noise
 
 
-@dataclass(config=Validation)
-class MeshSlepianCoefficients(MeshCoefficients):
+@dataclass(config=sleplet._validation.Validation)
+class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
     def __post_init_post_parse__(self) -> None:
-        self.mesh_slepian = MeshSlepian(self.mesh)
+        self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
         super().__post_init_post_parse__()
 
     def _add_noise_to_signal(
@@ -28,10 +28,10 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            n_p = _create_slepian_mesh_noise(
+            n_p = sleplet.noise._create_slepian_mesh_noise(
                 self.mesh_slepian, self.coefficients, self.noise
             )
-            snr = compute_snr(self.coefficients, n_p, "Slepian")
+            snr = sleplet.noise.compute_snr(self.coefficients, n_p, "Slepian")
             self.coefficients = self.coefficients + n_p
             return unnoised_coefficients, snr
         return None, None

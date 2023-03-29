@@ -7,7 +7,8 @@ from numpy import typing as npt
 from pys2let import axisym_wav_l
 
 import sleplet
-import sleplet.slepian
+import sleplet._convolution_methods
+import sleplet.slepian.slepian_functions
 
 
 def slepian_wavelet_forward(

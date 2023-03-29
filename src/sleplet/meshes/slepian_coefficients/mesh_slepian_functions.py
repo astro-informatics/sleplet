@@ -3,14 +3,15 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet._validation import Validation
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.slepian_methods import slepian_mesh_forward
+import sleplet
+import sleplet._validation
+import sleplet.meshes
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshSlepianFunctions(MeshSlepianCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianFunctions(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
     rank: int = 0
 
     def __post_init_post_parse__(self) -> None:
@@ -20,12 +21,12 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         """
         compute field on the vertices of the mesh
         """
-        logger.info(
+        sleplet.logger.info(
             f"Slepian eigenvalue {self.rank}: "
             f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
         )
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
-        return slepian_mesh_forward(
+        return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
             u_i=s_p_i,
         )

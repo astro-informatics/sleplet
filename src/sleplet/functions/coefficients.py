@@ -9,22 +9,21 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet._convolution_methods import sifting_convolution
-from sleplet._mask_methods import ensure_masked_flm_bandlimited
-from sleplet._string_methods import filename_args
-from sleplet._validation import Validation
-from sleplet.region import Region
+import sleplet
+import sleplet._mask_methods
+import sleplet._validation
+import sleplet.region
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class Coefficients:
     L: int
     _: KW_ONLY
     extra_args: list[int] | None = None
     noise: float | None = None
-    region: Region | None = None
+    region: sleplet.region.Region | None = None
     smoothing: int | None = None
 
     def __post_init_post_parse__(self) -> None:
@@ -55,7 +54,9 @@ class Coefficients:
     ) -> npt.NDArray[np.complex_ | np.float_]:
         # translation/convolution are not real for general function
         self.reality = False
-        return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
+        return sleplet._convolution_methods.sifting_convolution(
+            f_coefficient, g_coefficient, shannon=shannon
+        )
 
     def _add_details_to_name(self) -> None:
         """
@@ -63,14 +64,16 @@ class Coefficients:
         adds noise/smoothing if appropriate and bandlimit
         """
         if (
-            isinstance(self.region, Region)
+            isinstance(self.region, sleplet.region.Region)
             and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
             self.name += f"_{self.region.name_ending}"
         if self.noise is not None:
-            self.name += f"{filename_args(self.noise, 'noise')}"
+            self.name += f"{sleplet._string_methods.filename_args(self.noise, 'noise')}"
         if self.smoothing is not None:
-            self.name += f"{filename_args(self.smoothing, 'smoothed')}"
+            self.name += (
+                f"{sleplet._string_methods.filename_args(self.smoothing, 'smoothed')}"
+            )
         self.name += f"_L{self.L}"
 
     @validator("coefficients", check_fields=False)
@@ -79,7 +82,7 @@ class Coefficients:
             values["region"]
             and not set(values["name"].split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
-            v = ensure_masked_flm_bandlimited(
+            v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
                 v,
                 values["L"],
                 values["region"],

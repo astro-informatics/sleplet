@@ -4,19 +4,14 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet._integration_methods import (
-    integrate_region_mesh,
-    integrate_whole_mesh,
-)
-from sleplet._validation import Validation
-from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.mesh_slepian import MeshSlepian
+import sleplet
+import sleplet._validation
+import sleplet.meshes.mesh_slepian
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class MeshSlepianDecomposition:
-    mesh_slepian: MeshSlepian
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian
     _: KW_ONLY
     mask: bool = False
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None
@@ -59,11 +54,11 @@ class MeshSlepianDecomposition:
         f(x) \overline{S_{p}(x)}
         """
         assert isinstance(self.u, np.ndarray)  # noqa: S101
-        s_p = mesh_inverse(
+        s_p = sleplet.harmonic_methods.mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
         )
-        integration = integrate_region_mesh(
+        integration = sleplet._integration_methods.integrate_region_mesh(
             self.mesh_slepian.mesh.region,
             self.mesh_slepian.mesh.vertices,
             self.mesh_slepian.mesh.faces,
@@ -79,11 +74,11 @@ class MeshSlepianDecomposition:
         f(x) \overline{S_{p}(x)}
         """
         assert isinstance(self.u, np.ndarray)  # noqa: S101
-        s_p = mesh_inverse(
+        s_p = sleplet.harmonic_methods.mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
         )
-        return integrate_whole_mesh(
+        return sleplet._integration_methods.integrate_whole_mesh(
             self.mesh_slepian.mesh.vertices, self.mesh_slepian.mesh.faces, self.u, s_p
         )
 
@@ -100,13 +95,13 @@ class MeshSlepianDecomposition:
         detects what method is used to perform the decomposition
         """
         if isinstance(self.u_i, np.ndarray):
-            logger.info("harmonic sum method selected")
+            sleplet.logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
         elif isinstance(self.u, np.ndarray) and not self.mask:
-            logger.info("integrating the whole mesh method selected")
+            sleplet.logger.info("integrating the whole mesh method selected")
             self.method = "integrate_mesh"
         elif isinstance(self.u, np.ndarray):
-            logger.info("integrating a region on the mesh method selected")
+            sleplet.logger.info("integrating a region on the mesh method selected")
             self.method = "integrate_region"
         else:
             raise RuntimeError(

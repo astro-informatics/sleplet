@@ -3,28 +3,27 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._data.create_earth_flm import create_flm
-from sleplet._data.setup_pooch import find_on_pooch_then_local
-from sleplet._mask_methods import create_mask
-from sleplet._string_methods import _convert_camel_case_to_snake_case
-from sleplet._validation import Validation
-from sleplet._vars import SAMPLING_SCHEME
-from sleplet.functions.f_lm import F_LM
-from sleplet.harmonic_methods import _ensure_f_bandlimited, rotate_earth_to_africa
+import sleplet
+import sleplet._data.create_earth_flm
+import sleplet._mask_methods
+import sleplet._validation
+import sleplet.functions.f_lm
 
 
-@dataclass(config=Validation)
-class Africa(F_LM):
+@dataclass(config=sleplet._validation.Validation)
+class Africa(sleplet.functions.f_lm.F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return _ensure_f_bandlimited(
+        return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun, self.L, reality=self.reality, spin=self.spin
         )
 
     def _create_name(self) -> str:
-        return _convert_camel_case_to_snake_case(self.__class__.__name__)
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__
+        )
 
     def _set_reality(self) -> bool:
         return True
@@ -44,15 +43,19 @@ class Africa(F_LM):
         """
         function on the grid
         """
-        earth_flm = create_flm(self.L, smoothing=self.smoothing)
-        rot_flm = rotate_earth_to_africa(earth_flm, self.L)
+        earth_flm = sleplet._data.create_earth_flm.create_flm(
+            self.L, smoothing=self.smoothing
+        )
+        rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, self.L)
         earth_f = ssht.inverse(
-            rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
+            rot_flm, self.L, Reality=self.reality, Method=sleplet._vars.SAMPLING_SCHEME
         )
         mask_name = f"{self.name}_L{self.L}.npy"
-        mask_location = find_on_pooch_then_local(f"slepian_masks_{mask_name}")
+        mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(
+            f"slepian_masks_{mask_name}"
+        )
         mask = (
-            create_mask(self.L, mask_name)
+            sleplet._mask_methods.create_mask(self.L, mask_name)
             if mask_location is None
             else np.load(mask_location)
         )

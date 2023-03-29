@@ -2,22 +2,23 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._data.create_wmap_flm import create_flm
-from sleplet._string_methods import _convert_camel_case_to_snake_case
-from sleplet._validation import Validation
-from sleplet.functions.f_lm import F_LM
+import sleplet
+import sleplet._validation
+import sleplet.functions.f_lm
 
 
-@dataclass(config=Validation)
-class Wmap(F_LM):
+@dataclass(config=sleplet._validation.Validation)
+class Wmap(sleplet.functions.f_lm.F_LM):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return create_flm(self.L)
+        return sleplet._data.create_wmap_flm.create_flm(self.L)
 
     def _create_name(self) -> str:
-        return _convert_camel_case_to_snake_case(self.__class__.__name__)
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__
+        )
 
     def _set_reality(self) -> bool:
         return True

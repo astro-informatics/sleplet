@@ -4,15 +4,15 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
-from sleplet import logger
-from sleplet._string_methods import filename_args, wavelet_ending
-from sleplet._validation import Validation
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.wavelet_methods import create_kappas
+import sleplet
+import sleplet._validation
+import sleplet.meshes.mesh_slepian_coefficients
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshSlepianWavelets(MeshSlepianCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianWavelets(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
     B: int = 3
     j_min: int = 2
     j: int | None = None
@@ -21,18 +21,18 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        logger.info("start computing wavelets")
+        sleplet.logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
-        logger.info("finish computing wavelets")
+        sleplet.logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
 
     def _create_name(self) -> str:
         return (
             f"slepian_wavelets_{self.mesh.name}"
-            f"{filename_args(self.B, 'B')}"
-            f"{filename_args(self.j_min, 'jmin')}"
-            f"{wavelet_ending(self.j_min, self.j)}"
+            f"{sleplet._string_methods.filename_args(self.B, 'B')}"
+            f"{sleplet._string_methods.filename_args(self.j_min, 'jmin')}"
+            f"{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}"
         )
 
     def _setup_args(self) -> None:
@@ -46,7 +46,9 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         """
         creates the Slepian wavelets of the mesh
         """
-        return create_kappas(self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min)
+        return sleplet.wavelet_methods.create_kappas(
+            self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
+        )
 
     @validator("j")
     def _check_j(cls, v, values) -> int | None:

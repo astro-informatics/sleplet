@@ -33,7 +33,7 @@ def clean_evals_and_evecs(
     return eigenvalues, eigenvectors
 
 
-def compute_mesh_shannon(mesh: sleplet.meshes.Mesh) -> int:
+def compute_mesh_shannon(mesh: sleplet.meshes.mesh.Mesh) -> int:
     """
     computes the effective Shannon number for a region of a mesh
     """

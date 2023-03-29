@@ -4,29 +4,25 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet._string_methods import (
-    _convert_camel_case_to_snake_case,
-    filename_args,
-)
-from sleplet._validation import Validation
-from sleplet.functions.f_lm import F_LM
-from sleplet.harmonic_methods import _create_spherical_harmonic
+import sleplet
+import sleplet._validation
+import sleplet.functions.f_lm
 
 
-@dataclass(config=Validation, kw_only=True)
-class SphericalHarmonic(F_LM):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SphericalHarmonic(sleplet.functions.f_lm.F_LM):
     ell: int = 0
     m: int = 0
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         ind = ssht.elm2ind(self.ell, self.m)
-        return _create_spherical_harmonic(self.L, ind)
+        return sleplet.harmonic_methods._create_spherical_harmonic(self.L, ind)
 
     def _create_name(self) -> str:
         return (
-            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"{filename_args(self.ell, 'l')}"
-            f"{filename_args(self.m, 'm')}"
+            f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{sleplet._string_methods.filename_args(self.ell, 'l')}"
+            f"{sleplet._string_methods.filename_args(self.m, 'm')}"
         )
 
     def _set_reality(self) -> bool:

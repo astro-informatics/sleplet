@@ -15,28 +15,28 @@ MESHES: list[str] = [
     for x in glob(str(_data_path / "*.toml"))
 ]
 
-FLM: list[type[sleplet.functions.Coefficients]] = [
-    sleplet.functions.flm.Africa,
-    sleplet.functions.flm.AxisymmetricWaveletCoefficientsAfrica,
-    sleplet.functions.flm.AxisymmetricWaveletCoefficientsEarth,
-    sleplet.functions.flm.AxisymmetricWaveletCoefficientsSouthAmerica,
-    sleplet.functions.flm.AxisymmetricWavelets,
-    sleplet.functions.flm.DiracDelta,
-    sleplet.functions.flm.DirectionalSpinWavelets,
-    sleplet.functions.flm.Earth,
-    sleplet.functions.flm.ElongatedGaussian,
-    sleplet.functions.flm.Gaussian,
-    sleplet.functions.flm.HarmonicGaussian,
-    sleplet.functions.flm.Identity,
-    sleplet.functions.flm.NoiseEarth,
-    sleplet.functions.flm.Ridgelets,
-    sleplet.functions.flm.SouthAmerica,
-    sleplet.functions.flm.SphericalHarmonic,
-    sleplet.functions.flm.SquashedGaussian,
-    sleplet.functions.flm.Wmap,
+FLM: list[type[sleplet.functions.coefficients.Coefficients]] = [
+    sleplet.functions.flm.africa.Africa,
+    sleplet.functions.flm.axisymmetric_wavelet_coefficients_africa.AxisymmetricWaveletCoefficientsAfrica,
+    sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth.AxisymmetricWaveletCoefficientsEarth,
+    sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america.AxisymmetricWaveletCoefficientsSouthAmerica,
+    sleplet.functions.flm.axisymmetric_wavelets.AxisymmetricWavelets,
+    sleplet.functions.flm.dirac_delta.DiracDelta,
+    sleplet.functions.flm.directional_spin_wavelets.DirectionalSpinWavelets,
+    sleplet.functions.flm.earth.Earth,
+    sleplet.functions.flm.elongated_gaussian.ElongatedGaussian,
+    sleplet.functions.flm.gaussian.Gaussian,
+    sleplet.functions.flm.harmonic_gaussian.HarmonicGaussian,
+    sleplet.functions.flm.identity.Identity,
+    sleplet.functions.flm.noise_earth.NoiseEarth,
+    sleplet.functions.flm.ridgelets.Ridgelets,
+    sleplet.functions.flm.south_america.SouthAmerica,
+    sleplet.functions.flm.spherical_harmonic.SphericalHarmonic,
+    sleplet.functions.flm.squashed_gaussian.SquashedGaussian,
+    sleplet.functions.flm.wmap.Wmap,
 ]
 
-FP: list[type[sleplet.functions.Coefficients]] = [
+FP: list[type[sleplet.functions.coefficients.Coefficients]] = [
     sleplet.functions.fp.Slepian,
     sleplet.functions.fp.SlepianAfrica,
     sleplet.functions.fp.SlepianDiracDelta,
@@ -49,21 +49,21 @@ FP: list[type[sleplet.functions.Coefficients]] = [
     sleplet.functions.fp.SlepianWavelets,
 ]
 
-COEFFICIENTS: list[type[sleplet.functions.Coefficients]] = FLM + FP
+COEFFICIENTS: list[type[sleplet.functions.coefficients.Coefficientss]] = FLM + FP
 
-MAPS_LM: list[type[sleplet.functions.Coefficients]] = [
-    sleplet.functions.flm.Earth,
-    sleplet.functions.flm.SouthAmerica,
-    sleplet.functions.flm.Wmap,
+MAPS_LM: list[type[sleplet.functions.coefficients.Coefficients]] = [
+    sleplet.functions.flm.earth.Earth,
+    sleplet.functions.flm.south_america.SouthAmerica,
+    sleplet.functions.flm.wmap.Wmap,
 ]
 
-MESH_HARMONIC: list[type[sleplet.meshes.MeshCoefficients]] = [
-    sleplet.meshes.harmonic_coefficients.MeshBasisFunctions,
-    sleplet.meshes.harmonic_coefficients.MeshField,
-    sleplet.meshes.harmonic_coefficients.MeshNoiseField,
+MESH_HARMONIC: list[type[sleplet.meshes.mesh_coefficients.MeshCoefficients]] = [
+    sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions,
+    sleplet.meshes.harmonic_coefficients.mesh_field.MeshField,
+    sleplet.meshes.harmonic_coefficients.mesh_noise_field.MeshNoiseField,
 ]
 
-MESH_SLEPIAN: list[type[sleplet.meshes.MeshCoefficients]] = [
+MESH_SLEPIAN: list[type[sleplet.meshes.mesh_coefficients.MeshCoefficients]] = [
     sleplet.meshes.slepian_coefficientsMeshSlepianField,
     sleplet.meshes.slepian_coefficientsMeshSlepianFunctions,
     sleplet.meshes.slepian_coefficientsMeshSlepianNoiseField,
@@ -71,6 +71,6 @@ MESH_SLEPIAN: list[type[sleplet.meshes.MeshCoefficients]] = [
     sleplet.meshes.slepian_coefficientsMeshSlepianWavelets,
 ]
 
-MESH_COEFFICIENTS: list[type[sleplet.meshes.MeshCoefficients]] = (
+MESH_COEFFICIENTS: list[type[sleplet.meshes.mesh_coefficients.MeshCoefficients]] = (
     MESH_HARMONIC + MESH_SLEPIAN
 )

@@ -4,8 +4,10 @@ from numpy.testing import assert_allclose, assert_array_equal, assert_equal
 from pys2let import pys2let_j_max
 
 from sleplet._vars import SAMPLING_SCHEME
-from sleplet.functions.flm import (
+from sleplet.functions.flm.axisymmetric_wavelet_coefficients_earth import (
     AxisymmetricWaveletCoefficientsEarth,
+)
+from sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america import (
     AxisymmetricWaveletCoefficientsSouthAmerica,
 )
 from sleplet.slepian_methods import slepian_forward

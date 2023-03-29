@@ -9,17 +9,17 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet._mask_methods import ensure_masked_bandlimit_mesh_signal
-from sleplet._string_methods import filename_args
-from sleplet._validation import Validation
-from sleplet.meshes.mesh import Mesh
+import sleplet
+import sleplet._mask_methods
+import sleplet._validation
+import sleplet.meshes
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    mesh: Mesh
+    mesh: sleplet.meshes.mesh.Mesh
     _: KW_ONLY
     extra_args: list[int] | None = None
     noise: float | None = None
@@ -39,7 +39,7 @@ class MeshCoefficients:
         if self.region and "slepian" not in self.mesh.name:
             self.name += "_region"
         if self.noise is not None:
-            self.name += f"{filename_args(self.noise, 'noise')}"
+            self.name += f"{sleplet._string_methods.filename_args(self.noise, 'noise')}"
         if self.mesh.zoom:
             self.name += "_zoom"
 
@@ -49,7 +49,9 @@ class MeshCoefficients:
             values["region"]
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
-            v = ensure_masked_bandlimit_mesh_signal(values["mesh"], v)
+            v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
+                values["mesh"], v
+            )
         return v
 
     @abstractmethod

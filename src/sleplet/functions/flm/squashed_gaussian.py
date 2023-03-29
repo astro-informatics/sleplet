@@ -2,18 +2,13 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._string_methods import (
-    _convert_camel_case_to_snake_case,
-    filename_args,
-)
-from sleplet._validation import Validation
-from sleplet._vars import THETA_0
-from sleplet.functions.f_lm import F_LM
-from sleplet.harmonic_methods import _ensure_f_bandlimited
+import sleplet
+import sleplet._validation
+import sleplet.functions.f_lm
 
 
-@dataclass(config=Validation, kw_only=True)
-class SquashedGaussian(F_LM):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SquashedGaussian(sleplet.functions.f_lm.F_LM):
     freq: float = 0.1
     t_sigma: float = 1
 
@@ -21,15 +16,15 @@ class SquashedGaussian(F_LM):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return _ensure_f_bandlimited(
+        return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun, self.L, reality=self.reality, spin=self.spin
         )
 
     def _create_name(self) -> str:
         return (
-            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"{filename_args(self.t_sigma, 'tsig')}"
-            f"{filename_args(self.freq, 'freq')}"
+            f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{sleplet._string_methods.filename_args(self.t_sigma, 'tsig')}"
+            f"{sleplet._string_methods.filename_args(self.freq, 'freq')}"
         )
 
     def _set_reality(self) -> bool:
@@ -51,6 +46,6 @@ class SquashedGaussian(F_LM):
         """
         function on the grid
         """
-        return np.exp(-(((theta - THETA_0) / self.t_sigma) ** 2) / 2) * np.sin(
-            self.freq * phi
-        )
+        return np.exp(
+            -(((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2) / 2
+        ) * np.sin(self.freq * phi)

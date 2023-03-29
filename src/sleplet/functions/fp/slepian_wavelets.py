@@ -4,19 +4,13 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
-from sleplet import logger
-from sleplet._string_methods import (
-    _convert_camel_case_to_snake_case,
-    filename_args,
-    wavelet_ending,
-)
-from sleplet._validation import Validation
-from sleplet.functions.f_p import F_P
-from sleplet.wavelet_methods import create_kappas
+import sleplet
+import sleplet._validation
+import sleplet.functions.f_p
 
 
-@dataclass(config=Validation, kw_only=True)
-class SlepianWavelets(F_P):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SlepianWavelets(sleplet.functions.f_p.F_P):
     B: int = 3
     j_min: int = 2
     j: int | None = None
@@ -25,19 +19,19 @@ class SlepianWavelets(F_P):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        logger.info("start computing wavelets")
+        sleplet.logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
-        logger.info("finish computing wavelets")
+        sleplet.logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
 
     def _create_name(self) -> str:
         return (
-            f"{_convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"_{self.slepian.region.name_ending}"
-            f"{filename_args(self.B, 'B')}"
-            f"{filename_args(self.j_min, 'jmin')}"
-            f"{wavelet_ending(self.j_min, self.j)}"
+            f"{sleplet._string_methods.filename_args(self.B, 'B')}"
+            f"{sleplet._string_methods.filename_args(self.j_min, 'jmin')}"
+            f"{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}"
         )
 
     def _set_reality(self) -> bool:
@@ -57,7 +51,7 @@ class SlepianWavelets(F_P):
         """
         computes wavelets in Slepian space
         """
-        return create_kappas(self.L**2, self.B, self.j_min)
+        return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
     @validator("j")
     def _check_j(cls, v, values):

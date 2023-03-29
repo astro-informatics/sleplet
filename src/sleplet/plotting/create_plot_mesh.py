@@ -13,17 +13,12 @@ from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet._mask_methods import convert_region_on_vertices_to_faces
-from sleplet._mesh_methods import average_functions_on_vertices_to_faces
-from sleplet._plotly_methods import (
-    create_colour_bar,
-    create_layout,
-    create_tick_mark,
-)
-from sleplet._validation import Validation
-from sleplet.meshes.mesh import Mesh
-from sleplet.plot_methods import _convert_colourscale, _normalise_function
+import sleplet
+import sleplet._mask_methods
+import sleplet._mesh_methods
+import sleplet._plotly_methods
+import sleplet._validation
+import sleplet.meshes
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
@@ -32,9 +27,9 @@ MESH_CBAR_FONT_SIZE = 32
 MESH_UNSEEN = -1e5  # kaleido bug
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class Plot:
-    mesh: Mesh
+    mesh: sleplet.meshes.mesh.Mesh
     filename: str
     f: npt.NDArray[np.complex_ | np.float_]
     _: KW_ONLY
@@ -59,7 +54,9 @@ class Plot:
             f = self._set_outside_region_to_minimum(f)
 
         # pick largest tick max value
-        tick_mark = create_tick_mark(vmin, vmax, amplitude=self.amplitude)
+        tick_mark = sleplet._plotly_methods.create_tick_mark(
+            vmin, vmax, amplitude=self.amplitude
+        )
 
         data = [
             Mesh3d(
@@ -74,20 +71,20 @@ class Plot:
                 cmax=1 if self.normalise else tick_mark,
                 cmid=0.5 if self.normalise else 0,
                 cmin=0 if self.normalise else -tick_mark,
-                colorbar=create_colour_bar(
+                colorbar=sleplet._plotly_methods.create_colour_bar(
                     tick_mark,
                     normalise=self.normalise,
                     bar_len=MESH_CBAR_LEN,
                     bar_pos=self.mesh.colourbar_pos,
                     font_size=MESH_CBAR_FONT_SIZE,
                 ),
-                colorscale=_convert_colourscale(self.colour),
+                colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
             )
         ]
 
-        layout = create_layout(self.mesh.camera_view)
+        layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
 
         fig = Figure(data=data, layout=layout)
 
@@ -97,7 +94,7 @@ class Plot:
 
         for file_type in {"png", "pdf"}:
             filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-            logger.info(f"saving {filename}")
+            sleplet.logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(
@@ -106,8 +103,10 @@ class Plot:
         """
         scales the field before plotting
         """
-        return _normalise_function(
-            average_functions_on_vertices_to_faces(self.mesh.faces, f),
+        return sleplet.plot_methods._normalise_function(
+            sleplet._mesh_methods.average_functions_on_vertices_to_faces(
+                self.mesh.faces, f
+            ),
             normalise=self.normalise,
         )
 
@@ -118,5 +117,7 @@ class Plot:
         for the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region
         """
-        region_on_faces = convert_region_on_vertices_to_faces(self.mesh)
+        region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(
+            self.mesh
+        )
         return np.where(region_on_faces, f, MESH_UNSEEN)

@@ -7,7 +7,6 @@ from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 import sleplet
-import sleplet._data
 
 _data_path = Path(__file__).resolve().parent / "_data"
 
@@ -85,8 +84,12 @@ def mesh_eigendecomposition(
     evec_loc = f"{eigd_loc}_eigenvectors.npy"
 
     try:
-        eigenvalues = np.load(sleplet._data.find_on_pooch_then_local(eval_loc))
-        eigenvectors = np.load(sleplet._data.find_on_pooch_then_local(evec_loc))
+        eigenvalues = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+        )
+        eigenvectors = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc)
+        )
     except TypeError:
         laplacian = _mesh_laplacian(vertices, faces)
         eigenvalues, eigenvectors = LA_sparse.eigsh(

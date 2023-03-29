@@ -5,8 +5,9 @@ import pyssht as ssht
 from numpy import typing as npt
 
 import sleplet
-import sleplet._data
-import sleplet.meshes
+import sleplet._data.create_earth_flm
+import sleplet.meshes.mesh
+import sleplet.region
 
 _data_path = Path(__file__).resolve().parent / "_data"
 
@@ -29,7 +30,7 @@ def create_mask_region(L: int, region: sleplet.region.Region) -> npt.NDArray[np.
 
     match region.region_type:
         case "arbitrary":
-            sleplet.logger.logger.info("loading and checking shape of provided mask")
+            sleplet.logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
             mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
@@ -47,10 +48,10 @@ def create_mask_region(L: int, region: sleplet.region.Region) -> npt.NDArray[np.
             )
 
         case "polar":
-            sleplet.logger.logger.info("creating polar cap mask")
+            sleplet.logger.info("creating polar cap mask")
             mask = thetas <= region.theta_max
             if region.gap:
-                sleplet.logger.logger.info("creating polar gap mask")
+                sleplet.logger.info("creating polar gap mask")
                 mask += thetas >= np.pi - region.theta_max
     return mask
 
@@ -59,7 +60,9 @@ def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
     """
     attempts to read the mask from the config file
     """
-    mask = sleplet._data.find_on_pooch_then_local(f"slepian_masks_{mask_name}")
+    mask = sleplet._data.setup_pooch.find_on_pooch_then_local(
+        f"slepian_masks_{mask_name}"
+    )
     return create_mask(L, mask_name) if mask is None else np.load(mask)
 
 
@@ -115,18 +118,18 @@ def create_mesh_region(
 
 
 def ensure_masked_bandlimit_mesh_signal(
-    mesh: sleplet.meshes.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.float_]:
     """
     ensures that signal in pixel space is bandlimited
     """
-    field = sleplet.meshes.mesh_inverse(mesh, u_i)
+    field = sleplet.harmonic_methods.mesh_inverse(mesh, u_i)
     masked_field = np.where(mesh.region, field, 0)
-    return sleplet.meshes.mesh_forward(mesh, masked_field)
+    return sleplet.harmonic_methods.mesh_forward(mesh, masked_field)
 
 
 def convert_region_on_vertices_to_faces(
-    mesh: sleplet.meshes.Mesh,
+    mesh: sleplet.meshes.mesh.Mesh,
 ) -> npt.NDArray[np.float_]:
     """
     converts the region on vertices to faces
@@ -174,7 +177,7 @@ def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
     """
     creates the South America region mask
     """
-    earth_flm = sleplet._data.create_flm(L)
+    earth_flm = sleplet._data.create_earth_flm.create_flm(L)
     if mask_name == f"africa_L{L}.npy":
         mask = _create_africa_mask(L, earth_flm)
     elif mask_name == f"south_america_L{L}.npy":

@@ -4,14 +4,20 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 from sleplet._vars import RANDOM_SEED
-from sleplet.functions.flm import Earth, SouthAmerica
-from sleplet.functions.fp import SlepianDiracDelta, SlepianWavelets
+from sleplet.functions.flm.earth import Earth
+from sleplet.functions.flm.south_america import SouthAmerica
+from sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
-from sleplet.meshes.harmonic_coefficients import MeshField
+from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.mesh_slepian import MeshSlepian
-from sleplet.meshes.slepian_coefficients import MeshSlepianWavelets
-from sleplet.slepian import SlepianArbitrary, SlepianLimitLatLon, SlepianPolarCap
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+    MeshSlepianWavelets,
+)
+from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
+from sleplet.slepian.slepian_limit_lat_lon import SlepianLimitLatLon
+from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
 
 ARRAY_DIM = 10
 L = 16

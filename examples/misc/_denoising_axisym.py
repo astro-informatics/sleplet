@@ -3,7 +3,7 @@ import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet.functions.coefficients import Coefficients
-from sleplet.functions.flm import AxisymmetricWavelets
+from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.harmonic_methods import rotate_earth_to_south_america
 from sleplet.noise import (
     _compute_sigma_j,
