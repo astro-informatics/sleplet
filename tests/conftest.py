@@ -4,10 +4,8 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 from sleplet._vars import RANDOM_SEED
-from sleplet.functions.flm.earth import Earth
-from sleplet.functions.flm.south_america import SouthAmerica
-from sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
-from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.functions.flm import Earth, SouthAmerica
+from sleplet.functions.fp import SlepianDiracDelta, SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from sleplet.meshes.mesh import Mesh

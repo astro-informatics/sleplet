@@ -1,4 +1,4 @@
-from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
+from sleplet.functions.fp import (
     SlepianWaveletCoefficientsAfrica,
 )
 from sleplet.plotting.create_plot_sphere import Plot

@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet.functions.flm.earth import Earth
+from sleplet.functions.flm import Earth
 from sleplet.plot_methods import save_plot
 from sleplet.region import Region
 from sleplet.slepian.slepian_polar_cap import SlepianPolarCap

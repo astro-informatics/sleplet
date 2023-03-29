@@ -5,10 +5,10 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america import (
+from sleplet.functions.flm import (
     AxisymmetricWaveletCoefficientsSouthAmerica,
 )
-from sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
+from sleplet.functions.fp import (
     SlepianWaveletCoefficientsSouthAmerica,
 )
 from sleplet.plot_methods import save_plot

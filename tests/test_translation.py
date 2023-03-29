@@ -5,7 +5,7 @@ from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
 from sleplet._vars import RANDOM_SEED, SAMPLING_SCHEME
-from sleplet.functions.flm.dirac_delta import DiracDelta
+from sleplet.functions.flm import DiracDelta
 from sleplet.plot_methods import _calc_nearest_grid_point
 from sleplet.slepian_methods import slepian_inverse
 
