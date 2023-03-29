@@ -5,9 +5,9 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._noise import compute_snr, create_noise
 from sleplet._validation import Validation
 from sleplet.functions.coefficients import Coefficients
+from sleplet.noise import _create_noise, compute_snr
 
 
 @dataclass(config=Validation)
@@ -34,7 +34,7 @@ class F_LM(Coefficients):  # noqa: N801
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            nlm = create_noise(self.L, self.coefficients, self.noise)
+            nlm = _create_noise(self.L, self.coefficients, self.noise)
             snr = compute_snr(self.coefficients, nlm, "Harmonic")
             self.coefficients = self.coefficients + nlm
             return unnoised_coefficients, snr

@@ -2,11 +2,11 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._noise import compute_snr, create_slepian_mesh_noise
 from sleplet._string_methods import filename_args
 from sleplet._validation import Validation
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
+from sleplet.noise import _create_slepian_mesh_noise, compute_snr
 
 
 @dataclass(config=Validation, kw_only=True)
@@ -18,7 +18,9 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         smf = MeshSlepianField(self.mesh, region=True)
-        noise = create_slepian_mesh_noise(self.mesh_slepian, smf.coefficients, self.SNR)
+        noise = _create_slepian_mesh_noise(
+            self.mesh_slepian, smf.coefficients, self.SNR
+        )
         compute_snr(smf.coefficients, noise, "Slepian")
         return noise
 

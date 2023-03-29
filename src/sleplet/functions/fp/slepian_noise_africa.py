@@ -2,7 +2,6 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._noise import compute_snr, create_slepian_noise
 from sleplet._string_methods import (
     _convert_camel_case_to_snake_case,
     filename_args,
@@ -10,6 +9,7 @@ from sleplet._string_methods import (
 from sleplet._validation import Validation
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
+from sleplet.noise import _create_slepian_noise, compute_snr
 from sleplet.region import Region
 
 
@@ -24,7 +24,7 @@ class SlepianNoiseAfrica(F_P):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         sa = SlepianAfrica(self.L, region=self.region, smoothing=self.smoothing)
-        noise = create_slepian_noise(self.L, sa.coefficients, self.slepian, self.SNR)
+        noise = _create_slepian_noise(self.L, sa.coefficients, self.slepian, self.SNR)
         compute_snr(sa.coefficients, noise, "Slepian")
         return noise
 

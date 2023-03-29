@@ -4,10 +4,10 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._noise import compute_snr, create_slepian_mesh_noise
 from sleplet._validation import Validation
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian import MeshSlepian
+from sleplet.noise import _create_slepian_mesh_noise, compute_snr
 
 
 @dataclass(config=Validation)
@@ -25,7 +25,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            n_p = create_slepian_mesh_noise(
+            n_p = _create_slepian_mesh_noise(
                 self.mesh_slepian, self.coefficients, self.noise
             )
             snr = compute_snr(self.coefficients, n_p, "Slepian")

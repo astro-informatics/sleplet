@@ -1,8 +1,14 @@
-from sleplet.denoising import denoising_axisym
+import sys
+from pathlib import Path
+
 from sleplet.functions.flm.africa import Africa
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
+
+sys.path.append(str(Path(__file__).resolve().parent))
+
+from _denoising_axisym import denoising_axisym  # noqa: E402
 
 B = 2
 J_MIN = 0

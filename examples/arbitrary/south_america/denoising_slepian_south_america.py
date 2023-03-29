@@ -1,12 +1,17 @@
+import sys
 from argparse import ArgumentParser
+from pathlib import Path
 
 from sleplet import logger
-from sleplet.denoising import denoising_slepian_wavelet
 from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.region import Region
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from _denoising_slepian_wavelet import denoising_slepian_wavelet  # noqa: E402
 
 B = 3
 J_MIN = 2

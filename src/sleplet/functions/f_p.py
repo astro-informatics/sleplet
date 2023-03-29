@@ -5,9 +5,9 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet._mask_methods import create_default_region
-from sleplet._noise import compute_snr, create_slepian_noise
 from sleplet._validation import Validation
 from sleplet.functions.coefficients import Coefficients
+from sleplet.noise import _create_slepian_noise, compute_snr
 from sleplet.region import Region
 from sleplet.slepian_methods import (
     _compute_s_p_omega_prime,
@@ -43,7 +43,7 @@ class F_P(Coefficients):  # noqa: N801
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            n_p = create_slepian_noise(
+            n_p = _create_slepian_noise(
                 self.L, self.coefficients, self.slepian, self.noise
             )
             snr = compute_snr(self.coefficients, n_p, "Slepian")

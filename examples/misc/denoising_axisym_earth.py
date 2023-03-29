@@ -1,8 +1,16 @@
-from sleplet.denoising import denoising_axisym
+import sys
+from pathlib import Path
+
+from numpy.testing import assert_array_less
+
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.functions.flm.earth import Earth
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
+
+sys.path.append(str(Path(__file__).resolve().parent))
+
+from _denoising_axisym import denoising_axisym  # noqa: E402
 
 B = 2
 J_MIN = 0
@@ -26,9 +34,10 @@ def main() -> None:
     # fix amplitude
     amplitude = find_max_amplitude(fun)
 
-    f, _, _ = denoising_axisym(
+    f, noised_snr, denoised_snr = denoising_axisym(
         fun, fun_noised, aw, SNR_IN, N_SIGMA, rotate_to_south_america=True
     )
+    assert_array_less(noised_snr, denoised_snr)
     name = f"{fun.name}_denoised_axisym"
     Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
 

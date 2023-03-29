@@ -1,3 +1,6 @@
+"""
+methods to handle noise in Fourier or wavelet space
+"""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -52,7 +55,7 @@ def compute_sigma_noise(
     return np.sqrt(10 ** (-snr_in / 10) * _signal_power(signal) / denominator)
 
 
-def create_noise(
+def _create_noise(
     L: int, signal: npt.NDArray[np.complex_ | np.float_], snr_in: float
 ) -> npt.NDArray[np.complex_]:
     """
@@ -83,7 +86,7 @@ def create_noise(
     return nlm
 
 
-def create_slepian_noise(
+def _create_slepian_noise(
     L: int,
     slepian_signal: npt.NDArray[np.complex_ | np.float_],
     slepian: SlepianFunctions,
@@ -95,7 +98,7 @@ def create_slepian_noise(
     flm = ssht.forward(
         slepian_inverse(slepian_signal, L, slepian), L, Method=SAMPLING_SCHEME
     )
-    nlm = create_noise(L, flm, snr_in)
+    nlm = _create_noise(L, flm, snr_in)
     return slepian_forward(L, slepian, flm=nlm)
 
 
@@ -164,7 +167,7 @@ def slepian_function_hard_thresholding(
     return slepian_forward(L, slepian, f=f_thresholded)
 
 
-def compute_sigma_j(
+def _compute_sigma_j(
     signal: npt.NDArray[np.complex_ | np.float_],
     psi_j: npt.NDArray[np.complex_],
     snr_in: float,
@@ -177,7 +180,7 @@ def compute_sigma_j(
     return sigma_noise * np.sqrt(wavelet_power)
 
 
-def compute_slepian_sigma_j(
+def _compute_slepian_sigma_j(
     L: int,
     signal: npt.NDArray[np.complex_ | np.float_],
     psi_j: npt.NDArray[np.float_],
@@ -194,7 +197,7 @@ def compute_slepian_sigma_j(
     return sigma_noise * np.sqrt(wavelet_power)
 
 
-def create_mesh_noise(
+def _create_mesh_noise(
     u_i: npt.NDArray[np.complex_ | np.float_], snr_in: float
 ) -> npt.NDArray[np.float_]:
     """
@@ -215,7 +218,7 @@ def create_mesh_noise(
     return n_i
 
 
-def create_slepian_mesh_noise(
+def _create_slepian_mesh_noise(
     mesh_slepian: MeshSlepian,
     slepian_signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
@@ -230,7 +233,7 @@ def create_slepian_mesh_noise(
             slepian_signal,
         ),
     )
-    n_i = create_mesh_noise(u_i, snr_in)
+    n_i = _create_mesh_noise(u_i, snr_in)
     return slepian_mesh_forward(
         mesh_slepian,
         u_i=n_i,
