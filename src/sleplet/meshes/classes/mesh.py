@@ -2,14 +2,14 @@ from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass
 
-from sleplet.utils._mesh_methods import (
+from sleplet._mesh_methods import (
     create_mesh_region,
     extract_mesh_config,
     mesh_eigendecomposition,
     read_mesh,
 )
-from sleplet.utils._plotly_methods import create_camera
-from sleplet.utils._validation import Validation
+from sleplet._plotly_methods import create_camera
+from sleplet._validation import Validation
 
 
 @dataclass(config=Validation)

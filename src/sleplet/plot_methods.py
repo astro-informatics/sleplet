@@ -7,17 +7,17 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.functions.coefficients import Coefficients
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.utils._mask_methods import create_mask_region
-from sleplet.utils._vars import (
+from sleplet._mask_methods import create_mask_region
+from sleplet._vars import (
     SAMPLING_SCHEME,
     SPHERE_UNSEEN,
 )
-from sleplet.utils.harmonic_methods import invert_flm_boosted, mesh_inverse
-from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
+from sleplet.functions.coefficients import Coefficients
+from sleplet.harmonic_methods import invert_flm_boosted, mesh_inverse
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+from sleplet.region import Region
+from sleplet.slepian_methods import slepian_inverse, slepian_mesh_inverse
 
 
 def calc_plot_resolution(L: int) -> int:

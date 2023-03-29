@@ -4,10 +4,10 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._noise import compute_snr, create_slepian_mesh_noise
+from sleplet._validation import Validation
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.utils._noise import compute_snr, create_slepian_mesh_noise
-from sleplet.utils._validation import Validation
 
 
 @dataclass(config=Validation)

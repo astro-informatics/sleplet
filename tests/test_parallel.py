@@ -1,6 +1,6 @@
 from numpy.testing import assert_allclose, assert_equal
 
-from sleplet.utils._parallel_methods import split_arr_into_chunks
+from sleplet._parallel_methods import split_arr_into_chunks
 
 L_LARGE = 128
 L_SMALL = 16

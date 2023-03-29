@@ -1,8 +1,8 @@
+from sleplet.denoising import denoising_axisym
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
 from sleplet.functions.flm.south_america import SouthAmerica
+from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.denoising import denoising_axisym
-from sleplet.utils.plot_methods import find_max_amplitude
 
 B = 2
 J_MIN = 0

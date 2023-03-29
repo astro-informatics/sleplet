@@ -2,10 +2,10 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._validation import Validation
 from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.utils._validation import Validation
-from sleplet.utils.slepian_methods import slepian_mesh_forward
+from sleplet.slepian_methods import slepian_mesh_forward
 
 
 @dataclass(config=Validation)

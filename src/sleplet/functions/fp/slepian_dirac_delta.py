@@ -4,11 +4,11 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet._validation import Validation
+from sleplet._vars import SAMPLING_SCHEME
 from sleplet.functions.f_p import F_P
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import SAMPLING_SCHEME
-from sleplet.utils.slepian_methods import _compute_s_p_omega_prime
-from sleplet.utils.string_methods import _convert_camel_case_to_snake_case
+from sleplet.slepian_methods import _compute_s_p_omega_prime
+from sleplet.string_methods import _convert_camel_case_to_snake_case
 
 
 @dataclass(config=Validation)

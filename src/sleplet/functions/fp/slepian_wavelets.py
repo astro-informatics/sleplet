@@ -5,14 +5,14 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 from sleplet import logger
+from sleplet._validation import Validation
 from sleplet.functions.f_p import F_P
-from sleplet.utils._validation import Validation
-from sleplet.utils.string_methods import (
+from sleplet.string_methods import (
     _convert_camel_case_to_snake_case,
     _wavelet_ending,
     filename_args,
 )
-from sleplet.utils.wavelet_methods import create_kappas
+from sleplet.wavelet_methods import create_kappas
 
 
 @dataclass(config=Validation, kw_only=True)

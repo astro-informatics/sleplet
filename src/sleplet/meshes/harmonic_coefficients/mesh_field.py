@@ -3,9 +3,9 @@ from igl import per_vertex_normals
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._validation import Validation
+from sleplet.harmonic_methods import mesh_forward
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from sleplet.utils._validation import Validation
-from sleplet.utils.harmonic_methods import mesh_forward
 
 
 @dataclass(config=Validation)

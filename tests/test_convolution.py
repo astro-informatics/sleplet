@@ -5,7 +5,7 @@ from sleplet.functions.flm.earth import Earth
 from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.functions.flm.identity import Identity
 from sleplet.functions.fp.slepian_identity import SlepianIdentity
-from sleplet.utils.slepian_methods import slepian_forward
+from sleplet.slepian_methods import slepian_forward
 
 L = 128
 

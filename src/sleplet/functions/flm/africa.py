@@ -3,14 +3,14 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._mask_methods import create_mask
+from sleplet._validation import Validation
+from sleplet._vars import SAMPLING_SCHEME
 from sleplet.data.create_earth_flm import create_flm
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.functions.f_lm import F_LM
-from sleplet.utils._mask_methods import create_mask
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import SAMPLING_SCHEME
-from sleplet.utils.harmonic_methods import _ensure_f_bandlimited, rotate_earth_to_africa
-from sleplet.utils.string_methods import _convert_camel_case_to_snake_case
+from sleplet.harmonic_methods import _ensure_f_bandlimited, rotate_earth_to_africa
+from sleplet.string_methods import _convert_camel_case_to_snake_case
 
 
 @dataclass(config=Validation)

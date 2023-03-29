@@ -6,11 +6,11 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.utils._convolution_methods import sifting_convolution
-from sleplet.utils._mask_methods import ensure_masked_flm_bandlimited
-from sleplet.utils._validation import Validation
-from sleplet.utils.region import Region
-from sleplet.utils.string_methods import filename_args
+from sleplet._convolution_methods import sifting_convolution
+from sleplet._mask_methods import ensure_masked_flm_bandlimited
+from sleplet._validation import Validation
+from sleplet.region import Region
+from sleplet.string_methods import filename_args
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 

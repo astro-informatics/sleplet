@@ -4,9 +4,9 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet._validation import Validation
 from sleplet.functions.f_p import F_P
-from sleplet.utils._validation import Validation
-from sleplet.utils.slepian_methods import slepian_forward
+from sleplet.slepian_methods import slepian_forward
 
 
 @dataclass(config=Validation, kw_only=True)

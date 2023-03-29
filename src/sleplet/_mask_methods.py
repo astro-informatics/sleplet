@@ -5,10 +5,7 @@ import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.data.create_earth_flm import create_flm
-from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils._vars import (
+from sleplet._vars import (
     PHI_MAX,
     PHI_MIN,
     POLAR_GAP,
@@ -17,13 +14,16 @@ from sleplet.utils._vars import (
     THETA_MAX,
     THETA_MIN,
 )
-from sleplet.utils.harmonic_methods import (
+from sleplet.data.create_earth_flm import create_flm
+from sleplet.data.setup_pooch import find_on_pooch_then_local
+from sleplet.harmonic_methods import (
     mesh_forward,
     mesh_inverse,
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
-from sleplet.utils.region import Region
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.region import Region
 
 _data_path = Path(__file__).resolve().parents[1] / "data"
 

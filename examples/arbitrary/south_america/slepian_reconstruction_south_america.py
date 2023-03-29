@@ -1,7 +1,7 @@
 from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
+from sleplet.region import Region
+from sleplet.slepian_methods import choose_slepian_method, slepian_inverse
 
 L = 128
 NORMALISE = False

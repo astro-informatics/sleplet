@@ -5,9 +5,9 @@ from sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
 )
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import slepian_inverse
-from sleplet.utils.wavelet_methods import slepian_wavelet_inverse
+from sleplet.region import Region
+from sleplet.slepian_methods import slepian_inverse
+from sleplet.wavelet_methods import slepian_wavelet_inverse
 
 B = 3
 J_MIN = 2

@@ -1,13 +1,13 @@
 from argparse import ArgumentParser
 
 from sleplet import logger
+from sleplet.denoising import denoising_slepian_wavelet
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.denoising import denoising_slepian_wavelet
-from sleplet.utils.plot_methods import find_max_amplitude
-from sleplet.utils.region import Region
-from sleplet.utils.string_methods import filename_args
+from sleplet.region import Region
+from sleplet.string_methods import filename_args
 
 B = 3
 J_MIN = 2

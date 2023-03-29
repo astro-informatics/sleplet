@@ -6,21 +6,21 @@ import pyssht as ssht
 from numpy import typing as npt
 
 from sleplet import logger
+from sleplet._class_lists import COEFFICIENTS, MAPS_LM
+from sleplet._mask_methods import create_default_region
 from sleplet.functions.coefficients import Coefficients
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils._class_lists import COEFFICIENTS, MAPS_LM
-from sleplet.utils._mask_methods import create_default_region
-from sleplet.utils.harmonic_methods import (
+from sleplet.harmonic_methods import (
     rotate_earth_to_africa,
     rotate_earth_to_south_america,
 )
-from sleplet.utils.plot_methods import (
+from sleplet.plot_methods import (
     _calc_nearest_grid_point,
     _coefficients_to_field_sphere,
     compute_amplitude_for_noisy_sphere_plots,
 )
-from sleplet.utils.slepian_methods import slepian_forward
-from sleplet.utils.string_methods import (
+from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.slepian_methods import slepian_forward
+from sleplet.string_methods import (
     _convert_classes_list_to_snake_case,
     _filename_angle,
 )

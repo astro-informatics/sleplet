@@ -4,12 +4,12 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._mask_methods import create_default_region
+from sleplet._noise import compute_snr, create_slepian_noise
+from sleplet._validation import Validation
 from sleplet.functions.coefficients import Coefficients
-from sleplet.utils._mask_methods import create_default_region
-from sleplet.utils._noise import compute_snr, create_slepian_noise
-from sleplet.utils._validation import Validation
-from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import (
+from sleplet.region import Region
+from sleplet.slepian_methods import (
     _compute_s_p_omega_prime,
     choose_slepian_method,
 )

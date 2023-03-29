@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.testing import assert_equal
 
-from sleplet.utils.region import Region
+from sleplet.region import Region
 
 MASK = "south_america"
 PHI_0 = np.pi / 6

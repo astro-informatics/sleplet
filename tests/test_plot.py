@@ -2,7 +2,7 @@ import cmocean
 import numpy as np
 from numpy.testing import assert_equal
 
-from sleplet.utils.plot_methods import (
+from sleplet.plot_methods import (
     _calc_nearest_grid_point,
     _convert_colourscale,
     calc_plot_resolution,

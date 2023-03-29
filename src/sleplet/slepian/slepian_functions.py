@@ -5,8 +5,8 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
-from sleplet.utils._validation import Validation
-from sleplet.utils.region import Region
+from sleplet._validation import Validation
+from sleplet.region import Region
 
 
 @dataclass(config=Validation)

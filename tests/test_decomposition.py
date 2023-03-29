@@ -2,10 +2,10 @@ import numpy as np
 import pyssht as ssht
 from numpy.testing import assert_allclose, assert_raises
 
+from sleplet._mask_methods import create_mask_region
+from sleplet._vars import SAMPLING_SCHEME
 from sleplet.slepian._slepian_decomposition import SlepianDecomposition
-from sleplet.utils._mask_methods import create_mask_region
-from sleplet.utils._vars import SAMPLING_SCHEME
-from sleplet.utils.slepian_methods import slepian_forward, slepian_inverse
+from sleplet.slepian_methods import slepian_forward, slepian_inverse
 
 
 def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:

@@ -4,8 +4,8 @@ from numpy.random import default_rng
 
 from sleplet import logger
 from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from sleplet.utils.harmonic_methods import compute_random_signal
-from sleplet.utils.wavelet_methods import (
+from sleplet.harmonic_methods import compute_random_signal
+from sleplet.wavelet_methods import (
     axisymmetric_wavelet_forward,
     compute_wavelet_covariance,
 )

@@ -5,9 +5,9 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._noise import compute_snr, create_noise
+from sleplet._validation import Validation
 from sleplet.functions.coefficients import Coefficients
-from sleplet.utils._noise import compute_snr, create_noise
-from sleplet.utils._validation import Validation
 
 
 @dataclass(config=Validation)

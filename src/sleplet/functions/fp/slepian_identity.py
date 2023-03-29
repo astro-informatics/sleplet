@@ -2,9 +2,9 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._validation import Validation
 from sleplet.functions.f_p import F_P
-from sleplet.utils._validation import Validation
-from sleplet.utils.string_methods import _convert_camel_case_to_snake_case
+from sleplet.string_methods import _convert_camel_case_to_snake_case
 
 
 @dataclass(config=Validation)

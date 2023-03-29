@@ -3,11 +3,11 @@ from numpy.random import default_rng
 
 from sleplet import logger
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.harmonic_methods import compute_random_signal
 from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.harmonic_methods import compute_random_signal
-from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import slepian_inverse
-from sleplet.utils.wavelet_methods import (
+from sleplet.region import Region
+from sleplet.slepian_methods import slepian_inverse
+from sleplet.wavelet_methods import (
     compute_slepian_wavelet_covariance,
     find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,

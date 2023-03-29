@@ -8,8 +8,8 @@ from scipy.interpolate import pchip
 
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from sleplet.utils.plot_methods import save_plot
-from sleplet.utils.wavelet_methods import create_kappas
+from sleplet.plot_methods import save_plot
+from sleplet.wavelet_methods import create_kappas
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")

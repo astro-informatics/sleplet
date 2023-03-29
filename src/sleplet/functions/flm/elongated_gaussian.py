@@ -2,11 +2,11 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._validation import Validation
+from sleplet._vars import PHI_0, THETA_0
 from sleplet.functions.f_lm import F_LM
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import PHI_0, THETA_0
-from sleplet.utils.harmonic_methods import _ensure_f_bandlimited
-from sleplet.utils.string_methods import (
+from sleplet.harmonic_methods import _ensure_f_bandlimited
+from sleplet.string_methods import (
     _convert_camel_case_to_snake_case,
     filename_args,
 )

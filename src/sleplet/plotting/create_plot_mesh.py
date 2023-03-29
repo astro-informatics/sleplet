@@ -11,16 +11,16 @@ from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils._mask_methods import convert_region_on_vertices_to_faces
-from sleplet.utils._mesh_methods import average_functions_on_vertices_to_faces
-from sleplet.utils._plotly_methods import (
+from sleplet._mask_methods import convert_region_on_vertices_to_faces
+from sleplet._mesh_methods import average_functions_on_vertices_to_faces
+from sleplet._plotly_methods import (
     create_colour_bar,
     create_layout,
     create_tick_mark,
 )
-from sleplet.utils._validation import Validation
-from sleplet.utils.plot_methods import _convert_colourscale, _normalise_function
+from sleplet._validation import Validation
+from sleplet.meshes.classes.mesh import Mesh
+from sleplet.plot_methods import _convert_colourscale, _normalise_function
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
 

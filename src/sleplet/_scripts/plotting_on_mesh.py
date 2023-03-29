@@ -2,16 +2,16 @@
 from argparse import ArgumentParser, Namespace
 
 from sleplet import logger
+from sleplet._class_lists import MESH_COEFFICIENTS, MESHES
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.plotting.create_plot_mesh import Plot
-from sleplet.utils._class_lists import MESH_COEFFICIENTS, MESHES
-from sleplet.utils.plot_methods import (
+from sleplet.plot_methods import (
     _coefficients_to_field_mesh,
     compute_amplitude_for_noisy_mesh_plots,
 )
-from sleplet.utils.string_methods import _convert_classes_list_to_snake_case
+from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.string_methods import _convert_classes_list_to_snake_case
 
 
 def valid_meshes(mesh_name: str) -> str:

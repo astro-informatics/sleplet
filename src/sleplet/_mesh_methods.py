@@ -7,8 +7,8 @@ from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 from sleplet import logger
+from sleplet._integration_methods import integrate_whole_mesh
 from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.utils._integration_methods import integrate_whole_mesh
 
 _data_path = Path(__file__).resolve().parents[1] / "data"
 

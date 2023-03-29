@@ -9,29 +9,29 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
-from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils._integration_methods import (
+from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet._integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
 )
-from sleplet.utils._mask_methods import create_mask_region
-from sleplet.utils._parallel_methods import (
+from sleplet._mask_methods import create_mask_region
+from sleplet._parallel_methods import (
     attach_to_shared_memory_block,
     create_shared_memory_array,
     free_shared_memory,
     release_shared_memory,
     split_arr_into_chunks,
 )
-from sleplet.utils._slepian_arbitrary_methods import clean_evals_and_evecs
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import NCPU
-from sleplet.utils.harmonic_methods import (
+from sleplet._slepian_arbitrary_methods import clean_evals_and_evecs
+from sleplet._validation import Validation
+from sleplet._vars import NCPU
+from sleplet.data.setup_pooch import find_on_pooch_then_local
+from sleplet.harmonic_methods import (
     _create_spherical_harmonic,
     invert_flm_boosted,
 )
-from sleplet.utils.region import Region
+from sleplet.region import Region
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 

@@ -5,10 +5,10 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 from sleplet import logger
+from sleplet._validation import Validation
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.utils._validation import Validation
-from sleplet.utils.string_methods import _wavelet_ending, filename_args
-from sleplet.utils.wavelet_methods import create_kappas
+from sleplet.string_methods import _wavelet_ending, filename_args
+from sleplet.wavelet_methods import create_kappas
 
 
 @dataclass(config=Validation, kw_only=True)

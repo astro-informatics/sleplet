@@ -4,8 +4,8 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
+from sleplet.plot_methods import save_plot
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from sleplet.utils.plot_methods import save_plot
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")

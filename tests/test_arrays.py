@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.testing import assert_array_equal
 
-from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
 
 
 def test_fill_matrix_using_hermitian_relation() -> None:

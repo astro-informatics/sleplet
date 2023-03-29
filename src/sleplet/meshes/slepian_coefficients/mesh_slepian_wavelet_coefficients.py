@@ -5,14 +5,14 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 from sleplet import logger
+from sleplet._validation import Validation
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
-from sleplet.utils._validation import Validation
-from sleplet.utils.string_methods import _wavelet_ending, filename_args
-from sleplet.utils.wavelet_methods import slepian_wavelet_forward
+from sleplet.string_methods import _wavelet_ending, filename_args
+from sleplet.wavelet_methods import slepian_wavelet_forward
 
 
 @dataclass(config=Validation, kw_only=True)

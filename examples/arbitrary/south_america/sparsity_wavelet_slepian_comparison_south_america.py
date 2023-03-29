@@ -11,8 +11,8 @@ from sleplet.functions.flm.axisymmetric_wavelet_coefficients_south_america impor
 from sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
     SlepianWaveletCoefficientsSouthAmerica,
 )
-from sleplet.utils.plot_methods import save_plot
-from sleplet.utils.region import Region
+from sleplet.plot_methods import save_plot
+from sleplet.region import Region
 
 _fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
 sns.set(context="paper")

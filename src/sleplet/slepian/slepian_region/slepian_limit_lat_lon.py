@@ -7,18 +7,18 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.utils._array_methods import fill_upper_triangle_of_hermitian_matrix
-from sleplet.utils._mask_methods import create_mask_region
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import (
+from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet._mask_methods import create_mask_region
+from sleplet._validation import Validation
+from sleplet._vars import (
     PHI_MAX_DEFAULT,
     PHI_MIN_DEFAULT,
     THETA_MAX_DEFAULT,
     THETA_MIN_DEFAULT,
 )
-from sleplet.utils.region import Region
+from sleplet.data.setup_pooch import find_on_pooch_then_local
+from sleplet.region import Region
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[2] / "data"
 

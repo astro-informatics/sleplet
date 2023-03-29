@@ -4,11 +4,11 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 from sleplet import logger
+from sleplet._vars import RANDOM_SEED, SAMPLING_SCHEME
+from sleplet.harmonic_methods import mesh_forward
 from sleplet.meshes.classes.mesh_slepian import MeshSlepian
 from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.utils._vars import RANDOM_SEED, SAMPLING_SCHEME
-from sleplet.utils.harmonic_methods import mesh_forward
-from sleplet.utils.slepian_methods import (
+from sleplet.slepian_methods import (
     _compute_mesh_s_p_pixel,
     _compute_s_p_omega,
     slepian_forward,

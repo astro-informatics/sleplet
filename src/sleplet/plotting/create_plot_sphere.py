@@ -11,15 +11,15 @@ from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
-from sleplet.utils._plotly_methods import (
+from sleplet._plotly_methods import (
     create_camera,
     create_colour_bar,
     create_layout,
     create_tick_mark,
 )
-from sleplet.utils._validation import Validation
-from sleplet.utils._vars import SAMPLING_SCHEME, SPHERE_UNSEEN
-from sleplet.utils.plot_methods import (
+from sleplet._validation import Validation
+from sleplet._vars import SAMPLING_SCHEME, SPHERE_UNSEEN
+from sleplet.plot_methods import (
     _boost_field,
     _convert_colourscale,
     _create_plot_type,
@@ -27,7 +27,7 @@ from sleplet.utils.plot_methods import (
     _set_outside_region_to_minimum,
     calc_plot_resolution,
 )
-from sleplet.utils.region import Region
+from sleplet.region import Region
 
 _fig_path = Path(__file__).resolve().parents[1] / "figures"
 

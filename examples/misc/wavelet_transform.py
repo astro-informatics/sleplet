@@ -5,7 +5,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet.utils.plot_methods import save_plot
+from sleplet.plot_methods import save_plot
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")

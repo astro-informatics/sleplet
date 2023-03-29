@@ -2,15 +2,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet.functions.coefficients import Coefficients
-from sleplet.functions.f_p import F_P
-from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
-    MeshSlepianWavelets,
-)
-from sleplet.utils._noise import (
+from sleplet._noise import (
     compute_sigma_j,
     compute_sigma_noise,
     compute_slepian_mesh_sigma_j,
@@ -21,10 +13,18 @@ from sleplet.utils._noise import (
     slepian_mesh_hard_thresholding,
     slepian_wavelet_hard_thresholding,
 )
-from sleplet.utils._vars import SAMPLING_SCHEME
-from sleplet.utils.harmonic_methods import rotate_earth_to_south_america
-from sleplet.utils.slepian_methods import slepian_inverse, slepian_mesh_inverse
-from sleplet.utils.wavelet_methods import (
+from sleplet._vars import SAMPLING_SCHEME
+from sleplet.functions.coefficients import Coefficients
+from sleplet.functions.f_p import F_P
+from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.harmonic_methods import rotate_earth_to_south_america
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
+    MeshSlepianWavelets,
+)
+from sleplet.slepian_methods import slepian_inverse, slepian_mesh_inverse
+from sleplet.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,
     slepian_wavelet_forward,

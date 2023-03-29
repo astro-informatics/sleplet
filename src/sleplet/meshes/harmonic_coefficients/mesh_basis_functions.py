@@ -4,9 +4,9 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet._validation import Validation
+from sleplet.harmonic_methods import mesh_forward
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from sleplet.utils._validation import Validation
-from sleplet.utils.harmonic_methods import mesh_forward
 
 
 @dataclass(config=Validation, kw_only=True)
