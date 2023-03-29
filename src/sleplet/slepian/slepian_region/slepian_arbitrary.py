@@ -10,6 +10,7 @@ from pydantic.dataclasses import dataclass
 
 from sleplet import logger
 from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._integration_methods import (
     calc_integration_weight,
     integrate_region_sphere,
@@ -25,7 +26,6 @@ from sleplet._parallel_methods import (
 from sleplet._slepian_arbitrary_methods import clean_evals_and_evecs
 from sleplet._validation import Validation
 from sleplet._vars import NCPU
-from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.harmonic_methods import (
     _create_spherical_harmonic,
     invert_flm_boosted,
@@ -33,7 +33,7 @@ from sleplet.harmonic_methods import (
 from sleplet.region import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[2] / "data"
+_data_path = Path(__file__).resolve().parents[2] / "_data"
 
 SAMPLES = 2
 

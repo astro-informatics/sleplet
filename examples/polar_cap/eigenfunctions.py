@@ -1,12 +1,12 @@
 from pathlib import Path
 
 import numpy as np
+import pooch
 import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.harmonic_methods import invert_flm_boosted
 from sleplet.plot_methods import calc_plot_resolution, save_plot
 from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
@@ -25,6 +25,7 @@ TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_MAX = 40
 THETA_MAX_DEFAULT = np.pi
 THETA_MIN_DEFAULT = 0
+ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 
 
 def main() -> None:
@@ -80,9 +81,16 @@ def _find_p_value(rank: int, shannon: int) -> int:
     """
     method to find the effective p rank of the Slepian function
     """
+    pooch_registry = pooch.create(
+        path=pooch.os_cache("sleplet"),
+        base_url=f"doi:{ZENODO_DATA_DOI}/",
+        registry=None,
+    )
+    pooch_registry.load_registry_from_doi()
     orders = np.load(
-        find_on_pooch_then_local(
-            f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy"
+        pooch_registry.fetch(
+            f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy",
+            progressbar=True,
         )
     )
     return np.where(orders == ORDER)[0][rank]

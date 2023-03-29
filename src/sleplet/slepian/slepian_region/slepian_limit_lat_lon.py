@@ -8,6 +8,7 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
+from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._mask_methods import create_mask_region
 from sleplet._validation import Validation
 from sleplet._vars import (
@@ -16,11 +17,10 @@ from sleplet._vars import (
     THETA_MAX_DEFAULT,
     THETA_MIN_DEFAULT,
 )
-from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.region import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[2] / "data"
+_data_path = Path(__file__).resolve().parents[2] / "_data"
 
 
 @dataclass(config=Validation, kw_only=True)

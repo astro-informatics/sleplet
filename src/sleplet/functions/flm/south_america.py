@@ -3,12 +3,12 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
+from sleplet._data.create_earth_flm import create_flm
+from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._mask_methods import create_mask
 from sleplet._string_methods import _convert_camel_case_to_snake_case
 from sleplet._validation import Validation
 from sleplet._vars import SAMPLING_SCHEME
-from sleplet.data.create_earth_flm import create_flm
-from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.functions.f_lm import F_LM
 from sleplet.harmonic_methods import (
     _ensure_f_bandlimited,

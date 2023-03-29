@@ -7,10 +7,10 @@ from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 from sleplet import logger
+from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._integration_methods import integrate_whole_mesh
-from sleplet.data.setup_pooch import find_on_pooch_then_local
 
-_data_path = Path(__file__).resolve().parent / "data"
+_data_path = Path(__file__).resolve().parent / "_data"
 
 
 def average_functions_on_vertices_to_faces(

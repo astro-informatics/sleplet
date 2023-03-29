@@ -11,6 +11,7 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 from sleplet import logger
+from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._mask_methods import create_mask_region
 from sleplet._parallel_methods import (
     attach_to_shared_memory_block,
@@ -21,12 +22,11 @@ from sleplet._parallel_methods import (
 )
 from sleplet._validation import Validation
 from sleplet._vars import NCPU
-from sleplet.data.setup_pooch import find_on_pooch_then_local
 from sleplet.harmonic_methods import _create_emm_vector
 from sleplet.region import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[2] / "data"
+_data_path = Path(__file__).resolve().parents[2] / "_data"
 
 L_SAVE_ALL = 16
 
