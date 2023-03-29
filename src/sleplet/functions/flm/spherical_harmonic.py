@@ -4,13 +4,13 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet._validation import Validation
-from sleplet.functions.f_lm import F_LM
-from sleplet.harmonic_methods import _create_spherical_harmonic
-from sleplet.string_methods import (
+from sleplet._string_methods import (
     _convert_camel_case_to_snake_case,
     filename_args,
 )
+from sleplet._validation import Validation
+from sleplet.functions.f_lm import F_LM
+from sleplet.harmonic_methods import _create_spherical_harmonic
 
 
 @dataclass(config=Validation, kw_only=True)

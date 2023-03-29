@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.testing import assert_equal
 
-from sleplet.string_methods import (
+from sleplet._string_methods import (
     _angle_as_degree,
     _filename_angle,
     _multiples_of_pi,

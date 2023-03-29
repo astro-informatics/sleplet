@@ -58,7 +58,7 @@ from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 
-_data_path = Path(__file__).resolve().parents[1] / "data"
+_data_path = Path(__file__).resolve().parent / "data"
 
 MESHES: list[str] = [
     Path(x).stem.removeprefix("meshes_regions_")

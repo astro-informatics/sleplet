@@ -7,7 +7,6 @@ from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.region import Region
-from sleplet.string_methods import filename_args
 
 B = 3
 J_MIN = 2
@@ -37,7 +36,7 @@ def main(snr: float, sigma: int) -> None:
     amplitude = find_max_amplitude(fun)
 
     f = denoising_slepian_wavelet(fun, fun_noised, sw, snr, sigma)
-    name = f"{fun.name}{filename_args(snr, 'snr')}{filename_args(sigma,'n')}_denoised"
+    name = f"{fun.name}_{snr}snr_{sigma}n_denoised"
     Plot(
         f, L, name, amplitude=amplitude, normalise=NORMALISE, region=sw.region
     ).execute()

@@ -10,7 +10,7 @@ from sleplet import logger
 from sleplet._integration_methods import integrate_whole_mesh
 from sleplet.data.setup_pooch import find_on_pooch_then_local
 
-_data_path = Path(__file__).resolve().parents[1] / "data"
+_data_path = Path(__file__).resolve().parent / "data"
 
 
 def average_functions_on_vertices_to_faces(

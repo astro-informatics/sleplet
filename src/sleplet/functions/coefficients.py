@@ -8,9 +8,9 @@ from pydantic.dataclasses import dataclass
 
 from sleplet._convolution_methods import sifting_convolution
 from sleplet._mask_methods import ensure_masked_flm_bandlimited
+from sleplet._string_methods import filename_args
 from sleplet._validation import Validation
 from sleplet.region import Region
-from sleplet.string_methods import filename_args
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 

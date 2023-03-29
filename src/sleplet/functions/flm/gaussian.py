@@ -3,12 +3,12 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet._validation import Validation
-from sleplet.functions.f_lm import F_LM
-from sleplet.string_methods import (
+from sleplet._string_methods import (
     _convert_camel_case_to_snake_case,
     filename_args,
 )
+from sleplet._validation import Validation
+from sleplet.functions.f_lm import F_LM
 
 
 @dataclass(config=Validation, kw_only=True)

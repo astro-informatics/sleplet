@@ -8,6 +8,10 @@ from numpy import typing as npt
 from sleplet import logger
 from sleplet._class_lists import COEFFICIENTS, MAPS_LM
 from sleplet._mask_methods import create_default_region
+from sleplet._string_methods import (
+    _convert_classes_list_to_snake_case,
+    _filename_angle,
+)
 from sleplet.functions.coefficients import Coefficients
 from sleplet.harmonic_methods import (
     rotate_earth_to_africa,
@@ -20,10 +24,6 @@ from sleplet.plot_methods import (
 )
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.slepian_methods import slepian_forward
-from sleplet.string_methods import (
-    _convert_classes_list_to_snake_case,
-    _filename_angle,
-)
 
 ALPHA_DEFAULT = 0.75
 ANNOTATION_COLOUR = "gold"

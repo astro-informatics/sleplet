@@ -3,14 +3,14 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 from sleplet._noise import compute_snr, create_slepian_noise
+from sleplet._string_methods import (
+    _convert_camel_case_to_snake_case,
+    filename_args,
+)
 from sleplet._validation import Validation
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.region import Region
-from sleplet.string_methods import (
-    _convert_camel_case_to_snake_case,
-    filename_args,
-)
 
 
 @dataclass(config=Validation, kw_only=True)

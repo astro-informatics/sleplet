@@ -5,16 +5,16 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 from sleplet import logger
+from sleplet._string_methods import (
+    _convert_camel_case_to_snake_case,
+    _wavelet_ending,
+    filename_args,
+)
 from sleplet._validation import Validation
 from sleplet.functions.f_p import F_P
 from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.region import Region
-from sleplet.string_methods import (
-    _convert_camel_case_to_snake_case,
-    _wavelet_ending,
-    filename_args,
-)
 from sleplet.wavelet_methods import slepian_wavelet_forward
 
 

@@ -6,7 +6,6 @@ from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.region import Region
-from sleplet.string_methods import filename_args
 
 B = 3
 J_MIN = 2
@@ -33,10 +32,7 @@ def main(snr: float, sigma: int) -> None:
     amplitude = find_max_amplitude(fun)
 
     f = denoising_slepian_function(fun, fun_noised, snr, sigma)
-    name = (
-        f"{fun.name}{filename_args(snr, 'snr')}"
-        f"{filename_args(sigma,'n')}_denoised_function"
-    )
+    name = f"{fun.name}_{snr}snr_{sigma}n_denoised_function"
     Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE, region=region).execute()
 
 

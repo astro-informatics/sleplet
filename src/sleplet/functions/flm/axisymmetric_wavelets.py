@@ -5,13 +5,13 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 from sleplet import logger
-from sleplet._validation import Validation
-from sleplet.functions.f_lm import F_LM
-from sleplet.string_methods import (
+from sleplet._string_methods import (
     _convert_camel_case_to_snake_case,
     _wavelet_ending,
     filename_args,
 )
+from sleplet._validation import Validation
+from sleplet.functions.f_lm import F_LM
 from sleplet.wavelet_methods import _create_axisymmetric_wavelets
 
 

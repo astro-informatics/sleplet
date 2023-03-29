@@ -25,7 +25,7 @@ from sleplet.harmonic_methods import (
 from sleplet.meshes.classes.mesh import Mesh
 from sleplet.region import Region
 
-_data_path = Path(__file__).resolve().parents[1] / "data"
+_data_path = Path(__file__).resolve().parent / "data"
 
 AFRICA_RANGE = np.deg2rad(41)
 SOUTH_AMERICA_RANGE = np.deg2rad(40)
