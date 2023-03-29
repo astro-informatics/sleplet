@@ -1,3 +1,6 @@
+"""
+parent class to deal with harmonic coefficients on the sphere
+"""
 from abc import abstractmethod
 
 import numpy as np
