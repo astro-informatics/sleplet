@@ -14,7 +14,7 @@ from sleplet.utils.plot_methods import (
 from sleplet.utils.string_methods import _convert_classes_list_to_snake_case
 
 
-def _valid_meshes(mesh_name: str) -> str:
+def valid_meshes(mesh_name: str) -> str:
     """
     check if valid mesh name
     """
@@ -24,7 +24,7 @@ def _valid_meshes(mesh_name: str) -> str:
         raise ValueError(f"'{mesh_name}' is not a valid mesh name to plot")
 
 
-def _valid_methods(method_name: str) -> str:
+def valid_methods(method_name: str) -> str:
     """
     check if valid mesh name
     """
@@ -36,14 +36,14 @@ def _valid_methods(method_name: str) -> str:
         raise ValueError(f"'{method_name}' is not a valid method to plot")
 
 
-def _read_args() -> Namespace:
+def read_args() -> Namespace:
     """
     method to read args from the command line
     """
     parser = ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",
-        type=_valid_meshes,
+        type=valid_meshes,
         choices=MESHES,
         help="mesh to plot",
     )
@@ -57,7 +57,7 @@ def _read_args() -> Namespace:
     parser.add_argument(
         "--method",
         "-m",
-        type=_valid_methods,
+        type=valid_methods,
         nargs="?",
         default="basis_functions",
         const="basis_functions",
@@ -88,7 +88,7 @@ def _read_args() -> Namespace:
     return parser.parse_args()
 
 
-def _plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> None:
+def plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> None:
     """
     master plotting method
     """
@@ -104,7 +104,7 @@ def _plot(f: MeshCoefficients, *, normalise: bool, amplitude: float | None) -> N
 
 
 def main() -> None:
-    args = _read_args()
+    args = read_args()
     logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
@@ -124,7 +124,7 @@ def main() -> None:
     amplitude = compute_amplitude_for_noisy_mesh_plots(f)
 
     # perform plot
-    _plot(f, normalise=not args.unnormalise, amplitude=amplitude)
+    plot(f, normalise=not args.unnormalise, amplitude=amplitude)
 
 
 if __name__ == "__main__":

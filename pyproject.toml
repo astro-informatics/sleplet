@@ -53,7 +53,7 @@ keywords = [
 name = "sleplet"
 readme = "README.md"
 requires-python = ">=3.10"
-scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scripts.plotting_on_sphere:main"}
+scripts = {mesh = "sleplet._scripts.plotting_on_mesh:main", sphere = "sleplet._scripts.plotting_on_sphere:main"}
 license.file = "LICENCE.md"
 optional-dependencies.dev = [
     "black",
