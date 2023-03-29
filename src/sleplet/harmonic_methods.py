@@ -1,3 +1,6 @@
+"""
+methods to perform operations in Fourier space of the sphere or mesh
+"""
 from collections.abc import Callable
 from typing import Any
 

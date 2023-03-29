@@ -1,3 +1,6 @@
+"""
+identifies and creates the appropriate Slepian region for the sphere
+"""
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 

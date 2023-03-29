@@ -1,3 +1,6 @@
+"""
+methods to help in creating plots
+"""
 from pathlib import Path
 
 import numpy as np
