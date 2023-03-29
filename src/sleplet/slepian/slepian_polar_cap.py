@@ -13,7 +13,7 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
+from sleplet import NCPU, logger
 from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._mask_methods import create_mask_region
 from sleplet._parallel_methods import (
@@ -24,7 +24,6 @@ from sleplet._parallel_methods import (
     split_arr_into_chunks,
 )
 from sleplet._validation import Validation
-from sleplet._vars import NCPU
 from sleplet.harmonic_methods import _create_emm_vector
 from sleplet.region import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions

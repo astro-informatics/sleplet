@@ -4,18 +4,18 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet import logger
-from sleplet._data.create_earth_flm import create_flm
-from sleplet._data.setup_pooch import find_on_pooch_then_local
-from sleplet._vars import (
+from sleplet import (
     PHI_MAX,
     PHI_MIN,
     POLAR_GAP,
-    SAMPLING_SCHEME,
     SLEPIAN_MASK,
     THETA_MAX,
     THETA_MIN,
+    logger,
 )
+from sleplet._data.create_earth_flm import create_flm
+from sleplet._data.setup_pooch import find_on_pooch_then_local
+from sleplet._vars import SAMPLING_SCHEME
 from sleplet.harmonic_methods import (
     mesh_forward,
     mesh_inverse,

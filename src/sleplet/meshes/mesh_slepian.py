@@ -9,7 +9,7 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
+from sleplet import NCPU, logger
 from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
 from sleplet._data.setup_pooch import find_on_pooch_then_local
 from sleplet._integration_methods import integrate_region_mesh
@@ -22,7 +22,6 @@ from sleplet._parallel_methods import (
 )
 from sleplet._slepian_arbitrary_methods import compute_mesh_shannon
 from sleplet._validation import Validation
-from sleplet._vars import NCPU
 from sleplet.meshes.mesh import Mesh
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
