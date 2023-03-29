@@ -1,3 +1,6 @@
+"""
+creates a mesh object
+"""
 from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass

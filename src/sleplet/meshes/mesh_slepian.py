@@ -1,3 +1,6 @@
+"""
+creates Slepian object of a given mesh
+"""
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 

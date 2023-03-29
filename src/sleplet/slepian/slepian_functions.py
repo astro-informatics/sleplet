@@ -1,3 +1,6 @@
+"""
+parent class of creating the different Slepian regions on the sphere
+"""
 from abc import abstractmethod
 
 import numpy as np

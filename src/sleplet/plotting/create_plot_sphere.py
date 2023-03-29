@@ -1,3 +1,6 @@
+"""
+creates surface sphere plot via `plotly`
+"""
 from dataclasses import KW_ONLY, field
 from pathlib import Path
 

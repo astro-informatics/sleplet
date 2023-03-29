@@ -1,3 +1,6 @@
+"""
+parent class to handle Fourier/Slepian coefficients on the mesh
+"""
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 

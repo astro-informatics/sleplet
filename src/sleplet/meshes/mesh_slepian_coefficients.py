@@ -1,3 +1,6 @@
+"""
+parent class to handle Slepian coefficients on the mesh
+"""
 from abc import abstractmethod
 
 import numpy as np

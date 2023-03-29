@@ -1,3 +1,6 @@
+"""
+class to create a polar cap Slepian region on the sphere
+"""
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path

@@ -1,3 +1,6 @@
+"""
+class to create a limited latitude longitude Slepian region on the sphere
+"""
 from pathlib import Path
 
 import numpy as np

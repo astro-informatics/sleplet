@@ -1,5 +1,5 @@
 """
-parent class to deal with Slepian coefficients on the sphere
+parent class to handle Slepian coefficients on the sphere
 """
 from abc import abstractmethod
 

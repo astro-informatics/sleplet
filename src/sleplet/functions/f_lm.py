@@ -1,5 +1,5 @@
 """
-parent class to deal with harmonic coefficients on the sphere
+parent class to handle harmonic coefficients on the sphere
 """
 from abc import abstractmethod
 

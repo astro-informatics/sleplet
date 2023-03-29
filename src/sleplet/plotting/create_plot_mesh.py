@@ -1,3 +1,6 @@
+"""
+creates surface mesh plot via `plotly`
+"""
 from dataclasses import KW_ONLY
 from pathlib import Path
 

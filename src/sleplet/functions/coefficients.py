@@ -1,5 +1,5 @@
 """
-parent class to deal with harmonic/Slepian coefficients on the sphere
+parent class to handle harmonic/Slepian coefficients on the sphere
 """
 from abc import abstractmethod
 from dataclasses import KW_ONLY
