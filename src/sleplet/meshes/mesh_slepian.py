@@ -22,7 +22,7 @@ from sleplet._validation import Validation
 from sleplet._vars import NCPU
 from sleplet.meshes.mesh import Mesh
 
-_data_path = Path(__file__).resolve().parents[2] / "_data"
+_data_path = Path(__file__).resolve().parents[1] / "_data"
 
 
 @dataclass(config=Validation)

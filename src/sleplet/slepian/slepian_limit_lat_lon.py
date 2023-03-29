@@ -20,7 +20,7 @@ from sleplet._vars import (
 from sleplet.region import Region
 from sleplet.slepian._slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[2] / "_data"
+_data_path = Path(__file__).resolve().parents[1] / "_data"
 
 
 @dataclass(config=Validation, kw_only=True)

@@ -15,9 +15,9 @@ from sleplet.meshes.mesh_slepian import MeshSlepian
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
-from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
+from sleplet.slepian.slepian_limit_lat_lon import SlepianLimitLatLon
+from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
 
 ARRAY_DIM = 10
 L = 16

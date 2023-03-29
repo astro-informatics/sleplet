@@ -26,7 +26,7 @@ from sleplet.harmonic_methods import _create_emm_vector
 from sleplet.region import Region
 from sleplet.slepian._slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[2] / "_data"
+_data_path = Path(__file__).resolve().parents[1] / "_data"
 
 L_SAVE_ALL = 16
 

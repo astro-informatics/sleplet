@@ -10,9 +10,9 @@ from sleplet.meshes.mesh_slepian import MeshSlepian
 from sleplet.region import Region
 from sleplet.slepian._slepian_decomposition import SlepianDecomposition
 from sleplet.slepian._slepian_functions import SlepianFunctions
-from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from sleplet.slepian.slepian_region.slepian_limit_lat_lon import SlepianLimitLatLon
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
+from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
+from sleplet.slepian.slepian_limit_lat_lon import SlepianLimitLatLon
+from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
 
 
 def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
