@@ -22,7 +22,7 @@ from sleplet._validation import Validation
 from sleplet.meshes.mesh import Mesh
 from sleplet.plot_methods import _convert_colourscale, _normalise_function
 
-_fig_path = Path(__file__).resolve().parents[1] / "figures"
+_fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
 MESH_CBAR_LEN = 0.95
 MESH_CBAR_FONT_SIZE = 32

@@ -9,7 +9,7 @@ from sleplet import logger
 from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.plot_methods import save_plot
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 ALPHA_DEFAULT = 0.75

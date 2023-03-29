@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from sleplet.plot_methods import save_plot
 from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 COLOURS = ["b", "k"]

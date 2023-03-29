@@ -14,7 +14,7 @@ from sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
 from sleplet.plot_methods import save_plot
 from sleplet.region import Region
 
-_fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 B = 3

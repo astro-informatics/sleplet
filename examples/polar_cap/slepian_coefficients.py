@@ -11,7 +11,7 @@ from sleplet.region import Region
 from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
 from sleplet.slepian_methods import choose_slepian_method, slepian_forward
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 L = 16

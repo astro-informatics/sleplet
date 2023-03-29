@@ -8,7 +8,7 @@ from scipy.interpolate import pchip
 from sleplet.plot_methods import save_plot
 from sleplet.wavelet_methods import create_kappas
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 B = 3

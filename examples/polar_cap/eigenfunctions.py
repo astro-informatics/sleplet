@@ -11,7 +11,7 @@ from sleplet.harmonic_methods import invert_flm_boosted
 from sleplet.plot_methods import calc_plot_resolution, save_plot
 from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 COLUMNS = 3

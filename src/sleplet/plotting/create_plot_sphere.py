@@ -29,7 +29,7 @@ from sleplet.plot_methods import (
 )
 from sleplet.region import Region
 
-_fig_path = Path(__file__).resolve().parents[1] / "figures"
+_fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
 MW_POLE_LENGTH = 2
 
