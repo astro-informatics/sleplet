@@ -3,10 +3,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from sleplet import logger
-from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
-from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.functions.fp import SlepianSouthAmerica, SlepianWavelets
 from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.plotting import PlotSphere
 from sleplet.region import Region
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
@@ -42,7 +41,7 @@ def main(snr: float, sigma: int) -> None:
 
     f = denoising_slepian_wavelet(fun, fun_noised, sw, snr, sigma)
     name = f"{fun.name}_{snr}snr_{sigma}n_denoised"
-    Plot(
+    PlotSphere(
         f, L, name, amplitude=amplitude, normalise=NORMALISE, region=sw.region
     ).execute()
 

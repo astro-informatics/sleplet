@@ -3,8 +3,8 @@ from argparse import ArgumentParser
 import cmocean
 import numpy as np
 
-from sleplet.meshes.mesh import Mesh
-from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.meshes import Mesh
+from sleplet.plotting import PlotMesh
 
 MESHES = [
     "bird",
@@ -28,7 +28,7 @@ def main(mesh_name: str) -> None:
     field[mesh.region] = 1
 
     name = f"{mesh_name}_region"
-    Plot(mesh, name, field, colour=cmocean.cm.haline, region=True).execute()
+    PlotMesh(mesh, name, field, colour=cmocean.cm.haline, region=True).execute()
 
 
 if __name__ == "__main__":

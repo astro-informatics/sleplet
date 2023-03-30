@@ -1,10 +1,9 @@
 import sys
 from pathlib import Path
 
-from sleplet.functions.flm.africa import Africa
-from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
+from sleplet.functions.flm import Africa, AxisymmetricWavelets
 from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.plotting import PlotSphere
 
 sys.path.append(str(Path(__file__).resolve().parent))
 
@@ -34,7 +33,7 @@ def main() -> None:
 
     f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
     name = f"{fun.name}_denoised_axisym"
-    Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
+    PlotSphere(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
 
 
 if __name__ == "__main__":

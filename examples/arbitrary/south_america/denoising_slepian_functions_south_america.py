@@ -4,14 +4,14 @@ import numpy as np
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
+from sleplet.functions.fp import SlepianSouthAmerica
 from sleplet.noise import (
     compute_sigma_noise,
     compute_snr,
     slepian_function_hard_thresholding,
 )
 from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.plotting import PlotSphere
 from sleplet.region import Region
 from sleplet.slepian_methods import slepian_inverse
 
@@ -66,7 +66,9 @@ def main(snr: float, sigma: int) -> None:
 
     f = _denoising_slepian_function(fun, fun_noised, snr, sigma)
     name = f"{fun.name}_{snr}snr_{sigma}n_denoised_function"
-    Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE, region=region).execute()
+    PlotSphere(
+        f, L, name, amplitude=amplitude, normalise=NORMALISE, region=region
+    ).execute()
 
 
 if __name__ == "__main__":

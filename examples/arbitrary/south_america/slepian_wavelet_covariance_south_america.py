@@ -2,9 +2,9 @@ import numpy as np
 from numpy.random import default_rng
 
 from sleplet import logger
-from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
+from sleplet.functions.fp import SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
-from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.plotting import PlotSphere
 from sleplet.region import Region
 from sleplet.slepian_methods import slepian_inverse
 from sleplet.wavelet_methods import (
@@ -67,7 +67,7 @@ def main() -> None:
     for j, diff in enumerate(differences):
         name = f"slepian_covariance_diff_{j}"
         logger.info(name)
-        Plot(diff, L, name, normalise=NORMALISE, region=sw.region).execute()
+        PlotSphere(diff, L, name, normalise=NORMALISE, region=sw.region).execute()
 
 
 if __name__ == "__main__":

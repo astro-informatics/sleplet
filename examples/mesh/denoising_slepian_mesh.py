@@ -4,12 +4,10 @@ import numpy as np
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.meshes.mesh import Mesh
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.slepian_coefficients.mesh_slepian_field import (
+from sleplet.meshes import Mesh
+from sleplet.meshes._mesh_coefficients import MeshCoefficients
+from sleplet.meshes.slepian_coefficients import (
     MeshSlepianField,
-)
-from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 from sleplet.noise import (
@@ -17,7 +15,7 @@ from sleplet.noise import (
     compute_snr,
     slepian_mesh_hard_thresholding,
 )
-from sleplet.plotting.create_plot_mesh import Plot
+from sleplet.plotting import PlotMesh
 from sleplet.slepian_methods import slepian_mesh_inverse
 from sleplet.wavelet_methods import (
     slepian_wavelet_forward,
@@ -102,7 +100,9 @@ def main(mesh_name: str, snr: float, sigma: int) -> None:
 
     f = _denoising_mesh_slepian(fun, fun_noised, smw, snr, sigma)
     name = f"{mesh_name}_{snr}snr_{sigma}n_denoised"
-    Plot(mesh, name, f, amplitude=amplitude, normalise=NORMALISE, region=True).execute()
+    PlotMesh(
+        mesh, name, f, amplitude=amplitude, normalise=NORMALISE, region=True
+    ).execute()
 
 
 if __name__ == "__main__":

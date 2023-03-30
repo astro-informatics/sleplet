@@ -1,5 +1,5 @@
-from sleplet.functions.fp.slepian_africa import SlepianAfrica
-from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.functions.fp import SlepianAfrica
+from sleplet.plotting import PlotSphere
 from sleplet.region import Region
 from sleplet.slepian_methods import choose_slepian_method, slepian_inverse
 
@@ -21,7 +21,7 @@ def main() -> None:
 
     # plot
     name = f"africa_slepian_reconstruction_L{L}"
-    Plot(f, L, name, normalise=NORMALISE, region=slepian.region).execute()
+    PlotSphere(f, L, name, normalise=NORMALISE, region=slepian.region).execute()
 
 
 if __name__ == "__main__":

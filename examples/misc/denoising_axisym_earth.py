@@ -3,10 +3,9 @@ from pathlib import Path
 
 from numpy.testing import assert_array_less
 
-from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from sleplet.functions.flm.earth import Earth
+from sleplet.functions.flm import AxisymmetricWavelets, Earth
 from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.plotting import PlotSphere
 
 sys.path.append(str(Path(__file__).resolve().parent))
 
@@ -39,7 +38,7 @@ def main() -> None:
     )
     assert_array_less(noised_snr, denoised_snr)
     name = f"{fun.name}_denoised_axisym"
-    Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
+    PlotSphere(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
 
 
 if __name__ == "__main__":

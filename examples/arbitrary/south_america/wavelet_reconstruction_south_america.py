@@ -1,7 +1,5 @@
-from sleplet.functions.fp.slepian_wavelet_coefficients_south_america import (
-    SlepianWaveletCoefficientsSouthAmerica,
-)
-from sleplet.plotting.create_plot_sphere import Plot
+from sleplet.functions.fp import SlepianWaveletCoefficientsSouthAmerica
+from sleplet.plotting import PlotSphere
 from sleplet.region import Region
 from sleplet.slepian_methods import slepian_inverse
 from sleplet.wavelet_methods import slepian_wavelet_inverse
@@ -26,7 +24,7 @@ def main() -> None:
     # plot
     f = slepian_inverse(f_p, L, swc.slepian)
     name = f"south_america_wavelet_reconstruction_L{L}"
-    Plot(f, L, name, normalise=NORMALISE, region=swc.region).execute()
+    PlotSphere(f, L, name, normalise=NORMALISE, region=swc.region).execute()
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 
 from sleplet import logger
-from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
+from sleplet.functions.flm import HarmonicGaussian
 from sleplet.plot_methods import save_plot
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
