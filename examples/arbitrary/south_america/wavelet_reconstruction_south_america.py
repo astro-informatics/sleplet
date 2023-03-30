@@ -1,6 +1,6 @@
 from sleplet.functions.fp import SlepianWaveletCoefficientsSouthAmerica
 from sleplet.plotting import PlotSphere
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 from sleplet.wavelet_methods import slepian_wavelet_inverse
 

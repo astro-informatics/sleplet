@@ -6,7 +6,7 @@ from sleplet import logger
 from sleplet.functions.fp import SlepianSouthAmerica, SlepianWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 

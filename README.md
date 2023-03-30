@@ -407,9 +407,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import (
-    SlepianWaveletCoefficientsAfrica,
-)
+from sleplet.functions.fp import SlepianWaveletCoefficientsAfrica
 from sleplet.plotting import PlotSphere
 from sleplet.region import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -468,8 +466,8 @@ done
 
 ```python
 from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.harmonic_coefficients import MeshBasisFunctions
 from sleplet.meshes import Mesh
+from sleplet.meshes.harmonic_coefficients import MeshBasisFunctions
 from sleplet.plotting import PlotMesh
 
 mesh = Mesh("homer")
@@ -531,9 +529,7 @@ done
 
 ```python
 from sleplet.meshes import Mesh
-from sleplet.meshes.slepian_coefficients import (
-    MeshSlepianWavelets,
-)
+from sleplet.meshes.slepian_coefficients import MeshSlepianWavelets
 from sleplet.plotting import PlotMesh
 from sleplet.slepian_methods import slepian_mesh_inverse
 
@@ -552,8 +548,8 @@ mesh homer -m field -u
 
 ```python
 from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.harmonic_coefficients import MeshField
 from sleplet.meshes import Mesh
+from sleplet.meshes.harmonic_coefficients import MeshField
 from sleplet.plotting import PlotMesh
 
 mesh = Mesh("homer")
@@ -575,9 +571,7 @@ done
 
 ```python
 from sleplet.meshes import Mesh
-from sleplet.meshes.slepian_coefficients import (
-    MeshSlepianWaveletCoefficients,
-)
+from sleplet.meshes.slepian_coefficients import MeshSlepianWaveletCoefficients
 from sleplet.plotting import PlotMesh
 from sleplet.slepian_methods import slepian_mesh_inverse
 

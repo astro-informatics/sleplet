@@ -1,6 +1,6 @@
 from sleplet.functions.fp import SlepianAfrica
 from sleplet.plotting import PlotSphere
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import choose_slepian_method, slepian_inverse
 
 L = 128

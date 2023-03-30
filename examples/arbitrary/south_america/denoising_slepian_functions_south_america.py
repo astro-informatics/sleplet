@@ -12,7 +12,7 @@ from sleplet.noise import (
 )
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 B = 3

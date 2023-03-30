@@ -5,7 +5,7 @@ from sleplet import logger
 from sleplet.functions.fp import SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
 from sleplet.plotting import PlotSphere
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 from sleplet.wavelet_methods import (
     compute_slepian_wavelet_covariance,
