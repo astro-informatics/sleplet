@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from sleplet.functions.flm import AxisymmetricWaveletCoefficientsSouthAmerica
 from sleplet.functions.fp import SlepianWaveletCoefficientsSouthAmerica
 from sleplet.plot_methods import save_plot
-from sleplet.region import Region
+from sleplet.slepian.region import Region
 
 _fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")

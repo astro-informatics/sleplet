@@ -19,8 +19,9 @@ import sleplet._mask_methods
 import sleplet._parallel_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.region
 import sleplet.slepian.slepian_functions
+from sleplet.slepian.region import Region
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
@@ -28,7 +29,7 @@ L_SAVE_ALL = 16
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianPolarCap(sleplet.slepian.slepian_functions.SlepianFunctions):
+class SlepianPolarCap(SlepianFunctions):
     theta_max: float
     _: KW_ONLY
     gap: bool = False
@@ -40,8 +41,8 @@ class SlepianPolarCap(sleplet.slepian.slepian_functions.SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"
 
-    def _create_region(self) -> sleplet.region.Region:
-        return sleplet.region.Region(gap=self.gap, theta_max=self.theta_max)
+    def _create_region(self) -> Region:
+        return Region(gap=self.gap, theta_max=self.theta_max)
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
         return sleplet._mask_methods.create_mask_region(self.L, self.region)

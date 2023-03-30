@@ -5,7 +5,6 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.meshes import Mesh
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.slepian_coefficients import (
     MeshSlepianField,
     MeshSlepianWavelets,
@@ -38,8 +37,8 @@ SNR_IN = -5
 
 
 def _denoising_mesh_slepian(
-    signal: MeshCoefficients,
-    noised_signal: MeshCoefficients,
+    signal: MeshSlepianField,
+    noised_signal: MeshSlepianField,
     mesh_slepian_wavelets: MeshSlepianWavelets,
     snr_in: float,
     n_sigma: int,

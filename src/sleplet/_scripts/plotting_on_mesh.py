@@ -8,7 +8,7 @@ import sleplet.meshes.mesh_coefficients
 import sleplet.meshes.mesh_slepian
 import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.plot_methods
-import sleplet.plotting.create_plot_mesh
+import sleplet.plotting._create_plot_mesh
 from sleplet.meshes import Mesh
 
 
@@ -96,7 +96,7 @@ def plot(
     master plotting method
     """
     field = sleplet.plot_methods._coefficients_to_field_mesh(f, f.coefficients)
-    sleplet.plotting.create_plot_mesh.Plot(
+    sleplet.plotting._create_plot_mesh.Plot(
         f.mesh,
         f.name,
         field,

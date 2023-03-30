@@ -7,7 +7,7 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.plot_methods import save_plot
-from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
+from sleplet.slepian import SlepianPolarCap
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")

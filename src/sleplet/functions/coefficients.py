@@ -1,5 +1,5 @@
 """
-parent class to handle harmonic/Slepian coefficients on the sphere
+abstract parent class to handle harmonic/Slepian coefficients on the sphere
 """
 from abc import abstractmethod
 from dataclasses import KW_ONLY
@@ -13,7 +13,7 @@ import sleplet._convolution_methods
 import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.region
+from sleplet.slepian.region import Region
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
@@ -24,7 +24,7 @@ class Coefficients:
     _: KW_ONLY
     extra_args: list[int] | None = None
     noise: float | None = None
-    region: sleplet.region.Region | None = None
+    region: Region | None = None
     smoothing: int | None = None
 
     def __post_init_post_parse__(self) -> None:
@@ -65,7 +65,7 @@ class Coefficients:
         adds noise/smoothing if appropriate and bandlimit
         """
         if (
-            isinstance(self.region, sleplet.region.Region)
+            isinstance(self.region, Region)
             and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
             self.name += f"_{self.region.name_ending}"

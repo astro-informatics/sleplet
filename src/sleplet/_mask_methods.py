@@ -9,8 +9,8 @@ import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
 import sleplet._vars
 import sleplet.harmonic_methods
-import sleplet.region
 from sleplet.meshes import Mesh
+from sleplet.slepian.region import Region
 
 _data_path = Path(__file__).resolve().parent / "_data"
 
@@ -18,7 +18,7 @@ AFRICA_RANGE = np.deg2rad(41)
 SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 
-def create_mask_region(L: int, region: sleplet.region.Region) -> npt.NDArray[np.float_]:
+def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
     """
     creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
@@ -72,7 +72,7 @@ def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
 def ensure_masked_flm_bandlimited(
     flm: npt.NDArray[np.complex_],
     L: int,
-    region: sleplet.region.Region,
+    region: Region,
     *,
     reality: bool,
     spin: int,
@@ -90,11 +90,11 @@ def ensure_masked_flm_bandlimited(
     )
 
 
-def create_default_region() -> sleplet.region.Region:
+def create_default_region() -> Region:
     """
     creates default region
     """
-    return sleplet.region.Region(
+    return Region(
         gap=sleplet.POLAR_GAP,
         mask_name=sleplet.SLEPIAN_MASK,
         phi_max=np.deg2rad(sleplet.PHI_MAX),

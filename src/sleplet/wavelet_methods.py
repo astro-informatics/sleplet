@@ -9,6 +9,7 @@ from pys2let import axisym_wav_l
 import sleplet._convolution_methods
 import sleplet.slepian.slepian_functions
 import sleplet.slepian_methods
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
 def slepian_wavelet_forward(
@@ -90,7 +91,7 @@ def compute_wavelet_covariance(
 def compute_slepian_wavelet_covariance(
     L: int,
     wavelets: npt.NDArray[np.float_],
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
     *,
     var_signal: float,
 ) -> npt.NDArray[np.float_]:

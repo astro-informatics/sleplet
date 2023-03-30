@@ -10,9 +10,7 @@ from sleplet.harmonic_methods import compute_random_signal
 from sleplet.meshes import Mesh, MeshSlepian
 from sleplet.meshes.harmonic_coefficients import MeshField
 from sleplet.meshes.slepian_coefficients import MeshSlepianWavelets
-from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
-from sleplet.slepian.slepian_limit_lat_lon import SlepianLimitLatLon
-from sleplet.slepian.slepian_polar_cap import SlepianPolarCap
+from sleplet.slepian import SlepianArbitrary, SlepianLimitLatLon, SlepianPolarCap
 
 ARRAY_DIM = 10
 L = 16

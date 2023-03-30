@@ -20,8 +20,9 @@ import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.region
 import sleplet.slepian.slepian_functions
+from sleplet.slepian.region import Region
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
@@ -29,7 +30,7 @@ SAMPLES = 2
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianArbitrary(sleplet.slepian.slepian_functions.SlepianFunctions):
+class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     _: KW_ONLY
 
@@ -40,8 +41,8 @@ class SlepianArbitrary(sleplet.slepian.slepian_functions.SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"
 
-    def _create_region(self) -> sleplet.region.Region:
-        return sleplet.region.Region(mask_name=self.mask_name)
+    def _create_region(self) -> Region:
+        return Region(mask_name=self.mask_name)
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
         return sleplet._mask_methods.create_mask_region(self.resolution, self.region)

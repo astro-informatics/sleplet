@@ -1,5 +1,5 @@
 """
-parent class of creating the different Slepian regions on the sphere
+abstract parent class of creating the different Slepian regions on the sphere
 """
 from abc import abstractmethod
 
@@ -8,7 +8,7 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-import sleplet.region
+from sleplet.slepian.region import Region
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -35,7 +35,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_region(self) -> sleplet.region.Region:
+    def _create_region(self) -> Region:
         """
         creates a region object for area of interest
         """

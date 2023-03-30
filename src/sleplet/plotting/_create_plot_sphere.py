@@ -18,7 +18,7 @@ import sleplet._plotly_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.plot_methods
-import sleplet.region
+from sleplet.slepian.region import Region
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
@@ -36,7 +36,7 @@ class PlotSphere:
     normalise: bool = True
     plot_type: str = "real"
     reality: bool = False
-    region: sleplet.region.Region | None = None
+    region: Region | None = None
     spin: int = 0
     upsample: bool = True
 
@@ -63,7 +63,7 @@ class PlotSphere:
             f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
         )
 
-        if isinstance(self.region, sleplet.region.Region):
+        if isinstance(self.region, Region):
             # make plot area clearer
             f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
                 f_plot, self.resolution, self.region

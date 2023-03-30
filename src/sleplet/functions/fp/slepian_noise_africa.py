@@ -7,7 +7,7 @@ import sleplet._validation
 import sleplet.functions.f_p
 import sleplet.functions.fp.slepian_africa
 import sleplet.noise
-import sleplet.region
+from sleplet.slepian.region import Region
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -16,10 +16,7 @@ class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
-        if (
-            isinstance(self.region, sleplet.region.Region)
-            and self.region.name_ending != "africa"
-        ):
+        if isinstance(self.region, Region) and self.region.name_ending != "africa":
             raise RuntimeError("Slepian region selected must be 'africa'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:

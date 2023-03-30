@@ -6,18 +6,15 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_p
 import sleplet.functions.flm.africa
-import sleplet.region
 import sleplet.slepian_methods
+from sleplet.slepian.region import Region
 
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianAfrica(sleplet.functions.f_p.F_P):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
-        if (
-            isinstance(self.region, sleplet.region.Region)
-            and self.region.name_ending != "africa"
-        ):
+        if isinstance(self.region, Region) and self.region.name_ending != "africa":
             raise RuntimeError("Slepian region selected must be 'africa'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:

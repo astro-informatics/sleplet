@@ -3,7 +3,7 @@ import numpy as np
 from sleplet import logger
 from sleplet.functions.fp import SlepianWaveletCoefficientsAfrica
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian.region import Region
 from sleplet.slepian_methods import slepian_inverse
 from sleplet.wavelet_methods import slepian_wavelet_inverse
 

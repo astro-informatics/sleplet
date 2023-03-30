@@ -12,7 +12,7 @@ import sleplet._string_methods
 import sleplet.functions.coefficients
 import sleplet.harmonic_methods
 import sleplet.plot_methods
-import sleplet.plotting.create_plot_sphere
+import sleplet.plotting._create_plot_sphere
 import sleplet.slepian_methods
 
 ALPHA_DEFAULT = 0.75
@@ -233,7 +233,7 @@ def plot(
     field = sleplet.plot_methods._coefficients_to_field_sphere(f, coefficients)
 
     # do plot
-    sleplet.plotting.create_plot_sphere.Plot(
+    sleplet.plotting._create_plot_sphere.Plot(
         field,
         f.L,
         filename,

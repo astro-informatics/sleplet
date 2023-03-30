@@ -1,5 +1,5 @@
 """
-parent class to handle Slepian coefficients on the mesh
+abstract parent class to handle Slepian coefficients on the mesh
 """
 from abc import abstractmethod
 
