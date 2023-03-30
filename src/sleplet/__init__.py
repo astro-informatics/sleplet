@@ -1,8 +1,6 @@
 """
 API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
 the rest of the documentation.
-
-[![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 """
 
 import logging
