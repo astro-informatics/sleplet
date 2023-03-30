@@ -12,6 +12,7 @@ import sleplet.noise
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class NoiseEarth(sleplet.functions.f_lm.F_LM):
     SNR: float = 10
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

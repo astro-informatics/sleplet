@@ -21,10 +21,14 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 @dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
     mesh: Mesh
+    """TODO"""
     _: KW_ONLY
     extra_args: list[int] | None = None
+    """TODO"""
     noise: float | None = None
+    """TODO"""
     region: bool = False
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self._setup_args()

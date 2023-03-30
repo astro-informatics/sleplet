@@ -14,6 +14,7 @@ class MeshNoiseField(
     sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
 ):
     SNR: float = 10
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

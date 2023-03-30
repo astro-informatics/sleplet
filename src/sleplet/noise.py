@@ -27,8 +27,15 @@ def compute_snr(
     noise: npt.NDArray[np.complex_ | np.float_],
     signal_type: str,
 ) -> float:
-    """
-    computes the signal to noise ratio
+    """TODO computes the signal to noise ratio
+
+    Args:
+        signal: _description_
+        noise: _description_
+        signal_type: _description_
+
+    Returns:
+        f_description_
     """
     snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
     sleplet.logger.info(f"{signal_type} SNR: {snr:.2f}")
@@ -41,8 +48,15 @@ def compute_sigma_noise(
     *,
     denominator: int | None = None,
 ) -> float:
-    """
-    compute the std dev of the noise
+    """TODO compute the std dev of the noise
+
+    Args:
+        signal: _description_
+        snr_in: _description_
+        denominator: _description_
+
+    Returns:
+        _description_
     """
     if denominator is None:
         denominator = signal.shape[0]
@@ -116,8 +130,16 @@ def harmonic_hard_thresholding(
     sigma_j: npt.NDArray[np.float_],
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """
-    perform thresholding in harmonic space
+    """TODO perform thresholding in harmonic space
+
+    Args:
+        L: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma: _description_
+
+    Returns:
+        _description_
     """
     sleplet.logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
@@ -137,8 +159,17 @@ def slepian_wavelet_hard_thresholding(
     n_sigma: int,
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """
-    perform thresholding in Slepian wavelet space
+    """TODO perform thresholding in Slepian wavelet space
+
+    Args:
+        L: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma _description_
+        slepian: _description_
+
+    Returns:
+        _description_
     """
     sleplet.logger.info("begin Slepian hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
@@ -158,8 +189,17 @@ def slepian_function_hard_thresholding(
     n_sigma: int,
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """
-    perform thresholding in Slepian function space
+    """TODO perform thresholding in Slepian function space
+
+    Args:
+        L: _description_
+        coefficients: _description_
+        sigma: _description_
+        n_sigma: _description_
+        slepian: _description_
+
+    Returns:
+        _description_
     """
     sleplet.logger.info("begin Slepian hard thresholding")
     f = sleplet.slepian_methods.slepian_inverse(coefficients, L, slepian)
@@ -246,8 +286,16 @@ def compute_slepian_mesh_sigma_j(
     psi_j: npt.NDArray[np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """
-    compute sigma_j for wavelets used in denoising the signal
+    """TODO compute sigma_j for wavelets used in denoising the signal
+
+    Args:
+        mesh_slepian: _description_
+        signal: _description_
+        psi_j: _description_
+        snr_in: _description_
+
+    Returns:
+        _description_
     """
     sigma_noise = compute_sigma_noise(
         signal, snr_in, denominator=mesh_slepian.slepian_eigenvalues.shape[0]
@@ -264,8 +312,16 @@ def slepian_mesh_hard_thresholding(
     sigma_j: npt.NDArray[np.float_],
     n_sigma: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """
-    perform thresholding in Slepian space
+    """TODO perform thresholding in Slepian space
+
+    Args:
+        mesh_slepian: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma: _description_
+
+    Returns:
+        _description_
     """
     sleplet.logger.info("begin Slepian mesh hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):

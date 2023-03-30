@@ -17,8 +17,11 @@ class MeshSlepianWaveletCoefficients(
     sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
 ):
     B: int = 3
+    """TODO"""
     j_min: int = 2
+    """TODO"""
     j: int | None = None
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

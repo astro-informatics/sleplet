@@ -32,6 +32,7 @@ SAMPLES = 2
 @dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
     mask_name: str
+    """TODO"""
     _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:

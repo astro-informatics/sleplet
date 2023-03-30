@@ -21,11 +21,16 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 @dataclass(config=sleplet._validation.Validation)
 class Coefficients:
     L: int
+    """TODO"""
     _: KW_ONLY
     extra_args: list[int] | None = None
+    """TODO"""
     noise: float | None = None
+    """TODO"""
     region: Region | None = None
+    """TODO"""
     smoothing: int | None = None
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self._setup_args()
@@ -39,6 +44,16 @@ class Coefficients:
     def translate(
         self, alpha: float, beta: float, *, shannon: int | None = None
     ) -> npt.NDArray[np.complex_ | np.float_]:
+        """TODO
+
+        Args:
+            alpha: _description_
+            beta: _description_
+            shannon: _description_
+
+        Returns:
+            _description_
+        """
         g_coefficients = self._translation_helper(alpha, beta)
         return (
             g_coefficients
@@ -53,6 +68,16 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
+        """TODO
+
+        Args:
+            f_coefficient: _description_
+            g_coefficien: _description_
+            shannon: _description_
+
+        Returns:
+            _description_
+        """
         # translation/convolution are not real for general function
         self.reality = False
         return sleplet._convolution_methods.sifting_convolution(

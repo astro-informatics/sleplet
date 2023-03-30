@@ -13,11 +13,17 @@ import sleplet._vars
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
     gap: bool = False
+    """TODO"""
     mask_name: str = ""
+    """TODO"""
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
+    """TODO"""
     phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
+    """TODO"""
     theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
+    """TODO"""
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self._identify_region()

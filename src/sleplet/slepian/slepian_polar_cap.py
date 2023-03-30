@@ -31,9 +31,12 @@ L_SAVE_ALL = 16
 @dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
     theta_max: float
+    """TODO"""
     _: KW_ONLY
     gap: bool = False
+    """TODO"""
     order: int | npt.NDArray[np.int_] | None = None
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

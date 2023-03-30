@@ -22,8 +22,13 @@ from sleplet.slepian.region import Region
 
 
 def calc_plot_resolution(L: int) -> int:
-    """
-    calculate appropriate resolution for given L
+    """TODO calculate appropriate resolution for given L
+
+    Args:
+        L: _description_
+
+    Returns:
+        _description_
     """
     res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
 
@@ -71,8 +76,11 @@ def _calc_nearest_grid_point(
 
 
 def save_plot(path: Path, name: str) -> None:
-    """
-    helper method to save plots
+    """TODO helper method to save plots
+
+    Args:
+        path: _description_
+        name: _description_
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
@@ -90,9 +98,16 @@ def find_max_amplitude(
     plot_type: str = "real",
     upsample: bool = True,
 ) -> float:
-    """
-    for a given set of coefficients it finds the largest absolute value for a
+    """TODO for a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input
+
+    Args:
+        function: _description_
+        plot_type: _description_
+        upsample: _description_
+
+    Returns:
+        _description_
     """
     # compute inverse transform
     if hasattr(function, "slepian"):
@@ -199,8 +214,13 @@ def _boost_field(
 def compute_amplitude_for_noisy_mesh_plots(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
 ) -> float | None:
-    """
-    for the noised plots fix the amplitude to the initial data
+    """TODO for the noised mesh plots fix the amplitude to the initial data
+
+    Args:
+        f: _description_
+
+    Returns:
+        _description_
     """
     return (
         np.abs(_coefficients_to_field_mesh(f, f.unnoised_coefficients)).max()
@@ -228,8 +248,13 @@ def _coefficients_to_field_mesh(
 def compute_amplitude_for_noisy_sphere_plots(
     f: sleplet.functions.coefficients.Coefficients,
 ) -> float | None:
-    """
-    for the noised plots fix the amplitude to the initial data
+    """TODO for the noised sphere plots fix the amplitude to the initial data
+
+    Args:
+        f: _description_
+
+    Returns:
+        _description_
     """
     return (
         np.abs(_coefficients_to_field_sphere(f, f.unnoised_coefficients)).max()

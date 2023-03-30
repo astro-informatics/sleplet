@@ -14,8 +14,11 @@ import sleplet.wavelet_methods
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class AxisymmetricWavelets(sleplet.functions.f_lm.F_LM):
     B: int = 3
+    """TODO"""
     j_min: int = 2
+    """TODO"""
     j: int | None = None
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

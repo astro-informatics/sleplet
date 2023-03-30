@@ -14,6 +14,7 @@ from sleplet.slepian.region import Region
 @dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
     L: int
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self.region = self._create_region()

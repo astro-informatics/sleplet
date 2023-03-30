@@ -24,6 +24,7 @@ _data_path = Path(__file__).resolve().parents[1] / "_data"
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepian:
     mesh: Mesh
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)

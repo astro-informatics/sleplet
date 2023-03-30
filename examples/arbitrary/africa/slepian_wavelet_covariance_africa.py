@@ -1,3 +1,6 @@
+import sys
+from pathlib import Path
+
 import numpy as np
 from numpy.random import default_rng
 
@@ -8,10 +11,13 @@ from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 from sleplet.wavelet_methods import (
-    compute_slepian_wavelet_covariance,
     find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,
 )
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from _slepian_wavelet_covariance import compute_slepian_wavelet_covariance  # noqa: E402
 
 B = 3
 J_MIN = 2
@@ -32,9 +38,7 @@ def main() -> None:
     sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
 
     # theoretical covariance
-    covar_theory = compute_slepian_wavelet_covariance(
-        L, sw.wavelets, sw.slepian, var_signal=VAR_FP
-    )
+    covar_theory = compute_slepian_wavelet_covariance(L, sw, var_signal=VAR_FP)
 
     # initialise matrix
     covar_runs_shape = (RUNS, *covar_theory.shape)

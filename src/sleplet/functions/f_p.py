@@ -9,6 +9,7 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
 import sleplet._validation
+import sleplet.functions.coefficients
 import sleplet.noise
 import sleplet.slepian_methods
 from sleplet.slepian.region import Region
