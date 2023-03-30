@@ -29,7 +29,7 @@ MESH_UNSEEN = -1e5  # kaleido bug
 
 
 @dataclass(config=sleplet._validation.Validation)
-class Plot:
+class PlotMesh:
     mesh: sleplet.meshes.mesh.Mesh
     filename: str
     f: npt.NDArray[np.complex_ | np.float_]

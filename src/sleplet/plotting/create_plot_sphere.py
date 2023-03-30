@@ -26,7 +26,7 @@ MW_POLE_LENGTH = 2
 
 
 @dataclass(config=sleplet._validation.Validation)
-class Plot:
+class PlotSphere:
     f: npt.NDArray[np.complex_ | np.float_]
     L: int
     filename: str
