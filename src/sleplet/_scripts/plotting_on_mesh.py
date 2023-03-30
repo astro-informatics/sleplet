@@ -5,7 +5,6 @@ import sleplet
 import sleplet._class_lists
 import sleplet._string_methods
 import sleplet.meshes.mesh_coefficients
-import sleplet.meshes.mesh_slepian
 import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_mesh
