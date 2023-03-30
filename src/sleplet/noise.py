@@ -7,8 +7,11 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 import sleplet
+import sleplet._vars
+import sleplet.harmonic_methods
 import sleplet.meshes.mesh_slepian
 import sleplet.slepian.slepian_functions
+import sleplet.slepian_methods
 
 
 def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:

@@ -5,7 +5,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-import sleplet
+import sleplet._vars
 
 
 def calc_integration_weight(L: int) -> npt.NDArray[np.float_]:

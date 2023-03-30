@@ -1,4 +1,4 @@
-from sleplet.functions.fp import SlepianAfrica
+from sleplet.functions.fp.slepian_africa import SlepianAfrica
 from sleplet.plotting.create_plot_sphere import Plot
 from sleplet.region import Region
 from sleplet.slepian_methods import choose_slepian_method, slepian_inverse

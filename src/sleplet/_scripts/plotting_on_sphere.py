@@ -6,9 +6,14 @@ import pyssht as ssht
 from numpy import typing as npt
 
 import sleplet
+import sleplet._class_lists
 import sleplet._mask_methods
-import sleplet.functions
-import sleplet.plotting
+import sleplet._string_methods
+import sleplet.functions.coefficients
+import sleplet.harmonic_methods
+import sleplet.plot_methods
+import sleplet.plotting.create_plot_sphere
+import sleplet.slepian_methods
 
 ALPHA_DEFAULT = 0.75
 ANNOTATION_COLOUR = "gold"
@@ -334,7 +339,7 @@ def main() -> None:
     mask = sleplet._mask_methods.create_default_region() if args.region else None
 
     f = sleplet._class_lists.COEFFICIENTS[
-        sleplet.string_methods.convert_classes_list_to_snake_case(
+        sleplet._string_methods.convert_classes_list_to_snake_case(
             sleplet._class_lists.COEFFICIENTS
         ).index(args.function)
     ](
@@ -347,7 +352,7 @@ def main() -> None:
 
     g = (
         sleplet._class_lists.MAPS_LM[
-            sleplet.string_methods.convert_classes_list_to_snake_case(
+            sleplet._string_methods.convert_classes_list_to_snake_case(
                 sleplet._class_lists.MAPS_LM
             ).index(args.convolve)
         ](args.bandlimit)

@@ -2,8 +2,8 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._data.create_earth_flm
+import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_lm
 

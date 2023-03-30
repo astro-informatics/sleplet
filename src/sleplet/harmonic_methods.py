@@ -9,8 +9,9 @@ import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import Generator
 
-import sleplet
 import sleplet._data.create_earth_flm
+import sleplet._integration_methods
+import sleplet._vars
 import sleplet.meshes.mesh
 
 AFRICA_ALPHA = np.deg2rad(44)

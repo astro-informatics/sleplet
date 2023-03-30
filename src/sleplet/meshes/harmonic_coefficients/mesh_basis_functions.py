@@ -5,11 +5,14 @@ from pydantic.dataclasses import dataclass
 
 import sleplet
 import sleplet._validation
+import sleplet.harmonic_methods
 import sleplet.meshes.mesh_harmonic_coefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class MeshBasisFunctions(sleplet.meshes.MeshHarmonicCoefficients):
+class MeshBasisFunctions(
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+):
     rank: int = 0
 
     def __post_init_post_parse__(self) -> None:

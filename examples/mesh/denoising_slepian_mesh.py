@@ -4,10 +4,12 @@ import numpy as np
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.meshes import Mesh
+from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.slepian_coefficients import (
+from sleplet.meshes.slepian_coefficients.mesh_slepian_field import (
     MeshSlepianField,
+)
+from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (
     MeshSlepianWavelets,
 )
 from sleplet.noise import (

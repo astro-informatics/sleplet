@@ -94,7 +94,7 @@ done
 import numpy as np
 import pyssht as ssht
 
-from sleplet.functions.flm import HarmonicGaussian
+from sleplet.functions.flm.harmonic_gaussian import HarmonicGaussian
 from sleplet.plotting.create_plot_sphere import Plot
 
 for ell in range(2, 0, -1):

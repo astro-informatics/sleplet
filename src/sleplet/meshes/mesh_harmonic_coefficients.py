@@ -7,7 +7,6 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._validation
 import sleplet.meshes.mesh_coefficients
 import sleplet.noise

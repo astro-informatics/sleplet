@@ -3,7 +3,7 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
+import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_lm
 

@@ -11,8 +11,14 @@ from numpy import typing as npt
 
 import sleplet
 import sleplet._mask_methods
-import sleplet.functions
+import sleplet._vars
+import sleplet.functions.coefficients
+import sleplet.harmonic_methods
 import sleplet.meshes
+import sleplet.meshes.mesh_coefficients
+import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.region
+import sleplet.slepian_methods
 
 
 def calc_plot_resolution(L: int) -> int:

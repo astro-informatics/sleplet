@@ -7,6 +7,8 @@ from numpy import typing as npt
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 import sleplet
+import sleplet._data.setup_pooch
+import sleplet._integration_methods
 
 _data_path = Path(__file__).resolve().parent / "_data"
 

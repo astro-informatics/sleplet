@@ -1,4 +1,4 @@
-import sleplet
+import sleplet._vars
 
 
 def is_polar_cap(

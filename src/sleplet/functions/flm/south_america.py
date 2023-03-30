@@ -3,11 +3,14 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._data.create_earth_flm
+import sleplet._data.setup_pooch
 import sleplet._mask_methods
+import sleplet._string_methods
 import sleplet._validation
+import sleplet._vars
 import sleplet.functions.f_lm
+import sleplet.harmonic_methods
 
 
 @dataclass(config=sleplet._validation.Validation)

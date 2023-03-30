@@ -14,8 +14,12 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 
 import sleplet
+import sleplet._data.setup_pooch
 import sleplet._mask_methods
+import sleplet._parallel_methods
 import sleplet._validation
+import sleplet.harmonic_methods
+import sleplet.region
 import sleplet.slepian.slepian_functions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"

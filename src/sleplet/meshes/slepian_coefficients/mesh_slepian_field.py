@@ -2,13 +2,15 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._validation
-import sleplet.meshes.mesh_slepian
+import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation)
-class MeshSlepianField(sleplet.meshes.mesh_slepian.MeshSlepianCoefficients):
+class MeshSlepianField(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 

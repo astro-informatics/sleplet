@@ -6,6 +6,7 @@ from pydantic.dataclasses import dataclass
 import sleplet
 import sleplet._validation
 import sleplet.meshes
+import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)

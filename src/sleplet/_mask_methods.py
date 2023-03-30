@@ -6,6 +6,9 @@ from numpy import typing as npt
 
 import sleplet
 import sleplet._data.create_earth_flm
+import sleplet._data.setup_pooch
+import sleplet._vars
+import sleplet.harmonic_methods
 import sleplet.meshes.mesh
 import sleplet.region
 

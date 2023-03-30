@@ -6,7 +6,9 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet
+import sleplet._integration_methods
 import sleplet._validation
+import sleplet._vars
 import sleplet.slepian.slepian_functions
 
 

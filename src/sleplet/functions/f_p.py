@@ -7,10 +7,11 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._mask_methods
 import sleplet._validation
 import sleplet.noise
+import sleplet.region
+import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation)

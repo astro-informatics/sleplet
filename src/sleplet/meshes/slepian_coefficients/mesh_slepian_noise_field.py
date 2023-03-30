@@ -2,9 +2,9 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
+import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes
+import sleplet.meshes.slepian_coefficients.mesh_slepian_field
 import sleplet.noise
 
 

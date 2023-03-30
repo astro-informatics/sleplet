@@ -5,8 +5,13 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 import sleplet
+import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_p
+import sleplet.functions.fp.slepian_south_america
+import sleplet.functions.fp.slepian_wavelets
+import sleplet.region
+import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -57,10 +62,10 @@ class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.f_p.F_P):
         """
         computes wavelet coefficients in Slepian space
         """
-        sw = sleplet.functions.fp.SlepianWavelets(
+        sw = sleplet.functions.fp.slepian_wavelets.SlepianWavelets(
             self.L, B=self.B, j_min=self.j_min, region=self.region
         )
-        sa = sleplet.functions.fp.SlepianSouthAmerica(
+        sa = sleplet.functions.fp.slepian_south_america.SlepianSouthAmerica(
             self.L, region=self.region, smoothing=self.smoothing
         )
         wavelets = sw.wavelets

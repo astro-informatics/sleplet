@@ -9,10 +9,11 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._mask_methods
+import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes
+import sleplet._vars
+import sleplet.meshes.mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 

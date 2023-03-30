@@ -16,6 +16,9 @@ from pydantic.dataclasses import dataclass
 import sleplet
 import sleplet._plotly_methods
 import sleplet._validation
+import sleplet._vars
+import sleplet.plot_methods
+import sleplet.region
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 

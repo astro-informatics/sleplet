@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
 from sleplet.plot_methods import save_plot
-from sleplet.slepian import SlepianArbitrary
+from sleplet.slepian.slepian_arbitrary import SlepianArbitrary
 from sleplet.wavelet_methods import create_kappas
 
 _fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "_figures"

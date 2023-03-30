@@ -2,8 +2,14 @@
 from argparse import ArgumentParser, Namespace
 
 import sleplet
+import sleplet._class_lists
+import sleplet._string_methods
+import sleplet.meshes.mesh
+import sleplet.meshes.mesh_coefficients
 import sleplet.meshes.mesh_slepian
-import sleplet.plotting
+import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.plot_methods
+import sleplet.plotting.create_plot_mesh
 
 
 def valid_meshes(mesh_name: str) -> str:
@@ -96,7 +102,10 @@ def plot(
         field,
         amplitude=amplitude,
         normalise=normalise,
-        region=isinstance(f, sleplet.meshes.mesh_slepian.MeshSlepianCoefficients),
+        region=isinstance(
+            f,
+            sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
+        ),
     ).execute()
 
 

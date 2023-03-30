@@ -4,7 +4,8 @@ from numpy import typing as npt
 from numpy.random import default_rng
 from scipy import io as sio
 
-import sleplet
+import sleplet._data.setup_pooch
+import sleplet._vars
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:

@@ -5,8 +5,11 @@ from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 import sleplet
+import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_lm
+import sleplet.functions.flm.africa
+import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)

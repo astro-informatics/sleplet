@@ -3,7 +3,7 @@ import pyssht as ssht
 from numpy import typing as npt
 from scipy import io as sio
 
-import sleplet
+import sleplet._data.setup_pooch
 import sleplet._smoothing
 
 

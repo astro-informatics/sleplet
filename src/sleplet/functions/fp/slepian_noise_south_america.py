@@ -2,10 +2,12 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
+import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_p
+import sleplet.functions.fp.slepian_south_america
 import sleplet.noise
+import sleplet.region
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -21,7 +23,7 @@ class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        sa = sleplet.functions.fp.SlepianSouthAmerica(
+        sa = sleplet.functions.fp.slepian_south_america.SlepianSouthAmerica(
             self.L, region=self.region, smoothing=self.smoothing
         )
         noise = sleplet.noise._create_slepian_noise(

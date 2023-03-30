@@ -10,6 +10,10 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet
+import sleplet._array_methods
+import sleplet._data.setup_pooch
+import sleplet._integration_methods
+import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
 import sleplet.meshes.mesh

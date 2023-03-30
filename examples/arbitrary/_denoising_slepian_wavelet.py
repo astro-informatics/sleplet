@@ -5,7 +5,7 @@ import numpy as np
 from numpy import typing as npt
 
 from sleplet.functions.coefficients import Coefficients
-from sleplet.functions.fp import SlepianWavelets
+from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.noise import (
     _compute_slepian_sigma_j,
     compute_snr,

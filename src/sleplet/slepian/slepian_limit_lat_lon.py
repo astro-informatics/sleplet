@@ -10,9 +10,12 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
+import sleplet._array_methods
+import sleplet._data.setup_pooch
 import sleplet._mask_methods
 import sleplet._validation
+import sleplet._vars
+import sleplet.region
 import sleplet.slepian.slepian_functions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"

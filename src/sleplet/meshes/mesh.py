@@ -5,7 +5,6 @@ from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation

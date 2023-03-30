@@ -9,8 +9,9 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-import sleplet
+import sleplet._convolution_methods
 import sleplet._mask_methods
+import sleplet._string_methods
 import sleplet._validation
 import sleplet.region
 

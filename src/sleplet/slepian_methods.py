@@ -6,9 +6,16 @@ import pyssht as ssht
 from numpy import typing as npt
 
 import sleplet
+import sleplet._vars
+import sleplet.harmonic_methods
 import sleplet.meshes._mesh_slepian_decomposition
 import sleplet.meshes.mesh_slepian
+import sleplet.region
+import sleplet.slepian._slepian_decomposition
+import sleplet.slepian.slepian_arbitrary
 import sleplet.slepian.slepian_functions
+import sleplet.slepian.slepian_limit_lat_lon
+import sleplet.slepian.slepian_polar_cap
 
 
 def choose_slepian_method(

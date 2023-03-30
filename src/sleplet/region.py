@@ -4,8 +4,10 @@ identifies and creates the appropriate Slepian region for the sphere
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-import sleplet
+import sleplet._bool_methods
+import sleplet._string_methods
 import sleplet._validation
+import sleplet._vars
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
