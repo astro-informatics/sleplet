@@ -1,9 +1,7 @@
 import numpy as np
-import pyssht as ssht
 from numpy.testing import assert_allclose, assert_array_equal, assert_equal
 from pys2let import pys2let_j_max
 
-from sleplet._vars import SAMPLING_SCHEME
 from sleplet.functions.flm import (
     AxisymmetricWaveletCoefficientsEarth,
     AxisymmetricWaveletCoefficientsSouthAmerica,
@@ -11,8 +9,6 @@ from sleplet.functions.flm import (
 from sleplet.slepian_methods import slepian_forward
 from sleplet.wavelet_methods import (
     axisymmetric_wavelet_inverse,
-    compute_slepian_wavelet_covariance,
-    compute_wavelet_covariance,
     create_kappas,
     find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,
@@ -106,30 +102,3 @@ def test_create_kappas() -> None:
     j_max = pys2let_j_max(B, L_LARGE**2, J_MIN)
     assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
     assert_equal(L_LARGE**2, wavelets.shape[1])
-
-
-def test_wavelet_covariance(random_nd_flm) -> None:
-    """
-    checks that sigma^j is computed for the axisymmetric case
-    """
-    covariance = compute_wavelet_covariance(
-        L_SMALL, random_nd_flm, var_signal=VAR_SIGNAL
-    )
-    assert_equal(random_nd_flm.shape[0], covariance.shape[0])
-
-
-def test_slepian_wavelet_covariance(slepian_wavelets_polar_cap) -> None:
-    """
-    checks that sigma^j is computed for the Slepian case
-    """
-    covariance = compute_slepian_wavelet_covariance(
-        slepian_wavelets_polar_cap.L,
-        slepian_wavelets_polar_cap.wavelets,
-        slepian_wavelets_polar_cap.slepian,
-        var_signal=VAR_SIGNAL,
-    )
-    assert_equal(slepian_wavelets_polar_cap.wavelets.shape[0], covariance.shape[0])
-    assert_equal(
-        ssht.sample_shape(slepian_wavelets_polar_cap.L, Method=SAMPLING_SCHEME),
-        covariance.shape[1:],
-    )

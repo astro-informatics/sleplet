@@ -1,6 +1,3 @@
-"""
-abstract parent class to handle Slepian coefficients on the mesh
-"""
 from abc import abstractmethod
 
 import numpy as np
@@ -15,6 +12,8 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
+    """abstract parent class to handle Slepian coefficients on the mesh"""
+
     def __post_init_post_parse__(self) -> None:
         self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
         super().__post_init_post_parse__()

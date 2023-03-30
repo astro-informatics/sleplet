@@ -1,6 +1,3 @@
-"""
-abstract parent class to handle Slepian coefficients on the sphere
-"""
 from abc import abstractmethod
 
 import numpy as np
@@ -9,6 +6,7 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
 import sleplet._validation
+import sleplet.functions.coefficients
 import sleplet.noise
 import sleplet.slepian_methods
 from sleplet.slepian.region import Region
@@ -16,6 +14,8 @@ from sleplet.slepian.region import Region
 
 @dataclass(config=sleplet._validation.Validation)
 class F_P(sleplet.functions.coefficients.Coefficients):  # noqa: N801
+    """abstract parent class to handle Slepian coefficients on the sphere"""
+
     def __post_init_post_parse__(self) -> None:
         self.region: Region | None = (
             self.region

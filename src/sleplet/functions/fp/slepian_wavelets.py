@@ -13,9 +13,14 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWavelets(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     B: int = 3
+    """TODO"""
     j_min: int = 2
+    """TODO"""
     j: int | None = None
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

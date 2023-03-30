@@ -1,6 +1,3 @@
-"""
-class to create an arbitrary Slepian region on the sphere
-"""
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path
@@ -31,7 +28,10 @@ SAMPLES = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
+    """class to create an arbitrary Slepian region on the sphere"""
+
     mask_name: str
+    """TODO"""
     _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:

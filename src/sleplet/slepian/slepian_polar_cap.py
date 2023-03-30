@@ -1,6 +1,3 @@
-"""
-class to create a polar cap Slepian region on the sphere
-"""
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path
@@ -30,10 +27,15 @@ L_SAVE_ALL = 16
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
+    """class to create a polar cap Slepian region on the sphere"""
+
     theta_max: float
+    """TODO"""
     _: KW_ONLY
     gap: bool = False
+    """TODO"""
     order: int | npt.NDArray[np.int_] | None = None
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

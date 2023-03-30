@@ -12,8 +12,12 @@ import sleplet.harmonic_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SphericalHarmonic(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     ell: int = 0
+    """TODO"""
     m: int = 0
+    """TODO"""
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         ind = ssht.elm2ind(self.ell, self.m)

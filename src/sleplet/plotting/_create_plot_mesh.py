@@ -1,6 +1,3 @@
-"""
-creates surface mesh plot via `plotly`
-"""
 from dataclasses import KW_ONLY
 from pathlib import Path
 
@@ -18,8 +15,8 @@ import sleplet._mask_methods
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
-import sleplet.meshes
 import sleplet.plot_methods
+from sleplet.meshes import Mesh
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
@@ -30,23 +27,30 @@ MESH_UNSEEN = -1e5  # kaleido bug
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
-    mesh: sleplet.meshes.Mesh
+    """creates surface mesh plot via `plotly`"""
+
+    mesh: Mesh
+    """TODO"""
     filename: str
+    """TODO"""
     f: npt.NDArray[np.complex_ | np.float_]
+    """TODO"""
     _: KW_ONLY
     amplitude: float | None = None
+    """TODO"""
     colour: LinearSegmentedColormap = cmocean.cm.ice
+    """TODO"""
     normalise: bool = True
+    """TODO"""
     region: bool = False
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         if self.normalise:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """
-        creates 3d plotly mesh plot
-        """
+        """TODO creates 3d plotly mesh plot"""
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
 

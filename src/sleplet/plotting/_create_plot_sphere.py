@@ -1,6 +1,3 @@
-"""
-creates surface sphere plot via `plotly`
-"""
 from dataclasses import KW_ONLY, field
 from pathlib import Path
 
@@ -27,18 +24,31 @@ MW_POLE_LENGTH = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
+    """creates surface sphere plot via `plotly`"""
+
     f: npt.NDArray[np.complex_ | np.float_]
+    """TODO"""
     L: int
+    """TODO"""
     filename: str
+    """TODO"""
     _: KW_ONLY
     amplitude: float | None = None
+    """TODO"""
     annotations: list[dict] = field(default_factory=list)
+    """TODO"""
     normalise: bool = True
+    """TODO"""
     plot_type: str = "real"
+    """TODO"""
     reality: bool = False
+    """TODO"""
     region: Region | None = None
+    """TODO"""
     spin: int = 0
+    """TODO"""
     upsample: bool = True
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self.resolution = (
@@ -53,9 +63,7 @@ class PlotSphere:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """
-        creates basic plotly plot rather than matplotlib
-        """
+        """TODO creates basic plotly plot rather than matplotlib"""
         f = self._prepare_field(self.f)
 
         # get values from the setup

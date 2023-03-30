@@ -1,6 +1,3 @@
-"""
-creates a mesh object
-"""
 from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass
@@ -12,10 +9,15 @@ import sleplet._validation
 
 @dataclass(config=sleplet._validation.Validation)
 class Mesh:
+    """creates a mesh object"""
+
     name: str
+    """TODO"""
     _: KW_ONLY
     number_basis_functions: int | None = None
+    """TODO"""
     zoom: bool = False
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         mesh_config = sleplet._mesh_methods.extract_mesh_config(self.name)

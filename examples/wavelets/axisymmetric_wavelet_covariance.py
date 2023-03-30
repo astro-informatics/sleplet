@@ -1,13 +1,14 @@
 import numpy as np
 import pyssht as ssht
+from numpy import typing as npt
 from numpy.random import default_rng
+from numpy.testing import assert_equal
 
 from sleplet import logger
 from sleplet.functions.flm import AxisymmetricWavelets
 from sleplet.harmonic_methods import compute_random_signal
 from sleplet.wavelet_methods import (
     axisymmetric_wavelet_forward,
-    compute_wavelet_covariance,
 )
 
 B = 3
@@ -15,6 +16,16 @@ J_MIN = 2
 L = 128
 RANDOM_SEED = 30
 SAMPLING_SCHEME = "MWSS"
+
+
+def _compute_wavelet_covariance(
+    L: int, wavelets: npt.NDArray[np.complex_], *, var_signal: float
+) -> npt.NDArray[np.float_]:
+    """
+    computes the theoretical covariance of the wavelet coefficients
+    """
+    covar_theory = (np.abs(wavelets) ** 2).sum(axis=1)
+    return covar_theory * var_signal
 
 
 def _is_ergodic(j_min: int, *, j: int = 0) -> bool:
@@ -52,7 +63,8 @@ def axisymmetric_wavelet_covariance(
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # theoretical covariance
-    covar_theory = compute_wavelet_covariance(L, aw.wavelets, var_signal=var_flm)
+    covar_theory = _compute_wavelet_covariance(L, aw.wavelets, var_signal=var_flm)
+    assert_equal(aw.wavelets.shape[0], covar_theory.shape[0])
 
     # initialise matrix
     covar_runs_shape = (runs, *covar_theory.shape)

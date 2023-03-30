@@ -1,6 +1,3 @@
-"""
-abstract parent class to handle Fourier coefficients on the mesh
-"""
 from abc import abstractmethod
 
 import numpy as np
@@ -14,6 +11,8 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshHarmonicCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
+    """abstract parent class to handle Fourier coefficients on the mesh"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 

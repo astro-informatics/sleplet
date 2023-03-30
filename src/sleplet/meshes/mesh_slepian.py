@@ -1,6 +1,3 @@
-"""
-creates Slepian object of a given mesh
-"""
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -23,7 +20,10 @@ _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepian:
+    """creates Slepian object of a given mesh"""
+
     mesh: Mesh
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)

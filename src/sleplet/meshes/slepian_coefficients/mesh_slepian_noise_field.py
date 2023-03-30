@@ -12,7 +12,10 @@ import sleplet.noise
 class MeshSlepianNoiseField(
     sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
 ):
+    """TODO"""
+
     SNR: float = -5
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

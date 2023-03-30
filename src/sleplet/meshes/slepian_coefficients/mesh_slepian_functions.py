@@ -13,7 +13,10 @@ import sleplet.slepian_methods
 class MeshSlepianFunctions(
     sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
 ):
+    """TODO"""
+
     rank: int = 0
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
