@@ -233,7 +233,7 @@ def plot(
     field = sleplet.plot_methods._coefficients_to_field_sphere(f, coefficients)
 
     # do plot
-    sleplet.plotting._create_plot_sphere.Plot(
+    sleplet.plotting._create_plot_sphere.PlotSphere(
         field,
         f.L,
         filename,

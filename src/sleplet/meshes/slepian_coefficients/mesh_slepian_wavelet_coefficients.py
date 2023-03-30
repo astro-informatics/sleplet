@@ -7,8 +7,9 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes.mesh_slepian
 import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.meshes.slepian_coefficients.mesh_slepian_field
+import sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets
 import sleplet.wavelet_methods
 
 
@@ -56,10 +57,12 @@ class MeshSlepianWaveletCoefficients(
         """
         computes wavelet coefficients in Slepian space
         """
-        smw = sleplet.meshes.mesh_slepian.MeshSlepianWavelets(
+        smw = sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets(  # noqa: E501
             self.mesh, B=self.B, j_min=self.j_min
         )
-        smf = sleplet.meshes.mesh_slepian.MeshSlepianField(self.mesh)
+        smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
+            self.mesh
+        )
         wavelets = smw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
             smf.coefficients,

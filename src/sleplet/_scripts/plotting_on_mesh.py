@@ -96,7 +96,7 @@ def plot(
     master plotting method
     """
     field = sleplet.plot_methods._coefficients_to_field_mesh(f, f.coefficients)
-    sleplet.plotting._create_plot_mesh.Plot(
+    sleplet.plotting._create_plot_mesh.PlotMesh(
         f.mesh,
         f.name,
         field,
