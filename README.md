@@ -134,8 +134,7 @@ done
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import Earth
-from sleplet.functions.flm import HarmonicGaussian
+from sleplet.functions.flm import Earth, HarmonicGaussian
 from sleplet.harmonic_methods import rotate_earth_to_south_america
 from sleplet.plotting import PlotSphere
 
@@ -175,7 +174,7 @@ from sleplet.functions.flm import Earth
 from sleplet.functions.fp import SlepianSouthAmerica
 from sleplet.harmonic_methods import rotate_earth_to_south_america
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 # a
@@ -202,7 +201,7 @@ done
 ```python
 from sleplet.functions.fp import Slepian
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 region = Region(mask_name="south_america")
@@ -235,7 +234,7 @@ done
 ```python
 from sleplet.functions.fp import SlepianWavelets
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 region = Region(mask_name="south_america")
@@ -262,7 +261,7 @@ done
 ```python
 from sleplet.functions.fp import SlepianWaveletCoefficientsSouthAmerica
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 region = Region(mask_name="south_america")
@@ -292,7 +291,7 @@ done
 from sleplet.functions.fp import SlepianSouthAmerica
 from sleplet.plot_methods import compute_amplitude_for_noisy_sphere_plots
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 # a
@@ -322,7 +321,7 @@ from sleplet.functions.flm import Earth
 from sleplet.functions.fp import SlepianAfrica
 from sleplet.harmonic_methods import rotate_earth_to_africa
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 # a
@@ -355,7 +354,7 @@ done
 ```python
 from sleplet.functions.fp import Slepian
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 region = Region(mask_name="africa")
@@ -382,7 +381,7 @@ done
 ```python
 from sleplet.functions.fp import SlepianWavelets
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 region = Region(mask_name="africa")
@@ -409,7 +408,7 @@ done
 ```python
 from sleplet.functions.fp import SlepianWaveletCoefficientsAfrica
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 region = Region(mask_name="africa")
@@ -439,7 +438,7 @@ done
 from sleplet.functions.fp import SlepianAfrica
 from sleplet.plot_methods import compute_amplitude_for_noisy_sphere_plots
 from sleplet.plotting import PlotSphere
-from sleplet.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
 
 # a
