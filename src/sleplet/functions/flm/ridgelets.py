@@ -15,6 +15,8 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Ridgelets(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     B: int = 3
     """TODO"""
     j_min: int = 2

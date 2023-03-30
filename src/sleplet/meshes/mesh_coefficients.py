@@ -1,6 +1,3 @@
-"""
-abstract parent class to handle Fourier/Slepian coefficients on the mesh
-"""
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
@@ -20,6 +17,8 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
+    """abstract parent class to handle Fourier/Slepian coefficients on the mesh"""
+
     mesh: Mesh
     """TODO"""
     _: KW_ONLY

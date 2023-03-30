@@ -11,6 +11,8 @@ from sleplet.slepian.region import Region
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianSouthAmerica(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
         if (

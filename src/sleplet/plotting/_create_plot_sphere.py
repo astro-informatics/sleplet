@@ -1,6 +1,3 @@
-"""
-creates surface sphere plot via `plotly`
-"""
 from dataclasses import KW_ONLY, field
 from pathlib import Path
 
@@ -27,6 +24,8 @@ MW_POLE_LENGTH = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
+    """creates surface sphere plot via `plotly`"""
+
     f: npt.NDArray[np.complex_ | np.float_]
     """TODO"""
     L: int

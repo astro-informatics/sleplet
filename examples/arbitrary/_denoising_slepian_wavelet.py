@@ -1,6 +1,3 @@
-"""
-methods to perform denoising
-"""
 import numpy as np
 from numpy import typing as npt
 

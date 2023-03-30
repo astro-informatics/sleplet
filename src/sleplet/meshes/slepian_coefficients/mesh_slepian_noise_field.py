@@ -12,6 +12,8 @@ import sleplet.noise
 class MeshSlepianNoiseField(
     sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
 ):
+    """TODO"""
+
     SNR: float = -5
     """TODO"""
 

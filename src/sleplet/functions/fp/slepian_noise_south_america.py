@@ -12,6 +12,8 @@ from sleplet.slepian.region import Region
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     SNR: float = -10
     """TODO"""
 

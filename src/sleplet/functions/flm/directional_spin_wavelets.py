@@ -13,6 +13,8 @@ import sleplet.functions.f_lm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class DirectionalSpinWavelets(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     B: int = 3
     """TODO"""
     j_min: int = 2

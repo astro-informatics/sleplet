@@ -16,6 +16,8 @@ from sleplet.slepian.region import Region
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     B: int = 3
     """TODO"""
     j_min: int = 2

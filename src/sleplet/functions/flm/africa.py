@@ -15,6 +15,8 @@ import sleplet.harmonic_methods
 
 @dataclass(config=sleplet._validation.Validation)
 class Africa(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 

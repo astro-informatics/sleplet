@@ -10,6 +10,8 @@ import sleplet.functions.f_lm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class HarmonicGaussian(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     l_sigma: float = 10
     """TODO"""
     m_sigma: float = 10

@@ -13,6 +13,8 @@ import sleplet.noise
 class MeshNoiseField(
     sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
 ):
+    """TODO"""
+
     SNR: float = 10
     """TODO"""
 

@@ -11,6 +11,8 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Slepian(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     rank: int = 0
     """TODO"""
 

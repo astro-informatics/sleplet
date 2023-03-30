@@ -1,6 +1,3 @@
-"""
-identifies and creates the appropriate Slepian region for the sphere
-"""
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -12,6 +9,8 @@ import sleplet._vars
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
+    """identifies and creates the appropriate Slepian region for the sphere"""
+
     gap: bool = False
     """TODO"""
     mask_name: str = ""

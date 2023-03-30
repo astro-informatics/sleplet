@@ -1,6 +1,3 @@
-"""
-abstract parent class to handle harmonic/Slepian coefficients on the sphere
-"""
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
@@ -20,6 +17,8 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 @dataclass(config=sleplet._validation.Validation)
 class Coefficients:
+    """abstract parent class to handle harmonic/Slepian coefficients on the sphere"""
+
     L: int
     """TODO"""
     _: KW_ONLY

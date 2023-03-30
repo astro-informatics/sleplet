@@ -10,6 +10,8 @@ import sleplet.functions.f_lm
 
 @dataclass(config=sleplet._validation.Validation)
 class Wmap(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 

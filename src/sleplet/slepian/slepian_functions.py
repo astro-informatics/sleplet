@@ -1,6 +1,3 @@
-"""
-abstract parent class of creating the different Slepian regions on the sphere
-"""
 from abc import abstractmethod
 
 import numpy as np
@@ -13,6 +10,8 @@ from sleplet.slepian.region import Region
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
+    """abstract parent class of creating the different Slepian regions on the sphere"""
+
     L: int
     """TODO"""
 

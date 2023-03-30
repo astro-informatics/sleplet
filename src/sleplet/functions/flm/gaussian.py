@@ -10,6 +10,8 @@ import sleplet.functions.f_lm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Gaussian(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     sigma: float = 10
     """TODO"""
 

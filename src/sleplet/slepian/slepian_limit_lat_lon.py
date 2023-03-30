@@ -1,6 +1,3 @@
-"""
-class to create a limited latitude longitude Slepian region on the sphere
-"""
 from pathlib import Path
 
 import numpy as np
@@ -24,6 +21,8 @@ _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
+    """class to create a limited latitude longitude Slepian region on the sphere"""
+
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
     """TODO"""
     phi_min: float = sleplet._vars.PHI_MIN_DEFAULT

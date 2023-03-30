@@ -15,6 +15,8 @@ import sleplet.wavelet_methods
 class MeshSlepianWavelets(
     sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
 ):
+    """TODO"""
+
     B: int = 3
     """TODO"""
     j_min: int = 2

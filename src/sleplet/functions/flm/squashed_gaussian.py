@@ -11,6 +11,8 @@ import sleplet.harmonic_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SquashedGaussian(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     freq: float = 0.1
     """TODO"""
     t_sigma: float = 1

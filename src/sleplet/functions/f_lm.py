@@ -1,6 +1,3 @@
-"""
-abstract parent class to handle harmonic coefficients on the sphere
-"""
 from abc import abstractmethod
 
 import numpy as np
@@ -15,6 +12,8 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation)
 class F_LM(sleplet.functions.coefficients.Coefficients):  # noqa: N801
+    """abstract parent class to handle harmonic coefficients on the sphere"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 

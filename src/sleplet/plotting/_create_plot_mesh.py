@@ -1,6 +1,3 @@
-"""
-creates surface mesh plot via `plotly`
-"""
 from dataclasses import KW_ONLY
 from pathlib import Path
 
@@ -30,6 +27,8 @@ MESH_UNSEEN = -1e5  # kaleido bug
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
+    """creates surface mesh plot via `plotly`"""
+
     mesh: Mesh
     """TODO"""
     filename: str

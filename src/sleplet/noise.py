@@ -35,7 +35,7 @@ def compute_snr(
         signal_type: _description_
 
     Returns:
-        f_description_
+        _description_
     """
     snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
     sleplet.logger.info(f"{signal_type} SNR: {snr:.2f}")
