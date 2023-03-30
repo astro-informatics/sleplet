@@ -11,7 +11,7 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianFunctions(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes._mesh_slepian_coefficients.MeshSlepianCoefficients
 ):
     rank: int = 0
 

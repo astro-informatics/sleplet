@@ -4,14 +4,14 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.meshes._mesh_harmonic_coefficients
 import sleplet.meshes.harmonic_coefficients
-import sleplet.meshes.mesh_harmonic_coefficients
 import sleplet.noise
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshNoiseField(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+    sleplet.meshes._mesh_harmonic_coefficients.MeshHarmonicCoefficients
 ):
     SNR: float = 10
 

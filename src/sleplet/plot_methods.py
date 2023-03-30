@@ -15,8 +15,7 @@ import sleplet._vars
 import sleplet.functions.coefficients
 import sleplet.harmonic_methods
 import sleplet.meshes
-import sleplet.meshes.mesh_coefficients
-import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.meshes._mesh_slepian_coefficients
 import sleplet.region
 import sleplet.slepian_methods
 
@@ -219,7 +218,7 @@ def _coefficients_to_field_mesh(
     return (
         sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, coefficients)
         if isinstance(
-            f, sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+            f, sleplet.meshes._mesh_slepian_coefficients.MeshSlepianCoefficients
         )
         else sleplet.harmonic_methods.mesh_inverse(f.mesh, coefficients)
     )

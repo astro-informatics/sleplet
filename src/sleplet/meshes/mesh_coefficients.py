@@ -13,14 +13,14 @@ import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.meshes.mesh
+from sleplet.meshes import Mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    mesh: sleplet.meshes.mesh.Mesh
+    mesh: Mesh
     _: KW_ONLY
     extra_args: list[int] | None = None
     noise: float | None = None
