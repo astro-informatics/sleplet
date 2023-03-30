@@ -230,7 +230,7 @@ def _compute_slepian_sigma_j(
     compute sigma_j for wavelets used in denoising the signal
     """
     sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L**2)
-    s_p = sleplet.slepian_methods._compute_s_p_omega(L, slepian)
+    s_p = sleplet.slepian_methods.compute_s_p_omega(L, slepian)
     psi_j_reshape = psi_j[:, : slepian.N, np.newaxis, np.newaxis]
     wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)
