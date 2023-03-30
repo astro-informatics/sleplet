@@ -9,7 +9,7 @@ from sleplet.functions.flm.south_america import SouthAmerica
 from sleplet.functions.fp.slepian_dirac_delta import SlepianDiracDelta
 from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
-from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from sleplet.meshes.harmonic_coefficients import MeshField
 from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.mesh_slepian import MeshSlepian
 from sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets import (

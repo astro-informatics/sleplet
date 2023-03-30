@@ -458,7 +458,7 @@ done
 
 ```python
 from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.harmonic_coefficients.mesh_basis_functions import MeshBasisFunctions
+from sleplet.meshes.harmonic_coefficients import MeshBasisFunctions
 from sleplet.meshes.mesh import Mesh
 from sleplet.plotting.create_plot_mesh import Plot
 
@@ -544,7 +544,7 @@ mesh homer -m field -u
 
 ```python
 from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
+from sleplet.meshes.harmonic_coefficients import MeshField
 from sleplet.meshes.mesh import Mesh
 from sleplet.plotting.create_plot_mesh import Plot
 
