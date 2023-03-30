@@ -10,7 +10,7 @@ import sleplet._data.setup_pooch
 import sleplet._vars
 import sleplet.harmonic_methods
 from sleplet.meshes import Mesh
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 _data_path = Path(__file__).resolve().parent / "_data"
 

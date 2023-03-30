@@ -10,7 +10,6 @@ import sleplet
 import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes.mesh_slepian
-import sleplet.slepian.slepian_functions
 import sleplet.slepian_methods
 from sleplet.slepian.slepian_functions import SlepianFunctions
 

@@ -7,7 +7,7 @@ import sleplet._validation
 import sleplet.functions.f_p
 import sleplet.functions.flm.africa
 import sleplet.slepian_methods
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 
 @dataclass(config=sleplet._validation.Validation)

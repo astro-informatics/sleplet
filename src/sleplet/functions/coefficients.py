@@ -10,7 +10,7 @@ import sleplet._convolution_methods
 import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 

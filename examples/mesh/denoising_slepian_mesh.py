@@ -5,10 +5,7 @@ from numpy import typing as npt
 
 from sleplet import logger
 from sleplet.meshes import Mesh
-from sleplet.meshes.slepian_coefficients import (
-    MeshSlepianField,
-    MeshSlepianWavelets,
-)
+from sleplet.meshes.slepian_coefficients import MeshSlepianField, MeshSlepianWavelets
 from sleplet.noise import (
     compute_slepian_mesh_sigma_j,
     compute_snr,
@@ -16,10 +13,7 @@ from sleplet.noise import (
 )
 from sleplet.plotting import PlotMesh
 from sleplet.slepian_methods import slepian_mesh_inverse
-from sleplet.wavelet_methods import (
-    slepian_wavelet_forward,
-    slepian_wavelet_inverse,
-)
+from sleplet.wavelet_methods import slepian_wavelet_forward, slepian_wavelet_inverse
 
 B = 3
 J_MIN = 2

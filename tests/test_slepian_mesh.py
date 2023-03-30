@@ -3,10 +3,7 @@ from numpy.testing import assert_allclose
 
 from sleplet.harmonic_methods import mesh_inverse
 from sleplet.slepian_methods import slepian_mesh_forward, slepian_mesh_inverse
-from sleplet.wavelet_methods import (
-    slepian_wavelet_forward,
-    slepian_wavelet_inverse,
-)
+from sleplet.wavelet_methods import slepian_wavelet_forward, slepian_wavelet_inverse
 
 
 def test_decompose_all_mesh(mesh_slepian, mesh_field_region) -> None:

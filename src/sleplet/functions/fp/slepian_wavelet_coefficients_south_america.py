@@ -11,7 +11,7 @@ import sleplet.functions.f_p
 import sleplet.functions.fp.slepian_south_america
 import sleplet.functions.fp.slepian_wavelets
 import sleplet.wavelet_methods
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)

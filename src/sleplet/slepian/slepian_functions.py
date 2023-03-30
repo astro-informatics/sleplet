@@ -5,7 +5,7 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 
 @dataclass(config=sleplet._validation.Validation)

@@ -15,7 +15,7 @@ import sleplet._plotly_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.plot_methods
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 

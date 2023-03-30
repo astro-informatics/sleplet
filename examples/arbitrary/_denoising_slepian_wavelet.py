@@ -8,10 +8,7 @@ from sleplet.noise import (
     slepian_wavelet_hard_thresholding,
 )
 from sleplet.slepian_methods import slepian_inverse
-from sleplet.wavelet_methods import (
-    slepian_wavelet_forward,
-    slepian_wavelet_inverse,
-)
+from sleplet.wavelet_methods import slepian_wavelet_forward, slepian_wavelet_inverse
 
 
 def denoising_slepian_wavelet(

@@ -12,8 +12,7 @@ import sleplet._data.setup_pooch
 import sleplet._mask_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.slepian.slepian_functions
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"

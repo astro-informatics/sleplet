@@ -4,11 +4,7 @@ from numpy import typing as npt
 
 from sleplet.functions.flm import Africa, AxisymmetricWavelets, Earth, SouthAmerica
 from sleplet.harmonic_methods import rotate_earth_to_south_america
-from sleplet.noise import (
-    _compute_sigma_j,
-    compute_snr,
-    harmonic_hard_thresholding,
-)
+from sleplet.noise import _compute_sigma_j, compute_snr, harmonic_hard_thresholding
 from sleplet.wavelet_methods import (
     axisymmetric_wavelet_forward,
     axisymmetric_wavelet_inverse,

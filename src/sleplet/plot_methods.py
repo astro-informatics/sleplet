@@ -14,11 +14,10 @@ import sleplet._mask_methods
 import sleplet._vars
 import sleplet.functions.coefficients
 import sleplet.harmonic_methods
-import sleplet.meshes
 import sleplet.meshes.mesh_coefficients
 import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.slepian_methods
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 
 def calc_plot_resolution(L: int) -> int:

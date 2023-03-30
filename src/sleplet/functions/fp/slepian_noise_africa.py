@@ -7,7 +7,7 @@ import sleplet._validation
 import sleplet.functions.f_p
 import sleplet.functions.fp.slepian_africa
 import sleplet.noise
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)

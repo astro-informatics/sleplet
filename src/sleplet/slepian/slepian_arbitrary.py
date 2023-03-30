@@ -17,8 +17,7 @@ import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.slepian.slepian_functions
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"

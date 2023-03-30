@@ -7,9 +7,7 @@ from numpy.testing import assert_equal
 from sleplet import logger
 from sleplet.functions.flm import AxisymmetricWavelets
 from sleplet.harmonic_methods import compute_random_signal
-from sleplet.wavelet_methods import (
-    axisymmetric_wavelet_forward,
-)
+from sleplet.wavelet_methods import axisymmetric_wavelet_forward
 
 B = 3
 J_MIN = 2

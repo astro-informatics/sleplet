@@ -11,10 +11,9 @@ import sleplet.harmonic_methods
 import sleplet.meshes._mesh_slepian_decomposition
 import sleplet.slepian._slepian_decomposition
 import sleplet.slepian.slepian_arbitrary
-import sleplet.slepian.slepian_functions
 import sleplet.slepian.slepian_limit_lat_lon
 import sleplet.slepian.slepian_polar_cap
-from sleplet.slepian.region import Region
+from sleplet.slepian import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 

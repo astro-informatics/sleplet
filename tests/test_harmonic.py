@@ -2,10 +2,7 @@ import pyssht as ssht
 from numpy.testing import assert_equal
 
 from sleplet._vars import SAMPLING_SCHEME
-from sleplet.harmonic_methods import (
-    _boost_coefficient_resolution,
-    invert_flm_boosted,
-)
+from sleplet.harmonic_methods import _boost_coefficient_resolution, invert_flm_boosted
 
 L_LARGE = 128
 L_SMALL = 16
