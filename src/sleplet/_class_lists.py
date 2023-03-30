@@ -32,11 +32,11 @@ import sleplet.functions.fp.slepian_wavelet_coefficients_south_america
 import sleplet.functions.fp.slepian_wavelets
 import sleplet.meshes.harmonic_coefficients
 import sleplet.meshes.mesh_coefficients
-import sleplet.meshes.slepian_coefficients._mesh_slepian_field
-import sleplet.meshes.slepian_coefficients._mesh_slepian_functions
-import sleplet.meshes.slepian_coefficients._mesh_slepian_noise_field
-import sleplet.meshes.slepian_coefficients._mesh_slepian_wavelet_coefficients
-import sleplet.meshes.slepian_coefficients._mesh_slepian_wavelets
+import sleplet.meshes.slepian_coefficients.mesh_slepian_field
+import sleplet.meshes.slepian_coefficients.mesh_slepian_functions
+import sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field
+import sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients
+import sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets
 
 _data_path = Path(__file__).resolve().parent / "_data"
 
@@ -94,11 +94,11 @@ MESH_HARMONIC: list[type[sleplet.meshes.mesh_coefficients.MeshCoefficients]] = [
 ]
 
 MESH_SLEPIAN: list[type[sleplet.meshes.mesh_coefficients.MeshCoefficients]] = [
-    sleplet.meshes.slepian_coefficients._mesh_slepian_field.MeshSlepianField,
-    sleplet.meshes.slepian_coefficients._mesh_slepian_functions.MeshSlepianFunctions,
-    sleplet.meshes.slepian_coefficients._mesh_slepian_noise_field.MeshSlepianNoiseField,
-    sleplet.meshes.slepian_coefficients._mesh_slepian_wavelet_coefficients.MeshSlepianWaveletCoefficients,
-    sleplet.meshes.slepian_coefficients._mesh_slepian_wavelets.MeshSlepianWavelets,
+    sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField,
+    sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions,
+    sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field.MeshSlepianNoiseField,
+    sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients.MeshSlepianWaveletCoefficients,
+    sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets,
 ]
 
 MESH_COEFFICIENTS: list[type[sleplet.meshes.mesh_coefficients.MeshCoefficients]] = (

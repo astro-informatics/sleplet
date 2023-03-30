@@ -4,10 +4,9 @@ from argparse import ArgumentParser, Namespace
 import sleplet
 import sleplet._class_lists
 import sleplet._string_methods
-import sleplet.meshes._mesh_slepian_coefficients
-import sleplet.meshes.mesh
 import sleplet.meshes.mesh_coefficients
 import sleplet.meshes.mesh_slepian
+import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.plot_methods
 import sleplet.plotting.create_plot_mesh
 from sleplet.meshes import Mesh
@@ -105,7 +104,7 @@ def plot(
         normalise=normalise,
         region=isinstance(
             f,
-            sleplet.meshes._mesh_slepian_coefficients.MeshSlepianCoefficients,
+            sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
         ),
     ).execute()
 

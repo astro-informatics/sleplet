@@ -4,37 +4,34 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes.slepian_coefficients._mesh_slepian_field
+import sleplet.meshes.harmonic_coefficients
+import sleplet.meshes.mesh_harmonic_coefficients
 import sleplet.noise
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class MeshSlepianNoiseField(
-    sleplet.meshes._mesh_slepian_coefficients.MeshSlepianCoefficients
+class MeshNoiseField(
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
 ):
-    SNR: float = -5
+    SNR: float = 10
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        smf = sleplet.meshes.slepian_coefficients._mesh_slepian_field.MeshSlepianField(
-            self.mesh, region=True
-        )
-        noise = sleplet.noise._create_slepian_mesh_noise(
-            self.mesh_slepian, smf.coefficients, self.SNR
-        )
-        sleplet.noise.compute_snr(smf.coefficients, noise, "Slepian")
+        mf = sleplet.meshes.harmonic_coefficients.MeshField(self.mesh)
+        noise = sleplet.noise._create_mesh_noise(mf.coefficients, self.SNR)
+        sleplet.noise.compute_snr(mf.coefficients, noise, "Harmonic")
         return noise
 
     def _create_name(self) -> str:
         return (
-            f"slepian_{self.mesh.name}_noise_field"
+            f"{self.mesh.name}_noise_field"
             f"{sleplet._string_methods.filename_args(self.SNR, 'snr')}"
         )
 
     def _set_reality(self) -> bool:
-        return False
+        return True
 
     def _set_spin(self) -> int:
         return 0

@@ -1,17 +1,15 @@
 import numpy as np
+from igl import per_vertex_normals
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-import sleplet.meshes._mesh_slepian_coefficients
-import sleplet.meshes.harmonic_coefficients
-import sleplet.slepian_methods
+import sleplet.harmonic_methods
+import sleplet.meshes.mesh_harmonic_coefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class MeshSlepianField(
-    sleplet.meshes._mesh_slepian_coefficients.MeshSlepianCoefficients
-):
+class MeshField(sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
@@ -19,14 +17,11 @@ class MeshSlepianField(
         """
         compute field on the vertices of the mesh
         """
-        mf = sleplet.meshes.harmonic_coefficients.MeshField(self.mesh, region=True)
-        return sleplet.slepian_methods.slepian_mesh_forward(
-            self.mesh_slepian,
-            u_i=mf.coefficients,
-        )
+        field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
+        return sleplet.harmonic_methods.mesh_forward(self.mesh, field)
 
     def _create_name(self) -> str:
-        return f"slepian_{self.mesh.name}_field"
+        return f"{self.mesh.name}_field"
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):

@@ -18,8 +18,8 @@ import sleplet._mask_methods
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
+import sleplet.meshes
 import sleplet.plot_methods
-from sleplet.meshes import Mesh
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
@@ -30,7 +30,7 @@ MESH_UNSEEN = -1e5  # kaleido bug
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
-    mesh: Mesh
+    mesh: sleplet.meshes.Mesh
     filename: str
     f: npt.NDArray[np.complex_ | np.float_]
     _: KW_ONLY

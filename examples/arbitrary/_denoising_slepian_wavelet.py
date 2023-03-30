@@ -4,8 +4,7 @@ methods to perform denoising
 import numpy as np
 from numpy import typing as npt
 
-from sleplet.functions import Coefficients
-from sleplet.functions.fp import SlepianWavelets
+from sleplet.functions.fp import SlepianAfrica, SlepianSouthAmerica, SlepianWavelets
 from sleplet.noise import (
     _compute_slepian_sigma_j,
     compute_snr,
@@ -19,8 +18,8 @@ from sleplet.wavelet_methods import (
 
 
 def denoising_slepian_wavelet(
-    signal: Coefficients,
-    noised_signal: Coefficients,
+    signal: SlepianAfrica | SlepianSouthAmerica,
+    noised_signal: SlepianAfrica | SlepianSouthAmerica,
     slepian_wavelets: SlepianWavelets,
     snr_in: float,
     n_sigma: int,

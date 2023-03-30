@@ -218,7 +218,7 @@ def _create_mesh_noise(
 
 
 def _create_slepian_mesh_noise(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: sleplet.meshes.MeshSlepian,
     slepian_signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
