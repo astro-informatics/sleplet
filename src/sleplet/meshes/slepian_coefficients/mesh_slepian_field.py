@@ -3,7 +3,7 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-import sleplet.meshes.harmonic_coefficients
+import sleplet.meshes.harmonic_coefficients.mesh_field
 import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.slepian_methods
 
@@ -21,7 +21,9 @@ class MeshSlepianField(
         """
         compute field on the vertices of the mesh
         """
-        mf = sleplet.meshes.harmonic_coefficients.MeshField(self.mesh, region=True)
+        mf = sleplet.meshes.harmonic_coefficients.mesh_field.MeshField(
+            self.mesh, region=True
+        )
         return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
             u_i=mf.coefficients,
