@@ -661,7 +661,21 @@ done
 ```
 
 ```python
+import numpy as np
+import pyssht as ssht
 
+from sleplet.functions.flm import ElongatedGaussian
+from sleplet.plotting import PlotSphere
+
+# a
+f = ElongatedGaussian(L=128, p_sigma=0.1, t_sigma=0.1)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
+PlotSphere(f_sphere, f.L, f"fig_2_2_a", annotations=[]).execute()
+# b-d
+for a, b, g in [(0, 0, 0.25), (0, 0.25, 0.25), (0.25, 0.25, 0.25)]:
+    flm = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
+    f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
+    PlotSphere(f_sphere, f.L, f"fig_2_2_a_{a}_b_{b}_g_{g}", annotations=[]).execute()
 ```
 
 ##### Fig. 2.3
@@ -808,7 +822,6 @@ done
 ```
 
 ```python
-import numpy as np
 import pyssht as ssht
 
 from sleplet.functions.flm import HarmonicGaussian
