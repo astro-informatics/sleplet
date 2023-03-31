@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.functions.fp API documentation</title>
-<meta name="description" content="classes of functions on the sphere created in Slepian space" />
+<meta name="description" content="classes of functions on the sphere created in Slepian space." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,14 +22,12 @@
 <h1 class="title">Module <code>sleplet.functions.fp</code></h1>
 </header>
 <section id="section-intro">
-<p>classes of functions on the sphere created in Slepian space</p>
+<p>classes of functions on the sphere created in Slepian space.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;
-classes of functions on the sphere created in Slepian space
-&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;classes of functions on the sphere created in Slepian space.&#34;&#34;&#34;
 
 from .slepian import Slepian
 from .slepian_africa import SlepianAfrica
@@ -115,14 +113,14 @@ __all__ = [
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, rank: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Slepian(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     rank: int = 0
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -149,10 +147,12 @@ class Slepian(sleplet.functions.f_p.F_P):
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         sleplet.logger.info(f&#34;Shannon number: {self.slepian.N}&#34;)
         sleplet.logger.info(
-            f&#34;Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}&#34;
+            f&#34;Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}&#34;,
         )
         return sleplet.slepian_methods.slepian_forward(
-            self.L, self.slepian, flm=self.slepian.eigenvectors[self.rank]
+            self.L,
+            self.slepian,
+            flm=self.slepian.eigenvectors[self.rank],
         )
 
     def _set_reality(self) -&gt; bool:
@@ -166,14 +166,12 @@ class Slepian(sleplet.functions.f_p.F_P):
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
-                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
                 )
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -&gt; None:
-        &#34;&#34;&#34;
-        checks the requested rank is valid
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;checks the requested rank is valid.&#34;&#34;&#34;
         if isinstance(self.extra_args, list):
             limit = self.L**2
             if self.extra_args[0] &gt;= limit:
@@ -220,14 +218,14 @@ class Slepian(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianAfrica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -240,12 +238,14 @@ class SlepianAfrica(sleplet.functions.f_p.F_P):
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         a = sleplet.functions.flm.africa.Africa(self.L, smoothing=self.smoothing)
         return sleplet.slepian_methods.slepian_forward(
-            self.L, self.slepian, flm=a.coefficients
+            self.L,
+            self.slepian,
+            flm=a.coefficients,
         )
 
     def _create_name(self) -&gt; str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(
-            self.__class__.__name__
+            self.__class__.__name__,
         )
 
     def _set_reality(self) -&gt; bool:
@@ -257,7 +257,7 @@ class SlepianAfrica(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -286,14 +286,14 @@ class SlepianAfrica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -301,7 +301,10 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
         return sleplet.slepian_methods._compute_s_p_omega_prime(
-            self.L, self.alpha, self.beta, self.slepian
+            self.L,
+            self.alpha,
+            self.beta,
+            self.slepian,
         ).conj()
 
     def _create_name(self) -&gt; str:
@@ -319,27 +322,29 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )
 
     def _compute_angles(self) -&gt; None:
-        &#34;&#34;&#34;
-        computes alpha/beta if not provided
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes alpha/beta if not provided.&#34;&#34;&#34;
         thetas, phis = ssht.sample_positions(
-            self.L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+            self.L,
+            Grid=True,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         sp = ssht.inverse(
-            self.slepian.eigenvectors[0], self.L, Method=sleplet._vars.SAMPLING_SCHEME
+            self.slepian.eigenvectors[0],
+            self.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]
         sleplet.logger.info(
-            f&#34;angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})&#34;
+            f&#34;angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})&#34;,
         )
         sleplet.logger.info(
-            f&#34;grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})&#34;
+            f&#34;grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})&#34;,
         )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -368,14 +373,14 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianIdentity(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -398,7 +403,7 @@ class SlepianIdentity(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -427,14 +432,14 @@ class SlepianIdentity(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = -10)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = -10
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -449,10 +454,15 @@ class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         noise = sleplet.noise._create_slepian_noise(
-            self.L, sa.coefficients, self.slepian, self.SNR
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
         )
         sleplet.noise.compute_snr(sa.coefficients, noise, &#34;Slepian&#34;)
         return noise
@@ -509,14 +519,14 @@ class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = -10)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = -10
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -531,10 +541,15 @@ class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.fp.slepian_south_america.SlepianSouthAmerica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         noise = sleplet.noise._create_slepian_noise(
-            self.L, sa.coefficients, self.slepian, self.SNR
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
         )
         sleplet.noise.compute_snr(sa.coefficients, noise, &#34;Slepian&#34;)
         return noise
@@ -591,14 +606,14 @@ class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianSouthAmerica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -610,15 +625,18 @@ class SlepianSouthAmerica(sleplet.functions.f_p.F_P):
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.flm.south_america.SouthAmerica(
-            self.L, smoothing=self.smoothing
+            self.L,
+            smoothing=self.smoothing,
         )
         return sleplet.slepian_methods.slepian_forward(
-            self.L, self.slepian, flm=sa.coefficients
+            self.L,
+            self.slepian,
+            flm=sa.coefficients,
         )
 
     def _create_name(self) -&gt; str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(
-            self.__class__.__name__
+            self.__class__.__name__,
         )
 
     def _set_reality(self) -&gt; bool:
@@ -630,7 +648,7 @@ class SlepianSouthAmerica(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -659,14 +677,14 @@ class SlepianSouthAmerica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -714,18 +732,23 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
     def _create_wavelet_coefficients(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        &#34;&#34;&#34;
-        computes wavelet coefficients in Slepian space
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
         sw = sleplet.functions.fp.slepian_wavelets.SlepianWavelets(
-            self.L, B=self.B, j_min=self.j_min, region=self.region
+            self.L,
+            B=self.B,
+            j_min=self.j_min,
+            region=self.region,
         )
         sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         wavelets = sw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
-            sa.coefficients, wavelets, self.slepian.N
+            sa.coefficients,
+            wavelets,
+            self.slepian.N,
         )
         return wavelets, wavelet_coefficients
 
@@ -736,7 +759,7 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>
@@ -781,14 +804,14 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -836,18 +859,23 @@ class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.f_p.F_P):
     def _create_wavelet_coefficients(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        &#34;&#34;&#34;
-        computes wavelet coefficients in Slepian space
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
         sw = sleplet.functions.fp.slepian_wavelets.SlepianWavelets(
-            self.L, B=self.B, j_min=self.j_min, region=self.region
+            self.L,
+            B=self.B,
+            j_min=self.j_min,
+            region=self.region,
         )
         sa = sleplet.functions.fp.slepian_south_america.SlepianSouthAmerica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         wavelets = sw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
-            sa.coefficients, wavelets, self.slepian.N
+            sa.coefficients,
+            wavelets,
+            self.slepian.N,
         )
         return wavelets, wavelet_coefficients
 
@@ -858,7 +886,7 @@ class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.f_p.F_P):
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>
@@ -903,14 +931,14 @@ class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWavelets(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -952,9 +980,7 @@ class SlepianWavelets(sleplet.functions.f_p.F_P):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;
-        computes wavelets in Slepian space
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes wavelets in Slepian space.&#34;&#34;&#34;
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
     @validator(&#34;j&#34;)
@@ -964,7 +990,7 @@ class SlepianWavelets(sleplet.functions.f_p.F_P):
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>

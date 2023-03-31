@@ -41,7 +41,7 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -49,7 +49,10 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
         return sleplet.slepian_methods._compute_s_p_omega_prime(
-            self.L, self.alpha, self.beta, self.slepian
+            self.L,
+            self.alpha,
+            self.beta,
+            self.slepian,
         ).conj()
 
     def _create_name(self) -&gt; str:
@@ -67,27 +70,29 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )
 
     def _compute_angles(self) -&gt; None:
-        &#34;&#34;&#34;
-        computes alpha/beta if not provided
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes alpha/beta if not provided.&#34;&#34;&#34;
         thetas, phis = ssht.sample_positions(
-            self.L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+            self.L,
+            Grid=True,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         sp = ssht.inverse(
-            self.slepian.eigenvectors[0], self.L, Method=sleplet._vars.SAMPLING_SCHEME
+            self.slepian.eigenvectors[0],
+            self.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]
         sleplet.logger.info(
-            f&#34;angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})&#34;
+            f&#34;angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})&#34;,
         )
         sleplet.logger.info(
-            f&#34;grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})&#34;
+            f&#34;grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})&#34;,
         )</code></pre>
 </details>
 </section>
@@ -105,14 +110,14 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -120,7 +125,10 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
         return sleplet.slepian_methods._compute_s_p_omega_prime(
-            self.L, self.alpha, self.beta, self.slepian
+            self.L,
+            self.alpha,
+            self.beta,
+            self.slepian,
         ).conj()
 
     def _create_name(self) -&gt; str:
@@ -138,27 +146,29 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )
 
     def _compute_angles(self) -&gt; None:
-        &#34;&#34;&#34;
-        computes alpha/beta if not provided
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes alpha/beta if not provided.&#34;&#34;&#34;
         thetas, phis = ssht.sample_positions(
-            self.L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+            self.L,
+            Grid=True,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         sp = ssht.inverse(
-            self.slepian.eigenvectors[0], self.L, Method=sleplet._vars.SAMPLING_SCHEME
+            self.slepian.eigenvectors[0],
+            self.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]
         sleplet.logger.info(
-            f&#34;angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})&#34;
+            f&#34;angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})&#34;,
         )
         sleplet.logger.info(
-            f&#34;grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})&#34;
+            f&#34;grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})&#34;,
         )</code></pre>
 </details>
 <h3>Ancestors</h3>

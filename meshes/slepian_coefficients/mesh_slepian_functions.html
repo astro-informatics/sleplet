@@ -39,9 +39,9 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianFunctions(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     rank: int = 0
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -50,12 +50,10 @@ class MeshSlepianFunctions(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        compute field on the vertices of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;compute field on the vertices of the mesh.&#34;&#34;&#34;
         sleplet.logger.info(
             f&#34;Slepian eigenvalue {self.rank}: &#34;
-            f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;
+            f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;,
         )
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
         return sleplet.slepian_methods.slepian_mesh_forward(
@@ -78,14 +76,12 @@ class MeshSlepianFunctions(
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
-                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
                 )
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -&gt; None:
-        &#34;&#34;&#34;
-        checks the requested rank is valid
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;checks the requested rank is valid.&#34;&#34;&#34;
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] &gt; limit:
@@ -114,16 +110,16 @@ class MeshSlepianFunctions(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianFunctions(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     rank: int = 0
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -132,12 +128,10 @@ class MeshSlepianFunctions(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        compute field on the vertices of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;compute field on the vertices of the mesh.&#34;&#34;&#34;
         sleplet.logger.info(
             f&#34;Slepian eigenvalue {self.rank}: &#34;
-            f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;
+            f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;,
         )
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
         return sleplet.slepian_methods.slepian_mesh_forward(
@@ -160,14 +154,12 @@ class MeshSlepianFunctions(
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
-                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
                 )
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -&gt; None:
-        &#34;&#34;&#34;
-        checks the requested rank is valid
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;checks the requested rank is valid.&#34;&#34;&#34;
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] &gt; limit:

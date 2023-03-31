@@ -37,7 +37,7 @@ import sleplet._validation
 
 @dataclass(config=sleplet._validation.Validation)
 class Mesh:
-    &#34;&#34;&#34;creates a mesh object&#34;&#34;&#34;
+    &#34;&#34;&#34;creates a mesh object.&#34;&#34;&#34;
 
     name: str
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -65,7 +65,8 @@ class Mesh:
         )
         self.vertices, self.faces = sleplet._mesh_methods.read_mesh(mesh_config)
         self.region = sleplet._mesh_methods.create_mesh_region(
-            mesh_config, self.vertices
+            mesh_config,
+            self.vertices,
         )
         (
             self.mesh_eigenvalues,
@@ -93,14 +94,14 @@ class Mesh:
 <span>(</span><span>name: str, *, number_basis_functions: int | None = None, zoom: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>creates a mesh object</p></div>
+<div class="desc"><p>creates a mesh object.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class Mesh:
-    &#34;&#34;&#34;creates a mesh object&#34;&#34;&#34;
+    &#34;&#34;&#34;creates a mesh object.&#34;&#34;&#34;
 
     name: str
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -128,7 +129,8 @@ class Mesh:
         )
         self.vertices, self.faces = sleplet._mesh_methods.read_mesh(mesh_config)
         self.region = sleplet._mesh_methods.create_mesh_region(
-            mesh_config, self.vertices
+            mesh_config,
+            self.vertices,
         )
         (
             self.mesh_eigenvalues,

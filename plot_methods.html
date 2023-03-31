@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.plot_methods API documentation</title>
-<meta name="description" content="methods to help in creating plots" />
+<meta name="description" content="methods to help in creating plots." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,14 +22,12 @@
 <h1 class="title">Module <code>sleplet.plot_methods</code></h1>
 </header>
 <section id="section-intro">
-<p>methods to help in creating plots</p>
+<p>methods to help in creating plots.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;
-methods to help in creating plots
-&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;methods to help in creating plots.&#34;&#34;&#34;
 from pathlib import Path
 
 import numpy as np
@@ -49,12 +47,14 @@ import sleplet.slepian_methods
 
 
 def calc_plot_resolution(L: int) -&gt; int:
-    &#34;&#34;&#34;TODO calculate appropriate resolution for given L
+    &#34;&#34;&#34;TODO calculate appropriate resolution for given L.
 
     Args:
+    ----
         L: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
@@ -70,11 +70,11 @@ def calc_plot_resolution(L: int) -&gt; int:
 
 
 def _convert_colourscale(
-    cmap: colors, *, pl_entries: int = 255
+    cmap: colors,
+    *,
+    pl_entries: int = 255,
 ) -&gt; list[tuple[float, str]]:
-    &#34;&#34;&#34;
-    converts cmocean colourscale to a plotly colourscale
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;converts cmocean colourscale to a plotly colourscale.&#34;&#34;&#34;
     h = 1 / (pl_entries - 1)
     pl_colorscale = []
 
@@ -86,13 +86,14 @@ def _convert_colourscale(
 
 
 def _calc_nearest_grid_point(
-    L: int, alpha_pi_fraction: float, beta_pi_fraction: float
+    L: int,
+    alpha_pi_fraction: float,
+    beta_pi_fraction: float,
 ) -&gt; tuple[float, float]:
-    &#34;&#34;&#34;
-    calculate nearest index of alpha/beta for translation
+    &#34;&#34;&#34;calculate nearest index of alpha/beta for translation
     this is due to calculating omega&#39; through the pixel
     values - the translation needs to be at the same position
-    as the rotation such that the difference error is small
+    as the rotation such that the difference error is small.
     &#34;&#34;&#34;
     thetas, phis = ssht.sample_positions(L, Method=sleplet._vars.SAMPLING_SCHEME)
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
@@ -103,9 +104,10 @@ def _calc_nearest_grid_point(
 
 
 def save_plot(path: Path, name: str) -&gt; None:
-    &#34;&#34;&#34;TODO helper method to save plots
+    &#34;&#34;&#34;TODO helper method to save plots.
 
     Args:
+    ----
         path: _description_
         name: _description_
     &#34;&#34;&#34;
@@ -126,24 +128,30 @@ def find_max_amplitude(
     upsample: bool = True,
 ) -&gt; float:
     &#34;&#34;&#34;TODO for a given set of coefficients it finds the largest absolute value for a
-    given plot type such that plots can have the same scale as the input
+    given plot type such that plots can have the same scale as the input.
 
     Args:
+    ----
         function: _description_
         plot_type: _description_
         upsample: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     # compute inverse transform
     if hasattr(function, &#34;slepian&#34;):
         field = sleplet.slepian_methods.slepian_inverse(
-            function.coefficients, function.L, function.slepian
+            function.coefficients,
+            function.L,
+            function.slepian,
         )
     else:
         field = ssht.inverse(
-            function.coefficients, function.L, Method=sleplet._vars.SAMPLING_SCHEME
+            function.coefficients,
+            function.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
 
     # find resolution of final plot for boosting if necessary
@@ -164,11 +172,10 @@ def find_max_amplitude(
 
 
 def _create_plot_type(
-    field: npt.NDArray[np.complex_ | np.float_], plot_type: str
+    field: npt.NDArray[np.complex_ | np.float_],
+    plot_type: str,
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;
-    gets the given plot type of the field
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;gets the given plot type of the field.&#34;&#34;&#34;
     sleplet.logger.info(f&#34;plotting type: &#39;{plot_type}&#39;&#34;)
     plot_dict = {
         &#34;abs&#34;: np.abs(field),
@@ -180,11 +187,12 @@ def _create_plot_type(
 
 
 def _set_outside_region_to_minimum(
-    f_plot: npt.NDArray[np.float_], L: int, region: sleplet.slepian.region.Region
+    f_plot: npt.NDArray[np.float_],
+    L: int,
+    region: sleplet.slepian.region.Region,
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;
-    for the Slepian region set the outisde area to negative infinity
-    hence it is clear we are only interested in the coloured region
+    &#34;&#34;&#34;for the Slepian region set the outisde area to negative infinity
+    hence it is clear we are only interested in the coloured region.
     &#34;&#34;&#34;
     # create mask of interest
     mask = sleplet._mask_methods.create_mask_region(L, region)
@@ -198,11 +206,11 @@ def _set_outside_region_to_minimum(
 
 
 def _normalise_function(
-    f: npt.NDArray[np.float_], *, normalise: bool
+    f: npt.NDArray[np.float_],
+    *,
+    normalise: bool,
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;
-    normalise function between 0 and 1 for visualisation
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;normalise function between 0 and 1 for visualisation.&#34;&#34;&#34;
     if not normalise:
         return f
     elif (f == 0).all():
@@ -225,28 +233,36 @@ def _boost_field(
     spin: int,
     upsample: bool,
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;
-    inverts and then boosts the field before plotting
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;inverts and then boosts the field before plotting.&#34;&#34;&#34;
     if not upsample:
         return field
     flm = ssht.forward(
-        field, L, Reality=reality, Spin=spin, Method=sleplet._vars.SAMPLING_SCHEME
+        field,
+        L,
+        Reality=reality,
+        Spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     return sleplet.harmonic_methods.invert_flm_boosted(
-        flm, L, resolution, reality=reality, spin=spin
+        flm,
+        L,
+        resolution,
+        reality=reality,
+        spin=spin,
     )
 
 
 def compute_amplitude_for_noisy_mesh_plots(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
 ) -&gt; float | None:
-    &#34;&#34;&#34;TODO for the noised mesh plots fix the amplitude to the initial data
+    &#34;&#34;&#34;TODO for the noised mesh plots fix the amplitude to the initial data.
 
     Args:
+    ----
         f: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     return (
@@ -260,9 +276,7 @@ def _coefficients_to_field_mesh(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;
-    computes the field over the whole mesh from the harmonic/Slepian coefficients
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;computes the field over the whole mesh from the harmonic/Slepian coefficients.&#34;&#34;&#34;
     return (
         sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, coefficients)
         if hasattr(f, &#34;mesh_slepian&#34;)
@@ -273,12 +287,14 @@ def _coefficients_to_field_mesh(
 def compute_amplitude_for_noisy_sphere_plots(
     f: sleplet.functions.coefficients.Coefficients,
 ) -&gt; float | None:
-    &#34;&#34;&#34;TODO for the noised sphere plots fix the amplitude to the initial data
+    &#34;&#34;&#34;TODO for the noised sphere plots fix the amplitude to the initial data.
 
     Args:
+    ----
         f: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     return (
@@ -292,9 +308,7 @@ def _coefficients_to_field_sphere(
     f: sleplet.functions.coefficients.Coefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;
-    computes the field over the samples from the harmonic/Slepian coefficients
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;computes the field over the samples from the harmonic/Slepian coefficients.&#34;&#34;&#34;
     return (
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, &#34;slepian&#34;)
@@ -319,25 +333,26 @@ def _coefficients_to_field_sphere(
 <span>def <span class="ident">calc_plot_resolution</span></span>(<span>L: int) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO calculate appropriate resolution for given L</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>L</code></strong></dt>
-<dd><em>description</em></dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p><em>description</em></p></div>
+<div class="desc"><p>TODO calculate appropriate resolution for given L.</p>
+<h2 id="args">Args:</h2>
+<pre><code>L: _description_
+</code></pre>
+<h2 id="returns">Returns:</h2>
+<pre><code>_description_
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calc_plot_resolution(L: int) -&gt; int:
-    &#34;&#34;&#34;TODO calculate appropriate resolution for given L
+    &#34;&#34;&#34;TODO calculate appropriate resolution for given L.
 
     Args:
+    ----
         L: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
@@ -356,14 +371,13 @@ def _coefficients_to_field_sphere(
 <span>def <span class="ident">compute_amplitude_for_noisy_mesh_plots</span></span>(<span>f: <a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="meshes/mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a>) ‑> float | None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO for the noised mesh plots fix the amplitude to the initial data</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>f</code></strong></dt>
-<dd><em>description</em></dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p><em>description</em></p></div>
+<div class="desc"><p>TODO for the noised mesh plots fix the amplitude to the initial data.</p>
+<h2 id="args">Args:</h2>
+<pre><code>f: _description_
+</code></pre>
+<h2 id="returns">Returns:</h2>
+<pre><code>_description_
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -371,12 +385,14 @@ def _coefficients_to_field_sphere(
 <pre><code class="python">def compute_amplitude_for_noisy_mesh_plots(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
 ) -&gt; float | None:
-    &#34;&#34;&#34;TODO for the noised mesh plots fix the amplitude to the initial data
+    &#34;&#34;&#34;TODO for the noised mesh plots fix the amplitude to the initial data.
 
     Args:
+    ----
         f: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     return (
@@ -390,14 +406,13 @@ def _coefficients_to_field_sphere(
 <span>def <span class="ident">compute_amplitude_for_noisy_sphere_plots</span></span>(<span>f: <a title="sleplet.functions.coefficients.Coefficients" href="functions/coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a>) ‑> float | None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO for the noised sphere plots fix the amplitude to the initial data</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>f</code></strong></dt>
-<dd><em>description</em></dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p><em>description</em></p></div>
+<div class="desc"><p>TODO for the noised sphere plots fix the amplitude to the initial data.</p>
+<h2 id="args">Args:</h2>
+<pre><code>f: _description_
+</code></pre>
+<h2 id="returns">Returns:</h2>
+<pre><code>_description_
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -405,12 +420,14 @@ def _coefficients_to_field_sphere(
 <pre><code class="python">def compute_amplitude_for_noisy_sphere_plots(
     f: sleplet.functions.coefficients.Coefficients,
 ) -&gt; float | None:
-    &#34;&#34;&#34;TODO for the noised sphere plots fix the amplitude to the initial data
+    &#34;&#34;&#34;TODO for the noised sphere plots fix the amplitude to the initial data.
 
     Args:
+    ----
         f: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     return (
@@ -425,18 +442,15 @@ def _coefficients_to_field_sphere(
 </code></dt>
 <dd>
 <div class="desc"><p>TODO for a given set of coefficients it finds the largest absolute value for a
-given plot type such that plots can have the same scale as the input</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>function</code></strong></dt>
-<dd><em>description</em></dd>
-<dt><strong><code>plot_type</code></strong></dt>
-<dd><em>description</em></dd>
-<dt><strong><code>upsample</code></strong></dt>
-<dd><em>description</em></dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p><em>description</em></p></div>
+given plot type such that plots can have the same scale as the input.</p>
+<h2 id="args">Args:</h2>
+<pre><code>function: _description_
+plot_type: _description_
+upsample: _description_
+</code></pre>
+<h2 id="returns">Returns:</h2>
+<pre><code>_description_
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -448,24 +462,30 @@ given plot type such that plots can have the same scale as the input</p>
     upsample: bool = True,
 ) -&gt; float:
     &#34;&#34;&#34;TODO for a given set of coefficients it finds the largest absolute value for a
-    given plot type such that plots can have the same scale as the input
+    given plot type such that plots can have the same scale as the input.
 
     Args:
+    ----
         function: _description_
         plot_type: _description_
         upsample: _description_
 
     Returns:
+    -------
         _description_
     &#34;&#34;&#34;
     # compute inverse transform
     if hasattr(function, &#34;slepian&#34;):
         field = sleplet.slepian_methods.slepian_inverse(
-            function.coefficients, function.L, function.slepian
+            function.coefficients,
+            function.L,
+            function.slepian,
         )
     else:
         field = ssht.inverse(
-            function.coefficients, function.L, Method=sleplet._vars.SAMPLING_SCHEME
+            function.coefficients,
+            function.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
 
     # find resolution of final plot for boosting if necessary
@@ -489,22 +509,20 @@ given plot type such that plots can have the same scale as the input</p>
 <span>def <span class="ident">save_plot</span></span>(<span>path: pathlib.Path, name: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO helper method to save plots</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd><em>description</em></dd>
-<dt><strong><code>name</code></strong></dt>
-<dd><em>description</em></dd>
-</dl></div>
+<div class="desc"><p>TODO helper method to save plots.</p>
+<h2 id="args">Args:</h2>
+<pre><code>path: _description_
+name: _description_
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def save_plot(path: Path, name: str) -&gt; None:
-    &#34;&#34;&#34;TODO helper method to save plots
+    &#34;&#34;&#34;TODO helper method to save plots.
 
     Args:
+    ----
         path: _description_
         name: _description_
     &#34;&#34;&#34;

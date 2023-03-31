@@ -41,9 +41,9 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWavelets(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -78,23 +78,25 @@ class MeshSlepianWavelets(
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;
-        creates the Slepian wavelets of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;creates the Slepian wavelets of the mesh.&#34;&#34;&#34;
         return sleplet.wavelet_methods.create_kappas(
-            self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
+            self.mesh.mesh_eigenvalues.shape[0],
+            self.B,
+            self.j_min,
         )
 
     @validator(&#34;j&#34;)
     def _check_j(cls, v, values) -&gt; int | None:
         j_max = pys2let_j_max(
-            values[&#34;B&#34;], values[&#34;mesh&#34;].mesh_eigenvalues.shape[0], values[&#34;j_min&#34;]
+            values[&#34;B&#34;],
+            values[&#34;mesh&#34;].mesh_eigenvalues.shape[0],
+            values[&#34;j_min&#34;],
         )
         if v is not None and v &lt; 0:
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>
@@ -113,16 +115,16 @@ class MeshSlepianWavelets(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, B: int = 3, j_min: int = 2, j: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWavelets(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -157,23 +159,25 @@ class MeshSlepianWavelets(
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;
-        creates the Slepian wavelets of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;creates the Slepian wavelets of the mesh.&#34;&#34;&#34;
         return sleplet.wavelet_methods.create_kappas(
-            self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
+            self.mesh.mesh_eigenvalues.shape[0],
+            self.B,
+            self.j_min,
         )
 
     @validator(&#34;j&#34;)
     def _check_j(cls, v, values) -&gt; int | None:
         j_max = pys2let_j_max(
-            values[&#34;B&#34;], values[&#34;mesh&#34;].mesh_eigenvalues.shape[0], values[&#34;j_min&#34;]
+            values[&#34;B&#34;],
+            values[&#34;mesh&#34;].mesh_eigenvalues.shape[0],
+            values[&#34;j_min&#34;],
         )
         if v is not None and v &lt; 0:
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>

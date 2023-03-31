@@ -39,9 +39,9 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianNoiseField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = -5
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -51,10 +51,13 @@ class MeshSlepianNoiseField(
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
-            self.mesh, region=True
+            self.mesh,
+            region=True,
         )
         noise = sleplet.noise._create_slepian_mesh_noise(
-            self.mesh_slepian, smf.coefficients, self.SNR
+            self.mesh_slepian,
+            smf.coefficients,
+            self.SNR,
         )
         sleplet.noise.compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
         return noise
@@ -93,16 +96,16 @@ class MeshSlepianNoiseField(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = -5)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianNoiseField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = -5
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -112,10 +115,13 @@ class MeshSlepianNoiseField(
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
-            self.mesh, region=True
+            self.mesh,
+            region=True,
         )
         noise = sleplet.noise._create_slepian_mesh_noise(
-            self.mesh_slepian, smf.coefficients, self.SNR
+            self.mesh_slepian,
+            smf.coefficients,
+            self.SNR,
         )
         sleplet.noise.compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
         return noise

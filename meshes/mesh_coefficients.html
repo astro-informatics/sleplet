@@ -45,7 +45,7 @@ COEFFICIENTS_TO_NOT_MASK: str = &#34;slepian&#34;
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    &#34;&#34;&#34;abstract parent class to handle Fourier/Slepian coefficients on the mesh&#34;&#34;&#34;
+    &#34;&#34;&#34;abstract parent class to handle Fourier/Slepian coefficients on the mesh.&#34;&#34;&#34;
 
     mesh: sleplet.meshes.mesh.Mesh
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -65,9 +65,7 @@ class MeshCoefficients:
         self.unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def _add_details_to_name(self) -&gt; None:
-        &#34;&#34;&#34;
-        adds region to the name if present if not a Slepian function
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;adds region to the name if present if not a Slepian function.&#34;&#34;&#34;
         if self.region and &#34;slepian&#34; not in self.mesh.name:
             self.name += &#34;_region&#34;
         if self.noise is not None:
@@ -82,7 +80,8 @@ class MeshCoefficients:
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
             v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
-                values[&#34;mesh&#34;], v
+                values[&#34;mesh&#34;],
+                v,
             )
         return v
 
@@ -90,30 +89,23 @@ class MeshCoefficients:
     def _add_noise_to_signal(
         self,
     ) -&gt; tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        &#34;&#34;&#34;
-        adds Gaussian white noise to the signal
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;adds Gaussian white noise to the signal.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        creates the flm on the north pole
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;creates the flm on the north pole.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_name(self) -&gt; str:
-        &#34;&#34;&#34;
-        creates the name of the function
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;creates the name of the function.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _setup_args(self) -&gt; None:
-        &#34;&#34;&#34;
-        initialises function specific args
-        either default value or user input
+        &#34;&#34;&#34;initialises function specific args
+        either default value or user input.
         &#34;&#34;&#34;
         raise NotImplementedError</code></pre>
 </details>
@@ -132,14 +124,14 @@ class MeshCoefficients:
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>abstract parent class to handle Fourier/Slepian coefficients on the mesh</p></div>
+<div class="desc"><p>abstract parent class to handle Fourier/Slepian coefficients on the mesh.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    &#34;&#34;&#34;abstract parent class to handle Fourier/Slepian coefficients on the mesh&#34;&#34;&#34;
+    &#34;&#34;&#34;abstract parent class to handle Fourier/Slepian coefficients on the mesh.&#34;&#34;&#34;
 
     mesh: sleplet.meshes.mesh.Mesh
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -159,9 +151,7 @@ class MeshCoefficients:
         self.unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def _add_details_to_name(self) -&gt; None:
-        &#34;&#34;&#34;
-        adds region to the name if present if not a Slepian function
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;adds region to the name if present if not a Slepian function.&#34;&#34;&#34;
         if self.region and &#34;slepian&#34; not in self.mesh.name:
             self.name += &#34;_region&#34;
         if self.noise is not None:
@@ -176,7 +166,8 @@ class MeshCoefficients:
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
             v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
-                values[&#34;mesh&#34;], v
+                values[&#34;mesh&#34;],
+                v,
             )
         return v
 
@@ -184,30 +175,23 @@ class MeshCoefficients:
     def _add_noise_to_signal(
         self,
     ) -&gt; tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        &#34;&#34;&#34;
-        adds Gaussian white noise to the signal
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;adds Gaussian white noise to the signal.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        creates the flm on the north pole
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;creates the flm on the north pole.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_name(self) -&gt; str:
-        &#34;&#34;&#34;
-        creates the name of the function
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;creates the name of the function.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _setup_args(self) -&gt; None:
-        &#34;&#34;&#34;
-        initialises function specific args
-        either default value or user input
+        &#34;&#34;&#34;initialises function specific args
+        either default value or user input.
         &#34;&#34;&#34;
         raise NotImplementedError</code></pre>
 </details>

@@ -40,7 +40,7 @@ import sleplet.slepian.region
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = -10
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -55,10 +55,15 @@ class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         noise = sleplet.noise._create_slepian_noise(
-            self.L, sa.coefficients, self.slepian, self.SNR
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
         )
         sleplet.noise.compute_snr(sa.coefficients, noise, &#34;Slepian&#34;)
         return noise
@@ -97,14 +102,14 @@ class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = -10)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = -10
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -119,10 +124,15 @@ class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         noise = sleplet.noise._create_slepian_noise(
-            self.L, sa.coefficients, self.slepian, self.SNR
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
         )
         sleplet.noise.compute_snr(sa.coefficients, noise, &#34;Slepian&#34;)
         return noise

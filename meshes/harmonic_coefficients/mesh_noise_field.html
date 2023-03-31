@@ -39,9 +39,9 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshNoiseField(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = 10
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -89,16 +89,16 @@ class MeshNoiseField(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = 10)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshNoiseField(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = 10
     &#34;&#34;&#34;TODO&#34;&#34;&#34;

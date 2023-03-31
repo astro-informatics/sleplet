@@ -44,7 +44,7 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -92,18 +92,23 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
     def _create_wavelet_coefficients(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        &#34;&#34;&#34;
-        computes wavelet coefficients in Slepian space
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
         sw = sleplet.functions.fp.slepian_wavelets.SlepianWavelets(
-            self.L, B=self.B, j_min=self.j_min, region=self.region
+            self.L,
+            B=self.B,
+            j_min=self.j_min,
+            region=self.region,
         )
         sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         wavelets = sw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
-            sa.coefficients, wavelets, self.slepian.N
+            sa.coefficients,
+            wavelets,
+            self.slepian.N,
         )
         return wavelets, wavelet_coefficients
 
@@ -114,7 +119,7 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>
@@ -133,14 +138,14 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -188,18 +193,23 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
     def _create_wavelet_coefficients(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        &#34;&#34;&#34;
-        computes wavelet coefficients in Slepian space
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
         sw = sleplet.functions.fp.slepian_wavelets.SlepianWavelets(
-            self.L, B=self.B, j_min=self.j_min, region=self.region
+            self.L,
+            B=self.B,
+            j_min=self.j_min,
+            region=self.region,
         )
         sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         wavelets = sw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
-            sa.coefficients, wavelets, self.slepian.N
+            sa.coefficients,
+            wavelets,
+            self.slepian.N,
         )
         return wavelets, wavelet_coefficients
 
@@ -210,7 +220,7 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>

@@ -37,7 +37,7 @@ import sleplet._vars
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
-    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere&#34;&#34;&#34;
+    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
 
     gap: bool = False
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -56,11 +56,12 @@ class Region:
         self._identify_region()
 
     def _identify_region(self) -&gt; None:
-        &#34;&#34;&#34;
-        identify region type based on the angle inputs or a mask name
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
         if sleplet._bool_methods.is_polar_cap(
-            self.phi_min, self.phi_max, self.theta_min, self.theta_max
+            self.phi_min,
+            self.phi_max,
+            self.theta_min,
+            self.theta_max,
         ):
             self.region_type = &#34;polar&#34;
             self.name_ending = (
@@ -69,7 +70,10 @@ class Region:
             )
 
         elif sleplet._bool_methods.is_limited_lat_lon(
-            self.phi_min, self.phi_max, self.theta_min, self.theta_max
+            self.phi_min,
+            self.phi_max,
+            self.theta_min,
+            self.theta_max,
         ):
             self.region_type = &#34;lim_lat_lon&#34;
             self.name_ending = (
@@ -86,7 +90,7 @@ class Region:
         else:
             raise AttributeError(
                 &#34;need to specify either a polar cap, a limited latitude &#34;
-                &#34;longitude region, or a file with a mask&#34;
+                &#34;longitude region, or a file with a mask&#34;,
             )
 
     @validator(&#34;phi_max&#34;)
@@ -96,7 +100,7 @@ class Region:
         if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
                 f&#34;phi_max cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;,  # noqa: E501
             )
         return v
 
@@ -107,7 +111,7 @@ class Region:
         if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
                 f&#34;phi_min cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;,  # noqa: E501
             )
         return v
 
@@ -118,7 +122,7 @@ class Region:
         if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
                 &#34;theta_max cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;,
             )
         return v
 
@@ -129,7 +133,7 @@ class Region:
         if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
                 &#34;theta_min cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;,
             )
         return v</code></pre>
 </details>
@@ -148,14 +152,14 @@ class Region:
 <span>(</span><span>*, gap: bool = False, mask_name: str = '', phi_max: float = 6.283185307179586, phi_min: float = 0.0, theta_max: float = 3.141592653589793, theta_min: float = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>identifies and creates the appropriate Slepian region for the sphere</p></div>
+<div class="desc"><p>identifies and creates the appropriate Slepian region for the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
-    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere&#34;&#34;&#34;
+    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
 
     gap: bool = False
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -174,11 +178,12 @@ class Region:
         self._identify_region()
 
     def _identify_region(self) -&gt; None:
-        &#34;&#34;&#34;
-        identify region type based on the angle inputs or a mask name
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
         if sleplet._bool_methods.is_polar_cap(
-            self.phi_min, self.phi_max, self.theta_min, self.theta_max
+            self.phi_min,
+            self.phi_max,
+            self.theta_min,
+            self.theta_max,
         ):
             self.region_type = &#34;polar&#34;
             self.name_ending = (
@@ -187,7 +192,10 @@ class Region:
             )
 
         elif sleplet._bool_methods.is_limited_lat_lon(
-            self.phi_min, self.phi_max, self.theta_min, self.theta_max
+            self.phi_min,
+            self.phi_max,
+            self.theta_min,
+            self.theta_max,
         ):
             self.region_type = &#34;lim_lat_lon&#34;
             self.name_ending = (
@@ -204,7 +212,7 @@ class Region:
         else:
             raise AttributeError(
                 &#34;need to specify either a polar cap, a limited latitude &#34;
-                &#34;longitude region, or a file with a mask&#34;
+                &#34;longitude region, or a file with a mask&#34;,
             )
 
     @validator(&#34;phi_max&#34;)
@@ -214,7 +222,7 @@ class Region:
         if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
                 f&#34;phi_max cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;,  # noqa: E501
             )
         return v
 
@@ -225,7 +233,7 @@ class Region:
         if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
                 f&#34;phi_min cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;,  # noqa: E501
             )
         return v
 
@@ -236,7 +244,7 @@ class Region:
         if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
                 &#34;theta_max cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;,
             )
         return v
 
@@ -247,7 +255,7 @@ class Region:
         if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
                 &#34;theta_min cannot be greater than &#34;
-                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;,
             )
         return v</code></pre>
 </details>

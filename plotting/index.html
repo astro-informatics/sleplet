@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.plotting API documentation</title>
-<meta name="description" content="classes to create plots on the sphere or mesh" />
+<meta name="description" content="classes to create plots on the sphere or mesh." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,14 +22,12 @@
 <h1 class="title">Module <code>sleplet.plotting</code></h1>
 </header>
 <section id="section-intro">
-<p>classes to create plots on the sphere or mesh</p>
+<p>classes to create plots on the sphere or mesh.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;
-classes to create plots on the sphere or mesh
-&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;classes to create plots on the sphere or mesh.&#34;&#34;&#34;
 
 from ._create_plot_mesh import PlotMesh
 from ._create_plot_sphere import PlotSphere
@@ -54,14 +52,14 @@ __all__ = [
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, filename: str, f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, amplitude: float | None = None, colour: matplotlib.colors.LinearSegmentedColormap = &lt;matplotlib.colors.LinearSegmentedColormap object&gt;, normalise: bool = True, region: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>creates surface mesh plot via <code>plotly</code></p></div>
+<div class="desc"><p>creates surface mesh plot via <code>plotly</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
-    &#34;&#34;&#34;creates surface mesh plot via `plotly`&#34;&#34;&#34;
+    &#34;&#34;&#34;creates surface mesh plot via `plotly`.&#34;&#34;&#34;
 
     mesh: sleplet.meshes.mesh.Mesh
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -84,7 +82,7 @@ class PlotMesh:
             self.filename += &#34;_norm&#34;
 
     def execute(self) -&gt; None:
-        &#34;&#34;&#34;TODO creates 3d plotly mesh plot&#34;&#34;&#34;
+        &#34;&#34;&#34;TODO creates 3d plotly mesh plot.&#34;&#34;&#34;
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
 
@@ -94,7 +92,9 @@ class PlotMesh:
 
         # pick largest tick max value
         tick_mark = sleplet._plotly_methods.create_tick_mark(
-            vmin, vmax, amplitude=self.amplitude
+            vmin,
+            vmax,
+            amplitude=self.amplitude,
         )
 
         data = [
@@ -120,7 +120,7 @@ class PlotMesh:
                 colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
-            )
+            ),
         ]
 
         layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
@@ -137,27 +137,27 @@ class PlotMesh:
             fig.write_image(filename, engine=&#34;kaleido&#34;)
 
     def _prepare_field(
-        self, f: npt.NDArray[np.complex_ | np.float_]
+        self,
+        f: npt.NDArray[np.complex_ | np.float_],
     ) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;
-        scales the field before plotting
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;scales the field before plotting.&#34;&#34;&#34;
         return sleplet.plot_methods._normalise_function(
             sleplet._mesh_methods.average_functions_on_vertices_to_faces(
-                self.mesh.faces, f
+                self.mesh.faces,
+                f,
             ),
             normalise=self.normalise,
         )
 
     def _set_outside_region_to_minimum(
-        self, f: npt.NDArray[np.float_]
+        self,
+        f: npt.NDArray[np.float_],
     ) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;
-        for the Slepian region set the outisde area to negative infinity
-        hence it is clear we are only interested in the coloured region
+        &#34;&#34;&#34;for the Slepian region set the outisde area to negative infinity
+        hence it is clear we are only interested in the coloured region.
         &#34;&#34;&#34;
         region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(
-            self.mesh
+            self.mesh,
         )
         return np.where(region_on_faces, f, MESH_UNSEEN)</code></pre>
 </details>
@@ -198,13 +198,13 @@ class PlotMesh:
 <span>def <span class="ident">execute</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO creates 3d plotly mesh plot</p></div>
+<div class="desc"><p>TODO creates 3d plotly mesh plot.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def execute(self) -&gt; None:
-    &#34;&#34;&#34;TODO creates 3d plotly mesh plot&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO creates 3d plotly mesh plot.&#34;&#34;&#34;
     vmin, vmax = self.f.min(), self.f.max()
     f = self._prepare_field(self.f)
 
@@ -214,7 +214,9 @@ class PlotMesh:
 
     # pick largest tick max value
     tick_mark = sleplet._plotly_methods.create_tick_mark(
-        vmin, vmax, amplitude=self.amplitude
+        vmin,
+        vmax,
+        amplitude=self.amplitude,
     )
 
     data = [
@@ -240,7 +242,7 @@ class PlotMesh:
             colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
             lighting=Lighting(ambient=1),
             reversescale=True,
-        )
+        ),
     ]
 
     layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
@@ -264,14 +266,14 @@ class PlotMesh:
 <span>(</span><span>f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], L: int, filename: str, *, amplitude: float | None = None, annotations: list[dict] = &lt;factory&gt;, normalise: bool = True, plot_type: str = 'real', reality: bool = False, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, spin: int = 0, upsample: bool = True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>creates surface sphere plot via <code>plotly</code></p></div>
+<div class="desc"><p>creates surface sphere plot via <code>plotly</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
-    &#34;&#34;&#34;creates surface sphere plot via `plotly`&#34;&#34;&#34;
+    &#34;&#34;&#34;creates surface sphere plot via `plotly`.&#34;&#34;&#34;
 
     f: npt.NDArray[np.complex_ | np.float_]
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -310,18 +312,22 @@ class PlotSphere:
             self.filename += &#34;_norm&#34;
 
     def execute(self) -&gt; None:
-        &#34;&#34;&#34;TODO creates basic plotly plot rather than matplotlib&#34;&#34;&#34;
+        &#34;&#34;&#34;TODO creates basic plotly plot rather than matplotlib.&#34;&#34;&#34;
         f = self._prepare_field(self.f)
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
+            f,
+            self.resolution,
+            method=sleplet._vars.SAMPLING_SCHEME,
         )
 
         if isinstance(self.region, sleplet.slepian.region.Region):
             # make plot area clearer
             f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
-                f_plot, self.resolution, self.region
+                f_plot,
+                self.resolution,
+                self.region,
             )
 
         # appropriate zoom in on north pole
@@ -329,7 +335,9 @@ class PlotSphere:
 
         # pick largest tick max value
         tick_mark = sleplet._plotly_methods.create_tick_mark(
-            vmin, vmax, amplitude=self.amplitude
+            vmin,
+            vmax,
+            amplitude=self.amplitude,
         )
 
         data = [
@@ -342,16 +350,18 @@ class PlotSphere:
                 cmid=0.5 if self.normalise else 0,
                 cmin=0 if self.normalise else -tick_mark,
                 colorbar=sleplet._plotly_methods.create_colour_bar(
-                    tick_mark, normalise=self.normalise
+                    tick_mark,
+                    normalise=self.normalise,
                 ),
                 colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
-            )
+            ),
         ]
 
         layout = sleplet._plotly_methods.create_layout(
-            camera, annotations=self.annotations
+            camera,
+            annotations=self.annotations,
         )
 
         fig = Figure(data=data, layout=layout)
@@ -383,9 +393,7 @@ class PlotSphere:
         float,
         float,
     ]:
-        &#34;&#34;&#34;
-        function which creates the data for the matplotlib/plotly plot
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;function which creates the data for the matplotlib/plotly plot.&#34;&#34;&#34;
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
         if method == &#34;MW_pole&#34;:
@@ -428,7 +436,10 @@ class PlotSphere:
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
-                    f_normalised, n_phi, f_normalised[:, 0], axis=1
+                    f_normalised,
+                    n_phi,
+                    f_normalised[:, 0],
+                    axis=1,
                 )
             thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
             phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
@@ -443,11 +454,10 @@ class PlotSphere:
         return x, y, z, f_plot, vmin, vmax
 
     def _prepare_field(
-        self, f: npt.NDArray[np.complex_ | np.float_]
+        self,
+        f: npt.NDArray[np.complex_ | np.float_],
     ) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;
-        boosts, forces plot type and then scales the field before plotting
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;boosts, forces plot type and then scales the field before plotting.&#34;&#34;&#34;
         boosted_field = sleplet.plot_methods._boost_field(
             f,
             self.L,
@@ -457,10 +467,12 @@ class PlotSphere:
             upsample=self.upsample,
         )
         field_space = sleplet.plot_methods._create_plot_type(
-            boosted_field, self.plot_type
+            boosted_field,
+            self.plot_type,
         )
         return sleplet.plot_methods._normalise_function(
-            field_space, normalise=self.normalise
+            field_space,
+            normalise=self.normalise,
         )</code></pre>
 </details>
 <h3>Class variables</h3>
@@ -516,24 +528,28 @@ class PlotSphere:
 <span>def <span class="ident">execute</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO creates basic plotly plot rather than matplotlib</p></div>
+<div class="desc"><p>TODO creates basic plotly plot rather than matplotlib.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def execute(self) -&gt; None:
-    &#34;&#34;&#34;TODO creates basic plotly plot rather than matplotlib&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO creates basic plotly plot rather than matplotlib.&#34;&#34;&#34;
     f = self._prepare_field(self.f)
 
     # get values from the setup
     x, y, z, f_plot, vmin, vmax = self._setup_plot(
-        f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
+        f,
+        self.resolution,
+        method=sleplet._vars.SAMPLING_SCHEME,
     )
 
     if isinstance(self.region, sleplet.slepian.region.Region):
         # make plot area clearer
         f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
-            f_plot, self.resolution, self.region
+            f_plot,
+            self.resolution,
+            self.region,
         )
 
     # appropriate zoom in on north pole
@@ -541,7 +557,9 @@ class PlotSphere:
 
     # pick largest tick max value
     tick_mark = sleplet._plotly_methods.create_tick_mark(
-        vmin, vmax, amplitude=self.amplitude
+        vmin,
+        vmax,
+        amplitude=self.amplitude,
     )
 
     data = [
@@ -554,16 +572,18 @@ class PlotSphere:
             cmid=0.5 if self.normalise else 0,
             cmin=0 if self.normalise else -tick_mark,
             colorbar=sleplet._plotly_methods.create_colour_bar(
-                tick_mark, normalise=self.normalise
+                tick_mark,
+                normalise=self.normalise,
             ),
             colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
             lighting=Lighting(ambient=1),
             reversescale=True,
-        )
+        ),
     ]
 
     layout = sleplet._plotly_methods.create_layout(
-        camera, annotations=self.annotations
+        camera,
+        annotations=self.annotations,
     )
 
     fig = Figure(data=data, layout=layout)

@@ -37,7 +37,7 @@ import sleplet.functions.f_p
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianIdentity(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -60,7 +60,7 @@ class SlepianIdentity(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )</code></pre>
 </details>
 </section>
@@ -78,14 +78,14 @@ class SlepianIdentity(sleplet.functions.f_p.F_P):
 <span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianIdentity(sleplet.functions.f_p.F_P):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -108,7 +108,7 @@ class SlepianIdentity(sleplet.functions.f_p.F_P):
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )</code></pre>
 </details>
 <h3>Ancestors</h3>

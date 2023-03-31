@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.meshes.harmonic_coefficients API documentation</title>
-<meta name="description" content="classes of functions on the mesh created in Fourier space" />
+<meta name="description" content="classes of functions on the mesh created in Fourier space." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,14 +22,12 @@
 <h1 class="title">Module <code>sleplet.meshes.harmonic_coefficients</code></h1>
 </header>
 <section id="section-intro">
-<p>classes of functions on the mesh created in Fourier space</p>
+<p>classes of functions on the mesh created in Fourier space.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;
-classes of functions on the mesh created in Fourier space
-&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;classes of functions on the mesh created in Fourier space.&#34;&#34;&#34;
 
 from .mesh_basis_functions import MeshBasisFunctions
 from .mesh_field import MeshField
@@ -71,16 +69,16 @@ __all__ = [
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshBasisFunctions(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     rank: int = 0
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -90,12 +88,10 @@ class MeshBasisFunctions(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        compute field on the vertices of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;compute field on the vertices of the mesh.&#34;&#34;&#34;
         sleplet.logger.info(
             f&#34;Mesh eigenvalue {self.rank}: &#34;
-            f&#34;{self.mesh.mesh_eigenvalues[self.rank]:e}&#34;
+            f&#34;{self.mesh.mesh_eigenvalues[self.rank]:e}&#34;,
         )
         basis_function = self.mesh.basis_functions[self.rank]
         return sleplet.harmonic_methods.mesh_forward(self.mesh, basis_function)
@@ -115,14 +111,12 @@ class MeshBasisFunctions(
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
-                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
                 )
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -&gt; None:
-        &#34;&#34;&#34;
-        checks the requested rank is valid
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;checks the requested rank is valid.&#34;&#34;&#34;
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] &gt; limit:
@@ -165,22 +159,20 @@ class MeshBasisFunctions(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class MeshField(sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        compute field on the vertices of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;compute field on the vertices of the mesh.&#34;&#34;&#34;
         field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
         return sleplet.harmonic_methods.mesh_forward(self.mesh, field)
 
@@ -190,7 +182,7 @@ class MeshField(sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficien
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -215,16 +207,16 @@ class MeshField(sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficien
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = 10)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshNoiseField(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = 10
     &#34;&#34;&#34;TODO&#34;&#34;&#34;

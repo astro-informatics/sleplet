@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.meshes.slepian_coefficients API documentation</title>
-<meta name="description" content="classes of functions on the sphere created in Fourier space" />
+<meta name="description" content="classes of functions on the sphere created in Fourier space." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,14 +22,12 @@
 <h1 class="title">Module <code>sleplet.meshes.slepian_coefficients</code></h1>
 </header>
 <section id="section-intro">
-<p>classes of functions on the sphere created in Fourier space</p>
+<p>classes of functions on the sphere created in Fourier space.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;
-classes of functions on the sphere created in Fourier space
-&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;classes of functions on the sphere created in Fourier space.&#34;&#34;&#34;
 
 from .mesh_slepian_field import MeshSlepianField
 from .mesh_slepian_functions import MeshSlepianFunctions
@@ -83,26 +81,25 @@ __all__ = [
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class MeshSlepianField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        compute field on the vertices of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;compute field on the vertices of the mesh.&#34;&#34;&#34;
         mf = sleplet.meshes.harmonic_coefficients.mesh_field.MeshField(
-            self.mesh, region=True
+            self.mesh,
+            region=True,
         )
         return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
@@ -115,7 +112,7 @@ class MeshSlepianField(
     def _setup_args(self) -&gt; None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f&#34;{self.__class__.__name__} does not support extra arguments&#34;
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
             )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -140,16 +137,16 @@ class MeshSlepianField(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianFunctions(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     rank: int = 0
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -158,12 +155,10 @@ class MeshSlepianFunctions(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        &#34;&#34;&#34;
-        compute field on the vertices of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;compute field on the vertices of the mesh.&#34;&#34;&#34;
         sleplet.logger.info(
             f&#34;Slepian eigenvalue {self.rank}: &#34;
-            f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;
+            f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;,
         )
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
         return sleplet.slepian_methods.slepian_mesh_forward(
@@ -186,14 +181,12 @@ class MeshSlepianFunctions(
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
-                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
                 )
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -&gt; None:
-        &#34;&#34;&#34;
-        checks the requested rank is valid
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;checks the requested rank is valid.&#34;&#34;&#34;
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] &gt; limit:
@@ -236,16 +229,16 @@ class MeshSlepianFunctions(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = -5)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianNoiseField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     SNR: float = -5
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -255,10 +248,13 @@ class MeshSlepianNoiseField(
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
-            self.mesh, region=True
+            self.mesh,
+            region=True,
         )
         noise = sleplet.noise._create_slepian_mesh_noise(
-            self.mesh_slepian, smf.coefficients, self.SNR
+            self.mesh_slepian,
+            smf.coefficients,
+            self.SNR,
         )
         sleplet.noise.compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
         return noise
@@ -311,16 +307,16 @@ class MeshSlepianNoiseField(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, B: int = 3, j_min: int = 2, j: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWaveletCoefficients(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -357,14 +353,14 @@ class MeshSlepianWaveletCoefficients(
     def _create_wavelet_coefficients(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        &#34;&#34;&#34;
-        computes wavelet coefficients in Slepian space
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
         smw = sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets(  # noqa: E501
-            self.mesh, B=self.B, j_min=self.j_min
+            self.mesh,
+            B=self.B,
+            j_min=self.j_min,
         )
         smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
-            self.mesh
+            self.mesh,
         )
         wavelets = smw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
@@ -377,13 +373,15 @@ class MeshSlepianWaveletCoefficients(
     @validator(&#34;j&#34;)
     def _check_j(cls, v, values):
         j_max = pys2let_j_max(
-            values[&#34;B&#34;], values[&#34;mesh&#34;].mesh_eigenvalues.shape[0], values[&#34;j_min&#34;]
+            values[&#34;B&#34;],
+            values[&#34;mesh&#34;].mesh_eigenvalues.shape[0],
+            values[&#34;j_min&#34;],
         )
         if v is not None and v &lt; 0:
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>
@@ -424,16 +422,16 @@ class MeshSlepianWaveletCoefficients(
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, B: int = 3, j_min: int = 2, j: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>TODO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWavelets(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
 
     B: int = 3
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -468,23 +466,25 @@ class MeshSlepianWavelets(
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;
-        creates the Slepian wavelets of the mesh
-        &#34;&#34;&#34;
+        &#34;&#34;&#34;creates the Slepian wavelets of the mesh.&#34;&#34;&#34;
         return sleplet.wavelet_methods.create_kappas(
-            self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
+            self.mesh.mesh_eigenvalues.shape[0],
+            self.B,
+            self.j_min,
         )
 
     @validator(&#34;j&#34;)
     def _check_j(cls, v, values) -&gt; int | None:
         j_max = pys2let_j_max(
-            values[&#34;B&#34;], values[&#34;mesh&#34;].mesh_eigenvalues.shape[0], values[&#34;j_min&#34;]
+            values[&#34;B&#34;],
+            values[&#34;mesh&#34;].mesh_eigenvalues.shape[0],
+            values[&#34;j_min&#34;],
         )
         if v is not None and v &lt; 0:
             raise ValueError(&#34;j should be positive&#34;)
         if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
             raise ValueError(
-                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
             )
         return v</code></pre>
 </details>
