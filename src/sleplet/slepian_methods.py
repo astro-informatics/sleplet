@@ -9,6 +9,7 @@ import sleplet
 import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes._mesh_slepian_decomposition
+import sleplet.meshes.mesh_slepian
 import sleplet.slepian._slepian_decomposition
 import sleplet.slepian.region
 import sleplet.slepian.slepian_arbitrary
@@ -150,7 +151,7 @@ def _compute_s_p_omega_prime(
 
 
 def slepian_mesh_forward(
-    mesh_slepian: sleplet.meshes.MeshSlepian,
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
     *,
     u: npt.NDArray[np.complex_ | np.float_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
