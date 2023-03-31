@@ -16,7 +16,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Cache tox
+      - name: Cache tox/pooch
         uses: actions/cache@v3
         with:
           path: |
