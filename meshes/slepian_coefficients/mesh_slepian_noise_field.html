@@ -30,28 +30,40 @@
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
-from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.meshes.slepian_coefficients.mesh_slepian_field
+import sleplet.noise
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshSlepianNoiseField(MeshSlepianCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianNoiseField(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     SNR: float = -5
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        smf = MeshSlepianField(self.mesh, region=True)
-        noise = create_slepian_mesh_noise(self.mesh_slepian, smf.coefficients, self.SNR)
-        compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
+        smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
+            self.mesh, region=True
+        )
+        noise = sleplet.noise._create_slepian_mesh_noise(
+            self.mesh_slepian, smf.coefficients, self.SNR
+        )
+        sleplet.noise.compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
         return noise
 
     def _create_name(self) -&gt; str:
-        return f&#34;slepian_{self.mesh.name}_noise_field{filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        return (
+            f&#34;slepian_{self.mesh.name}_noise_field&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        )
 
     def _set_reality(self) -&gt; bool:
         return False
@@ -78,29 +90,41 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
 <dl>
 <dt id="sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field.MeshSlepianNoiseField"><code class="flex name class">
 <span>class <span class="ident">MeshSlepianNoiseField</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="../classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = -5)</span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = -5)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MeshSlepianNoiseField(mesh: sleplet.meshes.classes.mesh.Mesh, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = -5)</p></div>
+<div class="desc"><p>TODO</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation, kw_only=True)
-class MeshSlepianNoiseField(MeshSlepianCoefficients):
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianNoiseField(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     SNR: float = -5
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
-        smf = MeshSlepianField(self.mesh, region=True)
-        noise = create_slepian_mesh_noise(self.mesh_slepian, smf.coefficients, self.SNR)
-        compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
+        smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
+            self.mesh, region=True
+        )
+        noise = sleplet.noise._create_slepian_mesh_noise(
+            self.mesh_slepian, smf.coefficients, self.SNR
+        )
+        sleplet.noise.compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
         return noise
 
     def _create_name(self) -&gt; str:
-        return f&#34;slepian_{self.mesh.name}_noise_field{filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        return (
+            f&#34;slepian_{self.mesh.name}_noise_field&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        )
 
     def _set_reality(self) -&gt; bool:
         return False
@@ -124,9 +148,20 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
 <dl>
 <dt id="sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field.MeshSlepianNoiseField.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="../mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>

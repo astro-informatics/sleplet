@@ -31,15 +31,20 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from sleplet.utils.harmonic_methods import mesh_forward
-from sleplet.utils.validation import Validation
+import sleplet
+import sleplet._validation
+import sleplet.harmonic_methods
+import sleplet.meshes.mesh_harmonic_coefficients
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshBasisFunctions(MeshHarmonicCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshBasisFunctions(
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     rank: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._validate_rank()
@@ -49,12 +54,12 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         &#34;&#34;&#34;
         compute field on the vertices of the mesh
         &#34;&#34;&#34;
-        logger.info(
+        sleplet.logger.info(
             f&#34;Mesh eigenvalue {self.rank}: &#34;
             f&#34;{self.mesh.mesh_eigenvalues[self.rank]:e}&#34;
         )
         basis_function = self.mesh.basis_functions[self.rank]
-        return mesh_forward(self.mesh, basis_function)
+        return sleplet.harmonic_methods.mesh_forward(self.mesh, basis_function)
 
     def _create_name(self) -&gt; str:
         return (
@@ -85,7 +90,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
                 raise ValueError(f&#34;rank should be less than or equal to {limit}&#34;)
 
     @validator(&#34;rank&#34;)
-    def check_rank(cls, v):
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError(&#34;rank should be an integer&#34;)
         if v &lt; 0:
@@ -104,17 +109,22 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
 <dl>
 <dt id="sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions"><code class="flex name class">
 <span>class <span class="ident">MeshBasisFunctions</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="../classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MeshBasisFunctions(mesh: sleplet.meshes.classes.mesh.Mesh, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</p></div>
+<div class="desc"><p>TODO</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation, kw_only=True)
-class MeshBasisFunctions(MeshHarmonicCoefficients):
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshBasisFunctions(
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     rank: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._validate_rank()
@@ -124,12 +134,12 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         &#34;&#34;&#34;
         compute field on the vertices of the mesh
         &#34;&#34;&#34;
-        logger.info(
+        sleplet.logger.info(
             f&#34;Mesh eigenvalue {self.rank}: &#34;
             f&#34;{self.mesh.mesh_eigenvalues[self.rank]:e}&#34;
         )
         basis_function = self.mesh.basis_functions[self.rank]
-        return mesh_forward(self.mesh, basis_function)
+        return sleplet.harmonic_methods.mesh_forward(self.mesh, basis_function)
 
     def _create_name(self) -&gt; str:
         return (
@@ -160,7 +170,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
                 raise ValueError(f&#34;rank should be less than or equal to {limit}&#34;)
 
     @validator(&#34;rank&#34;)
-    def check_rank(cls, v):
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError(&#34;rank should be an integer&#34;)
         if v &lt; 0:
@@ -176,30 +186,20 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
 <dl>
 <dt id="sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions.check_rank"><code class="name flex">
-<span>def <span class="ident">check_rank</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;rank&#34;)
-def check_rank(cls, v):
-    if not isinstance(v, int):
-        raise TypeError(&#34;rank should be an integer&#34;)
-    if v &lt; 0:
-        raise ValueError(&#34;rank cannot be negative&#34;)
-    return v</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="../mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.extra_args" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.mesh" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.noise" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.region" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -220,7 +220,6 @@ def check_rank(cls, v):
 <li>
 <h4><code><a title="sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions" href="#sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions">MeshBasisFunctions</a></code></h4>
 <ul class="">
-<li><code><a title="sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions.check_rank" href="#sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions.check_rank">check_rank</a></code></li>
 <li><code><a title="sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions.rank" href="#sleplet.meshes.harmonic_coefficients.mesh_basis_functions.MeshBasisFunctions.rank">rank</a></code></li>
 </ul>
 </li>

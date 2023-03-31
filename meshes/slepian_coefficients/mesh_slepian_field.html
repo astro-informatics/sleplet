@@ -30,14 +30,18 @@
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.utils.slepian_methods import slepian_mesh_forward
-from sleplet.utils.validation import Validation
+import sleplet._validation
+import sleplet.meshes.harmonic_coefficients.mesh_field
+import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.slepian_methods
 
 
-@dataclass(config=Validation)
-class MeshSlepianField(MeshSlepianCoefficients):
+@dataclass(config=sleplet._validation.Validation)
+class MeshSlepianField(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
@@ -45,8 +49,10 @@ class MeshSlepianField(MeshSlepianCoefficients):
         &#34;&#34;&#34;
         compute field on the vertices of the mesh
         &#34;&#34;&#34;
-        mf = MeshField(self.mesh, region=True)
-        return slepian_mesh_forward(
+        mf = sleplet.meshes.harmonic_coefficients.mesh_field.MeshField(
+            self.mesh, region=True
+        )
+        return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
             u_i=mf.coefficients,
         )
@@ -72,16 +78,20 @@ class MeshSlepianField(MeshSlepianCoefficients):
 <dl>
 <dt id="sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField"><code class="flex name class">
 <span>class <span class="ident">MeshSlepianField</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="../classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MeshSlepianField(mesh: sleplet.meshes.classes.mesh.Mesh, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</p></div>
+<div class="desc"><p>TODO</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation)
-class MeshSlepianField(MeshSlepianCoefficients):
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class MeshSlepianField(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
@@ -89,8 +99,10 @@ class MeshSlepianField(MeshSlepianCoefficients):
         &#34;&#34;&#34;
         compute field on the vertices of the mesh
         &#34;&#34;&#34;
-        mf = MeshField(self.mesh, region=True)
-        return slepian_mesh_forward(
+        mf = sleplet.meshes.harmonic_coefficients.mesh_field.MeshField(
+            self.mesh, region=True
+        )
+        return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
             u_i=mf.coefficients,
         )
@@ -108,6 +120,17 @@ class MeshSlepianField(MeshSlepianCoefficients):
 <ul class="hlist">
 <li><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="../mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></li>
 <li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="../mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
 </ul>
 </dd>
 </dl>

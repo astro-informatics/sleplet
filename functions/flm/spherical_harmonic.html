@@ -32,26 +32,30 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.functions.f_lm import F_LM
-from sleplet.utils.harmonic_methods import create_spherical_harmonic
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.functions.f_lm
+import sleplet.harmonic_methods
 
 
-@dataclass(config=Validation, kw_only=True)
-class SphericalHarmonic(F_LM):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SphericalHarmonic(sleplet.functions.f_lm.F_LM):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     ell: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     m: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         ind = ssht.elm2ind(self.ell, self.m)
-        return create_spherical_harmonic(self.L, ind)
+        return sleplet.harmonic_methods._create_spherical_harmonic(self.L, ind)
 
     def _create_name(self) -&gt; str:
         return (
-            f&#34;{convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
-            f&#34;{filename_args(self.ell, &#39;l&#39;)}&#34;
-            f&#34;{filename_args(self.m, &#39;m&#39;)}&#34;
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.ell, &#39;l&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.m, &#39;m&#39;)}&#34;
         )
 
     def _set_reality(self) -&gt; bool:
@@ -68,7 +72,7 @@ class SphericalHarmonic(F_LM):
             self.ell, self.m = self.extra_args
 
     @validator(&#34;ell&#34;)
-    def check_ell(cls, v, values):
+    def _check_ell(cls, v, values):
         if not isinstance(v, int):
             raise TypeError(&#34;ell should be an integer&#34;)
         if v &lt; 0:
@@ -78,7 +82,7 @@ class SphericalHarmonic(F_LM):
         return v
 
     @validator(&#34;m&#34;)
-    def check_m(cls, v, values):
+    def _check_m(cls, v, values):
         if not isinstance(v, int):
             raise TypeError(&#34;m should be an integer&#34;)
         if abs(v) &gt; values[&#34;ell&#34;]:
@@ -97,28 +101,32 @@ class SphericalHarmonic(F_LM):
 <dl>
 <dt id="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic"><code class="flex name class">
 <span>class <span class="ident">SphericalHarmonic</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.utils.region.Region" href="../../utils/region.html#sleplet.utils.region.Region">Region</a> | None = None, smoothing: int | None = None, ell: int = 0, m: int = 0)</span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, ell: int = 0, m: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>SphericalHarmonic(L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: sleplet.utils.region.Region | None = None, smoothing: int | None = None, ell: int = 0, m: int = 0)</p></div>
+<div class="desc"><p>TODO</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation, kw_only=True)
-class SphericalHarmonic(F_LM):
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SphericalHarmonic(sleplet.functions.f_lm.F_LM):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     ell: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     m: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
         ind = ssht.elm2ind(self.ell, self.m)
-        return create_spherical_harmonic(self.L, ind)
+        return sleplet.harmonic_methods._create_spherical_harmonic(self.L, ind)
 
     def _create_name(self) -&gt; str:
         return (
-            f&#34;{convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
-            f&#34;{filename_args(self.ell, &#39;l&#39;)}&#34;
-            f&#34;{filename_args(self.m, &#39;m&#39;)}&#34;
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.ell, &#39;l&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.m, &#39;m&#39;)}&#34;
         )
 
     def _set_reality(self) -&gt; bool:
@@ -135,7 +143,7 @@ class SphericalHarmonic(F_LM):
             self.ell, self.m = self.extra_args
 
     @validator(&#34;ell&#34;)
-    def check_ell(cls, v, values):
+    def _check_ell(cls, v, values):
         if not isinstance(v, int):
             raise TypeError(&#34;ell should be an integer&#34;)
         if v &lt; 0:
@@ -145,7 +153,7 @@ class SphericalHarmonic(F_LM):
         return v
 
     @validator(&#34;m&#34;)
-    def check_m(cls, v, values):
+    def _check_m(cls, v, values):
         if not isinstance(v, int):
             raise TypeError(&#34;m should be an integer&#34;)
         if abs(v) &gt; values[&#34;ell&#34;]:
@@ -161,59 +169,25 @@ class SphericalHarmonic(F_LM):
 <dl>
 <dt id="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.ell"><code class="name">var <span class="ident">ell</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 <dt id="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.m"><code class="name">var <span class="ident">m</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.check_ell"><code class="name flex">
-<span>def <span class="ident">check_ell</span></span>(<span>v, values)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;ell&#34;)
-def check_ell(cls, v, values):
-    if not isinstance(v, int):
-        raise TypeError(&#34;ell should be an integer&#34;)
-    if v &lt; 0:
-        raise ValueError(&#34;ell should be positive&#34;)
-    if v &gt;= values[&#34;L&#34;]:
-        raise ValueError(&#34;ell should be less than or equal to L&#34;)
-    return v</code></pre>
-</details>
-</dd>
-<dt id="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.check_m"><code class="name flex">
-<span>def <span class="ident">check_m</span></span>(<span>v, values)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;m&#34;)
-def check_m(cls, v, values):
-    if not isinstance(v, int):
-        raise TypeError(&#34;m should be an integer&#34;)
-    if abs(v) &gt; values[&#34;ell&#34;]:
-        raise ValueError(&#34;the magnitude of m should be less than ell&#34;)
-    return v</code></pre>
-</details>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="sleplet.functions.f_lm.F_LM" href="../f_lm.html#sleplet.functions.f_lm.F_LM">F_LM</a></b></code>:
 <ul class="hlist">
+<li><code><a title="sleplet.functions.f_lm.F_LM.L" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.convolve" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.extra_args" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.noise" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.region" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
 <li><code><a title="sleplet.functions.f_lm.F_LM.rotate" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.smoothing" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.translate" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
 </ul>
 </li>
 </ul>
@@ -237,8 +211,6 @@ def check_m(cls, v, values):
 <li>
 <h4><code><a title="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic" href="#sleplet.functions.flm.spherical_harmonic.SphericalHarmonic">SphericalHarmonic</a></code></h4>
 <ul class="">
-<li><code><a title="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.check_ell" href="#sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.check_ell">check_ell</a></code></li>
-<li><code><a title="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.check_m" href="#sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.check_m">check_m</a></code></li>
 <li><code><a title="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.ell" href="#sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.ell">ell</a></code></li>
 <li><code><a title="sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.m" href="#sleplet.functions.flm.spherical_harmonic.SphericalHarmonic.m">m</a></code></li>
 </ul>

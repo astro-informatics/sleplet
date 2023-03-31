@@ -34,21 +34,28 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.validation import Validation
+import sleplet._mask_methods
+import sleplet._string_methods
+import sleplet._validation
+import sleplet._vars
+import sleplet.meshes.mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = &#34;slepian&#34;
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    mesh: Mesh
+    &#34;&#34;&#34;abstract parent class to handle Fourier/Slepian coefficients on the mesh&#34;&#34;&#34;
+
+    mesh: sleplet.meshes.mesh.Mesh
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     _: KW_ONLY
     extra_args: list[int] | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     noise: float | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     region: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._setup_args()
@@ -64,17 +71,19 @@ class MeshCoefficients:
         if self.region and &#34;slepian&#34; not in self.mesh.name:
             self.name += &#34;_region&#34;
         if self.noise is not None:
-            self.name += f&#34;{filename_args(self.noise, &#39;noise&#39;)}&#34;
+            self.name += f&#34;{sleplet._string_methods.filename_args(self.noise, &#39;noise&#39;)}&#34;
         if self.mesh.zoom:
             self.name += &#34;_zoom&#34;
 
     @validator(&#34;coefficients&#34;, check_fields=False)
-    def check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):
         if (
             values[&#34;region&#34;]
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
-            v = ensure_masked_bandlimit_mesh_signal(values[&#34;mesh&#34;], v)
+            v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
+                values[&#34;mesh&#34;], v
+            )
         return v
 
     @abstractmethod
@@ -120,21 +129,27 @@ class MeshCoefficients:
 <dl>
 <dt id="sleplet.meshes.mesh_coefficients.MeshCoefficients"><code class="flex name class">
 <span>class <span class="ident">MeshCoefficients</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MeshCoefficients(mesh: sleplet.meshes.classes.mesh.Mesh, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</p></div>
+<div class="desc"><p>abstract parent class to handle Fourier/Slepian coefficients on the mesh</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation)
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    mesh: Mesh
+    &#34;&#34;&#34;abstract parent class to handle Fourier/Slepian coefficients on the mesh&#34;&#34;&#34;
+
+    mesh: sleplet.meshes.mesh.Mesh
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     _: KW_ONLY
     extra_args: list[int] | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     noise: float | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     region: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._setup_args()
@@ -150,17 +165,19 @@ class MeshCoefficients:
         if self.region and &#34;slepian&#34; not in self.mesh.name:
             self.name += &#34;_region&#34;
         if self.noise is not None:
-            self.name += f&#34;{filename_args(self.noise, &#39;noise&#39;)}&#34;
+            self.name += f&#34;{sleplet._string_methods.filename_args(self.noise, &#39;noise&#39;)}&#34;
         if self.mesh.zoom:
             self.name += &#34;_zoom&#34;
 
     @validator(&#34;coefficients&#34;, check_fields=False)
-    def check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):
         if (
             values[&#34;region&#34;]
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
-            v = ensure_masked_bandlimit_mesh_signal(values[&#34;mesh&#34;], v)
+            v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
+                values[&#34;mesh&#34;], v
+            )
         return v
 
     @abstractmethod
@@ -203,41 +220,19 @@ class MeshCoefficients:
 <dl>
 <dt id="sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args"><code class="name">var <span class="ident">extra_args</span> : list[int] | None</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh"><code class="name">var <span class="ident">mesh</span> : <a title="sleplet.meshes.classes.mesh.Mesh" href="classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a></code></dt>
+<dt id="sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh"><code class="name">var <span class="ident">mesh</span> : <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 <dt id="sleplet.meshes.mesh_coefficients.MeshCoefficients.noise"><code class="name">var <span class="ident">noise</span> : float | None</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 <dt id="sleplet.meshes.mesh_coefficients.MeshCoefficients.region"><code class="name">var <span class="ident">region</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.meshes.mesh_coefficients.MeshCoefficients.check_coefficients"><code class="name flex">
-<span>def <span class="ident">check_coefficients</span></span>(<span>v, values)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;coefficients&#34;, check_fields=False)
-def check_coefficients(cls, v, values):
-    if (
-        values[&#34;region&#34;]
-        and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
-    ):
-        v = ensure_masked_bandlimit_mesh_signal(values[&#34;mesh&#34;], v)
-    return v</code></pre>
-</details>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
 </dd>
@@ -260,7 +255,6 @@ def check_coefficients(cls, v, values):
 <li>
 <h4><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></code></h4>
 <ul class="">
-<li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.check_coefficients" href="#sleplet.meshes.mesh_coefficients.MeshCoefficients.check_coefficients">check_coefficients</a></code></li>
 <li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args" href="#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
 <li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh" href="#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
 <li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.noise" href="#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>

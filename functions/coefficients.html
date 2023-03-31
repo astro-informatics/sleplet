@@ -34,23 +34,30 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.utils.convolution_methods import sifting_convolution
-from sleplet.utils.mask_methods import ensure_masked_flm_bandlimited
-from sleplet.utils.region import Region
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.validation import Validation
+import sleplet._convolution_methods
+import sleplet._mask_methods
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.slepian.region
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {&#34;slepian&#34;, &#34;south&#34;, &#34;america&#34;}
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class Coefficients:
+    &#34;&#34;&#34;abstract parent class to handle harmonic/Slepian coefficients on the sphere&#34;&#34;&#34;
+
     L: int
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     _: KW_ONLY
     extra_args: list[int] | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     noise: float | None = None
-    region: Region | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    region: sleplet.slepian.region.Region | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     smoothing: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._setup_args()
@@ -64,6 +71,16 @@ class Coefficients:
     def translate(
         self, alpha: float, beta: float, *, shannon: int | None = None
     ) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;TODO
+
+        Args:
+            alpha: _description_
+            beta: _description_
+            shannon: _description_
+
+        Returns:
+            _description_
+        &#34;&#34;&#34;
         g_coefficients = self._translation_helper(alpha, beta)
         return (
             g_coefficients
@@ -78,9 +95,21 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;TODO
+
+        Args:
+            f_coefficient: _description_
+            g_coefficien: _description_
+            shannon: _description_
+
+        Returns:
+            _description_
+        &#34;&#34;&#34;
         # translation/convolution are not real for general function
         self.reality = False
-        return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
+        return sleplet._convolution_methods.sifting_convolution(
+            f_coefficient, g_coefficient, shannon=shannon
+        )
 
     def _add_details_to_name(self) -&gt; None:
         &#34;&#34;&#34;
@@ -88,23 +117,25 @@ class Coefficients:
         adds noise/smoothing if appropriate and bandlimit
         &#34;&#34;&#34;
         if (
-            isinstance(self.region, Region)
+            isinstance(self.region, sleplet.slepian.region.Region)
             and not set(self.name.split(&#34;_&#34;)) &amp; COEFFICIENTS_TO_NOT_MASK
         ):
             self.name += f&#34;_{self.region.name_ending}&#34;
         if self.noise is not None:
-            self.name += f&#34;{filename_args(self.noise, &#39;noise&#39;)}&#34;
+            self.name += f&#34;{sleplet._string_methods.filename_args(self.noise, &#39;noise&#39;)}&#34;
         if self.smoothing is not None:
-            self.name += f&#34;{filename_args(self.smoothing, &#39;smoothed&#39;)}&#34;
+            self.name += (
+                f&#34;{sleplet._string_methods.filename_args(self.smoothing, &#39;smoothed&#39;)}&#34;
+            )
         self.name += f&#34;_L{self.L}&#34;
 
     @validator(&#34;coefficients&#34;, check_fields=False)
-    def check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):
         if (
             values[&#34;region&#34;]
             and not set(values[&#34;name&#34;].split(&#34;_&#34;)) &amp; COEFFICIENTS_TO_NOT_MASK
         ):
-            v = ensure_masked_flm_bandlimited(
+            v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
                 v,
                 values[&#34;L&#34;],
                 values[&#34;region&#34;],
@@ -117,8 +148,15 @@ class Coefficients:
     def rotate(
         self, alpha: float, beta: float, *, gamma: float = 0
     ) -&gt; npt.NDArray[np.complex_]:
-        &#34;&#34;&#34;
-        rotates given flm on the sphere by alpha/beta/gamma
+        &#34;&#34;&#34;TODO rotates given flm on the sphere by alpha/beta/gamma
+
+        Args:
+            alpha: _description_
+            beta: _description_
+            gamma: _description_
+
+        Returns:
+            _description_
         &#34;&#34;&#34;
         raise NotImplementedError
 
@@ -188,22 +226,29 @@ class Coefficients:
 <dl>
 <dt id="sleplet.functions.coefficients.Coefficients"><code class="flex name class">
 <span>class <span class="ident">Coefficients</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.utils.region.Region" href="../utils/region.html#sleplet.utils.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Coefficients(L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: sleplet.utils.region.Region | None = None, smoothing: int | None = None)</p></div>
+<div class="desc"><p>abstract parent class to handle harmonic/Slepian coefficients on the sphere</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation)
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class Coefficients:
+    &#34;&#34;&#34;abstract parent class to handle harmonic/Slepian coefficients on the sphere&#34;&#34;&#34;
+
     L: int
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     _: KW_ONLY
     extra_args: list[int] | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     noise: float | None = None
-    region: Region | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    region: sleplet.slepian.region.Region | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     smoothing: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._setup_args()
@@ -217,6 +262,16 @@ class Coefficients:
     def translate(
         self, alpha: float, beta: float, *, shannon: int | None = None
     ) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;TODO
+
+        Args:
+            alpha: _description_
+            beta: _description_
+            shannon: _description_
+
+        Returns:
+            _description_
+        &#34;&#34;&#34;
         g_coefficients = self._translation_helper(alpha, beta)
         return (
             g_coefficients
@@ -231,9 +286,21 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;TODO
+
+        Args:
+            f_coefficient: _description_
+            g_coefficien: _description_
+            shannon: _description_
+
+        Returns:
+            _description_
+        &#34;&#34;&#34;
         # translation/convolution are not real for general function
         self.reality = False
-        return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)
+        return sleplet._convolution_methods.sifting_convolution(
+            f_coefficient, g_coefficient, shannon=shannon
+        )
 
     def _add_details_to_name(self) -&gt; None:
         &#34;&#34;&#34;
@@ -241,23 +308,25 @@ class Coefficients:
         adds noise/smoothing if appropriate and bandlimit
         &#34;&#34;&#34;
         if (
-            isinstance(self.region, Region)
+            isinstance(self.region, sleplet.slepian.region.Region)
             and not set(self.name.split(&#34;_&#34;)) &amp; COEFFICIENTS_TO_NOT_MASK
         ):
             self.name += f&#34;_{self.region.name_ending}&#34;
         if self.noise is not None:
-            self.name += f&#34;{filename_args(self.noise, &#39;noise&#39;)}&#34;
+            self.name += f&#34;{sleplet._string_methods.filename_args(self.noise, &#39;noise&#39;)}&#34;
         if self.smoothing is not None:
-            self.name += f&#34;{filename_args(self.smoothing, &#39;smoothed&#39;)}&#34;
+            self.name += (
+                f&#34;{sleplet._string_methods.filename_args(self.smoothing, &#39;smoothed&#39;)}&#34;
+            )
         self.name += f&#34;_L{self.L}&#34;
 
     @validator(&#34;coefficients&#34;, check_fields=False)
-    def check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):
         if (
             values[&#34;region&#34;]
             and not set(values[&#34;name&#34;].split(&#34;_&#34;)) &amp; COEFFICIENTS_TO_NOT_MASK
         ):
-            v = ensure_masked_flm_bandlimited(
+            v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
                 v,
                 values[&#34;L&#34;],
                 values[&#34;region&#34;],
@@ -270,8 +339,15 @@ class Coefficients:
     def rotate(
         self, alpha: float, beta: float, *, gamma: float = 0
     ) -&gt; npt.NDArray[np.complex_]:
-        &#34;&#34;&#34;
-        rotates given flm on the sphere by alpha/beta/gamma
+        &#34;&#34;&#34;TODO rotates given flm on the sphere by alpha/beta/gamma
+
+        Args:
+            alpha: _description_
+            beta: _description_
+            gamma: _description_
+
+        Returns:
+            _description_
         &#34;&#34;&#34;
         raise NotImplementedError
 
@@ -338,51 +414,23 @@ class Coefficients:
 <dl>
 <dt id="sleplet.functions.coefficients.Coefficients.L"><code class="name">var <span class="ident">L</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.extra_args"><code class="name">var <span class="ident">extra_args</span> : list[int] | None</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.noise"><code class="name">var <span class="ident">noise</span> : float | None</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.functions.coefficients.Coefficients.region"><code class="name">var <span class="ident">region</span> : <a title="sleplet.utils.region.Region" href="../utils/region.html#sleplet.utils.region.Region">Region</a> | None</code></dt>
+<dt id="sleplet.functions.coefficients.Coefficients.region"><code class="name">var <span class="ident">region</span> : <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.smoothing"><code class="name">var <span class="ident">smoothing</span> : int | None</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.functions.coefficients.Coefficients.check_coefficients"><code class="name flex">
-<span>def <span class="ident">check_coefficients</span></span>(<span>v, values)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;coefficients&#34;, check_fields=False)
-def check_coefficients(cls, v, values):
-    if (
-        values[&#34;region&#34;]
-        and not set(values[&#34;name&#34;].split(&#34;_&#34;)) &amp; COEFFICIENTS_TO_NOT_MASK
-    ):
-        v = ensure_masked_flm_bandlimited(
-            v,
-            values[&#34;L&#34;],
-            values[&#34;region&#34;],
-            reality=values[&#34;reality&#34;],
-            spin=values[&#34;spin&#34;],
-        )
-    return v</code></pre>
-</details>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -391,7 +439,18 @@ def check_coefficients(cls, v, values):
 <span>def <span class="ident">convolve</span></span>(<span>self, f_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], g_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>f_coefficient</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>g_coefficien</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>shannon</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -403,16 +462,39 @@ def check_coefficients(cls, v, values):
     *,
     shannon: int | None = None,
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
+    &#34;&#34;&#34;TODO
+
+    Args:
+        f_coefficient: _description_
+        g_coefficien: _description_
+        shannon: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
     # translation/convolution are not real for general function
     self.reality = False
-    return sifting_convolution(f_coefficient, g_coefficient, shannon=shannon)</code></pre>
+    return sleplet._convolution_methods.sifting_convolution(
+        f_coefficient, g_coefficient, shannon=shannon
+    )</code></pre>
 </details>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.rotate"><code class="name flex">
 <span>def <span class="ident">rotate</span></span>(<span>self, alpha: float, beta: float, *, gamma: float = 0) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>rotates given flm on the sphere by alpha/beta/gamma</p></div>
+<div class="desc"><p>TODO rotates given flm on the sphere by alpha/beta/gamma</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>alpha</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>beta</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>gamma</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -421,8 +503,15 @@ def check_coefficients(cls, v, values):
 def rotate(
     self, alpha: float, beta: float, *, gamma: float = 0
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    rotates given flm on the sphere by alpha/beta/gamma
+    &#34;&#34;&#34;TODO rotates given flm on the sphere by alpha/beta/gamma
+
+    Args:
+        alpha: _description_
+        beta: _description_
+        gamma: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     raise NotImplementedError</code></pre>
 </details>
@@ -431,7 +520,18 @@ def rotate(
 <span>def <span class="ident">translate</span></span>(<span>self, alpha: float, beta: float, *, shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>alpha</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>beta</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>shannon</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -439,6 +539,16 @@ def rotate(
 <pre><code class="python">def translate(
     self, alpha: float, beta: float, *, shannon: int | None = None
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
+    &#34;&#34;&#34;TODO
+
+    Args:
+        alpha: _description_
+        beta: _description_
+        shannon: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
     g_coefficients = self._translation_helper(alpha, beta)
     return (
         g_coefficients
@@ -469,7 +579,6 @@ def rotate(
 <h4><code><a title="sleplet.functions.coefficients.Coefficients" href="#sleplet.functions.coefficients.Coefficients">Coefficients</a></code></h4>
 <ul class="two-column">
 <li><code><a title="sleplet.functions.coefficients.Coefficients.L" href="#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
-<li><code><a title="sleplet.functions.coefficients.Coefficients.check_coefficients" href="#sleplet.functions.coefficients.Coefficients.check_coefficients">check_coefficients</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.convolve" href="#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.extra_args" href="#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.noise" href="#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>

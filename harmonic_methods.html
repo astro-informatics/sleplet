@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>sleplet.utils.harmonic_methods API documentation</title>
-<meta name="description" content="" />
+<title>sleplet.harmonic_methods API documentation</title>
+<meta name="description" content="methods to perform operations in Fourier space of the sphere or mesh" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,14 +19,18 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sleplet.utils.harmonic_methods</code></h1>
+<h1 class="title">Module <code>sleplet.harmonic_methods</code></h1>
 </header>
 <section id="section-intro">
+<p>methods to perform operations in Fourier space of the sphere or mesh</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from collections.abc import Callable
+<pre><code class="python">&#34;&#34;&#34;
+methods to perform operations in Fourier space of the sphere or mesh
+&#34;&#34;&#34;
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
@@ -34,29 +38,37 @@ import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import Generator
 
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.integration_methods import integrate_whole_mesh
-from sleplet.utils.vars import (
-    AFRICA_ALPHA,
-    AFRICA_BETA,
-    AFRICA_GAMMA,
-    SAMPLING_SCHEME,
-    SOUTH_AMERICA_ALPHA,
-    SOUTH_AMERICA_BETA,
-    SOUTH_AMERICA_GAMMA,
-)
+import sleplet._data.create_earth_flm
+import sleplet._integration_methods
+import sleplet._vars
+import sleplet.meshes.mesh
+
+AFRICA_ALPHA = np.deg2rad(44)
+AFRICA_BETA = np.deg2rad(87)
+AFRICA_GAMMA = np.deg2rad(341)
+SOUTH_AMERICA_ALPHA = np.deg2rad(54)
+SOUTH_AMERICA_BETA = np.deg2rad(108)
+SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
-def create_spherical_harmonic(L: int, ind: int) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    create a spherical harmonic in harmonic space for the given index
+def _create_spherical_harmonic(L: int, ind: int) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;TODO create a spherical harmonic in harmonic space for the given index
+
+    Args:
+        L: _description_
+        ind: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     flm = np.zeros(L**2, dtype=np.complex_)
     flm[ind] = 1
     return flm
 
 
-def boost_coefficient_resolution(flm: npt.NDArray[Any], boost: int) -&gt; npt.NDArray[Any]:
+def _boost_coefficient_resolution(
+    flm: npt.NDArray[Any], boost: int
+) -&gt; npt.NDArray[Any]:
     &#34;&#34;&#34;
     calculates a boost in resolution for given flm
     &#34;&#34;&#34;
@@ -71,17 +83,30 @@ def invert_flm_boosted(
     reality: bool = False,
     spin: int = 0,
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;
-    performs the inverse harmonic transform
+    &#34;&#34;&#34;TODO performs the inverse harmonic transform
+
+    Args:
+        flm: _description_
+        L: _description_
+        resolution: _description_
+        reality: _description_
+        spin: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     boost = resolution**2 - L**2
-    flm = boost_coefficient_resolution(flm, boost)
+    flm = _boost_coefficient_resolution(flm, boost)
     return ssht.inverse(
-        flm, resolution, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME
+        flm,
+        resolution,
+        Reality=reality,
+        Spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
 
 
-def ensure_f_bandlimited(
+def _ensure_f_bandlimited(
     grid_fun: Callable[
         [npt.NDArray[np.float_], npt.NDArray[np.float_]], npt.NDArray[np.float_]
     ],
@@ -94,12 +119,16 @@ def ensure_f_bandlimited(
     if the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it
     &#34;&#34;&#34;
-    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(
+        L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+    )
     f = grid_fun(thetas, phis)
-    return ssht.forward(f, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)
+    return ssht.forward(
+        f, L, Reality=reality, Spin=spin, Method=sleplet._vars.SAMPLING_SCHEME
+    )
 
 
-def create_emm_vector(L: int) -&gt; npt.NDArray[np.float_]:
+def _create_emm_vector(L: int) -&gt; npt.NDArray[np.float_]:
     &#34;&#34;&#34;
     create vector of m values for a given L
     &#34;&#34;&#34;
@@ -116,9 +145,16 @@ def create_emm_vector(L: int) -&gt; npt.NDArray[np.float_]:
 def compute_random_signal(
     L: int, rng: Generator, *, var_signal: float
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    generates a normally distributed random signal of a
+    &#34;&#34;&#34;TODO generates a normally distributed random signal of a
     complex signal with mean 0 and variance 1
+
+    Args:
+        L: _description_
+        rng: _description_
+        var_signal: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     return np.sqrt(var_signal / 2) * (
         rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
@@ -126,22 +162,36 @@ def compute_random_signal(
 
 
 def mesh_forward(
-    mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u: npt.NDArray[np.complex_ | np.float_]
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;
-    computes the mesh forward transform from real space to harmonic space
+    &#34;&#34;&#34;TODO computes the mesh forward transform from real space to harmonic space
+
+    Args:
+        mesh: _description_
+        u: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
     for i, phi_i in enumerate(mesh.basis_functions):
-        u_i[i] = integrate_whole_mesh(mesh.vertices, mesh.faces, u, phi_i)
+        u_i[i] = sleplet._integration_methods.integrate_whole_mesh(
+            mesh.vertices, mesh.faces, u, phi_i
+        )
     return u_i
 
 
 def mesh_inverse(
-    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;
-    computes the mesh inverse transform from harmonic space to real space
+    &#34;&#34;&#34;TODO computes the mesh inverse transform from harmonic space to real space
+
+    Args:
+        mesh: _description_
+        u_i: _description_
+
+    Returns:
+        n: _description_
     &#34;&#34;&#34;
     return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)
 
@@ -149,8 +199,14 @@ def mesh_inverse(
 def rotate_earth_to_south_america(
     earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    rotates the flms of the Earth to a view centered on South America
+    &#34;&#34;&#34;TODO rotates the flms of the Earth to a view centered on South America
+
+    Args:
+        earth_flm: _description_
+        L: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     return ssht.rotate_flms(
         earth_flm, SOUTH_AMERICA_ALPHA, SOUTH_AMERICA_BETA, SOUTH_AMERICA_GAMMA, L
@@ -160,8 +216,14 @@ def rotate_earth_to_south_america(
 def rotate_earth_to_africa(
     earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    rotates the flms of the Earth to a view centered on Africa
+    &#34;&#34;&#34;TODO rotates the flms of the Earth to a view centered on Africa
+
+    Args:
+        earth_flm: _description_
+        L: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)</code></pre>
 </details>
@@ -173,28 +235,23 @@ def rotate_earth_to_africa(
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="sleplet.utils.harmonic_methods.boost_coefficient_resolution"><code class="name flex">
-<span>def <span class="ident">boost_coefficient_resolution</span></span>(<span>flm: numpy.ndarray[typing.Any, numpy.dtype[typing.Any]], boost: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[typing.Any]]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>calculates a boost in resolution for given flm</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def boost_coefficient_resolution(flm: npt.NDArray[Any], boost: int) -&gt; npt.NDArray[Any]:
-    &#34;&#34;&#34;
-    calculates a boost in resolution for given flm
-    &#34;&#34;&#34;
-    return np.pad(flm, (0, boost), &#34;constant&#34;)</code></pre>
-</details>
-</dd>
-<dt id="sleplet.utils.harmonic_methods.compute_random_signal"><code class="name flex">
+<dt id="sleplet.harmonic_methods.compute_random_signal"><code class="name flex">
 <span>def <span class="ident">compute_random_signal</span></span>(<span>L: int, rng: numpy.random._generator.Generator, *, var_signal: float) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>generates a normally distributed random signal of a
-complex signal with mean 0 and variance 1</p></div>
+<div class="desc"><p>TODO generates a normally distributed random signal of a
+complex signal with mean 0 and variance 1</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>rng</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>var_signal</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -202,89 +259,42 @@ complex signal with mean 0 and variance 1</p></div>
 <pre><code class="python">def compute_random_signal(
     L: int, rng: Generator, *, var_signal: float
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    generates a normally distributed random signal of a
+    &#34;&#34;&#34;TODO generates a normally distributed random signal of a
     complex signal with mean 0 and variance 1
+
+    Args:
+        L: _description_
+        rng: _description_
+        var_signal: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     return np.sqrt(var_signal / 2) * (
         rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
     )</code></pre>
 </details>
 </dd>
-<dt id="sleplet.utils.harmonic_methods.create_emm_vector"><code class="name flex">
-<span>def <span class="ident">create_emm_vector</span></span>(<span>L: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>create vector of m values for a given L</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_emm_vector(L: int) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;
-    create vector of m values for a given L
-    &#34;&#34;&#34;
-    emm = np.zeros(2 * L * 2 * L)
-    k = 0
-
-    for ell in range(2 * L):
-        M = 2 * ell + 1
-        emm[k : k + M] = np.arange(-ell, ell + 1)
-        k += M
-    return emm</code></pre>
-</details>
-</dd>
-<dt id="sleplet.utils.harmonic_methods.create_spherical_harmonic"><code class="name flex">
-<span>def <span class="ident">create_spherical_harmonic</span></span>(<span>L: int, ind: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>create a spherical harmonic in harmonic space for the given index</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_spherical_harmonic(L: int, ind: int) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    create a spherical harmonic in harmonic space for the given index
-    &#34;&#34;&#34;
-    flm = np.zeros(L**2, dtype=np.complex_)
-    flm[ind] = 1
-    return flm</code></pre>
-</details>
-</dd>
-<dt id="sleplet.utils.harmonic_methods.ensure_f_bandlimited"><code class="name flex">
-<span>def <span class="ident">ensure_f_bandlimited</span></span>(<span>grid_fun: collections.abc.Callable[[numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]], numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]], numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]], L: int, *, reality: bool, spin: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>if the function created is created in pixel space rather than harmonic
-space then need to transform it into harmonic space first before using it</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def ensure_f_bandlimited(
-    grid_fun: Callable[
-        [npt.NDArray[np.float_], npt.NDArray[np.float_]], npt.NDArray[np.float_]
-    ],
-    L: int,
-    *,
-    reality: bool,
-    spin: int,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    if the function created is created in pixel space rather than harmonic
-    space then need to transform it into harmonic space first before using it
-    &#34;&#34;&#34;
-    thetas, phis = ssht.sample_positions(L, Grid=True, Method=SAMPLING_SCHEME)
-    f = grid_fun(thetas, phis)
-    return ssht.forward(f, L, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME)</code></pre>
-</details>
-</dd>
-<dt id="sleplet.utils.harmonic_methods.invert_flm_boosted"><code class="name flex">
+<dt id="sleplet.harmonic_methods.invert_flm_boosted"><code class="name flex">
 <span>def <span class="ident">invert_flm_boosted</span></span>(<span>flm: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]], L: int, resolution: int, *, reality: bool = False, spin: int = 0) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>performs the inverse harmonic transform</p></div>
+<div class="desc"><p>TODO performs the inverse harmonic transform</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>flm</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>L</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>resolution</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>reality</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>spin</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -297,60 +307,117 @@ space then need to transform it into harmonic space first before using it</p></d
     reality: bool = False,
     spin: int = 0,
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;
-    performs the inverse harmonic transform
+    &#34;&#34;&#34;TODO performs the inverse harmonic transform
+
+    Args:
+        flm: _description_
+        L: _description_
+        resolution: _description_
+        reality: _description_
+        spin: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     boost = resolution**2 - L**2
-    flm = boost_coefficient_resolution(flm, boost)
+    flm = _boost_coefficient_resolution(flm, boost)
     return ssht.inverse(
-        flm, resolution, Reality=reality, Spin=spin, Method=SAMPLING_SCHEME
+        flm,
+        resolution,
+        Reality=reality,
+        Spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )</code></pre>
 </details>
 </dd>
-<dt id="sleplet.utils.harmonic_methods.mesh_forward"><code class="name flex">
-<span>def <span class="ident">mesh_forward</span></span>(<span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="../meshes/classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, u: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
+<dt id="sleplet.harmonic_methods.mesh_forward"><code class="name flex">
+<span>def <span class="ident">mesh_forward</span></span>(<span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, u: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>computes the mesh forward transform from real space to harmonic space</p></div>
+<div class="desc"><p>TODO computes the mesh forward transform from real space to harmonic space</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mesh</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>u</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def mesh_forward(
-    mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u: npt.NDArray[np.complex_ | np.float_]
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;
-    computes the mesh forward transform from real space to harmonic space
+    &#34;&#34;&#34;TODO computes the mesh forward transform from real space to harmonic space
+
+    Args:
+        mesh: _description_
+        u: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
     for i, phi_i in enumerate(mesh.basis_functions):
-        u_i[i] = integrate_whole_mesh(mesh.vertices, mesh.faces, u, phi_i)
+        u_i[i] = sleplet._integration_methods.integrate_whole_mesh(
+            mesh.vertices, mesh.faces, u, phi_i
+        )
     return u_i</code></pre>
 </details>
 </dd>
-<dt id="sleplet.utils.harmonic_methods.mesh_inverse"><code class="name flex">
-<span>def <span class="ident">mesh_inverse</span></span>(<span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="../meshes/classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, u_i: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<dt id="sleplet.harmonic_methods.mesh_inverse"><code class="name flex">
+<span>def <span class="ident">mesh_inverse</span></span>(<span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, u_i: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>computes the mesh inverse transform from harmonic space to real space</p></div>
+<div class="desc"><p>TODO computes the mesh inverse transform from harmonic space to real space</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mesh</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>u_i</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>n</code></dt>
+<dd><em>description</em></dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def mesh_inverse(
-    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;
-    computes the mesh inverse transform from harmonic space to real space
+    &#34;&#34;&#34;TODO computes the mesh inverse transform from harmonic space to real space
+
+    Args:
+        mesh: _description_
+        u_i: _description_
+
+    Returns:
+        n: _description_
     &#34;&#34;&#34;
     return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)</code></pre>
 </details>
 </dd>
-<dt id="sleplet.utils.harmonic_methods.rotate_earth_to_africa"><code class="name flex">
+<dt id="sleplet.harmonic_methods.rotate_earth_to_africa"><code class="name flex">
 <span>def <span class="ident">rotate_earth_to_africa</span></span>(<span>earth_flm: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], L: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>rotates the flms of the Earth to a view centered on Africa</p></div>
+<div class="desc"><p>TODO rotates the flms of the Earth to a view centered on Africa</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>earth_flm</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>L</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -358,17 +425,32 @@ space then need to transform it into harmonic space first before using it</p></d
 <pre><code class="python">def rotate_earth_to_africa(
     earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    rotates the flms of the Earth to a view centered on Africa
+    &#34;&#34;&#34;TODO rotates the flms of the Earth to a view centered on Africa
+
+    Args:
+        earth_flm: _description_
+        L: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)</code></pre>
 </details>
 </dd>
-<dt id="sleplet.utils.harmonic_methods.rotate_earth_to_south_america"><code class="name flex">
+<dt id="sleplet.harmonic_methods.rotate_earth_to_south_america"><code class="name flex">
 <span>def <span class="ident">rotate_earth_to_south_america</span></span>(<span>earth_flm: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], L: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>rotates the flms of the Earth to a view centered on South America</p></div>
+<div class="desc"><p>TODO rotates the flms of the Earth to a view centered on South America</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>earth_flm</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>L</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -376,8 +458,14 @@ space then need to transform it into harmonic space first before using it</p></d
 <pre><code class="python">def rotate_earth_to_south_america(
     earth_flm: npt.NDArray[np.complex_ | np.float_], L: int
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;
-    rotates the flms of the Earth to a view centered on South America
+    &#34;&#34;&#34;TODO rotates the flms of the Earth to a view centered on South America
+
+    Args:
+        earth_flm: _description_
+        L: _description_
+
+    Returns:
+        _description_
     &#34;&#34;&#34;
     return ssht.rotate_flms(
         earth_flm, SOUTH_AMERICA_ALPHA, SOUTH_AMERICA_BETA, SOUTH_AMERICA_GAMMA, L
@@ -397,21 +485,17 @@ space then need to transform it into harmonic space first before using it</p></d
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sleplet.utils" href="index.html">sleplet.utils</a></code></li>
+<li><code><a title="sleplet" href="index.html">sleplet</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="sleplet.utils.harmonic_methods.boost_coefficient_resolution" href="#sleplet.utils.harmonic_methods.boost_coefficient_resolution">boost_coefficient_resolution</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.compute_random_signal" href="#sleplet.utils.harmonic_methods.compute_random_signal">compute_random_signal</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.create_emm_vector" href="#sleplet.utils.harmonic_methods.create_emm_vector">create_emm_vector</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.create_spherical_harmonic" href="#sleplet.utils.harmonic_methods.create_spherical_harmonic">create_spherical_harmonic</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.ensure_f_bandlimited" href="#sleplet.utils.harmonic_methods.ensure_f_bandlimited">ensure_f_bandlimited</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.invert_flm_boosted" href="#sleplet.utils.harmonic_methods.invert_flm_boosted">invert_flm_boosted</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.mesh_forward" href="#sleplet.utils.harmonic_methods.mesh_forward">mesh_forward</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.mesh_inverse" href="#sleplet.utils.harmonic_methods.mesh_inverse">mesh_inverse</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.rotate_earth_to_africa" href="#sleplet.utils.harmonic_methods.rotate_earth_to_africa">rotate_earth_to_africa</a></code></li>
-<li><code><a title="sleplet.utils.harmonic_methods.rotate_earth_to_south_america" href="#sleplet.utils.harmonic_methods.rotate_earth_to_south_america">rotate_earth_to_south_america</a></code></li>
+<li><code><a title="sleplet.harmonic_methods.compute_random_signal" href="#sleplet.harmonic_methods.compute_random_signal">compute_random_signal</a></code></li>
+<li><code><a title="sleplet.harmonic_methods.invert_flm_boosted" href="#sleplet.harmonic_methods.invert_flm_boosted">invert_flm_boosted</a></code></li>
+<li><code><a title="sleplet.harmonic_methods.mesh_forward" href="#sleplet.harmonic_methods.mesh_forward">mesh_forward</a></code></li>
+<li><code><a title="sleplet.harmonic_methods.mesh_inverse" href="#sleplet.harmonic_methods.mesh_inverse">mesh_inverse</a></code></li>
+<li><code><a title="sleplet.harmonic_methods.rotate_earth_to_africa" href="#sleplet.harmonic_methods.rotate_earth_to_africa">rotate_earth_to_africa</a></code></li>
+<li><code><a title="sleplet.harmonic_methods.rotate_earth_to_south_america" href="#sleplet.harmonic_methods.rotate_earth_to_south_america">rotate_earth_to_south_america</a></code></li>
 </ul>
 </li>
 </ul>

@@ -31,15 +31,20 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.utils.slepian_methods import slepian_mesh_forward
-from sleplet.utils.validation import Validation
+import sleplet
+import sleplet._validation
+import sleplet.meshes
+import sleplet.slepian_methods
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshSlepianFunctions(MeshSlepianCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianFunctions(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     rank: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -48,12 +53,12 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         &#34;&#34;&#34;
         compute field on the vertices of the mesh
         &#34;&#34;&#34;
-        logger.info(
+        sleplet.logger.info(
             f&#34;Slepian eigenvalue {self.rank}: &#34;
             f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;
         )
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
-        return slepian_mesh_forward(
+        return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
             u_i=s_p_i,
         )
@@ -87,7 +92,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
                 raise ValueError(f&#34;rank should be less than or equal to {limit}&#34;)
 
     @validator(&#34;rank&#34;)
-    def check_rank(cls, v):
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError(&#34;rank should be an integer&#34;)
         if v &lt; 0:
@@ -106,17 +111,22 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
 <dl>
 <dt id="sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions"><code class="flex name class">
 <span>class <span class="ident">MeshSlepianFunctions</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="../classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MeshSlepianFunctions(mesh: sleplet.meshes.classes.mesh.Mesh, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</p></div>
+<div class="desc"><p>TODO</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation, kw_only=True)
-class MeshSlepianFunctions(MeshSlepianCoefficients):
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianFunctions(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     rank: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -125,12 +135,12 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         &#34;&#34;&#34;
         compute field on the vertices of the mesh
         &#34;&#34;&#34;
-        logger.info(
+        sleplet.logger.info(
             f&#34;Slepian eigenvalue {self.rank}: &#34;
             f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;
         )
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
-        return slepian_mesh_forward(
+        return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
             u_i=s_p_i,
         )
@@ -164,7 +174,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
                 raise ValueError(f&#34;rank should be less than or equal to {limit}&#34;)
 
     @validator(&#34;rank&#34;)
-    def check_rank(cls, v):
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError(&#34;rank should be an integer&#34;)
         if v &lt; 0:
@@ -180,30 +190,20 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
 <dl>
 <dt id="sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions.check_rank"><code class="name flex">
-<span>def <span class="ident">check_rank</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;rank&#34;)
-def check_rank(cls, v):
-    if not isinstance(v, int):
-        raise TypeError(&#34;rank should be an integer&#34;)
-    if v &lt; 0:
-        raise ValueError(&#34;rank cannot be negative&#34;)
-    return v</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="../mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="../mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -224,7 +224,6 @@ def check_rank(cls, v):
 <li>
 <h4><code><a title="sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions" href="#sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions">MeshSlepianFunctions</a></code></h4>
 <ul class="">
-<li><code><a title="sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions.check_rank" href="#sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions.check_rank">check_rank</a></code></li>
 <li><code><a title="sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions.rank" href="#sleplet.meshes.slepian_coefficients.mesh_slepian_functions.MeshSlepianFunctions.rank">rank</a></code></li>
 </ul>
 </li>

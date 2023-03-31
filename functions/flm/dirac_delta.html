@@ -31,13 +31,15 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.functions.f_lm import F_LM
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.functions.f_lm
 
 
-@dataclass(config=Validation)
-class DiracDelta(F_LM):
+@dataclass(config=sleplet._validation.Validation)
+class DiracDelta(sleplet.functions.f_lm.F_LM):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
@@ -49,7 +51,9 @@ class DiracDelta(F_LM):
         return flm
 
     def _create_name(self) -&gt; str:
-        return convert_camel_case_to_snake_case(self.__class__.__name__)
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__
+        )
 
     def _set_reality(self) -&gt; bool:
         return True
@@ -75,16 +79,18 @@ class DiracDelta(F_LM):
 <dl>
 <dt id="sleplet.functions.flm.dirac_delta.DiracDelta"><code class="flex name class">
 <span>class <span class="ident">DiracDelta</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.utils.region.Region" href="../../utils/region.html#sleplet.utils.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>DiracDelta(L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: sleplet.utils.region.Region | None = None, smoothing: int | None = None)</p></div>
+<div class="desc"><p>TODO</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation)
-class DiracDelta(F_LM):
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class DiracDelta(sleplet.functions.f_lm.F_LM):
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
 
@@ -96,7 +102,9 @@ class DiracDelta(F_LM):
         return flm
 
     def _create_name(self) -&gt; str:
-        return convert_camel_case_to_snake_case(self.__class__.__name__)
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__
+        )
 
     def _set_reality(self) -&gt; bool:
         return True
@@ -119,7 +127,14 @@ class DiracDelta(F_LM):
 <ul class="hlist">
 <li><code><b><a title="sleplet.functions.f_lm.F_LM" href="../f_lm.html#sleplet.functions.f_lm.F_LM">F_LM</a></b></code>:
 <ul class="hlist">
+<li><code><a title="sleplet.functions.f_lm.F_LM.L" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.convolve" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.extra_args" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.noise" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.region" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
 <li><code><a title="sleplet.functions.f_lm.F_LM.rotate" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.smoothing" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.f_lm.F_LM.translate" href="../coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
 </ul>
 </li>
 </ul>

@@ -6,7 +6,7 @@
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet API documentation</title>
 <meta name="description" content="API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
-the rest of the documentation …" />
+the rest of the documentation." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -25,7 +25,6 @@ the rest of the documentation …" />
 <section id="section-intro">
 <p>API of the <code>SLEPLET</code> package. See <a href="https://pypi.org/project/sleplet">PyPI</a> for
 the rest of the documentation.</p>
-<p><a href="https://pypi.org/project/sleplet"><img alt="PyPI" src="https://badge.fury.io/py/sleplet.svg"></a></p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -33,52 +32,78 @@ the rest of the documentation.</p>
 <pre><code class="python">&#34;&#34;&#34;
 API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
 the rest of the documentation.
-
-[![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 &#34;&#34;&#34;
 
 import logging
+import os
 
-from sleplet._version import __version__
+from ._version import __version__  # noqa: F401
 
 logging.basicConfig(
     format=&#34;[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)&#34;,
     datefmt=&#34;%Y-%m-%d %H:%M:%S&#34;,
     level=logging.INFO,
 )
-logger = logging.getLogger(__name__)</code></pre>
+logger = logging.getLogger(__name__)
+
+NCPU = int(os.getenv(&#34;NCPU&#34;, &#34;4&#34;))
+PHI_MAX = int(os.getenv(&#34;PHI_MAX&#34;, &#34;360&#34;))
+PHI_MIN = int(os.getenv(&#34;PHI_MIN&#34;, &#34;0&#34;))
+POLAR_GAP = os.getenv(&#34;POLAR_GAP&#34;, &#34;False&#34;).lower() == &#34;true&#34;
+SLEPIAN_MASK = os.getenv(&#34;SLEPIAN_MASK&#34;, &#34;south_america&#34;)
+THETA_MAX = int(os.getenv(&#34;THETA_MAX&#34;, &#34;180&#34;))
+THETA_MIN = int(os.getenv(&#34;THETA_MIN&#34;, &#34;0&#34;))
+
+logger.info(
+    &#34;Environment variables set as &#34;
+    f&#34;NCPU={NCPU}, &#34;
+    f&#34;POLAR_GAP={POLAR_GAP}, &#34;
+    f&#34;THETA_MAX={THETA_MAX}, &#34;
+    f&#34;THETA_MIN={THETA_MIN}, &#34;
+    f&#34;PHI_MAX={PHI_MAX}, &#34;
+    f&#34;PHI_MIN={PHI_MIN}, &#34;
+    f&#34;SLEPIAN_MASK={SLEPIAN_MASK}.&#34;
+)</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="sleplet.data" href="data/index.html">sleplet.data</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt><code class="name"><a title="sleplet.functions" href="functions/index.html">sleplet.functions</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>set of classes to create functions on the sphere</p></div>
+</dd>
+<dt><code class="name"><a title="sleplet.harmonic_methods" href="harmonic_methods.html">sleplet.harmonic_methods</a></code></dt>
+<dd>
+<div class="desc"><p>methods to perform operations in Fourier space of the sphere or mesh</p></div>
 </dd>
 <dt><code class="name"><a title="sleplet.meshes" href="meshes/index.html">sleplet.meshes</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>classes to create and handle mesh (manifold) data</p></div>
+</dd>
+<dt><code class="name"><a title="sleplet.noise" href="noise.html">sleplet.noise</a></code></dt>
+<dd>
+<div class="desc"><p>methods to handle noise in Fourier or wavelet space</p></div>
+</dd>
+<dt><code class="name"><a title="sleplet.plot_methods" href="plot_methods.html">sleplet.plot_methods</a></code></dt>
+<dd>
+<div class="desc"><p>methods to help in creating plots</p></div>
 </dd>
 <dt><code class="name"><a title="sleplet.plotting" href="plotting/index.html">sleplet.plotting</a></code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="sleplet.scripts" href="scripts/index.html">sleplet.scripts</a></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>classes to create plots on the sphere or mesh</p></div>
 </dd>
 <dt><code class="name"><a title="sleplet.slepian" href="slepian/index.html">sleplet.slepian</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>classes to create the Slepian regions on the sphere</p></div>
 </dd>
-<dt><code class="name"><a title="sleplet.utils" href="utils/index.html">sleplet.utils</a></code></dt>
+<dt><code class="name"><a title="sleplet.slepian_methods" href="slepian_methods.html">sleplet.slepian_methods</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>methods to work with Slepian coefficients</p></div>
+</dd>
+<dt><code class="name"><a title="sleplet.wavelet_methods" href="wavelet_methods.html">sleplet.wavelet_methods</a></code></dt>
+<dd>
+<div class="desc"><p>methods to work with wavelet and wavelet coefficients</p></div>
 </dd>
 </dl>
 </section>
@@ -97,13 +122,15 @@ logger = logging.getLogger(__name__)</code></pre>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="sleplet.data" href="data/index.html">sleplet.data</a></code></li>
 <li><code><a title="sleplet.functions" href="functions/index.html">sleplet.functions</a></code></li>
+<li><code><a title="sleplet.harmonic_methods" href="harmonic_methods.html">sleplet.harmonic_methods</a></code></li>
 <li><code><a title="sleplet.meshes" href="meshes/index.html">sleplet.meshes</a></code></li>
+<li><code><a title="sleplet.noise" href="noise.html">sleplet.noise</a></code></li>
+<li><code><a title="sleplet.plot_methods" href="plot_methods.html">sleplet.plot_methods</a></code></li>
 <li><code><a title="sleplet.plotting" href="plotting/index.html">sleplet.plotting</a></code></li>
-<li><code><a title="sleplet.scripts" href="scripts/index.html">sleplet.scripts</a></code></li>
 <li><code><a title="sleplet.slepian" href="slepian/index.html">sleplet.slepian</a></code></li>
-<li><code><a title="sleplet.utils" href="utils/index.html">sleplet.utils</a></code></li>
+<li><code><a title="sleplet.slepian_methods" href="slepian_methods.html">sleplet.slepian_methods</a></code></li>
+<li><code><a title="sleplet.wavelet_methods" href="wavelet_methods.html">sleplet.wavelet_methods</a></code></li>
 </ul>
 </li>
 </ul>

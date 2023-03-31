@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>sleplet.slepian.slepian_region.slepian_polar_cap API documentation</title>
+<title>sleplet.slepian.slepian_polar_cap API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sleplet.slepian.slepian_region.slepian_polar_cap</code></h1>
+<h1 class="title">Module <code>sleplet.slepian.slepian_polar_cap</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -38,33 +38,31 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet.data.setup_pooch import find_on_pooch_then_local
+import sleplet
+import sleplet._data.setup_pooch
+import sleplet._mask_methods
+import sleplet._parallel_methods
+import sleplet._validation
+import sleplet.harmonic_methods
+import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
-from sleplet.utils.harmonic_methods import create_emm_vector
-from sleplet.utils.mask_methods import create_mask_region
-from sleplet.utils.parallel_methods import (
-    attach_to_shared_memory_block,
-    create_shared_memory_array,
-    free_shared_memory,
-    release_shared_memory,
-    split_arr_into_chunks,
-)
-from sleplet.utils.region import Region
-from sleplet.utils.validation import Validation
-from sleplet.utils.vars import NCPU
+
+_data_path = Path(__file__).resolve().parents[1] / &#34;_data&#34;
 
 L_SAVE_ALL = 16
 
-_data_path = Path(__file__).resolve().parents[2] / &#34;data&#34;
 
-
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
+    &#34;&#34;&#34;class to create a polar cap Slepian region on the sphere&#34;&#34;&#34;
+
     theta_max: float
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     _: KW_ONLY
     gap: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     order: int | npt.NDArray[np.int_] | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -72,11 +70,11 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_fn_name(self) -&gt; str:
         return f&#34;slepian_{self.region.name_ending}&#34;
 
-    def _create_region(self) -&gt; Region:
-        return Region(gap=self.gap, theta_max=self.theta_max)
+    def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
+        return sleplet.slepian.region.Region(gap=self.gap, theta_max=self.theta_max)
 
     def _create_mask(self) -&gt; npt.NDArray[np.float_]:
-        return create_mask_region(self.L, self.region)
+        return sleplet._mask_methods.create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -&gt; float:
         return 2 * np.pi * (1 - np.cos(self.theta_max))
@@ -101,9 +99,13 @@ class SlepianPolarCap(SlepianFunctions):
         &#34;&#34;&#34;
         solves eigenproblem with files already saved
         &#34;&#34;&#34;
-        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
-        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
-        orders = np.load(find_on_pooch_then_local(order_loc))
+        eigenvalues = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+        )
+        eigenvectors = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc)
+        )
+        orders = np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(order_loc))
 
         if self.order is not None:
             idx = np.where(orders == self.order)
@@ -146,7 +148,7 @@ class SlepianPolarCap(SlepianFunctions):
         &#34;&#34;&#34;
         solves the eigenproblem for a given order &#39;m;
         &#34;&#34;&#34;
-        emm = create_emm_vector(self.L)
+        emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)
@@ -191,35 +193,39 @@ class SlepianPolarCap(SlepianFunctions):
         Dm = np.zeros((self.L - m, self.L - m))
         lvec = np.arange(m, self.L)
 
-        Dm_ext, shm_ext = create_shared_memory_array(Dm)
+        Dm_ext, shm_ext = sleplet._parallel_methods.create_shared_memory_array(Dm)
 
         def func(chunk: list[int]) -&gt; None:
             &#34;&#34;&#34;
             calculate D matrix components for each chunk
             &#34;&#34;&#34;
-            Dm_int, shm_int = attach_to_shared_memory_block(Dm, shm_ext)
+            Dm_int, shm_int = sleplet._parallel_methods.attach_to_shared_memory_block(
+                Dm, shm_ext
+            )
 
             # deal with chunk
             for i in chunk:
-                logger.info(f&#34;start ell: {i}&#34;)
+                sleplet.logger.info(f&#34;start ell: {i}&#34;)
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
-                logger.info(f&#34;finish ell: {i}&#34;)
+                sleplet.logger.info(f&#34;finish ell: {i}&#34;)
 
-            free_shared_memory(shm_int)
+            sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L - m, NCPU)
+        chunks = sleplet._parallel_methods.split_arr_into_chunks(
+            self.L - m, sleplet.NCPU
+        )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=NCPU) as e:
+        with ThreadPoolExecutor(max_workers=sleplet.NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
         Dm = Dm_ext * (-1) ** m / 2
 
         # Free and release the shared memory block at the very end
-        free_shared_memory(shm_ext)
-        release_shared_memory(shm_ext)
+        sleplet._parallel_methods.free_shared_memory(shm_ext)
+        sleplet._parallel_methods.release_shared_memory(shm_ext)
         return Dm
 
     def _create_legendre_polynomials_table(
@@ -389,13 +395,13 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     @validator(&#34;order&#34;)
-    def check_order(cls, v, values):
+    def _check_order(cls, v, values):
         if v is not None and (np.abs(v) &gt;= values[&#34;L&#34;]).any():
             raise ValueError(f&#34;Order magnitude should be less than {values[&#39;L&#39;]}&#34;)
         return v
 
     @validator(&#34;theta_max&#34;)
-    def check_theta_max(cls, v):
+    def _check_theta_max(cls, v):
         if v == 0:
             raise ValueError(&#34;theta_max cannot be zero&#34;)
         return v</code></pre>
@@ -410,22 +416,27 @@ class SlepianPolarCap(SlepianFunctions):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap"><code class="flex name class">
+<dt id="sleplet.slepian.slepian_polar_cap.SlepianPolarCap"><code class="flex name class">
 <span>class <span class="ident">SlepianPolarCap</span></span>
 <span>(</span><span>L: int, theta_max: float, *, gap: bool = False, order: int | numpy.ndarray[typing.Any, numpy.dtype[numpy.int64]] | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>SlepianPolarCap(L: int, theta_max: float, *, gap: bool = False, order: int | numpy.ndarray[typing.Any, numpy.dtype[numpy.int64]] | None = None)</p></div>
+<div class="desc"><p>class to create a polar cap Slepian region on the sphere</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation)
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
+    &#34;&#34;&#34;class to create a polar cap Slepian region on the sphere&#34;&#34;&#34;
+
     theta_max: float
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     _: KW_ONLY
     gap: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     order: int | npt.NDArray[np.int_] | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         super().__post_init_post_parse__()
@@ -433,11 +444,11 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_fn_name(self) -&gt; str:
         return f&#34;slepian_{self.region.name_ending}&#34;
 
-    def _create_region(self) -&gt; Region:
-        return Region(gap=self.gap, theta_max=self.theta_max)
+    def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
+        return sleplet.slepian.region.Region(gap=self.gap, theta_max=self.theta_max)
 
     def _create_mask(self) -&gt; npt.NDArray[np.float_]:
-        return create_mask_region(self.L, self.region)
+        return sleplet._mask_methods.create_mask_region(self.L, self.region)
 
     def _calculate_area(self) -&gt; float:
         return 2 * np.pi * (1 - np.cos(self.theta_max))
@@ -462,9 +473,13 @@ class SlepianPolarCap(SlepianFunctions):
         &#34;&#34;&#34;
         solves eigenproblem with files already saved
         &#34;&#34;&#34;
-        eigenvalues = np.load(find_on_pooch_then_local(eval_loc))
-        eigenvectors = np.load(find_on_pooch_then_local(evec_loc))
-        orders = np.load(find_on_pooch_then_local(order_loc))
+        eigenvalues = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+        )
+        eigenvectors = np.load(
+            sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc)
+        )
+        orders = np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(order_loc))
 
         if self.order is not None:
             idx = np.where(orders == self.order)
@@ -507,7 +522,7 @@ class SlepianPolarCap(SlepianFunctions):
         &#34;&#34;&#34;
         solves the eigenproblem for a given order &#39;m;
         &#34;&#34;&#34;
-        emm = create_emm_vector(self.L)
+        emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
         eigenvalues, eigenvectors = self._clean_evals_and_evecs(eigenvalues, gl, emm, m)
@@ -552,35 +567,39 @@ class SlepianPolarCap(SlepianFunctions):
         Dm = np.zeros((self.L - m, self.L - m))
         lvec = np.arange(m, self.L)
 
-        Dm_ext, shm_ext = create_shared_memory_array(Dm)
+        Dm_ext, shm_ext = sleplet._parallel_methods.create_shared_memory_array(Dm)
 
         def func(chunk: list[int]) -&gt; None:
             &#34;&#34;&#34;
             calculate D matrix components for each chunk
             &#34;&#34;&#34;
-            Dm_int, shm_int = attach_to_shared_memory_block(Dm, shm_ext)
+            Dm_int, shm_int = sleplet._parallel_methods.attach_to_shared_memory_block(
+                Dm, shm_ext
+            )
 
             # deal with chunk
             for i in chunk:
-                logger.info(f&#34;start ell: {i}&#34;)
+                sleplet.logger.info(f&#34;start ell: {i}&#34;)
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
-                logger.info(f&#34;finish ell: {i}&#34;)
+                sleplet.logger.info(f&#34;finish ell: {i}&#34;)
 
-            free_shared_memory(shm_int)
+            sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        chunks = split_arr_into_chunks(self.L - m, NCPU)
+        chunks = sleplet._parallel_methods.split_arr_into_chunks(
+            self.L - m, sleplet.NCPU
+        )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=NCPU) as e:
+        with ThreadPoolExecutor(max_workers=sleplet.NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
         Dm = Dm_ext * (-1) ** m / 2
 
         # Free and release the shared memory block at the very end
-        free_shared_memory(shm_ext)
-        release_shared_memory(shm_ext)
+        sleplet._parallel_methods.free_shared_memory(shm_ext)
+        sleplet._parallel_methods.release_shared_memory(shm_ext)
         return Dm
 
     def _create_legendre_polynomials_table(
@@ -750,71 +769,44 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     @validator(&#34;order&#34;)
-    def check_order(cls, v, values):
+    def _check_order(cls, v, values):
         if v is not None and (np.abs(v) &gt;= values[&#34;L&#34;]).any():
             raise ValueError(f&#34;Order magnitude should be less than {values[&#39;L&#39;]}&#34;)
         return v
 
     @validator(&#34;theta_max&#34;)
-    def check_theta_max(cls, v):
+    def _check_theta_max(cls, v):
         if v == 0:
             raise ValueError(&#34;theta_max cannot be zero&#34;)
         return v</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="../slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a></li>
+<li><a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.gap"><code class="name">var <span class="ident">gap</span> : bool</code></dt>
+<dt id="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.gap"><code class="name">var <span class="ident">gap</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.order"><code class="name">var <span class="ident">order</span> : int | numpy.ndarray[typing.Any, numpy.dtype[numpy.int64]] | None</code></dt>
+<dt id="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.order"><code class="name">var <span class="ident">order</span> : int | numpy.ndarray[typing.Any, numpy.dtype[numpy.int64]] | None</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
+<dt id="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.check_order"><code class="name flex">
-<span>def <span class="ident">check_order</span></span>(<span>v, values)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;order&#34;)
-def check_order(cls, v, values):
-    if v is not None and (np.abs(v) &gt;= values[&#34;L&#34;]).any():
-        raise ValueError(f&#34;Order magnitude should be less than {values[&#39;L&#39;]}&#34;)
-    return v</code></pre>
-</details>
-</dd>
-<dt id="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.check_theta_max"><code class="name flex">
-<span>def <span class="ident">check_theta_max</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;theta_max&#34;)
-def check_theta_max(cls, v):
-    if v == 0:
-        raise ValueError(&#34;theta_max cannot be zero&#34;)
-    return v</code></pre>
-</details>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.L" href="slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions.L">L</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -827,19 +819,17 @@ def check_theta_max(cls, v):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sleplet.slepian.slepian_region" href="index.html">sleplet.slepian.slepian_region</a></code></li>
+<li><code><a title="sleplet.slepian" href="index.html">sleplet.slepian</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap" href="#sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap">SlepianPolarCap</a></code></h4>
+<h4><code><a title="sleplet.slepian.slepian_polar_cap.SlepianPolarCap" href="#sleplet.slepian.slepian_polar_cap.SlepianPolarCap">SlepianPolarCap</a></code></h4>
 <ul class="">
-<li><code><a title="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.check_order" href="#sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.check_order">check_order</a></code></li>
-<li><code><a title="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.check_theta_max" href="#sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.check_theta_max">check_theta_max</a></code></li>
-<li><code><a title="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.gap" href="#sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.gap">gap</a></code></li>
-<li><code><a title="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.order" href="#sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.order">order</a></code></li>
-<li><code><a title="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.theta_max" href="#sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap.theta_max">theta_max</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.gap" href="#sleplet.slepian.slepian_polar_cap.SlepianPolarCap.gap">gap</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.order" href="#sleplet.slepian.slepian_polar_cap.SlepianPolarCap.order">order</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.theta_max" href="#sleplet.slepian.slepian_polar_cap.SlepianPolarCap.theta_max">theta_max</a></code></li>
 </ul>
 </li>
 </ul>

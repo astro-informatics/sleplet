@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.plotting API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="classes to create plots on the sphere or mesh" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,28 +19,568 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Namespace <code>sleplet.plotting</code></h1>
+<h1 class="title">Module <code>sleplet.plotting</code></h1>
 </header>
 <section id="section-intro">
+<p>classes to create plots on the sphere or mesh</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+classes to create plots on the sphere or mesh
+&#34;&#34;&#34;
+
+from ._create_plot_mesh import PlotMesh
+from ._create_plot_sphere import PlotSphere
+
+__all__ = [
+    &#34;PlotSphere&#34;,
+    &#34;PlotMesh&#34;,
+]</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="sleplet.plotting.create_plot_mesh" href="create_plot_mesh.html">sleplet.plotting.create_plot_mesh</a></code></dt>
+<dt id="sleplet.plotting.PlotMesh"><code class="flex name class">
+<span>class <span class="ident">PlotMesh</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, filename: str, f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, amplitude: float | None = None, colour: matplotlib.colors.LinearSegmentedColormap = &lt;matplotlib.colors.LinearSegmentedColormap object&gt;, normalise: bool = True, region: bool = False)</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>creates surface mesh plot via <code>plotly</code></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class PlotMesh:
+    &#34;&#34;&#34;creates surface mesh plot via `plotly`&#34;&#34;&#34;
+
+    mesh: sleplet.meshes.mesh.Mesh
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    filename: str
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    f: npt.NDArray[np.complex_ | np.float_]
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    _: KW_ONLY
+    amplitude: float | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    colour: LinearSegmentedColormap = cmocean.cm.ice
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    normalise: bool = True
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    region: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        if self.normalise:
+            self.filename += &#34;_norm&#34;
+
+    def execute(self) -&gt; None:
+        &#34;&#34;&#34;TODO creates 3d plotly mesh plot&#34;&#34;&#34;
+        vmin, vmax = self.f.min(), self.f.max()
+        f = self._prepare_field(self.f)
+
+        if self.region:
+            # make plot area clearer
+            f = self._set_outside_region_to_minimum(f)
+
+        # pick largest tick max value
+        tick_mark = sleplet._plotly_methods.create_tick_mark(
+            vmin, vmax, amplitude=self.amplitude
+        )
+
+        data = [
+            Mesh3d(
+                x=self.mesh.vertices[:, 0],
+                y=self.mesh.vertices[:, 2],
+                z=self.mesh.vertices[:, 1],
+                i=self.mesh.faces[:, 0],
+                j=self.mesh.faces[:, 1],
+                k=self.mesh.faces[:, 2],
+                intensitymode=&#34;cell&#34;,
+                intensity=f,
+                cmax=1 if self.normalise else tick_mark,
+                cmid=0.5 if self.normalise else 0,
+                cmin=0 if self.normalise else -tick_mark,
+                colorbar=sleplet._plotly_methods.create_colour_bar(
+                    tick_mark,
+                    normalise=self.normalise,
+                    bar_len=MESH_CBAR_LEN,
+                    bar_pos=self.mesh.colourbar_pos,
+                    font_size=MESH_CBAR_FONT_SIZE,
+                ),
+                colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
+                lighting=Lighting(ambient=1),
+                reversescale=True,
+            )
+        ]
+
+        layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
+
+        fig = Figure(data=data, layout=layout)
+
+        html_filename = str(_fig_path / &#34;html&#34; / f&#34;{self.filename}.html&#34;)
+
+        py.plot(fig, filename=html_filename)
+
+        for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+            filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
+            sleplet.logger.info(f&#34;saving {filename}&#34;)
+            fig.write_image(filename, engine=&#34;kaleido&#34;)
+
+    def _prepare_field(
+        self, f: npt.NDArray[np.complex_ | np.float_]
+    ) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;
+        scales the field before plotting
+        &#34;&#34;&#34;
+        return sleplet.plot_methods._normalise_function(
+            sleplet._mesh_methods.average_functions_on_vertices_to_faces(
+                self.mesh.faces, f
+            ),
+            normalise=self.normalise,
+        )
+
+    def _set_outside_region_to_minimum(
+        self, f: npt.NDArray[np.float_]
+    ) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;
+        for the Slepian region set the outisde area to negative infinity
+        hence it is clear we are only interested in the coloured region
+        &#34;&#34;&#34;
+        region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(
+            self.mesh
+        )
+        return np.where(region_on_faces, f, MESH_UNSEEN)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.plotting.PlotMesh.amplitude"><code class="name">var <span class="ident">amplitude</span> : float | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt><code class="name"><a title="sleplet.plotting.create_plot_sphere" href="create_plot_sphere.html">sleplet.plotting.create_plot_sphere</a></code></dt>
+<dt id="sleplet.plotting.PlotMesh.colour"><code class="name">var <span class="ident">colour</span> : matplotlib.colors.LinearSegmentedColormap</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotMesh.f"><code class="name">var <span class="ident">f</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotMesh.filename"><code class="name">var <span class="ident">filename</span> : str</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotMesh.mesh"><code class="name">var <span class="ident">mesh</span> : <a title="sleplet.meshes.mesh.Mesh" href="../meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a></code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotMesh.normalise"><code class="name">var <span class="ident">normalise</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotMesh.region"><code class="name">var <span class="ident">region</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
+<h3>Methods</h3>
+<dl>
+<dt id="sleplet.plotting.PlotMesh.execute"><code class="name flex">
+<span>def <span class="ident">execute</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO creates 3d plotly mesh plot</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute(self) -&gt; None:
+    &#34;&#34;&#34;TODO creates 3d plotly mesh plot&#34;&#34;&#34;
+    vmin, vmax = self.f.min(), self.f.max()
+    f = self._prepare_field(self.f)
+
+    if self.region:
+        # make plot area clearer
+        f = self._set_outside_region_to_minimum(f)
+
+    # pick largest tick max value
+    tick_mark = sleplet._plotly_methods.create_tick_mark(
+        vmin, vmax, amplitude=self.amplitude
+    )
+
+    data = [
+        Mesh3d(
+            x=self.mesh.vertices[:, 0],
+            y=self.mesh.vertices[:, 2],
+            z=self.mesh.vertices[:, 1],
+            i=self.mesh.faces[:, 0],
+            j=self.mesh.faces[:, 1],
+            k=self.mesh.faces[:, 2],
+            intensitymode=&#34;cell&#34;,
+            intensity=f,
+            cmax=1 if self.normalise else tick_mark,
+            cmid=0.5 if self.normalise else 0,
+            cmin=0 if self.normalise else -tick_mark,
+            colorbar=sleplet._plotly_methods.create_colour_bar(
+                tick_mark,
+                normalise=self.normalise,
+                bar_len=MESH_CBAR_LEN,
+                bar_pos=self.mesh.colourbar_pos,
+                font_size=MESH_CBAR_FONT_SIZE,
+            ),
+            colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
+            lighting=Lighting(ambient=1),
+            reversescale=True,
+        )
+    ]
+
+    layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
+
+    fig = Figure(data=data, layout=layout)
+
+    html_filename = str(_fig_path / &#34;html&#34; / f&#34;{self.filename}.html&#34;)
+
+    py.plot(fig, filename=html_filename)
+
+    for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+        filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
+        sleplet.logger.info(f&#34;saving {filename}&#34;)
+        fig.write_image(filename, engine=&#34;kaleido&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sleplet.plotting.PlotSphere"><code class="flex name class">
+<span>class <span class="ident">PlotSphere</span></span>
+<span>(</span><span>f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], L: int, filename: str, *, amplitude: float | None = None, annotations: list[dict] = &lt;factory&gt;, normalise: bool = True, plot_type: str = 'real', reality: bool = False, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, spin: int = 0, upsample: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>creates surface sphere plot via <code>plotly</code></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class PlotSphere:
+    &#34;&#34;&#34;creates surface sphere plot via `plotly`&#34;&#34;&#34;
+
+    f: npt.NDArray[np.complex_ | np.float_]
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    L: int
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    filename: str
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    _: KW_ONLY
+    amplitude: float | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    annotations: list[dict] = field(default_factory=list)
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    normalise: bool = True
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    plot_type: str = &#34;real&#34;
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    reality: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    region: sleplet.slepian.region.Region | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    spin: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    upsample: bool = True
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        self.resolution = (
+            sleplet.plot_methods.calc_plot_resolution(self.L)
+            if self.upsample
+            else self.L
+        )
+        if self.upsample:
+            self.filename += f&#34;_res{self.resolution}&#34;
+        self.filename += f&#34;_{self.plot_type}&#34;
+        if self.normalise:
+            self.filename += &#34;_norm&#34;
+
+    def execute(self) -&gt; None:
+        &#34;&#34;&#34;TODO creates basic plotly plot rather than matplotlib&#34;&#34;&#34;
+        f = self._prepare_field(self.f)
+
+        # get values from the setup
+        x, y, z, f_plot, vmin, vmax = self._setup_plot(
+            f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
+        )
+
+        if isinstance(self.region, sleplet.slepian.region.Region):
+            # make plot area clearer
+            f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
+                f_plot, self.resolution, self.region
+            )
+
+        # appropriate zoom in on north pole
+        camera = sleplet._plotly_methods.create_camera(-0.1, -0.1, 10, 7.88)
+
+        # pick largest tick max value
+        tick_mark = sleplet._plotly_methods.create_tick_mark(
+            vmin, vmax, amplitude=self.amplitude
+        )
+
+        data = [
+            Surface(
+                x=x,
+                y=y,
+                z=z,
+                surfacecolor=f_plot,
+                cmax=1 if self.normalise else tick_mark,
+                cmid=0.5 if self.normalise else 0,
+                cmin=0 if self.normalise else -tick_mark,
+                colorbar=sleplet._plotly_methods.create_colour_bar(
+                    tick_mark, normalise=self.normalise
+                ),
+                colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
+                lighting=Lighting(ambient=1),
+                reversescale=True,
+            )
+        ]
+
+        layout = sleplet._plotly_methods.create_layout(
+            camera, annotations=self.annotations
+        )
+
+        fig = Figure(data=data, layout=layout)
+
+        html_filename = str(_fig_path / &#34;html&#34; / f&#34;{self.filename}.html&#34;)
+
+        py.plot(fig, filename=html_filename)
+
+        for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+            filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
+            sleplet.logger.info(f&#34;saving {filename}&#34;)
+            fig.write_image(filename, engine=&#34;kaleido&#34;)
+
+    @staticmethod
+    def _setup_plot(
+        f: npt.NDArray[np.float_],
+        resolution: int,
+        *,
+        method: str = &#34;MW&#34;,
+        close: bool = True,
+        parametric: bool = False,
+        parametric_scaling: list[float] | None = None,
+        color_range: list[float] | None = None,
+    ) -&gt; tuple[
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_],
+        float,
+        float,
+    ]:
+        &#34;&#34;&#34;
+        function which creates the data for the matplotlib/plotly plot
+        &#34;&#34;&#34;
+        if parametric_scaling is None:
+            parametric_scaling = [0.0, 0.5]
+        if method == &#34;MW_pole&#34;:
+            if len(f) == MW_POLE_LENGTH:
+                f, _ = f
+            else:
+                f, _, _ = f
+
+        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
+
+        if thetas.size != f.size:
+            raise AttributeError(&#34;Bandlimit L deos not match that of f&#34;)
+
+        f_plot = f.copy()
+
+        f_max = f_plot.max()
+        f_min = f_plot.min()
+
+        if not isinstance(color_range, list):
+            vmin = f_min
+            vmax = f_max
+        else:
+            vmin = color_range[0]
+            vmax = color_range[1]
+            f_plot[f_plot &lt; color_range[0]] = color_range[0]
+            f_plot[f_plot &gt; color_range[1]] = color_range[1]
+            f_plot[f_plot == sleplet._vars.SPHERE_UNSEEN] = np.nan
+
+        # Compute position scaling for parametric plot.
+        f_normalised = (
+            (f_plot - vmin / (vmax - vmin)) * parametric_scaling[1]
+            + parametric_scaling[0]
+            if parametric
+            else np.zeros(f_plot.shape)
+        )
+
+        # Close plot.
+        if close:
+            _, n_phi = ssht.sample_shape(resolution, Method=method)
+            f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
+            if parametric:
+                f_normalised = np.insert(
+                    f_normalised, n_phi, f_normalised[:, 0], axis=1
+                )
+            thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
+            phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
+
+        # Compute location of vertices.
+        x, y, z = (
+            ssht.spherical_to_cart(f_normalised, thetas, phis)
+            if parametric
+            else ssht.s2_to_cart(thetas, phis)
+        )
+
+        return x, y, z, f_plot, vmin, vmax
+
+    def _prepare_field(
+        self, f: npt.NDArray[np.complex_ | np.float_]
+    ) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;
+        boosts, forces plot type and then scales the field before plotting
+        &#34;&#34;&#34;
+        boosted_field = sleplet.plot_methods._boost_field(
+            f,
+            self.L,
+            self.resolution,
+            reality=self.reality,
+            spin=self.spin,
+            upsample=self.upsample,
+        )
+        field_space = sleplet.plot_methods._create_plot_type(
+            boosted_field, self.plot_type
+        )
+        return sleplet.plot_methods._normalise_function(
+            field_space, normalise=self.normalise
+        )</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.plotting.PlotSphere.L"><code class="name">var <span class="ident">L</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.amplitude"><code class="name">var <span class="ident">amplitude</span> : float | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.annotations"><code class="name">var <span class="ident">annotations</span> : list[dict]</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.f"><code class="name">var <span class="ident">f</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.filename"><code class="name">var <span class="ident">filename</span> : str</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.normalise"><code class="name">var <span class="ident">normalise</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.plot_type"><code class="name">var <span class="ident">plot_type</span> : str</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.reality"><code class="name">var <span class="ident">reality</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.region"><code class="name">var <span class="ident">region</span> : <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.spin"><code class="name">var <span class="ident">spin</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.upsample"><code class="name">var <span class="ident">upsample</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sleplet.plotting.PlotSphere.execute"><code class="name flex">
+<span>def <span class="ident">execute</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO creates basic plotly plot rather than matplotlib</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute(self) -&gt; None:
+    &#34;&#34;&#34;TODO creates basic plotly plot rather than matplotlib&#34;&#34;&#34;
+    f = self._prepare_field(self.f)
+
+    # get values from the setup
+    x, y, z, f_plot, vmin, vmax = self._setup_plot(
+        f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
+    )
+
+    if isinstance(self.region, sleplet.slepian.region.Region):
+        # make plot area clearer
+        f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
+            f_plot, self.resolution, self.region
+        )
+
+    # appropriate zoom in on north pole
+    camera = sleplet._plotly_methods.create_camera(-0.1, -0.1, 10, 7.88)
+
+    # pick largest tick max value
+    tick_mark = sleplet._plotly_methods.create_tick_mark(
+        vmin, vmax, amplitude=self.amplitude
+    )
+
+    data = [
+        Surface(
+            x=x,
+            y=y,
+            z=z,
+            surfacecolor=f_plot,
+            cmax=1 if self.normalise else tick_mark,
+            cmid=0.5 if self.normalise else 0,
+            cmin=0 if self.normalise else -tick_mark,
+            colorbar=sleplet._plotly_methods.create_colour_bar(
+                tick_mark, normalise=self.normalise
+            ),
+            colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
+            lighting=Lighting(ambient=1),
+            reversescale=True,
+        )
+    ]
+
+    layout = sleplet._plotly_methods.create_layout(
+        camera, annotations=self.annotations
+    )
+
+    fig = Figure(data=data, layout=layout)
+
+    html_filename = str(_fig_path / &#34;html&#34; / f&#34;{self.filename}.html&#34;)
+
+    py.plot(fig, filename=html_filename)
+
+    for file_type in {&#34;png&#34;, &#34;pdf&#34;}:
+        filename = str(_fig_path / file_type / f&#34;{self.filename}.{file_type}&#34;)
+        sleplet.logger.info(f&#34;saving {filename}&#34;)
+        fig.write_image(filename, engine=&#34;kaleido&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -54,10 +594,38 @@
 <li><code><a title="sleplet" href="../index.html">sleplet</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="sleplet.plotting.create_plot_mesh" href="create_plot_mesh.html">sleplet.plotting.create_plot_mesh</a></code></li>
-<li><code><a title="sleplet.plotting.create_plot_sphere" href="create_plot_sphere.html">sleplet.plotting.create_plot_sphere</a></code></li>
+<li>
+<h4><code><a title="sleplet.plotting.PlotMesh" href="#sleplet.plotting.PlotMesh">PlotMesh</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sleplet.plotting.PlotMesh.amplitude" href="#sleplet.plotting.PlotMesh.amplitude">amplitude</a></code></li>
+<li><code><a title="sleplet.plotting.PlotMesh.colour" href="#sleplet.plotting.PlotMesh.colour">colour</a></code></li>
+<li><code><a title="sleplet.plotting.PlotMesh.execute" href="#sleplet.plotting.PlotMesh.execute">execute</a></code></li>
+<li><code><a title="sleplet.plotting.PlotMesh.f" href="#sleplet.plotting.PlotMesh.f">f</a></code></li>
+<li><code><a title="sleplet.plotting.PlotMesh.filename" href="#sleplet.plotting.PlotMesh.filename">filename</a></code></li>
+<li><code><a title="sleplet.plotting.PlotMesh.mesh" href="#sleplet.plotting.PlotMesh.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.plotting.PlotMesh.normalise" href="#sleplet.plotting.PlotMesh.normalise">normalise</a></code></li>
+<li><code><a title="sleplet.plotting.PlotMesh.region" href="#sleplet.plotting.PlotMesh.region">region</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.plotting.PlotSphere" href="#sleplet.plotting.PlotSphere">PlotSphere</a></code></h4>
+<ul class="two-column">
+<li><code><a title="sleplet.plotting.PlotSphere.L" href="#sleplet.plotting.PlotSphere.L">L</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.amplitude" href="#sleplet.plotting.PlotSphere.amplitude">amplitude</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.annotations" href="#sleplet.plotting.PlotSphere.annotations">annotations</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.execute" href="#sleplet.plotting.PlotSphere.execute">execute</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.f" href="#sleplet.plotting.PlotSphere.f">f</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.filename" href="#sleplet.plotting.PlotSphere.filename">filename</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.normalise" href="#sleplet.plotting.PlotSphere.normalise">normalise</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.plot_type" href="#sleplet.plotting.PlotSphere.plot_type">plot_type</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.reality" href="#sleplet.plotting.PlotSphere.reality">reality</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.region" href="#sleplet.plotting.PlotSphere.region">region</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.spin" href="#sleplet.plotting.PlotSphere.spin">spin</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.upsample" href="#sleplet.plotting.PlotSphere.upsample">upsample</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

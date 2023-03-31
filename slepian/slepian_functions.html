@@ -32,14 +32,17 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet.utils.region import Region
-from sleplet.utils.validation import Validation
+import sleplet
+import sleplet._validation
+import sleplet.slepian.region
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
+    &#34;&#34;&#34;abstract parent class of creating the different Slepian regions on the sphere&#34;&#34;&#34;
+
     L: int
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self.region = self._create_region()
@@ -47,11 +50,11 @@ class SlepianFunctions:
         self.name = self._create_fn_name()
         area = self._calculate_area()
         self.N = round(area * self.L**2 / (4 * np.pi))
-        logger.info(f&#34;Shannon number N={self.N}&#34;)
+        sleplet.logger.info(f&#34;Shannon number N={self.N}&#34;)
         self.matrix_location = self._create_matrix_location()
-        logger.info(&#34;start solving eigenproblem&#34;)
+        sleplet.logger.info(&#34;start solving eigenproblem&#34;)
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
-        logger.info(&#34;finished solving eigenproblem&#34;)
+        sleplet.logger.info(&#34;finished solving eigenproblem&#34;)
 
     @abstractmethod
     def _create_fn_name(self) -&gt; str:
@@ -61,7 +64,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_region(self) -&gt; Region:
+    def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
         &#34;&#34;&#34;
         creates a region object for area of interest
         &#34;&#34;&#34;
@@ -112,14 +115,17 @@ class SlepianFunctions:
 <span>(</span><span>L: int)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>SlepianFunctions(L: int)</p></div>
+<div class="desc"><p>abstract parent class of creating the different Slepian regions on the sphere</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation)
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
+    &#34;&#34;&#34;abstract parent class of creating the different Slepian regions on the sphere&#34;&#34;&#34;
+
     L: int
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self.region = self._create_region()
@@ -127,11 +133,11 @@ class SlepianFunctions:
         self.name = self._create_fn_name()
         area = self._calculate_area()
         self.N = round(area * self.L**2 / (4 * np.pi))
-        logger.info(f&#34;Shannon number N={self.N}&#34;)
+        sleplet.logger.info(f&#34;Shannon number N={self.N}&#34;)
         self.matrix_location = self._create_matrix_location()
-        logger.info(&#34;start solving eigenproblem&#34;)
+        sleplet.logger.info(&#34;start solving eigenproblem&#34;)
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
-        logger.info(&#34;finished solving eigenproblem&#34;)
+        sleplet.logger.info(&#34;finished solving eigenproblem&#34;)
 
     @abstractmethod
     def _create_fn_name(self) -&gt; str:
@@ -141,7 +147,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_region(self) -&gt; Region:
+    def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
         &#34;&#34;&#34;
         creates a region object for area of interest
         &#34;&#34;&#34;
@@ -179,15 +185,15 @@ class SlepianFunctions:
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary" href="slepian_region/slepian_arbitrary.html#sleplet.slepian.slepian_region.slepian_arbitrary.SlepianArbitrary">SlepianArbitrary</a></li>
-<li><a title="sleplet.slepian.slepian_region.slepian_limit_lat_lon.SlepianLimitLatLon" href="slepian_region/slepian_limit_lat_lon.html#sleplet.slepian.slepian_region.slepian_limit_lat_lon.SlepianLimitLatLon">SlepianLimitLatLon</a></li>
-<li><a title="sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap" href="slepian_region/slepian_polar_cap.html#sleplet.slepian.slepian_region.slepian_polar_cap.SlepianPolarCap">SlepianPolarCap</a></li>
+<li><a title="sleplet.slepian.slepian_arbitrary.SlepianArbitrary" href="slepian_arbitrary.html#sleplet.slepian.slepian_arbitrary.SlepianArbitrary">SlepianArbitrary</a></li>
+<li><a title="sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon" href="slepian_limit_lat_lon.html#sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon">SlepianLimitLatLon</a></li>
+<li><a title="sleplet.slepian.slepian_polar_cap.SlepianPolarCap" href="slepian_polar_cap.html#sleplet.slepian.slepian_polar_cap.SlepianPolarCap">SlepianPolarCap</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="sleplet.slepian.slepian_functions.SlepianFunctions.L"><code class="name">var <span class="ident">L</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
 </dd>

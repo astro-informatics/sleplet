@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>sleplet.utils.region API documentation</title>
+<title>sleplet.slepian.region API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>sleplet.utils.region</code></h1>
+<h1 class="title">Module <code>sleplet.slepian.region</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -29,25 +29,28 @@
 <pre><code class="python">from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.utils.bool_methods import is_limited_lat_lon, is_polar_cap
-from sleplet.utils.string_methods import angle_as_degree, multiples_of_pi
-from sleplet.utils.validation import Validation
-from sleplet.utils.vars import (
-    PHI_MAX_DEFAULT,
-    PHI_MIN_DEFAULT,
-    THETA_MAX_DEFAULT,
-    THETA_MIN_DEFAULT,
-)
+import sleplet._bool_methods
+import sleplet._string_methods
+import sleplet._validation
+import sleplet._vars
 
 
-@dataclass(config=Validation, kw_only=True)
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
+    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere&#34;&#34;&#34;
+
     gap: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     mask_name: str = &#34;&#34;
-    phi_max: float = PHI_MAX_DEFAULT
-    phi_min: float = PHI_MIN_DEFAULT
-    theta_max: float = THETA_MAX_DEFAULT
-    theta_min: float = THETA_MIN_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._identify_region()
@@ -56,22 +59,24 @@ class Region:
         &#34;&#34;&#34;
         identify region type based on the angle inputs or a mask name
         &#34;&#34;&#34;
-        if is_polar_cap(self.phi_min, self.phi_max, self.theta_min, self.theta_max):
+        if sleplet._bool_methods.is_polar_cap(
+            self.phi_min, self.phi_max, self.theta_min, self.theta_max
+        ):
             self.region_type = &#34;polar&#34;
             self.name_ending = (
                 f&#34;polar{&#39;_gap&#39; if self.gap else &#39;&#39;}&#34;
-                f&#34;{angle_as_degree(self.theta_max)}&#34;
+                f&#34;{sleplet._string_methods.angle_as_degree(self.theta_max)}&#34;
             )
 
-        elif is_limited_lat_lon(
+        elif sleplet._bool_methods.is_limited_lat_lon(
             self.phi_min, self.phi_max, self.theta_min, self.theta_max
         ):
             self.region_type = &#34;lim_lat_lon&#34;
             self.name_ending = (
-                f&#34;theta{angle_as_degree(self.theta_min)}&#34;
-                f&#34;-{angle_as_degree(self.theta_max)}&#34;
-                f&#34;_phi{angle_as_degree(self.phi_min)}&#34;
-                f&#34;-{angle_as_degree(self.phi_max)}&#34;
+                f&#34;theta{sleplet._string_methods.angle_as_degree(self.theta_min)}&#34;
+                f&#34;-{sleplet._string_methods.angle_as_degree(self.theta_max)}&#34;
+                f&#34;_phi{sleplet._string_methods.angle_as_degree(self.phi_min)}&#34;
+                f&#34;-{sleplet._string_methods.angle_as_degree(self.phi_max)}&#34;
             )
 
         elif self.mask_name:
@@ -85,42 +90,46 @@ class Region:
             )
 
     @validator(&#34;phi_max&#34;)
-    def check_phi_max(cls, v):
-        if v &lt; PHI_MIN_DEFAULT:
+    def _check_phi_max(cls, v):
+        if v &lt; sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError(&#34;phi_max cannot be negative&#34;)
-        if v &gt; PHI_MAX_DEFAULT:
+        if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
-                f&#34;phi_max cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}&#34;
+                f&#34;phi_max cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
             )
         return v
 
     @validator(&#34;phi_min&#34;)
-    def check_phi_min(cls, v):
-        if v &lt; PHI_MIN_DEFAULT:
+    def _check_phi_min(cls, v):
+        if v &lt; sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError(&#34;phi_min cannot be negative&#34;)
-        if v &gt; PHI_MAX_DEFAULT:
+        if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
-                f&#34;phi_min cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}&#34;
+                f&#34;phi_min cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
             )
         return v
 
     @validator(&#34;theta_max&#34;)
-    def check_theta_max(cls, v):
-        if v &lt; THETA_MIN_DEFAULT:
+    def _check_theta_max(cls, v):
+        if v &lt; sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError(&#34;theta_max cannot be negative&#34;)
-        if v &gt; THETA_MAX_DEFAULT:
+        if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
-                f&#34;theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}&#34;
+                &#34;theta_max cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
             )
         return v
 
     @validator(&#34;theta_min&#34;)
-    def check_theta_min(cls, v):
-        if v &lt; THETA_MIN_DEFAULT:
+    def _check_theta_min(cls, v):
+        if v &lt; sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError(&#34;theta_min cannot be negative&#34;)
-        if v &gt; THETA_MAX_DEFAULT:
+        if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
-                f&#34;theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}&#34;
+                &#34;theta_min cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
             )
         return v</code></pre>
 </details>
@@ -134,24 +143,32 @@ class Region:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="sleplet.utils.region.Region"><code class="flex name class">
+<dt id="sleplet.slepian.region.Region"><code class="flex name class">
 <span>class <span class="ident">Region</span></span>
 <span>(</span><span>*, gap: bool = False, mask_name: str = '', phi_max: float = 6.283185307179586, phi_min: float = 0.0, theta_max: float = 3.141592653589793, theta_min: float = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Region(*, gap: bool = False, mask_name: str = '', phi_max: float = 6.283185307179586, phi_min: float = 0.0, theta_max: float = 3.141592653589793, theta_min: float = 0)</p></div>
+<div class="desc"><p>identifies and creates the appropriate Slepian region for the sphere</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation, kw_only=True)
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
+    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere&#34;&#34;&#34;
+
     gap: bool = False
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
     mask_name: str = &#34;&#34;
-    phi_max: float = PHI_MAX_DEFAULT
-    phi_min: float = PHI_MIN_DEFAULT
-    theta_max: float = THETA_MAX_DEFAULT
-    theta_min: float = THETA_MIN_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
 
     def __post_init_post_parse__(self) -&gt; None:
         self._identify_region()
@@ -160,22 +177,24 @@ class Region:
         &#34;&#34;&#34;
         identify region type based on the angle inputs or a mask name
         &#34;&#34;&#34;
-        if is_polar_cap(self.phi_min, self.phi_max, self.theta_min, self.theta_max):
+        if sleplet._bool_methods.is_polar_cap(
+            self.phi_min, self.phi_max, self.theta_min, self.theta_max
+        ):
             self.region_type = &#34;polar&#34;
             self.name_ending = (
                 f&#34;polar{&#39;_gap&#39; if self.gap else &#39;&#39;}&#34;
-                f&#34;{angle_as_degree(self.theta_max)}&#34;
+                f&#34;{sleplet._string_methods.angle_as_degree(self.theta_max)}&#34;
             )
 
-        elif is_limited_lat_lon(
+        elif sleplet._bool_methods.is_limited_lat_lon(
             self.phi_min, self.phi_max, self.theta_min, self.theta_max
         ):
             self.region_type = &#34;lim_lat_lon&#34;
             self.name_ending = (
-                f&#34;theta{angle_as_degree(self.theta_min)}&#34;
-                f&#34;-{angle_as_degree(self.theta_max)}&#34;
-                f&#34;_phi{angle_as_degree(self.phi_min)}&#34;
-                f&#34;-{angle_as_degree(self.phi_max)}&#34;
+                f&#34;theta{sleplet._string_methods.angle_as_degree(self.theta_min)}&#34;
+                f&#34;-{sleplet._string_methods.angle_as_degree(self.theta_max)}&#34;
+                f&#34;_phi{sleplet._string_methods.angle_as_degree(self.phi_min)}&#34;
+                f&#34;-{sleplet._string_methods.angle_as_degree(self.phi_max)}&#34;
             )
 
         elif self.mask_name:
@@ -189,153 +208,74 @@ class Region:
             )
 
     @validator(&#34;phi_max&#34;)
-    def check_phi_max(cls, v):
-        if v &lt; PHI_MIN_DEFAULT:
+    def _check_phi_max(cls, v):
+        if v &lt; sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError(&#34;phi_max cannot be negative&#34;)
-        if v &gt; PHI_MAX_DEFAULT:
+        if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
-                f&#34;phi_max cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}&#34;
+                f&#34;phi_max cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
             )
         return v
 
     @validator(&#34;phi_min&#34;)
-    def check_phi_min(cls, v):
-        if v &lt; PHI_MIN_DEFAULT:
+    def _check_phi_min(cls, v):
+        if v &lt; sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError(&#34;phi_min cannot be negative&#34;)
-        if v &gt; PHI_MAX_DEFAULT:
+        if v &gt; sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
-                f&#34;phi_min cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}&#34;
+                f&#34;phi_min cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}&#34;  # noqa: E501
             )
         return v
 
     @validator(&#34;theta_max&#34;)
-    def check_theta_max(cls, v):
-        if v &lt; THETA_MIN_DEFAULT:
+    def _check_theta_max(cls, v):
+        if v &lt; sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError(&#34;theta_max cannot be negative&#34;)
-        if v &gt; THETA_MAX_DEFAULT:
+        if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
-                f&#34;theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}&#34;
+                &#34;theta_max cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
             )
         return v
 
     @validator(&#34;theta_min&#34;)
-    def check_theta_min(cls, v):
-        if v &lt; THETA_MIN_DEFAULT:
+    def _check_theta_min(cls, v):
+        if v &lt; sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError(&#34;theta_min cannot be negative&#34;)
-        if v &gt; THETA_MAX_DEFAULT:
+        if v &gt; sleplet._vars.THETA_MAX_DEFAULT:
             raise ValueError(
-                f&#34;theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}&#34;
+                &#34;theta_min cannot be greater than &#34;
+                f&#34;{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}&#34;
             )
         return v</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="sleplet.utils.region.Region.gap"><code class="name">var <span class="ident">gap</span> : bool</code></dt>
+<dt id="sleplet.slepian.region.Region.gap"><code class="name">var <span class="ident">gap</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.utils.region.Region.mask_name"><code class="name">var <span class="ident">mask_name</span> : str</code></dt>
+<dt id="sleplet.slepian.region.Region.mask_name"><code class="name">var <span class="ident">mask_name</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.utils.region.Region.phi_max"><code class="name">var <span class="ident">phi_max</span> : float</code></dt>
+<dt id="sleplet.slepian.region.Region.phi_max"><code class="name">var <span class="ident">phi_max</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.utils.region.Region.phi_min"><code class="name">var <span class="ident">phi_min</span> : float</code></dt>
+<dt id="sleplet.slepian.region.Region.phi_min"><code class="name">var <span class="ident">phi_min</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.utils.region.Region.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
+<dt id="sleplet.slepian.region.Region.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>TODO</p></div>
 </dd>
-<dt id="sleplet.utils.region.Region.theta_min"><code class="name">var <span class="ident">theta_min</span> : float</code></dt>
+<dt id="sleplet.slepian.region.Region.theta_min"><code class="name">var <span class="ident">theta_min</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="sleplet.utils.region.Region.check_phi_max"><code class="name flex">
-<span>def <span class="ident">check_phi_max</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;phi_max&#34;)
-def check_phi_max(cls, v):
-    if v &lt; PHI_MIN_DEFAULT:
-        raise ValueError(&#34;phi_max cannot be negative&#34;)
-    if v &gt; PHI_MAX_DEFAULT:
-        raise ValueError(
-            f&#34;phi_max cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}&#34;
-        )
-    return v</code></pre>
-</details>
-</dd>
-<dt id="sleplet.utils.region.Region.check_phi_min"><code class="name flex">
-<span>def <span class="ident">check_phi_min</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;phi_min&#34;)
-def check_phi_min(cls, v):
-    if v &lt; PHI_MIN_DEFAULT:
-        raise ValueError(&#34;phi_min cannot be negative&#34;)
-    if v &gt; PHI_MAX_DEFAULT:
-        raise ValueError(
-            f&#34;phi_min cannot be greater than {multiples_of_pi(PHI_MAX_DEFAULT)}&#34;
-        )
-    return v</code></pre>
-</details>
-</dd>
-<dt id="sleplet.utils.region.Region.check_theta_max"><code class="name flex">
-<span>def <span class="ident">check_theta_max</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;theta_max&#34;)
-def check_theta_max(cls, v):
-    if v &lt; THETA_MIN_DEFAULT:
-        raise ValueError(&#34;theta_max cannot be negative&#34;)
-    if v &gt; THETA_MAX_DEFAULT:
-        raise ValueError(
-            f&#34;theta_max cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}&#34;
-        )
-    return v</code></pre>
-</details>
-</dd>
-<dt id="sleplet.utils.region.Region.check_theta_min"><code class="name flex">
-<span>def <span class="ident">check_theta_min</span></span>(<span>v)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@validator(&#34;theta_min&#34;)
-def check_theta_min(cls, v):
-    if v &lt; THETA_MIN_DEFAULT:
-        raise ValueError(&#34;theta_min cannot be negative&#34;)
-    if v &gt; THETA_MAX_DEFAULT:
-        raise ValueError(
-            f&#34;theta_min cannot be greater than {multiples_of_pi(THETA_MAX_DEFAULT)}&#34;
-        )
-    return v</code></pre>
-</details>
+<div class="desc"><p>TODO</p></div>
 </dd>
 </dl>
 </dd>
@@ -350,24 +290,20 @@ def check_theta_min(cls, v):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="sleplet.utils" href="index.html">sleplet.utils</a></code></li>
+<li><code><a title="sleplet.slepian" href="index.html">sleplet.slepian</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="sleplet.utils.region.Region" href="#sleplet.utils.region.Region">Region</a></code></h4>
+<h4><code><a title="sleplet.slepian.region.Region" href="#sleplet.slepian.region.Region">Region</a></code></h4>
 <ul class="two-column">
-<li><code><a title="sleplet.utils.region.Region.check_phi_max" href="#sleplet.utils.region.Region.check_phi_max">check_phi_max</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.check_phi_min" href="#sleplet.utils.region.Region.check_phi_min">check_phi_min</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.check_theta_max" href="#sleplet.utils.region.Region.check_theta_max">check_theta_max</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.check_theta_min" href="#sleplet.utils.region.Region.check_theta_min">check_theta_min</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.gap" href="#sleplet.utils.region.Region.gap">gap</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.mask_name" href="#sleplet.utils.region.Region.mask_name">mask_name</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.phi_max" href="#sleplet.utils.region.Region.phi_max">phi_max</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.phi_min" href="#sleplet.utils.region.Region.phi_min">phi_min</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.theta_max" href="#sleplet.utils.region.Region.theta_max">theta_max</a></code></li>
-<li><code><a title="sleplet.utils.region.Region.theta_min" href="#sleplet.utils.region.Region.theta_min">theta_min</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.gap" href="#sleplet.slepian.region.Region.gap">gap</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.mask_name" href="#sleplet.slepian.region.Region.mask_name">mask_name</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.phi_max" href="#sleplet.slepian.region.Region.phi_max">phi_max</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.phi_min" href="#sleplet.slepian.region.Region.phi_min">phi_min</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.theta_max" href="#sleplet.slepian.region.Region.theta_max">theta_max</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.theta_min" href="#sleplet.slepian.region.Region.theta_min">theta_min</a></code></li>
 </ul>
 </li>
 </ul>

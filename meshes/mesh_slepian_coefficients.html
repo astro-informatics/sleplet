@@ -32,16 +32,18 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
-from sleplet.utils.validation import Validation
+import sleplet._validation
+import sleplet.meshes.mesh_coefficients
+import sleplet.meshes.mesh_slepian
+import sleplet.noise
 
 
-@dataclass(config=Validation)
-class MeshSlepianCoefficients(MeshCoefficients):
+@dataclass(config=sleplet._validation.Validation)
+class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
+    &#34;&#34;&#34;abstract parent class to handle Slepian coefficients on the mesh&#34;&#34;&#34;
+
     def __post_init_post_parse__(self) -&gt; None:
-        self.mesh_slepian = MeshSlepian(self.mesh)
+        self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
         super().__post_init_post_parse__()
 
     def _add_noise_to_signal(
@@ -53,10 +55,10 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            n_p = create_slepian_mesh_noise(
+            n_p = sleplet.noise._create_slepian_mesh_noise(
                 self.mesh_slepian, self.coefficients, self.noise
             )
-            snr = compute_snr(self.coefficients, n_p, &#34;Slepian&#34;)
+            snr = sleplet.noise.compute_snr(self.coefficients, n_p, &#34;Slepian&#34;)
             self.coefficients = self.coefficients + n_p
             return unnoised_coefficients, snr
         return None, None
@@ -85,18 +87,20 @@ class MeshSlepianCoefficients(MeshCoefficients):
 <dl>
 <dt id="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients"><code class="flex name class">
 <span>class <span class="ident">MeshSlepianCoefficients</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.classes.mesh.Mesh" href="classes/mesh.html#sleplet.meshes.classes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MeshSlepianCoefficients(mesh: sleplet.meshes.classes.mesh.Mesh, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</p></div>
+<div class="desc"><p>abstract parent class to handle Slepian coefficients on the mesh</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass(config=Validation)
-class MeshSlepianCoefficients(MeshCoefficients):
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
+    &#34;&#34;&#34;abstract parent class to handle Slepian coefficients on the mesh&#34;&#34;&#34;
+
     def __post_init_post_parse__(self) -&gt; None:
-        self.mesh_slepian = MeshSlepian(self.mesh)
+        self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
         super().__post_init_post_parse__()
 
     def _add_noise_to_signal(
@@ -108,10 +112,10 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            n_p = create_slepian_mesh_noise(
+            n_p = sleplet.noise._create_slepian_mesh_noise(
                 self.mesh_slepian, self.coefficients, self.noise
             )
-            snr = compute_snr(self.coefficients, n_p, &#34;Slepian&#34;)
+            snr = sleplet.noise.compute_snr(self.coefficients, n_p, &#34;Slepian&#34;)
             self.coefficients = self.coefficients + n_p
             return unnoised_coefficients, snr
         return None, None
@@ -139,6 +143,17 @@ class MeshSlepianCoefficients(MeshCoefficients):
 <li><a title="sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field.MeshSlepianNoiseField" href="slepian_coefficients/mesh_slepian_noise_field.html#sleplet.meshes.slepian_coefficients.mesh_slepian_noise_field.MeshSlepianNoiseField">MeshSlepianNoiseField</a></li>
 <li><a title="sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients.MeshSlepianWaveletCoefficients" href="slepian_coefficients/mesh_slepian_wavelet_coefficients.html#sleplet.meshes.slepian_coefficients.mesh_slepian_wavelet_coefficients.MeshSlepianWaveletCoefficients">MeshSlepianWaveletCoefficients</a></li>
 <li><a title="sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets" href="slepian_coefficients/mesh_slepian_wavelets.html#sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets">MeshSlepianWavelets</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
 </ul>
 </dd>
 </dl>

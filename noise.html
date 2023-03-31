@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>sleplet.noise API documentation</title>
+<meta name="description" content="methods to handle noise in Fourier or wavelet space" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sleplet.noise</code></h1>
+</header>
+<section id="section-intro">
+<p>methods to handle noise in Fourier or wavelet space</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+methods to handle noise in Fourier or wavelet space
+&#34;&#34;&#34;
+import numpy as np
+import pyssht as ssht
+from numpy import typing as npt
+from numpy.random import default_rng
+
+import sleplet
+import sleplet._vars
+import sleplet.harmonic_methods
+import sleplet.meshes.mesh_slepian
+import sleplet.slepian.slepian_functions
+import sleplet.slepian_methods
+
+
+def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -&gt; float:
+    &#34;&#34;&#34;
+    computes the power of the signal
+    &#34;&#34;&#34;
+    return (np.abs(signal) ** 2).sum()
+
+
+def compute_snr(
+    signal: npt.NDArray[np.complex_ | np.float_],
+    noise: npt.NDArray[np.complex_ | np.float_],
+    signal_type: str,
+) -&gt; float:
+    &#34;&#34;&#34;TODO computes the signal to noise ratio
+
+    Args:
+        signal: _description_
+        noise: _description_
+        signal_type: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
+    sleplet.logger.info(f&#34;{signal_type} SNR: {snr:.2f}&#34;)
+    return snr
+
+
+def compute_sigma_noise(
+    signal: npt.NDArray[np.complex_ | np.float_],
+    snr_in: float,
+    *,
+    denominator: int | None = None,
+) -&gt; float:
+    &#34;&#34;&#34;TODO compute the std dev of the noise
+
+    Args:
+        signal: _description_
+        snr_in: _description_
+        denominator: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    if denominator is None:
+        denominator = signal.shape[0]
+    return np.sqrt(10 ** (-snr_in / 10) * _signal_power(signal) / denominator)
+
+
+def _create_noise(
+    L: int, signal: npt.NDArray[np.complex_ | np.float_], snr_in: float
+) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;
+    computes Gaussian white noise
+    &#34;&#34;&#34;
+    # set random seed
+    rng = default_rng(sleplet._vars.RANDOM_SEED)
+
+    # initialise
+    nlm = np.zeros(L**2, dtype=np.complex_)
+
+    # std dev of the noise
+    sigma_noise = compute_sigma_noise(signal, snr_in)
+
+    # compute noise
+    for ell in range(L):
+        ind = ssht.elm2ind(ell, 0)
+        nlm[ind] = sigma_noise * rng.standard_normal()
+        for m in range(1, ell + 1):
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            nlm[ind_pm] = (
+                sigma_noise
+                / np.sqrt(2)
+                * (rng.standard_normal() + 1j * rng.standard_normal())
+            )
+            nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
+    return nlm
+
+
+def _create_slepian_noise(
+    L: int,
+    slepian_signal: npt.NDArray[np.complex_ | np.float_],
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    snr_in: float,
+) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;
+    computes Gaussian white noise in Slepian space
+    &#34;&#34;&#34;
+    flm = ssht.forward(
+        sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
+        L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+    )
+    nlm = _create_noise(L, flm, snr_in)
+    return sleplet.slepian_methods.slepian_forward(L, slepian, flm=nlm)
+
+
+def _perform_hard_thresholding(
+    f: npt.NDArray[np.complex_ | np.float_],
+    sigma_j: float | npt.NDArray[np.float_],
+    n_sigma: int,
+) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;
+    set pixels in real space to zero if the magnitude is less than the threshold
+    &#34;&#34;&#34;
+    threshold = n_sigma * sigma_j
+    return np.where(np.abs(f) &lt; threshold, 0, f)
+
+
+def harmonic_hard_thresholding(
+    L: int,
+    wav_coeffs: npt.NDArray[np.complex_],
+    sigma_j: npt.NDArray[np.float_],
+    n_sigma: int,
+) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;TODO perform thresholding in harmonic space
+
+    Args:
+        L: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin harmonic hard thresholding&#34;)
+    for j, coefficient in enumerate(wav_coeffs[1:]):
+        sleplet.logger.info(f&#34;start Psi^{j + 1}/{len(wav_coeffs)-1}&#34;)
+        f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
+        wav_coeffs[j + 1] = ssht.forward(
+            f_thresholded, L, Method=sleplet._vars.SAMPLING_SCHEME
+        )
+    return wav_coeffs
+
+
+def slepian_wavelet_hard_thresholding(
+    L: int,
+    wav_coeffs: npt.NDArray[np.complex_ | np.float_],
+    sigma_j: npt.NDArray[np.float_],
+    n_sigma: int,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+) -&gt; npt.NDArray[np.complex_ | np.float_]:
+    &#34;&#34;&#34;TODO perform thresholding in Slepian wavelet space
+
+    Args:
+        L: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma _description_
+        slepian: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin Slepian hard thresholding&#34;)
+    for j, coefficient in enumerate(wav_coeffs):
+        sleplet.logger.info(f&#34;start Psi^{j + 1}/{len(wav_coeffs)}&#34;)
+        f = sleplet.slepian_methods.slepian_inverse(coefficient, L, slepian)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
+        wav_coeffs[j] = sleplet.slepian_methods.slepian_forward(
+            L, slepian, f=f_thresholded
+        )
+    return wav_coeffs
+
+
+def slepian_function_hard_thresholding(
+    L: int,
+    coefficients: npt.NDArray[np.complex_ | np.float_],
+    sigma: float,
+    n_sigma: int,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;TODO perform thresholding in Slepian function space
+
+    Args:
+        L: _description_
+        coefficients: _description_
+        sigma: _description_
+        n_sigma: _description_
+        slepian: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin Slepian hard thresholding&#34;)
+    f = sleplet.slepian_methods.slepian_inverse(coefficients, L, slepian)
+    f_thresholded = _perform_hard_thresholding(f, sigma, n_sigma)
+    return sleplet.slepian_methods.slepian_forward(L, slepian, f=f_thresholded)
+
+
+def _compute_sigma_j(
+    signal: npt.NDArray[np.complex_ | np.float_],
+    psi_j: npt.NDArray[np.complex_],
+    snr_in: float,
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    compute sigma_j for wavelets used in denoising the signal
+    &#34;&#34;&#34;
+    sigma_noise = compute_sigma_noise(signal, snr_in)
+    wavelet_power = (np.abs(psi_j) ** 2).sum(axis=1)
+    return sigma_noise * np.sqrt(wavelet_power)
+
+
+def _compute_slepian_sigma_j(
+    L: int,
+    signal: npt.NDArray[np.complex_ | np.float_],
+    psi_j: npt.NDArray[np.float_],
+    snr_in: float,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    compute sigma_j for wavelets used in denoising the signal
+    &#34;&#34;&#34;
+    sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L**2)
+    s_p = sleplet.slepian_methods.compute_s_p_omega(L, slepian)
+    psi_j_reshape = psi_j[:, : slepian.N, np.newaxis, np.newaxis]
+    wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
+    return sigma_noise * np.sqrt(wavelet_power)
+
+
+def _create_mesh_noise(
+    u_i: npt.NDArray[np.complex_ | np.float_], snr_in: float
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    computes Gaussian white noise
+    &#34;&#34;&#34;
+    # set random seed
+    rng = default_rng(sleplet._vars.RANDOM_SEED)
+
+    # initialise
+    n_i = np.zeros(u_i.shape[0])
+
+    # std dev of the noise
+    sigma_noise = compute_sigma_noise(u_i, snr_in)
+
+    # compute noise
+    for i in range(u_i.shape[0]):
+        n_i[i] = sigma_noise * rng.standard_normal()
+    return n_i
+
+
+def _create_slepian_mesh_noise(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    slepian_signal: npt.NDArray[np.complex_ | np.float_],
+    snr_in: float,
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;
+    computes Gaussian white noise in Slepian space
+    &#34;&#34;&#34;
+    u_i = sleplet.harmonic_methods.mesh_forward(
+        mesh_slepian.mesh,
+        sleplet.slepian_methods.slepian_mesh_inverse(
+            mesh_slepian,
+            slepian_signal,
+        ),
+    )
+    n_i = _create_mesh_noise(u_i, snr_in)
+    return sleplet.slepian_methods.slepian_mesh_forward(
+        mesh_slepian,
+        u_i=n_i,
+    )
+
+
+def compute_slepian_mesh_sigma_j(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    signal: npt.NDArray[np.complex_ | np.float_],
+    psi_j: npt.NDArray[np.float_],
+    snr_in: float,
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;TODO compute sigma_j for wavelets used in denoising the signal
+
+    Args:
+        mesh_slepian: _description_
+        signal: _description_
+        psi_j: _description_
+        snr_in: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sigma_noise = compute_sigma_noise(
+        signal, snr_in, denominator=mesh_slepian.slepian_eigenvalues.shape[0]
+    )
+    s_p = sleplet.slepian_methods._compute_mesh_s_p_pixel(mesh_slepian)
+    psi_j_reshape = psi_j[:, : mesh_slepian.N, np.newaxis]
+    wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
+    return sigma_noise * np.sqrt(wavelet_power)
+
+
+def slepian_mesh_hard_thresholding(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    wav_coeffs: npt.NDArray[np.complex_ | np.float_],
+    sigma_j: npt.NDArray[np.float_],
+    n_sigma: int,
+) -&gt; npt.NDArray[np.complex_ | np.float_]:
+    &#34;&#34;&#34;TODO perform thresholding in Slepian space
+
+    Args:
+        mesh_slepian: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin Slepian mesh hard thresholding&#34;)
+    for j, coefficient in enumerate(wav_coeffs):
+        sleplet.logger.info(f&#34;start Psi^{j + 1}/{len(wav_coeffs)}&#34;)
+        f = sleplet.slepian_methods.slepian_mesh_inverse(mesh_slepian, coefficient)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
+        wav_coeffs[j] = sleplet.slepian_methods.slepian_mesh_forward(
+            mesh_slepian, u=f_thresholded
+        )
+    return wav_coeffs</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="sleplet.noise.compute_sigma_noise"><code class="name flex">
+<span>def <span class="ident">compute_sigma_noise</span></span>(<span>signal: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], snr_in: float, *, denominator: int | None = None) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO compute the std dev of the noise</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>signal</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>snr_in</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>denominator</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_sigma_noise(
+    signal: npt.NDArray[np.complex_ | np.float_],
+    snr_in: float,
+    *,
+    denominator: int | None = None,
+) -&gt; float:
+    &#34;&#34;&#34;TODO compute the std dev of the noise
+
+    Args:
+        signal: _description_
+        snr_in: _description_
+        denominator: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    if denominator is None:
+        denominator = signal.shape[0]
+    return np.sqrt(10 ** (-snr_in / 10) * _signal_power(signal) / denominator)</code></pre>
+</details>
+</dd>
+<dt id="sleplet.noise.compute_slepian_mesh_sigma_j"><code class="name flex">
+<span>def <span class="ident">compute_slepian_mesh_sigma_j</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>, signal: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], psi_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]], snr_in: float) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO compute sigma_j for wavelets used in denoising the signal</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mesh_slepian</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>signal</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>psi_j</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>snr_in</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_slepian_mesh_sigma_j(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    signal: npt.NDArray[np.complex_ | np.float_],
+    psi_j: npt.NDArray[np.float_],
+    snr_in: float,
+) -&gt; npt.NDArray[np.float_]:
+    &#34;&#34;&#34;TODO compute sigma_j for wavelets used in denoising the signal
+
+    Args:
+        mesh_slepian: _description_
+        signal: _description_
+        psi_j: _description_
+        snr_in: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sigma_noise = compute_sigma_noise(
+        signal, snr_in, denominator=mesh_slepian.slepian_eigenvalues.shape[0]
+    )
+    s_p = sleplet.slepian_methods._compute_mesh_s_p_pixel(mesh_slepian)
+    psi_j_reshape = psi_j[:, : mesh_slepian.N, np.newaxis]
+    wavelet_power = (np.abs(psi_j_reshape) ** 2 * np.abs(s_p) ** 2).sum(axis=1)
+    return sigma_noise * np.sqrt(wavelet_power)</code></pre>
+</details>
+</dd>
+<dt id="sleplet.noise.compute_snr"><code class="name flex">
+<span>def <span class="ident">compute_snr</span></span>(<span>signal: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], noise: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], signal_type: str) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO computes the signal to noise ratio</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>signal</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>noise</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>signal_type</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_snr(
+    signal: npt.NDArray[np.complex_ | np.float_],
+    noise: npt.NDArray[np.complex_ | np.float_],
+    signal_type: str,
+) -&gt; float:
+    &#34;&#34;&#34;TODO computes the signal to noise ratio
+
+    Args:
+        signal: _description_
+        noise: _description_
+        signal_type: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
+    sleplet.logger.info(f&#34;{signal_type} SNR: {snr:.2f}&#34;)
+    return snr</code></pre>
+</details>
+</dd>
+<dt id="sleplet.noise.harmonic_hard_thresholding"><code class="name flex">
+<span>def <span class="ident">harmonic_hard_thresholding</span></span>(<span>L: int, wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]], sigma_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]], n_sigma: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO perform thresholding in harmonic space</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>wav_coeffs</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>sigma_j</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>n_sigma</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def harmonic_hard_thresholding(
+    L: int,
+    wav_coeffs: npt.NDArray[np.complex_],
+    sigma_j: npt.NDArray[np.float_],
+    n_sigma: int,
+) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;TODO perform thresholding in harmonic space
+
+    Args:
+        L: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin harmonic hard thresholding&#34;)
+    for j, coefficient in enumerate(wav_coeffs[1:]):
+        sleplet.logger.info(f&#34;start Psi^{j + 1}/{len(wav_coeffs)-1}&#34;)
+        f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
+        wav_coeffs[j + 1] = ssht.forward(
+            f_thresholded, L, Method=sleplet._vars.SAMPLING_SCHEME
+        )
+    return wav_coeffs</code></pre>
+</details>
+</dd>
+<dt id="sleplet.noise.slepian_function_hard_thresholding"><code class="name flex">
+<span>def <span class="ident">slepian_function_hard_thresholding</span></span>(<span>L: int, coefficients: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], sigma: float, n_sigma: int, slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO perform thresholding in Slepian function space</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>coefficients</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>sigma</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>n_sigma</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>slepian</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def slepian_function_hard_thresholding(
+    L: int,
+    coefficients: npt.NDArray[np.complex_ | np.float_],
+    sigma: float,
+    n_sigma: int,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+) -&gt; npt.NDArray[np.complex_]:
+    &#34;&#34;&#34;TODO perform thresholding in Slepian function space
+
+    Args:
+        L: _description_
+        coefficients: _description_
+        sigma: _description_
+        n_sigma: _description_
+        slepian: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin Slepian hard thresholding&#34;)
+    f = sleplet.slepian_methods.slepian_inverse(coefficients, L, slepian)
+    f_thresholded = _perform_hard_thresholding(f, sigma, n_sigma)
+    return sleplet.slepian_methods.slepian_forward(L, slepian, f=f_thresholded)</code></pre>
+</details>
+</dd>
+<dt id="sleplet.noise.slepian_mesh_hard_thresholding"><code class="name flex">
+<span>def <span class="ident">slepian_mesh_hard_thresholding</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>, wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], sigma_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]], n_sigma: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO perform thresholding in Slepian space</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mesh_slepian</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>wav_coeffs</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>sigma_j</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>n_sigma</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def slepian_mesh_hard_thresholding(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    wav_coeffs: npt.NDArray[np.complex_ | np.float_],
+    sigma_j: npt.NDArray[np.float_],
+    n_sigma: int,
+) -&gt; npt.NDArray[np.complex_ | np.float_]:
+    &#34;&#34;&#34;TODO perform thresholding in Slepian space
+
+    Args:
+        mesh_slepian: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin Slepian mesh hard thresholding&#34;)
+    for j, coefficient in enumerate(wav_coeffs):
+        sleplet.logger.info(f&#34;start Psi^{j + 1}/{len(wav_coeffs)}&#34;)
+        f = sleplet.slepian_methods.slepian_mesh_inverse(mesh_slepian, coefficient)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
+        wav_coeffs[j] = sleplet.slepian_methods.slepian_mesh_forward(
+            mesh_slepian, u=f_thresholded
+        )
+    return wav_coeffs</code></pre>
+</details>
+</dd>
+<dt id="sleplet.noise.slepian_wavelet_hard_thresholding"><code class="name flex">
+<span>def <span class="ident">slepian_wavelet_hard_thresholding</span></span>(<span>L: int, wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], sigma_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]], n_sigma: int, slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO perform thresholding in Slepian wavelet space</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>wav_coeffs</code></strong></dt>
+<dd><em>description</em></dd>
+<dt><strong><code>sigma_j</code></strong></dt>
+<dd><em>description</em></dd>
+<dt>n_sigma <em>description</em></dt>
+<dt><strong><code>slepian</code></strong></dt>
+<dd><em>description</em></dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p><em>description</em></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def slepian_wavelet_hard_thresholding(
+    L: int,
+    wav_coeffs: npt.NDArray[np.complex_ | np.float_],
+    sigma_j: npt.NDArray[np.float_],
+    n_sigma: int,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+) -&gt; npt.NDArray[np.complex_ | np.float_]:
+    &#34;&#34;&#34;TODO perform thresholding in Slepian wavelet space
+
+    Args:
+        L: _description_
+        wav_coeffs: _description_
+        sigma_j: _description_
+        n_sigma _description_
+        slepian: _description_
+
+    Returns:
+        _description_
+    &#34;&#34;&#34;
+    sleplet.logger.info(&#34;begin Slepian hard thresholding&#34;)
+    for j, coefficient in enumerate(wav_coeffs):
+        sleplet.logger.info(f&#34;start Psi^{j + 1}/{len(wav_coeffs)}&#34;)
+        f = sleplet.slepian_methods.slepian_inverse(coefficient, L, slepian)
+        f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
+        wav_coeffs[j] = sleplet.slepian_methods.slepian_forward(
+            L, slepian, f=f_thresholded
+        )
+    return wav_coeffs</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sleplet" href="index.html">sleplet</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="sleplet.noise.compute_sigma_noise" href="#sleplet.noise.compute_sigma_noise">compute_sigma_noise</a></code></li>
+<li><code><a title="sleplet.noise.compute_slepian_mesh_sigma_j" href="#sleplet.noise.compute_slepian_mesh_sigma_j">compute_slepian_mesh_sigma_j</a></code></li>
+<li><code><a title="sleplet.noise.compute_snr" href="#sleplet.noise.compute_snr">compute_snr</a></code></li>
+<li><code><a title="sleplet.noise.harmonic_hard_thresholding" href="#sleplet.noise.harmonic_hard_thresholding">harmonic_hard_thresholding</a></code></li>
+<li><code><a title="sleplet.noise.slepian_function_hard_thresholding" href="#sleplet.noise.slepian_function_hard_thresholding">slepian_function_hard_thresholding</a></code></li>
+<li><code><a title="sleplet.noise.slepian_mesh_hard_thresholding" href="#sleplet.noise.slepian_mesh_hard_thresholding">slepian_mesh_hard_thresholding</a></code></li>
+<li><code><a title="sleplet.noise.slepian_wavelet_hard_thresholding" href="#sleplet.noise.slepian_wavelet_hard_thresholding">slepian_wavelet_hard_thresholding</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
