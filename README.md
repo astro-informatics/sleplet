@@ -688,7 +688,15 @@ done
 ```
 
 ```python
+import pyssht as ssht
 
+from sleplet.functions.flm import AxisymmetricWavelets
+from sleplet.plotting import PlotSphere
+
+for j in [None, *list(range(4))]:
+    f = AxisymmetricWavelets(L=128, B=3, j_min=2, j=j)
+    f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
+    PlotSphere(f_sphere, f.L, f"fig_2_5_j_{j}", normalise=False).execute()
 ```
 
 ##### Fig. 2.6
