@@ -2,28 +2,36 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.harmonic_coefficients.mesh_field import MeshField
-from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
-from sleplet.utils.noise import compute_snr, create_mesh_noise
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.meshes.harmonic_coefficients.mesh_field
+import sleplet.meshes.mesh_harmonic_coefficients
+import sleplet.noise
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshNoiseField(MeshHarmonicCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshNoiseField(
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+):
+    """TODO"""
+
     SNR: float = 10
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        mf = MeshField(self.mesh)
-        noise = create_mesh_noise(mf.coefficients, self.SNR)
-        compute_snr(mf.coefficients, noise, "Harmonic")
+        mf = sleplet.meshes.harmonic_coefficients.mesh_field.MeshField(self.mesh)
+        noise = sleplet.noise._create_mesh_noise(mf.coefficients, self.SNR)
+        sleplet.noise.compute_snr(mf.coefficients, noise, "Harmonic")
         return noise
 
     def _create_name(self) -> str:
-        return f"{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"
+        return (
+            f"{self.mesh.name}_noise_field"
+            f"{sleplet._string_methods.filename_args(self.SNR, 'snr')}"
+        )
 
     def _set_reality(self) -> bool:
         return True

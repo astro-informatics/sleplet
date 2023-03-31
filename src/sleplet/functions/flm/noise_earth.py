@@ -2,30 +2,33 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.functions.f_lm import F_LM
-from sleplet.functions.flm.earth import Earth
-from sleplet.utils.noise import compute_snr, create_noise
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case, filename_args
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.functions.f_lm
+import sleplet.functions.flm.earth
+import sleplet.noise
 
 
-@dataclass(config=Validation, kw_only=True)
-class NoiseEarth(F_LM):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class NoiseEarth(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     SNR: float = 10
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        earth = Earth(self.L, smoothing=self.smoothing)
-        noise = create_noise(self.L, earth.coefficients, self.SNR)
-        compute_snr(earth.coefficients, noise, "Harmonic")
+        earth = sleplet.functions.flm.earth.Earth(self.L, smoothing=self.smoothing)
+        noise = sleplet.noise._create_noise(self.L, earth.coefficients, self.SNR)
+        sleplet.noise.compute_snr(earth.coefficients, noise, "Harmonic")
         return noise
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"{filename_args(self.SNR, 'snr')}"
+            f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{sleplet._string_methods.filename_args(self.SNR, 'snr')}"
         )
 
     def _set_reality(self) -> bool:

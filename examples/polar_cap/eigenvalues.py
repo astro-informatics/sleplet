@@ -4,14 +4,14 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from sleplet.utils.plot_methods import save_plot
+from sleplet.plot_methods import save_plot
+from sleplet.slepian import SlepianPolarCap
+
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
+sns.set(context="paper")
 
 L = 16
 THETA_MAX = 40
-
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
-sns.set(context="paper")
 
 
 def main() -> None:
@@ -34,7 +34,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(fig_path, "polar_cap_eigenvalues")
+    save_plot(_fig_path, "polar_cap_eigenvalues")
 
 
 if __name__ == "__main__":

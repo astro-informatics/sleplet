@@ -6,21 +6,28 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.utils.mask_methods import ensure_masked_bandlimit_mesh_signal
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.validation import Validation
+import sleplet._mask_methods
+import sleplet._string_methods
+import sleplet._validation
+import sleplet._vars
+import sleplet.meshes.mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    mesh: Mesh
+    """abstract parent class to handle Fourier/Slepian coefficients on the mesh"""
+
+    mesh: sleplet.meshes.mesh.Mesh
+    """TODO"""
     _: KW_ONLY
     extra_args: list[int] | None = None
+    """TODO"""
     noise: float | None = None
+    """TODO"""
     region: bool = False
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self._setup_args()
@@ -36,17 +43,19 @@ class MeshCoefficients:
         if self.region and "slepian" not in self.mesh.name:
             self.name += "_region"
         if self.noise is not None:
-            self.name += f"{filename_args(self.noise, 'noise')}"
+            self.name += f"{sleplet._string_methods.filename_args(self.noise, 'noise')}"
         if self.mesh.zoom:
             self.name += "_zoom"
 
     @validator("coefficients", check_fields=False)
-    def check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):
         if (
             values["region"]
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
-            v = ensure_masked_bandlimit_mesh_signal(values["mesh"], v)
+            v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
+                values["mesh"], v
+            )
         return v
 
     @abstractmethod

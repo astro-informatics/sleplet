@@ -1,6 +1,11 @@
-from denoising_slepian_mesh import main
+import sys
+from pathlib import Path
 
 from sleplet import logger
+
+sys.path.append(str(Path(__file__).resolve().parent))
+
+from denoising_slepian_mesh import main  # noqa: E402
 
 MESH_SNR_DICT = {
     "cheetah": -8.64,

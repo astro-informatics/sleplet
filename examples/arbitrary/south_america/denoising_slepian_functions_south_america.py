@@ -1,20 +1,52 @@
 from argparse import ArgumentParser
 
+import numpy as np
+from numpy import typing as npt
+
 from sleplet import logger
-from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.denoising import denoising_slepian_function
-from sleplet.utils.plot_methods import find_max_amplitude
-from sleplet.utils.region import Region
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.vars import SMOOTHING
+from sleplet.functions.fp import SlepianSouthAmerica
+from sleplet.noise import (
+    compute_sigma_noise,
+    compute_snr,
+    slepian_function_hard_thresholding,
+)
+from sleplet.plot_methods import find_max_amplitude
+from sleplet.plotting import PlotSphere
+from sleplet.slepian import Region
+from sleplet.slepian_methods import slepian_inverse
 
 B = 3
 J_MIN = 2
 L = 128
 N_SIGMA = 2
 NORMALISE = False
+SMOOTHING = 2
 SNR_IN = -10
+
+
+def _denoising_slepian_function(
+    signal: SlepianSouthAmerica,
+    noised_signal: SlepianSouthAmerica,
+    snr_in: float,
+    n_sigma: int,
+) -> npt.NDArray[np.complex_]:
+    """
+    denoising demo using Slepian function
+    """
+    # compute Slepian noise
+    sigma_noise = compute_sigma_noise(
+        signal.coefficients, snr_in, denominator=signal.L**2
+    )
+
+    # hard thresholding
+    f_p = slepian_function_hard_thresholding(
+        signal.L, noised_signal.coefficients, sigma_noise, n_sigma, signal.slepian
+    )
+
+    # compute SNR
+    compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
+
+    return slepian_inverse(f_p, signal.L, signal.slepian)
 
 
 def main(snr: float, sigma: int) -> None:
@@ -32,12 +64,11 @@ def main(snr: float, sigma: int) -> None:
     # fix amplitude
     amplitude = find_max_amplitude(fun)
 
-    f = denoising_slepian_function(fun, fun_noised, snr, sigma)
-    name = (
-        f"{fun.name}{filename_args(snr, 'snr')}"
-        f"{filename_args(sigma,'n')}_denoised_function"
-    )
-    Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE, region=region).execute()
+    f = _denoising_slepian_function(fun, fun_noised, snr, sigma)
+    name = f"{fun.name}_{snr}snr_{sigma}n_denoised_function"
+    PlotSphere(
+        f, L, name, amplitude=amplitude, normalise=NORMALISE, region=region
+    ).execute()
 
 
 if __name__ == "__main__":

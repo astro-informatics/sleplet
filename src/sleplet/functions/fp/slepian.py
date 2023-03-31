@@ -3,15 +3,18 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet.functions.f_p import F_P
-from sleplet.utils.slepian_methods import slepian_forward
-from sleplet.utils.validation import Validation
+import sleplet
+import sleplet._validation
+import sleplet.functions.f_p
+import sleplet.slepian_methods
 
 
-@dataclass(config=Validation, kw_only=True)
-class Slepian(F_P):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class Slepian(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     rank: int = 0
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self._validate_rank()
@@ -33,9 +36,11 @@ class Slepian(F_P):
         )
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        logger.info(f"Shannon number: {self.slepian.N}")
-        logger.info(f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}")
-        return slepian_forward(
+        sleplet.logger.info(f"Shannon number: {self.slepian.N}")
+        sleplet.logger.info(
+            f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}"
+        )
+        return sleplet.slepian_methods.slepian_forward(
             self.L, self.slepian, flm=self.slepian.eigenvectors[self.rank]
         )
 
@@ -64,7 +69,7 @@ class Slepian(F_P):
                 raise ValueError(f"rank should be less than {limit}")
 
     @validator("rank")
-    def check_rank(cls, v):
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")
         if v < 0:

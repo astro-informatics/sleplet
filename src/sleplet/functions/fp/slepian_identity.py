@@ -2,13 +2,15 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.functions.f_p import F_P
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.functions.f_p
 
 
-@dataclass(config=Validation)
-class SlepianIdentity(F_P):
+@dataclass(config=sleplet._validation.Validation)
+class SlepianIdentity(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
@@ -17,7 +19,7 @@ class SlepianIdentity(F_P):
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"_{self.slepian.region.name_ending}"
         )
 

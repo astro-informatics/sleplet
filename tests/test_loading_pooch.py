@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from sleplet.data.setup_pooch import find_on_pooch_then_local
+from sleplet._data.setup_pooch import find_on_pooch_then_local
 
 
 def test_known_file_exists_on_pooch() -> None:

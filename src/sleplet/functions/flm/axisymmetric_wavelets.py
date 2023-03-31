@@ -4,39 +4,40 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
-from sleplet import logger
-from sleplet.functions.f_lm import F_LM
-from sleplet.utils.string_methods import (
-    convert_camel_case_to_snake_case,
-    filename_args,
-    wavelet_ending,
-)
-from sleplet.utils.validation import Validation
-from sleplet.utils.wavelet_methods import create_axisymmetric_wavelets
+import sleplet
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.functions.f_lm
+import sleplet.wavelet_methods
 
 
-@dataclass(config=Validation, kw_only=True)
-class AxisymmetricWavelets(F_LM):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class AxisymmetricWavelets(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     B: int = 3
+    """TODO"""
     j_min: int = 2
+    """TODO"""
     j: int | None = None
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        logger.info("start computing wavelets")
+        sleplet.logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
-        logger.info("finish computing wavelets")
+        sleplet.logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"{filename_args(self.B, 'B')}"
-            f"{filename_args(self.j_min, 'jmin')}"
-            f"{wavelet_ending(self.j_min, self.j)}"
+            f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{sleplet._string_methods.filename_args(self.B, 'B')}"
+            f"{sleplet._string_methods.filename_args(self.j_min, 'jmin')}"
+            f"{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}"
         )
 
     def _set_reality(self) -> bool:
@@ -56,10 +57,12 @@ class AxisymmetricWavelets(F_LM):
         """
         compute all wavelets
         """
-        return create_axisymmetric_wavelets(self.L, self.B, self.j_min)
+        return sleplet.wavelet_methods._create_axisymmetric_wavelets(
+            self.L, self.B, self.j_min
+        )
 
     @validator("j")
-    def check_j(cls, v, values):
+    def _check_j(cls, v, values):
         j_max = pys2let_j_max(values["B"], values["L"], values["j_min"])
         if v is not None and v < 0:
             raise ValueError("j should be positive")

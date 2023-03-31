@@ -5,13 +5,15 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.functions.coefficients import Coefficients
-from sleplet.utils.noise import compute_snr, create_noise
-from sleplet.utils.validation import Validation
+import sleplet._validation
+import sleplet.functions.coefficients
+import sleplet.noise
 
 
-@dataclass(config=Validation)
-class F_LM(Coefficients):  # noqa: N801
+@dataclass(config=sleplet._validation.Validation)
+class F_LM(sleplet.functions.coefficients.Coefficients):  # noqa: N801
+    """abstract parent class to handle harmonic coefficients on the sphere"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
@@ -34,8 +36,8 @@ class F_LM(Coefficients):  # noqa: N801
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
-            nlm = create_noise(self.L, self.coefficients, self.noise)
-            snr = compute_snr(self.coefficients, nlm, "Harmonic")
+            nlm = sleplet.noise._create_noise(self.L, self.coefficients, self.noise)
+            snr = sleplet.noise.compute_snr(self.coefficients, nlm, "Harmonic")
             self.coefficients = self.coefficients + nlm
             return unnoised_coefficients, snr
         return None, None

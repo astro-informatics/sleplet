@@ -4,14 +4,17 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet.utils.region import Region
-from sleplet.utils.validation import Validation
+import sleplet
+import sleplet._validation
+import sleplet.slepian.region
 
 
-@dataclass(config=Validation)
+@dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
+    """abstract parent class of creating the different Slepian regions on the sphere"""
+
     L: int
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         self.region = self._create_region()
@@ -19,11 +22,11 @@ class SlepianFunctions:
         self.name = self._create_fn_name()
         area = self._calculate_area()
         self.N = round(area * self.L**2 / (4 * np.pi))
-        logger.info(f"Shannon number N={self.N}")
+        sleplet.logger.info(f"Shannon number N={self.N}")
         self.matrix_location = self._create_matrix_location()
-        logger.info("start solving eigenproblem")
+        sleplet.logger.info("start solving eigenproblem")
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
-        logger.info("finished solving eigenproblem")
+        sleplet.logger.info("finished solving eigenproblem")
 
     @abstractmethod
     def _create_fn_name(self) -> str:
@@ -33,7 +36,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_region(self) -> Region:
+    def _create_region(self) -> "sleplet.slepian.region.Region":
         """
         creates a region object for area of interest
         """

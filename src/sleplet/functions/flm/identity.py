@@ -2,13 +2,15 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.functions.f_lm import F_LM
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.functions.f_lm
 
 
-@dataclass(config=Validation)
-class Identity(F_LM):
+@dataclass(config=sleplet._validation.Validation)
+class Identity(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
@@ -16,7 +18,9 @@ class Identity(F_LM):
         return np.ones(self.L**2, dtype=np.complex_)
 
     def _create_name(self) -> str:
-        return convert_camel_case_to_snake_case(self.__class__.__name__)
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__
+        )
 
     def _set_reality(self) -> bool:
         return True

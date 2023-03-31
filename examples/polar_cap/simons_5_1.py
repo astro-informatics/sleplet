@@ -6,10 +6,12 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from sleplet.utils.harmonic_methods import invert_flm_boosted
-from sleplet.utils.plot_methods import calc_plot_resolution, save_plot
-from sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
+from sleplet.harmonic_methods import invert_flm_boosted
+from sleplet.plot_methods import calc_plot_resolution, save_plot
+from sleplet.slepian import SlepianPolarCap
+
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
+sns.set(context="paper")
 
 L = 16
 ORDERS = 4
@@ -19,10 +21,8 @@ RESOLUTION = calc_plot_resolution(L)
 SIGNS = [[1, -1, 1], [-1, -1, -1], [1, 1, 1], [1, 1, -1]]
 TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_MAX = 40
-
-
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
-sns.set(context="paper")
+THETA_MAX_DEFAULT = np.pi
+THETA_MIN_DEFAULT = 0
 
 
 def main() -> None:
@@ -44,7 +44,7 @@ def main() -> None:
         slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
             _helper(ax, slepian, RESOLUTION, x, i, order, rank)
-    save_plot(fig_path, "slepian_colatitude")
+    save_plot(_fig_path, "slepian_colatitude")
 
 
 def _helper(  # noqa: PLR0913

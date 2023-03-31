@@ -4,10 +4,10 @@ from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
-from sleplet.functions.flm.dirac_delta import DiracDelta
-from sleplet.utils.plot_methods import calc_nearest_grid_point
-from sleplet.utils.slepian_methods import slepian_inverse
-from sleplet.utils.vars import RANDOM_SEED, SAMPLING_SCHEME
+from sleplet._vars import RANDOM_SEED, SAMPLING_SCHEME
+from sleplet.functions.flm import DiracDelta
+from sleplet.plot_methods import _calc_nearest_grid_point
+from sleplet.slepian_methods import slepian_inverse
 
 L = 128
 THETA_MAX = np.pi / 3
@@ -36,7 +36,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     give the same result for the Dirac delta
     """
     dd = DiracDelta(L)
-    alpha, beta = calc_nearest_grid_point(L, alpha_pi_frac, beta_pi_frac)
+    alpha, beta = _calc_nearest_grid_point(L, alpha_pi_frac, beta_pi_frac)
     dd_rot = dd.rotate(alpha, beta)
     dd_trans = dd.translate(alpha, beta)
     assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=0)
@@ -46,7 +46,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     """
     test to ensure the location of the maximum of a field moves when translated
     """
-    _, beta = calc_nearest_grid_point(
+    _, beta = _calc_nearest_grid_point(
         slepian_dirac_delta_polar_cap.L, 0, THETA_MAX / np.pi
     )
     sdd_trans = slepian_dirac_delta_polar_cap.translate(
@@ -77,7 +77,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     """
     test to ensure the location of the maximum of a field moves when translated
     """
-    _, beta = calc_nearest_grid_point(
+    _, beta = _calc_nearest_grid_point(
         slepian_dirac_delta_lim_lat_lon.L, 0, THETA_MAX / np.pi
     )
     sdd_trans = slepian_dirac_delta_lim_lat_lon.translate(

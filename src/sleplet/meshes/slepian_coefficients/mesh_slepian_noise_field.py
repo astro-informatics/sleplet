@@ -2,28 +2,40 @@ import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
-from sleplet.meshes.slepian_coefficients.mesh_slepian_field import MeshSlepianField
-from sleplet.utils.noise import compute_snr, create_slepian_mesh_noise
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.validation import Validation
+import sleplet._string_methods
+import sleplet._validation
+import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.meshes.slepian_coefficients.mesh_slepian_field
+import sleplet.noise
 
 
-@dataclass(config=Validation, kw_only=True)
-class MeshSlepianNoiseField(MeshSlepianCoefficients):
+@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianNoiseField(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
+    """TODO"""
+
     SNR: float = -5
+    """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        smf = MeshSlepianField(self.mesh, region=True)
-        noise = create_slepian_mesh_noise(self.mesh_slepian, smf.coefficients, self.SNR)
-        compute_snr(smf.coefficients, noise, "Slepian")
+        smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
+            self.mesh, region=True
+        )
+        noise = sleplet.noise._create_slepian_mesh_noise(
+            self.mesh_slepian, smf.coefficients, self.SNR
+        )
+        sleplet.noise.compute_snr(smf.coefficients, noise, "Slepian")
         return noise
 
     def _create_name(self) -> str:
-        return f"slepian_{self.mesh.name}_noise_field{filename_args(self.SNR, 'snr')}"
+        return (
+            f"slepian_{self.mesh.name}_noise_field"
+            f"{sleplet._string_methods.filename_args(self.SNR, 'snr')}"
+        )
 
     def _set_reality(self) -> bool:
         return False

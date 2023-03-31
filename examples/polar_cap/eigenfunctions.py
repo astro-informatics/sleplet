@@ -1,16 +1,18 @@
 from pathlib import Path
 
 import numpy as np
+import pooch
 import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from sleplet.utils.harmonic_methods import invert_flm_boosted
-from sleplet.utils.plot_methods import calc_plot_resolution, save_plot
-from sleplet.utils.vars import THETA_MAX_DEFAULT, THETA_MIN_DEFAULT
+from sleplet.harmonic_methods import invert_flm_boosted
+from sleplet.plot_methods import calc_plot_resolution, save_plot
+from sleplet.slepian import SlepianPolarCap
+
+_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
+sns.set(context="paper")
 
 COLUMNS = 3
 L = 16
@@ -21,10 +23,9 @@ RESOLUTION = calc_plot_resolution(L)
 SIGNS = [1, -1, 1, -1, 1, -1]
 TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_MAX = 40
-
-
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
-sns.set(context="paper")
+THETA_MAX_DEFAULT = np.pi
+THETA_MIN_DEFAULT = 0
+ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 
 
 def main() -> None:
@@ -46,7 +47,7 @@ def main() -> None:
     slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER)
     for rank in range(ROWS * COLUMNS):
         _helper(axes[rank], slepian, x, i, rank)
-    save_plot(fig_path, "slepian_colatitude")
+    save_plot(_fig_path, "slepian_colatitude")
 
 
 def _helper(
@@ -80,9 +81,16 @@ def _find_p_value(rank: int, shannon: int) -> int:
     """
     method to find the effective p rank of the Slepian function
     """
+    pooch_registry = pooch.create(
+        path=pooch.os_cache("sleplet"),
+        base_url=f"doi:{ZENODO_DATA_DOI}/",
+        registry=None,
+    )
+    pooch_registry.load_registry_from_doi()
     orders = np.load(
-        find_on_pooch_then_local(
-            f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy"
+        pooch_registry.fetch(
+            f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy",
+            progressbar=True,
         )
     )
     return np.where(orders == ORDER)[0][rank]

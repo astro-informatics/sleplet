@@ -3,31 +3,32 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet.data.other.earth.create_earth_flm import create_flm
-from sleplet.data.setup_pooch import find_on_pooch_then_local
-from sleplet.functions.f_lm import F_LM
-from sleplet.utils.harmonic_methods import (
-    ensure_f_bandlimited,
-    rotate_earth_to_south_america,
-)
-from sleplet.utils.mask_methods import create_mask
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
-from sleplet.utils.validation import Validation
-from sleplet.utils.vars import SAMPLING_SCHEME
+import sleplet._data.create_earth_flm
+import sleplet._data.setup_pooch
+import sleplet._mask_methods
+import sleplet._string_methods
+import sleplet._validation
+import sleplet._vars
+import sleplet.functions.f_lm
+import sleplet.harmonic_methods
 
 
-@dataclass(config=Validation)
-class SouthAmerica(F_LM):
+@dataclass(config=sleplet._validation.Validation)
+class SouthAmerica(sleplet.functions.f_lm.F_LM):
+    """TODO"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return ensure_f_bandlimited(
+        return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun, self.L, reality=self.reality, spin=self.spin
         )
 
     def _create_name(self) -> str:
-        return convert_camel_case_to_snake_case(self.__class__.__name__)
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__
+        )
 
     def _set_reality(self) -> bool:
         return True
@@ -47,15 +48,21 @@ class SouthAmerica(F_LM):
         """
         function on the grid
         """
-        earth_flm = create_flm(self.L, smoothing=self.smoothing)
-        rot_flm = rotate_earth_to_south_america(earth_flm, self.L)
+        earth_flm = sleplet._data.create_earth_flm.create_flm(
+            self.L, smoothing=self.smoothing
+        )
+        rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(
+            earth_flm, self.L
+        )
         earth_f = ssht.inverse(
-            rot_flm, self.L, Reality=self.reality, Method=SAMPLING_SCHEME
+            rot_flm, self.L, Reality=self.reality, Method=sleplet._vars.SAMPLING_SCHEME
         )
         mask_name = f"{self.name}_L{self.L}.npy"
-        mask_location = find_on_pooch_then_local(f"slepian_masks_{mask_name}")
+        mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(
+            f"slepian_masks_{mask_name}"
+        )
         mask = (
-            create_mask(self.L, mask_name)
+            sleplet._mask_methods.create_mask(self.L, mask_name)
             if mask_location is None
             else np.load(mask_location)
         )

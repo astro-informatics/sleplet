@@ -3,28 +3,30 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-from sleplet import logger
-from sleplet.functions.f_p import F_P
-from sleplet.utils.slepian_methods import compute_s_p_omega_prime
-from sleplet.utils.string_methods import convert_camel_case_to_snake_case
-from sleplet.utils.validation import Validation
-from sleplet.utils.vars import SAMPLING_SCHEME
+import sleplet
+import sleplet._string_methods
+import sleplet._validation
+import sleplet._vars
+import sleplet.functions.f_p
+import sleplet.slepian_methods
 
 
-@dataclass(config=Validation)
-class SlepianDiracDelta(F_P):
+@dataclass(config=sleplet._validation.Validation)
+class SlepianDiracDelta(sleplet.functions.f_p.F_P):
+    """TODO"""
+
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
-        return compute_s_p_omega_prime(
+        return sleplet.slepian_methods._compute_s_p_omega_prime(
             self.L, self.alpha, self.beta, self.slepian
         ).conj()
 
     def _create_name(self) -> str:
         return (
-            f"{convert_camel_case_to_snake_case(self.__class__.__name__)}"
+            f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"_{self.slepian.region.name_ending}"
         )
 
@@ -44,12 +46,18 @@ class SlepianDiracDelta(F_P):
         """
         computes alpha/beta if not provided
         """
-        thetas, phis = ssht.sample_positions(self.L, Grid=True, Method=SAMPLING_SCHEME)
-        sp = ssht.inverse(self.slepian.eigenvectors[0], self.L, Method=SAMPLING_SCHEME)
+        thetas, phis = ssht.sample_positions(
+            self.L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+        )
+        sp = ssht.inverse(
+            self.slepian.eigenvectors[0], self.L, Method=sleplet._vars.SAMPLING_SCHEME
+        )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]
-        logger.info(
+        sleplet.logger.info(
             f"angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})"
         )
-        logger.info(f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})")
+        sleplet.logger.info(
+            f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})"
+        )

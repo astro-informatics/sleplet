@@ -1,7 +1,7 @@
 import numpy as np
 
-from sleplet.utils.bool_methods import is_ergodic, is_limited_lat_lon, is_polar_cap
-from sleplet.utils.vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
+from sleplet._bool_methods import is_limited_lat_lon, is_polar_cap
+from sleplet._vars import PHI_MAX_DEFAULT, PHI_MIN_DEFAULT, THETA_MIN_DEFAULT
 
 J = 2
 J_MIN = 0
@@ -28,11 +28,3 @@ def test_bool_lim_lat_lon() -> None:
     assert not is_limited_lat_lon(
         PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, THETA_MAX
     )
-
-
-def test_bool_erodicity() -> None:
-    """
-    verifies that a function follows ergodicity
-    """
-    assert not is_ergodic(J_MIN)
-    assert is_ergodic(J_MIN, j=J)

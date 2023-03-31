@@ -1,11 +1,11 @@
-from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import choose_slepian_method, slepian_inverse
-from sleplet.utils.vars import SMOOTHING
+from sleplet.functions.fp import SlepianSouthAmerica
+from sleplet.plotting import PlotSphere
+from sleplet.slepian import Region
+from sleplet.slepian_methods import choose_slepian_method, slepian_inverse
 
 L = 128
 NORMALISE = False
+SMOOTHING = 2
 
 
 def main() -> None:
@@ -21,7 +21,7 @@ def main() -> None:
 
     # plot
     name = f"south_america_slepian_reconstruction_L{L}"
-    Plot(f, L, name, normalise=NORMALISE, region=slepian.region).execute()
+    PlotSphere(f, L, name, normalise=NORMALISE, region=slepian.region).execute()
 
 
 if __name__ == "__main__":
