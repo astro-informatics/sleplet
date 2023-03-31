@@ -683,8 +683,8 @@ f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
 PlotSphere(f_sphere, f.L, "fig_2_2_a", annotations=[]).execute()
 # b-d
 for a, b, g in [(0, 0, 0.25), (0, 0.25, 0.25), (0.25, 0.25, 0.25)]:
-    flm_rot = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
-    g_sphere = ssht.inverse(flm_rot, f.L, Method="MWSS")
+    glm_rot = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
+    g_sphere = ssht.inverse(glm_rot, f.L, Method="MWSS")
     PlotSphere(g_sphere, f.L, f"fig_2_2_a_{a}_b_{b}_g_{g}", annotations=[]).execute()
 ```
 
