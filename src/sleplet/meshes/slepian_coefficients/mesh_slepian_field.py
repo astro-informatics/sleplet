@@ -10,19 +10,18 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepianField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    """TODO"""
+    """TODO."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """
-        compute field on the vertices of the mesh
-        """
+        """compute field on the vertices of the mesh."""
         mf = sleplet.meshes.harmonic_coefficients.mesh_field.MeshField(
-            self.mesh, region=True
+            self.mesh,
+            region=True,
         )
         return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
@@ -35,5 +34,5 @@ class MeshSlepianField(
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments"
+                f"{self.__class__.__name__} does not support extra arguments",
             )

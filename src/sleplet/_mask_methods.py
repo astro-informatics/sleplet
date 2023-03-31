@@ -19,18 +19,20 @@ SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 
 def create_mask_region(
-    L: int, region: "sleplet.slepian.region.Region"
+    L: int,
+    region: "sleplet.slepian.region.Region",
 ) -> npt.NDArray[np.float_]:
-    """
-    creates a mask of a region of interested, the output will be based
+    """creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
     * polar cap - if theta_max provided
     * limited latitude longitude - if one of theta_min, theta_max,
                                    phi_min or phi_max is provided
-    * arbitrary - just checks the shape of the input mask
+    * arbitrary - just checks the shape of the input mask.
     """
     thetas, phis = ssht.sample_positions(
-        L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
 
     match region.region_type:
@@ -62,11 +64,9 @@ def create_mask_region(
 
 
 def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
-    """
-    attempts to read the mask from the config file
-    """
+    """attempts to read the mask from the config file."""
     mask = sleplet._data.setup_pooch.find_on_pooch_then_local(
-        f"slepian_masks_{mask_name}"
+        f"slepian_masks_{mask_name}",
     )
     return create_mask(L, mask_name) if mask is None else np.load(mask)
 
@@ -79,23 +79,27 @@ def ensure_masked_flm_bandlimited(
     reality: bool,
     spin: int,
 ) -> npt.NDArray[np.complex_]:
-    """
-    ensures the coefficients is bandlimited for a given region
-    """
+    """ensures the coefficients is bandlimited for a given region."""
     field = ssht.inverse(
-        flm, L, Reality=reality, Spin=spin, Method=sleplet._vars.SAMPLING_SCHEME
+        flm,
+        L,
+        Reality=reality,
+        Spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
     return ssht.forward(
-        field, L, Reality=reality, Spin=spin, Method=sleplet._vars.SAMPLING_SCHEME
+        field,
+        L,
+        Reality=reality,
+        Spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
 
 
 def create_default_region() -> "sleplet.slepian.region.Region":
-    """
-    creates default region
-    """
+    """creates default region."""
     return sleplet.slepian.region.Region(
         gap=sleplet.POLAR_GAP,
         mask_name=sleplet.SLEPIAN_MASK,
@@ -107,11 +111,10 @@ def create_default_region() -> "sleplet.slepian.region.Region":
 
 
 def create_mesh_region(
-    mesh_config: dict, vertices: npt.NDArray[np.float_]
+    mesh_config: dict,
+    vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
-    """
-    creates the boolean region for the given mesh
-    """
+    """creates the boolean region for the given mesh."""
     return (
         (vertices[:, 0] >= mesh_config["XMIN"])
         & (vertices[:, 0] <= mesh_config["XMAX"])
@@ -123,11 +126,10 @@ def create_mesh_region(
 
 
 def ensure_masked_bandlimit_mesh_signal(
-    mesh: sleplet.meshes.mesh.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh,
+    u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """
-    ensures that signal in pixel space is bandlimited
-    """
+    """ensures that signal in pixel space is bandlimited."""
     field = sleplet.harmonic_methods.mesh_inverse(mesh, u_i)
     masked_field = np.where(mesh.region, field, 0)
     return sleplet.harmonic_methods.mesh_forward(mesh, masked_field)
@@ -136,9 +138,7 @@ def ensure_masked_bandlimit_mesh_signal(
 def convert_region_on_vertices_to_faces(
     mesh: sleplet.meshes.mesh.Mesh,
 ) -> npt.NDArray[np.float_]:
-    """
-    converts the region on vertices to faces
-    """
+    """converts the region on vertices to faces."""
     region_reshape = np.argwhere(mesh.region).reshape(-1)
     faces_in_region = np.isin(mesh.faces, region_reshape).all(axis=1)
     region_on_faces = np.zeros(mesh.faces.shape[0])
@@ -147,41 +147,47 @@ def convert_region_on_vertices_to_faces(
 
 
 def _create_africa_mask(
-    L: int, earth_flm: npt.NDArray[np.complex_]
+    L: int,
+    earth_flm: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.float_]:
-    """
-    creates the Africa region mask
-    """
+    """creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, L)
     earth_f = ssht.inverse(
-        rot_flm, L, Reality=True, Method=sleplet._vars.SAMPLING_SCHEME
+        rot_flm,
+        L,
+        Reality=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas, _ = ssht.sample_positions(
-        L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     return (thetas <= AFRICA_RANGE) & (earth_f >= 0)
 
 
 def _create_south_america_mask(
-    L: int, earth_flm: npt.NDArray[np.complex_]
+    L: int,
+    earth_flm: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.float_]:
-    """
-    creates the Africa region mask
-    """
+    """creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(earth_flm, L)
     earth_f = ssht.inverse(
-        rot_flm, L, Reality=True, Method=sleplet._vars.SAMPLING_SCHEME
+        rot_flm,
+        L,
+        Reality=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas, _ = ssht.sample_positions(
-        L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     return (thetas <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
 
 
 def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
-    """
-    creates the South America region mask
-    """
+    """creates the South America region mask."""
     earth_flm = sleplet._data.create_earth_flm.create_flm(L)
     if mask_name == f"africa_L{L}.npy":
         mask = _create_africa_mask(L, earth_flm)

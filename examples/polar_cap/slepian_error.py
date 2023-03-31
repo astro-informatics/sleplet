@@ -20,9 +20,7 @@ THETA_MAX = 40
 
 
 def main() -> None:
-    """
-    creates a plot of Slepian coefficients against rank
-    """
+    """creates a plot of Slepian coefficients against rank."""
     region = Region(theta_max=np.deg2rad(THETA_MAX))
     earth = Earth(L, region=region)
     field = ssht.inverse(earth.coefficients, L, Method=SAMPLING_SCHEME)
@@ -31,10 +29,20 @@ def main() -> None:
     N = SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     ax = plt.gca()
     sns.scatterplot(
-        x=range(N), y=integrate_region, ax=ax, label="region", linewidth=0, marker="."
+        x=range(N),
+        y=integrate_region,
+        ax=ax,
+        label="region",
+        linewidth=0,
+        marker=".",
     )
     sns.scatterplot(
-        x=range(N), y=integrate_sphere, ax=ax, label="sphere", linewidth=0, marker="*"
+        x=range(N),
+        y=integrate_sphere,
+        ax=ax,
+        label="sphere",
+        linewidth=0,
+        marker="*",
     )
     ax.set_xlabel("coefficients")
     ax.set_ylabel("relative error")
@@ -48,9 +56,7 @@ def _helper_sphere(
     f: npt.NDArray[np.complex_],
     flm: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """
-    the difference in Slepian coefficients by integration of whole sphere
-    """
+    """the difference in Slepian coefficients by integration of whole sphere."""
     slepian = choose_slepian_method(L, region)
     output = np.abs(slepian_forward(L, slepian, f=f))
     desired = np.abs(slepian_forward(L, slepian, flm=flm))
@@ -63,9 +69,7 @@ def _helper_region(
     f: npt.NDArray[np.complex_],
     flm: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """
-    the difference in Slepian coefficients by integration of region on the sphere
-    """
+    """the difference in Slepian coefficients by integration of region on the sphere."""
     slepian = choose_slepian_method(L, region)
     output = np.abs(slepian_forward(L, slepian, f=f, mask=slepian.mask))
     desired = np.abs(slepian_forward(L, slepian, flm=flm))

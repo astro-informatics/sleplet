@@ -11,7 +11,7 @@ import sleplet.harmonic_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class ElongatedGaussian(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     p_sigma: float = 0.1
     """TODO"""
@@ -23,7 +23,10 @@ class ElongatedGaussian(sleplet.functions.f_lm.F_LM):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return sleplet.harmonic_methods._ensure_f_bandlimited(
-            self._grid_fun, self.L, reality=self.reality, spin=self.spin
+            self._grid_fun,
+            self.L,
+            reality=self.reality,
+            spin=self.spin,
         )
 
     def _create_name(self) -> str:
@@ -49,15 +52,15 @@ class ElongatedGaussian(sleplet.functions.f_lm.F_LM):
             )
 
     def _grid_fun(
-        self, theta: npt.NDArray[np.float_], phi: npt.NDArray[np.float_]
+        self,
+        theta: npt.NDArray[np.float_],
+        phi: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """
-        function on the grid
-        """
+        """function on the grid."""
         return np.exp(
             -(
                 ((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2
                 + ((phi - sleplet._vars.PHI_0) / self.p_sigma) ** 2
             )
-            / 2
+            / 2,
         )

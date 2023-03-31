@@ -13,18 +13,17 @@ THETA_MAX = 2 * np.pi / 9
 
 
 def test_bool_polar_cap() -> None:
-    """
-    verifies that one is case is a polar cap and one isn't
-    """
+    """verifies that one is case is a polar cap and one isn't."""
     assert is_polar_cap(PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, THETA_MAX)
     assert not is_polar_cap(PHI_0, PHI_1, THETA_0, THETA_1)
 
 
 def test_bool_lim_lat_lon() -> None:
-    """
-    verifies that one is case is a polar cap and one isn't
-    """
+    """verifies that one is case is a polar cap and one isn't."""
     assert is_limited_lat_lon(PHI_0, PHI_1, THETA_0, THETA_1)
     assert not is_limited_lat_lon(
-        PHI_MIN_DEFAULT, PHI_MAX_DEFAULT, THETA_MIN_DEFAULT, THETA_MAX
+        PHI_MIN_DEFAULT,
+        PHI_MAX_DEFAULT,
+        THETA_MIN_DEFAULT,
+        THETA_MAX,
     )

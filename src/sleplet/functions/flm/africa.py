@@ -15,19 +15,22 @@ import sleplet.harmonic_methods
 
 @dataclass(config=sleplet._validation.Validation)
 class Africa(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return sleplet.harmonic_methods._ensure_f_bandlimited(
-            self._grid_fun, self.L, reality=self.reality, spin=self.spin
+            self._grid_fun,
+            self.L,
+            reality=self.reality,
+            spin=self.spin,
         )
 
     def _create_name(self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(
-            self.__class__.__name__
+            self.__class__.__name__,
         )
 
     def _set_reality(self) -> bool:
@@ -39,25 +42,29 @@ class Africa(sleplet.functions.f_lm.F_LM):
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments"
+                f"{self.__class__.__name__} does not support extra arguments",
             )
 
     def _grid_fun(
-        self, theta: npt.NDArray[np.float_], phi: npt.NDArray[np.float_]
+        self,
+        theta: npt.NDArray[np.float_],
+        phi: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """
-        function on the grid
-        """
+        """function on the grid."""
         earth_flm = sleplet._data.create_earth_flm.create_flm(
-            self.L, smoothing=self.smoothing
+            self.L,
+            smoothing=self.smoothing,
         )
         rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, self.L)
         earth_f = ssht.inverse(
-            rot_flm, self.L, Reality=self.reality, Method=sleplet._vars.SAMPLING_SCHEME
+            rot_flm,
+            self.L,
+            Reality=self.reality,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         mask_name = f"{self.name}_L{self.L}.npy"
         mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(
-            f"slepian_masks_{mask_name}"
+            f"slepian_masks_{mask_name}",
         )
         mask = (
             sleplet._mask_methods.create_mask(self.L, mask_name)

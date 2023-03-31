@@ -1,6 +1,4 @@
-"""
-classes of functions on the sphere created in harmonic space
-"""
+"""classes of functions on the sphere created in harmonic space."""
 
 from .africa import Africa
 from .axisymmetric_wavelet_coefficients_africa import (

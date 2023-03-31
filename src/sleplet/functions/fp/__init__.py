@@ -1,6 +1,4 @@
-"""
-classes of functions on the sphere created in Slepian space
-"""
+"""classes of functions on the sphere created in Slepian space."""
 
 from .slepian import Slepian
 from .slepian_africa import SlepianAfrica

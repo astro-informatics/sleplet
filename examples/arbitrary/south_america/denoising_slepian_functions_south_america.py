@@ -30,17 +30,21 @@ def _denoising_slepian_function(
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """
-    denoising demo using Slepian function
-    """
+    """denoising demo using Slepian function."""
     # compute Slepian noise
     sigma_noise = compute_sigma_noise(
-        signal.coefficients, snr_in, denominator=signal.L**2
+        signal.coefficients,
+        snr_in,
+        denominator=signal.L**2,
     )
 
     # hard thresholding
     f_p = slepian_function_hard_thresholding(
-        signal.L, noised_signal.coefficients, sigma_noise, n_sigma, signal.slepian
+        signal.L,
+        noised_signal.coefficients,
+        sigma_noise,
+        n_sigma,
+        signal.slepian,
     )
 
     # compute SNR
@@ -50,9 +54,7 @@ def _denoising_slepian_function(
 
 
 def main(snr: float, sigma: int) -> None:
-    """
-    denoising demo using Slepian wavelets
-    """
+    """denoising demo using Slepian wavelets."""
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
     region = Region(mask_name="south_america")
@@ -67,7 +69,12 @@ def main(snr: float, sigma: int) -> None:
     f = _denoising_slepian_function(fun, fun_noised, snr, sigma)
     name = f"{fun.name}_{snr}snr_{sigma}n_denoised_function"
     PlotSphere(
-        f, L, name, amplitude=amplitude, normalise=NORMALISE, region=region
+        f,
+        L,
+        name,
+        amplitude=amplitude,
+        normalise=NORMALISE,
+        region=region,
     ).execute()
 
 

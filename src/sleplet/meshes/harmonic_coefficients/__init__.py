@@ -1,6 +1,4 @@
-"""
-classes of functions on the mesh created in Fourier space
-"""
+"""classes of functions on the mesh created in Fourier space."""
 
 from .mesh_basis_functions import MeshBasisFunctions
 from .mesh_field import MeshField

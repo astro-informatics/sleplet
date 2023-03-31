@@ -10,9 +10,7 @@ SNR_IN = 10
 
 
 def test_adding_noise_changes_flm() -> None:
-    """
-    tests the addition of Gaussian noise changes the coefficients
-    """
+    """tests the addition of Gaussian noise changes the coefficients."""
     earth = Earth(L)
     earth_noised = Earth(L, noise=SNR_IN)
     assert_raises(

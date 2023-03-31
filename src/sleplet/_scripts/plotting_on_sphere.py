@@ -29,11 +29,9 @@ BETA_DEFAULT = 0.125
 
 
 def valid_maps(map_name: str) -> str:
-    """
-    check if valid map
-    """
+    """check if valid map."""
     if map_name in sleplet._string_methods.convert_classes_list_to_snake_case(
-        sleplet._class_lists.MAPS_LM
+        sleplet._class_lists.MAPS_LM,
     ):
         return map_name
     else:
@@ -41,11 +39,9 @@ def valid_maps(map_name: str) -> str:
 
 
 def valid_plotting(func_name: str) -> str:
-    """
-    check if valid function
-    """
+    """check if valid function."""
     if func_name in sleplet._string_methods.convert_classes_list_to_snake_case(
-        sleplet._class_lists.COEFFICIENTS
+        sleplet._class_lists.COEFFICIENTS,
     ):
         return func_name
     else:
@@ -53,15 +49,13 @@ def valid_plotting(func_name: str) -> str:
 
 
 def read_args() -> Namespace:
-    """
-    method to read args from the command line
-    """
+    """method to read args from the command line."""
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
         "function",
         type=valid_plotting,
         choices=sleplet._string_methods.convert_classes_list_to_snake_case(
-            sleplet._class_lists.COEFFICIENTS
+            sleplet._class_lists.COEFFICIENTS,
         ),
         help="function to plot on the sphere",
     )
@@ -86,7 +80,7 @@ def read_args() -> Namespace:
         type=valid_maps,
         default=None,
         choices=sleplet._string_methods.convert_classes_list_to_snake_case(
-            sleplet._class_lists.MAPS_LM
+            sleplet._class_lists.MAPS_LM,
         ),
         help="glm to perform sifting convolution with i.e. flm x glm*",
     )
@@ -183,9 +177,7 @@ def plot(
     earth_view: str,
     amplitude: float | None,
 ) -> None:
-    """
-    master plotting method
-    """
+    """master plotting method."""
     filename = f.name
     coefficients = f.coefficients
 
@@ -200,11 +192,19 @@ def plot(
     match method:
         case "rotate":
             coefficients, filename = _rotation_helper(
-                f, filename, alpha_pi_frac, beta_pi_frac, gamma_pi_frac
+                f,
+                filename,
+                alpha_pi_frac,
+                beta_pi_frac,
+                gamma_pi_frac,
             )
         case "translate":
             coefficients, filename, trans_annotation = _translation_helper(
-                f, filename, alpha_pi_frac, beta_pi_frac, shannon
+                f,
+                filename,
+                alpha_pi_frac,
+                beta_pi_frac,
+                shannon,
             )
 
             # annotate translation point
@@ -213,7 +213,11 @@ def plot(
 
     if g is not None:
         coefficients, filename = _convolution_helper(
-            f, g, coefficients, shannon, filename
+            f,
+            g,
+            coefficients,
+            shannon,
+            filename,
         )
 
     # rotate plot of Earth
@@ -221,12 +225,14 @@ def plot(
         match earth_view:
             case "africa":
                 coefficients = sleplet.harmonic_methods.rotate_earth_to_africa(
-                    coefficients, f.L
+                    coefficients,
+                    f.L,
                 )
                 filename += "_africa"
             case "south_america":
                 coefficients = sleplet.harmonic_methods.rotate_earth_to_south_america(
-                    coefficients, f.L
+                    coefficients,
+                    f.L,
                 )
 
     # get field value
@@ -255,12 +261,10 @@ def _rotation_helper(
     beta_pi_frac: float,
     gamma_pi_frac: float,
 ) -> tuple[npt.NDArray[np.complex_], str]:
-    """
-    performs the rotation specific steps
-    """
+    """performs the rotation specific steps."""
     sleplet.logger.info(
         "angles: (alpha, beta, gamma) = "
-        f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
+        f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
     )
     filename += (
         "_rotate_"
@@ -269,7 +273,9 @@ def _rotation_helper(
 
     # calculate angles
     alpha, beta = sleplet.plot_methods._calc_nearest_grid_point(
-        f.L, alpha_pi_frac, beta_pi_frac
+        f.L,
+        alpha_pi_frac,
+        beta_pi_frac,
     )
     gamma = gamma_pi_frac * np.pi
 
@@ -285,9 +291,7 @@ def _translation_helper(
     beta_pi_frac: float,
     shannon: int | None,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
-    """
-    performs the translation specific steps
-    """
+    """performs the translation specific steps."""
     sleplet.logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
     filename += (
@@ -297,7 +301,9 @@ def _translation_helper(
 
     # calculate angles
     alpha, beta = sleplet.plot_methods._calc_nearest_grid_point(
-        f.L, alpha_pi_frac, beta_pi_frac
+        f.L,
+        alpha_pi_frac,
+        beta_pi_frac,
     )
 
     # translate by alpha, beta
@@ -319,9 +325,7 @@ def _convolution_helper(
     shannon: int | None,
     filename: str,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str]:
-    """
-    performs the convolution specific steps
-    """
+    """performs the convolution specific steps."""
     g_coefficients = (
         sleplet.slepian_methods.slepian_forward(f.L, f.slepian, flm=g.coefficients)
         if hasattr(f, "slepian")
@@ -340,7 +344,7 @@ def main() -> None:
 
     f = sleplet._class_lists.COEFFICIENTS[
         sleplet._string_methods.convert_classes_list_to_snake_case(
-            sleplet._class_lists.COEFFICIENTS
+            sleplet._class_lists.COEFFICIENTS,
         ).index(args.function)
     ](
         args.bandlimit,
@@ -353,7 +357,7 @@ def main() -> None:
     g = (
         sleplet._class_lists.MAPS_LM[
             sleplet._string_methods.convert_classes_list_to_snake_case(
-                sleplet._class_lists.MAPS_LM
+                sleplet._class_lists.MAPS_LM,
             ).index(args.convolve)
         ](args.bandlimit)
         if isinstance(args.convolve, str)

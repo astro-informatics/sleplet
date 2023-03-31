@@ -17,9 +17,7 @@ POOCH.load_registry_from_doi()
 
 
 def find_on_pooch_then_local(filename: str) -> os.PathLike | None:
-    """
-    find a file on POOCH first and if not look in data folder
-    """
+    """find a file on POOCH first and if not look in data folder."""
     if filename in POOCH.registry:
         sleplet.logger.info(f"Found {filename} at https://doi.org/{ZENODO_DATA_DOI}")
         return POOCH.fetch(filename, progressbar=True)

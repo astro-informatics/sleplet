@@ -29,9 +29,8 @@ VAR_FP = 1
 
 
 def main() -> None:
-    """
-    plots the difference between the theoretical &
-    experimental covariances for the Slepian wavelets
+    """plots the difference between the theoretical &
+    experimental covariances for the Slepian wavelets.
     """
     # compute wavelets
     region = Region(mask_name="south_america")

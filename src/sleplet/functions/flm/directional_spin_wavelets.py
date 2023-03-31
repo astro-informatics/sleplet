@@ -13,7 +13,7 @@ import sleplet.functions.f_lm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class DirectionalSpinWavelets(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -60,9 +60,7 @@ class DirectionalSpinWavelets(sleplet.functions.f_lm.F_LM):
             self.B, self.j_min, self.spin, self.N, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
-        """
-        compute all wavelets
-        """
+        """compute all wavelets."""
         phi_l, psi_lm = wavelet_tiling(self.B, self.L, self.N, self.j_min, self.spin)
         wavelets = np.zeros((psi_lm.shape[1] + 1, self.L**2), dtype=np.complex_)
         for ell in range(self.L):
@@ -78,6 +76,6 @@ class DirectionalSpinWavelets(sleplet.functions.f_lm.F_LM):
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v

@@ -13,7 +13,7 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class AxisymmetricWavelets(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -54,11 +54,11 @@ class AxisymmetricWavelets(sleplet.functions.f_lm.F_LM):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
-        """
-        compute all wavelets
-        """
+        """compute all wavelets."""
         return sleplet.wavelet_methods._create_axisymmetric_wavelets(
-            self.L, self.B, self.j_min
+            self.L,
+            self.B,
+            self.j_min,
         )
 
     @validator("j")
@@ -68,6 +68,6 @@ class AxisymmetricWavelets(sleplet.functions.f_lm.F_LM):
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v

@@ -11,9 +11,9 @@ import sleplet.meshes.mesh_harmonic_coefficients
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshBasisFunctions(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients,
 ):
-    """TODO"""
+    """TODO."""
 
     rank: int = 0
     """TODO"""
@@ -23,12 +23,10 @@ class MeshBasisFunctions(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """
-        compute field on the vertices of the mesh
-        """
+        """compute field on the vertices of the mesh."""
         sleplet.logger.info(
             f"Mesh eigenvalue {self.rank}: "
-            f"{self.mesh.mesh_eigenvalues[self.rank]:e}"
+            f"{self.mesh.mesh_eigenvalues[self.rank]:e}",
         )
         basis_function = self.mesh.basis_functions[self.rank]
         return sleplet.harmonic_methods.mesh_forward(self.mesh, basis_function)
@@ -48,14 +46,12 @@ class MeshBasisFunctions(
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
-                    f"The number of extra arguments should be 1 or {num_args}"
+                    f"The number of extra arguments should be 1 or {num_args}",
                 )
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -> None:
-        """
-        checks the requested rank is valid
-        """
+        """checks the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] > limit:

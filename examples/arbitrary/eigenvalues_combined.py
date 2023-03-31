@@ -18,9 +18,7 @@ ZORDER = [2, 1]
 
 
 def main() -> None:
-    """
-    plots the tiling of the Slepian line
-    """
+    """plots the tiling of the Slepian line."""
     for c, region in enumerate(REGIONS):
         slepian = SlepianArbitrary(L, region)
         p_range = np.arange(0, L**2)

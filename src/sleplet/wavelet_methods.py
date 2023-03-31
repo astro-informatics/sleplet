@@ -1,6 +1,4 @@
-"""
-methods to work with wavelet and wavelet coefficients
-"""
+"""methods to work with wavelet and wavelet coefficients."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -15,19 +13,23 @@ def slepian_wavelet_forward(
     wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the coefficients of the given tiling function in Slepian space
+    """TODO computes the coefficients of the given tiling function in Slepian space.
 
     Args:
+    ----
         f_p: _description_
         wavelets: _description_
         shannon: _description_
 
     Returns:
+    -------
         _description_
     """
     return find_non_zero_wavelet_coefficients(
         sleplet._convolution_methods.sifting_convolution(
-            wavelets, f_p, shannon=shannon
+            wavelets,
+            f_p,
+            shannon=shannon,
         ),
         axis=1,
     )
@@ -38,20 +40,24 @@ def slepian_wavelet_inverse(
     wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the inverse wavelet transform in Slepian space
+    """TODO computes the inverse wavelet transform in Slepian space.
 
     Args:
+    ----
         wav_coeffs: _description_
         wavelets: _description_
         shannon: _description_
 
     Returns:
+    -------
         _description_
     """
     # ensure wavelets are the same shape as the coefficients
     wavelets_shannon = wavelets[: len(wav_coeffs)]
     wavelet_reconstruction = sleplet._convolution_methods.sifting_convolution(
-        wavelets_shannon, wav_coeffs.T, shannon=shannon
+        wavelets_shannon,
+        wav_coeffs.T,
+        shannon=shannon,
     )
     return wavelet_reconstruction.sum(axis=0)
 
@@ -61,14 +67,16 @@ def axisymmetric_wavelet_forward(
     flm: npt.NDArray[np.complex_ | np.float_],
     wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the coefficients of the axisymmetric wavelets
+    """TODO computes the coefficients of the axisymmetric wavelets.
 
     Args:
+    ----
         L  _description_
         flm: _description_
         wavelets: _description_
 
     Returns:
+    -------
         _description_
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
@@ -82,16 +90,20 @@ def axisymmetric_wavelet_forward(
 
 
 def axisymmetric_wavelet_inverse(
-    L: int, wav_coeffs: npt.NDArray[np.complex_], wavelets: npt.NDArray[np.complex_]
+    L: int,
+    wav_coeffs: npt.NDArray[np.complex_],
+    wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the inverse axisymmetric wavelet transform
+    """TODO computes the inverse axisymmetric wavelet transform.
 
     Args:
+    ----
         L: _description_
         wav_coeffs: _description_
         wavelets: _description_
 
     Returns:
+    -------
         _description_
     """
     flm = np.zeros(L**2, dtype=np.complex_)
@@ -105,11 +117,11 @@ def axisymmetric_wavelet_inverse(
 
 
 def _create_axisymmetric_wavelets(
-    L: int, B: int, j_min: int
+    L: int,
+    B: int,
+    j_min: int,
 ) -> npt.NDArray[np.complex_]:
-    """
-    computes the axisymmetric wavelets
-    """
+    """computes the axisymmetric wavelets."""
     kappas = create_kappas(L, B, j_min)
     wavelets = np.zeros((kappas.shape[0], L**2), dtype=np.complex_)
     for ell in range(L):
@@ -120,14 +132,16 @@ def _create_axisymmetric_wavelets(
 
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
-    """TODO computes the Slepian wavelets
+    """TODO computes the Slepian wavelets.
 
     Args:
+    ----
         xlim: _description_
         B: _description_
         j_min: _description_
 
     Returns:
+    -------
         _description_
     """
     kappa0, kappa = axisym_wav_l(B, xlim, j_min)
@@ -135,15 +149,19 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
 
 
 def find_non_zero_wavelet_coefficients(
-    wav_coeffs: npt.NDArray[np.complex_ | np.float_], *, axis: int | tuple[int, ...]
+    wav_coeffs: npt.NDArray[np.complex_ | np.float_],
+    *,
+    axis: int | tuple[int, ...],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO finds the coefficients within the shannon number to speed up computations
+    """TODO finds the coefficients within the shannon number to speed up computations.
 
     Args:
+    ----
         wav_coeffs: _description_
         axis: _description_
 
     Returns:
+    -------
         _description_
     """
     return wav_coeffs[wav_coeffs.any(axis=axis)]

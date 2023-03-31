@@ -8,9 +8,7 @@ NCPU = 4
 
 
 def test_split_L_into_chunks() -> None:  # noqa: N802
-    """
-    ensure vector L split into appropriate number of chunks
-    """
+    """ensure vector L split into appropriate number of chunks."""
     chunks = split_arr_into_chunks(L_SMALL, NCPU)
     assert_equal(len(chunks), NCPU)
     chunk_length = L_SMALL // NCPU

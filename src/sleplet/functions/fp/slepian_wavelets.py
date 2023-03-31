@@ -13,7 +13,7 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWavelets(sleplet.functions.f_p.F_P):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -55,9 +55,7 @@ class SlepianWavelets(sleplet.functions.f_p.F_P):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.float_]:
-        """
-        computes wavelets in Slepian space
-        """
+        """computes wavelets in Slepian space."""
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
     @validator("j")
@@ -67,6 +65,6 @@ class SlepianWavelets(sleplet.functions.f_p.F_P):
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v
