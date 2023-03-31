@@ -22,9 +22,7 @@ SNR_IN = -10
 
 
 def main(snr: float, sigma: int) -> None:
-    """
-    denoising demo using Slepian wavelets
-    """
+    """denoising demo using Slepian wavelets."""
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
     region = Region(mask_name="south_america")
@@ -42,7 +40,12 @@ def main(snr: float, sigma: int) -> None:
     f = denoising_slepian_wavelet(fun, fun_noised, sw, snr, sigma)
     name = f"{fun.name}_{snr}snr_{sigma}n_denoised"
     PlotSphere(
-        f, L, name, amplitude=amplitude, normalise=NORMALISE, region=sw.region
+        f,
+        L,
+        name,
+        amplitude=amplitude,
+        normalise=NORMALISE,
+        region=sw.region,
     ).execute()
 
 

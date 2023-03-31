@@ -1,5 +1,4 @@
-"""
-API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
+"""API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
 the rest of the documentation.
 """
 
@@ -31,5 +30,5 @@ logger.info(
     f"THETA_MIN={THETA_MIN}, "
     f"PHI_MAX={PHI_MAX}, "
     f"PHI_MIN={PHI_MIN}, "
-    f"SLEPIAN_MASK={SLEPIAN_MASK}."
+    f"SLEPIAN_MASK={SLEPIAN_MASK}.",
 )

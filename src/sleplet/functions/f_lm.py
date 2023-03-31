@@ -12,27 +12,31 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation)
 class F_LM(sleplet.functions.coefficients.Coefficients):  # noqa: N801
-    """abstract parent class to handle harmonic coefficients on the sphere"""
+    """abstract parent class to handle harmonic coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
     def rotate(
-        self, alpha: float, beta: float, *, gamma: float = 0
+        self,
+        alpha: float,
+        beta: float,
+        *,
+        gamma: float = 0,
     ) -> npt.NDArray[np.complex_]:
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
     def _translation_helper(
-        self, alpha: float, beta: float
+        self,
+        alpha: float,
+        beta: float,
     ) -> npt.NDArray[np.complex_]:
         return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
 
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """
-        adds Gaussian white noise to the signal
-        """
+        """adds Gaussian white noise to the signal."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()

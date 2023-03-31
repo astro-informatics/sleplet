@@ -11,7 +11,7 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Slepian(sleplet.functions.f_p.F_P):
-    """TODO"""
+    """TODO."""
 
     rank: int = 0
     """TODO"""
@@ -38,10 +38,12 @@ class Slepian(sleplet.functions.f_p.F_P):
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         sleplet.logger.info(f"Shannon number: {self.slepian.N}")
         sleplet.logger.info(
-            f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}"
+            f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}",
         )
         return sleplet.slepian_methods.slepian_forward(
-            self.L, self.slepian, flm=self.slepian.eigenvectors[self.rank]
+            self.L,
+            self.slepian,
+            flm=self.slepian.eigenvectors[self.rank],
         )
 
     def _set_reality(self) -> bool:
@@ -55,14 +57,12 @@ class Slepian(sleplet.functions.f_p.F_P):
             num_args = 1
             if len(self.extra_args) != num_args:
                 raise ValueError(
-                    f"The number of extra arguments should be 1 or {num_args}"
+                    f"The number of extra arguments should be 1 or {num_args}",
                 )
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -> None:
-        """
-        checks the requested rank is valid
-        """
+        """checks the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.L**2
             if self.extra_args[0] >= limit:

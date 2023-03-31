@@ -7,9 +7,7 @@ from sleplet.wavelet_methods import slepian_wavelet_forward, slepian_wavelet_inv
 
 
 def test_decompose_all_mesh(mesh_slepian, mesh_field_region) -> None:
-    """
-    tests that all three methods produce the same coefficients for the mesh
-    """
+    """tests that all three methods produce the same coefficients for the mesh."""
     field = mesh_inverse(mesh_slepian.mesh, mesh_field_region.coefficients)
     harmonic_sum_p = slepian_mesh_forward(
         mesh_slepian,
@@ -37,9 +35,7 @@ def test_decompose_all_mesh(mesh_slepian, mesh_field_region) -> None:
 
 
 def test_forward_inverse_transform_slepian(mesh_slepian, mesh_field_region) -> None:
-    """
-    tests that the Slepian forward and inverse transforms recover the field
-    """
+    """tests that the Slepian forward and inverse transforms recover the field."""
     f_p = slepian_mesh_forward(
         mesh_slepian,
         u_i=mesh_field_region.coefficients,
@@ -54,9 +50,7 @@ def test_forward_inverse_transform_slepian(mesh_slepian, mesh_field_region) -> N
 
 
 def test_synthesis_mesh(mesh_slepian_wavelets, mesh_field_region) -> None:
-    """
-    tests that Slepian polar wavelet synthesis matches the coefficients
-    """
+    """tests that Slepian polar wavelet synthesis matches the coefficients."""
     coefficients = slepian_mesh_forward(
         mesh_slepian_wavelets.mesh_slepian,
         u_i=mesh_field_region.coefficients,

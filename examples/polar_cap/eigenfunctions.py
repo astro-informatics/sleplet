@@ -29,8 +29,8 @@ ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 
 
 def main() -> None:
-    """
-    create fig 5.1 from Spatiospectral Concentration on a Sphere by Simons et al 2006
+    """create fig 5.1 from Spatiospectral Concentration on a Sphere
+    by Simons et al 2006.
     """
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
     i = (x < THETA_MAX).sum()
@@ -57,9 +57,7 @@ def _helper(
     i: int,
     rank: int,
 ) -> None:
-    """
-    helper which plots the required order and specified ranks
-    """
+    """helper which plots the required order and specified ranks."""
     logger.info(f"plotting rank={rank}")
     flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
@@ -78,9 +76,7 @@ def _helper(
 
 
 def _find_p_value(rank: int, shannon: int) -> int:
-    """
-    method to find the effective p rank of the Slepian function
-    """
+    """method to find the effective p rank of the Slepian function."""
     pooch_registry = pooch.create(
         path=pooch.os_cache("sleplet"),
         base_url=f"doi:{ZENODO_DATA_DOI}/",
@@ -91,7 +87,7 @@ def _find_p_value(rank: int, shannon: int) -> int:
         pooch_registry.fetch(
             f"slepian_eigensolutions_D_polar{THETA_MAX}_L{L}_N{shannon}_orders.npy",
             progressbar=True,
-        )
+        ),
     )
     return np.where(orders == ORDER)[0][rank]
 

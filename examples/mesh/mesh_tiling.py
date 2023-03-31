@@ -27,9 +27,7 @@ STEP = 0.01
 
 
 def main(mesh_name: str) -> None:
-    """
-    plots the tiling of the Slepian line
-    """
+    """plots the tiling of the Slepian line."""
     # initialise mesh and Slepian mesh
     mesh = Mesh(mesh_name)
     mesh_slepian = MeshSlepian(mesh)
@@ -67,7 +65,8 @@ def main(mesh_name: str) -> None:
     plt.xlabel(r"$p$")
     plt.legend()
     save_plot(
-        _fig_path, f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}"
+        _fig_path,
+        f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}",
     )
 
 

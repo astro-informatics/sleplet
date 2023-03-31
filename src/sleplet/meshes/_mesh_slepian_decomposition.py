@@ -24,9 +24,7 @@ class MeshSlepianDecomposition:
         self._detect_method()
 
     def decompose(self, rank: int) -> float:
-        """
-        decompose the signal into its Slepian coefficients via the given method
-        """
+        """decompose the signal into its Slepian coefficients via the given method."""
         self._validate_rank(rank)
 
         match self.method:
@@ -40,20 +38,17 @@ class MeshSlepianDecomposition:
                 raise ValueError(f"'{self.method}' is not a valid method")
 
     def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.float_]:
-        """
-        decompose all ranks of the Slepian coefficients
-        """
+        """decompose all ranks of the Slepian coefficients."""
         coefficients = np.zeros(n_coefficients)
         for rank in range(n_coefficients):
             coefficients[rank] = self.decompose(rank)
         return coefficients
 
     def _integrate_region(self, rank: int) -> float:
-        r"""
-        f_{p} =
+        r"""f_{p} =
         \frac{1}{\lambda_{p}}
         \int\limits_{R} \dd{x}
-        f(x) \overline{S_{p}(x)}
+        f(x) \overline{S_{p}(x)}.
         """
         assert isinstance(self.u, np.ndarray)  # noqa: S101
         s_p = sleplet.harmonic_methods.mesh_inverse(
@@ -70,10 +65,9 @@ class MeshSlepianDecomposition:
         return integration / self.mesh_slepian.slepian_eigenvalues[rank]
 
     def _integrate_mesh(self, rank: int) -> float:
-        r"""
-        f_{p} =
+        r"""f_{p} =
         \int\limits_{x} \dd{x}
-        f(x) \overline{S_{p}(x)}
+        f(x) \overline{S_{p}(x)}.
         """
         assert isinstance(self.u, np.ndarray)  # noqa: S101
         s_p = sleplet.harmonic_methods.mesh_inverse(
@@ -81,21 +75,21 @@ class MeshSlepianDecomposition:
             self.mesh_slepian.slepian_functions[rank],
         )
         return sleplet._integration_methods.integrate_whole_mesh(
-            self.mesh_slepian.mesh.vertices, self.mesh_slepian.mesh.faces, self.u, s_p
+            self.mesh_slepian.mesh.vertices,
+            self.mesh_slepian.mesh.faces,
+            self.u,
+            s_p,
         )
 
     def _harmonic_sum(self, rank: int) -> float:
-        r"""
-        f_{p} =
+        r"""f_{p} =
         \sum\limits_{i=0}^{K}
-        f_{i} (S_{p})_{i}^{*}
+        f_{i} (S_{p})_{i}^{*}.
         """
         return (self.u_i * self.mesh_slepian.slepian_functions[rank]).sum()
 
     def _detect_method(self) -> None:
-        """
-        detects what method is used to perform the decomposition
-        """
+        """detects what method is used to perform the decomposition."""
         if isinstance(self.u_i, np.ndarray):
             sleplet.logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
@@ -108,15 +102,14 @@ class MeshSlepianDecomposition:
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "
-                "or real pixels with a mask"
+                "or real pixels with a mask",
             )
 
     def _validate_rank(self, rank: int) -> None:
-        """
-        checks the requested rank is valid
-        """
+        """checks the requested rank is valid."""
         assert isinstance(  # noqa: S101
-            self.mesh_slepian.mesh.number_basis_functions, int
+            self.mesh_slepian.mesh.number_basis_functions,
+            int,
         )
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
@@ -125,5 +118,5 @@ class MeshSlepianDecomposition:
         if rank >= self.mesh_slepian.mesh.number_basis_functions:
             raise ValueError(
                 "rank should be less than "
-                f"{self.mesh_slepian.mesh.number_basis_functions}"
+                f"{self.mesh_slepian.mesh.number_basis_functions}",
             )

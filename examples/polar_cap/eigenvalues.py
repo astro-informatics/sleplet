@@ -15,9 +15,7 @@ THETA_MAX = 40
 
 
 def main() -> None:
-    """
-    creates a plot of Slepian eigenvalues against rank
-    """
+    """creates a plot of Slepian eigenvalues against rank."""
     slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX))
     p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")

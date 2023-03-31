@@ -17,7 +17,7 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
-    """abstract parent class to handle Fourier/Slepian coefficients on the mesh"""
+    """abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 
     mesh: sleplet.meshes.mesh.Mesh
     """TODO"""
@@ -37,9 +37,7 @@ class MeshCoefficients:
         self.unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def _add_details_to_name(self) -> None:
-        """
-        adds region to the name if present if not a Slepian function
-        """
+        """adds region to the name if present if not a Slepian function."""
         if self.region and "slepian" not in self.mesh.name:
             self.name += "_region"
         if self.noise is not None:
@@ -54,7 +52,8 @@ class MeshCoefficients:
             and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
             v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
-                values["mesh"], v
+                values["mesh"],
+                v,
             )
         return v
 
@@ -62,29 +61,22 @@ class MeshCoefficients:
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """
-        adds Gaussian white noise to the signal
-        """
+        """adds Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """
-        creates the flm on the north pole
-        """
+        """creates the flm on the north pole."""
         raise NotImplementedError
 
     @abstractmethod
     def _create_name(self) -> str:
-        """
-        creates the name of the function
-        """
+        """creates the name of the function."""
         raise NotImplementedError
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """
-        initialises function specific args
-        either default value or user input
+        """initialises function specific args
+        either default value or user input.
         """
         raise NotImplementedError

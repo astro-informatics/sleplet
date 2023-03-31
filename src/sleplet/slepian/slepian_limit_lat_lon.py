@@ -20,7 +20,7 @@ _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
-    """class to create a limited latitude longitude Slepian region on the sphere"""
+    """class to create a limited latitude longitude Slepian region on the sphere."""
 
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
     """TODO"""
@@ -63,7 +63,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
         try:
             return np.load(
-                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
             ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
         except TypeError:
             K = self._create_K_matrix()
@@ -73,9 +73,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
-        """
-        computes the K matrix
-        """
+        """computes the K matrix."""
         # Compute sub-integral matrix
         G = self._slepian_integral()
 
@@ -87,9 +85,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         return K
 
     def _slepian_integral(self) -> npt.NDArray[np.complex_]:
-        """
-        Syntax:
-        G = _slepian_integral()
+        """Syntax:
+        G = _slepian_integral().
 
         Output:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -106,9 +103,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex_)
 
         def helper(row: int, col: int, S: float) -> None:
-            """
-            Using conjugate symmetry property to reduce the number of iterations
-            """
+            """Using conjugate symmetry property to reduce the number of iterations."""
             try:
                 Q = (1 / (col**2 - 1)) * (
                     np.exp(1j * col * self.theta_min)
@@ -125,7 +120,8 @@ class SlepianLimitLatLon(SlepianFunctions):
 
             G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col] = Q * S
             G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = G[
-                2 * (self.L - 1) + row, 2 * (self.L - 1) + col
+                2 * (self.L - 1) + row,
+                2 * (self.L - 1) + col,
             ].conj()
 
         # row = 0
@@ -146,11 +142,13 @@ class SlepianLimitLatLon(SlepianFunctions):
     @staticmethod
     @njit(parallel=True, fastmath=True)
     def _slepian_matrix(
-        dl: npt.NDArray[np.float_], L: int, N: int, G: npt.NDArray[np.complex_]
+        dl: npt.NDArray[np.float_],
+        L: int,
+        N: int,
+        G: npt.NDArray[np.complex_],
     ) -> npt.NDArray[np.complex_]:
-        """
-        Syntax:
-        K = _slepian_matrix(dl, L, N, G)
+        """Syntax:
+        K = _slepian_matrix(dl, L, N, G).
 
         Input:
         G  =  Sub-integral matrix (obtained after the use of Wigner-D and
@@ -199,9 +197,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """
-        need eigenvalues and eigenvectors to be in a certain format
-        """
+        """need eigenvalues and eigenvectors to be in a certain format."""
         # access values
         eigenvalues, eigenvectors = eigendecomposition
 

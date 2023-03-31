@@ -27,7 +27,7 @@ SAMPLES = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
-    """class to create an arbitrary Slepian region on the sphere"""
+    """class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
     """TODO"""
@@ -48,7 +48,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _calculate_area(self) -> float:
         self.weight = sleplet._integration_methods.calc_integration_weight(
-            self.resolution
+            self.resolution,
         )
         return (self.mask * self.weight).sum()
 
@@ -63,13 +63,15 @@ class SlepianArbitrary(SlepianFunctions):
 
         try:
             return np.load(
-                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc)
+                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
             ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
         except TypeError:
             return self._solve_D_matrix(eval_loc, evec_loc)
 
     def _solve_D_matrix(  # noqa: N802
-        self, eval_loc, evec_loc
+        self,
+        eval_loc,
+        evec_loc,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
 
@@ -86,9 +88,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
-        """
-        computes the D matrix in parallel
-        """
+        """computes the D matrix in parallel."""
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
 
@@ -100,9 +100,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i_ext, shm_i_ext = sleplet._parallel_methods.create_shared_memory_array(D_i)
 
         def func(chunk: list[int]) -> None:
-            """
-            calculate D matrix components for each chunk
-            """
+            """calculate D matrix components for each chunk."""
             (
                 D_r_int,
                 shm_r_int,
@@ -121,7 +119,8 @@ class SlepianArbitrary(SlepianFunctions):
 
         # split up L range to maximise effiency
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
-            self.L**2, sleplet.NCPU
+            self.L**2,
+            sleplet.NCPU,
         )
 
         # initialise pool and apply function
@@ -137,10 +136,12 @@ class SlepianArbitrary(SlepianFunctions):
         return D
 
     def _matrix_helper(
-        self, D_r: npt.NDArray[np.float_], D_i: npt.NDArray[np.float_], i: int
+        self,
+        D_r: npt.NDArray[np.float_],
+        D_i: npt.NDArray[np.float_],
+        i: int,
     ) -> None:
-        """
-        used in both serial and parallel calculations
+        """used in both serial and parallel calculations.
 
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease
@@ -169,9 +170,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -> complex:
-        """
-        calculates the D integral between two spherical harmonics
-        """
+        """calculates the D integral between two spherical harmonics."""
         if i not in self._fields:
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),
@@ -185,5 +184,8 @@ class SlepianArbitrary(SlepianFunctions):
                 self.resolution,
             )
         return sleplet._integration_methods.integrate_region_sphere(
-            self.mask, self.weight, self._fields[i], self._fields[j].conj()
+            self.mask,
+            self.weight,
+            self._fields[i],
+            self._fields[j].conj(),
         )

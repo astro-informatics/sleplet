@@ -9,9 +9,8 @@ L = 128
 
 
 def test_earth_identity_convolution() -> None:
-    """
-    test to ensure that the convolving with the
-    identity function doesn't change the map
+    """test to ensure that the convolving with the
+    identity function doesn't change the map.
     """
     f = Earth(L)
     g = Identity(L)
@@ -21,9 +20,8 @@ def test_earth_identity_convolution() -> None:
 
 
 def test_earth_harmonic_gaussian_convolution() -> None:
-    """
-    test to ensure that convolving the Earth with the harmonic
-    Gausian does not change significantly change the map
+    """test to ensure that convolving the Earth with the harmonic
+    Gausian does not change significantly change the map.
     """
     f = Earth(L)
     g = HarmonicGaussian(L)
@@ -33,17 +31,21 @@ def test_earth_harmonic_gaussian_convolution() -> None:
 
 
 def test_south_america_slepian_identity_convolution(
-    slepian_arbitrary, south_america_arbitrary
+    slepian_arbitrary,
+    south_america_arbitrary,
 ) -> None:
-    """
-    test to ensure that the convolving with the Slepian
-    identity function doesn't change the map in Slepian space
+    """test to ensure that the convolving with the Slepian
+    identity function doesn't change the map in Slepian space.
     """
     f_p = slepian_forward(
-        slepian_arbitrary.L, slepian_arbitrary, flm=south_america_arbitrary.coefficients
+        slepian_arbitrary.L,
+        slepian_arbitrary,
+        flm=south_america_arbitrary.coefficients,
     )
     g = SlepianIdentity(slepian_arbitrary.L, region=slepian_arbitrary.region)
     fp_conv = south_america_arbitrary.convolve(
-        f_p, g.coefficients, shannon=slepian_arbitrary.N
+        f_p,
+        g.coefficients,
+        shannon=slepian_arbitrary.N,
     )
     assert_array_equal(f_p, fp_conv)

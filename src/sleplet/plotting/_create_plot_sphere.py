@@ -24,7 +24,7 @@ MW_POLE_LENGTH = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
-    """creates surface sphere plot via `plotly`"""
+    """creates surface sphere plot via `plotly`."""
 
     f: npt.NDArray[np.complex_ | np.float_]
     """TODO"""
@@ -63,18 +63,22 @@ class PlotSphere:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """TODO creates basic plotly plot rather than matplotlib"""
+        """TODO creates basic plotly plot rather than matplotlib."""
         f = self._prepare_field(self.f)
 
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
-            f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
+            f,
+            self.resolution,
+            method=sleplet._vars.SAMPLING_SCHEME,
         )
 
         if isinstance(self.region, sleplet.slepian.region.Region):
             # make plot area clearer
             f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
-                f_plot, self.resolution, self.region
+                f_plot,
+                self.resolution,
+                self.region,
             )
 
         # appropriate zoom in on north pole
@@ -82,7 +86,9 @@ class PlotSphere:
 
         # pick largest tick max value
         tick_mark = sleplet._plotly_methods.create_tick_mark(
-            vmin, vmax, amplitude=self.amplitude
+            vmin,
+            vmax,
+            amplitude=self.amplitude,
         )
 
         data = [
@@ -95,16 +101,18 @@ class PlotSphere:
                 cmid=0.5 if self.normalise else 0,
                 cmin=0 if self.normalise else -tick_mark,
                 colorbar=sleplet._plotly_methods.create_colour_bar(
-                    tick_mark, normalise=self.normalise
+                    tick_mark,
+                    normalise=self.normalise,
                 ),
                 colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
-            )
+            ),
         ]
 
         layout = sleplet._plotly_methods.create_layout(
-            camera, annotations=self.annotations
+            camera,
+            annotations=self.annotations,
         )
 
         fig = Figure(data=data, layout=layout)
@@ -136,9 +144,7 @@ class PlotSphere:
         float,
         float,
     ]:
-        """
-        function which creates the data for the matplotlib/plotly plot
-        """
+        """function which creates the data for the matplotlib/plotly plot."""
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
         if method == "MW_pole":
@@ -181,7 +187,10 @@ class PlotSphere:
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
-                    f_normalised, n_phi, f_normalised[:, 0], axis=1
+                    f_normalised,
+                    n_phi,
+                    f_normalised[:, 0],
+                    axis=1,
                 )
             thetas = np.insert(thetas, n_phi, thetas[:, 0], axis=1)
             phis = np.insert(phis, n_phi, phis[:, 0], axis=1)
@@ -196,11 +205,10 @@ class PlotSphere:
         return x, y, z, f_plot, vmin, vmax
 
     def _prepare_field(
-        self, f: npt.NDArray[np.complex_ | np.float_]
+        self,
+        f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
-        """
-        boosts, forces plot type and then scales the field before plotting
-        """
+        """boosts, forces plot type and then scales the field before plotting."""
         boosted_field = sleplet.plot_methods._boost_field(
             f,
             self.L,
@@ -210,8 +218,10 @@ class PlotSphere:
             upsample=self.upsample,
         )
         field_space = sleplet.plot_methods._create_plot_type(
-            boosted_field, self.plot_type
+            boosted_field,
+            self.plot_type,
         )
         return sleplet.plot_methods._normalise_function(
-            field_space, normalise=self.normalise
+            field_space,
+            normalise=self.normalise,
         )

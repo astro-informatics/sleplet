@@ -13,7 +13,7 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(sleplet.functions.f_p.F_P):
-    """TODO"""
+    """TODO."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -21,7 +21,10 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
         return sleplet.slepian_methods._compute_s_p_omega_prime(
-            self.L, self.alpha, self.beta, self.slepian
+            self.L,
+            self.alpha,
+            self.beta,
+            self.slepian,
         ).conj()
 
     def _create_name(self) -> str:
@@ -39,25 +42,27 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments"
+                f"{self.__class__.__name__} does not support extra arguments",
             )
 
     def _compute_angles(self) -> None:
-        """
-        computes alpha/beta if not provided
-        """
+        """computes alpha/beta if not provided."""
         thetas, phis = ssht.sample_positions(
-            self.L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME
+            self.L,
+            Grid=True,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         sp = ssht.inverse(
-            self.slepian.eigenvectors[0], self.L, Method=sleplet._vars.SAMPLING_SCHEME
+            self.slepian.eigenvectors[0],
+            self.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]
         sleplet.logger.info(
-            f"angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})"
+            f"angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})",
         )
         sleplet.logger.info(
-            f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})"
+            f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})",
         )

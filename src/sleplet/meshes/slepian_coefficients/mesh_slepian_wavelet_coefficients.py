@@ -15,9 +15,9 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWaveletCoefficients(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -54,14 +54,14 @@ class MeshSlepianWaveletCoefficients(
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        """
-        computes wavelet coefficients in Slepian space
-        """
+        """computes wavelet coefficients in Slepian space."""
         smw = sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets(  # noqa: E501
-            self.mesh, B=self.B, j_min=self.j_min
+            self.mesh,
+            B=self.B,
+            j_min=self.j_min,
         )
         smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
-            self.mesh
+            self.mesh,
         )
         wavelets = smw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
@@ -74,12 +74,14 @@ class MeshSlepianWaveletCoefficients(
     @validator("j")
     def _check_j(cls, v, values):
         j_max = pys2let_j_max(
-            values["B"], values["mesh"].mesh_eigenvalues.shape[0], values["j_min"]
+            values["B"],
+            values["mesh"].mesh_eigenvalues.shape[0],
+            values["j_min"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v

@@ -18,9 +18,7 @@ SAMPLING_SCHEME = "MWSS"
 
 
 def compute_translation_normalisation_theta() -> None:
-    """
-    analysis of the translation norm for referee
-    """
+    """analysis of the translation norm for referee."""
     hg = HarmonicGaussian(L)
     thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
     norm = np.zeros(len(thetas))

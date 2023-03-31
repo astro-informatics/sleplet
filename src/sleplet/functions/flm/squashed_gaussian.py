@@ -11,7 +11,7 @@ import sleplet.harmonic_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SquashedGaussian(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     freq: float = 0.1
     """TODO"""
@@ -23,7 +23,10 @@ class SquashedGaussian(sleplet.functions.f_lm.F_LM):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return sleplet.harmonic_methods._ensure_f_bandlimited(
-            self._grid_fun, self.L, reality=self.reality, spin=self.spin
+            self._grid_fun,
+            self.L,
+            reality=self.reality,
+            spin=self.spin,
         )
 
     def _create_name(self) -> str:
@@ -47,11 +50,11 @@ class SquashedGaussian(sleplet.functions.f_lm.F_LM):
             self.t_sigma, self.freq = (np.float_power(10, x) for x in self.extra_args)
 
     def _grid_fun(
-        self, theta: npt.NDArray[np.float_], phi: npt.NDArray[np.float_]
+        self,
+        theta: npt.NDArray[np.float_],
+        phi: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """
-        function on the grid
-        """
+        """function on the grid."""
         return np.exp(
-            -(((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2) / 2
+            -(((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2) / 2,
         ) * np.sin(self.freq * phi)
