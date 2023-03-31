@@ -681,7 +681,7 @@ from sleplet.plotting import PlotSphere
 # a
 f = ElongatedGaussian(L=128, p_sigma=0.1, t_sigma=0.1)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, f"fig_2_2_a", annotations=[]).execute()
+PlotSphere(f_sphere, f.L, "fig_2_2_a", annotations=[]).execute()
 # b-d
 for a, b, g in [(0, 0, 0.25), (0, 0.25, 0.25), (0.25, 0.25, 0.25)]:
     flm = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
@@ -763,11 +763,11 @@ from sleplet.plotting import PlotSphere
 # a
 f = Gaussian(L=128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, f"fig_3_1_a", annotations=[]).execute()
+PlotSphere(f_sphere, f.L, "fig_3_1_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
-PlotSphere(g_sphere, f.L, f"fig_3_1_b", annotations=[]).execute()
+PlotSphere(g_sphere, f.L, "fig_3_1_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.2
@@ -789,11 +789,11 @@ from sleplet.plotting import PlotSphere
 # a
 f = SquashedGaussian(L=128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, f"fig_3_2_a", annotations=[]).execute()
+PlotSphere(f_sphere, f.L, "fig_3_2_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
-PlotSphere(g_sphere, f.L, f"fig_3_2_b", annotations=[]).execute()
+PlotSphere(g_sphere, f.L, "fig_3_2_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.3
@@ -815,11 +815,11 @@ from sleplet.plotting import PlotSphere
 # a
 f = ElongatedGaussian(L=128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, f"fig_3_3_a", annotations=[]).execute()
+PlotSphere(f_sphere, f.L, "fig_3_3_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
-PlotSphere(g_sphere, f.L, f"fig_3_3_b", annotations=[]).execute()
+PlotSphere(g_sphere, f.L, "fig_3_3_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.4
