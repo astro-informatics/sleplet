@@ -12,7 +12,7 @@ from numpy.random import Generator
 import sleplet._data.create_earth_flm
 import sleplet._integration_methods
 import sleplet._vars
-from sleplet.meshes import Mesh
+import sleplet.meshes.mesh
 
 AFRICA_ALPHA = np.deg2rad(44)
 AFRICA_BETA = np.deg2rad(87)
@@ -133,7 +133,7 @@ def compute_random_signal(
 
 
 def mesh_forward(
-    mesh: Mesh, u: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.float_]:
     """TODO computes the mesh forward transform from real space to harmonic space
 
@@ -153,7 +153,7 @@ def mesh_forward(
 
 
 def mesh_inverse(
-    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """TODO computes the mesh inverse transform from harmonic space to real space
 

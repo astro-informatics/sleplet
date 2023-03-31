@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 
-from sleplet.meshes import Mesh
+import sleplet.meshes.mesh
 
 MACHINE_EPSILON = 1e-14
 
@@ -33,7 +33,7 @@ def clean_evals_and_evecs(
     return eigenvalues, eigenvectors
 
 
-def compute_mesh_shannon(mesh: Mesh) -> int:
+def compute_mesh_shannon(mesh: "sleplet.meshes.mesh.Mesh") -> int:
     """
     computes the effective Shannon number for a region of a mesh
     """

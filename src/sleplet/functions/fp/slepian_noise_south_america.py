@@ -7,7 +7,7 @@ import sleplet._validation
 import sleplet.functions.f_p
 import sleplet.functions.fp.slepian_south_america
 import sleplet.noise
-from sleplet.slepian import Region
+import sleplet.slepian.region
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -20,7 +20,7 @@ class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
         if (
-            isinstance(self.region, Region)
+            isinstance(self.region, sleplet.slepian.region.Region)
             and self.region.name_ending != "south_america"
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")

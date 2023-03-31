@@ -15,7 +15,7 @@ import sleplet._plotly_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.plot_methods
-from sleplet.slepian import Region
+import sleplet.slepian.region
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
@@ -43,7 +43,7 @@ class PlotSphere:
     """TODO"""
     reality: bool = False
     """TODO"""
-    region: Region | None = None
+    region: sleplet.slepian.region.Region | None = None
     """TODO"""
     spin: int = 0
     """TODO"""
@@ -71,7 +71,7 @@ class PlotSphere:
             f, self.resolution, method=sleplet._vars.SAMPLING_SCHEME
         )
 
-        if isinstance(self.region, Region):
+        if isinstance(self.region, sleplet.slepian.region.Region):
             # make plot area clearer
             f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
                 f_plot, self.resolution, self.region

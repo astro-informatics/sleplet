@@ -16,8 +16,8 @@ import sleplet.functions.coefficients
 import sleplet.harmonic_methods
 import sleplet.meshes.mesh_coefficients
 import sleplet.meshes.mesh_slepian_coefficients
+import sleplet.slepian.region
 import sleplet.slepian_methods
-from sleplet.slepian import Region
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -152,7 +152,7 @@ def _create_plot_type(
 
 
 def _set_outside_region_to_minimum(
-    f_plot: npt.NDArray[np.float_], L: int, region: Region
+    f_plot: npt.NDArray[np.float_], L: int, region: sleplet.slepian.region.Region
 ) -> npt.NDArray[np.float_]:
     """
     for the Slepian region set the outisde area to negative infinity

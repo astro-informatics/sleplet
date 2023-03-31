@@ -10,7 +10,7 @@ import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-from sleplet.meshes import Mesh
+import sleplet.meshes.mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
@@ -19,7 +19,7 @@ COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 class MeshCoefficients:
     """abstract parent class to handle Fourier/Slepian coefficients on the mesh"""
 
-    mesh: Mesh
+    mesh: sleplet.meshes.mesh.Mesh
     """TODO"""
     _: KW_ONLY
     extra_args: list[int] | None = None

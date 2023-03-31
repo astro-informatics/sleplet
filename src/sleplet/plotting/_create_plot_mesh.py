@@ -15,8 +15,8 @@ import sleplet._mask_methods
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
+import sleplet.meshes.mesh
 import sleplet.plot_methods
-from sleplet.meshes import Mesh
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
@@ -29,7 +29,7 @@ MESH_UNSEEN = -1e5  # kaleido bug
 class PlotMesh:
     """creates surface mesh plot via `plotly`"""
 
-    mesh: Mesh
+    mesh: sleplet.meshes.mesh.Mesh
     """TODO"""
     filename: str
     """TODO"""

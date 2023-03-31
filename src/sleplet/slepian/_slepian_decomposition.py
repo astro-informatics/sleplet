@@ -9,13 +9,13 @@ import sleplet
 import sleplet._integration_methods
 import sleplet._validation
 import sleplet._vars
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet.slepian.slepian_functions
 
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianDecomposition:
     L: int
-    slepian: SlepianFunctions
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions
     _: KW_ONLY
     f: npt.NDArray[np.complex_] | None = None
     flm: npt.NDArray[np.complex_ | np.float_] | None = None

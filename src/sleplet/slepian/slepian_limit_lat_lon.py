@@ -12,7 +12,7 @@ import sleplet._data.setup_pooch
 import sleplet._mask_methods
 import sleplet._validation
 import sleplet._vars
-from sleplet.slepian import Region
+import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
@@ -37,8 +37,8 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"
 
-    def _create_region(self) -> Region:
-        return Region(
+    def _create_region(self) -> "sleplet.slepian.region.Region":
+        return sleplet.slepian.region.Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
             phi_min=self.phi_min,

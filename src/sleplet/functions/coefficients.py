@@ -10,7 +10,7 @@ import sleplet._convolution_methods
 import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
-from sleplet.slepian import Region
+import sleplet.slepian.region
 
 COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
@@ -26,7 +26,7 @@ class Coefficients:
     """TODO"""
     noise: float | None = None
     """TODO"""
-    region: Region | None = None
+    region: sleplet.slepian.region.Region | None = None
     """TODO"""
     smoothing: int | None = None
     """TODO"""
@@ -89,7 +89,7 @@ class Coefficients:
         adds noise/smoothing if appropriate and bandlimit
         """
         if (
-            isinstance(self.region, Region)
+            isinstance(self.region, sleplet.slepian.region.Region)
             and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
         ):
             self.name += f"_{self.region.name_ending}"

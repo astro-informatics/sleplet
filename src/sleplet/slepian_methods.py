@@ -10,14 +10,17 @@ import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes._mesh_slepian_decomposition
 import sleplet.slepian._slepian_decomposition
+import sleplet.slepian.region
 import sleplet.slepian.slepian_arbitrary
+import sleplet.slepian.slepian_functions
 import sleplet.slepian.slepian_limit_lat_lon
 import sleplet.slepian.slepian_polar_cap
-from sleplet.slepian import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
-def choose_slepian_method(L: int, region: Region) -> SlepianFunctions:
+def choose_slepian_method(
+    L: int, region: sleplet.slepian.region.Region
+) -> sleplet.slepian.slepian_functions.SlepianFunctions:
     """TODO initialise Slepian object depending on input
 
     Args:

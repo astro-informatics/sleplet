@@ -9,8 +9,8 @@ import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
 import sleplet._vars
 import sleplet.harmonic_methods
-from sleplet.meshes import Mesh
-from sleplet.slepian import Region
+import sleplet.meshes.mesh
+import sleplet.slepian.region
 
 _data_path = Path(__file__).resolve().parent / "_data"
 
@@ -18,7 +18,9 @@ AFRICA_RANGE = np.deg2rad(41)
 SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 
-def create_mask_region(L: int, region: Region) -> npt.NDArray[np.float_]:
+def create_mask_region(
+    L: int, region: "sleplet.slepian.region.Region"
+) -> npt.NDArray[np.float_]:
     """
     creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
@@ -72,7 +74,7 @@ def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
 def ensure_masked_flm_bandlimited(
     flm: npt.NDArray[np.complex_],
     L: int,
-    region: Region,
+    region: "sleplet.slepian.region.Region",
     *,
     reality: bool,
     spin: int,
@@ -90,11 +92,11 @@ def ensure_masked_flm_bandlimited(
     )
 
 
-def create_default_region() -> Region:
+def create_default_region() -> "sleplet.slepian.region.Region":
     """
     creates default region
     """
-    return Region(
+    return sleplet.slepian.region.Region(
         gap=sleplet.POLAR_GAP,
         mask_name=sleplet.SLEPIAN_MASK,
         phi_max=np.deg2rad(sleplet.PHI_MAX),
@@ -121,7 +123,7 @@ def create_mesh_region(
 
 
 def ensure_masked_bandlimit_mesh_signal(
-    mesh: Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
+    mesh: sleplet.meshes.mesh.Mesh, u_i: npt.NDArray[np.complex_ | np.float_]
 ) -> npt.NDArray[np.float_]:
     """
     ensures that signal in pixel space is bandlimited
@@ -132,7 +134,7 @@ def ensure_masked_bandlimit_mesh_signal(
 
 
 def convert_region_on_vertices_to_faces(
-    mesh: Mesh,
+    mesh: sleplet.meshes.mesh.Mesh,
 ) -> npt.NDArray[np.float_]:
     """
     converts the region on vertices to faces
