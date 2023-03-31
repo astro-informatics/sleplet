@@ -626,3 +626,7 @@ done
 ```sh
 python -m examples.mesh.produce_table
 ```
+
+### Slepian Wavelets for the Analysis of Incomplete Data on Manifolds
+
+[![Slepian Wavelets for the Analysis of Incomplete Data on Manifolds](https://img.shields.io/badge/PhD Thesis-Patrick J. Roddy-pink.svg)](https://paddyroddy.github.io/thesis)
