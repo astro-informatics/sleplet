@@ -82,7 +82,7 @@ isn't provided as it is contained within the
 
 [![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://dx.doi.org/10.1109/LSP.2021.3050961)
 
-#### Fig. 1
+#### Sifting Convolution on the Sphere: Fig. 1
 
 ```sh
 for ell in $(seq 2 -1 1); do
@@ -104,7 +104,7 @@ for ell in range(2, 0, -1):
     PlotSphere(f_sphere, f.L, f"fig_1_ell_{ell}", annotations=[]).execute()
 ```
 
-#### Fig. 2
+#### Sifting Convolution on the Sphere: Fig. 2
 
 ```sh
 sphere earth -L 128
@@ -123,7 +123,7 @@ f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
 PlotSphere(f_sphere, f.L, "fig_2").execute()
 ```
 
-#### Fig. 3
+#### Sifting Convolution on the Sphere: Fig. 3
 
 ```sh
 for ell in $(seq 2 -1 1); do
@@ -151,13 +151,13 @@ for ell in range(2, 0, -1):
 
 [![Slepian Scale-Discretised Wavelets on the Sphere](https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg)](https://dx.doi.org/10.1109/TSP.2022.3233309)
 
-#### Fig. 2
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 2
 
 ```sh
 python -m examples.arbitrary.south_america.tiling_south_america
 ```
 
-#### Fig. 3
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 3
 
 ```sh
 export SLEPIAN_MASK="south_america"
@@ -189,7 +189,7 @@ g_sphere = slepian_inverse(g.coefficients, g.L, g.slepian)
 PlotSphere(g_sphere, g.L, "fig_3_b", normalise=False, region=g.region).execute()
 ```
 
-#### Fig. 4
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 4
 
 ```sh
 export SLEPIAN_MASK="south_america"
@@ -213,13 +213,13 @@ for p in [0, 9, 24, 49, 99, 199]:
     ).execute()
 ```
 
-#### Fig. 5
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 5
 
 ```sh
 python -m examples.arbitrary.south_america.eigenvalues_south_america
 ```
 
-#### Fig. 6
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 6
 
 ```sh
 export SLEPIAN_MASK="south_america"
@@ -246,7 +246,7 @@ for j in [None, *list(range(5))]:
     ).execute()
 ```
 
-#### Fig. 7
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 7
 
 ```sh
 export SLEPIAN_MASK="south_america"
@@ -275,7 +275,7 @@ for j in [None, *list(range(5))]:
     ).execute()
 ```
 
-#### Fig. 8
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 8
 
 ```sh
 export SLEPIAN_MASK="south_america"
@@ -304,7 +304,7 @@ PlotSphere(
 ).execute()
 ```
 
-#### Fig. 9
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 9
 
 ```sh
 export SLEPIAN_MASK="africa"
@@ -336,13 +336,13 @@ g_sphere = slepian_inverse(g.coefficients, g.L, g.slepian)
 PlotSphere(g_sphere, g.L, "fig_9_b", normalise=False, region=g.region).execute()
 ```
 
-#### Fig. 10
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 10
 
 ```sh
 python -m examples.arbitrary.africa.eigenvalues_africa
 ```
 
-#### Fig. 11
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 11
 
 ```sh
 export SLEPIAN_MASK="africa"
@@ -366,7 +366,7 @@ for p in [0, 9, 24, 49, 99, 199]:
     ).execute()
 ```
 
-#### Fig. 12
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 12
 
 ```sh
 export SLEPIAN_MASK="africa"
@@ -393,7 +393,7 @@ for j in [None, *list(range(6))]:
     ).execute()
 ```
 
-#### Fig. 13
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 13
 
 ```sh
 export SLEPIAN_MASK="africa"
@@ -422,7 +422,7 @@ for j in [None, *list(range(6))]:
     ).execute()
 ```
 
-#### Fig. 14
+#### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 14
 
 ```sh
 export SLEPIAN_MASK="africa"
@@ -455,7 +455,7 @@ PlotSphere(
 
 [![Slepian Scale-Discretised Wavelets on Manifolds](https://img.shields.io/badge/DOI-10.48550/arXiv.2302.06006-pink.svg)](https://doi.org/10.48550/arXiv.2302.06006)
 
-#### Fig. 2
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 2
 
 ```sh
 for r in $(seq 2 9); do
@@ -476,19 +476,19 @@ for r in range(2, 10):
     PlotMesh(mesh, f"fig_2_r_{r}", f_mesh, normalise=False).execute()
 ```
 
-#### Fig. 4
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 4
 
 ```sh
 python -m examples.mesh.mesh_tiling homer
 ```
 
-#### Fig. 5
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 5
 
 ```sh
 python -m examples.mesh.mesh_region homer
 ```
 
-#### Fig. 6
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 6
 
 ```sh
 for p in 0 9 24 49 99 199; do
@@ -509,13 +509,13 @@ for p in [0, 9, 24, 49, 99, 199]:
     PlotMesh(mesh, f"fig_6_p_{p}", f_mesh, normalise=False, region=True).execute()
 ```
 
-#### Fig. 7
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 7
 
 ```sh
 python -m examples.mesh.mesh_slepian_eigenvalues homer
 ```
 
-#### Fig. 8
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 8
 
 ```sh
 # a
@@ -539,7 +539,7 @@ for j in [None, *list(range(5))]:
     PlotMesh(mesh, f"fig_8_j_{j}", f_mesh, normalise=False, region=True).execute()
 ```
 
-#### Fig. 9
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 9
 
 ```sh
 mesh homer -m field -u
@@ -557,7 +557,7 @@ f_mesh = mesh_inverse(f.mesh, f.coefficients)
 PlotMesh(mesh, "fig_9", f_mesh, normalise=False).execute()
 ```
 
-#### Fig. 10
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 10
 
 ```sh
 # a
@@ -581,7 +581,7 @@ for j in [None, *list(range(5))]:
     PlotMesh(mesh, f"fig_10_j_{j}", f_mesh, normalise=False, region=True).execute()
 ```
 
-#### Fig. 11
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 11
 
 ```sh
 # a
@@ -613,7 +613,7 @@ PlotMesh(
 ).execute()
 ```
 
-#### Fig. 12
+#### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 12
 
 ```sh
 for f in cheetah dragon bird teapot cube; do
@@ -621,7 +621,7 @@ for f in cheetah dragon bird teapot cube; do
 done
 ```
 
-#### Tab. 1
+#### Slepian Scale-Discretised Wavelets on Manifolds: Tab. 1
 
 ```sh
 python -m examples.mesh.produce_table
@@ -630,3 +630,11 @@ python -m examples.mesh.produce_table
 ### Slepian Wavelets for the Analysis of Incomplete Data on Manifolds
 
 [![Slepian Wavelets for the Analysis of Incomplete Data on Manifolds](https://img.shields.io/badge/PhD%20Thesis-Patrick%20J.%20Roddy-pink.svg)](https://paddyroddy.github.io/thesis)
+
+#### Chapter 4
+
+The plots here are the same as the Slepian Scale-Discretised Wavelets on the Sphere paper [above](#slepian-scale-discretised-wavelets-on-the-sphere) without the Africa examples, i.e. [Fig. 10 onwards](#slepian-scale-discretised-wavelets-on-the-sphere-fig-10).
+
+#### Chapter 5
+
+The plots here are the same as the Slepian Scale-Discretised Wavelets on Manifolds paper [above](#slepian-scale-discretised-wavelets-on-manifolds).
