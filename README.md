@@ -638,7 +638,6 @@ python -m examples.mesh.produce_table
 ```sh
 for ell in $(seq 0 4); do
     for m in $(seq 0 ${ell}); do
-        echo figure: 1, ell: ${ell}, m: ${m}
         sphere spherical_harmonic -e ${ell} ${m} -L 128 -u -z
     done
 done
