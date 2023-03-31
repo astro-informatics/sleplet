@@ -721,7 +721,20 @@ sphere gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 ```
 
 ```python
+import numpy as np
+import pyssht as ssht
 
+from sleplet.functions.flm import Gaussian
+from sleplet.plotting import PlotSphere
+
+# a
+f = Gaussian(L=128)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
+PlotSphere(f_sphere, f.L, f"fig_3_1_a", annotations=[]).execute()
+# b
+glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
+g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
+PlotSphere(g_sphere, f.L, f"fig_3_1_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.2
@@ -734,7 +747,20 @@ sphere squashed_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 ```
 
 ```python
+import numpy as np
+import pyssht as ssht
 
+from sleplet.functions.flm import SquashedGaussian
+from sleplet.plotting import PlotSphere
+
+# a
+f = SquashedGaussian(L=128)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
+PlotSphere(f_sphere, f.L, f"fig_3_2_a", annotations=[]).execute()
+# b
+glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
+g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
+PlotSphere(g_sphere, f.L, f"fig_3_2_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.3
@@ -747,7 +773,20 @@ sphere elongated_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 ```
 
 ```python
+import numpy as np
+import pyssht as ssht
 
+from sleplet.functions.flm import ElongatedGaussian
+from sleplet.plotting import PlotSphere
+
+# a
+f = ElongatedGaussian(L=128)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
+PlotSphere(f_sphere, f.L, f"fig_3_3_a", annotations=[]).execute()
+# b
+glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
+g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
+PlotSphere(g_sphere, f.L, f"fig_3_3_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.4
