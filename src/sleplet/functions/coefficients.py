@@ -120,8 +120,15 @@ class Coefficients:
     def rotate(
         self, alpha: float, beta: float, *, gamma: float = 0
     ) -> npt.NDArray[np.complex_]:
-        """
-        rotates given flm on the sphere by alpha/beta/gamma
+        """TODO rotates given flm on the sphere by alpha/beta/gamma
+
+        Args:
+            alpha: _description_
+            beta: _description_
+            gamma: _description_
+
+        Returns:
+            _description_
         """
         raise NotImplementedError
 
