@@ -27,7 +27,7 @@ MESH_UNSEEN = -1e5  # kaleido bug
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
-    """creates surface mesh plot via `plotly`"""
+    """creates surface mesh plot via `plotly`."""
 
     mesh: sleplet.meshes.mesh.Mesh
     """TODO"""
@@ -50,7 +50,7 @@ class PlotMesh:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """TODO creates 3d plotly mesh plot"""
+        """TODO creates 3d plotly mesh plot."""
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
 
@@ -60,7 +60,9 @@ class PlotMesh:
 
         # pick largest tick max value
         tick_mark = sleplet._plotly_methods.create_tick_mark(
-            vmin, vmax, amplitude=self.amplitude
+            vmin,
+            vmax,
+            amplitude=self.amplitude,
         )
 
         data = [
@@ -86,7 +88,7 @@ class PlotMesh:
                 colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
                 lighting=Lighting(ambient=1),
                 reversescale=True,
-            )
+            ),
         ]
 
         layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
@@ -103,26 +105,26 @@ class PlotMesh:
             fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(
-        self, f: npt.NDArray[np.complex_ | np.float_]
+        self,
+        f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
-        """
-        scales the field before plotting
-        """
+        """scales the field before plotting."""
         return sleplet.plot_methods._normalise_function(
             sleplet._mesh_methods.average_functions_on_vertices_to_faces(
-                self.mesh.faces, f
+                self.mesh.faces,
+                f,
             ),
             normalise=self.normalise,
         )
 
     def _set_outside_region_to_minimum(
-        self, f: npt.NDArray[np.float_]
+        self,
+        f: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """
-        for the Slepian region set the outisde area to negative infinity
-        hence it is clear we are only interested in the coloured region
+        """for the Slepian region set the outisde area to negative infinity
+        hence it is clear we are only interested in the coloured region.
         """
         region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(
-            self.mesh
+            self.mesh,
         )
         return np.where(region_on_faces, f, MESH_UNSEEN)

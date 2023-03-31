@@ -11,9 +11,9 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianNoiseField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    """TODO"""
+    """TODO."""
 
     SNR: float = -5
     """TODO"""
@@ -23,10 +23,13 @@ class MeshSlepianNoiseField(
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
-            self.mesh, region=True
+            self.mesh,
+            region=True,
         )
         noise = sleplet.noise._create_slepian_mesh_noise(
-            self.mesh_slepian, smf.coefficients, self.SNR
+            self.mesh_slepian,
+            smf.coefficients,
+            self.SNR,
         )
         sleplet.noise.compute_snr(smf.coefficients, noise, "Slepian")
         return noise

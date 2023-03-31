@@ -13,7 +13,7 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class AxisymmetricWaveletCoefficientsSouthAmerica(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -56,17 +56,20 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(sleplet.functions.f_lm.F_LM):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
-        """
-        computes wavelet coefficients of South America
-        """
+        """computes wavelet coefficients of South America."""
         wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
-            self.L, self.B, self.j_min
+            self.L,
+            self.B,
+            self.j_min,
         )
         self.south_america = sleplet.functions.flm.south_america.SouthAmerica(
-            self.L, smoothing=self.smoothing
+            self.L,
+            smoothing=self.smoothing,
         )
         wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
-            self.L, self.south_america.coefficients, wavelets
+            self.L,
+            self.south_america.coefficients,
+            wavelets,
         )
         return wavelets, wavelet_coefficients
 
@@ -77,6 +80,6 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(sleplet.functions.f_lm.F_LM):
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v

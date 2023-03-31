@@ -13,9 +13,9 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWavelets(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
 ):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -50,22 +50,24 @@ class MeshSlepianWavelets(
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.float_]:
-        """
-        creates the Slepian wavelets of the mesh
-        """
+        """creates the Slepian wavelets of the mesh."""
         return sleplet.wavelet_methods.create_kappas(
-            self.mesh.mesh_eigenvalues.shape[0], self.B, self.j_min
+            self.mesh.mesh_eigenvalues.shape[0],
+            self.B,
+            self.j_min,
         )
 
     @validator("j")
     def _check_j(cls, v, values) -> int | None:
         j_max = pys2let_j_max(
-            values["B"], values["mesh"].mesh_eigenvalues.shape[0], values["j_min"]
+            values["B"],
+            values["mesh"].mesh_eigenvalues.shape[0],
+            values["j_min"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v

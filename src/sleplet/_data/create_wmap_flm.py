@@ -9,9 +9,7 @@ import sleplet._vars
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:
-    """
-    creates the flm for the whole CMB
-    """
+    """creates the flm for the whole CMB."""
     # load in data
     cl = _load_cl()
 
@@ -37,15 +35,15 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
 
 
 def _load_cl(
-    *, file_ending: str = "_lcdm_pl_model_wmap7baoh0"
+    *,
+    file_ending: str = "_lcdm_pl_model_wmap7baoh0",
 ) -> npt.NDArray[np.float_]:
-    """
-    pick coefficients from file options are:
+    """pick coefficients from file options are:
     * _lcdm_pl_model_yr1_v1.mat
     * _tt_spectrum_7yr_v4p1.mat
-    * _lcdm_pl_model_wmap7baoh0.mat
+    * _lcdm_pl_model_wmap7baoh0.mat.
     """
     mat_contents = sio.loadmat(
-        sleplet._data.setup_pooch.find_on_pooch_then_local(f"wmap{file_ending}.mat")
+        sleplet._data.setup_pooch.find_on_pooch_then_local(f"wmap{file_ending}.mat"),
     )
     return np.ascontiguousarray(mat_contents["cl"][:, 0])

@@ -22,9 +22,7 @@ MESHES = [
 
 
 def main(mesh_name: str, num_basis_fun: int) -> None:
-    """
-    plots the Slepian eigenvalues of the given mesh
-    """
+    """plots the Slepian eigenvalues of the given mesh."""
     mesh = Mesh(
         mesh_name,
         number_basis_functions=num_basis_fun,
@@ -45,7 +43,8 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     save_plot(
-        _fig_path, f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
+        _fig_path,
+        f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}",
     )
 
 

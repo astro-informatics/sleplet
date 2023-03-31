@@ -9,9 +9,7 @@ SMOOTHING = 2
 
 
 def main() -> None:
-    """
-    the reconstruction of a signal in Slepian space
-    """
+    """the reconstruction of a signal in Slepian space."""
     region = Region(mask_name="africa")
     slepian = choose_slepian_method(L, region)
     africa = SlepianAfrica(L, region=region, smoothing=SMOOTHING)

@@ -22,17 +22,19 @@ def denoising_axisym(
     *,
     rotate_to_south_america: bool = False,
 ) -> tuple[npt.NDArray[np.complex_], float | None, float]:
-    """
-    reproduce the denoising demo from s2let paper
-    """
+    """reproduce the denoising demo from s2let paper."""
     # compute wavelet coefficients
     w = axisymmetric_wavelet_forward(
-        signal.L, noised_signal.coefficients, axisymmetric_wavelets.wavelets
+        signal.L,
+        noised_signal.coefficients,
+        axisymmetric_wavelets.wavelets,
     )
 
     # compute wavelet noise
     sigma_j = _compute_sigma_j(
-        signal.coefficients, axisymmetric_wavelets.wavelets[1:], snr_in
+        signal.coefficients,
+        axisymmetric_wavelets.wavelets[1:],
+        snr_in,
     )
 
     # hard thresholding
@@ -40,12 +42,16 @@ def denoising_axisym(
 
     # wavelet synthesis
     flm = axisymmetric_wavelet_inverse(
-        signal.L, w_denoised, axisymmetric_wavelets.wavelets
+        signal.L,
+        w_denoised,
+        axisymmetric_wavelets.wavelets,
     )
 
     # compute SNR
     denoised_snr = compute_snr(
-        signal.coefficients, flm - signal.coefficients, "Harmonic"
+        signal.coefficients,
+        flm - signal.coefficients,
+        "Harmonic",
     )
 
     # rotate to South America

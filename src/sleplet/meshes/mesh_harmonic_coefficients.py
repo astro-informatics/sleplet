@@ -11,7 +11,7 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshHarmonicCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
-    """abstract parent class to handle Fourier coefficients on the mesh"""
+    """abstract parent class to handle Fourier coefficients on the mesh."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -19,9 +19,7 @@ class MeshHarmonicCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """
-        adds Gaussian white noise to the signal
-        """
+        """adds Gaussian white noise to the signal."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()

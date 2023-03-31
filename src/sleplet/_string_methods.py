@@ -5,17 +5,13 @@ import numpy as np
 
 
 def _get_angle_num_dem(angle_fraction: float) -> tuple[int, int]:
-    """
-    ger numerator and denominator for a given decimal
-    """
+    """ger numerator and denominator for a given decimal."""
     angle = Fraction(angle_fraction).limit_denominator()
     return angle.numerator, angle.denominator
 
 
 def _pi_in_filename(numerator: int, denominator: int) -> str:
-    """
-    create filename for angle as multiple of pi
-    """
+    """create filename for angle as multiple of pi."""
     filename = f"{numerator}pi"
     # if whole number
     if denominator != 1:
@@ -24,9 +20,7 @@ def _pi_in_filename(numerator: int, denominator: int) -> str:
 
 
 def filename_args(value: float, arg_name: str) -> str:
-    """
-    used to add an extra argument to filename
-    """
+    """used to add an extra argument to filename."""
     filename = "_"
     num, dem = _get_angle_num_dem(value)
     filename += f"{num}{arg_name}"
@@ -36,11 +30,11 @@ def filename_args(value: float, arg_name: str) -> str:
 
 
 def filename_angle(
-    alpha_pi_fraction: float, beta_pi_fraction: float, gamma_pi_fraction: float = 0
+    alpha_pi_fraction: float,
+    beta_pi_fraction: float,
+    gamma_pi_fraction: float = 0,
 ) -> str:
-    """
-    middle part of filename
-    """
+    """middle part of filename."""
     # get numerator/denominator for filename
     alpha_num, alpha_den = _get_angle_num_dem(alpha_pi_fraction)
     beta_num, beta_den = _get_angle_num_dem(beta_pi_fraction)
@@ -66,41 +60,34 @@ def filename_angle(
 
 
 def multiples_of_pi(angle: float) -> str:
-    """
-    prints the unicode pi with a prefix of the multiple unless it's 1
-    i.e. pi, 2pi, 3pi
+    """prints the unicode pi with a prefix of the multiple unless it's 1
+    i.e. pi, 2pi, 3pi.
     """
     multiple = int(angle / np.pi)
     return f"{multiple if multiple != 1 else ''}\u03C0"
 
 
 def angle_as_degree(radian: float) -> int:
-    """
-    converts radian angle to integer degree
-    """
+    """converts radian angle to integer degree."""
     return round(np.rad2deg(radian))
 
 
 def wavelet_ending(j_min: int, j: int | None) -> str:
-    """
-    the ending name of the given wavelet
-    """
+    """the ending name of the given wavelet."""
     return "_scaling" if j is None else f"{filename_args(j + j_min, 'j')}"
 
 
 def _convert_camel_case_to_snake_case(name: str) -> str:
-    """
-    converts a string in camel case to snake case
-    """
+    """converts a string in camel case to snake case."""
     return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
 
 
 def convert_classes_list_to_snake_case(
-    classes: list, *, word_to_remove: str = ""
+    classes: list,
+    *,
+    word_to_remove: str = "",
 ) -> list[str]:
-    """
-    converts a list of classes to snake case
-    """
+    """converts a list of classes to snake case."""
     return [
         _convert_camel_case_to_snake_case(c.__name__.removeprefix(word_to_remove))
         for c in classes

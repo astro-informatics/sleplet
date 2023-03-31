@@ -12,7 +12,7 @@ import sleplet.slepian.region
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
-    """TODO"""
+    """TODO."""
 
     SNR: float = -10
     """TODO"""
@@ -27,10 +27,15 @@ class SlepianNoiseSouthAmerica(sleplet.functions.f_p.F_P):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.fp.slepian_south_america.SlepianSouthAmerica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         noise = sleplet.noise._create_slepian_noise(
-            self.L, sa.coefficients, self.slepian, self.SNR
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
         )
         sleplet.noise.compute_snr(sa.coefficients, noise, "Slepian")
         return noise

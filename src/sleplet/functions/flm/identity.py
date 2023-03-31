@@ -9,7 +9,7 @@ import sleplet.functions.f_lm
 
 @dataclass(config=sleplet._validation.Validation)
 class Identity(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -19,7 +19,7 @@ class Identity(sleplet.functions.f_lm.F_LM):
 
     def _create_name(self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(
-            self.__class__.__name__
+            self.__class__.__name__,
         )
 
     def _set_reality(self) -> bool:
@@ -31,5 +31,5 @@ class Identity(sleplet.functions.f_lm.F_LM):
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments"
+                f"{self.__class__.__name__} does not support extra arguments",
             )

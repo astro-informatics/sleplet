@@ -9,7 +9,7 @@ import sleplet.functions.f_p
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianIdentity(sleplet.functions.f_p.F_P):
-    """TODO"""
+    """TODO."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -32,5 +32,5 @@ class SlepianIdentity(sleplet.functions.f_p.F_P):
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
             raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments"
+                f"{self.__class__.__name__} does not support extra arguments",
             )

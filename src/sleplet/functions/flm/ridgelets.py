@@ -15,7 +15,7 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Ridgelets(sleplet.functions.f_lm.F_LM):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -59,9 +59,7 @@ class Ridgelets(sleplet.functions.f_lm.F_LM):
             self.B, self.j_min, self.spin, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
-        """
-        compute all wavelets
-        """
+        """compute all wavelets."""
         ring_lm = self._compute_ring()
         kappas = sleplet.wavelet_methods.create_kappas(self.L, self.B, self.j_min)
         wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
@@ -72,9 +70,7 @@ class Ridgelets(sleplet.functions.f_lm.F_LM):
         return wavelets
 
     def _compute_ring(self) -> npt.NDArray[np.complex_]:
-        """
-        compute ring in harmonic space
-        """
+        """compute ring in harmonic space."""
         ring_lm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(abs(self.spin), self.L):
             logp2 = (
@@ -92,7 +88,7 @@ class Ridgelets(sleplet.functions.f_lm.F_LM):
                 * p0
                 * (-1) ** self.spin
                 * np.sqrt(
-                    np.exp(gammaln(ell - self.spin + 1) - gammaln(ell + self.spin + 1))
+                    np.exp(gammaln(ell - self.spin + 1) - gammaln(ell + self.spin + 1)),
                 )
             )
         return ring_lm
@@ -104,6 +100,6 @@ class Ridgelets(sleplet.functions.f_lm.F_LM):
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v

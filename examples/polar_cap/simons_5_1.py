@@ -26,8 +26,8 @@ THETA_MIN_DEFAULT = 0
 
 
 def main() -> None:
-    """
-    create fig 5.1 from Spatiospectral Concentration on a Sphere by Simons et al 2006
+    """create fig 5.1 from Spatiospectral Concentration on a Sphere
+    by Simons et al 2006.
     """
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
     i = (x < THETA_MAX).sum()
@@ -56,9 +56,7 @@ def _helper(  # noqa: PLR0913
     order: int,
     rank: int,
 ) -> None:
-    """
-    helper which plots the required order and specified ranks
-    """
+    """helper which plots the required order and specified ranks."""
     logger.info(f"plotting order={order}, rank={rank}")
     axs = ax[order, rank]
     flm = slepian.eigenvectors[rank] * SIGNS[order][rank]
@@ -72,7 +70,11 @@ def _helper(  # noqa: PLR0913
         axs.set_xlabel("colatitude")
     axs.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])
     axs.text(
-        0.45, 0.81, rf"$\mu={{{lam:.6f}}}$", transform=axs.transAxes, bbox=TEXT_BOX
+        0.45,
+        0.81,
+        rf"$\mu={{{lam:.6f}}}$",
+        transform=axs.transAxes,
+        bbox=TEXT_BOX,
     )
 
 

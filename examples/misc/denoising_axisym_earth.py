@@ -20,9 +20,7 @@ SNR_IN = 10
 
 
 def main() -> None:
-    """
-    reproduce the denoising demo from s2let paper
-    """
+    """reproduce the denoising demo from s2let paper."""
     # create map & noised map
     fun = Earth(L)
     fun_noised = Earth(L, noise=SNR_IN)
@@ -34,7 +32,12 @@ def main() -> None:
     amplitude = find_max_amplitude(fun)
 
     f, noised_snr, denoised_snr = denoising_axisym(
-        fun, fun_noised, aw, SNR_IN, N_SIGMA, rotate_to_south_america=True
+        fun,
+        fun_noised,
+        aw,
+        SNR_IN,
+        N_SIGMA,
+        rotate_to_south_america=True,
     )
     assert_array_less(noised_snr, denoised_snr)
     name = f"{fun.name}_denoised_axisym"

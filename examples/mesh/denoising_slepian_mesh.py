@@ -37,9 +37,7 @@ def _denoising_mesh_slepian(
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """
-    denoising demo using Slepian wavelets
-    """
+    """denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
     w = slepian_wavelet_forward(
         noised_signal.coefficients,
@@ -57,12 +55,17 @@ def _denoising_mesh_slepian(
 
     # hard thresholding
     w_denoised = slepian_mesh_hard_thresholding(
-        mesh_slepian_wavelets.mesh_slepian, w, sigma_j, n_sigma
+        mesh_slepian_wavelets.mesh_slepian,
+        w,
+        sigma_j,
+        n_sigma,
     )
 
     # wavelet synthesis
     f_p = slepian_wavelet_inverse(
-        w_denoised, mesh_slepian_wavelets.wavelets, mesh_slepian_wavelets.mesh_slepian.N
+        w_denoised,
+        mesh_slepian_wavelets.wavelets,
+        mesh_slepian_wavelets.mesh_slepian.N,
     )
 
     # compute SNR
@@ -72,9 +75,7 @@ def _denoising_mesh_slepian(
 
 
 def main(mesh_name: str, snr: float, sigma: int) -> None:
-    """
-    denoising demo using Slepian wavelets
-    """
+    """denoising demo using Slepian wavelets."""
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
     mesh = Mesh(mesh_name, zoom=True)
@@ -88,13 +89,18 @@ def main(mesh_name: str, snr: float, sigma: int) -> None:
 
     # fix amplitude
     amplitude = np.abs(
-        slepian_mesh_inverse(fun_noised.mesh_slepian, fun.coefficients)
+        slepian_mesh_inverse(fun_noised.mesh_slepian, fun.coefficients),
     ).max()
 
     f = _denoising_mesh_slepian(fun, fun_noised, smw, snr, sigma)
     name = f"{mesh_name}_{snr}snr_{sigma}n_denoised"
     PlotMesh(
-        mesh, name, f, amplitude=amplitude, normalise=NORMALISE, region=True
+        mesh,
+        name,
+        f,
+        amplitude=amplitude,
+        normalise=NORMALISE,
+        region=True,
     ).execute()
 
 

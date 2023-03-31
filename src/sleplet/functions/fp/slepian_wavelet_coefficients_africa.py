@@ -16,7 +16,7 @@ import sleplet.wavelet_methods
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
-    """TODO"""
+    """TODO."""
 
     B: int = 3
     """TODO"""
@@ -64,18 +64,23 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        """
-        computes wavelet coefficients in Slepian space
-        """
+        """computes wavelet coefficients in Slepian space."""
         sw = sleplet.functions.fp.slepian_wavelets.SlepianWavelets(
-            self.L, B=self.B, j_min=self.j_min, region=self.region
+            self.L,
+            B=self.B,
+            j_min=self.j_min,
+            region=self.region,
         )
         sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
-            self.L, region=self.region, smoothing=self.smoothing
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
         )
         wavelets = sw.wavelets
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
-            sa.coefficients, wavelets, self.slepian.N
+            sa.coefficients,
+            wavelets,
+            self.slepian.N,
         )
         return wavelets, wavelet_coefficients
 
@@ -86,6 +91,6 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
             )
         return v

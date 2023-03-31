@@ -1,6 +1,4 @@
-"""
-methods to work with Slepian coefficients
-"""
+"""methods to work with Slepian coefficients."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -19,25 +17,31 @@ import sleplet.slepian.slepian_polar_cap
 
 
 def choose_slepian_method(
-    L: int, region: sleplet.slepian.region.Region
+    L: int,
+    region: sleplet.slepian.region.Region,
 ) -> sleplet.slepian.slepian_functions.SlepianFunctions:
-    """TODO initialise Slepian object depending on input
+    """TODO initialise Slepian object depending on input.
 
     Args:
+    ----
         L: _description_
         region: _description_
 
     Raises:
+    ------
         ValueError: _description_
 
     Returns:
+    -------
         _description_
     """
     match region.region_type:
         case "polar":
             sleplet.logger.info("polar cap region detected")
             return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
-                L, region.theta_max, gap=region.gap
+                L,
+                region.theta_max,
+                gap=region.gap,
             )
 
         case "lim_lat_lon":
@@ -53,7 +57,8 @@ def choose_slepian_method(
         case "arbitrary":
             sleplet.logger.info("mask specified in file detected")
             return sleplet.slepian.slepian_arbitrary.SlepianArbitrary(
-                L, region.mask_name
+                L,
+                region.mask_name,
             )
 
         case _:
@@ -65,14 +70,16 @@ def slepian_inverse(
     L: int,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the Slepian inverse transform up to the Shannon number
+    """TODO computes the Slepian inverse transform up to the Shannon number.
 
     Args:
+    ----
         f_p: _description_
         L: _description_
         slepian: _description_
 
     Returns:
+    -------
         _description_
     """
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
@@ -89,9 +96,10 @@ def slepian_forward(
     mask: npt.NDArray[np.float_] | None = None,
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the Slepian forward transform for all coefficients
+    """TODO computes the Slepian forward transform for all coefficients.
 
     Args:
+    ----
         L: _description_
         slepian: _description_
         f: _description_
@@ -100,25 +108,33 @@ def slepian_forward(
         n_coeffs: _description_
 
     Returns:
+    -------
         _description_
     """
     sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
-        L, slepian, f=f, flm=flm, mask=mask
+        L,
+        slepian,
+        f=f,
+        flm=flm,
+        mask=mask,
     )
     n_coeffs = slepian.N if n_coeffs is None else n_coeffs
     return sd.decompose_all(n_coeffs)
 
 
 def compute_s_p_omega(
-    L: int, slepian: sleplet.slepian.slepian_functions.SlepianFunctions
+    L: int,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """TODO method to calculate Sp(omega) for a given region
+    """TODO method to calculate Sp(omega) for a given region.
 
     Args:
+    ----
         L: _description_
         slepian: _description_
 
     Returns:
+    -------
         _description_
     """
     n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
@@ -127,7 +143,9 @@ def compute_s_p_omega(
         if p % L == 0:
             sleplet.logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
         sp[p] = ssht.inverse(
-            slepian.eigenvectors[p], L, Method=sleplet._vars.SAMPLING_SCHEME
+            slepian.eigenvectors[p],
+            L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
     return sp
 
@@ -138,9 +156,7 @@ def _compute_s_p_omega_prime(
     beta: float,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """
-    method to pick out the desired angle from Sp(omega)
-    """
+    """method to pick out the desired angle from Sp(omega)."""
     sp_omega = compute_s_p_omega(L, slepian)
     p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
     q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
@@ -158,9 +174,10 @@ def slepian_mesh_forward(
     mask: bool = False,
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.float_]:
-    """TODO computes the Slepian forward transform for all coefficients
+    """TODO computes the Slepian forward transform for all coefficients.
 
     Args:
+    ----
         mesh_slepian: _description_
         u: _description_
         u_i: _description_
@@ -168,6 +185,7 @@ def slepian_mesh_forward(
         n_coeffs: _description_
 
     Returns:
+    -------
         _description_
     """
     sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
@@ -184,13 +202,15 @@ def slepian_mesh_inverse(
     mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the Slepian inverse transform on the mesh up to the Shannon number
+    """TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
 
     Args:
+    ----
         mesh_slepian: _description_
         f_p: _description_
 
     Returns:
+    -------
         _description_
     """
     f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
@@ -201,12 +221,11 @@ def slepian_mesh_inverse(
 def _compute_mesh_s_p_pixel(
     mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
 ) -> npt.NDArray[np.float_]:
-    """
-    method to calculate Sp(omega) for a given region
-    """
+    """method to calculate Sp(omega) for a given region."""
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
     for p in range(mesh_slepian.N):
         sp[p] = sleplet.harmonic_methods.mesh_inverse(
-            mesh_slepian.mesh, mesh_slepian.slepian_functions[p]
+            mesh_slepian.mesh,
+            mesh_slepian.slepian_functions[p],
         )
     return sp

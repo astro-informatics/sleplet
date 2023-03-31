@@ -18,9 +18,7 @@ def denoising_slepian_wavelet(
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """
-    denoising demo using Slepian wavelets
-    """
+    """denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
     w = slepian_wavelet_forward(
         noised_signal.coefficients,
@@ -39,12 +37,18 @@ def denoising_slepian_wavelet(
 
     # hard thresholding
     w_denoised = slepian_wavelet_hard_thresholding(
-        signal.L, w, sigma_j, n_sigma, slepian_wavelets.slepian
+        signal.L,
+        w,
+        sigma_j,
+        n_sigma,
+        slepian_wavelets.slepian,
     )
 
     # wavelet synthesis
     f_p = slepian_wavelet_inverse(
-        w_denoised, slepian_wavelets.wavelets, slepian_wavelets.slepian.N
+        w_denoised,
+        slepian_wavelets.wavelets,
+        slepian_wavelets.slepian.N,
     )
 
     # compute SNR
