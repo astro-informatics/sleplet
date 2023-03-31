@@ -645,7 +645,18 @@ done
 ```
 
 ```python
+import pyssht as ssht
 
+from sleplet.functions.flm import SphericalHarmonic
+from sleplet.plotting import PlotSphere
+
+for ell in range(5):
+    for m in range(ell + 1):
+        f = SphericalHarmonic(L=128, ell=ell, m=m)
+        f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
+        PlotSphere(
+            f_sphere, f.L, f"fig_2_1_ell_{ell}_m_{m}", normalise=False, unzeropad=True
+        ).execute()
 ```
 
 ##### Fig. 2.2
