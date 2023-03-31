@@ -124,12 +124,12 @@ class SlepianLimitLatLon(SlepianFunctions):
                 2 * (self.L - 1) + col,
             ].conj()
 
-        # row = 0
+        # for row equal to zero
         S = self.phi_max - self.phi_min
         for col in range(-2 * (self.L - 1), 1):
             helper(0, col, S)
 
-        # row != 0
+        # for row not equal to zero
         for row in range(-2 * (self.L - 1), 0):
             S = (1j / row) * (
                 np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)

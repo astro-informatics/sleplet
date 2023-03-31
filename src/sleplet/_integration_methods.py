@@ -40,8 +40,8 @@ def integrate_region_sphere(
 
 
 def integrate_whole_mesh(
-    vertices: npt.NDArray[np.float_],
-    faces: npt.NDArray[np.int_],
+    vertices: npt.NDArray[np.float_],  # noqa: ARG001
+    faces: npt.NDArray[np.int_],  # noqa: ARG001
     *functions: npt.NDArray[np.complex_ | np.float_],
 ) -> float:
     """computes the integral of functions on the vertices."""
@@ -51,8 +51,8 @@ def integrate_whole_mesh(
 
 def integrate_region_mesh(
     mask: npt.NDArray[np.bool_],
-    vertices: npt.NDArray[np.float_],
-    faces: npt.NDArray[np.int_],
+    vertices: npt.NDArray[np.float_],  # noqa: ARG001
+    faces: npt.NDArray[np.int_],  # noqa: ARG001
     *functions: npt.NDArray[np.complex_ | np.float_],
 ) -> float:
     """computes the integral of a region of functions on the vertices."""

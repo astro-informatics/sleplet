@@ -1,7 +1,10 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 from numpy import typing as npt
 
-import sleplet.meshes.mesh
+if TYPE_CHECKING:
+    import sleplet.meshes.mesh
 
 MACHINE_EPSILON = 1e-14
 

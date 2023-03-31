@@ -83,9 +83,8 @@ class SlepianPolarCap(SlepianFunctions):
         if self.order is not None:
             idx = np.where(orders == self.order)
             return eigenvalues[idx], eigenvectors[idx]
-        else:
-            self.order = orders
-            return eigenvalues, eigenvectors
+        self.order = orders
+        return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_scratch(
         self,

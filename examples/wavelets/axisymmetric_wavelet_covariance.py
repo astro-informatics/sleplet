@@ -17,7 +17,6 @@ SAMPLING_SCHEME = "MWSS"
 
 
 def _compute_wavelet_covariance(
-    L: int,
     wavelets: npt.NDArray[np.complex_],
     *,
     var_signal: float,
@@ -65,7 +64,7 @@ def axisymmetric_wavelet_covariance(
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # theoretical covariance
-    covar_theory = _compute_wavelet_covariance(L, aw.wavelets, var_signal=var_flm)
+    covar_theory = _compute_wavelet_covariance(aw.wavelets, var_signal=var_flm)
     assert_equal(aw.wavelets.shape[0], covar_theory.shape[0])
 
     # initialise matrix

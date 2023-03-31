@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from argparse import ArgumentParser, Namespace
 
 import numpy as np
@@ -34,8 +33,7 @@ def valid_maps(map_name: str) -> str:
         sleplet._class_lists.MAPS_LM,
     ):
         return map_name
-    else:
-        raise ValueError(f"{map_name} is not a valid map to convolve")
+    raise ValueError(f"{map_name} is not a valid map to convolve")
 
 
 def valid_plotting(func_name: str) -> str:
@@ -44,8 +42,7 @@ def valid_plotting(func_name: str) -> str:
         sleplet._class_lists.COEFFICIENTS,
     ):
         return func_name
-    else:
-        raise ValueError(f"{func_name} is not a valid function to plot")
+    raise ValueError(f"{func_name} is not a valid function to plot")
 
 
 def read_args() -> Namespace:
@@ -311,10 +308,7 @@ def _translation_helper(
 
     # annotate translation point
     x, y, z = ssht.s2_to_cart(beta, alpha)
-    annotation = {
-        **{"x": x, "y": y, "z": z, "arrowcolor": ANNOTATION_COLOUR},
-        **ARROW_STYLE,
-    }
+    annotation = {"x": x, "y": y, "z": z, "arrowcolor": ANNOTATION_COLOUR} | ARROW_STYLE
     return coefficients, filename, annotation
 
 

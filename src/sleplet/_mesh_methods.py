@@ -53,7 +53,7 @@ def create_mesh_region(
 
 def extract_mesh_config(mesh_name: str) -> dict:
     """reads in the given mesh region settings file."""
-    with open(_data_path / f"meshes_regions_{mesh_name}.toml", "rb") as f:
+    with Path.open(_data_path / f"meshes_regions_{mesh_name}.toml", "rb") as f:
         return tomli.load(f)
 
 
