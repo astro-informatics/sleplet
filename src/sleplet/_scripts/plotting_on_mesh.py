@@ -6,7 +6,6 @@ import sleplet._class_lists
 import sleplet._string_methods
 import sleplet.meshes.mesh
 import sleplet.meshes.mesh_coefficients
-import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_mesh
 
@@ -101,10 +100,7 @@ def plot(
         field,
         amplitude=amplitude,
         normalise=normalise,
-        region=isinstance(
-            f,
-            sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
-        ),
+        region=hasattr(f, "mesh_slepian"),
     ).execute()
 
 
