@@ -4,6 +4,7 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.meshes.slepian_coefficients.mesh_slepian_field
 import sleplet.noise
 
