@@ -15,7 +15,6 @@ import sleplet.slepian.slepian_arbitrary
 import sleplet.slepian.slepian_functions
 import sleplet.slepian.slepian_limit_lat_lon
 import sleplet.slepian.slepian_polar_cap
-from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
 def choose_slepian_method(
@@ -63,7 +62,7 @@ def choose_slepian_method(
 def slepian_inverse(
     f_p: npt.NDArray[np.complex_ | np.float_],
     L: int,
-    slepian: SlepianFunctions,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """TODO computes the Slepian inverse transform up to the Shannon number
 
@@ -82,7 +81,7 @@ def slepian_inverse(
 
 def slepian_forward(
     L: int,
-    slepian: SlepianFunctions,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
     *,
     f: npt.NDArray[np.complex_] | None = None,
     flm: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -109,7 +108,9 @@ def slepian_forward(
     return sd.decompose_all(n_coeffs)
 
 
-def compute_s_p_omega(L: int, slepian: SlepianFunctions) -> npt.NDArray[np.complex_]:
+def compute_s_p_omega(
+    L: int, slepian: sleplet.slepian.slepian_functions.SlepianFunctions
+) -> npt.NDArray[np.complex_]:
     """TODO method to calculate Sp(omega) for a given region
 
     Args:
@@ -134,7 +135,7 @@ def _compute_s_p_omega_prime(
     L: int,
     alpha: float,
     beta: float,
-    slepian: SlepianFunctions,
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
     method to pick out the desired angle from Sp(omega)
