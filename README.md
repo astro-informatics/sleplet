@@ -664,7 +664,7 @@ for ell in range(5):
 # a
 sphere elongated_gaussian -e -1 -1 -L 128
 # b-d
-for angle in "0,0,0.25 0,0.25,0.25 0.25,0.25,0.25"; do
+for angle in 0,0,0.25 0,0.25,0.25 0.25,0.25,0.25; do
     read -r a b g <<< $(echo ${angle} | tr ',' ' ')
     sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a ${a} -b ${b} -g ${g}
 done
