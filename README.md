@@ -631,10 +631,82 @@ python -m examples.mesh.produce_table
 
 [![Slepian Wavelets for the Analysis of Incomplete Data on Manifolds](https://img.shields.io/badge/PhD%20Thesis-Patrick%20J.%20Roddy-pink.svg)](https://paddyroddy.github.io/thesis)
 
+#### Chapter 3
+
+##### Fig. 3.1
+
+```sh
+# a
+sphere gaussian -L 128
+# b
+sphere gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
+```
+
+```python
+
+```
+
+##### Fig. 3.2
+
+```sh
+# a
+sphere squashed_gaussian -L 128
+# b
+sphere squashed_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
+```
+
+```python
+
+```
+
+##### Fig. 3.3
+
+```sh
+# a
+sphere elongated_gaussian -L 128
+# b
+sphere elongated_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
+```
+
+```python
+
+```
+
+##### Fig. 3.4
+
+Figs. (c-d) correspond to (a-b) in [Fig. 1 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-1). The following creates Figs. (a-b).
+
+```sh
+for ell in $(seq 2 -1 1); do
+    sphere harmonic_gaussian -e ${ell} 1 -L 128
+done
+```
+
+```python
+import numpy as np
+import pyssht as ssht
+
+from sleplet.functions.flm import HarmonicGaussian
+from sleplet.plotting import PlotSphere
+
+for ell in range(2, 0, -1):
+    f = HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
+    f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
+    PlotSphere(f_sphere, f.L, f"fig_3_4_ell_{ell}", annotations=[]).execute()
+```
+
+##### Fig. 3.5
+
+The same as [Fig. 2 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-2).
+
+##### Fig. 3.6
+
+The same as [Fig. 3 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-3).
+
 #### Chapter 4
 
-The plots here are the same as the Slepian Scale-Discretised Wavelets on the Sphere paper [above](#slepian-scale-discretised-wavelets-on-the-sphere) without the Africa examples, i.e. [Fig. 10 onwards](#slepian-scale-discretised-wavelets-on-the-sphere-fig-10).
+The plots here are the same as the [Slepian Scale-Discretised Wavelets on the Sphere paper](#slepian-scale-discretised-wavelets-on-the-sphere) without the Africa examples, i.e. [Fig. 10 onwards](#slepian-scale-discretised-wavelets-on-the-sphere-fig-10).
 
 #### Chapter 5
 
-The plots here are the same as the Slepian Scale-Discretised Wavelets on Manifolds paper [above](#slepian-scale-discretised-wavelets-on-manifolds).
+The plots here are the same as the [Slepian Scale-Discretised Wavelets on Manifolds paper](#slepian-scale-discretised-wavelets-on-manifolds).
