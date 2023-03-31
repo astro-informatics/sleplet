@@ -631,6 +631,84 @@ python -m examples.mesh.produce_table
 
 [![Slepian Wavelets for the Analysis of Incomplete Data on Manifolds](https://img.shields.io/badge/PhD%20Thesis-Patrick%20J.%20Roddy-pink.svg)](https://paddyroddy.github.io/thesis)
 
+#### Chapter 2
+
+##### Fig. 2.1
+
+```sh
+for ell in $(seq 0 4); do
+    for m in $(seq 0 ${ell}); do
+        echo figure: 1, ell: ${ell}, m: ${m}
+        sphere spherical_harmonic -e ${ell} ${m} -L 128 -u -z
+    done
+done
+```
+
+```python
+
+```
+
+##### Fig. 2.2
+
+```sh
+# a
+sphere elongated_gaussian -e -1 -1 -L 128
+# b-d
+for angle in "0,0,0.25 0,0.25,0.25 0.25,0.25,0.25"; do
+    read -r a b g <<< $(echo ${angle} | tr ',' ' ')
+    sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a ${a} -b ${b} -g ${g}
+done
+```
+
+```python
+
+```
+
+##### Fig. 2.3
+
+```sh
+python -m examples.misc.wavelet_transform
+```
+
+##### Fig. 2.4
+
+```sh
+python -m examples.wavelets.axisymmetric_tiling
+```
+
+##### Fig. 2.5
+
+```sh
+# a
+sphere axisymmetric_wavelets -L 128 -u
+# b-e
+for j in $(seq 0 3); do
+    sphere axisymmetric_wavelets -e 3 2 ${j} -L 128 -u
+done
+```
+
+```python
+
+```
+
+##### Fig. 2.6
+
+```sh
+python -m examples.polar_cap.eigenvalues
+```
+
+##### Fig. 2.7
+
+```sh
+python -m examples.polar_cap.fried_egg
+```
+
+##### Fig. 2.8
+
+```sh
+python -m examples.polar_cap.eigenfunctions
+```
+
 #### Chapter 3
 
 ##### Fig. 3.1
