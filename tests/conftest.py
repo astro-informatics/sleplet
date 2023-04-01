@@ -7,9 +7,7 @@ from sleplet._vars import RANDOM_SEED
 from sleplet.functions.flm import Earth, SouthAmerica
 from sleplet.functions.fp import SlepianDiracDelta, SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
-from sleplet.meshes import Mesh, MeshSlepian
-from sleplet.meshes.harmonic_coefficients import MeshField
-from sleplet.meshes.slepian_coefficients import MeshSlepianWavelets
+from sleplet.meshes import Mesh, MeshField, MeshSlepian, MeshSlepianWavelets
 from sleplet.slepian import SlepianArbitrary, SlepianLimitLatLon, SlepianPolarCap
 
 ARRAY_DIM = 10

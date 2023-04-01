@@ -8,8 +8,8 @@ import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.meshes.mesh_slepian_coefficients
-import sleplet.meshes.slepian_coefficients.mesh_slepian_field
-import sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets
+import sleplet.meshes.mesh_slepian_field
+import sleplet.meshes.mesh_slepian_wavelets
 import sleplet.wavelet_methods
 
 
@@ -55,12 +55,12 @@ class MeshSlepianWaveletCoefficients(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
         """Computes wavelet coefficients in Slepian space."""
-        smw = sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets(  # noqa: E501
+        smw = sleplet.meshes.mesh_slepian_wavelets.MeshSlepianWavelets(
             self.mesh,
             B=self.B,
             j_min=self.j_min,
         )
-        smf = sleplet.meshes.slepian_coefficients.mesh_slepian_field.MeshSlepianField(
+        smf = sleplet.meshes.mesh_slepian_field.MeshSlepianField(
             self.mesh,
         )
         wavelets = smw.wavelets
