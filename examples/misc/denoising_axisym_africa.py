@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from sleplet.functions.flm import Africa, AxisymmetricWavelets
+from sleplet.functions import Africa, AxisymmetricWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
 

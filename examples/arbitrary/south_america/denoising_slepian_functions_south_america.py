@@ -4,7 +4,7 @@ import numpy as np
 from numpy import typing as npt
 
 from sleplet import logger
-from sleplet.functions.fp import SlepianSouthAmerica
+from sleplet.functions import SlepianSouthAmerica
 from sleplet.noise import (
     compute_sigma_noise,
     compute_snr,

@@ -5,29 +5,31 @@ from pydantic.dataclasses import dataclass
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_p
-import sleplet.functions.flm.africa
+import sleplet.functions.south_america
 import sleplet.slepian.region
-import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianAfrica(sleplet.functions.f_p.F_P):
+class SlepianSouthAmerica(sleplet.functions.f_p.F_P):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
-            and self.region.name_ending != "africa"
+            and self.region.name_ending != "south_america"
         ):
-            raise RuntimeError("Slepian region selected must be 'africa'")
+            raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        a = sleplet.functions.flm.africa.Africa(self.L, smoothing=self.smoothing)
+        sa = sleplet.functions.south_america.SouthAmerica(
+            self.L,
+            smoothing=self.smoothing,
+        )
         return sleplet.slepian_methods.slepian_forward(
             self.L,
             self.slepian,
-            flm=a.coefficients,
+            flm=sa.coefficients,
         )
 
     def _create_name(self) -> str:

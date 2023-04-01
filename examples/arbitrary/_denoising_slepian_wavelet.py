@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 
-from sleplet.functions.fp import SlepianAfrica, SlepianSouthAmerica, SlepianWavelets
+from sleplet.functions import SlepianAfrica, SlepianSouthAmerica, SlepianWavelets
 from sleplet.noise import (
     _compute_slepian_sigma_j,
     compute_snr,

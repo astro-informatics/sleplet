@@ -4,25 +4,40 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.f_lm
-import sleplet.functions.flm.earth
+import sleplet.functions.f_p
+import sleplet.functions.slepian_africa
 import sleplet.noise
+import sleplet.slepian.region
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class NoiseEarth(sleplet.functions.f_lm.F_LM):
+class SlepianNoiseAfrica(sleplet.functions.f_p.F_P):
     """TODO."""
 
-    SNR: float = 10
+    SNR: float = -10
     """TODO"""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
+        if (
+            isinstance(self.region, sleplet.slepian.region.Region)
+            and self.region.name_ending != "africa"
+        ):
+            raise RuntimeError("Slepian region selected must be 'africa'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        earth = sleplet.functions.flm.earth.Earth(self.L, smoothing=self.smoothing)
-        noise = sleplet.noise._create_noise(self.L, earth.coefficients, self.SNR)
-        sleplet.noise.compute_snr(earth.coefficients, noise, "Harmonic")
+        sa = sleplet.functions.slepian_africa.SlepianAfrica(
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
+        )
+        noise = sleplet.noise._create_slepian_noise(
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
+        )
+        sleplet.noise.compute_snr(sa.coefficients, noise, "Slepian")
         return noise
 
     def _create_name(self) -> str:
@@ -32,7 +47,7 @@ class NoiseEarth(sleplet.functions.f_lm.F_LM):
         )
 
     def _set_reality(self) -> bool:
-        return True
+        return False
 
     def _set_spin(self) -> int:
         return 0

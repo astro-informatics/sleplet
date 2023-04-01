@@ -2,7 +2,7 @@ import numpy as np
 from numpy.testing import assert_allclose, assert_array_equal, assert_equal
 from pys2let import pys2let_j_max
 
-from sleplet.functions.flm import (
+from sleplet.functions import (
     AxisymmetricWaveletCoefficientsEarth,
     AxisymmetricWaveletCoefficientsSouthAmerica,
 )

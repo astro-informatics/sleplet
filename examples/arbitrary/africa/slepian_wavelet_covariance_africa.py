@@ -5,7 +5,7 @@ import numpy as np
 from numpy.random import default_rng
 
 from sleplet import logger
-from sleplet.functions.fp import SlepianWavelets
+from sleplet.functions import SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region

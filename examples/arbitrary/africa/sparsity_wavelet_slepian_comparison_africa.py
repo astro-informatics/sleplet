@@ -5,8 +5,10 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.functions.flm import AxisymmetricWaveletCoefficientsAfrica
-from sleplet.functions.fp import SlepianWaveletCoefficientsAfrica
+from sleplet.functions import (
+    AxisymmetricWaveletCoefficientsAfrica,
+    SlepianWaveletCoefficientsAfrica,
+)
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region
 

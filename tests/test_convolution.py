@@ -1,8 +1,7 @@
 import numpy as np
 from numpy.testing import assert_allclose, assert_array_equal
 
-from sleplet.functions.flm import Earth, HarmonicGaussian, Identity
-from sleplet.functions.fp import SlepianIdentity
+from sleplet.functions import Earth, HarmonicGaussian, Identity, SlepianIdentity
 from sleplet.slepian_methods import slepian_forward
 
 L = 128

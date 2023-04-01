@@ -1,7 +1,7 @@
 import numpy as np
 
 from sleplet import logger
-from sleplet.functions.fp import Slepian
+from sleplet.functions import Slepian
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse

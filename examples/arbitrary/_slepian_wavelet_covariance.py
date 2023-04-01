@@ -3,7 +3,7 @@ import pyssht as ssht
 from numpy import typing as npt
 from numpy.testing import assert_equal
 
-from sleplet.functions.fp import SlepianWavelets
+from sleplet.functions import SlepianWavelets
 from sleplet.slepian_methods import compute_s_p_omega
 
 SAMPLING_SCHEME = "MWSS"

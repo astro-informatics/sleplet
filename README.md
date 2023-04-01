@@ -94,7 +94,7 @@ done
 import numpy as np
 import pyssht as ssht
 
-from sleplet.functions.flm import HarmonicGaussian
+from sleplet.functions import HarmonicGaussian
 from sleplet.plotting import PlotSphere
 
 for ell in range(2, 0, -1):
@@ -113,7 +113,7 @@ sphere earth -L 128
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import Earth
+from sleplet.functions import Earth
 from sleplet.harmonic_methods import rotate_earth_to_south_america
 from sleplet.plotting import PlotSphere
 
@@ -134,7 +134,7 @@ done
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import Earth, HarmonicGaussian
+from sleplet.functions import Earth, HarmonicGaussian
 from sleplet.harmonic_methods import rotate_earth_to_south_america
 from sleplet.plotting import PlotSphere
 
@@ -170,8 +170,7 @@ sphere slepian_south_america -L 128 -s 2 -u
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import Earth
-from sleplet.functions.fp import SlepianSouthAmerica
+from sleplet.functions import Earth, SlepianSouthAmerica
 from sleplet.harmonic_methods import rotate_earth_to_south_america
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
@@ -199,7 +198,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import Slepian
+from sleplet.functions import Slepian
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -232,7 +231,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import SlepianWavelets
+from sleplet.functions import SlepianWavelets
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -259,7 +258,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import SlepianWaveletCoefficientsSouthAmerica
+from sleplet.functions import SlepianWaveletCoefficientsSouthAmerica
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -288,7 +287,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import SlepianSouthAmerica
+from sleplet.functions import SlepianSouthAmerica
 from sleplet.plot_methods import compute_amplitude_for_noisy_sphere_plots
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
@@ -317,8 +316,7 @@ sphere slepian_africa -L 128 -s 2 -u
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import Earth
-from sleplet.functions.fp import SlepianAfrica
+from sleplet.functions import Earth, SlepianAfrica
 from sleplet.harmonic_methods import rotate_earth_to_africa
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
@@ -352,7 +350,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import Slepian
+from sleplet.functions import Slepian
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -379,7 +377,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import SlepianWavelets
+from sleplet.functions import SlepianWavelets
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -406,7 +404,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import SlepianWaveletCoefficientsAfrica
+from sleplet.functions import SlepianWaveletCoefficientsAfrica
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -435,7 +433,7 @@ done
 ```
 
 ```python
-from sleplet.functions.fp import SlepianAfrica
+from sleplet.functions import SlepianAfrica
 from sleplet.plot_methods import compute_amplitude_for_noisy_sphere_plots
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
@@ -640,7 +638,7 @@ done
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import SphericalHarmonic
+from sleplet.functions import SphericalHarmonic
 from sleplet.plotting import PlotSphere
 
 for ell in range(5):
@@ -669,7 +667,7 @@ sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0.25 -b 0.25 -g 0.25
 import numpy as np
 import pyssht as ssht
 
-from sleplet.functions.flm import ElongatedGaussian
+from sleplet.functions import ElongatedGaussian
 from sleplet.plotting import PlotSphere
 
 # a
@@ -709,7 +707,7 @@ done
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import AxisymmetricWavelets
+from sleplet.functions import AxisymmetricWavelets
 from sleplet.plotting import PlotSphere
 
 for j in [None, *list(range(4))]:
@@ -751,7 +749,7 @@ sphere gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 import numpy as np
 import pyssht as ssht
 
-from sleplet.functions.flm import Gaussian
+from sleplet.functions import Gaussian
 from sleplet.plotting import PlotSphere
 
 # a
@@ -777,7 +775,7 @@ sphere squashed_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 import numpy as np
 import pyssht as ssht
 
-from sleplet.functions.flm import SquashedGaussian
+from sleplet.functions import SquashedGaussian
 from sleplet.plotting import PlotSphere
 
 # a
@@ -803,7 +801,7 @@ sphere elongated_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 import numpy as np
 import pyssht as ssht
 
-from sleplet.functions.flm import ElongatedGaussian
+from sleplet.functions import ElongatedGaussian
 from sleplet.plotting import PlotSphere
 
 # a
@@ -829,7 +827,7 @@ done
 ```python
 import pyssht as ssht
 
-from sleplet.functions.flm import HarmonicGaussian
+from sleplet.functions import HarmonicGaussian
 from sleplet.plotting import PlotSphere
 
 for ell in range(2, 0, -1):

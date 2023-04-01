@@ -1,4 +1,4 @@
-from sleplet.functions.fp import SlepianSouthAmerica
+from sleplet.functions import SlepianSouthAmerica
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import choose_slepian_method, slepian_inverse

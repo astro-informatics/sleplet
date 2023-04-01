@@ -4,8 +4,7 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 from sleplet._vars import RANDOM_SEED
-from sleplet.functions.flm import Earth, SouthAmerica
-from sleplet.functions.fp import SlepianDiracDelta, SlepianWavelets
+from sleplet.functions import Earth, SlepianDiracDelta, SlepianWavelets, SouthAmerica
 from sleplet.harmonic_methods import compute_random_signal
 from sleplet.meshes import Mesh, MeshField, MeshSlepian, MeshSlepianWavelets
 from sleplet.slepian import SlepianArbitrary, SlepianLimitLatLon, SlepianPolarCap

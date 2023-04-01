@@ -8,8 +8,8 @@ import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.f_p
-import sleplet.functions.fp.slepian_africa
-import sleplet.functions.fp.slepian_wavelets
+import sleplet.functions.slepian_africa
+import sleplet.functions.slepian_wavelets
 import sleplet.slepian.region
 import sleplet.wavelet_methods
 
@@ -65,13 +65,13 @@ class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
         """Computes wavelet coefficients in Slepian space."""
-        sw = sleplet.functions.fp.slepian_wavelets.SlepianWavelets(
+        sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
             self.L,
             B=self.B,
             j_min=self.j_min,
             region=self.region,
         )
-        sa = sleplet.functions.fp.slepian_africa.SlepianAfrica(
+        sa = sleplet.functions.slepian_africa.SlepianAfrica(
             self.L,
             region=self.region,
             smoothing=self.smoothing,

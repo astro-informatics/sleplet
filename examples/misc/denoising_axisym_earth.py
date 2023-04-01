@@ -3,7 +3,7 @@ from pathlib import Path
 
 from numpy.testing import assert_array_less
 
-from sleplet.functions.flm import AxisymmetricWavelets, Earth
+from sleplet.functions import AxisymmetricWavelets, Earth
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
 

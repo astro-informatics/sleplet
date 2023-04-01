@@ -7,12 +7,13 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.flm.south_america
+import sleplet.functions.earth
+import sleplet.functions.f_lm
 import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class AxisymmetricWaveletCoefficientsSouthAmerica(sleplet.functions.f_lm.F_LM):
+class AxisymmetricWaveletCoefficientsEarth(sleplet.functions.f_lm.F_LM):
     """TODO."""
 
     B: int = 3
@@ -56,19 +57,16 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(sleplet.functions.f_lm.F_LM):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
-        """Computes wavelet coefficients of South America."""
+        """Computes wavelet coefficients of the Earth."""
         wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,
             self.B,
             self.j_min,
         )
-        self.south_america = sleplet.functions.flm.south_america.SouthAmerica(
-            self.L,
-            smoothing=self.smoothing,
-        )
+        self.earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
         wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
             self.L,
-            self.south_america.coefficients,
+            self.earth.coefficients,
             wavelets,
         )
         return wavelets, wavelet_coefficients

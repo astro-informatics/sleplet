@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from sleplet import logger
-from sleplet.functions.fp import SlepianAfrica, SlepianWavelets
+from sleplet.functions import SlepianAfrica, SlepianWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
