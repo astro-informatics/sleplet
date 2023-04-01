@@ -663,11 +663,12 @@ for ell in range(5):
 ```sh
 # a
 sphere elongated_gaussian -e -1 -1 -L 128
-# b-d
-for angle in 0,0,0.25 0,0.25,0.25 0.25,0.25,0.25; do
-    read -r a b g <<< $(echo ${angle} | tr ',' ' ')
-    sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a ${a} -b ${b} -g ${g}
-done
+# b
+sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0 -b 0 -g 0.25
+# c
+sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0 -b 0.25 -g 0.25
+# d
+sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0.25 -b 0.25 -g 0.25
 ```
 
 ```python
