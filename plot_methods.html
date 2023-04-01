@@ -213,15 +213,11 @@ def _normalise_function(
     &#34;&#34;&#34;normalise function between 0 and 1 for visualisation.&#34;&#34;&#34;
     if not normalise:
         return f
-    elif (f == 0).all():
+    if (f == 0).all():
         # if all 0, set to 0
         return f + 0.5
-    elif np.allclose(f, f.max()):
-        # if all non-zero, set to 1
-        return f / f.max()
-    else:
-        # scale from [0, 1]
-        return (f - f.min()) / f.ptp()
+    # if all non-zero, set to 1 otherwise scale from [0, 1]
+    return f / f.max() if np.allclose(f, f.max()) else (f - f.min()) / f.ptp()
 
 
 def _boost_field(
