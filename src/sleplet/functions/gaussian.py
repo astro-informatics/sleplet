@@ -5,11 +5,11 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.f_lm
+import sleplet.functions.flm
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class Gaussian(sleplet.functions.f_lm.F_LM):
+class Gaussian(sleplet.functions.flm.F_LM):
     """TODO."""
 
     sigma: float = 10

@@ -5,13 +5,13 @@ from pydantic.dataclasses import dataclass
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.africa
-import sleplet.functions.f_p
+import sleplet.functions.fp
 import sleplet.slepian.region
 import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianAfrica(sleplet.functions.f_p.F_P):
+class SlepianAfrica(sleplet.functions.fp.F_P):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

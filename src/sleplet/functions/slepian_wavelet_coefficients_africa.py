@@ -7,7 +7,7 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.f_p
+import sleplet.functions.fp
 import sleplet.functions.slepian_africa
 import sleplet.functions.slepian_wavelets
 import sleplet.slepian.region
@@ -15,7 +15,7 @@ import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianWaveletCoefficientsAfrica(sleplet.functions.f_p.F_P):
+class SlepianWaveletCoefficientsAfrica(sleplet.functions.fp.F_P):
     """TODO."""
 
     B: int = 3
