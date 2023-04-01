@@ -20,7 +20,7 @@ SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 def create_mask_region(
     L: int,
-    region: "sleplet.slepian.region.Region",
+    region: sleplet.slepian.region.Region,
 ) -> npt.NDArray[np.float_]:
     """Creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
@@ -74,7 +74,7 @@ def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
 def ensure_masked_flm_bandlimited(
     flm: npt.NDArray[np.complex_],
     L: int,
-    region: "sleplet.slepian.region.Region",
+    region: sleplet.slepian.region.Region,
     *,
     reality: bool,
     spin: int,

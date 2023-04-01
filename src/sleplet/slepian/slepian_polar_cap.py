@@ -17,7 +17,7 @@ import sleplet._parallel_methods
 import sleplet._validation
 import sleplet.harmonic_methods
 import sleplet.slepian.region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet.slepian.slepian_functions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
@@ -25,7 +25,7 @@ L_SAVE_ALL = 16
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianPolarCap(SlepianFunctions):
+class SlepianPolarCap(sleplet.slepian.slepian_functions.SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
     theta_max: float

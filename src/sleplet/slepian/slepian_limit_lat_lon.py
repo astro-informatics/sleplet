@@ -13,13 +13,13 @@ import sleplet._mask_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.slepian.region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet.slepian.slepian_functions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianLimitLatLon(SlepianFunctions):
+class SlepianLimitLatLon(sleplet.slepian.slepian_functions.SlepianFunctions):
     """Class to create a limited latitude longitude Slepian region on the sphere."""
 
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
