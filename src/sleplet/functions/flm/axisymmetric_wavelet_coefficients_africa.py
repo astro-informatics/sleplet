@@ -57,7 +57,7 @@ class AxisymmetricWaveletCoefficientsAfrica(sleplet.functions.f_lm.F_LM):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
-        """computes wavelet coefficients of Africa."""
+        """Computes wavelet coefficients of Africa."""
         wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,
             self.B,

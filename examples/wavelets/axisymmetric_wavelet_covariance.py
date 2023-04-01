@@ -21,13 +21,13 @@ def _compute_wavelet_covariance(
     *,
     var_signal: float,
 ) -> npt.NDArray[np.float_]:
-    """computes the theoretical covariance of the wavelet coefficients."""
+    """Computes the theoretical covariance of the wavelet coefficients."""
     covar_theory = (np.abs(wavelets) ** 2).sum(axis=1)
     return covar_theory * var_signal
 
 
 def _is_ergodic(j_min: int, *, j: int = 0) -> bool:
-    """computes whether the function follows ergodicity.
+    """Computes whether the function follows ergodicity.
 
     ergodicity fails for J_min = 0, because the scaling function will only
     cover f00. Hence <flm flm*> will be 0 in that case and the scaling
@@ -46,7 +46,7 @@ def axisymmetric_wavelet_covariance(
     runs: int = 100,
     var_flm: float = 1,
 ) -> None:
-    """compute theoretical covariance of wavelet coefficients.
+    """Compute theoretical covariance of wavelet coefficients.
 
     the covariance <Wj(omega)Wj*(omega)> is given by the following expression:
     sigma^2 Sum(l,0) |Psi^j_l0|^2

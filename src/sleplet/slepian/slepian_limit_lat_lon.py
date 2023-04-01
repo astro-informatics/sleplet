@@ -20,7 +20,7 @@ _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
-    """class to create a limited latitude longitude Slepian region on the sphere."""
+    """Class to create a limited latitude longitude Slepian region on the sphere."""
 
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
     """TODO"""
@@ -73,7 +73,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
-        """computes the K matrix."""
+        """Computes the K matrix."""
         # Compute sub-integral matrix
         G = self._slepian_integral()
 
@@ -197,7 +197,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """need eigenvalues and eigenvectors to be in a certain format."""
+        """Need eigenvalues and eigenvectors to be in a certain format."""
         # access values
         eigenvalues, eigenvectors = eigendecomposition
 

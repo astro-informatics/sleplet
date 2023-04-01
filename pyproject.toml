@@ -116,6 +116,7 @@ select = [
     "BLE",
     "C",
     "COM",
+    "D",
     "DJ",
     "DTZ",
     "E",

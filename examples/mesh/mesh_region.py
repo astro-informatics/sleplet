@@ -17,7 +17,7 @@ MESHES = [
 
 
 def main(mesh_name: str) -> None:
-    """plots the tiling of the Slepian line."""
+    """Plots the tiling of the Slepian line."""
     # initialise mesh and Slepian mesh
     mesh = Mesh(mesh_name)
 

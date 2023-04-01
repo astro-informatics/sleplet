@@ -23,7 +23,7 @@ def create_camera(
     y_center: float = 0,
     z_center: float = 0,
 ) -> Camera:
-    """creates default camera view with a zoom factor."""
+    """Creates default camera view with a zoom factor."""
     return Camera(
         eye=Eye(x=x_eye / zoom, y=y_eye / zoom, z=z_eye / zoom),
         center=Center(x=x_center, y=y_center, z=z_center),
@@ -31,7 +31,7 @@ def create_camera(
 
 
 def create_layout(camera: Camera, *, annotations: list[dict] | None = None) -> Layout:
-    """default plotly layout."""
+    """Default plotly layout."""
     return Layout(
         scene=Scene(
             dragmode="orbit",
@@ -53,7 +53,7 @@ def create_tick_mark(
     *,
     amplitude: float | None = None,
 ) -> float:
-    """creates tick mark to use when using a non-normalised plot."""
+    """Creates tick mark to use when using a non-normalised plot."""
     return amplitude if amplitude is not None else max(abs(fmin), abs(fmax))
 
 
@@ -65,7 +65,7 @@ def create_colour_bar(
     bar_pos: float = 0.97,
     font_size: int = 38,
 ) -> dict:
-    """default plotly colour bar."""
+    """Default plotly colour bar."""
     return {
         "x": bar_pos,
         "len": bar_len,

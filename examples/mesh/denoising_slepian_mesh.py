@@ -37,7 +37,7 @@ def _denoising_mesh_slepian(
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """denoising demo using Slepian wavelets."""
+    """Denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
     w = slepian_wavelet_forward(
         noised_signal.coefficients,
@@ -75,7 +75,7 @@ def _denoising_mesh_slepian(
 
 
 def main(mesh_name: str, snr: float, sigma: int) -> None:
-    """denoising demo using Slepian wavelets."""
+    """Denoising demo using Slepian wavelets."""
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
     mesh = Mesh(mesh_name, zoom=True)

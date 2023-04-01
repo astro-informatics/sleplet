@@ -9,7 +9,7 @@ import sleplet._vars
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
-    """identifies and creates the appropriate Slepian region for the sphere."""
+    """Identifies and creates the appropriate Slepian region for the sphere."""
 
     gap: bool = False
     """TODO"""
@@ -28,7 +28,7 @@ class Region:
         self._identify_region()
 
     def _identify_region(self) -> None:
-        """identify region type based on the angle inputs or a mask name."""
+        """Identify region type based on the angle inputs or a mask name."""
         if sleplet._bool_methods.is_polar_cap(
             self.phi_min,
             self.phi_max,

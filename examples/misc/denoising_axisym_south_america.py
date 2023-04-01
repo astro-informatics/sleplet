@@ -18,7 +18,7 @@ SNR_IN = 10
 
 
 def main() -> None:
-    """contrast denosiing with an Earth map versus South America map."""
+    """Contrast denosiing with an Earth map versus South America map."""
     # create map & noised map
     fun = SouthAmerica(L)
     fun_noised = SouthAmerica(L, noise=SNR_IN)

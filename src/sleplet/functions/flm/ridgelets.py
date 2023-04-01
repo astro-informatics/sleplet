@@ -59,7 +59,7 @@ class Ridgelets(sleplet.functions.f_lm.F_LM):
             self.B, self.j_min, self.spin, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
-        """compute all wavelets."""
+        """Compute all wavelets."""
         ring_lm = self._compute_ring()
         kappas = sleplet.wavelet_methods.create_kappas(self.L, self.B, self.j_min)
         wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
@@ -70,7 +70,7 @@ class Ridgelets(sleplet.functions.f_lm.F_LM):
         return wavelets
 
     def _compute_ring(self) -> npt.NDArray[np.complex_]:
-        """compute ring in harmonic space."""
+        """Compute ring in harmonic space."""
         ring_lm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(abs(self.spin), self.L):
             logp2 = (

@@ -9,7 +9,7 @@ import sleplet._vars
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:
-    """creates the flm for the whole CMB."""
+    """Creates the flm for the whole CMB."""
     # load in data
     cl = _load_cl()
 
@@ -38,7 +38,7 @@ def _load_cl(
     *,
     file_ending: str = "_lcdm_pl_model_wmap7baoh0",
 ) -> npt.NDArray[np.float_]:
-    """pick coefficients from file options are:
+    """Pick coefficients from file options are:
     * _lcdm_pl_model_yr1_v1.mat
     * _tt_spectrum_7yr_v4p1.mat
     * _lcdm_pl_model_wmap7baoh0.mat.

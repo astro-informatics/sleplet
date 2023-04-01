@@ -24,7 +24,7 @@ MW_POLE_LENGTH = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
-    """creates surface sphere plot via `plotly`."""
+    """Creates surface sphere plot via `plotly`."""
 
     f: npt.NDArray[np.complex_ | np.float_]
     """TODO"""
@@ -144,7 +144,7 @@ class PlotSphere:
         float,
         float,
     ]:
-        """function which creates the data for the matplotlib/plotly plot."""
+        """Function which creates the data for the matplotlib/plotly plot."""
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
         if method == "MW_pole":
@@ -208,7 +208,7 @@ class PlotSphere:
         self,
         f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
-        """boosts, forces plot type and then scales the field before plotting."""
+        """Boosts, forces plot type and then scales the field before plotting."""
         boosted_field = sleplet.plot_methods._boost_field(
             f,
             self.L,

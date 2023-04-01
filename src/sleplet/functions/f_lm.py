@@ -12,7 +12,7 @@ import sleplet.noise
 
 @dataclass(config=sleplet._validation.Validation)
 class F_LM(sleplet.functions.coefficients.Coefficients):  # noqa: N801
-    """abstract parent class to handle harmonic coefficients on the sphere."""
+    """Abstract parent class to handle harmonic coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -36,7 +36,7 @@ class F_LM(sleplet.functions.coefficients.Coefficients):  # noqa: N801
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """adds Gaussian white noise to the signal."""
+        """Adds Gaussian white noise to the signal."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()

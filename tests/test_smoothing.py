@@ -7,7 +7,7 @@ SMOOTHING = 2
 
 
 def test_smoothing_changes_flm() -> None:
-    """tests the addition of Gaussian noise changes the coefficients."""
+    """Tests the addition of Gaussian noise changes the coefficients."""
     earth = Earth(L)
     earth_smoothed = Earth(L, smoothing=SMOOTHING)
     assert_raises(

@@ -60,7 +60,7 @@ class DirectionalSpinWavelets(sleplet.functions.f_lm.F_LM):
             self.B, self.j_min, self.spin, self.N, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
-        """compute all wavelets."""
+        """Compute all wavelets."""
         phi_l, psi_lm = wavelet_tiling(self.B, self.L, self.N, self.j_min, self.spin)
         wavelets = np.zeros((psi_lm.shape[1] + 1, self.L**2), dtype=np.complex_)
         for ell in range(self.L):

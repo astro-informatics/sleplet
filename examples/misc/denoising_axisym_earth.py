@@ -20,7 +20,7 @@ SNR_IN = 10
 
 
 def main() -> None:
-    """reproduce the denoising demo from s2let paper."""
+    """Reproduce the denoising demo from s2let paper."""
     # create map & noised map
     fun = Earth(L)
     fun_noised = Earth(L, noise=SNR_IN)

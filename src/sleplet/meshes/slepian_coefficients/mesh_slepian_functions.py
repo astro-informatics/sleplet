@@ -22,7 +22,7 @@ class MeshSlepianFunctions(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """compute field on the vertices of the mesh."""
+        """Compute field on the vertices of the mesh."""
         sleplet.logger.info(
             f"Slepian eigenvalue {self.rank}: "
             f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",
@@ -53,7 +53,7 @@ class MeshSlepianFunctions(
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -> None:
-        """checks the requested rank is valid."""
+        """Checks the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] > limit:

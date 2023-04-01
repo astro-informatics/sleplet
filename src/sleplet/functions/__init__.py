@@ -1,1 +1,1 @@
-"""set of classes to create functions on the sphere."""
+"""Set of classes to create functions on the sphere."""

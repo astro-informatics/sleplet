@@ -55,7 +55,7 @@ class SlepianWavelets(sleplet.functions.f_p.F_P):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.float_]:
-        """computes wavelets in Slepian space."""
+        """Computes wavelets in Slepian space."""
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
     @validator("j")

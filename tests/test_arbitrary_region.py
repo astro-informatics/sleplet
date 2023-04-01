@@ -7,7 +7,7 @@ from sleplet.slepian import SlepianArbitrary
 
 @pytest.mark.slow()
 def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
-    """tests that the eigenvectors and eigenvalues are close
+    """Tests that the eigenvectors and eigenvalues are close
     in comparison to the smarter Slepian polar cap method.
     """
     mask_name = slepian_polar_cap.region.name_ending
@@ -33,7 +33,7 @@ def test_equality_to_polar_cap_method(slepian_polar_cap) -> None:
 
 @pytest.mark.slow()
 def test_equality_to_lim_lat_lon_method(slepian_lim_lat_lon) -> None:
-    """tests that the eigenvectors and eigenvalues are close
+    """Tests that the eigenvectors and eigenvalues are close
     in comparison to the smarter Slepian lim lat lon method.
     """
     mask_name = slepian_lim_lat_lon.region.name_ending

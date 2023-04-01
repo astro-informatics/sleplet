@@ -9,7 +9,7 @@ L = 128
 
 
 def test_earth_identity_convolution() -> None:
-    """test to ensure that the convolving with the
+    """Test to ensure that the convolving with the
     identity function doesn't change the map.
     """
     f = Earth(L)
@@ -20,7 +20,7 @@ def test_earth_identity_convolution() -> None:
 
 
 def test_earth_harmonic_gaussian_convolution() -> None:
-    """test to ensure that convolving the Earth with the harmonic
+    """Test to ensure that convolving the Earth with the harmonic
     Gausian does not change significantly change the map.
     """
     f = Earth(L)
@@ -34,7 +34,7 @@ def test_south_america_slepian_identity_convolution(
     slepian_arbitrary,
     south_america_arbitrary,
 ) -> None:
-    """test to ensure that the convolving with the Slepian
+    """Test to ensure that the convolving with the Slepian
     identity function doesn't change the map in Slepian space.
     """
     f_p = slepian_forward(

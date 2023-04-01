@@ -14,7 +14,7 @@ import sleplet.slepian_methods
 
 @dataclass(config=sleplet._validation.Validation)
 class F_P(sleplet.functions.coefficients.Coefficients):  # noqa: N801
-    """abstract parent class to handle Slepian coefficients on the sphere."""
+    """Abstract parent class to handle Slepian coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:
         self.region: sleplet.slepian.region.Region | None = (
@@ -52,7 +52,7 @@ class F_P(sleplet.functions.coefficients.Coefficients):  # noqa: N801
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """adds Gaussian white noise converted to Slepian space."""
+        """Adds Gaussian white noise converted to Slepian space."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()

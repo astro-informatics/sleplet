@@ -26,7 +26,7 @@ L_SAVE_ALL = 16
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
-    """class to create a polar cap Slepian region on the sphere."""
+    """Class to create a polar cap Slepian region on the sphere."""
 
     theta_max: float
     """TODO"""
@@ -71,7 +71,7 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc: str,
         order_loc: str,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """solves eigenproblem with files already saved."""
+        """Solves eigenproblem with files already saved."""
         eigenvalues = np.load(
             sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
         )
@@ -92,7 +92,7 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc: str,
         order_loc: str,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """sovles eigenproblem from scratch and then saves the files."""
+        """Sovles eigenproblem from scratch and then saves the files."""
         if isinstance(self.order, int):
             return self._solve_eigenproblem_order(self.order)
 
@@ -119,7 +119,7 @@ class SlepianPolarCap(SlepianFunctions):
         self,
         m: int,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """solves the eigenproblem for a given order 'm;"""
+        """Solves the eigenproblem for a given order 'm;"""
         emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
@@ -132,7 +132,7 @@ class SlepianPolarCap(SlepianFunctions):
         eigenvectors: npt.NDArray[np.complex_],
         orders: npt.NDArray[np.int_],
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_], npt.NDArray[np.int_]]:
-        """sorts all eigenvalues and eigenvectors for all orders."""
+        """Sorts all eigenvalues and eigenvectors for all orders."""
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
         eigenvectors = eigenvectors[idx]
@@ -167,7 +167,7 @@ class SlepianPolarCap(SlepianFunctions):
         Dm_ext, shm_ext = sleplet._parallel_methods.create_shared_memory_array(Dm)
 
         def func(chunk: list[int]) -> None:
-            """calculate D matrix components for each chunk."""
+            """Calculate D matrix components for each chunk."""
             Dm_int, shm_int = sleplet._parallel_methods.attach_to_shared_memory_block(
                 Dm,
                 shm_ext,
@@ -203,7 +203,7 @@ class SlepianPolarCap(SlepianFunctions):
         self,
         emm: npt.NDArray[np.float_],
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
-        """create Legendre polynomials table for matrix calculation."""
+        """Create Legendre polynomials table for matrix calculation."""
         Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
         ind = emm == 0
         ell = np.arange(2 * self.L)[np.newaxis]
@@ -219,7 +219,7 @@ class SlepianPolarCap(SlepianFunctions):
         Pl: npt.NDArray[np.float_],
         ell: npt.NDArray[np.int_],
     ) -> None:
-        """used in both serial and parallel calculations."""
+        """Used in both serial and parallel calculations."""
         el = int(lvec[i])
         for j in range(i, self.L - m):
             p = int(lvec[j])
@@ -330,7 +330,7 @@ class SlepianPolarCap(SlepianFunctions):
         return s
 
     def _polar_gap_modification(self, ell1: int, ell2: int) -> int:
-        """eq 67 - Spherical Slepian functions and the polar gap in geodesy
+        """Eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell').
         """
         return 1 + self.gap * (-1) ** (ell1 + ell2)
@@ -342,7 +342,7 @@ class SlepianPolarCap(SlepianFunctions):
         emm: npt.NDArray[np.float_],
         m: int,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """need eigenvalues and eigenvectors to be in a certain format."""
+        """Need eigenvalues and eigenvectors to be in a certain format."""
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]

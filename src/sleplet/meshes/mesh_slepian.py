@@ -20,7 +20,7 @@ _data_path = Path(__file__).resolve().parents[1] / "_data"
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepian:
-    """creates Slepian object of a given mesh."""
+    """Creates Slepian object of a given mesh."""
 
     mesh: Mesh
     """TODO"""
@@ -30,7 +30,7 @@ class MeshSlepian:
         self._compute_slepian_functions()
 
     def _compute_slepian_functions(self) -> None:
-        """computes the Slepian functions of the mesh."""
+        """Computes the Slepian functions of the mesh."""
         sleplet.logger.info("computing slepian functions of mesh")
 
         # create filenames
@@ -71,7 +71,7 @@ class MeshSlepian:
         np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
-        """computes the D matrix for the mesh eigenfunctions."""
+        """Computes the D matrix for the mesh eigenfunctions."""
         D = np.zeros(
             (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0]),
         )
@@ -79,7 +79,7 @@ class MeshSlepian:
         D_ext, shm_ext = sleplet._parallel_methods.create_shared_memory_array(D)
 
         def func(chunk: list[int]) -> None:
-            """calculate D matrix components for each chunk."""
+            """Calculate D matrix components for each chunk."""
             D_int, shm_int = sleplet._parallel_methods.attach_to_shared_memory_block(
                 D,
                 shm_ext,
@@ -111,13 +111,13 @@ class MeshSlepian:
         return D
 
     def _fill_D_elements(self, D: npt.NDArray[np.float_], i: int) -> None:  # noqa: N802
-        """fill in the D matrix elements using symmetries."""
+        """Fill in the D matrix elements using symmetries."""
         D[i][i] = self._integral(i, i)
         for j in range(i + 1, self.mesh.mesh_eigenvalues.shape[0]):
             D[j][i] = self._integral(j, i)
 
     def _integral(self, i: int, j: int) -> float:
-        """calculates the D integral between two mesh basis functions."""
+        """Calculates the D integral between two mesh basis functions."""
         return sleplet._integration_methods.integrate_region_mesh(
             self.mesh.region,
             self.mesh.vertices,
@@ -130,7 +130,7 @@ class MeshSlepian:
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
-        """need eigenvalues and eigenvectors to be in a certain format."""
+        """Need eigenvalues and eigenvectors to be in a certain format."""
         # access values
         eigenvalues, eigenvectors = eigendecomposition
 

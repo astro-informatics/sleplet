@@ -54,7 +54,7 @@ class MeshSlepianWaveletCoefficients(
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        """computes wavelet coefficients in Slepian space."""
+        """Computes wavelet coefficients in Slepian space."""
         smw = sleplet.meshes.slepian_coefficients.mesh_slepian_wavelets.MeshSlepianWavelets(  # noqa: E501
             self.mesh,
             B=self.B,

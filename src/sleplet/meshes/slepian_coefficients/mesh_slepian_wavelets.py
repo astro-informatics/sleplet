@@ -50,7 +50,7 @@ class MeshSlepianWavelets(
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.float_]:
-        """creates the Slepian wavelets of the mesh."""
+        """Creates the Slepian wavelets of the mesh."""
         return sleplet.wavelet_methods.create_kappas(
             self.mesh.mesh_eigenvalues.shape[0],
             self.B,

@@ -18,7 +18,7 @@ class MeshSlepianField(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """compute field on the vertices of the mesh."""
+        """Compute field on the vertices of the mesh."""
         mf = sleplet.meshes.harmonic_coefficients.mesh_field.MeshField(
             self.mesh,
             region=True,

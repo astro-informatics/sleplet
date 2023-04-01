@@ -54,7 +54,7 @@ class AxisymmetricWavelets(sleplet.functions.f_lm.F_LM):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
-        """compute all wavelets."""
+        """Compute all wavelets."""
         return sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,
             self.B,

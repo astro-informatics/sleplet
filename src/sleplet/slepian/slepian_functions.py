@@ -11,7 +11,7 @@ import sleplet.slepian.region
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
-    """abstract parent class of creating the different Slepian regions on the sphere."""
+    """Abstract parent class of creating the different Slepian regions on the sphere."""
 
     L: int
     """TODO"""
@@ -30,32 +30,32 @@ class SlepianFunctions:
 
     @abstractmethod
     def _create_fn_name(self) -> str:
-        """creates the name for plotting."""
+        """Creates the name for plotting."""
         raise NotImplementedError
 
     @abstractmethod
     def _create_region(self) -> "sleplet.slepian.region.Region":
-        """creates a region object for area of interest."""
+        """Creates a region object for area of interest."""
         raise NotImplementedError
 
     @abstractmethod
     def _create_mask(self) -> npt.NDArray[np.float_]:
-        """creates a mask of the region of interest."""
+        """Creates a mask of the region of interest."""
         raise NotImplementedError
 
     @abstractmethod
     def _calculate_area(self) -> float:
-        """calculates area of region."""
+        """Calculates area of region."""
         raise NotImplementedError
 
     @abstractmethod
     def _create_matrix_location(self) -> str:
-        """creates the name of the matrix binary."""
+        """Creates the name of the matrix binary."""
         raise NotImplementedError
 
     @abstractmethod
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """solves the eigenproblem for the given function."""
+        """Solves the eigenproblem for the given function."""
         raise NotImplementedError

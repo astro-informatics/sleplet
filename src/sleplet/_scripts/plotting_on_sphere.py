@@ -28,7 +28,7 @@ BETA_DEFAULT = 0.125
 
 
 def valid_maps(map_name: str) -> str:
-    """check if valid map."""
+    """Check if valid map."""
     if map_name in sleplet._string_methods.convert_classes_list_to_snake_case(
         sleplet._class_lists.MAPS_LM,
     ):
@@ -37,7 +37,7 @@ def valid_maps(map_name: str) -> str:
 
 
 def valid_plotting(func_name: str) -> str:
-    """check if valid function."""
+    """Check if valid function."""
     if func_name in sleplet._string_methods.convert_classes_list_to_snake_case(
         sleplet._class_lists.COEFFICIENTS,
     ):
@@ -46,7 +46,7 @@ def valid_plotting(func_name: str) -> str:
 
 
 def read_args() -> Namespace:
-    """method to read args from the command line."""
+    """Method to read args from the command line."""
     parser = ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
         "function",
@@ -174,7 +174,7 @@ def plot(
     earth_view: str,
     amplitude: float | None,
 ) -> None:
-    """master plotting method."""
+    """Master plotting method."""
     filename = f.name
     coefficients = f.coefficients
 
@@ -258,7 +258,7 @@ def _rotation_helper(
     beta_pi_frac: float,
     gamma_pi_frac: float,
 ) -> tuple[npt.NDArray[np.complex_], str]:
-    """performs the rotation specific steps."""
+    """Performs the rotation specific steps."""
     sleplet.logger.info(
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
@@ -288,7 +288,7 @@ def _translation_helper(
     beta_pi_frac: float,
     shannon: int | None,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
-    """performs the translation specific steps."""
+    """Performs the translation specific steps."""
     sleplet.logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
     filename += (
@@ -319,7 +319,7 @@ def _convolution_helper(
     shannon: int | None,
     filename: str,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str]:
-    """performs the convolution specific steps."""
+    """Performs the convolution specific steps."""
     g_coefficients = (
         sleplet.slepian_methods.slepian_forward(f.L, f.slepian, flm=g.coefficients)
         if hasattr(f, "slepian")

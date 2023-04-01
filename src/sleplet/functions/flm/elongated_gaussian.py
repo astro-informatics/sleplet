@@ -56,7 +56,7 @@ class ElongatedGaussian(sleplet.functions.f_lm.F_LM):
         theta: npt.NDArray[np.float_],
         phi: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """function on the grid."""
+        """Function on the grid."""
         return np.exp(
             -(
                 ((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2

@@ -46,7 +46,7 @@ class SlepianDiracDelta(sleplet.functions.f_p.F_P):
             )
 
     def _compute_angles(self) -> None:
-        """computes alpha/beta if not provided."""
+        """Computes alpha/beta if not provided."""
         thetas, phis = ssht.sample_positions(
             self.L,
             Grid=True,

@@ -27,7 +27,7 @@ SAMPLES = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
-    """class to create an arbitrary Slepian region on the sphere."""
+    """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
     """TODO"""
@@ -88,7 +88,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
-        """computes the D matrix in parallel."""
+        """Computes the D matrix in parallel."""
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
 
@@ -100,7 +100,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i_ext, shm_i_ext = sleplet._parallel_methods.create_shared_memory_array(D_i)
 
         def func(chunk: list[int]) -> None:
-            """calculate D matrix components for each chunk."""
+            """Calculate D matrix components for each chunk."""
             (
                 D_r_int,
                 shm_r_int,
@@ -141,7 +141,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i: npt.NDArray[np.float_],
         i: int,
     ) -> None:
-        """used in both serial and parallel calculations.
+        """Used in both serial and parallel calculations.
 
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease
@@ -170,7 +170,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -> complex:
-        """calculates the D integral between two spherical harmonics."""
+        """Calculates the D integral between two spherical harmonics."""
         if i not in self._fields:
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),

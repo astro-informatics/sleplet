@@ -22,7 +22,7 @@ SNR_IN = -10
 
 
 def main(snr: float, sigma: int) -> None:
-    """denoising demo using Slepian wavelets."""
+    """Denoising demo using Slepian wavelets."""
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
     region = Region(mask_name="south_america")

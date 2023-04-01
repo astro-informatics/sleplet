@@ -1,4 +1,4 @@
-"""methods to work with wavelet and wavelet coefficients."""
+"""Methods to work with wavelet and wavelet coefficients."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -121,7 +121,7 @@ def _create_axisymmetric_wavelets(
     B: int,
     j_min: int,
 ) -> npt.NDArray[np.complex_]:
-    """computes the axisymmetric wavelets."""
+    """Computes the axisymmetric wavelets."""
     kappas = create_kappas(L, B, j_min)
     wavelets = np.zeros((kappas.shape[0], L**2), dtype=np.complex_)
     for ell in range(L):

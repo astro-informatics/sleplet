@@ -1,4 +1,4 @@
-"""classes to create and handle mesh (manifold) data."""
+"""Classes to create and handle mesh (manifold) data."""
 
 from .mesh import Mesh
 from .mesh_slepian import MeshSlepian

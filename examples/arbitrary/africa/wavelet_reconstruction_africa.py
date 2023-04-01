@@ -12,7 +12,7 @@ SMOOTHING = 2
 
 
 def main() -> None:
-    """the reconstruction of a signal in Slepian space."""
+    """The reconstruction of a signal in Slepian space."""
     region = Region(mask_name="africa")
     swc = SlepianWaveletCoefficientsAfrica(
         L,

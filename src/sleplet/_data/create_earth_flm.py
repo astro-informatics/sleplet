@@ -8,7 +8,7 @@ import sleplet._smoothing
 
 
 def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex_]:
-    """creates the flm for the whole Earth."""
+    """Creates the flm for the whole Earth."""
     # load in data
     flm = _load_flm()
 
@@ -31,7 +31,7 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
 
 
 def _load_flm() -> npt.NDArray[np.complex_]:
-    """load coefficients from file."""
+    """Load coefficients from file."""
     mat_contents = sio.loadmat(
         sleplet._data.setup_pooch.find_on_pooch_then_local(
             "EGM2008_Topography_flms_L2190.mat",

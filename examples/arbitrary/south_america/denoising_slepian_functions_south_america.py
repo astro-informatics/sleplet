@@ -30,7 +30,7 @@ def _denoising_slepian_function(
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """denoising demo using Slepian function."""
+    """Denoising demo using Slepian function."""
     # compute Slepian noise
     sigma_noise = compute_sigma_noise(
         signal.coefficients,
@@ -54,7 +54,7 @@ def _denoising_slepian_function(
 
 
 def main(snr: float, sigma: int) -> None:
-    """denoising demo using Slepian wavelets."""
+    """Denoising demo using Slepian wavelets."""
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
     region = Region(mask_name="south_america")
