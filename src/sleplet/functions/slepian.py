@@ -10,7 +10,7 @@ import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class Slepian(sleplet.functions.fp.F_P):
+class Slepian(sleplet.functions.fp.FP):
     """TODO."""
 
     rank: int = 0

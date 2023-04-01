@@ -11,7 +11,7 @@ import sleplet.harmonic_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SphericalHarmonic(sleplet.functions.flm.F_LM):
+class SphericalHarmonic(sleplet.functions.flm.FLM):
     """TODO."""
 
     ell: int = 0

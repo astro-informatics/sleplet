@@ -11,7 +11,7 @@ import sleplet.noise
 
 
 @dataclass(config=sleplet._validation.Validation)
-class F_LM(sleplet.functions.coefficients.Coefficients):  # noqa: N801
+class FLM(sleplet.functions.coefficients.Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:

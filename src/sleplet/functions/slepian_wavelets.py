@@ -12,7 +12,7 @@ import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianWavelets(sleplet.functions.fp.F_P):
+class SlepianWavelets(sleplet.functions.fp.FP):
     """TODO."""
 
     B: int = 3

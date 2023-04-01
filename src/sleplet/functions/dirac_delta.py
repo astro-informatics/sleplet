@@ -9,7 +9,7 @@ import sleplet.functions.flm
 
 
 @dataclass(config=sleplet._validation.Validation)
-class DiracDelta(sleplet.functions.flm.F_LM):
+class DiracDelta(sleplet.functions.flm.FLM):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

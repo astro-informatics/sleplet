@@ -10,7 +10,7 @@ import sleplet.harmonic_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class ElongatedGaussian(sleplet.functions.flm.F_LM):
+class ElongatedGaussian(sleplet.functions.flm.FLM):
     """TODO."""
 
     p_sigma: float = 0.1

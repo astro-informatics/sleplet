@@ -13,7 +13,7 @@ import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class AxisymmetricWaveletCoefficientsAfrica(sleplet.functions.flm.F_LM):
+class AxisymmetricWaveletCoefficientsAfrica(sleplet.functions.flm.FLM):
     """TODO."""
 
     B: int = 3

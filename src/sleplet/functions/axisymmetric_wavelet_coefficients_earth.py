@@ -13,7 +13,7 @@ import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class AxisymmetricWaveletCoefficientsEarth(sleplet.functions.flm.F_LM):
+class AxisymmetricWaveletCoefficientsEarth(sleplet.functions.flm.FLM):
     """TODO."""
 
     B: int = 3

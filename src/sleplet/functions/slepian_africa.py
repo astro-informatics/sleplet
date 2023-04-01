@@ -11,7 +11,7 @@ import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianAfrica(sleplet.functions.fp.F_P):
+class SlepianAfrica(sleplet.functions.fp.FP):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

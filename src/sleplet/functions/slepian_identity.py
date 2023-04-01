@@ -8,7 +8,7 @@ import sleplet.functions.fp
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianIdentity(sleplet.functions.fp.F_P):
+class SlepianIdentity(sleplet.functions.fp.FP):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

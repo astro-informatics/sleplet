@@ -15,7 +15,7 @@ import sleplet.wavelet_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.fp.F_P):
+class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.fp.FP):
     """TODO."""
 
     B: int = 3

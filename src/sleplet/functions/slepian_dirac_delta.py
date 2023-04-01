@@ -12,7 +12,7 @@ import sleplet.slepian_methods
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianDiracDelta(sleplet.functions.fp.F_P):
+class SlepianDiracDelta(sleplet.functions.fp.FP):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

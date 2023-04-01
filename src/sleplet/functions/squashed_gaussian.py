@@ -10,7 +10,7 @@ import sleplet.harmonic_methods
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SquashedGaussian(sleplet.functions.flm.F_LM):
+class SquashedGaussian(sleplet.functions.flm.FLM):
     """TODO."""
 
     freq: float = 0.1
