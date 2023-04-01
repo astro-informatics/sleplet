@@ -12,7 +12,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: FantasticFiasco/action-update-license-year@v2
+      - uses: FantasticFiasco/action-update-license-year@v3
         with:
           path: LICENSE.md
           token: ${{ secrets.GITHUB_TOKEN }}

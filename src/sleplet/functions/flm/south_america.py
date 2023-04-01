@@ -47,8 +47,8 @@ class SouthAmerica(sleplet.functions.f_lm.F_LM):
 
     def _grid_fun(
         self,
-        theta: npt.NDArray[np.float_],
-        phi: npt.NDArray[np.float_],
+        theta: npt.NDArray[np.float_],  # noqa: ARG002
+        phi: npt.NDArray[np.float_],  # noqa: ARG002
     ) -> npt.NDArray[np.float_]:
         """function on the grid."""
         earth_flm = sleplet._data.create_earth_flm.create_flm(
