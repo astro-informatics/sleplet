@@ -111,13 +111,11 @@ per-file-ignores = {"test_*" = [
 ]}
 select = [
     "A",
-    # "ANN", TODO:
     "ARG",
     "B",
     "BLE",
     "C",
     "COM",
-    # "D", TODO:
     "DJ",
     "DTZ",
     "E",
@@ -126,10 +124,8 @@ select = [
     "EXE",
     "F",
     "FBT",
-    # "G", TODO:
     "I",
     "ICN",
-    # "INP", TODO:
     "ISC",
     "N",
     "NPY",
@@ -146,11 +142,9 @@ select = [
     "RUF",
     "S",
     "SIM",
-    # "SLF", TODO:
     "T",
     "TCH",
     "TID",
-    # "TRY", TODO:
     "UP",
     "W",
     "YTT",
