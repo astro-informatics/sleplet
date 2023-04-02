@@ -41,12 +41,15 @@ Slepian wavelets are built upon the eigenfunctions of the Slepian concentration 
 Wavelets are constructed through a tiling of the Slepian harmonic line by leveraging the existing scale-discretised framework [@Wiaux2008; @Leistedt2013].
 Whilst these wavelets were inspired by spherical datasets, like in cosmology, the wavelet construction may be utilised for manifold or graph data.
 
-To the author's knowledge, there is no public software which allows one to compute Slepian wavelets (or similar approach) on the sphere or general manifolds/meshes.
-`SHTools` [@Wieczorek2018] and `slepian_alpha` [@Simons2020] are examples of codes which allow one to compute Slepian functions on the sphere.
-In conjunction with `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013] may be used to develop scale-discretised wavelets on the whole sphere.
+To the author's knowledge, there is no public software which allows one to compute Slepian wavelets
+(or a similar approach) on the sphere or general manifolds/meshes.
+`SHTools` [@Wieczorek2018] is a `Python` code used for spherical harmonic transforms, which allows one to compute the Slepian functions of the spherical polar cap [@Simons2006].
+A series of `MATLAB` scripts exist in `slepian_alpha` [@Simons2020] which permits the calculation of the Slepian functions on the sphere.
+In both cases, however, the codes only support the spherical setting and not the general manifold setting.
 
 `SLEPLET` [@RoddySLEPLET] is a Python package for the construction of Slepian wavelets in the spherical and manifold (via meshes) settings.
-The API of `SLEPLET` has been designed in an object-orientated manner and is easily extendible.
+In contrast to the aforementioned codes, `SLEPLET` handles any spherical region as well as the manifold setting.
+The API is documented and easily extendible, designed in an object-orientated manner.
 Upon installation, `SLEPLET` comes with two command line interfaces - `sphere` and `mesh` - which allows one to easily generate plots on the sphere and a set of meshes using `plotly`.
 Whilst these scripts are the primary intended use, `SLEPLET` may be used directly to generate the Slepian coefficients in the spherical/manifold setting and use methods to convert these into real space for visualisation or other intended purposes.
 The construction of the sifting convolution [@Roddy2021] was required to create Slepian wavelets.
@@ -58,14 +61,13 @@ Although symmetries of this matrix and the spherical harmonics have been exploit
 The matrix is filled in parallel in `Python` using `concurrent.futures`, and the spherical harmonic transforms are computed in `C` using `SSHT`.
 This may be sped up further by utilising the new `ducc0` backend for `SSHT`, which may allow for a multithreaded solution.
 Ultimately, the eigenproblem must be solved to compute the Slepian functions, requiring sophisticated algorithms to balance speed and accuracy.
-Therefore, to work with high-resolution data such as these, one requires high performance computing methods on supercomputers with massive memory and storage.
+Therefore, to work with high-resolution data such as these, one requires high-performance computing methods on supercomputers with massive memory and storage.
 To this end, Slepian wavelets may be exploited at present at low resolutions, but further work is required for them to be fully scalable.
 
 # Acknowledgements
 
 The author would like to thank Jason D. McEwen for his advice and guidance on the mathematics behind `SLEPLET`.
-Further, the author would like to thank Zubair Khalid for providing his `MATLAB` implementation to compute the Slepian functions of a polar cap region, as well as the formulation
-for a limited colatitude-longitude region.
-`SLEPLET` makes use of several libraries the author would like to acknowledge, in particular `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013], and `libigl` [@Libigl2017].
+Further, the author would like to thank Zubair Khalid for providing his `MATLAB` implementation to compute the Slepian functions of a polar cap region, as well as the formulation for a limited colatitude-longitude region [@Bates2017].
+`SLEPLET` makes use of several libraries the author would like to acknowledge, in particular, `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013], and `libigl` [@Libigl2017].
 
 # References
