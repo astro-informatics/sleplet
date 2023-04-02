@@ -7,12 +7,12 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions
 import sleplet.wavelet_methods
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class AxisymmetricWaveletCoefficientsSouthAmerica(sleplet.functions.f_lm.FLM):
+class AxisymmetricWaveletCoefficientsSouthAmerica(FLM):
     """TODO."""
 
     B: int = 3

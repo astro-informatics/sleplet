@@ -5,12 +5,12 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-import sleplet.meshes.mesh_coefficients
 import sleplet.noise
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class MeshHarmonicCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
+class MeshHarmonicCoefficients(MeshCoefficients):
     """Abstract parent class to handle Fourier coefficients on the mesh."""
 
     def __post_init_post_parse__(self) -> None:

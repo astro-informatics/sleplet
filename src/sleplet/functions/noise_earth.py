@@ -5,12 +5,12 @@ from pydantic.dataclasses import dataclass
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions
-import sleplet.functions.flm
 import sleplet.noise
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class NoiseEarth(sleplet.functions.flm.FLM):
+class NoiseEarth(FLM):
     """TODO."""
 
     SNR: float = 10

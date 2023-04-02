@@ -4,13 +4,13 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._validation
 import sleplet.meshes
-import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.slepian_methods
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepianField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
+    MeshSlepianCoefficients,
 ):
     """TODO."""
 

@@ -8,13 +8,13 @@ import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.meshes
-import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.wavelet_methods
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWaveletCoefficients(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
+    MeshSlepianCoefficients,
 ):
     """TODO."""
 

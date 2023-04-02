@@ -9,12 +9,12 @@ from scipy.special import gammaln
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.flm
 import sleplet.wavelet_methods
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class Ridgelets(sleplet.functions.flm.FLM):
+class Ridgelets(FLM):
     """TODO."""
 
     B: int = 3

@@ -5,11 +5,11 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.flm
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class HarmonicGaussian(sleplet.functions.flm.FLM):
+class HarmonicGaussian(FLM):
     """TODO."""
 
     l_sigma: float = 10

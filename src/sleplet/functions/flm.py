@@ -6,12 +6,12 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-import sleplet.functions.coefficients
 import sleplet.noise
+from sleplet.functions.coefficients import Coefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class FLM(sleplet.functions.coefficients.Coefficients):
+class FLM(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:

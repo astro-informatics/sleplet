@@ -4,11 +4,11 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.fp
+from sleplet.functions.fp import FP
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianIdentity(sleplet.functions.fp.FP):
+class SlepianIdentity(FP):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

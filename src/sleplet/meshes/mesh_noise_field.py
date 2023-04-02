@@ -5,13 +5,13 @@ from pydantic.dataclasses import dataclass
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.meshes
-import sleplet.meshes.mesh_harmonic_coefficients
 import sleplet.noise
+from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshNoiseField(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients,
+    MeshHarmonicCoefficients,
 ):
     """TODO."""
 

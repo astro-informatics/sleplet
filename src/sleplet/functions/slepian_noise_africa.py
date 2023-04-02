@@ -5,13 +5,13 @@ from pydantic.dataclasses import dataclass
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions
-import sleplet.functions.fp
 import sleplet.noise
 import sleplet.slepian
+from sleplet.functions.fp import FP
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianNoiseAfrica(sleplet.functions.fp.FP):
+class SlepianNoiseAfrica(FP):
     """TODO."""
 
     SNR: float = -10

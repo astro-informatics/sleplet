@@ -8,11 +8,11 @@ from pys2let import pys2let_j_max, wavelet_tiling
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.flm
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class DirectionalSpinWavelets(sleplet.functions.flm.FLM):
+class DirectionalSpinWavelets(FLM):
     """TODO."""
 
     B: int = 3

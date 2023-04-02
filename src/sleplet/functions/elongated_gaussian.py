@@ -5,12 +5,12 @@ from pydantic.dataclasses import dataclass
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.functions.flm
 import sleplet.harmonic_methods
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class ElongatedGaussian(sleplet.functions.flm.FLM):
+class ElongatedGaussian(FLM):
     """TODO."""
 
     p_sigma: float = 0.1

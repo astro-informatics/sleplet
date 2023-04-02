@@ -8,13 +8,13 @@ import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions
-import sleplet.functions.fp
 import sleplet.slepian
 import sleplet.wavelet_methods
+from sleplet.functions.fp import FP
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.fp.FP):
+class SlepianWaveletCoefficientsSouthAmerica(FP):
     """TODO."""
 
     B: int = 3

@@ -5,11 +5,11 @@ from pydantic.dataclasses import dataclass
 import sleplet._data.create_wmap_flm
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.flm
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation)
-class Wmap(sleplet.functions.flm.FLM):
+class Wmap(FLM):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

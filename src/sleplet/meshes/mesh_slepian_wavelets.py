@@ -7,13 +7,13 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.wavelet_methods
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWavelets(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients,
+    MeshSlepianCoefficients,
 ):
     """TODO."""
 

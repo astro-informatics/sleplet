@@ -6,14 +6,14 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
 import sleplet._validation
-import sleplet.functions.coefficients
 import sleplet.noise
 import sleplet.slepian
 import sleplet.slepian_methods
+from sleplet.functions.coefficients import Coefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class FP(sleplet.functions.coefficients.Coefficients):
+class FP(Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:

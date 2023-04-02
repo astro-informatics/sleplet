@@ -7,12 +7,12 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.fp
 import sleplet.wavelet_methods
+from sleplet.functions.fp import FP
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianWavelets(sleplet.functions.fp.FP):
+class SlepianWavelets(FP):
     """TODO."""
 
     B: int = 3

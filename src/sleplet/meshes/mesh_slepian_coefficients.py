@@ -6,12 +6,12 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._validation
 import sleplet.meshes
-import sleplet.meshes.mesh_coefficients
 import sleplet.noise
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
+class MeshSlepianCoefficients(MeshCoefficients):
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
     def __post_init_post_parse__(self) -> None:

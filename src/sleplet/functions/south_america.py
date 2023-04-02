@@ -9,12 +9,12 @@ import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.functions.flm
 import sleplet.harmonic_methods
+from sleplet.functions.flm import FLM
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SouthAmerica(sleplet.functions.flm.FLM):
+class SouthAmerica(FLM):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

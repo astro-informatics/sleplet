@@ -7,12 +7,12 @@ import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.functions.fp
 import sleplet.slepian_methods
+from sleplet.functions.fp import FP
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianDiracDelta(sleplet.functions.fp.FP):
+class SlepianDiracDelta(FP):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:
