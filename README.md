@@ -72,6 +72,23 @@ The default region is the `south_america` arbitrary region.
 - `SLEPIAN_MASK`
   - for an arbitrary Slepian region, currently `africa`/`south_america` supported
 
+## Citing
+
+If you use `SLEPLET` in your research, please cite the paper.
+
+```bibtex
+@article{SLEPLET2023,
+  author    = {Roddy, Patrick J.},
+  title     = {{SLEPLET: Slepian scale-discretised wavelets in Python}},
+  journal   = {Journal of Open Source Software},
+  volume    = ,
+  number    = ,
+  pages     = ,
+  year      = 2023,
+  doi       = {},
+}
+```
+
 ## Paper Figures
 
 To recreate the figures from the below papers, one may use the CLI or the API.
