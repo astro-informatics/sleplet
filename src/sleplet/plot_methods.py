@@ -16,7 +16,7 @@ import sleplet.meshes.mesh_coefficients
 import sleplet.slepian.region
 import sleplet.slepian_methods
 
-_fig_path = Path(__file__).resolve().parent / "figures"
+_fig_path = Path(__file__).resolve().parent / "_figures"
 
 
 def calc_plot_resolution(L: int) -> int:
