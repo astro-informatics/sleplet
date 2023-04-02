@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 import sleplet
 import sleplet._class_lists
 import sleplet._string_methods
-import sleplet.meshes
+import sleplet.meshes.mesh
 import sleplet.meshes.mesh_coefficients
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_mesh
@@ -100,7 +100,7 @@ def main() -> None:
     sleplet.logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
-    mesh = sleplet.meshes.Mesh(args.function, zoom=args.zoom)
+    mesh = sleplet.meshes.mesh.Mesh(args.function, zoom=args.zoom)
     f = sleplet._class_lists.MESH_COEFFICIENTS[
         sleplet._string_methods.convert_classes_list_to_snake_case(
             sleplet._class_lists.MESH_COEFFICIENTS,

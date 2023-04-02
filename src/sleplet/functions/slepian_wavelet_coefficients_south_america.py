@@ -7,7 +7,8 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions
+import sleplet.functions.slepian_south_america
+import sleplet.functions.slepian_wavelets
 import sleplet.slepian.region
 import sleplet.wavelet_methods
 from sleplet.functions.fp import Fp
@@ -64,13 +65,13 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
         """Computes wavelet coefficients in Slepian space."""
-        sw = sleplet.functions.SlepianWavelets(
+        sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
             self.L,
             B=self.B,
             j_min=self.j_min,
             region=self.region,
         )
-        sa = sleplet.functions.SlepianSouthAmerica(
+        sa = sleplet.functions.slepian_south_america.SlepianSouthAmerica(
             self.L,
             region=self.region,
             smoothing=self.smoothing,

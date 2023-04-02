@@ -7,7 +7,7 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions
+import sleplet.functions.africa
 import sleplet.wavelet_methods
 from sleplet.functions.flm import Flm
 
@@ -63,7 +63,7 @@ class AxisymmetricWaveletCoefficientsAfrica(Flm):
             self.B,
             self.j_min,
         )
-        self.africa = sleplet.functions.Africa(
+        self.africa = sleplet.functions.africa.Africa(
             self.L,
             smoothing=self.smoothing,
         )

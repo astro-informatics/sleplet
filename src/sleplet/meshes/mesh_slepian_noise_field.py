@@ -4,7 +4,7 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes
+import sleplet.meshes.mesh_slepian_field
 import sleplet.noise
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
@@ -22,7 +22,7 @@ class MeshSlepianNoiseField(
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        smf = sleplet.meshes.MeshSlepianField(
+        smf = sleplet.meshes.mesh_slepian_field.MeshSlepianField(
             self.mesh,
             region=True,
         )

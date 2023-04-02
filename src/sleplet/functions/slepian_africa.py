@@ -4,7 +4,7 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions
+import sleplet.functions.africa
 import sleplet.slepian.region
 import sleplet.slepian_methods
 from sleplet.functions.fp import Fp
@@ -23,7 +23,7 @@ class SlepianAfrica(Fp):
             raise RuntimeError("Slepian region selected must be 'africa'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        a = sleplet.functions.Africa(self.L, smoothing=self.smoothing)
+        a = sleplet.functions.africa.Africa(self.L, smoothing=self.smoothing)
         return sleplet.slepian_methods.slepian_forward(
             self.L,
             self.slepian,

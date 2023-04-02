@@ -9,7 +9,7 @@ import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
 import sleplet._vars
 import sleplet.harmonic_methods
-import sleplet.meshes
+import sleplet.meshes.mesh
 import sleplet.slepian.region
 
 _data_path = Path(__file__).resolve().parent / "_data"
@@ -126,7 +126,7 @@ def create_mesh_region(
 
 
 def ensure_masked_bandlimit_mesh_signal(
-    mesh: "sleplet.meshes.Mesh",
+    mesh: "sleplet.meshes.mesh.Mesh",
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """Ensures that signal in pixel space is bandlimited."""
@@ -136,7 +136,7 @@ def ensure_masked_bandlimit_mesh_signal(
 
 
 def convert_region_on_vertices_to_faces(
-    mesh: "sleplet.meshes.Mesh",
+    mesh: "sleplet.meshes.mesh.Mesh",
 ) -> npt.NDArray[np.float_]:
     """Converts the region on vertices to faces."""
     region_reshape = np.argwhere(mesh.region).reshape(-1)

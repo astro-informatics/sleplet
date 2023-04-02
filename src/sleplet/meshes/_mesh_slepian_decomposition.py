@@ -8,12 +8,12 @@ import sleplet
 import sleplet._integration_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.meshes.mesh_slepian
+from sleplet.meshes.mesh_slepian import MeshSlepian
 
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepianDecomposition:
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian
+    mesh_slepian: MeshSlepian
     _: KW_ONLY
     mask: bool = False
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None

@@ -6,8 +6,8 @@ from numpy import typing as npt
 import sleplet
 import sleplet._vars
 import sleplet.harmonic_methods
-import sleplet.meshes
 import sleplet.meshes._mesh_slepian_decomposition
+import sleplet.meshes.mesh_slepian
 import sleplet.slepian._slepian_decomposition
 import sleplet.slepian.region
 import sleplet.slepian.slepian_arbitrary
@@ -167,7 +167,7 @@ def _compute_s_p_omega_prime(
 
 
 def slepian_mesh_forward(
-    mesh_slepian: sleplet.meshes.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     *,
     u: npt.NDArray[np.complex_ | np.float_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -199,7 +199,7 @@ def slepian_mesh_forward(
 
 
 def slepian_mesh_inverse(
-    mesh_slepian: sleplet.meshes.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
@@ -219,7 +219,7 @@ def slepian_mesh_inverse(
 
 
 def _compute_mesh_s_p_pixel(
-    mesh_slepian: sleplet.meshes.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
 ) -> npt.NDArray[np.float_]:
     """Method to calculate Sp(omega) for a given region."""
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))

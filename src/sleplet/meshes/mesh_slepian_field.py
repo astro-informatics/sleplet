@@ -3,7 +3,7 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-import sleplet.meshes
+import sleplet.meshes.mesh_field
 import sleplet.slepian_methods
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
@@ -19,7 +19,7 @@ class MeshSlepianField(
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
-        mf = sleplet.meshes.MeshField(
+        mf = sleplet.meshes.mesh_field.MeshField(
             self.mesh,
             region=True,
         )

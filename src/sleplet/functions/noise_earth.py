@@ -4,7 +4,7 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions
+import sleplet.functions.earth
 import sleplet.noise
 from sleplet.functions.flm import Flm
 
@@ -20,7 +20,7 @@ class NoiseEarth(Flm):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        earth = sleplet.functions.Earth(self.L, smoothing=self.smoothing)
+        earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
         noise = sleplet.noise._create_noise(self.L, earth.coefficients, self.SNR)
         sleplet.noise.compute_snr(earth.coefficients, noise, "Harmonic")
         return noise
