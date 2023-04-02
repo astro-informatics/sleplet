@@ -123,8 +123,8 @@ def compute_random_signal(
     Args:
     ----
         L: The spherical harmonic bandlimit.
-        rng: _description_
-        var_signal: _description_
+        rng: The random number generator object.
+        var_signal: The variance of the signal.
 
     Returns:
     -------
@@ -176,7 +176,7 @@ def mesh_inverse(
 
     Returns:
     -------
-        n: _description_
+        The values on the mesh in pixel space.
     """
     return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)
 

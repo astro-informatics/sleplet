@@ -85,8 +85,8 @@ class Coefficients:
 
         Args:
         ----
-            f_coefficient: _description_
-            g_coefficien: _description_
+            f_coefficient: Input harmonic/Slepian coefficients.
+            g_coefficien: Input harmonic/Slepian coefficients.
             shannon: The Shannon number, only used in the Slepian case.
 
         Returns:

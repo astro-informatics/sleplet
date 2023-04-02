@@ -84,7 +84,7 @@ def save_plot(name: str) -> None:
 
     Args:
     ----
-        name: _description_
+        name: The output filename.
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
@@ -108,13 +108,13 @@ def find_max_amplitude(
 
     Args:
     ----
-        function: _description_
-        plot_type: _description_
-        upsample: _description_
+        function: The `Coefficients` value to find the amplitude of.
+        plot_type: Plot `real` or another field value.
+        upsample: Whether to upsample the output.
 
     Returns:
     -------
-        _description_
+        The maximum amplitude value.
     """
     # compute inverse transform
     if hasattr(function, "slepian"):
@@ -233,11 +233,11 @@ def compute_amplitude_for_noisy_mesh_plots(
 
     Args:
     ----
-        f: _description_
+        f: The mesh field value.
 
     Returns:
     -------
-        _description_
+        The noise adjusted maximum amplitude.
     """
     return (
         np.abs(_coefficients_to_field_mesh(f, f.unnoised_coefficients)).max()
@@ -266,11 +266,11 @@ def compute_amplitude_for_noisy_sphere_plots(
 
     Args:
     ----
-        f: _description_
+        f: The spherical field value.
 
     Returns:
     -------
-        _description_
+        The noise adjusted maximum amplitude value.
     """
     return (
         np.abs(_coefficients_to_field_sphere(f, f.unnoised_coefficients)).max()

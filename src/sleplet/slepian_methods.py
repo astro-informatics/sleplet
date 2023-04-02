@@ -26,15 +26,15 @@ def choose_slepian_method(
     Args:
     ----
         L: The spherical harmonic bandlimit.
-        region: _description_
+        region: The Slepian region.
 
     Raises:
     ------
-        ValueError: _description_
+        ValueError: Invalid region_type.
 
     Returns:
     -------
-        _description_
+        The given Slepian object.
     """
     match region.region_type:
         case "polar":
@@ -78,11 +78,11 @@ def slepian_inverse(
     ----
         f_p: The Slepian wavelet coefficients.
         L: The spherical harmonic bandlimit.
-        slepian: _description_
+        slepian: The given Slepian object.
 
     Returns:
     -------
-        _description_
+        The value on the sphere in pixel space.
     """
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
     s_p = compute_s_p_omega(L, slepian)
@@ -104,15 +104,15 @@ def slepian_forward(
     Args:
     ----
         L: The spherical harmonic bandlimit.
-        slepian: _description_
-        f: _description_
+        slepian: The given Slepian object.
+        f: The field value.
         flm: The spherical harmonic coefficients.
-        mask: _description_
-        n_coeffs: _description_
+        mask: A boolean mask of the Slepian region.
+        n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
     -------
-        _description_
+        The value in Slepian space.
     """
     sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
         L,
@@ -129,17 +129,17 @@ def compute_s_p_omega(
     L: int,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """
-    Method to calculate Sp(omega) for a given region.
+    r"""
+    Method to calculate \(S_{p}(\omega)\) for a given region.
 
     Args:
     ----
         L: The spherical harmonic bandlimit.
-        slepian: _description_
+        slepian: The given Slepian object.
 
     Returns:
     -------
-        _description_
+        The complex \(S_{p}(\omega)\) value.
     """
     n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
@@ -183,15 +183,15 @@ def slepian_mesh_forward(
 
     Args:
     ----
-        mesh_slepian: _description_
+        mesh_slepian: The Slepian mesh object containing the eigensolutions.
         u: The signal field value on the mesh.
         u_i: The Fourier coefficients on the mesh.
-        mask: _description_
-        n_coeffs: _description_
+        mask: A boolean mask of the Slepian region.
+        n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
     -------
-        _description_
+        The value of a function on the mesh in Slepian space.
     """
     sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
         mesh_slepian,
@@ -212,12 +212,12 @@ def slepian_mesh_inverse(
 
     Args:
     ----
-        mesh_slepian: _description_
+        mesh_slepian: The Slepian mesh object containing the eigensolutions.
         f_p: The Slepian wavelet coefficients.
 
     Returns:
     -------
-        _description_
+        The value of a function on the mesh in pixel space.
     """
     f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
     s_p = _compute_mesh_s_p_pixel(mesh_slepian)

@@ -24,7 +24,7 @@ def slepian_wavelet_forward(
 
     Returns:
     -------
-        _description_
+        The Slepian wavelets in pixel space.
     """
     return find_non_zero_wavelet_coefficients(
         sleplet._convolution_methods.sifting_convolution(
@@ -52,7 +52,7 @@ def slepian_wavelet_inverse(
 
     Returns:
     -------
-        _description_
+        The Slepian wavelets in Slepian space.
     """
     # ensure wavelets are the same shape as the coefficients
     wavelets_shannon = wavelets[: len(wav_coeffs)]
@@ -74,13 +74,13 @@ def axisymmetric_wavelet_forward(
 
     Args:
     ----
-        L  _description_
+        L: The spherical harmonic bandlimit.
         flm: The spherical harmonic coefficients.
         wavelets: The axisymmetric wavelets.
 
     Returns:
     -------
-        _description_
+        The axisymmetric wavelets in pixel space.
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
@@ -108,7 +108,7 @@ def axisymmetric_wavelet_inverse(
 
     Returns:
     -------
-        _description_
+        The axisymmetric wavelet coefficients in pixel space.
     """
     flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(L):
@@ -141,13 +141,13 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
 
     Args:
     ----
-        xlim: _description_
+        xlim: The x-axis value. \(L\)/\(L^2\) in the harmonic/Slepian case.
         B: The wavelet parameter. Represented as \(\lambda\) in the papers.
         j_min: The minimum wavelet scale.
 
     Returns:
     -------
-        _description_
+        The Slepian wavelet generating functions.
     """
     kappa0, kappa = axisym_wav_l(B, xlim, j_min)
     return np.concatenate((kappa0[np.newaxis], kappa.T))
@@ -164,10 +164,10 @@ def find_non_zero_wavelet_coefficients(
     Args:
     ----
         wav_coeffs: The wavelet coefficients.
-        axis: _description_
+        axis: The axis to search over.
 
     Returns:
     -------
-        _description_
+        The non-zero wavelet coefficients.
     """
     return wav_coeffs[wav_coeffs.any(axis=axis)]
