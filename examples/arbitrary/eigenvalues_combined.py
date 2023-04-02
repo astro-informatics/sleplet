@@ -1,13 +1,10 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from sleplet.utils.plot_methods import save_plot
+from sleplet.plot_methods import save_plot
+from sleplet.slepian import SlepianArbitrary
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 COLOURS = ["b", "k"]
@@ -18,9 +15,7 @@ ZORDER = [2, 1]
 
 
 def main() -> None:
-    """
-    plots the tiling of the Slepian line
-    """
+    """Plots the tiling of the Slepian line."""
     for c, region in enumerate(REGIONS):
         slepian = SlepianArbitrary(L, region)
         p_range = np.arange(0, L**2)
@@ -46,7 +41,7 @@ def main() -> None:
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     plt.legend(loc=3)
-    save_plot(fig_path, f"combined_eigenvalues_L{L}")
+    save_plot(f"combined_eigenvalues_L{L}")
 
 
 if __name__ == "__main__":

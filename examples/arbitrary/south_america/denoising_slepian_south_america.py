@@ -1,27 +1,28 @@
+import sys
 from argparse import ArgumentParser
+from pathlib import Path
 
 from sleplet import logger
-from sleplet.functions.fp.slepian_south_america import SlepianSouthAmerica
-from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.denoising import denoising_slepian_wavelet
-from sleplet.utils.plot_methods import find_max_amplitude
-from sleplet.utils.region import Region
-from sleplet.utils.string_methods import filename_args
-from sleplet.utils.vars import SMOOTHING
+from sleplet.functions import SlepianSouthAmerica, SlepianWavelets
+from sleplet.plot_methods import find_max_amplitude
+from sleplet.plotting import PlotSphere
+from sleplet.slepian import Region
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from _denoising_slepian_wavelet import denoising_slepian_wavelet  # noqa: E402
 
 B = 3
 J_MIN = 2
 L = 128
 N_SIGMA = 2
 NORMALISE = False
+SMOOTHING = 2
 SNR_IN = -10
 
 
 def main(snr: float, sigma: int) -> None:
-    """
-    denoising demo using Slepian wavelets
-    """
+    """Denoising demo using Slepian wavelets."""
     logger.info(f"SNR={snr}, n_sigma={sigma}")
     # setup
     region = Region(mask_name="south_america")
@@ -37,9 +38,14 @@ def main(snr: float, sigma: int) -> None:
     amplitude = find_max_amplitude(fun)
 
     f = denoising_slepian_wavelet(fun, fun_noised, sw, snr, sigma)
-    name = f"{fun.name}{filename_args(snr, 'snr')}{filename_args(sigma,'n')}_denoised"
-    Plot(
-        f, L, name, amplitude=amplitude, normalise=NORMALISE, region=sw.region
+    name = f"{fun.name}_{snr}snr_{sigma}n_denoised"
+    PlotSphere(
+        f,
+        L,
+        name,
+        amplitude=amplitude,
+        normalise=NORMALISE,
+        region=sw.region,
     ).execute()
 
 

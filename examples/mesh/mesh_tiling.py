@@ -1,30 +1,31 @@
 from argparse import ArgumentParser
-from pathlib import Path
 
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.meshes.classes.mesh_slepian import MeshSlepian
-from sleplet.scripts.plotting_on_mesh import valid_meshes
-from sleplet.utils.class_lists import MESHES
-from sleplet.utils.plot_methods import save_plot
-from sleplet.utils.wavelet_methods import create_kappas
+from sleplet.meshes import Mesh, MeshSlepian
+from sleplet.plot_methods import save_plot
+from sleplet.wavelet_methods import create_kappas
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 B = 3
 J_MIN = 2
+MESHES = [
+    "bird",
+    "cheetah",
+    "cube",
+    "dragon",
+    "homer",
+    "teapot",
+]
 STEP = 0.01
 
 
 def main(mesh_name: str) -> None:
-    """
-    plots the tiling of the Slepian line
-    """
+    """Plots the tiling of the Slepian line."""
     # initialise mesh and Slepian mesh
     mesh = Mesh(mesh_name)
     mesh_slepian = MeshSlepian(mesh)
@@ -61,16 +62,19 @@ def main(mesh_name: str) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.legend()
-    save_plot(fig_path, f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
+    save_plot(f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
 
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="mesh tiling")
     parser.add_argument(
         "function",
-        type=valid_meshes,
+        type=str,
         choices=MESHES,
         help="mesh to plot",
+        default="homer",
+        const="homer",
+        nargs="?",
     )
     args = parser.parse_args()
     main(args.function)

@@ -1,14 +1,11 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
-from sleplet.utils.plot_methods import save_plot
-from sleplet.utils.wavelet_methods import create_kappas
+from sleplet.plot_methods import save_plot
+from sleplet.wavelet_methods import create_kappas
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 B = 3
@@ -18,9 +15,7 @@ STEP = 0.01
 
 
 def main() -> None:
-    """
-    plots the tiling of the harmonic line
-    """
+    """Plots the tiling of the harmonic line."""
     xlim = L
     x = np.arange(xlim)
     xi = np.arange(0, xlim - 1 + STEP, STEP)
@@ -35,7 +30,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$\ell$")
     plt.legend(loc=6)
-    save_plot(fig_path, f"axisymmetric_tiling_L{L}")
+    save_plot(f"axisymmetric_tiling_L{L}")
 
 
 if __name__ == "__main__":

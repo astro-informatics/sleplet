@@ -1,40 +1,44 @@
+import sys
+from pathlib import Path
+
 import numpy as np
 from numpy.random import default_rng
 
 from sleplet import logger
-from sleplet.functions.fp.slepian_wavelets import SlepianWavelets
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.harmonic_methods import compute_random_signal
-from sleplet.utils.region import Region
-from sleplet.utils.slepian_methods import slepian_inverse
-from sleplet.utils.vars import RANDOM_SEED
-from sleplet.utils.wavelet_methods import (
-    compute_slepian_wavelet_covariance,
+from sleplet.functions import SlepianWavelets
+from sleplet.harmonic_methods import compute_random_signal
+from sleplet.plotting import PlotSphere
+from sleplet.slepian import Region
+from sleplet.slepian_methods import slepian_inverse
+from sleplet.wavelet_methods import (
     find_non_zero_wavelet_coefficients,
     slepian_wavelet_forward,
 )
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from _slepian_wavelet_covariance import compute_slepian_wavelet_covariance  # noqa: E402
 
 B = 3
 J_MIN = 2
 L = 128
 NORMALISE = False
+RANDOM_SEED = 30
 RUNS = 10
 VAR_FP = 1
 
 
 def main() -> None:
     """
-    plots the difference between the theoretical &
-    experimental covariances for the Slepian wavelets
+    Plots the difference between the theoretical &
+    experimental covariances for the Slepian wavelets.
     """
     # compute wavelets
     region = Region(mask_name="south_america")
     sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
 
     # theoretical covariance
-    covar_theory = compute_slepian_wavelet_covariance(
-        L, sw.wavelets, sw.slepian, var_signal=VAR_FP
-    )
+    covar_theory = compute_slepian_wavelet_covariance(L, sw, var_signal=VAR_FP)
 
     # initialise matrix
     covar_runs_shape = (RUNS, *covar_theory.shape)
@@ -67,7 +71,7 @@ def main() -> None:
     for j, diff in enumerate(differences):
         name = f"slepian_covariance_diff_{j}"
         logger.info(name)
-        Plot(diff, L, name, normalise=NORMALISE, region=sw.region).execute()
+        PlotSphere(diff, L, name, normalise=NORMALISE, region=sw.region).execute()
 
 
 if __name__ == "__main__":

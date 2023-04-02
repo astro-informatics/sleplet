@@ -1,23 +1,18 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.slepian.slepian_region.slepian_polar_cap import SlepianPolarCap
-from sleplet.utils.plot_methods import save_plot
+from sleplet.plot_methods import save_plot
+from sleplet.slepian import SlepianPolarCap
+
+sns.set(context="paper")
 
 L = 16
 THETA_MAX = 40
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
-sns.set(context="paper")
-
 
 def main() -> None:
-    """
-    creates a plot of Slepian eigenvalues against rank
-    """
+    """Creates a plot of Slepian eigenvalues against rank."""
     slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX))
     p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")
@@ -34,7 +29,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(fig_path, "polar_cap_eigenvalues")
+    save_plot("polar_cap_eigenvalues")
 
 
 if __name__ == "__main__":

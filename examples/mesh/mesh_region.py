@@ -1,21 +1,23 @@
 from argparse import ArgumentParser
-from pathlib import Path
 
 import cmocean
 import numpy as np
 
-from sleplet.meshes.classes.mesh import Mesh
-from sleplet.plotting.create_plot_mesh import Plot
-from sleplet.scripts.plotting_on_mesh import valid_meshes
-from sleplet.utils.class_lists import MESHES
+from sleplet.meshes import Mesh
+from sleplet.plotting import PlotMesh
 
-fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "figures"
+MESHES = [
+    "bird",
+    "cheetah",
+    "cube",
+    "dragon",
+    "homer",
+    "teapot",
+]
 
 
 def main(mesh_name: str) -> None:
-    """
-    plots the tiling of the Slepian line
-    """
+    """Plots the tiling of the Slepian line."""
     # initialise mesh and Slepian mesh
     mesh = Mesh(mesh_name)
 
@@ -24,16 +26,19 @@ def main(mesh_name: str) -> None:
     field[mesh.region] = 1
 
     name = f"{mesh_name}_region"
-    Plot(mesh, name, field, colour=cmocean.cm.haline, region=True).execute()
+    PlotMesh(mesh, name, field, colour=cmocean.cm.haline, region=True).execute()
 
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="mesh tiling")
     parser.add_argument(
         "function",
-        type=valid_meshes,
+        type=str,
         choices=MESHES,
         help="mesh to plot",
+        default="homer",
+        const="homer",
+        nargs="?",
     )
     args = parser.parse_args()
     main(args.function)

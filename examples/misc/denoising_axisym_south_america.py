@@ -1,8 +1,13 @@
-from sleplet.functions.flm.axisymmetric_wavelets import AxisymmetricWavelets
-from sleplet.functions.flm.south_america import SouthAmerica
-from sleplet.plotting.create_plot_sphere import Plot
-from sleplet.utils.denoising import denoising_axisym
-from sleplet.utils.plot_methods import find_max_amplitude
+import sys
+from pathlib import Path
+
+from sleplet.functions import AxisymmetricWavelets, SouthAmerica
+from sleplet.plot_methods import find_max_amplitude
+from sleplet.plotting import PlotSphere
+
+sys.path.append(str(Path(__file__).resolve().parent))
+
+from _denoising_axisym import denoising_axisym  # noqa: E402
 
 B = 2
 J_MIN = 0
@@ -13,9 +18,7 @@ SNR_IN = 10
 
 
 def main() -> None:
-    """
-    contrast denosiing with an Earth map versus South America map
-    """
+    """Contrast denosiing with an Earth map versus South America map."""
     # create map & noised map
     fun = SouthAmerica(L)
     fun_noised = SouthAmerica(L, noise=SNR_IN)
@@ -28,7 +31,7 @@ def main() -> None:
 
     f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
     name = f"{fun.name}_denoised_axisym"
-    Plot(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
+    PlotSphere(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
 
 
 if __name__ == "__main__":

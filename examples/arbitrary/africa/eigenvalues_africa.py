@@ -1,22 +1,17 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.slepian.slepian_region.slepian_arbitrary import SlepianArbitrary
-from sleplet.utils.plot_methods import save_plot
+from sleplet.plot_methods import save_plot
+from sleplet.slepian import SlepianArbitrary
 
-fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 L = 128
 
 
 def main() -> None:
-    """
-    plots the tiling of the Slepian line
-    """
+    """Plots the tiling of the Slepian line."""
     slepian = SlepianArbitrary(L, "africa")
     p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")
@@ -33,7 +28,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(fig_path, f"africa_eigenvalues_L{L}")
+    save_plot(f"africa_eigenvalues_L{L}")
 
 
 if __name__ == "__main__":

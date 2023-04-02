@@ -1,0 +1,66 @@
+name: Examples
+
+on:
+  workflow_dispatch:
+
+jobs:
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: "pyproject.toml"
+
+      - name: Cache pooch
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/sleplet
+          key: readme-${{ hashFiles('pyproject.toml') }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[readme]
+
+      - name: Run examples in the README
+        run: python -m pytest --codeblocks README.md
+
+  examples:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: "pyproject.toml"
+
+      - name: Cache pooch
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/sleplet
+          key: examples-${{ hashFiles('pyproject.toml') }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[docs]
+
+      - name: Run examples in the examples folder
+        run: |
+          find examples -name "*.py" \
+          -exec sh -c 'for f; \
+          do echo $f; \
+          python "$f" || exit 1\
+          ; done' sh {} +

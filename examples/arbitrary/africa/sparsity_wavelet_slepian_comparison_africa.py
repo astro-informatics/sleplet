@@ -1,20 +1,16 @@
 from argparse import ArgumentParser
-from pathlib import Path
 
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.functions.flm.axisymmetric_wavelet_coefficients_africa import (
+from sleplet.functions import (
     AxisymmetricWaveletCoefficientsAfrica,
-)
-from sleplet.functions.fp.slepian_wavelet_coefficients_africa import (
     SlepianWaveletCoefficientsAfrica,
 )
-from sleplet.utils.plot_methods import save_plot
-from sleplet.utils.region import Region
+from sleplet.plot_methods import save_plot
+from sleplet.slepian import Region
 
-fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "figures"
 sns.set(context="paper")
 
 B = 3
@@ -24,9 +20,7 @@ STEP = 0.01
 
 
 def _plot_slepian_coefficients() -> int:
-    """
-    plot the Slepian wavelet coefficients for the Africa region
-    """
+    """Plot the Slepian wavelet coefficients for the Africa region."""
     # initialise wavelet coefficients
     region = Region(mask_name="africa")
     swc = SlepianWaveletCoefficientsAfrica(L, B=B, j_min=J_MIN, region=region)
@@ -44,9 +38,7 @@ def _plot_slepian_coefficients() -> int:
 
 
 def _plot_axisymmetric_coefficients(shannon: int) -> None:
-    """
-    plot the axisymmetric wavelet coefficients for the Africa region
-    """
+    """Plot the axisymmetric wavelet coefficients for the Africa region."""
     # initialise wavelet coefficients
     awc = AxisymmetricWaveletCoefficientsAfrica(L, B=B, j_min=J_MIN)
 
@@ -75,7 +67,7 @@ def main(*, limit: bool) -> None:
         plt.xlim(right=300)
         plt.ylim(top=50)
         filename += "_limit"
-    save_plot(fig_path, filename)
+    save_plot(filename)
 
 
 if __name__ == "__main__":

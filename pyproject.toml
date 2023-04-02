@@ -3,7 +3,6 @@ build-backend = "setuptools.build_meta"
 requires = [
     "setuptools",
     "setuptools-scm",
-    "wheel",
 ]
 
 [project]
@@ -30,7 +29,6 @@ dependencies = [
     "multiprocess>=0.70.14",
     "numba>=0.56.4",
     "numpy>=1.23.5",
-    "pandas>=1.5.3",
     "plotly>=5.13.0",
     "pooch>=1.7.0",
     "pydantic>=1.10.4",
@@ -55,24 +53,28 @@ keywords = [
 name = "sleplet"
 readme = "README.md"
 requires-python = ">=3.10"
-scripts = {mesh = "sleplet.scripts.plotting_on_mesh:main", sphere = "sleplet.scripts.plotting_on_sphere:main"}
+scripts = {mesh = "sleplet._scripts.plotting_on_mesh:main", sphere = "sleplet._scripts.plotting_on_sphere:main"}
 license.file = "LICENCE.md"
 optional-dependencies.dev = [
     "black",
+    "build",
     "mypy",
     "pre-commit",
     "ruff",
-    "rundoc",
     "tox",
+    "twine",
 ]
 optional-dependencies.docs = [
     "pdoc3",
 ]
-urls."Bug Tracker" = "https://github.com/astro-informatics/sleplet/issues"
+optional-dependencies.readme = [
+    "pytest-codeblocks",
+]
+urls.Code = "https://github.com/astro-informatics/sleplet"
 urls.Documentation = "https://astro-informatics.github.io/sleplet"
 urls.Download = "https://pypi.org/project/sleplet"
 urls.Homepage = "https://github.com/astro-informatics/sleplet"
-urls."Source Code" = "https://github.com/astro-informatics/sleplet"
+urls.Issues = "https://github.com/astro-informatics/sleplet/issues"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
@@ -99,43 +101,67 @@ testpaths = [
 fix = true
 force-exclude = true
 ignore = [
+    "D105",
+    "D203",
+    "D205",
+    "D212",
+    "D401",
+    "D407",
+    "D417",
     "EM101",
     "EM102",
     "N803",
     "N806",
 ]
-per-file-ignores = {"__init__.py" = [
-    "F401",
+per-file-ignores = {"examples/*" = [
+    "D100",
 ], "test_*" = [
     "S101",
+], "tests/*" = [
+    "D100",
 ]}
 select = [
     "A",
+    "ARG",
     "B",
+    "BLE",
     "C",
+    "COM",
+    "D",
+    "DJ",
     "DTZ",
     "E",
     "EM",
+    "ERA",
+    "EXE",
     "F",
     "FBT",
     "I",
     "ICN",
     "ISC",
     "N",
-    "PLC",
-    "PLE",
-    "PLR",
-    "PLW",
+    "NPY",
+    "PD",
+    "PGH",
+    "PIE",
+    "PL",
+    "PT",
+    "PTH",
+    "PYI",
     "Q",
+    "RET",
+    "RSE",
     "RUF",
     "S",
     "SIM",
     "T",
+    "TCH",
     "TID",
     "UP",
     "W",
     "YTT",
 ]
+target-version = "py310"
 isort.known-first-party = ["sleplet"]
 mccabe.max-complexity = 18
 pep8-naming.classmethod-decorators = [
@@ -163,7 +189,6 @@ legacy_tox_ini = """
     commands =
         pytest --cov --slow
     deps =
-        pytest
         pytest-cov
         pytest-skip-slow
 
