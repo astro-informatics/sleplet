@@ -115,7 +115,7 @@ def create_mesh_region(
     mesh_config: dict,
     vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
-    """Creates the boolean region for the given mesh."""
+    """Creates a boolean region for the given mesh."""
     return (
         (vertices[:, 0] >= mesh_config["XMIN"])
         & (vertices[:, 0] <= mesh_config["XMAX"])

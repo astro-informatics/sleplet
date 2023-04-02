@@ -15,7 +15,7 @@ from sleplet.functions.fp import Fp
 class SlepianNoiseSouthAmerica(Fp):
     """
     Creates a noised Slepian region on the topographic map of the Earth of the
-    South America continent.
+    South America region.
     """
 
     SNR: float = -10

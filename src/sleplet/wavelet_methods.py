@@ -143,7 +143,7 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
     ----
         xlim: The x-axis value. \(L\)/\(L^2\) in the harmonic/Slepian case.
         B: The wavelet parameter. Represented as \(\lambda\) in the papers.
-        j_min: The minimum wavelet scale.
+        j_min: The minimum wavelet scale. Represented as \(J_{0}\) in the papers.
 
     Returns:
     -------

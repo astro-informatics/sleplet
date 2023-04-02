@@ -15,12 +15,12 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class AxisymmetricWaveletCoefficientsEarth(Flm):
-    """Creates the axisymmetric wavelet coefficients of the Earth."""
+    """Creates axisymmetric wavelet coefficients of the Earth."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
-    """The minimum wavelet scale."""
+    r"""The minimum wavelet scale. Represented as \(J_{0}\) in the papers."""
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""

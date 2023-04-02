@@ -17,7 +17,7 @@ class Gaussian(Flm):
     """
 
     sigma: float = 10
-    r"""Controls the value of \(\sigma\) in the Guassian."""
+    r"""Sets the \(\sigma\) value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

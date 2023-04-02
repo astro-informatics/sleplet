@@ -10,7 +10,7 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation)
 class Identity(Flm):
-    """Creates the identity function on the sphere."""
+    """Creates an identity function on the sphere."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

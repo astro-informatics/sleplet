@@ -16,12 +16,12 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
-    """Creates the Slepian wavelet coefficients of a given mesh."""
+    """Creates Slepian wavelet coefficients of a given mesh."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
-    """The minimum wavelet scale."""
+    r"""The minimum wavelet scale. Represented as \(J_{0}\) in the papers."""
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""

@@ -18,7 +18,7 @@ from sleplet.functions.flm import Flm
 class Africa(Flm):
     """
     Creates a topographic map of the Earth setting everything outide of the
-    Africa continent to zero.
+    Africa region to zero.
     """
 
     def __post_init_post_parse__(self) -> None:

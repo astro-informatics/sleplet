@@ -16,7 +16,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
 
     rank: int = 0
     """Slepian eigenvalues are ordered in decreasing value. The option `rank`
-    selects a given Slepian function from the spectrum."""
+    selects a given Slepian function from the spectrum (p in the papers)."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

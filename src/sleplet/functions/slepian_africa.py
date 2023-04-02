@@ -15,7 +15,7 @@ from sleplet.functions.fp import Fp
 class SlepianAfrica(Fp):
     """
     Creates a Slepian region on the topographic map of the Earth of the
-    Africa continent.
+    Africa region.
     """
 
     def __post_init_post_parse__(self) -> None:
