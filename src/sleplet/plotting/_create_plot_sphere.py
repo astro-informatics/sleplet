@@ -15,7 +15,7 @@ import sleplet._plotly_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.plot_methods
-import sleplet.slepian
+import sleplet.slepian.region
 
 _fig_path = Path(__file__).resolve().parents[1] / "_figures"
 
@@ -43,7 +43,7 @@ class PlotSphere:
     """TODO"""
     reality: bool = False
     """TODO"""
-    region: sleplet.slepian.Region | None = None
+    region: sleplet.slepian.region.Region | None = None
     """TODO"""
     spin: int = 0
     """TODO"""

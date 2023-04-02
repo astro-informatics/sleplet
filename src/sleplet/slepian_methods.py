@@ -8,14 +8,17 @@ import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes
 import sleplet.meshes._mesh_slepian_decomposition
-import sleplet.slepian
 import sleplet.slepian._slepian_decomposition
+import sleplet.slepian.region
+import sleplet.slepian.slepian_arbitrary
 import sleplet.slepian.slepian_functions
+import sleplet.slepian.slepian_limit_lat_lon
+import sleplet.slepian.slepian_polar_cap
 
 
 def choose_slepian_method(
     L: int,
-    region: sleplet.slepian.Region,
+    region: sleplet.slepian.region.Region,
 ) -> sleplet.slepian.slepian_functions.SlepianFunctions:
     """TODO initialise Slepian object depending on input.
 
@@ -35,7 +38,7 @@ def choose_slepian_method(
     match region.region_type:
         case "polar":
             sleplet.logger.info("polar cap region detected")
-            return sleplet.slepian.SlepianPolarCap(
+            return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
                 L,
                 region.theta_max,
                 gap=region.gap,
@@ -43,7 +46,7 @@ def choose_slepian_method(
 
         case "lim_lat_lon":
             sleplet.logger.info("limited latitude longitude region detected")
-            return sleplet.slepian.SlepianLimitLatLon(
+            return sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon(
                 L,
                 theta_min=region.theta_min,
                 theta_max=region.theta_max,
@@ -53,7 +56,7 @@ def choose_slepian_method(
 
         case "arbitrary":
             sleplet.logger.info("mask specified in file detected")
-            return sleplet.slepian.SlepianArbitrary(
+            return sleplet.slepian.slepian_arbitrary.SlepianArbitrary(
                 L,
                 region.mask_name,
             )

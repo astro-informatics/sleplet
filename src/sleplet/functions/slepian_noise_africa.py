@@ -6,7 +6,7 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions
 import sleplet.noise
-import sleplet.slepian
+import sleplet.slepian.region
 from sleplet.functions.fp import FP
 
 
@@ -20,7 +20,7 @@ class SlepianNoiseAfrica(FP):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
         if (
-            isinstance(self.region, sleplet.slepian.Region)
+            isinstance(self.region, sleplet.slepian.region.Region)
             and self.region.name_ending != "africa"
         ):
             raise RuntimeError("Slepian region selected must be 'africa'")
