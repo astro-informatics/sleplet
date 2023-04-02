@@ -190,7 +190,7 @@ def rotate_earth_to_south_america(
 
     Args:
     ----
-        earth_flm: The spherical harmonic coefficients.
+        earth_flm: The spherical harmonic coefficients of the Earth.
         L: The spherical harmonic bandlimit.
 
     Returns:
@@ -215,7 +215,7 @@ def rotate_earth_to_africa(
 
     Args:
     ----
-        earth_flm: The spherical harmonic coefficients.
+        earth_flm: The spherical harmonic coefficients of the Earth.
         L: The spherical harmonic bandlimit.
 
     Returns:

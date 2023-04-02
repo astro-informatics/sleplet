@@ -11,8 +11,8 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepianField(MeshSlepianCoefficients):
     """
-    Creates a field on the mesh computed from a Slepian region of the given
-    mesh. The default field is the per-vertex normals of the mesh.
+    Creates a field on a given mesh computed from a Slepian region of the mesh.
+    The default field is the per-vertex normals of the mesh.
     """
 
     def __post_init_post_parse__(self) -> None:
