@@ -26,13 +26,11 @@ def compute_snr(
     Computes the signal to noise ratio.
 
     Args:
-    ----
         signal: The unnoised signal.
         noise: The noised signal.
         signal_type: Specifier to improve logging.
 
     Returns:
-    -------
         The signal-to-noise value of the noised signal.
     """
     snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
@@ -50,13 +48,11 @@ def compute_sigma_noise(
     Compute the standard deviation of the noise.
 
     Args:
-    ----
         signal: The noised signal.
         snr_in: The parameter controlling the signal-to-noise.
         denominator: How many coefficients to use in computing the noise.
 
     Returns:
-    -------
         The standard deviation of the noise.
     """
     if denominator is None:
@@ -131,14 +127,12 @@ def harmonic_hard_thresholding(
     Perform thresholding in harmonic space.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         wav_coeffs: The wavelet coefficients.
         sigma_j: The wavelet standard deviation.
         n_sigma: The number of \(\sigma\) to threshold.
 
     Returns:
-    -------
         The thresholded wavelet coefficients.
     """
     sleplet.logger.info("begin harmonic hard thresholding")
@@ -165,7 +159,6 @@ def slepian_wavelet_hard_thresholding(
     Perform thresholding in Slepian wavelet space.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         wav_coeffs: The Slepian wavelet coefficients
         sigma_j: The wavelet standard deviation.
@@ -173,7 +166,6 @@ def slepian_wavelet_hard_thresholding(
         slepian: The given Slepian object.
 
     Returns:
-    -------
         The hard thresholded Slepian wavelet coefficients.
     """
     sleplet.logger.info("begin Slepian hard thresholding")
@@ -200,7 +192,6 @@ def slepian_function_hard_thresholding(
     Perform thresholding in Slepian function space.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         coefficients: The Slepian coefficients.
         sigma: The standard deviation of the noise.
@@ -208,7 +199,6 @@ def slepian_function_hard_thresholding(
         slepian: The given Slepian object.
 
     Returns:
-    -------
         The thresholded Slepian coefficients.
     """
     sleplet.logger.info("begin Slepian hard thresholding")
@@ -293,14 +283,12 @@ def compute_slepian_mesh_sigma_j(
     Compute \(\sigma_{j}\) for wavelets used in denoising the signal.
 
     Args:
-    ----
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
         signal: The noised signal.
         psi_j: The signal coefficients.
         snr_in: The paramter controlling the signal-to-noise ratio.
 
     Returns:
-    -------
         The standard deviation of the noise.
     """
     sigma_noise = compute_sigma_noise(
@@ -324,14 +312,12 @@ def slepian_mesh_hard_thresholding(
     Perform thresholding in Slepian space.
 
     Args:
-    ----
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
         wav_coeffs: The Slepian wavelet coefficients.
         sigma_j: The wavelet standard deviation.
         n_sigma: The number of \(\sigma\) to threshold.
 
     Returns:
-    -------
         The thresholded wavelet coefficients.
     """
     sleplet.logger.info("begin Slepian mesh hard thresholding")

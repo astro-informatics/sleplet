@@ -24,11 +24,9 @@ def calc_plot_resolution(L: int) -> int:
     Calculate appropriate resolution for given L.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
 
     Returns:
-    -------
         The output spherical harmonic bandlimit to boost the resolution.
     """
     res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
@@ -83,7 +81,6 @@ def save_plot(name: str) -> None:
     Helper method to save plots.
 
     Args:
-    ----
         name: The output filename.
     """
     plt.tight_layout()
@@ -107,13 +104,11 @@ def find_max_amplitude(
     given plot type such that plots can have the same scale as the input.
 
     Args:
-    ----
         function: The `Coefficients` value to find the amplitude of.
         plot_type: Plot `real` or another field value.
         upsample: Whether to upsample the output.
 
     Returns:
-    -------
         The maximum amplitude value.
     """
     # compute inverse transform
@@ -232,11 +227,9 @@ def compute_amplitude_for_noisy_mesh_plots(
     For the noised mesh plots fix the amplitude to the initial data.
 
     Args:
-    ----
         f: The mesh field value.
 
     Returns:
-    -------
         The noise adjusted maximum amplitude.
     """
     return (
@@ -265,11 +258,9 @@ def compute_amplitude_for_noisy_sphere_plots(
     For the noised sphere plots fix the amplitude to the initial data.
 
     Args:
-    ----
         f: The spherical field value.
 
     Returns:
-    -------
         The noise adjusted maximum amplitude value.
     """
     return (

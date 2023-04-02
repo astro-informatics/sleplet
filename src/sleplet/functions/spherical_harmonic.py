@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SphericalHarmonic(Flm):
-    """Creates spherical harmonic functions on the sphere."""
+    """Creates spherical harmonic functions."""
 
     ell: int = 0
     r"""Degree \(\ell \geq 0\)."""

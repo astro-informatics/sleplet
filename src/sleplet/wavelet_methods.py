@@ -17,13 +17,11 @@ def slepian_wavelet_forward(
     Computes the coefficients of the given tiling function in Slepian space.
 
     Args:
-    ----
         f_p: The Slepian coefficients.
         wavelets: The Slepian wavelets.
         shannon: The Shannon number.
 
     Returns:
-    -------
         The Slepian wavelets in pixel space.
     """
     return find_non_zero_wavelet_coefficients(
@@ -45,13 +43,11 @@ def slepian_wavelet_inverse(
     Computes the inverse wavelet transform in Slepian space.
 
     Args:
-    ----
         wav_coeffs: The Slepian wavelet coefficients.
         wavelets: The Slepian wavelets.
         shannon: The Shannon number.
 
     Returns:
-    -------
         The Slepian wavelets in Slepian space.
     """
     # ensure wavelets are the same shape as the coefficients
@@ -73,13 +69,11 @@ def axisymmetric_wavelet_forward(
     Computes the coefficients of the axisymmetric wavelets.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         flm: The spherical harmonic coefficients.
         wavelets: The axisymmetric wavelets in harmonic space.
 
     Returns:
-    -------
         The axisymmetric wavelets in pixel space.
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
@@ -101,13 +95,11 @@ def axisymmetric_wavelet_inverse(
     Computes the inverse axisymmetric wavelet transform.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         wav_coeffs: The axisymmetric wavelet coefficients.
         wavelets: The axisymmetric wavelets in pixel space.
 
     Returns:
-    -------
         The axisymmetric wavelet coefficients in harmonic space.
     """
     flm = np.zeros(L**2, dtype=np.complex_)
@@ -140,13 +132,11 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
     Computes the Slepian wavelets.
 
     Args:
-    ----
         xlim: The x-axis value. \(L\)/\(L^2\) in the harmonic/Slepian case.
         B: The wavelet parameter. Represented as \(\lambda\) in the papers.
         j_min: The minimum wavelet scale. Represented as \(J_{0}\) in the papers.
 
     Returns:
-    -------
         The Slepian wavelet generating functions.
     """
     kappa0, kappa = axisym_wav_l(B, xlim, j_min)
@@ -162,12 +152,10 @@ def find_non_zero_wavelet_coefficients(
     Finds the coefficients within the shannon number to speed up computations.
 
     Args:
-    ----
         wav_coeffs: The wavelet coefficients.
         axis: The axis to search over.
 
     Returns:
-    -------
         The non-zero wavelet coefficients.
     """
     return wav_coeffs[wav_coeffs.any(axis=axis)]

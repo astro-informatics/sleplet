@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SquashedGaussian(Flm):
     r"""
-    Creates a squashed Gaussian on the sphere
+    Creates a squashed Gaussian
     \(\exp(-\frac{1}{2}{(\frac{\theta-\overline{\theta}}{\sigma_{\theta}})}^{2})
     \sin{(\nu_{\phi}\phi)}\).
     """

@@ -56,13 +56,11 @@ class Coefficients:
         Performs the translation of the coefficients, used in the sifting convolution.
 
         Args:
-        ----
             alpha: The third Euler angle, a \(\alpha\).
             beta: The second Euler angle, a \(\beta\).
             shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
-        -------
             The translated spherical harmonic coefficients used in the sifting
             convolution.
         """
@@ -84,13 +82,11 @@ class Coefficients:
         Perform the sifting convolution of the two inputs.
 
         Args:
-        ----
             f_coefficient: Input harmonic/Slepian coefficients.
             g_coefficien: Input harmonic/Slepian coefficients.
             shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
-        -------
             The sifting convolution of the two inputs.
         """
         # translation/convolution are not real for general function
@@ -146,13 +142,11 @@ class Coefficients:
         Rotates given flm on the sphere by alpha/beta/gamma.
 
         Args:
-        ----
             alpha: The third Euler angle, a \(\alpha\) rotation about the z-axis.
             beta: The second Euler angle, a \(\beta\) rotation about the y-axis.
             gamma: The first Euler angle, a \(\gamma\) rotation about the z-axis.
 
         Returns:
-        -------
             The rotated spherical harmonic coefficients.
         """
         raise NotImplementedError

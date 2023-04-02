@@ -17,8 +17,8 @@ from sleplet.functions.flm import Flm
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Ridgelets(Flm):
     """
-    Crates scale-discretised wavelets on the sphere. As seen in
-    <https://arxiv.org/abs/1510.01595>,.
+    Crates scale-discretised wavelets. As seen in
+    <https://arxiv.org/abs/1510.01595>.
     """
 
     B: int = 3

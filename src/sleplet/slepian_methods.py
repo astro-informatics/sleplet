@@ -24,16 +24,13 @@ def choose_slepian_method(
     Initialise Slepian object depending on input.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         region: The Slepian region.
 
     Raises:
-    ------
         ValueError: Invalid region_type.
 
     Returns:
-    -------
         The given Slepian object.
     """
     match region.region_type:
@@ -75,13 +72,11 @@ def slepian_inverse(
     Computes the Slepian inverse transform up to the Shannon number.
 
     Args:
-    ----
         f_p: The Slepian wavelet coefficients.
         L: The spherical harmonic bandlimit.
         slepian: The given Slepian object.
 
     Returns:
-    -------
         The value on the sphere in pixel space.
     """
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
@@ -102,7 +97,6 @@ def slepian_forward(
     Computes the Slepian forward transform for all coefficients.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         slepian: The given Slepian object.
         f: The field value.
@@ -111,7 +105,6 @@ def slepian_forward(
         n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
-    -------
         The value in Slepian space.
     """
     sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
@@ -133,12 +126,10 @@ def compute_s_p_omega(
     Method to calculate \(S_{p}(\omega)\) for a given region.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         slepian: The given Slepian object.
 
     Returns:
-    -------
         The complex \(S_{p}(\omega)\) value.
     """
     n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
@@ -182,7 +173,6 @@ def slepian_mesh_forward(
     Computes the Slepian forward transform for all coefficients.
 
     Args:
-    ----
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
         u: The signal field value on the mesh.
         u_i: The Fourier coefficients on the mesh.
@@ -190,7 +180,6 @@ def slepian_mesh_forward(
         n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
-    -------
         The value of a function on the mesh in Slepian space.
     """
     sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
@@ -211,12 +200,10 @@ def slepian_mesh_inverse(
     Computes the Slepian inverse transform on the mesh up to the Shannon number.
 
     Args:
-    ----
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
         f_p: The Slepian wavelet coefficients.
 
     Returns:
-    -------
         The value of a function on the mesh in pixel space.
     """
     f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]

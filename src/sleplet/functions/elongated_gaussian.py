@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class ElongatedGaussian(Flm):
     r"""
-    Creates an elongated Gaussian on the sphere
+    Creates an elongated Gaussian
     \(\exp(-(\frac{{(\theta-\overline{\theta})}^{2}}{2\sigma_{\theta}^{2}}
     + \frac{{(\phi-\overline{\phi})}^{2}}{2\sigma_{\phi}^{2}}))\).
     """

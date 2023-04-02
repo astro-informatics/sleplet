@@ -15,7 +15,7 @@ from sleplet.functions.flm import Flm
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class DirectionalSpinWavelets(Flm):
     """
-    Creates directional spin scale-discretised wavelets on the sphere.
+    Creates directional spin scale-discretised wavelets.
     As seen in <https://doi.org/10.1016/j.acha.2016.03.009>.
     """
 

@@ -11,7 +11,7 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation)
 class Wmap(Flm):
-    """Creates the WMAP data on the sphere."""
+    """Creates the WMAP data."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

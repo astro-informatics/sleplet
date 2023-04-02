@@ -47,7 +47,6 @@ def invert_flm_boosted(
     Performs the inverse harmonic transform.
 
     Args:
-    ----
         flm: The spherical harmonic coefficients.
         L: The spherical harmonic bandlimit.
         resolution: The output resolution of the spherical harmonic coefficients.
@@ -55,7 +54,6 @@ def invert_flm_boosted(
         spin: The value of the spin.
 
     Returns:
-    -------
         The boosted spherical harmonic coefficients.
     """
     boost = resolution**2 - L**2
@@ -121,13 +119,11 @@ def compute_random_signal(
     complex signal with mean `0` and variance `1`.
 
     Args:
-    ----
         L: The spherical harmonic bandlimit.
         rng: The random number generator object.
         var_signal: The variance of the signal.
 
     Returns:
-    -------
         A random signal on the sphere.
     """
     return np.sqrt(var_signal / 2) * (
@@ -143,12 +139,10 @@ def mesh_forward(
     Computes the mesh forward transform from real space to harmonic space.
 
     Args:
-    ----
         mesh: The given mesh object.
         u: The signal field value on the mesh.
 
     Returns:
-    -------
         The basis functions of the mesh in Fourier space.
     """
     u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
@@ -170,12 +164,10 @@ def mesh_inverse(
     Computes the mesh inverse transform from harmonic space to real space.
 
     Args:
-    ----
         mesh: The given mesh object.
         u_i: The Fourier coefficients on the mesh.
 
     Returns:
-    -------
         The values on the mesh in pixel space.
     """
     return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)
@@ -189,12 +181,10 @@ def rotate_earth_to_south_america(
     Rotates the flms of the Earth to a view centered on South America.
 
     Args:
-    ----
         earth_flm: The spherical harmonic coefficients of the Earth.
         L: The spherical harmonic bandlimit.
 
     Returns:
-    -------
         The spherical harmonic coefficients of the Earth centered on South America.
     """
     return ssht.rotate_flms(
@@ -214,12 +204,10 @@ def rotate_earth_to_africa(
     Rotates the flms of the Earth to a view centered on Africa.
 
     Args:
-    ----
         earth_flm: The spherical harmonic coefficients of the Earth.
         L: The spherical harmonic bandlimit.
 
     Returns:
-    -------
         The spherical harmonic coefficients of the Earth centered on Africa.
     """
     return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)
