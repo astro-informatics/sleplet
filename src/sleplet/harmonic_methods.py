@@ -143,7 +143,7 @@ def compute_random_signal(
 
 
 def mesh_forward(
-    mesh: sleplet.meshes.mesh.Mesh,
+    mesh: "sleplet.meshes.mesh.Mesh",
     u: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """TODO computes the mesh forward transform from real space to harmonic space.
@@ -169,7 +169,7 @@ def mesh_forward(
 
 
 def mesh_inverse(
-    mesh: sleplet.meshes.mesh.Mesh,
+    mesh: "sleplet.meshes.mesh.Mesh",
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """TODO computes the mesh inverse transform from harmonic space to real space.
