@@ -119,7 +119,7 @@ class SlepianPolarCap(SlepianFunctions):
         self,
         m: int,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """Solves the eigenproblem for a given order 'm;"""
+        """Solves the eigenproblem for a given order m."""
         emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
