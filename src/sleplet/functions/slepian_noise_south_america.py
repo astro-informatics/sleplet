@@ -4,10 +4,10 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.functions
 import sleplet.functions.fp
-import sleplet.functions.slepian_south_america
 import sleplet.noise
-import sleplet.slepian.region
+import sleplet.slepian
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -20,13 +20,13 @@ class SlepianNoiseSouthAmerica(sleplet.functions.fp.FP):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
         if (
-            isinstance(self.region, sleplet.slepian.region.Region)
+            isinstance(self.region, sleplet.slepian.Region)
             and self.region.name_ending != "south_america"
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        sa = sleplet.functions.slepian_south_america.SlepianSouthAmerica(
+        sa = sleplet.functions.SlepianSouthAmerica(
             self.L,
             region=self.region,
             smoothing=self.smoothing,

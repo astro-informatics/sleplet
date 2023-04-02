@@ -17,8 +17,8 @@ import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.slepian.region
-import sleplet.slepian.slepian_functions
+import sleplet.slepian
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
@@ -26,7 +26,7 @@ SAMPLES = 2
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianArbitrary(sleplet.slepian.slepian_functions.SlepianFunctions):
+class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
@@ -40,8 +40,8 @@ class SlepianArbitrary(sleplet.slepian.slepian_functions.SlepianFunctions):
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"
 
-    def _create_region(self) -> "sleplet.slepian.region.Region":
-        return sleplet.slepian.region.Region(mask_name=self.mask_name)
+    def _create_region(self) -> "sleplet.slepian.Region":
+        return sleplet.slepian.Region(mask_name=self.mask_name)
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
         return sleplet._mask_methods.create_mask_region(self.resolution, self.region)

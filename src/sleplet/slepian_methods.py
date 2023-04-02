@@ -6,19 +6,16 @@ from numpy import typing as npt
 import sleplet
 import sleplet._vars
 import sleplet.harmonic_methods
+import sleplet.meshes
 import sleplet.meshes._mesh_slepian_decomposition
-import sleplet.meshes.mesh_slepian
+import sleplet.slepian
 import sleplet.slepian._slepian_decomposition
-import sleplet.slepian.region
-import sleplet.slepian.slepian_arbitrary
 import sleplet.slepian.slepian_functions
-import sleplet.slepian.slepian_limit_lat_lon
-import sleplet.slepian.slepian_polar_cap
 
 
 def choose_slepian_method(
     L: int,
-    region: sleplet.slepian.region.Region,
+    region: sleplet.slepian.Region,
 ) -> sleplet.slepian.slepian_functions.SlepianFunctions:
     """TODO initialise Slepian object depending on input.
 
@@ -38,7 +35,7 @@ def choose_slepian_method(
     match region.region_type:
         case "polar":
             sleplet.logger.info("polar cap region detected")
-            return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
+            return sleplet.slepian.SlepianPolarCap(
                 L,
                 region.theta_max,
                 gap=region.gap,
@@ -46,7 +43,7 @@ def choose_slepian_method(
 
         case "lim_lat_lon":
             sleplet.logger.info("limited latitude longitude region detected")
-            return sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon(
+            return sleplet.slepian.SlepianLimitLatLon(
                 L,
                 theta_min=region.theta_min,
                 theta_max=region.theta_max,
@@ -56,7 +53,7 @@ def choose_slepian_method(
 
         case "arbitrary":
             sleplet.logger.info("mask specified in file detected")
-            return sleplet.slepian.slepian_arbitrary.SlepianArbitrary(
+            return sleplet.slepian.SlepianArbitrary(
                 L,
                 region.mask_name,
             )
@@ -167,7 +164,7 @@ def _compute_s_p_omega_prime(
 
 
 def slepian_mesh_forward(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: sleplet.meshes.MeshSlepian,
     *,
     u: npt.NDArray[np.complex_ | np.float_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -199,7 +196,7 @@ def slepian_mesh_forward(
 
 
 def slepian_mesh_inverse(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: sleplet.meshes.MeshSlepian,
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
@@ -219,7 +216,7 @@ def slepian_mesh_inverse(
 
 
 def _compute_mesh_s_p_pixel(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: sleplet.meshes.MeshSlepian,
 ) -> npt.NDArray[np.float_]:
     """Method to calculate Sp(omega) for a given region."""
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))

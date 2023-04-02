@@ -1,7 +1,10 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 from numpy import typing as npt
 
-import sleplet.meshes.mesh
+if TYPE_CHECKING:
+    import sleplet.meshes
 
 MACHINE_EPSILON = 1e-14
 
@@ -31,7 +34,7 @@ def clean_evals_and_evecs(
     return eigenvalues, eigenvectors
 
 
-def compute_mesh_shannon(mesh: sleplet.meshes.mesh.Mesh) -> int:
+def compute_mesh_shannon(mesh: "sleplet.meshes.Mesh") -> int:
     """Computes the effective Shannon number for a region of a mesh."""
     num_basis_fun = mesh.mesh_eigenvalues.shape[0]
     region_vertices = mesh.region.sum()

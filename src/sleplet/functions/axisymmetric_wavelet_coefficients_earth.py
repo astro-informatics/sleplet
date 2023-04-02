@@ -7,7 +7,7 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.earth
+import sleplet.functions
 import sleplet.functions.flm
 import sleplet.wavelet_methods
 
@@ -63,7 +63,7 @@ class AxisymmetricWaveletCoefficientsEarth(sleplet.functions.flm.FLM):
             self.B,
             self.j_min,
         )
-        self.earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
+        self.earth = sleplet.functions.Earth(self.L, smoothing=self.smoothing)
         wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
             self.L,
             self.earth.coefficients,

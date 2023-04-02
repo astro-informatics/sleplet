@@ -6,7 +6,8 @@ from pydantic.dataclasses import dataclass
 
 import sleplet
 import sleplet._validation
-import sleplet.slepian.region
+
+from . import Region
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -34,7 +35,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abstractmethod
-    def _create_region(self) -> "sleplet.slepian.region.Region":
+    def _create_region(self) -> Region:
         """Creates a region object for area of interest."""
         raise NotImplementedError
 

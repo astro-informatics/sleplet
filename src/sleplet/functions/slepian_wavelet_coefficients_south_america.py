@@ -7,10 +7,9 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.functions
 import sleplet.functions.fp
-import sleplet.functions.slepian_south_america
-import sleplet.functions.slepian_wavelets
-import sleplet.slepian.region
+import sleplet.slepian
 import sleplet.wavelet_methods
 
 
@@ -28,7 +27,7 @@ class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.fp.FP):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
         if (
-            isinstance(self.region, sleplet.slepian.region.Region)
+            isinstance(self.region, sleplet.slepian.Region)
             and self.region.name_ending != "south_america"
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
@@ -65,13 +64,13 @@ class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.fp.FP):
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
         """Computes wavelet coefficients in Slepian space."""
-        sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
+        sw = sleplet.functions.SlepianWavelets(
             self.L,
             B=self.B,
             j_min=self.j_min,
             region=self.region,
         )
-        sa = sleplet.functions.slepian_south_america.SlepianSouthAmerica(
+        sa = sleplet.functions.SlepianSouthAmerica(
             self.L,
             region=self.region,
             smoothing=self.smoothing,

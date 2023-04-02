@@ -8,7 +8,7 @@ import sleplet._mask_methods
 import sleplet._validation
 import sleplet.functions.coefficients
 import sleplet.noise
-import sleplet.slepian.region
+import sleplet.slepian
 import sleplet.slepian_methods
 
 
@@ -17,9 +17,9 @@ class FP(sleplet.functions.coefficients.Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:
-        self.region: sleplet.slepian.region.Region | None = (
+        self.region: sleplet.slepian.Region | None = (
             self.region
-            if isinstance(self.region, sleplet.slepian.region.Region)
+            if isinstance(self.region, sleplet.slepian.Region)
             else sleplet._mask_methods.create_default_region()
         )
         self.slepian = sleplet.slepian_methods.choose_slepian_method(

@@ -13,7 +13,7 @@ import sleplet._vars
 import sleplet.functions.coefficients
 import sleplet.harmonic_methods
 import sleplet.meshes.mesh_coefficients
-import sleplet.slepian.region
+import sleplet.slepian
 import sleplet.slepian_methods
 
 
@@ -160,7 +160,7 @@ def _create_plot_type(
 def _set_outside_region_to_minimum(
     f_plot: npt.NDArray[np.float_],
     L: int,
-    region: sleplet.slepian.region.Region,
+    region: sleplet.slepian.Region,
 ) -> npt.NDArray[np.float_]:
     """For the Slepian region set the outisde area to negative infinity
     hence it is clear we are only interested in the coloured region.

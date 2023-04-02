@@ -7,7 +7,7 @@ from pys2let import pys2let_j_max
 import sleplet
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.south_america
+import sleplet.functions
 import sleplet.wavelet_methods
 
 
@@ -62,7 +62,7 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(sleplet.functions.f_lm.FLM):
             self.B,
             self.j_min,
         )
-        self.south_america = sleplet.functions.south_america.SouthAmerica(
+        self.south_america = sleplet.functions.SouthAmerica(
             self.L,
             smoothing=self.smoothing,
         )
