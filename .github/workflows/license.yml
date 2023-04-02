@@ -1,5 +1,4 @@
-name: Update copyright year(s) in license file
-
+name: Update Copyright
 on:
   schedule:
     - cron: "0 3 1 1 *"
@@ -14,7 +13,7 @@ jobs:
 
       - uses: FantasticFiasco/action-update-license-year@v3
         with:
-          path: LICENSE.md
+          path: LICENCE.md
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge pull request
