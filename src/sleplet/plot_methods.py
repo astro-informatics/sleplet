@@ -16,17 +16,18 @@ import sleplet.meshes.mesh_coefficients
 import sleplet.slepian.region
 import sleplet.slepian_methods
 
+_fig_path = Path(__file__).resolve().parent / "_figures"
+
 
 def calc_plot_resolution(L: int) -> int:
-    """TODO calculate appropriate resolution for given L.
+    """
+    Calculate appropriate resolution for given L.
 
     Args:
-    ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
 
     Returns:
-    -------
-        _description_
+        The output spherical harmonic bandlimit to boost the resolution.
     """
     res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
 
@@ -61,7 +62,8 @@ def _calc_nearest_grid_point(
     alpha_pi_fraction: float,
     beta_pi_fraction: float,
 ) -> tuple[float, float]:
-    """Calculate nearest index of alpha/beta for translation
+    """
+    Calculate nearest index of alpha/beta for translation
     this is due to calculating omega' through the pixel
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small.
@@ -74,17 +76,16 @@ def _calc_nearest_grid_point(
     return alpha, beta
 
 
-def save_plot(path: Path, name: str) -> None:
-    """TODO helper method to save plots.
+def save_plot(name: str) -> None:
+    """
+    Helper method to save plots.
 
     Args:
-    ----
-        path: _description_
-        name: _description_
+        name: The output filename.
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
-        filename = path / file_type / f"{name}.{file_type}"
+        filename = _fig_path / file_type / f"{name}.{file_type}"
         sleplet.logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
     plt.show(block=False)
@@ -98,18 +99,17 @@ def find_max_amplitude(
     plot_type: str = "real",
     upsample: bool = True,
 ) -> float:
-    """TODO for a given set of coefficients it finds the largest absolute value for a
+    """
+    For a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input.
 
     Args:
-    ----
-        function: _description_
-        plot_type: _description_
-        upsample: _description_
+        function: The `Coefficients` value to find the amplitude of.
+        plot_type: Select the `real`, `imag`, `abs` or `sum` value of the field.
+        upsample: Whether to upsample the output.
 
     Returns:
-    -------
-        _description_
+        The maximum amplitude value.
     """
     # compute inverse transform
     if hasattr(function, "slepian"):
@@ -162,7 +162,8 @@ def _set_outside_region_to_minimum(
     L: int,
     region: sleplet.slepian.region.Region,
 ) -> npt.NDArray[np.float_]:
-    """For the Slepian region set the outisde area to negative infinity
+    """
+    For the Slepian region set the outisde area to negative infinity
     hence it is clear we are only interested in the coloured region.
     """
     # create mask of interest
@@ -222,15 +223,14 @@ def _boost_field(
 def compute_amplitude_for_noisy_mesh_plots(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
 ) -> float | None:
-    """TODO for the noised mesh plots fix the amplitude to the initial data.
+    """
+    For the noised mesh plots fix the amplitude.
 
     Args:
-    ----
-        f: _description_
+        f: The mesh field value.
 
     Returns:
-    -------
-        _description_
+        The noise adjusted maximum amplitude.
     """
     return (
         np.abs(_coefficients_to_field_mesh(f, f.unnoised_coefficients)).max()
@@ -254,15 +254,14 @@ def _coefficients_to_field_mesh(
 def compute_amplitude_for_noisy_sphere_plots(
     f: sleplet.functions.coefficients.Coefficients,
 ) -> float | None:
-    """TODO for the noised sphere plots fix the amplitude to the initial data.
+    """
+    For the noised sphere plots fix the amplitude.
 
     Args:
-    ----
-        f: _description_
+        f: The spherical field value.
 
     Returns:
-    -------
-        _description_
+        The noise adjusted maximum amplitude value.
     """
     return (
         np.abs(_coefficients_to_field_sphere(f, f.unnoised_coefficients)).max()

@@ -21,17 +21,7 @@ SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
 def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
-    """TODO create a spherical harmonic in harmonic space for the given index.
-
-    Args:
-    ----
-        L: _description_
-        ind: _description_
-
-    Returns:
-    -------
-        _description_
-    """
+    """Create a spherical harmonic in harmonic space for the given index."""
     flm = np.zeros(L**2, dtype=np.complex_)
     flm[ind] = 1
     return flm
@@ -53,19 +43,18 @@ def invert_flm_boosted(
     reality: bool = False,
     spin: int = 0,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO performs the inverse harmonic transform.
+    """
+    Upsamples the signal and performs the inverse harmonic transform .
 
     Args:
-    ----
-        flm: _description_
-        L: _description_
-        resolution: _description_
-        reality: _description_
-        spin: _description_
+        flm: The spherical harmonic coefficients.
+        L: The spherical harmonic bandlimit.
+        resolution: The output resolution of the field values.
+        reality: Whether the given spherical signal is real or not.
+        spin: The value of the spin.
 
     Returns:
-    -------
-        _description_
+        The boosted field value.
     """
     boost = resolution**2 - L**2
     flm = _boost_coefficient_resolution(flm, boost)
@@ -88,7 +77,8 @@ def _ensure_f_bandlimited(
     reality: bool,
     spin: int,
 ) -> npt.NDArray[np.complex_]:
-    """If the function created is created in pixel space rather than harmonic
+    """
+    If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     """
     thetas, phis = ssht.sample_positions(
@@ -124,18 +114,17 @@ def compute_random_signal(
     *,
     var_signal: float,
 ) -> npt.NDArray[np.complex_]:
-    """TODO generates a normally distributed random signal of a
-    complex signal with mean 0 and variance 1.
+    """
+    Generates a normally distributed random signal of a
+    complex signal with mean `0` and variance `1`.
 
     Args:
-    ----
-        L: _description_
-        rng: _description_
-        var_signal: _description_
+        L: The spherical harmonic bandlimit.
+        rng: The random number generator object.
+        var_signal: The variance of the signal.
 
     Returns:
-    -------
-        _description_
+        The coefficients of a random signal on the sphere.
     """
     return np.sqrt(var_signal / 2) * (
         rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
@@ -146,16 +135,15 @@ def mesh_forward(
     mesh: "sleplet.meshes.mesh.Mesh",
     u: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """TODO computes the mesh forward transform from real space to harmonic space.
+    """
+    Computes the mesh forward transform from pixel space to Fourier space.
 
     Args:
-    ----
-        mesh: _description_
-        u: _description_
+        mesh: The given mesh object.
+        u: The signal field value on the mesh.
 
     Returns:
-    -------
-        _description_
+        The basis functions of the mesh in Fourier space.
     """
     u_i = np.zeros(mesh.mesh_eigenvalues.shape[0])
     for i, phi_i in enumerate(mesh.basis_functions):
@@ -172,16 +160,15 @@ def mesh_inverse(
     mesh: "sleplet.meshes.mesh.Mesh",
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the mesh inverse transform from harmonic space to real space.
+    """
+    Computes the mesh inverse transform from Fourier space to pixel space.
 
     Args:
-    ----
-        mesh: _description_
-        u_i: _description_
+        mesh: The given mesh object.
+        u_i: The Fourier coefficients on the mesh.
 
     Returns:
-    -------
-        n: _description_
+        The values on the mesh in pixel space.
     """
     return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)
 
@@ -190,16 +177,15 @@ def rotate_earth_to_south_america(
     earth_flm: npt.NDArray[np.complex_ | np.float_],
     L: int,
 ) -> npt.NDArray[np.complex_]:
-    """TODO rotates the flms of the Earth to a view centered on South America.
+    """
+    Rotates the harmonic coefficients of the Earth to a view centered on South America.
 
     Args:
-    ----
-        earth_flm: _description_
-        L: _description_
+        earth_flm: The spherical harmonic coefficients of the Earth.
+        L: The spherical harmonic bandlimit.
 
     Returns:
-    -------
-        _description_
+        The spherical harmonic coefficients of the Earth centered on South America.
     """
     return ssht.rotate_flms(
         earth_flm,
@@ -214,15 +200,14 @@ def rotate_earth_to_africa(
     earth_flm: npt.NDArray[np.complex_ | np.float_],
     L: int,
 ) -> npt.NDArray[np.complex_]:
-    """TODO rotates the flms of the Earth to a view centered on Africa.
+    """
+    Rotates the harmonic coefficients of the Earth to a view centered on Africa.
 
     Args:
-    ----
-        earth_flm: _description_
-        L: _description_
+        earth_flm: The spherical harmonic coefficients of the Earth.
+        L: The spherical harmonic bandlimit.
 
     Returns:
-    -------
-        _description_
+        The spherical harmonic coefficients of the Earth centered on Africa.
     """
     return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)

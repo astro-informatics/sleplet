@@ -20,20 +20,18 @@ def choose_slepian_method(
     L: int,
     region: sleplet.slepian.region.Region,
 ) -> sleplet.slepian.slepian_functions.SlepianFunctions:
-    """TODO initialise Slepian object depending on input.
+    """
+    Initialise Slepian object depending on input.
 
     Args:
-    ----
-        L: _description_
-        region: _description_
+        L: The spherical harmonic bandlimit.
+        region: The Slepian region.
 
     Raises:
-    ------
-        ValueError: _description_
+        ValueError: Invalid `region_type`, likely cause is invalid `mask_name`.
 
     Returns:
-    -------
-        _description_
+        The given Slepian object.
     """
     match region.region_type:
         case "polar":
@@ -70,17 +68,16 @@ def slepian_inverse(
     L: int,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the Slepian inverse transform up to the Shannon number.
+    """
+    Computes the Slepian inverse transform up to the Shannon number.
 
     Args:
-    ----
-        f_p: _description_
-        L: _description_
-        slepian: _description_
+        f_p: The Slepian coefficients.
+        L: The spherical harmonic bandlimit.
+        slepian: The given Slepian object.
 
     Returns:
-    -------
-        _description_
+        The values on the sphere in pixel space.
     """
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
     s_p = compute_s_p_omega(L, slepian)
@@ -96,20 +93,19 @@ def slepian_forward(
     mask: npt.NDArray[np.float_] | None = None,
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the Slepian forward transform for all coefficients.
+    """
+    Computes the Slepian forward transform for all coefficients.
 
     Args:
-    ----
-        L: _description_
-        slepian: _description_
-        f: _description_
-        flm: _description_
-        mask: _description_
-        n_coeffs: _description_
+        L: The spherical harmonic bandlimit.
+        slepian: The given Slepian object.
+        f: The field value.
+        flm: The spherical harmonic coefficients.
+        mask: A boolean mask of the Slepian region.
+        n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
-    -------
-        _description_
+        The Slepian coefficients of the inputs.
     """
     sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
         L,
@@ -126,16 +122,15 @@ def compute_s_p_omega(
     L: int,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """TODO method to calculate Sp(omega) for a given region.
+    r"""
+    Computes \(S_{p}(\omega)\) for a given region.
 
     Args:
-    ----
-        L: _description_
-        slepian: _description_
+        L: The spherical harmonic bandlimit.
+        slepian: The given Slepian object.
 
     Returns:
-    -------
-        _description_
+        The complex \(S_{p}(\omega)\) values.
     """
     n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
@@ -174,19 +169,18 @@ def slepian_mesh_forward(
     mask: bool = False,
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.float_]:
-    """TODO computes the Slepian forward transform for all coefficients.
+    """
+    Computes the Slepian forward transform for all coefficients on the mesh.
 
     Args:
-    ----
-        mesh_slepian: _description_
-        u: _description_
-        u_i: _description_
-        mask: _description_
-        n_coeffs: _description_
+        mesh_slepian: The Slepian mesh object containing the eigensolutions.
+        u: The signal field value on the mesh.
+        u_i: The Fourier coefficients of the mesh.
+        mask: Whether to use the mask to compute the coefficients.
+        n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
-    -------
-        _description_
+        The Slepian coefficients on the mesh.
     """
     sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
         mesh_slepian,
@@ -202,16 +196,15 @@ def slepian_mesh_inverse(
     mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
+    """
+    Computes the Slepian inverse transform on the mesh up to the Shannon number.
 
     Args:
-    ----
-        mesh_slepian: _description_
-        f_p: _description_
+        mesh_slepian: The Slepian mesh object containing the eigensolutions.
+        f_p: The Slepian wavelet coefficients.
 
     Returns:
-    -------
-        _description_
+        The value of a function on the mesh in pixel space.
     """
     f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
     s_p = _compute_mesh_s_p_pixel(mesh_slepian)

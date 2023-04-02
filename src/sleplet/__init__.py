@@ -1,4 +1,5 @@
-"""API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
+"""
+API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
 the rest of the documentation.
 """
 

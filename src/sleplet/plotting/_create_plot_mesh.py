@@ -30,27 +30,27 @@ class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 
     mesh: sleplet.meshes.mesh.Mesh
-    """TODO"""
+    """The given mesh object."""
     filename: str
-    """TODO"""
+    """The output filename of the plot."""
     f: npt.NDArray[np.complex_ | np.float_]
-    """TODO"""
+    """The field value sampled on the mesh."""
     _: KW_ONLY
     amplitude: float | None = None
-    """TODO"""
+    """Whether to customise the amplitude range of the colour bar."""
     colour: LinearSegmentedColormap = cmocean.cm.ice
-    """TODO"""
+    """The colour of the field on the mesh."""
     normalise: bool = True
-    """TODO"""
+    """Whether to normalise the plot or not."""
     region: bool = False
-    """TODO"""
+    """Whether to set the field values outside of the region to zero."""
 
     def __post_init_post_parse__(self) -> None:
         if self.normalise:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """TODO creates 3d plotly mesh plot."""
+        """Performs the plot."""
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
 
@@ -121,7 +121,8 @@ class PlotMesh:
         self,
         f: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """For the Slepian region set the outisde area to negative infinity
+        """
+        For the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region.
         """
         region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(

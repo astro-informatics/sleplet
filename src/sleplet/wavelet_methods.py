@@ -13,17 +13,16 @@ def slepian_wavelet_forward(
     wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the coefficients of the given tiling function in Slepian space.
+    """
+    Computes the coefficients of the given tiling function in Slepian space.
 
     Args:
-    ----
-        f_p: _description_
-        wavelets: _description_
-        shannon: _description_
+        f_p: The Slepian coefficients.
+        wavelets: The Slepian wavelets.
+        shannon: The Shannon number.
 
     Returns:
-    -------
-        _description_
+        The Slepian wavelets coefficients of the signal.
     """
     return find_non_zero_wavelet_coefficients(
         sleplet._convolution_methods.sifting_convolution(
@@ -40,17 +39,16 @@ def slepian_wavelet_inverse(
     wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the inverse wavelet transform in Slepian space.
+    """
+    Computes the inverse wavelet transform in Slepian space.
 
     Args:
-    ----
-        wav_coeffs: _description_
-        wavelets: _description_
-        shannon: _description_
+        wav_coeffs: The Slepian wavelet coefficients.
+        wavelets: The Slepian wavelets.
+        shannon: The Shannon number.
 
     Returns:
-    -------
-        _description_
+        The coefficients of the signal in Slepian space.
     """
     # ensure wavelets are the same shape as the coefficients
     wavelets_shannon = wavelets[: len(wav_coeffs)]
@@ -67,17 +65,16 @@ def axisymmetric_wavelet_forward(
     flm: npt.NDArray[np.complex_ | np.float_],
     wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the coefficients of the axisymmetric wavelets.
+    """
+    Computes the coefficients of the axisymmetric wavelets.
 
     Args:
-    ----
-        L  _description_
-        flm: _description_
-        wavelets: _description_
+        L: The spherical harmonic bandlimit.
+        flm: The spherical harmonic coefficients.
+        wavelets: Axisymmetric wavelets.
 
     Returns:
-    -------
-        _description_
+        Axisymmetric wavelets coefficients.
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
@@ -94,17 +91,16 @@ def axisymmetric_wavelet_inverse(
     wav_coeffs: npt.NDArray[np.complex_],
     wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the inverse axisymmetric wavelet transform.
+    """
+    Computes the inverse axisymmetric wavelet transform.
 
     Args:
-    ----
-        L: _description_
-        wav_coeffs: _description_
-        wavelets: _description_
+        L: The spherical harmonic bandlimit.
+        wav_coeffs: Axisymmetric wavelet coefficients.
+        wavelets: Axisymmetric wavelets.
 
     Returns:
-    -------
-        _description_
+        Spherical harmonic coefficients of the signal.
     """
     flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(L):
@@ -132,17 +128,16 @@ def _create_axisymmetric_wavelets(
 
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
-    """TODO computes the Slepian wavelets.
+    r"""
+    Computes the Slepian wavelets.
 
     Args:
-    ----
-        xlim: _description_
-        B: _description_
-        j_min: _description_
+        xlim: The x-axis value. \(L\) or \(L^2\) in the harmonic or Slepian case.
+        B: The wavelet parameter. Represented as \(\lambda\) in the papers.
+        j_min: The minimum wavelet scale. Represented as \(J_{0}\) in the papers.
 
     Returns:
-    -------
-        _description_
+        The Slepian wavelet generating functions.
     """
     kappa0, kappa = axisym_wav_l(B, xlim, j_min)
     return np.concatenate((kappa0[np.newaxis], kappa.T))
@@ -153,15 +148,14 @@ def find_non_zero_wavelet_coefficients(
     *,
     axis: int | tuple[int, ...],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO finds the coefficients within the shannon number to speed up computations.
+    """
+    Finds the coefficients within the shannon number to speed up computations.
 
     Args:
-    ----
-        wav_coeffs: _description_
-        axis: _description_
+        wav_coeffs: The wavelet coefficients.
+        axis: The axis to search over.
 
     Returns:
-    -------
-        _description_
+        The non-zero wavelet coefficients.
     """
     return wav_coeffs[wav_coeffs.any(axis=axis)]

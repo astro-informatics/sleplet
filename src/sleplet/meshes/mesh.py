@@ -1,3 +1,4 @@
+"""Contains the `Mesh` class."""
 from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass
@@ -12,12 +13,15 @@ class Mesh:
     """Creates a mesh object."""
 
     name: str
-    """TODO"""
+    """The name of the mesh. Current options `bird`, `cheetah`, `cube`, `dragon`
+    `homer` and `teapot`."""
     _: KW_ONLY
     number_basis_functions: int | None = None
-    """TODO"""
+    """The number of basis functions to compute from the Laplacian of the given
+    mesh. Defaults to one quarter of the number of vertices o the given mesh."""
     zoom: bool = False
-    """TODO"""
+    """Whether to zoom in on the pre-selected region of the mesh in the
+    plots."""
 
     def __post_init_post_parse__(self) -> None:
         mesh_config = sleplet._mesh_methods.extract_mesh_config(self.name)

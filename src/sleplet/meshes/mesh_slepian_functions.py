@@ -1,3 +1,4 @@
+"""Contains the `MeshSlepianFunctions` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
@@ -11,10 +12,11 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianFunctions(MeshSlepianCoefficients):
-    """TODO."""
+    """Creates Slepian functions of a given mesh."""
 
     rank: int = 0
-    """TODO"""
+    """Slepian eigenvalues are ordered in decreasing value. The option `rank`
+    selects a given Slepian function from the spectrum (p in the papers)."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

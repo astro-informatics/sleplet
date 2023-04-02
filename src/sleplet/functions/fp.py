@@ -1,3 +1,4 @@
+"""Contains the abstract `Fp` class."""
 from abc import abstractmethod
 
 import numpy as np
@@ -28,7 +29,7 @@ class Fp(Coefficients):
         )
         super().__post_init_post_parse__()
 
-    def rotate(
+    def rotate(  # noqa: D102
         self,
         alpha: float,
         beta: float,

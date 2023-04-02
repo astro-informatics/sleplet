@@ -1,3 +1,4 @@
+"""Contains the `Identity` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
@@ -9,7 +10,7 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation)
 class Identity(Flm):
-    """TODO."""
+    """Creates an identity function."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

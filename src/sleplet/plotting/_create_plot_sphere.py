@@ -27,28 +27,28 @@ class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 
     f: npt.NDArray[np.complex_ | np.float_]
-    """TODO"""
+    """The field value sampled on the sphere."""
     L: int
-    """TODO"""
+    """The spherical harmonic bandlimit."""
     filename: str
-    """TODO"""
+    """The output filename of the plot."""
     _: KW_ONLY
     amplitude: float | None = None
-    """TODO"""
+    """Whether to customise the amplitude range of the colour bar."""
     annotations: list[dict] = field(default_factory=list)
-    """TODO"""
+    """Whether to display any annotations on the surface plot or not."""
     normalise: bool = True
-    """TODO"""
+    """Whether to normalise the plot or not."""
     plot_type: str = "real"
-    """TODO"""
+    """Whether to display the `real`, `imag`, `abs` or `sum` value of the field."""
     reality: bool = False
-    """TODO"""
+    """Whether the given signal is real or not."""
     region: sleplet.slepian.region.Region | None = None
-    """TODO"""
+    """Whether to set the field values outside of a given region to zero."""
     spin: int = 0
-    """TODO"""
+    """Spin value."""
     upsample: bool = True
-    """TODO"""
+    """Whether to upsample the current field."""
 
     def __post_init_post_parse__(self) -> None:
         self.resolution = (
@@ -63,7 +63,7 @@ class PlotSphere:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """TODO creates basic plotly plot rather than matplotlib."""
+        """Performs the plot."""
         f = self._prepare_field(self.f)
 
         # get values from the setup

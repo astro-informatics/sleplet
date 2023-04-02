@@ -1,3 +1,4 @@
+"""Contains the `SlepianPolarCap` class."""
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path
@@ -29,12 +30,16 @@ class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
     theta_max: float
-    """TODO"""
+    """Sets the size of the polar cap region."""
     _: KW_ONLY
     gap: bool = False
-    """TODO"""
+    """Whether to enable a double ended polar cap."""
     order: int | npt.NDArray[np.int_] | None = None
-    """TODO"""
+    """
+    By default (i.e. `None`) all orders (i.e. `m`) will be computed. If
+    `order` is specified by an integer then only a given order `m` will be
+    computed. In the Slepian eigenproblem formulation this simplifies the
+    mathematical formulation."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -119,7 +124,7 @@ class SlepianPolarCap(SlepianFunctions):
         self,
         m: int,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """Solves the eigenproblem for a given order 'm;"""
+        """Solves the eigenproblem for a given order m."""
         emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
@@ -144,7 +149,8 @@ class SlepianPolarCap(SlepianFunctions):
         m: int,
         emm: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """Syntax:
+        """
+        Syntax:
         Dm = _create_Dm_matrix(m, P).
 
         Input:
@@ -247,7 +253,8 @@ class SlepianPolarCap(SlepianFunctions):
         m2: int,
         m3: int,
     ) -> float:
-        """Syntax:
+        """
+        Syntax:
         s = _wigner3j (l1, l2, l3, m1, m2, m3).
 
         Input:
@@ -330,7 +337,8 @@ class SlepianPolarCap(SlepianFunctions):
         return s
 
     def _polar_gap_modification(self, ell1: int, ell2: int) -> int:
-        """Eq 67 - Spherical Slepian functions and the polar gap in geodesy
+        """
+        Eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell').
         """
         return 1 + self.gap * (-1) ** (ell1 + ell2)

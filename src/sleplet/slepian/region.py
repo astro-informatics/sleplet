@@ -1,3 +1,4 @@
+"""Contains the `Region` class."""
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -12,17 +13,25 @@ class Region:
     """Identifies and creates the appropriate Slepian region for the sphere."""
 
     gap: bool = False
-    """TODO"""
+    """Whether to enable a double ended polar cap, set by the `POLAR_GAP`
+    environment variable. Only relevant if `theta_max` is not `180` and the
+    other angles are at their default values."""
     mask_name: str = ""
-    """TODO"""
+    """The name of the mask of the arbirary region, set by the `SLEPIAN_MASK`
+    environment variable. Current options are `africa` and `south_america`."""
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
-    """TODO"""
+    """For a limited latitude longitude region, set by the `PHI_MAX` environment
+    variable."""
     phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
-    """TODO"""
+    """For a limited latitude longitude region, set by the `PHI_MIN` environment
+    variable."""
     theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
-    """TODO"""
+    """Set by the `THETA_MAX` environment variable. When set without the
+    other angles it controls a polar cap region. When in conjuction with the
+    others it is for a limited latitude longitude region."""
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
-    """TODO"""
+    """For a limited latitude longitude region, set by the `THETA_MIN` environment
+    variable."""
 
     def __post_init_post_parse__(self) -> None:
         self._identify_region()

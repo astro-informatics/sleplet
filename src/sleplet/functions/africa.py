@@ -1,3 +1,4 @@
+"""Contains the `Africa` class."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -15,7 +16,10 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation)
 class Africa(Flm):
-    """TODO."""
+    """
+    Creates a topographic map of the Earth setting everything outide of the
+    Africa region to zero.
+    """
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

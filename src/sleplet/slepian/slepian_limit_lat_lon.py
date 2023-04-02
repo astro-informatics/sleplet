@@ -1,3 +1,4 @@
+"""Contains the `SlepianLimitLatLon` class."""
 from pathlib import Path
 
 import numpy as np
@@ -23,13 +24,13 @@ class SlepianLimitLatLon(SlepianFunctions):
     """Class to create a limited latitude longitude Slepian region on the sphere."""
 
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
-    """TODO"""
+    r"""Maximum \(\phi\) value."""
     phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
-    """TODO"""
+    r"""Minimum \(\phi\) value."""
     theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
-    """TODO"""
+    r"""Maximum \(\theta\) value."""
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
-    """TODO"""
+    r"""Minimum \(\theta\) value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
@@ -85,7 +86,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         return K
 
     def _slepian_integral(self) -> npt.NDArray[np.complex_]:
-        """Syntax:
+        """
+        Syntax:
         G = _slepian_integral().
 
         Output:
@@ -147,7 +149,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         N: int,
         G: npt.NDArray[np.complex_],
     ) -> npt.NDArray[np.complex_]:
-        """Syntax:
+        """
+        Syntax:
         K = _slepian_matrix(dl, L, N, G).
 
         Input:

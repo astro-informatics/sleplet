@@ -44,7 +44,8 @@ def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
 
 
 def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
-    """Tests that all three methods produce the same coefficients for
+    """
+    Tests that all three methods produce the same coefficients for
     limited latitude longitude region.
     """
     field = ssht.inverse(

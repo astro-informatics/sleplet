@@ -1,3 +1,4 @@
+"""Contains the `SquashedGaussian` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
@@ -11,12 +12,16 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SquashedGaussian(Flm):
-    """TODO."""
+    r"""
+    Creates a squashed Gaussian
+    \(\exp(-\frac{1}{2}{(\frac{\theta-\overline{\theta}}{\sigma_{\theta}})}^{2})
+    \sin{(\nu_{\phi}\phi)}\).
+    """
 
     freq: float = 0.1
-    """TODO"""
+    r"""Sets the \(\nu_{\phi}\) value."""
     t_sigma: float = 1
-    """TODO"""
+    r"""Sets the \(\sigma_{\theta}\) value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

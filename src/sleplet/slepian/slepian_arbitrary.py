@@ -1,3 +1,4 @@
+"""Contains the `SlepianArbitrary` class."""
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path
@@ -30,7 +31,7 @@ class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
-    """TODO"""
+    """The name of the mask of the arbirary region."""
     _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:
@@ -141,7 +142,8 @@ class SlepianArbitrary(SlepianFunctions):
         D_i: npt.NDArray[np.float_],
         i: int,
     ) -> None:
-        """Used in both serial and parallel calculations.
+        """
+        Used in both serial and parallel calculations.
 
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease

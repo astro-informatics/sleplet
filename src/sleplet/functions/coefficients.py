@@ -1,3 +1,4 @@
+"""Contains the abstract `Coefficients` class."""
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
@@ -17,19 +18,23 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 @dataclass(config=sleplet._validation.Validation)
 class Coefficients:
-    """Abstract parent class to handle harmonic/Slepian coefficients on the sphere."""
+    """
+    Abstract parent class to handle harmonic/Slepian coefficients on the
+    sphere.
+    """
 
     L: int
-    """TODO"""
+    """The spherical harmonic bandlimit."""
     _: KW_ONLY
     extra_args: list[int] | None = None
-    """TODO"""
+    """Control the extra arguments for the given set of spherical
+    coefficients. Only to be set by the `sphere` CLI."""
     noise: float | None = None
-    """TODO"""
+    """How much to noise the data."""
     region: sleplet.slepian.region.Region | None = None
-    """TODO"""
+    """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
-    """TODO"""
+    """How much to smooth the topographic map of the Earth by."""
 
     def __post_init_post_parse__(self) -> None:
         self._setup_args()
@@ -47,17 +52,16 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
-        """TODO.
+        r"""
+        Performs the translation of the coefficients, used in the sifting convolution.
 
         Args:
-        ----
-            alpha: _description_
-            beta: _description_
-            shannon: _description_
+            alpha: The point on the 2-sphere to translate to, i.e. the \(\phi\) value.
+            beta: The point on the 2-sphere to translate to, i.e. the \(\theta\) value.
+            shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
-        -------
-            _description_
+            The translated spherical harmonic coefficients.
         """
         g_coefficients = self._translation_helper(alpha, beta)
         return (
@@ -73,17 +77,16 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
-        """TODO.
+        """
+        Perform the sifting convolution of the two inputs.
 
         Args:
-        ----
-            f_coefficient: _description_
-            g_coefficien: _description_
-            shannon: _description_
+            f_coefficient: Input harmonic/Slepian coefficients.
+            g_coefficien: Input harmonic/Slepian coefficients.
+            shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
-        -------
-            _description_
+            The sifting convolution of the two inputs.
         """
         # translation/convolution are not real for general function
         self.reality = False
@@ -94,7 +97,8 @@ class Coefficients:
         )
 
     def _add_details_to_name(self) -> None:
-        """Adds region to the name if present if not a Slepian function
+        """
+        Adds region to the name if present if not a Slepian function
         adds noise/smoothing if appropriate and bandlimit.
         """
         if (
@@ -133,17 +137,16 @@ class Coefficients:
         *,
         gamma: float = 0,
     ) -> npt.NDArray[np.complex_]:
-        """TODO rotates given flm on the sphere by alpha/beta/gamma.
+        r"""
+        Rotates given flm on the sphere by alpha/beta/gamma.
 
         Args:
-        ----
-            alpha: _description_
-            beta: _description_
-            gamma: _description_
+            alpha: The third Euler angle, a \(\alpha\) rotation about the z-axis.
+            beta: The second Euler angle, a \(\beta\) rotation about the y-axis.
+            gamma: The first Euler angle, a \(\gamma\) rotation about the z-axis.
 
         Returns:
-        -------
-            _description_
+            The rotated spherical harmonic coefficients.
         """
         raise NotImplementedError
 
@@ -185,7 +188,8 @@ class Coefficients:
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """Initialises function specific args
+        """
+        Initialises function specific args
         either default value or user input.
         """
         raise NotImplementedError

@@ -1,3 +1,4 @@
+"""Contains the `ElongatedGaussian` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
@@ -11,12 +12,16 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class ElongatedGaussian(Flm):
-    """TODO."""
+    r"""
+    Creates an elongated Gaussian
+    \(\exp(-(\frac{{(\theta-\overline{\theta})}^{2}}{2\sigma_{\theta}^{2}}
+    + \frac{{(\phi-\overline{\phi})}^{2}}{2\sigma_{\phi}^{2}}))\).
+    """
 
     p_sigma: float = 0.1
-    """TODO"""
+    r"""Sets the \(\sigma_{\phi}\) value."""
     t_sigma: float = 1
-    """TODO"""
+    r"""Sets the \(\sigma_{\theta}\) value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

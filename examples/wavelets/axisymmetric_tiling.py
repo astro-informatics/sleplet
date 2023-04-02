@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -8,7 +6,6 @@ from scipy.interpolate import pchip
 from sleplet.plot_methods import save_plot
 from sleplet.wavelet_methods import create_kappas
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 B = 3
@@ -33,7 +30,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$\ell$")
     plt.legend(loc=6)
-    save_plot(_fig_path, f"axisymmetric_tiling_L{L}")
+    save_plot(f"axisymmetric_tiling_L{L}")
 
 
 if __name__ == "__main__":

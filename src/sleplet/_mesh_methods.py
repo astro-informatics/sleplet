@@ -17,7 +17,8 @@ def average_functions_on_vertices_to_faces(
     faces: npt.NDArray[np.int_],
     functions_on_vertices: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """The integrals require all functions to be defined on faces
+    """
+    The integrals require all functions to be defined on faces
     this method handles an arbitrary number of functions.
     """
     sleplet.logger.info("converting function on vertices to faces")
@@ -40,7 +41,7 @@ def create_mesh_region(
     mesh_config: dict,
     vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
-    """Creates the boolean region for the given mesh."""
+    """Creates a boolean region for the given mesh."""
     return (
         (vertices[:, 0] >= mesh_config["XMIN"])
         & (vertices[:, 0] <= mesh_config["XMAX"])
@@ -64,7 +65,8 @@ def mesh_eigendecomposition(
     *,
     number_basis_functions: int | None = None,
 ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_], int]:
-    """Computes the eigendecomposition of the mesh represented
+    """
+    Computes the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data.
     """
     # determine number of basis functions

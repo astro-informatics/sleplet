@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -7,7 +5,6 @@ from matplotlib import pyplot as plt
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import SlepianPolarCap
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 L = 16
@@ -32,7 +29,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(_fig_path, "polar_cap_eigenvalues")
+    save_plot("polar_cap_eigenvalues")
 
 
 if __name__ == "__main__":

@@ -38,7 +38,8 @@ def _load_cl(
     *,
     file_ending: str = "_lcdm_pl_model_wmap7baoh0",
 ) -> npt.NDArray[np.float_]:
-    """Pick coefficients from file options are:
+    """
+    Pick coefficients from file options are:
     * _lcdm_pl_model_yr1_v1.mat
     * _tt_spectrum_7yr_v4p1.mat
     * _lcdm_pl_model_wmap7baoh0.mat.

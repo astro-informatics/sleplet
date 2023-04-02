@@ -1,3 +1,4 @@
+"""Contains the `MeshBasisFunctions` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
@@ -11,10 +12,11 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
-    """TODO."""
+    """Creates the eigenfunctions of the Laplacian of the mesh."""
 
     rank: int = 0
-    """TODO"""
+    """Slepian eigenvalues are ordered in decreasing value. The option `rank`
+    selects a given Slepian function from the spectrum (p in the papers)."""
 
     def __post_init_post_parse__(self) -> None:
         self._validate_rank()

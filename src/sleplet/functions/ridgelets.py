@@ -1,3 +1,4 @@
+"""Contains the `Ridgelets` class."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -15,16 +16,20 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Ridgelets(Flm):
-    """TODO."""
+    """
+    Crates scale-discretised wavelets. As seen in
+    <https://arxiv.org/abs/1510.01595>.
+    """
 
     B: int = 3
-    """TODO"""
+    r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
-    """TODO"""
+    r"""The minimum wavelet scale. Represented as \(J_{0}\) in the papers."""
     j: int | None = None
-    """TODO"""
+    """Option to select a given wavelet. `None` indicates the scaling function,
+    whereas would correspond to the selected `j_min`."""
     spin: int = 2
-    """TODO"""
+    """Spin value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

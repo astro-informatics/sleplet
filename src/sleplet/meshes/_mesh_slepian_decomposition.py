@@ -20,7 +20,6 @@ class MeshSlepianDecomposition:
     u: npt.NDArray[np.complex_ | np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
-        """ """
         self._detect_method()
 
     def decompose(self, rank: int) -> float:
@@ -45,7 +44,8 @@ class MeshSlepianDecomposition:
         return coefficients
 
     def _integrate_region(self, rank: int) -> float:
-        r"""F_{p} =
+        r"""
+        F_{p} =
         \frac{1}{\lambda_{p}}
         \int\limits_{R} \dd{x}
         f(x) \overline{S_{p}(x)}.
@@ -65,7 +65,8 @@ class MeshSlepianDecomposition:
         return integration / self.mesh_slepian.slepian_eigenvalues[rank]
 
     def _integrate_mesh(self, rank: int) -> float:
-        r"""F_{p} =
+        r"""
+        F_{p} =
         \int\limits_{x} \dd{x}
         f(x) \overline{S_{p}(x)}.
         """
@@ -82,7 +83,8 @@ class MeshSlepianDecomposition:
         )
 
     def _harmonic_sum(self, rank: int) -> float:
-        r"""F_{p} =
+        r"""
+        F_{p} =
         \sum\limits_{i=0}^{K}
         f_{i} (S_{p})_{i}^{*}.
         """

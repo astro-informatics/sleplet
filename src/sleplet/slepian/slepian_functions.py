@@ -1,3 +1,4 @@
+"""Contains the abstract `SlepianFunctions` class."""
 from abc import abstractmethod
 
 import numpy as np
@@ -14,7 +15,7 @@ class SlepianFunctions:
     """Abstract parent class of creating the different Slepian regions on the sphere."""
 
     L: int
-    """TODO"""
+    """The spherical harmonic bandlimit."""
 
     def __post_init_post_parse__(self) -> None:
         self.region = self._create_region()

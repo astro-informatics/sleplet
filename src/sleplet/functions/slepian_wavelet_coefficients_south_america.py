@@ -1,3 +1,4 @@
+"""Contains the `SlepianWaveletCoefficientsSouthAmerica` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
@@ -16,14 +17,15 @@ from sleplet.functions.fp import Fp
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsSouthAmerica(Fp):
-    """TODO."""
+    """Creates Slepian wavelet coefficients of the South America region."""
 
     B: int = 3
-    """TODO"""
+    r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
-    """TODO"""
+    r"""The minimum wavelet scale. Represented as \(J_{0}\) in the papers."""
     j: int | None = None
-    """TODO"""
+    """Option to select a given wavelet. `None` indicates the scaling function,
+    whereas `0` would correspond to the selected `j_min`."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

@@ -22,17 +22,16 @@ def compute_snr(
     noise: npt.NDArray[np.complex_ | np.float_],
     signal_type: str,
 ) -> float:
-    """TODO computes the signal to noise ratio.
+    """
+    Computes the signal to noise ratio.
 
     Args:
-    ----
-        signal: _description_
-        noise: _description_
-        signal_type: _description_
+        signal: The unnoised signal.
+        noise: The noised signal.
+        signal_type: Specifier to improve logging.
 
     Returns:
-    -------
-        _description_
+        The signal-to-noise value of the noised signal.
     """
     snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
     sleplet.logger.info(f"{signal_type} SNR: {snr:.2f}")
@@ -45,17 +44,16 @@ def compute_sigma_noise(
     *,
     denominator: int | None = None,
 ) -> float:
-    """TODO compute the std dev of the noise.
+    """
+    Compute the standard deviation of the noise.
 
     Args:
-    ----
-        signal: _description_
-        snr_in: _description_
-        denominator: _description_
+        signal: The noised signal.
+        snr_in: The parameter controlling the signal-to-noise.
+        denominator: Coefficients to use in computing the noise, defaults to all.
 
     Returns:
-    -------
-        _description_
+        The standard deviation of the noise.
     """
     if denominator is None:
         denominator = signal.shape[0]
@@ -114,7 +112,7 @@ def _perform_hard_thresholding(
     sigma_j: float | npt.NDArray[np.float_],
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """Set pixels in real space to zero if the magnitude is less than the threshold."""
+    """Set pixels in pixel space to zero if the magnitude is less than the threshold."""
     threshold = n_sigma * sigma_j
     return np.where(np.abs(f) < threshold, 0, f)
 
@@ -125,18 +123,17 @@ def harmonic_hard_thresholding(
     sigma_j: npt.NDArray[np.float_],
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """TODO perform thresholding in harmonic space.
+    r"""
+    Perform thresholding in harmonic space.
 
     Args:
-    ----
-        L: _description_
-        wav_coeffs: _description_
-        sigma_j: _description_
-        n_sigma: _description_
+        L: The spherical harmonic bandlimit.
+        wav_coeffs: The harmonic wavelet coefficients.
+        sigma_j: The wavelet standard deviation \(\sigma_{j}\).
+        n_sigma: The number of \(\sigma_{j}\) to threshold.
 
     Returns:
-    -------
-        _description_
+        The thresholded wavelet coefficients.
     """
     sleplet.logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
@@ -158,19 +155,18 @@ def slepian_wavelet_hard_thresholding(
     n_sigma: int,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO perform thresholding in Slepian wavelet space.
+    r"""
+    Perform thresholding in Slepian wavelet space.
 
     Args:
-    ----
-        L: _description_
-        wav_coeffs: _description_
-        sigma_j: _description_
-        n_sigma _description_
-        slepian: _description_
+        L: The spherical harmonic bandlimit.
+        wav_coeffs: The Slepian wavelet coefficients
+        sigma_j: The wavelet standard deviation \(\sigma_{j}\).
+        n_sigma: The number of \(\sigma_{j}\) to threshold.
+        slepian: The given Slepian object.
 
     Returns:
-    -------
-        _description_
+        The hard thresholded Slepian wavelet coefficients.
     """
     sleplet.logger.info("begin Slepian hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
@@ -192,19 +188,18 @@ def slepian_function_hard_thresholding(
     n_sigma: int,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """TODO perform thresholding in Slepian function space.
+    r"""
+    Perform thresholding in Slepian space.
 
     Args:
-    ----
-        L: _description_
-        coefficients: _description_
-        sigma: _description_
-        n_sigma: _description_
-        slepian: _description_
+        L: The spherical harmonic bandlimit.
+        coefficients: The Slepian coefficients.
+        sigma: The standard deviation of the noise \(\sigma\).
+        n_sigma: The number of \(\sigma\) to threshold.
+        slepian: The given Slepian object.
 
     Returns:
-    -------
-        _description_
+        The thresholded Slepian coefficients.
     """
     sleplet.logger.info("begin Slepian hard thresholding")
     f = sleplet.slepian_methods.slepian_inverse(coefficients, L, slepian)
@@ -284,18 +279,17 @@ def compute_slepian_mesh_sigma_j(
     psi_j: npt.NDArray[np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """TODO compute sigma_j for wavelets used in denoising the signal.
+    r"""
+    Compute \(\sigma_{j}\) for wavelets used in denoising the signal.
 
     Args:
-    ----
-        mesh_slepian: _description_
-        signal: _description_
-        psi_j: _description_
-        snr_in: _description_
+        mesh_slepian: The Slepian mesh object containing the eigensolutions.
+        signal: The noised signal.
+        psi_j: The Slepian wavelet coefficients.
+        snr_in: The parameter controlling the signal-to-noise ratio.
 
     Returns:
-    -------
-        _description_
+        The standard deviation of the noise.
     """
     sigma_noise = compute_sigma_noise(
         signal,
@@ -314,18 +308,17 @@ def slepian_mesh_hard_thresholding(
     sigma_j: npt.NDArray[np.float_],
     n_sigma: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO perform thresholding in Slepian space.
+    r"""
+    Perform thresholding in Slepian space of the mesh.
 
     Args:
-    ----
-        mesh_slepian: _description_
-        wav_coeffs: _description_
-        sigma_j: _description_
-        n_sigma: _description_
+        mesh_slepian: The Slepian mesh object containing the eigensolutions.
+        wav_coeffs: The Slepian wavelet coefficients of the mesh.
+        sigma_j: The wavelet standard deviation \(\sigma_{j}\).
+        n_sigma: The number of \(\sigma\) to threshold.
 
     Returns:
-    -------
-        _description_
+        The thresholded wavelet coefficients of the mesh.
     """
     sleplet.logger.info("begin Slepian mesh hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
