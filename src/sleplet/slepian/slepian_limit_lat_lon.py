@@ -1,3 +1,4 @@
+"""Contains the `SlepianLimitLatLon` class."""
 from pathlib import Path
 
 import numpy as np

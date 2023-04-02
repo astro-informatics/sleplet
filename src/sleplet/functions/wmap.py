@@ -1,3 +1,4 @@
+"""Contains the `Wmap` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
@@ -10,7 +11,7 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation)
 class Wmap(Flm):
-    """TODO."""
+    """Creates the WMAP data on the sphere."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

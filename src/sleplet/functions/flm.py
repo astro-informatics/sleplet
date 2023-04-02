@@ -1,3 +1,4 @@
+"""Contains the abstract `Flm` class."""
 from abc import abstractmethod
 
 import numpy as np
@@ -17,7 +18,7 @@ class Flm(Coefficients):
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()
 
-    def rotate(
+    def rotate(  # noqa: D102
         self,
         alpha: float,
         beta: float,

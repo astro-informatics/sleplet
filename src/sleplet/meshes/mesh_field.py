@@ -1,3 +1,4 @@
+"""Contains the `MeshField` class."""
 import numpy as np
 from igl import per_vertex_normals
 from numpy import typing as npt
@@ -10,7 +11,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshField(MeshHarmonicCoefficients):
-    """TODO."""
+    """Creates a per-vertex normals field on a given mesh."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

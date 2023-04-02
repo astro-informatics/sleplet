@@ -1,3 +1,4 @@
+"""Contains the `Mesh` class."""
 from dataclasses import KW_ONLY
 
 from pydantic.dataclasses import dataclass

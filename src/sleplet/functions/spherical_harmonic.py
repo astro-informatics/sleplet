@@ -1,3 +1,4 @@
+"""Contains the `SphericalHarmonic` class."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -12,12 +13,12 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SphericalHarmonic(Flm):
-    """TODO."""
+    """Creates the spherical harmonic functions on the sphere."""
 
     ell: int = 0
-    """TODO"""
+    r"""Degree \(\ell \geq 0\)."""
     m: int = 0
-    """TODO"""
+    r"""Order \(\leq |\ell|\)"""
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         ind = ssht.elm2ind(self.ell, self.m)

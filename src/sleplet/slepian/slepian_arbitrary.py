@@ -1,3 +1,4 @@
+"""Contains the `SlepianArbitrary` class."""
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path

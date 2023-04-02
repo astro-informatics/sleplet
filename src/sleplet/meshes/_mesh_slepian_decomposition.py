@@ -20,7 +20,6 @@ class MeshSlepianDecomposition:
     u: npt.NDArray[np.complex_ | np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
-        """ """
         self._detect_method()
 
     def decompose(self, rank: int) -> float:

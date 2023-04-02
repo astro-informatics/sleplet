@@ -1,3 +1,4 @@
+"""Contains the `SlepianWavelets` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
@@ -13,7 +14,7 @@ from sleplet.functions.fp import Fp
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWavelets(Fp):
-    """TODO."""
+    """Creats the Slepian wavelets on the sphere."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""

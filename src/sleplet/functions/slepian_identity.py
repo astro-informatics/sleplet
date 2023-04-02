@@ -1,3 +1,4 @@
+"""Contains the `SlepianIdentity` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
@@ -9,7 +10,7 @@ from sleplet.functions.fp import Fp
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianIdentity(Fp):
-    """TODO."""
+    """Creates the identify function on ther sphere in the Slepian region."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

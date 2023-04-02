@@ -50,7 +50,7 @@ class PlotMesh:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """TODO creates 3d plotly mesh plot."""
+        """Creates 3d plotly mesh plot."""
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
 

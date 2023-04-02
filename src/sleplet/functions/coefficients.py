@@ -1,3 +1,4 @@
+"""Contains the abstract `Coefficients` class."""
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
@@ -52,7 +53,7 @@ class Coefficients:
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         """
-        TODO.
+        Performs the translation of the coefficients, used in the sifting convolution.
 
         Args:
         ----
@@ -80,7 +81,7 @@ class Coefficients:
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         """
-        TODO.
+        Perform the sifting convolution of the two inputs.
 
         Args:
         ----

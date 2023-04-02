@@ -1,3 +1,4 @@
+"""Contains the `MeshSlepianField` class."""
 import numpy as np
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass

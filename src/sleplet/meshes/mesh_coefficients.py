@@ -1,3 +1,4 @@
+"""Contains the abstract `MeshCoefficients` class."""
 from abc import abstractmethod
 from dataclasses import KW_ONLY
 
@@ -23,11 +24,12 @@ class MeshCoefficients:
     """A mesh object."""
     _: KW_ONLY
     extra_args: list[int] | None = None
-    """TODO"""
+    """Control the extra arguments for the given set of mesh
+    coefficients. Only to be set by the `mesh` CLI."""
     noise: float | None = None
-    """TODO"""
+    """How much to noise the data."""
     region: bool = False
-    """TODO"""
+    """Whether to set a region or not, used in the Slepian case."""
 
     def __post_init_post_parse__(self) -> None:
         self._setup_args()

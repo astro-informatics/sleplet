@@ -63,7 +63,7 @@ class PlotSphere:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """TODO creates basic plotly plot rather than matplotlib."""
+        """Creates basic plotly plot rather than matplotlib."""
         f = self._prepare_field(self.f)
 
         # get values from the setup

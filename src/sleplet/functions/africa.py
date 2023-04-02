@@ -1,3 +1,4 @@
+"""Contains the `Africa` class."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt

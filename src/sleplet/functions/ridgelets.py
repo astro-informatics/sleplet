@@ -1,3 +1,4 @@
+"""Contains the `Ridgelets` class."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -15,7 +16,10 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Ridgelets(Flm):
-    """TODO."""
+    """
+    Crates scale-discretised wavelets on the sphere. As seen in
+    <https://arxiv.org/abs/1510.01595>,.
+    """
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""

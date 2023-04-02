@@ -1,3 +1,4 @@
+"""Contains the `Region` class."""
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 

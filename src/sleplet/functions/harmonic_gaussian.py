@@ -1,3 +1,4 @@
+"""Contains the `HarmonicGaussian` class."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -10,12 +11,16 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class HarmonicGaussian(Flm):
-    """TODO."""
+    r"""
+    Creates the harmonic Gaussian on the sphere
+    \(\exp(-(\frac{{\ell}^{2}}{2\sigma_{\ell}^{2}}
+    + \frac{{m}^{2}}{2\sigma_{m}^{2}}))\).
+    """
 
     l_sigma: float = 10
-    """TODO"""
+    r"""Sets the \(\sigma_{\ell}\) value."""
     m_sigma: float = 10
-    """TODO"""
+    r"""Sets the \(\sigma_{m}\) value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

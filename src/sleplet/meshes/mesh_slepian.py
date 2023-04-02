@@ -1,3 +1,4 @@
+"""Contains the `MeshSlepian` class."""
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
