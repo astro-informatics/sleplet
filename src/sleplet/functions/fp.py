@@ -13,7 +13,7 @@ from sleplet.functions.coefficients import Coefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class FP(Coefficients):
+class Fp(Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:

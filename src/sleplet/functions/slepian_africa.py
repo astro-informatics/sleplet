@@ -7,11 +7,11 @@ import sleplet._validation
 import sleplet.functions
 import sleplet.slepian.region
 import sleplet.slepian_methods
-from sleplet.functions.fp import FP
+from sleplet.functions.fp import Fp
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianAfrica(FP):
+class SlepianAfrica(Fp):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

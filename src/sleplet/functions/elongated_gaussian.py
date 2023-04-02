@@ -6,11 +6,11 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.harmonic_methods
-from sleplet.functions.flm import FLM
+from sleplet.functions.flm import Flm
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class ElongatedGaussian(FLM):
+class ElongatedGaussian(Flm):
     """TODO."""
 
     p_sigma: float = 0.1

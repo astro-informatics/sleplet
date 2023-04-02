@@ -7,11 +7,11 @@ from pydantic.dataclasses import dataclass
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-from sleplet.functions.flm import FLM
+from sleplet.functions.flm import Flm
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SphericalHarmonic(FLM):
+class SphericalHarmonic(Flm):
     """TODO."""
 
     ell: int = 0

@@ -8,11 +8,11 @@ import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.wavelet_methods
-from sleplet.functions.fp import FP
+from sleplet.functions.fp import Fp
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianWavelets(FP):
+class SlepianWavelets(Fp):
     """TODO."""
 
     B: int = 3

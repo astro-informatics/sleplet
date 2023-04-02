@@ -6,11 +6,11 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions
 import sleplet.slepian.region
-from sleplet.functions.fp import FP
+from sleplet.functions.fp import Fp
 
 
 @dataclass(config=sleplet._validation.Validation)
-class SlepianSouthAmerica(FP):
+class SlepianSouthAmerica(Fp):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

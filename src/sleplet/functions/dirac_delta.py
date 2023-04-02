@@ -5,11 +5,11 @@ from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
-from sleplet.functions.flm import FLM
+from sleplet.functions.flm import Flm
 
 
 @dataclass(config=sleplet._validation.Validation)
-class DiracDelta(FLM):
+class DiracDelta(Flm):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

@@ -6,11 +6,11 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions
 import sleplet.noise
-from sleplet.functions.flm import FLM
+from sleplet.functions.flm import Flm
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class NoiseEarth(FLM):
+class NoiseEarth(Flm):
     """TODO."""
 
     SNR: float = 10

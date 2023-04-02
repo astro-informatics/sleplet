@@ -11,7 +11,7 @@ from sleplet.functions.coefficients import Coefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class FLM(Coefficients):
+class Flm(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
     def __post_init_post_parse__(self) -> None:

@@ -10,11 +10,11 @@ import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.wavelet_methods
-from sleplet.functions.flm import FLM
+from sleplet.functions.flm import Flm
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class Ridgelets(FLM):
+class Ridgelets(Flm):
     """TODO."""
 
     B: int = 3

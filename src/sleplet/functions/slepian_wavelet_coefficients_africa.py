@@ -10,11 +10,11 @@ import sleplet._validation
 import sleplet.functions
 import sleplet.slepian.region
 import sleplet.wavelet_methods
-from sleplet.functions.fp import FP
+from sleplet.functions.fp import Fp
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianWaveletCoefficientsAfrica(FP):
+class SlepianWaveletCoefficientsAfrica(Fp):
     """TODO."""
 
     B: int = 3

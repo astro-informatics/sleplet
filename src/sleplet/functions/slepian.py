@@ -6,11 +6,11 @@ from pydantic.dataclasses import dataclass
 import sleplet
 import sleplet._validation
 import sleplet.slepian_methods
-from sleplet.functions.fp import FP
+from sleplet.functions.fp import Fp
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class Slepian(FP):
+class Slepian(Fp):
     """TODO."""
 
     rank: int = 0

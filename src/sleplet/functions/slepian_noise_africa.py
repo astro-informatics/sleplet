@@ -7,11 +7,11 @@ import sleplet._validation
 import sleplet.functions
 import sleplet.noise
 import sleplet.slepian.region
-from sleplet.functions.fp import FP
+from sleplet.functions.fp import Fp
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianNoiseAfrica(FP):
+class SlepianNoiseAfrica(Fp):
     """TODO."""
 
     SNR: float = -10

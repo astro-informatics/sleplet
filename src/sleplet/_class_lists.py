@@ -13,7 +13,7 @@ MESHES: list[str] = [
     for x in glob(str(_data_path / "*.toml"))
 ]
 
-F_LM: list[type[sleplet.functions.coefficients.Coefficients]] = [
+FLM: list[type[sleplet.functions.coefficients.Coefficients]] = [
     sleplet.functions.Africa,
     sleplet.functions.AxisymmetricWaveletCoefficientsAfrica,
     sleplet.functions.AxisymmetricWaveletCoefficientsEarth,
@@ -34,7 +34,7 @@ F_LM: list[type[sleplet.functions.coefficients.Coefficients]] = [
     sleplet.functions.Wmap,
 ]
 
-F_P: list[type[sleplet.functions.coefficients.Coefficients]] = [
+FP: list[type[sleplet.functions.coefficients.Coefficients]] = [
     sleplet.functions.Slepian,
     sleplet.functions.SlepianAfrica,
     sleplet.functions.SlepianDiracDelta,
@@ -47,7 +47,7 @@ F_P: list[type[sleplet.functions.coefficients.Coefficients]] = [
     sleplet.functions.SlepianWavelets,
 ]
 
-COEFFICIENTS: list[type[sleplet.functions.coefficients.Coefficients]] = F_LM + F_P
+COEFFICIENTS: list[type[sleplet.functions.coefficients.Coefficients]] = FLM + FP
 
 MAPS_LM: list[type[sleplet.functions.coefficients.Coefficients]] = [
     sleplet.functions.Earth,
