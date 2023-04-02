@@ -89,6 +89,11 @@ If you use `SLEPLET` in your research, please cite the paper.
 }
 ```
 
+Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
+`SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394) in
+the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497) in
+mesh setting.
+
 ## Paper Figures
 
 To recreate the figures from the below papers, one may use the CLI or the API.
