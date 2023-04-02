@@ -76,7 +76,7 @@ def axisymmetric_wavelet_forward(
     ----
         L: The spherical harmonic bandlimit.
         flm: The spherical harmonic coefficients.
-        wavelets: The axisymmetric wavelets.
+        wavelets: The axisymmetric wavelets in harmonic space.
 
     Returns:
     -------
@@ -104,11 +104,11 @@ def axisymmetric_wavelet_inverse(
     ----
         L: The spherical harmonic bandlimit.
         wav_coeffs: The axisymmetric wavelet coefficients.
-        wavelets: The axisymmetric wavelets.
+        wavelets: The axisymmetric wavelets in pixel space.
 
     Returns:
     -------
-        The axisymmetric wavelet coefficients in pixel space.
+        The axisymmetric wavelet coefficients in harmonic space.
     """
     flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(L):
