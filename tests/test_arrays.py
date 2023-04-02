@@ -5,7 +5,7 @@ from sleplet._array_methods import fill_upper_triangle_of_hermitian_matrix
 
 
 def test_fill_matrix_using_hermitian_relation() -> None:
-    """test that Hermitian symmetry is applied to matrix."""
+    """Test that Hermitian symmetry is applied to matrix."""
     matrix_in = np.array(
         [[1 + 1j, 0, 0], [4 + 4j, 5 + 5j, 0], [7 + 7j, 8 + 8j, 9 + 9j]],
     )

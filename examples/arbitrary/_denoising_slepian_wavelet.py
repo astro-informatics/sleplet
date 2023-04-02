@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import typing as npt
 
-from sleplet.functions.fp import SlepianAfrica, SlepianSouthAmerica, SlepianWavelets
+from sleplet.functions import SlepianAfrica, SlepianSouthAmerica, SlepianWavelets
 from sleplet.noise import (
     _compute_slepian_sigma_j,
     compute_snr,
@@ -18,7 +18,7 @@ def denoising_slepian_wavelet(
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """denoising demo using Slepian wavelets."""
+    """Denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
     w = slepian_wavelet_forward(
         noised_signal.coefficients,

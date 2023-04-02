@@ -22,7 +22,7 @@ MESHES = [
 
 
 def main(mesh_name: str, num_basis_fun: int) -> None:
-    """plots the Slepian eigenvalues of the given mesh."""
+    """Plots the Slepian eigenvalues of the given mesh."""
     mesh = Mesh(
         mesh_name,
         number_basis_functions=num_basis_fun,

@@ -6,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 
 from sleplet import logger
-from sleplet.functions.flm import HarmonicGaussian
+from sleplet.functions import HarmonicGaussian
 from sleplet.plot_methods import save_plot
 
 _fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
@@ -18,7 +18,7 @@ SAMPLING_SCHEME = "MWSS"
 
 
 def compute_translation_normalisation_theta() -> None:
-    """analysis of the translation norm for referee."""
+    """Analysis of the translation norm for referee."""
     hg = HarmonicGaussian(L)
     thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
     norm = np.zeros(len(thetas))

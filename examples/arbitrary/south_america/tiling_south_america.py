@@ -19,7 +19,7 @@ STEP = 0.01
 
 
 def main() -> None:
-    """plots the tiling of the Slepian line."""
+    """Plots the tiling of the Slepian line."""
     xlim = L**2
     x = np.arange(xlim)
     xi = np.arange(0, xlim - 1 + STEP, STEP)

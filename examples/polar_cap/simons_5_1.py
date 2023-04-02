@@ -26,7 +26,7 @@ THETA_MIN_DEFAULT = 0
 
 
 def main() -> None:
-    """create fig 5.1 from Spatiospectral Concentration on a Sphere
+    """Create fig 5.1 from Spatiospectral Concentration on a Sphere
     by Simons et al 2006.
     """
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
@@ -56,7 +56,7 @@ def _helper(  # noqa: PLR0913
     order: int,
     rank: int,
 ) -> None:
-    """helper which plots the required order and specified ranks."""
+    """Helper which plots the required order and specified ranks."""
     logger.info(f"plotting order={order}, rank={rank}")
     axs = ax[order, rank]
     flm = slepian.eigenvectors[rank] * SIGNS[order][rank]

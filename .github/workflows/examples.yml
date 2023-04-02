@@ -22,7 +22,7 @@ jobs:
         with:
           path: |
             ~/.cache/sleplet
-          key: tox-${{ hashFiles('pyproject.toml') }}
+          key: readme-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
         run: |
@@ -50,7 +50,7 @@ jobs:
         with:
           path: |
             ~/.cache/sleplet
-          key: tox-${{ hashFiles('pyproject.toml') }}
+          key: examples-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
         run: |

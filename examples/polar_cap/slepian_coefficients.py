@@ -5,7 +5,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet.functions.flm import Earth
+from sleplet.functions import Earth
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region, SlepianPolarCap
 from sleplet.slepian_methods import choose_slepian_method, slepian_forward
@@ -21,7 +21,7 @@ def _earth_region_harmonic_coefficients(
     L: int,
     theta_max: int,
 ) -> npt.NDArray[np.float_]:
-    """harmonic coefficients of the Earth for the polar cap region."""
+    """Harmonic coefficients of the Earth for the polar cap region."""
     region = Region(theta_max=np.deg2rad(theta_max))
     earth = Earth(L, region=region)
     coefficients = np.abs(earth.coefficients)
@@ -33,7 +33,7 @@ def _earth_region_slepian_coefficients(
     L: int,
     theta_max: int,
 ) -> npt.NDArray[np.float_]:
-    """computes the Slepian coefficients."""
+    """Computes the Slepian coefficients."""
     region = Region(theta_max=np.deg2rad(theta_max))
     earth = Earth(L, region=region)
     slepian = choose_slepian_method(L, region)
@@ -41,7 +41,7 @@ def _earth_region_slepian_coefficients(
 
 
 def main() -> None:
-    """creates a plot of Slepian coefficients against rank."""
+    """Creates a plot of Slepian coefficients against rank."""
     N = SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     flm = _earth_region_harmonic_coefficients(L, THETA_MAX)[:N]
     f_p = np.sort(_earth_region_slepian_coefficients(L, THETA_MAX))[::-1]

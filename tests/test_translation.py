@@ -5,7 +5,7 @@ from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
 from sleplet._vars import RANDOM_SEED, SAMPLING_SCHEME
-from sleplet.functions.flm import DiracDelta
+from sleplet.functions import DiracDelta
 from sleplet.plot_methods import _calc_nearest_grid_point
 from sleplet.slepian_methods import slepian_inverse
 
@@ -14,12 +14,12 @@ THETA_MAX = np.pi / 3
 
 
 def valid_alphas() -> SearchStrategy[float]:
-    """alpha can be in the range [0, 2*pi)."""
+    """Alpha can be in the range [0, 2*pi)."""
     return floats(min_value=0, max_value=2, exclude_max=True)
 
 
 def valid_betas() -> SearchStrategy[float]:
-    """beta can be in the range [0, pi]."""
+    """Beta can be in the range [0, pi]."""
     return floats(min_value=0, max_value=1)
 
 
@@ -27,7 +27,7 @@ def valid_betas() -> SearchStrategy[float]:
 @settings(max_examples=8, deadline=None)
 @given(alpha_pi_frac=valid_alphas(), beta_pi_frac=valid_betas())
 def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
-    """test to ensure that rotation and translation
+    """Test to ensure that rotation and translation
     give the same result for the Dirac delta.
     """
     dd = DiracDelta(L)
@@ -38,7 +38,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
 
 
 def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) -> None:
-    """test to ensure the location of the maximum of a field moves when translated."""
+    """Test to ensure the location of the maximum of a field moves when translated."""
     _, beta = _calc_nearest_grid_point(
         slepian_dirac_delta_polar_cap.L,
         0,
@@ -71,7 +71,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
 def test_slepian_translation_changes_max_lim_lat_lon(
     slepian_dirac_delta_lim_lat_lon,
 ) -> None:
-    """test to ensure the location of the maximum of a field moves when translated."""
+    """Test to ensure the location of the maximum of a field moves when translated."""
     _, beta = _calc_nearest_grid_point(
         slepian_dirac_delta_lim_lat_lon.L,
         0,

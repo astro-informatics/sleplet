@@ -1,4 +1,4 @@
-"""methods to work with Slepian coefficients."""
+"""Methods to work with Slepian coefficients."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -156,7 +156,7 @@ def _compute_s_p_omega_prime(
     beta: float,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """method to pick out the desired angle from Sp(omega)."""
+    """Method to pick out the desired angle from Sp(omega)."""
     sp_omega = compute_s_p_omega(L, slepian)
     p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
     q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
@@ -167,7 +167,7 @@ def _compute_s_p_omega_prime(
 
 
 def slepian_mesh_forward(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     *,
     u: npt.NDArray[np.complex_ | np.float_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -199,7 +199,7 @@ def slepian_mesh_forward(
 
 
 def slepian_mesh_inverse(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
@@ -219,9 +219,9 @@ def slepian_mesh_inverse(
 
 
 def _compute_mesh_s_p_pixel(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
 ) -> npt.NDArray[np.float_]:
-    """method to calculate Sp(omega) for a given region."""
+    """Method to calculate Sp(omega) for a given region."""
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
     for p in range(mesh_slepian.N):
         sp[p] = sleplet.harmonic_methods.mesh_inverse(

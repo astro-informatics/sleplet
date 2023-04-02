@@ -1,4 +1,4 @@
-"""methods to handle noise in Fourier or wavelet space."""
+"""Methods to handle noise in Fourier or wavelet space."""
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -13,7 +13,7 @@ import sleplet.slepian_methods
 
 
 def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:
-    """computes the power of the signal."""
+    """Computes the power of the signal."""
     return (np.abs(signal) ** 2).sum()
 
 
@@ -67,7 +67,7 @@ def _create_noise(
     signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.complex_]:
-    """computes Gaussian white noise."""
+    """Computes Gaussian white noise."""
     # set random seed
     rng = default_rng(sleplet._vars.RANDOM_SEED)
 
@@ -99,7 +99,7 @@ def _create_slepian_noise(
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
     snr_in: float,
 ) -> npt.NDArray[np.complex_]:
-    """computes Gaussian white noise in Slepian space."""
+    """Computes Gaussian white noise in Slepian space."""
     flm = ssht.forward(
         sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
         L,
@@ -114,7 +114,7 @@ def _perform_hard_thresholding(
     sigma_j: float | npt.NDArray[np.float_],
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
-    """set pixels in real space to zero if the magnitude is less than the threshold."""
+    """Set pixels in real space to zero if the magnitude is less than the threshold."""
     threshold = n_sigma * sigma_j
     return np.where(np.abs(f) < threshold, 0, f)
 
@@ -217,7 +217,7 @@ def _compute_sigma_j(
     psi_j: npt.NDArray[np.complex_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """compute sigma_j for wavelets used in denoising the signal."""
+    """Compute sigma_j for wavelets used in denoising the signal."""
     sigma_noise = compute_sigma_noise(signal, snr_in)
     wavelet_power = (np.abs(psi_j) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)
@@ -230,7 +230,7 @@ def _compute_slepian_sigma_j(
     snr_in: float,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.float_]:
-    """compute sigma_j for wavelets used in denoising the signal."""
+    """Compute sigma_j for wavelets used in denoising the signal."""
     sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L**2)
     s_p = sleplet.slepian_methods.compute_s_p_omega(L, slepian)
     psi_j_reshape = psi_j[:, : slepian.N, np.newaxis, np.newaxis]
@@ -242,7 +242,7 @@ def _create_mesh_noise(
     u_i: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """computes Gaussian white noise."""
+    """Computes Gaussian white noise."""
     # set random seed
     rng = default_rng(sleplet._vars.RANDOM_SEED)
 
@@ -259,11 +259,11 @@ def _create_mesh_noise(
 
 
 def _create_slepian_mesh_noise(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     slepian_signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """computes Gaussian white noise in Slepian space."""
+    """Computes Gaussian white noise in Slepian space."""
     u_i = sleplet.harmonic_methods.mesh_forward(
         mesh_slepian.mesh,
         sleplet.slepian_methods.slepian_mesh_inverse(
@@ -279,7 +279,7 @@ def _create_slepian_mesh_noise(
 
 
 def compute_slepian_mesh_sigma_j(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     signal: npt.NDArray[np.complex_ | np.float_],
     psi_j: npt.NDArray[np.float_],
     snr_in: float,
@@ -309,7 +309,7 @@ def compute_slepian_mesh_sigma_j(
 
 
 def slepian_mesh_hard_thresholding(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     wav_coeffs: npt.NDArray[np.complex_ | np.float_],
     sigma_j: npt.NDArray[np.float_],
     n_sigma: int,

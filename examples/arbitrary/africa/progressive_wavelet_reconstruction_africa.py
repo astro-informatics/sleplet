@@ -1,7 +1,7 @@
 import numpy as np
 
 from sleplet import logger
-from sleplet.functions.fp import SlepianWaveletCoefficientsAfrica
+from sleplet.functions import SlepianWaveletCoefficientsAfrica
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -15,7 +15,7 @@ SMOOTHING = 2
 
 
 def main() -> None:
-    """the reconstruction of a signal in Slepian space."""
+    """The reconstruction of a signal in Slepian space."""
     region = Region(mask_name="africa")
     swc = SlepianWaveletCoefficientsAfrica(
         L,

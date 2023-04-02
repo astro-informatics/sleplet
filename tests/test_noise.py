@@ -1,6 +1,6 @@
 from numpy.testing import assert_array_equal, assert_raises
 
-from sleplet.functions.flm import Earth
+from sleplet.functions import Earth
 
 B = 2
 J_MIN = 0
@@ -10,7 +10,7 @@ SNR_IN = 10
 
 
 def test_adding_noise_changes_flm() -> None:
-    """tests the addition of Gaussian noise changes the coefficients."""
+    """Tests the addition of Gaussian noise changes the coefficients."""
     earth = Earth(L)
     earth_noised = Earth(L, noise=SNR_IN)
     assert_raises(

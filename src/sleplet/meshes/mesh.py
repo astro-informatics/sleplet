@@ -9,7 +9,7 @@ import sleplet._validation
 
 @dataclass(config=sleplet._validation.Validation)
 class Mesh:
-    """creates a mesh object."""
+    """Creates a mesh object."""
 
     name: str
     """TODO"""

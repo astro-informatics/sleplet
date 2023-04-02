@@ -27,7 +27,7 @@ MESH_UNSEEN = -1e5  # kaleido bug
 
 @dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
-    """creates surface mesh plot via `plotly`."""
+    """Creates surface mesh plot via `plotly`."""
 
     mesh: sleplet.meshes.mesh.Mesh
     """TODO"""
@@ -108,7 +108,7 @@ class PlotMesh:
         self,
         f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
-        """scales the field before plotting."""
+        """Scales the field before plotting."""
         return sleplet.plot_methods._normalise_function(
             sleplet._mesh_methods.average_functions_on_vertices_to_faces(
                 self.mesh.faces,
@@ -121,7 +121,7 @@ class PlotMesh:
         self,
         f: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """for the Slepian region set the outisde area to negative infinity
+        """For the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region.
         """
         region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(

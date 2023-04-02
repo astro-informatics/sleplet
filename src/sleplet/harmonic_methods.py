@@ -1,4 +1,4 @@
-"""methods to perform operations in Fourier space of the sphere or mesh."""
+"""Methods to perform operations in Fourier space of the sphere or mesh."""
 from collections.abc import Callable
 from typing import Any
 
@@ -41,7 +41,7 @@ def _boost_coefficient_resolution(
     flm: npt.NDArray[Any],
     boost: int,
 ) -> npt.NDArray[Any]:
-    """calculates a boost in resolution for given flm."""
+    """Calculates a boost in resolution for given flm."""
     return np.pad(flm, (0, boost), "constant")
 
 
@@ -88,7 +88,7 @@ def _ensure_f_bandlimited(
     reality: bool,
     spin: int,
 ) -> npt.NDArray[np.complex_]:
-    """if the function created is created in pixel space rather than harmonic
+    """If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     """
     thetas, phis = ssht.sample_positions(
@@ -107,7 +107,7 @@ def _ensure_f_bandlimited(
 
 
 def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
-    """create vector of m values for a given L."""
+    """Create vector of m values for a given L."""
     emm = np.zeros(2 * L * 2 * L)
     k = 0
 

@@ -5,14 +5,14 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
-import sleplet.meshes.mesh_coefficients
 import sleplet.meshes.mesh_slepian
 import sleplet.noise
+from sleplet.meshes.mesh_coefficients import MeshCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
-    """abstract parent class to handle Slepian coefficients on the mesh."""
+class MeshSlepianCoefficients(MeshCoefficients):
+    """Abstract parent class to handle Slepian coefficients on the mesh."""
 
     def __post_init_post_parse__(self) -> None:
         self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
@@ -21,7 +21,7 @@ class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients)
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """adds Gaussian white noise converted to Slepian space."""
+        """Adds Gaussian white noise converted to Slepian space."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()

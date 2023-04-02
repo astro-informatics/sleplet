@@ -3,7 +3,7 @@ from pathlib import Path
 
 from numpy.testing import assert_array_less
 
-from sleplet.functions.flm import AxisymmetricWavelets, Earth
+from sleplet.functions import AxisymmetricWavelets, Earth
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
 
@@ -20,7 +20,7 @@ SNR_IN = 10
 
 
 def main() -> None:
-    """reproduce the denoising demo from s2let paper."""
+    """Reproduce the denoising demo from s2let paper."""
     # create map & noised map
     fun = Earth(L)
     fun_noised = Earth(L, noise=SNR_IN)

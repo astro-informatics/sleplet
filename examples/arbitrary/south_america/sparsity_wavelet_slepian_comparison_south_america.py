@@ -5,8 +5,10 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.functions.flm import AxisymmetricWaveletCoefficientsSouthAmerica
-from sleplet.functions.fp import SlepianWaveletCoefficientsSouthAmerica
+from sleplet.functions import (
+    AxisymmetricWaveletCoefficientsSouthAmerica,
+    SlepianWaveletCoefficientsSouthAmerica,
+)
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region
 
@@ -20,7 +22,7 @@ STEP = 0.01
 
 
 def _plot_slepian_coefficients() -> int:
-    """plot the Slepian wavelet coefficients for the South America region."""
+    """Plot the Slepian wavelet coefficients for the South America region."""
     # initialise wavelet coefficients
     region = Region(mask_name="south_america")
     swc = SlepianWaveletCoefficientsSouthAmerica(L, B=B, j_min=J_MIN, region=region)
@@ -38,7 +40,7 @@ def _plot_slepian_coefficients() -> int:
 
 
 def _plot_axisymmetric_coefficients(shannon: int) -> None:
-    """plot the axisymmetric wavelet coefficients for the South America region."""
+    """Plot the axisymmetric wavelet coefficients for the South America region."""
     # initialise wavelet coefficients
     awc = AxisymmetricWaveletCoefficientsSouthAmerica(L, B=B, j_min=J_MIN)
 

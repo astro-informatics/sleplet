@@ -22,7 +22,7 @@ jobs:
           path: |
             .tox
             ~/.cache/sleplet
-          key: tox-${{ hashFiles('pyproject.toml') }}
+          key: test-${{ hashFiles('pyproject.toml') }}
 
       - name: Set up python
         uses: actions/setup-python@v4

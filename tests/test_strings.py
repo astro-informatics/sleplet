@@ -16,7 +16,7 @@ THETA_MAX = 2 * np.pi / 9
 
 
 def test_add_extra_args_to_filename() -> None:
-    """test extra args added to filename."""
+    """Test extra args added to filename."""
     arguments = [0, 123, 0.004]
     output = ["_0a", "_123a", "_1a250"]
     for c, arg in enumerate(arguments):
@@ -24,7 +24,7 @@ def test_add_extra_args_to_filename() -> None:
 
 
 def test_add_angle_to_filename() -> None:
-    """tests angle added to filename."""
+    """Tests angle added to filename."""
     arguments = [(0.75, 0.125, 0), (0.1, 0.2, 0.3), (0.9, 0, 0), (0, 0.8, 0), (0, 0, 0)]
     output = [
         "alpha3pi4_beta1pi8",
@@ -38,7 +38,7 @@ def test_add_angle_to_filename() -> None:
 
 
 def test_print_multiple_of_pi() -> None:
-    """tests that the pi prefix is added."""
+    """Tests that the pi prefix is added."""
     arguments = [0, 1, 2, 2.5]
     output = ["0\u03C0", "\u03C0", "2\u03C0", "2\u03C0"]
     for c, arg in enumerate(arguments):
@@ -46,7 +46,7 @@ def test_print_multiple_of_pi() -> None:
 
 
 def test_convert_angle_to_degrees() -> None:
-    """verifies angles is converted to degree."""
+    """Verifies angles is converted to degree."""
     arguments = [PHI_0, PHI_1, THETA_MAX]
     output = [30, 60, 40]
     for c, arg in enumerate(arguments):
@@ -54,7 +54,7 @@ def test_convert_angle_to_degrees() -> None:
 
 
 def test_add_to_wavelet_name() -> None:
-    """test that the correct ending for wavelets is added."""
+    """Test that the correct ending for wavelets is added."""
     arguments = [None, 0, 1]
     output = ["_scaling", "_0j", "_1j"]
     for c, arg in enumerate(arguments):

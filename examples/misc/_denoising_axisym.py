@@ -2,7 +2,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-from sleplet.functions.flm import Africa, AxisymmetricWavelets, Earth, SouthAmerica
+from sleplet.functions import Africa, AxisymmetricWavelets, Earth, SouthAmerica
 from sleplet.harmonic_methods import rotate_earth_to_south_america
 from sleplet.noise import _compute_sigma_j, compute_snr, harmonic_hard_thresholding
 from sleplet.wavelet_methods import (
@@ -22,7 +22,7 @@ def denoising_axisym(
     *,
     rotate_to_south_america: bool = False,
 ) -> tuple[npt.NDArray[np.complex_], float | None, float]:
-    """reproduce the denoising demo from s2let paper."""
+    """Reproduce the denoising demo from s2let paper."""
     # compute wavelet coefficients
     w = axisymmetric_wavelet_forward(
         signal.L,

@@ -4,12 +4,9 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 from sleplet._vars import RANDOM_SEED
-from sleplet.functions.flm import Earth, SouthAmerica
-from sleplet.functions.fp import SlepianDiracDelta, SlepianWavelets
+from sleplet.functions import Earth, SlepianDiracDelta, SlepianWavelets, SouthAmerica
 from sleplet.harmonic_methods import compute_random_signal
-from sleplet.meshes import Mesh, MeshSlepian
-from sleplet.meshes.harmonic_coefficients import MeshField
-from sleplet.meshes.slepian_coefficients import MeshSlepianWavelets
+from sleplet.meshes import Mesh, MeshField, MeshSlepian, MeshSlepianWavelets
 from sleplet.slepian import SlepianArbitrary, SlepianLimitLatLon, SlepianPolarCap
 
 ARRAY_DIM = 10
@@ -24,13 +21,13 @@ THETA_MAX = 2 * np.pi / 9
 
 @pytest.fixture(scope="session")
 def slepian_polar_cap() -> SlepianPolarCap:
-    """create a Slepian polar cap class."""
+    """Create a Slepian polar cap class."""
     return SlepianPolarCap(L, THETA_MAX)
 
 
 @pytest.fixture(scope="session")
 def slepian_lim_lat_lon() -> SlepianLimitLatLon:
-    """create a Slepian limited latitude longitude class."""
+    """Create a Slepian limited latitude longitude class."""
     return SlepianLimitLatLon(
         L,
         theta_min=THETA_0,
@@ -42,7 +39,7 @@ def slepian_lim_lat_lon() -> SlepianLimitLatLon:
 
 @pytest.fixture(scope="session")
 def slepian_arbitrary() -> SlepianArbitrary:
-    """create a Slepian arbitrary class."""
+    """Create a Slepian arbitrary class."""
     return SlepianArbitrary(L, MASK)
 
 
@@ -78,26 +75,26 @@ def slepian_dirac_delta_lim_lat_lon(slepian_lim_lat_lon) -> SlepianDiracDelta:
 
 @pytest.fixture(scope="session")
 def slepian_wavelets_polar_cap(slepian_polar_cap) -> SlepianWavelets:
-    """computes the Slepian wavelets for the polar cap region."""
+    """Computes the Slepian wavelets for the polar cap region."""
     return SlepianWavelets(slepian_polar_cap.L, region=slepian_polar_cap.region)
 
 
 @pytest.fixture(scope="session")
 def slepian_wavelets_lim_lat_lon(slepian_lim_lat_lon) -> SlepianWavelets:
-    """computes the Slepian wavelets for the lim_lat_lon region."""
+    """Computes the Slepian wavelets for the lim_lat_lon region."""
     return SlepianWavelets(slepian_lim_lat_lon.L, region=slepian_lim_lat_lon.region)
 
 
 @pytest.fixture(scope="session")
 def random_flm() -> npt.NDArray[np.complex_]:
-    """creates random flm."""
+    """Creates random flm."""
     rng = default_rng(RANDOM_SEED)
     return compute_random_signal(L, rng, var_signal=1)
 
 
 @pytest.fixture(scope="session")
 def random_nd_flm() -> npt.NDArray[np.complex_]:
-    """creates multiple random flm."""
+    """Creates multiple random flm."""
     rng = default_rng(RANDOM_SEED)
     return np.array(
         [compute_random_signal(L, rng, var_signal=1) for _ in range(ARRAY_DIM)],
@@ -106,23 +103,23 @@ def random_nd_flm() -> npt.NDArray[np.complex_]:
 
 @pytest.fixture(scope="session")
 def mesh() -> Mesh:
-    """creates a bird mesh."""
+    """Creates a bird mesh."""
     return Mesh("bird")
 
 
 @pytest.fixture(scope="session")
 def mesh_slepian(mesh) -> MeshSlepian:
-    """creates a Slepian bird mesh."""
+    """Creates a Slepian bird mesh."""
     return MeshSlepian(mesh)
 
 
 @pytest.fixture(scope="session")
 def mesh_field_region(mesh) -> MeshField:
-    """creates a field on the mesh."""
+    """Creates a field on the mesh."""
     return MeshField(mesh, region=True)
 
 
 @pytest.fixture(scope="session")
 def mesh_slepian_wavelets(mesh) -> MeshSlepianWavelets:
-    """creates a field on the mesh."""
+    """Creates a field on the mesh."""
     return MeshSlepianWavelets(mesh)

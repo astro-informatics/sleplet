@@ -8,12 +8,12 @@ import sleplet
 import sleplet._integration_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.meshes.mesh_slepian
+from sleplet.meshes.mesh_slepian import MeshSlepian
 
 
 @dataclass(config=sleplet._validation.Validation)
 class MeshSlepianDecomposition:
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian
+    mesh_slepian: MeshSlepian
     _: KW_ONLY
     mask: bool = False
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None
@@ -24,7 +24,7 @@ class MeshSlepianDecomposition:
         self._detect_method()
 
     def decompose(self, rank: int) -> float:
-        """decompose the signal into its Slepian coefficients via the given method."""
+        """Decompose the signal into its Slepian coefficients via the given method."""
         self._validate_rank(rank)
 
         match self.method:
@@ -38,14 +38,14 @@ class MeshSlepianDecomposition:
                 raise ValueError(f"'{self.method}' is not a valid method")
 
     def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.float_]:
-        """decompose all ranks of the Slepian coefficients."""
+        """Decompose all ranks of the Slepian coefficients."""
         coefficients = np.zeros(n_coefficients)
         for rank in range(n_coefficients):
             coefficients[rank] = self.decompose(rank)
         return coefficients
 
     def _integrate_region(self, rank: int) -> float:
-        r"""f_{p} =
+        r"""F_{p} =
         \frac{1}{\lambda_{p}}
         \int\limits_{R} \dd{x}
         f(x) \overline{S_{p}(x)}.
@@ -65,7 +65,7 @@ class MeshSlepianDecomposition:
         return integration / self.mesh_slepian.slepian_eigenvalues[rank]
 
     def _integrate_mesh(self, rank: int) -> float:
-        r"""f_{p} =
+        r"""F_{p} =
         \int\limits_{x} \dd{x}
         f(x) \overline{S_{p}(x)}.
         """
@@ -82,14 +82,14 @@ class MeshSlepianDecomposition:
         )
 
     def _harmonic_sum(self, rank: int) -> float:
-        r"""f_{p} =
+        r"""F_{p} =
         \sum\limits_{i=0}^{K}
         f_{i} (S_{p})_{i}^{*}.
         """
         return (self.u_i * self.mesh_slepian.slepian_functions[rank]).sum()
 
     def _detect_method(self) -> None:
-        """detects what method is used to perform the decomposition."""
+        """Detects what method is used to perform the decomposition."""
         if isinstance(self.u_i, np.ndarray):
             sleplet.logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
@@ -106,7 +106,7 @@ class MeshSlepianDecomposition:
             )
 
     def _validate_rank(self, rank: int) -> None:
-        """checks the requested rank is valid."""
+        """Checks the requested rank is valid."""
         assert isinstance(  # noqa: S101
             self.mesh_slepian.mesh.number_basis_functions,
             int,

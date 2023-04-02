@@ -10,14 +10,14 @@ import sleplet.plotting._create_plot_mesh
 
 
 def valid_meshes(mesh_name: str) -> str:
-    """check if valid mesh name."""
+    """Check if valid mesh name."""
     if mesh_name in sleplet._class_lists.MESHES:
         return mesh_name
     raise ValueError(f"'{mesh_name}' is not a valid mesh name to plot")
 
 
 def valid_methods(method_name: str) -> str:
-    """check if valid mesh name."""
+    """Check if valid mesh name."""
     if method_name in sleplet._string_methods.convert_classes_list_to_snake_case(
         sleplet._class_lists.MESH_COEFFICIENTS,
         word_to_remove="Mesh",
@@ -27,7 +27,7 @@ def valid_methods(method_name: str) -> str:
 
 
 def read_args() -> Namespace:
-    """method to read args from the command line."""
+    """Method to read args from the command line."""
     parser = ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",
@@ -83,7 +83,7 @@ def plot(
     normalise: bool,
     amplitude: float | None,
 ) -> None:
-    """master plotting method."""
+    """Master plotting method."""
     field = sleplet.plot_methods._coefficients_to_field_mesh(f, f.coefficients)
     sleplet.plotting._create_plot_mesh.PlotMesh(
         f.mesh,

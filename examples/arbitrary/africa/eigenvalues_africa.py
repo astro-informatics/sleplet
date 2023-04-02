@@ -14,7 +14,7 @@ L = 128
 
 
 def main() -> None:
-    """plots the tiling of the Slepian line."""
+    """Plots the tiling of the Slepian line."""
     slepian = SlepianArbitrary(L, "africa")
     p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")

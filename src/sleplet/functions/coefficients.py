@@ -17,7 +17,7 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 @dataclass(config=sleplet._validation.Validation)
 class Coefficients:
-    """abstract parent class to handle harmonic/Slepian coefficients on the sphere."""
+    """Abstract parent class to handle harmonic/Slepian coefficients on the sphere."""
 
     L: int
     """TODO"""
@@ -94,7 +94,7 @@ class Coefficients:
         )
 
     def _add_details_to_name(self) -> None:
-        """adds region to the name if present if not a Slepian function
+        """Adds region to the name if present if not a Slepian function
         adds noise/smoothing if appropriate and bandlimit.
         """
         if (
@@ -153,39 +153,39 @@ class Coefficients:
         alpha: float,
         beta: float,
     ) -> npt.NDArray[np.complex_]:
-        """compute the basis function at omega' for translation."""
+        """Compute the basis function at omega' for translation."""
         raise NotImplementedError
 
     @abstractmethod
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """adds Gaussian white noise to the signal."""
+        """Adds Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """creates the flm on the north pole."""
+        """Creates the flm on the north pole."""
         raise NotImplementedError
 
     @abstractmethod
     def _create_name(self) -> str:
-        """creates the name of the function."""
+        """Creates the name of the function."""
         raise NotImplementedError
 
     @abstractmethod
     def _set_reality(self) -> bool:
-        """sets the reality flag to speed up computations."""
+        """Sets the reality flag to speed up computations."""
         raise NotImplementedError
 
     @abstractmethod
     def _set_spin(self) -> int:
-        """sets the spin value in computations."""
+        """Sets the spin value in computations."""
         raise NotImplementedError
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """initialises function specific args
+        """Initialises function specific args
         either default value or user input.
         """
         raise NotImplementedError

@@ -17,7 +17,7 @@ def average_functions_on_vertices_to_faces(
     faces: npt.NDArray[np.int_],
     functions_on_vertices: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """the integrals require all functions to be defined on faces
+    """The integrals require all functions to be defined on faces
     this method handles an arbitrary number of functions.
     """
     sleplet.logger.info("converting function on vertices to faces")
@@ -40,7 +40,7 @@ def create_mesh_region(
     mesh_config: dict,
     vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
-    """creates the boolean region for the given mesh."""
+    """Creates the boolean region for the given mesh."""
     return (
         (vertices[:, 0] >= mesh_config["XMIN"])
         & (vertices[:, 0] <= mesh_config["XMAX"])
@@ -52,7 +52,7 @@ def create_mesh_region(
 
 
 def extract_mesh_config(mesh_name: str) -> dict:
-    """reads in the given mesh region settings file."""
+    """Reads in the given mesh region settings file."""
     with Path.open(_data_path / f"meshes_regions_{mesh_name}.toml", "rb") as f:
         return tomli.load(f)
 
@@ -64,7 +64,7 @@ def mesh_eigendecomposition(
     *,
     number_basis_functions: int | None = None,
 ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_], int]:
-    """computes the eigendecomposition of the mesh represented
+    """Computes the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data.
     """
     # determine number of basis functions
@@ -103,7 +103,7 @@ def mesh_eigendecomposition(
 
 
 def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
-    """reads in the given mesh."""
+    """Reads in the given mesh."""
     vertices, faces = read_triangle_mesh(
         str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}"),
     )
@@ -114,7 +114,7 @@ def _mesh_laplacian(
     vertices: npt.NDArray[np.float_],
     faces: npt.NDArray[np.int_],
 ) -> npt.NDArray[np.float_]:
-    """computes the cotagent mesh laplacian."""
+    """Computes the cotagent mesh laplacian."""
     return -cotmatrix(vertices, faces)
 
 
@@ -123,7 +123,7 @@ def _orthonormalise_basis_functions(
     faces: npt.NDArray[np.int_],
     basis_functions: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.float_]:
-    """for computing the Slepian D matrix the basis functions must be orthonormal."""
+    """For computing the Slepian D matrix the basis functions must be orthonormal."""
     sleplet.logger.info("orthonormalising basis functions")
     factor = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):

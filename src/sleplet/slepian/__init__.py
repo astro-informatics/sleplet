@@ -1,4 +1,4 @@
-"""classes to create the Slepian regions on the sphere."""
+"""Classes to create the Slepian regions on the sphere."""
 
 from .region import Region
 from .slepian_arbitrary import SlepianArbitrary

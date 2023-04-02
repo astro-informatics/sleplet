@@ -12,7 +12,7 @@ MACHINE_EPSILON = 1e-14
 def clean_evals_and_evecs(
     eigendecomposition: tuple,
 ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-    """need eigenvalues and eigenvectors to be in a certain format."""
+    """Need eigenvalues and eigenvectors to be in a certain format."""
     # access values
     eigenvalues, eigenvectors = eigendecomposition
 
@@ -35,7 +35,7 @@ def clean_evals_and_evecs(
 
 
 def compute_mesh_shannon(mesh: "sleplet.meshes.mesh.Mesh") -> int:
-    """computes the effective Shannon number for a region of a mesh."""
+    """Computes the effective Shannon number for a region of a mesh."""
     num_basis_fun = mesh.mesh_eigenvalues.shape[0]
     region_vertices = mesh.region.sum()
     total_vertices = mesh.region.shape[0]

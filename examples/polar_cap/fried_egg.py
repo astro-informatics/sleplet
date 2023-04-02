@@ -1,7 +1,7 @@
 import numpy as np
 
 from sleplet import logger
-from sleplet.functions.fp import Slepian
+from sleplet.functions import Slepian
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 from sleplet.slepian_methods import slepian_inverse
@@ -13,7 +13,7 @@ THETA_MAX = 40
 
 
 def main() -> None:
-    """create fig 5.4 from Spatiospectral Concentration on a Sphere
+    """Create fig 5.4 from Spatiospectral Concentration on a Sphere
     by Simons et al 2006.
     """
     region = Region(theta_max=np.deg2rad(THETA_MAX))
