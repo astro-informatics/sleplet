@@ -21,7 +21,8 @@ SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
 def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
-    """TODO create a spherical harmonic in harmonic space for the given index.
+    """
+    TODO create a spherical harmonic in harmonic space for the given index.
 
     Args:
     ----
@@ -53,7 +54,8 @@ def invert_flm_boosted(
     reality: bool = False,
     spin: int = 0,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO performs the inverse harmonic transform.
+    """
+    TODO performs the inverse harmonic transform.
 
     Args:
     ----
@@ -88,7 +90,8 @@ def _ensure_f_bandlimited(
     reality: bool,
     spin: int,
 ) -> npt.NDArray[np.complex_]:
-    """If the function created is created in pixel space rather than harmonic
+    """
+    If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     """
     thetas, phis = ssht.sample_positions(
@@ -124,7 +127,8 @@ def compute_random_signal(
     *,
     var_signal: float,
 ) -> npt.NDArray[np.complex_]:
-    """TODO generates a normally distributed random signal of a
+    """
+    TODO generates a normally distributed random signal of a
     complex signal with mean 0 and variance 1.
 
     Args:
@@ -146,7 +150,8 @@ def mesh_forward(
     mesh: "sleplet.meshes.mesh.Mesh",
     u: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """TODO computes the mesh forward transform from real space to harmonic space.
+    """
+    TODO computes the mesh forward transform from real space to harmonic space.
 
     Args:
     ----
@@ -172,7 +177,8 @@ def mesh_inverse(
     mesh: "sleplet.meshes.mesh.Mesh",
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the mesh inverse transform from harmonic space to real space.
+    """
+    TODO computes the mesh inverse transform from harmonic space to real space.
 
     Args:
     ----
@@ -190,7 +196,8 @@ def rotate_earth_to_south_america(
     earth_flm: npt.NDArray[np.complex_ | np.float_],
     L: int,
 ) -> npt.NDArray[np.complex_]:
-    """TODO rotates the flms of the Earth to a view centered on South America.
+    """
+    TODO rotates the flms of the Earth to a view centered on South America.
 
     Args:
     ----
@@ -214,7 +221,8 @@ def rotate_earth_to_africa(
     earth_flm: npt.NDArray[np.complex_ | np.float_],
     L: int,
 ) -> npt.NDArray[np.complex_]:
-    """TODO rotates the flms of the Earth to a view centered on Africa.
+    """
+    TODO rotates the flms of the Earth to a view centered on Africa.
 
     Args:
     ----

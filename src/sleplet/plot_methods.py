@@ -18,7 +18,8 @@ import sleplet.slepian_methods
 
 
 def calc_plot_resolution(L: int) -> int:
-    """TODO calculate appropriate resolution for given L.
+    """
+    TODO calculate appropriate resolution for given L.
 
     Args:
     ----
@@ -61,7 +62,8 @@ def _calc_nearest_grid_point(
     alpha_pi_fraction: float,
     beta_pi_fraction: float,
 ) -> tuple[float, float]:
-    """Calculate nearest index of alpha/beta for translation
+    """
+    Calculate nearest index of alpha/beta for translation
     this is due to calculating omega' through the pixel
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small.
@@ -75,7 +77,8 @@ def _calc_nearest_grid_point(
 
 
 def save_plot(path: Path, name: str) -> None:
-    """TODO helper method to save plots.
+    """
+    TODO helper method to save plots.
 
     Args:
     ----
@@ -98,7 +101,8 @@ def find_max_amplitude(
     plot_type: str = "real",
     upsample: bool = True,
 ) -> float:
-    """TODO for a given set of coefficients it finds the largest absolute value for a
+    """
+    TODO for a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input.
 
     Args:
@@ -162,7 +166,8 @@ def _set_outside_region_to_minimum(
     L: int,
     region: sleplet.slepian.region.Region,
 ) -> npt.NDArray[np.float_]:
-    """For the Slepian region set the outisde area to negative infinity
+    """
+    For the Slepian region set the outisde area to negative infinity
     hence it is clear we are only interested in the coloured region.
     """
     # create mask of interest
@@ -222,7 +227,8 @@ def _boost_field(
 def compute_amplitude_for_noisy_mesh_plots(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
 ) -> float | None:
-    """TODO for the noised mesh plots fix the amplitude to the initial data.
+    """
+    TODO for the noised mesh plots fix the amplitude to the initial data.
 
     Args:
     ----
@@ -254,7 +260,8 @@ def _coefficients_to_field_mesh(
 def compute_amplitude_for_noisy_sphere_plots(
     f: sleplet.functions.coefficients.Coefficients,
 ) -> float | None:
-    """TODO for the noised sphere plots fix the amplitude to the initial data.
+    """
+    TODO for the noised sphere plots fix the amplitude to the initial data.
 
     Args:
     ----

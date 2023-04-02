@@ -144,7 +144,8 @@ class SlepianPolarCap(SlepianFunctions):
         m: int,
         emm: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """Syntax:
+        """
+        Syntax:
         Dm = _create_Dm_matrix(m, P).
 
         Input:
@@ -247,7 +248,8 @@ class SlepianPolarCap(SlepianFunctions):
         m2: int,
         m3: int,
     ) -> float:
-        """Syntax:
+        """
+        Syntax:
         s = _wigner3j (l1, l2, l3, m1, m2, m3).
 
         Input:
@@ -330,7 +332,8 @@ class SlepianPolarCap(SlepianFunctions):
         return s
 
     def _polar_gap_modification(self, ell1: int, ell2: int) -> int:
-        """Eq 67 - Spherical Slepian functions and the polar gap in geodesy
+        """
+        Eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell').
         """
         return 1 + self.gap * (-1) ** (ell1 + ell2)

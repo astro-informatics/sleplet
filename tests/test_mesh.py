@@ -7,7 +7,8 @@ from sleplet.harmonic_methods import mesh_forward, mesh_inverse
 
 
 def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
-    """Tests that a given function is recovered after an
+    """
+    Tests that a given function is recovered after an
     inverse and forward transform on the mesh.
     """
     u = mesh_inverse(mesh_field_region.mesh, mesh_field_region.coefficients)
@@ -21,7 +22,8 @@ def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
 
 @pytest.mark.slow()
 def test_orthonormality_over_mesh_full(mesh) -> None:
-    """For the computation of the Slepian D matrix the basis
+    """
+    For the computation of the Slepian D matrix the basis
     functions must be orthornomal over the whole mesh.
     """
     orthonormality = np.zeros(

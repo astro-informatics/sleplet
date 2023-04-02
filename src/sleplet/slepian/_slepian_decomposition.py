@@ -46,7 +46,8 @@ class SlepianDecomposition:
         return coefficients
 
     def _integrate_region(self, rank: int) -> complex:
-        r"""F_{p} =
+        r"""
+        F_{p} =
         \frac{1}{\lambda_{p}}
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
@@ -68,7 +69,8 @@ class SlepianDecomposition:
         return integration / self.slepian.eigenvalues[rank]
 
     def _integrate_sphere(self, rank: int) -> complex:
-        r"""F_{p} =
+        r"""
+        F_{p} =
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
         """
@@ -86,7 +88,8 @@ class SlepianDecomposition:
         )
 
     def _harmonic_sum(self, rank: int) -> complex:
-        r"""F_{p} =
+        r"""
+        F_{p} =
         \sum\limits_{\ell=0}^{L^{2}}
         \sum\limits_{m=-\ell}^{\ell}
         f_{\ell m} (S_{p})_{\ell m}^{*}.

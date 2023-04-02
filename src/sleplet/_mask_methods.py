@@ -22,7 +22,8 @@ def create_mask_region(
     L: int,
     region: "sleplet.slepian.region.Region",
 ) -> npt.NDArray[np.float_]:
-    """Creates a mask of a region of interested, the output will be based
+    """
+    Creates a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
     * polar cap - if theta_max provided
     * limited latitude longitude - if one of theta_min, theta_max,

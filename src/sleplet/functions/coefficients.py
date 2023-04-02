@@ -47,7 +47,8 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
-        """TODO.
+        """
+        TODO.
 
         Args:
         ----
@@ -73,7 +74,8 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
-        """TODO.
+        """
+        TODO.
 
         Args:
         ----
@@ -94,7 +96,8 @@ class Coefficients:
         )
 
     def _add_details_to_name(self) -> None:
-        """Adds region to the name if present if not a Slepian function
+        """
+        Adds region to the name if present if not a Slepian function
         adds noise/smoothing if appropriate and bandlimit.
         """
         if (
@@ -133,7 +136,8 @@ class Coefficients:
         *,
         gamma: float = 0,
     ) -> npt.NDArray[np.complex_]:
-        """TODO rotates given flm on the sphere by alpha/beta/gamma.
+        """
+        TODO rotates given flm on the sphere by alpha/beta/gamma.
 
         Args:
         ----
@@ -185,7 +189,8 @@ class Coefficients:
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """Initialises function specific args
+        """
+        Initialises function specific args
         either default value or user input.
         """
         raise NotImplementedError

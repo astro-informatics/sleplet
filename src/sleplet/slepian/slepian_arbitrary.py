@@ -141,7 +141,8 @@ class SlepianArbitrary(SlepianFunctions):
         D_i: npt.NDArray[np.float_],
         i: int,
     ) -> None:
-        """Used in both serial and parallel calculations.
+        """
+        Used in both serial and parallel calculations.
 
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease

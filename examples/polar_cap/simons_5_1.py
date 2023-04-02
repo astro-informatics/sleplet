@@ -26,7 +26,8 @@ THETA_MIN_DEFAULT = 0
 
 
 def main() -> None:
-    """Create fig 5.1 from Spatiospectral Concentration on a Sphere
+    """
+    Create fig 5.1 from Spatiospectral Concentration on a Sphere
     by Simons et al 2006.
     """
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)

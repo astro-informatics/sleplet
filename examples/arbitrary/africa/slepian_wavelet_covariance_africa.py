@@ -29,7 +29,8 @@ VAR_FP = 1
 
 
 def main() -> None:
-    """Plots the difference between the theoretical &
+    """
+    Plots the difference between the theoretical &
     experimental covariances for the Slepian wavelets.
     """
     # compute wavelets

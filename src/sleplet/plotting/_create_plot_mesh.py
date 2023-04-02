@@ -121,7 +121,8 @@ class PlotMesh:
         self,
         f: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """For the Slepian region set the outisde area to negative infinity
+        """
+        For the Slepian region set the outisde area to negative infinity
         hence it is clear we are only interested in the coloured region.
         """
         region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(

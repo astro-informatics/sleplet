@@ -13,7 +13,8 @@ THETA_MAX = 40
 
 
 def main() -> None:
-    """Create fig 5.4 from Spatiospectral Concentration on a Sphere
+    """
+    Create fig 5.4 from Spatiospectral Concentration on a Sphere
     by Simons et al 2006.
     """
     region = Region(theta_max=np.deg2rad(THETA_MAX))

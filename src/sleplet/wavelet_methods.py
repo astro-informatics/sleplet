@@ -13,7 +13,8 @@ def slepian_wavelet_forward(
     wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the coefficients of the given tiling function in Slepian space.
+    """
+    TODO computes the coefficients of the given tiling function in Slepian space.
 
     Args:
     ----
@@ -40,7 +41,8 @@ def slepian_wavelet_inverse(
     wavelets: npt.NDArray[np.float_],
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO computes the inverse wavelet transform in Slepian space.
+    """
+    TODO computes the inverse wavelet transform in Slepian space.
 
     Args:
     ----
@@ -67,7 +69,8 @@ def axisymmetric_wavelet_forward(
     flm: npt.NDArray[np.complex_ | np.float_],
     wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the coefficients of the axisymmetric wavelets.
+    """
+    TODO computes the coefficients of the axisymmetric wavelets.
 
     Args:
     ----
@@ -94,7 +97,8 @@ def axisymmetric_wavelet_inverse(
     wav_coeffs: npt.NDArray[np.complex_],
     wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
-    """TODO computes the inverse axisymmetric wavelet transform.
+    """
+    TODO computes the inverse axisymmetric wavelet transform.
 
     Args:
     ----
@@ -132,7 +136,8 @@ def _create_axisymmetric_wavelets(
 
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
-    """TODO computes the Slepian wavelets.
+    """
+    TODO computes the Slepian wavelets.
 
     Args:
     ----
@@ -153,7 +158,8 @@ def find_non_zero_wavelet_coefficients(
     *,
     axis: int | tuple[int, ...],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """TODO finds the coefficients within the shannon number to speed up computations.
+    """
+    TODO finds the coefficients within the shannon number to speed up computations.
 
     Args:
     ----

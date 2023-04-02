@@ -85,7 +85,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         return K
 
     def _slepian_integral(self) -> npt.NDArray[np.complex_]:
-        """Syntax:
+        """
+        Syntax:
         G = _slepian_integral().
 
         Output:
@@ -147,7 +148,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         N: int,
         G: npt.NDArray[np.complex_],
     ) -> npt.NDArray[np.complex_]:
-        """Syntax:
+        """
+        Syntax:
         K = _slepian_matrix(dl, L, N, G).
 
         Input:

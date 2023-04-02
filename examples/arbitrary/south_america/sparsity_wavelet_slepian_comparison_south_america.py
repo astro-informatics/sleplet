@@ -55,7 +55,8 @@ def _plot_axisymmetric_coefficients(shannon: int) -> None:
 
 
 def main(*, limit: bool) -> None:
-    """Plot a comparison of the absolute values of the wavelet coefficients
+    """
+    Plot a comparison of the absolute values of the wavelet coefficients
     compared to the Slepian coefficients. Expect the Slepian coefficients to
     decay faster than the wavelet coefficients.
     """

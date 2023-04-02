@@ -76,7 +76,8 @@ class MeshCoefficients:
 
     @abstractmethod
     def _setup_args(self) -> None:
-        """Initialises function specific args
+        """
+        Initialises function specific args
         either default value or user input.
         """
         raise NotImplementedError

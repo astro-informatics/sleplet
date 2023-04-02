@@ -60,7 +60,8 @@ def filename_angle(
 
 
 def multiples_of_pi(angle: float) -> str:
-    """Prints the unicode pi with a prefix of the multiple unless it's 1
+    """
+    Prints the unicode pi with a prefix of the multiple unless it's 1
     i.e. pi, 2pi, 3pi.
     """
     multiple = int(angle / np.pi)
