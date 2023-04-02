@@ -10,9 +10,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class MeshBasisFunctions(
-    MeshHarmonicCoefficients,
-):
+class MeshBasisFunctions(MeshHarmonicCoefficients):
     """TODO."""
 
     rank: int = 0

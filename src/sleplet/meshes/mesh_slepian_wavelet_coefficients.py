@@ -14,9 +14,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class MeshSlepianWaveletCoefficients(
-    MeshSlepianCoefficients,
-):
+class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
     """TODO."""
 
     B: int = 3

@@ -9,9 +9,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation)
-class MeshSlepianField(
-    MeshSlepianCoefficients,
-):
+class MeshSlepianField(MeshSlepianCoefficients):
     """TODO."""
 
     def __post_init_post_parse__(self) -> None:

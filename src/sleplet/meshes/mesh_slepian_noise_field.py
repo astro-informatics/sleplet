@@ -10,9 +10,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class MeshSlepianNoiseField(
-    MeshSlepianCoefficients,
-):
+class MeshSlepianNoiseField(MeshSlepianCoefficients):
     """TODO."""
 
     SNR: float = -5

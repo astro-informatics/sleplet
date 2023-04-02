@@ -10,9 +10,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
-class MeshNoiseField(
-    MeshHarmonicCoefficients,
-):
+class MeshNoiseField(MeshHarmonicCoefficients):
     """TODO."""
 
     SNR: float = 10
