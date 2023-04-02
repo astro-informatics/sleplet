@@ -12,6 +12,7 @@
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
@@ -23,242 +24,6 @@
 </header>
 <section id="section-intro">
 <p>Methods to work with Slepian coefficients.</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;Methods to work with Slepian coefficients.&#34;&#34;&#34;
-import numpy as np
-import pyssht as ssht
-from numpy import typing as npt
-
-import sleplet
-import sleplet._vars
-import sleplet.harmonic_methods
-import sleplet.meshes._mesh_slepian_decomposition
-import sleplet.meshes.mesh_slepian
-import sleplet.slepian._slepian_decomposition
-import sleplet.slepian.region
-import sleplet.slepian.slepian_arbitrary
-import sleplet.slepian.slepian_functions
-import sleplet.slepian.slepian_limit_lat_lon
-import sleplet.slepian.slepian_polar_cap
-
-
-def choose_slepian_method(
-    L: int,
-    region: sleplet.slepian.region.Region,
-) -&gt; sleplet.slepian.slepian_functions.SlepianFunctions:
-    &#34;&#34;&#34;TODO initialise Slepian object depending on input.
-
-    Args:
-    ----
-        L: _description_
-        region: _description_
-
-    Raises:
-    ------
-        ValueError: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    match region.region_type:
-        case &#34;polar&#34;:
-            sleplet.logger.info(&#34;polar cap region detected&#34;)
-            return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
-                L,
-                region.theta_max,
-                gap=region.gap,
-            )
-
-        case &#34;lim_lat_lon&#34;:
-            sleplet.logger.info(&#34;limited latitude longitude region detected&#34;)
-            return sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon(
-                L,
-                theta_min=region.theta_min,
-                theta_max=region.theta_max,
-                phi_min=region.phi_min,
-                phi_max=region.phi_max,
-            )
-
-        case &#34;arbitrary&#34;:
-            sleplet.logger.info(&#34;mask specified in file detected&#34;)
-            return sleplet.slepian.slepian_arbitrary.SlepianArbitrary(
-                L,
-                region.mask_name,
-            )
-
-        case _:
-            raise ValueError(f&#34;{region.region_type} is an invalid region type&#34;)
-
-
-def slepian_inverse(
-    f_p: npt.NDArray[np.complex_ | np.float_],
-    L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;TODO computes the Slepian inverse transform up to the Shannon number.
-
-    Args:
-    ----
-        f_p: _description_
-        L: _description_
-        slepian: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
-    s_p = compute_s_p_omega(L, slepian)
-    return (f_p_reshape * s_p).sum(axis=0)
-
-
-def slepian_forward(
-    L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
-    *,
-    f: npt.NDArray[np.complex_] | None = None,
-    flm: npt.NDArray[np.complex_ | np.float_] | None = None,
-    mask: npt.NDArray[np.float_] | None = None,
-    n_coeffs: int | None = None,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;TODO computes the Slepian forward transform for all coefficients.
-
-    Args:
-    ----
-        L: _description_
-        slepian: _description_
-        f: _description_
-        flm: _description_
-        mask: _description_
-        n_coeffs: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
-        L,
-        slepian,
-        f=f,
-        flm=flm,
-        mask=mask,
-    )
-    n_coeffs = slepian.N if n_coeffs is None else n_coeffs
-    return sd.decompose_all(n_coeffs)
-
-
-def compute_s_p_omega(
-    L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;TODO method to calculate Sp(omega) for a given region.
-
-    Args:
-    ----
-        L: _description_
-        slepian: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
-    sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
-    for p in range(slepian.N):
-        if p % L == 0:
-            sleplet.logger.info(f&#34;compute Sp(omega) p={p+1}/{slepian.N}&#34;)
-        sp[p] = ssht.inverse(
-            slepian.eigenvectors[p],
-            L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
-        )
-    return sp
-
-
-def _compute_s_p_omega_prime(
-    L: int,
-    alpha: float,
-    beta: float,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;Method to pick out the desired angle from Sp(omega).&#34;&#34;&#34;
-    sp_omega = compute_s_p_omega(L, slepian)
-    p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
-    q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
-    sp_omega_prime = sp_omega[:, p, q]
-    # pad with zeros so it has the expected shape
-    boost = L**2 - slepian.N
-    return sleplet.harmonic_methods._boost_coefficient_resolution(sp_omega_prime, boost)
-
-
-def slepian_mesh_forward(
-    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
-    *,
-    u: npt.NDArray[np.complex_ | np.float_] | None = None,
-    u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
-    mask: bool = False,
-    n_coeffs: int | None = None,
-) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;TODO computes the Slepian forward transform for all coefficients.
-
-    Args:
-    ----
-        mesh_slepian: _description_
-        u: _description_
-        u_i: _description_
-        mask: _description_
-        n_coeffs: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
-        mesh_slepian,
-        u=u,
-        u_i=u_i,
-        mask=mask,
-    )
-    n_coeffs = mesh_slepian.N if n_coeffs is None else n_coeffs
-    return sd.decompose_all(n_coeffs)
-
-
-def slepian_mesh_inverse(
-    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
-    f_p: npt.NDArray[np.complex_ | np.float_],
-) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
-
-    Args:
-    ----
-        mesh_slepian: _description_
-        f_p: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
-    s_p = _compute_mesh_s_p_pixel(mesh_slepian)
-    return (f_p_reshape * s_p).sum(axis=0)
-
-
-def _compute_mesh_s_p_pixel(
-    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
-) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;Method to calculate Sp(omega) for a given region.&#34;&#34;&#34;
-    sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
-    for p in range(mesh_slepian.N):
-        sp[p] = sleplet.harmonic_methods.mesh_inverse(
-            mesh_slepian.mesh,
-            mesh_slepian.slepian_functions[p],
-        )
-    return sp</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -271,294 +36,112 @@ def _compute_mesh_s_p_pixel(
 <span>def <span class="ident">choose_slepian_method</span></span>(<span>L: int, region: <a title="sleplet.slepian.region.Region" href="slepian/region.html#sleplet.slepian.region.Region">Region</a>) ‑> <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO initialise Slepian object depending on input.</p>
-<h2 id="args">Args:</h2>
-<pre><code>L: _description_
-region: _description_
-</code></pre>
-<h2 id="raises">Raises:</h2>
-<pre><code>ValueError: _description_
-</code></pre>
-<h2 id="returns">Returns:</h2>
-<pre><code>_description_
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def choose_slepian_method(
-    L: int,
-    region: sleplet.slepian.region.Region,
-) -&gt; sleplet.slepian.slepian_functions.SlepianFunctions:
-    &#34;&#34;&#34;TODO initialise Slepian object depending on input.
-
-    Args:
-    ----
-        L: _description_
-        region: _description_
-
-    Raises:
-    ------
-        ValueError: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    match region.region_type:
-        case &#34;polar&#34;:
-            sleplet.logger.info(&#34;polar cap region detected&#34;)
-            return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
-                L,
-                region.theta_max,
-                gap=region.gap,
-            )
-
-        case &#34;lim_lat_lon&#34;:
-            sleplet.logger.info(&#34;limited latitude longitude region detected&#34;)
-            return sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon(
-                L,
-                theta_min=region.theta_min,
-                theta_max=region.theta_max,
-                phi_min=region.phi_min,
-                phi_max=region.phi_max,
-            )
-
-        case &#34;arbitrary&#34;:
-            sleplet.logger.info(&#34;mask specified in file detected&#34;)
-            return sleplet.slepian.slepian_arbitrary.SlepianArbitrary(
-                L,
-                region.mask_name,
-            )
-
-        case _:
-            raise ValueError(f&#34;{region.region_type} is an invalid region type&#34;)</code></pre>
-</details>
+<div class="desc"><p>Initialise Slepian object depending on input.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd>The spherical harmonic bandlimit.</dd>
+<dt><strong><code>region</code></strong></dt>
+<dd>The Slepian region.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>Invalid <code>region_type</code>, likely cause is invalid <code>mask_name</code>.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The given Slepian object.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.compute_s_p_omega"><code class="name flex">
 <span>def <span class="ident">compute_s_p_omega</span></span>(<span>L: int, slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO method to calculate Sp(omega) for a given region.</p>
-<h2 id="args">Args:</h2>
-<pre><code>L: _description_
-slepian: _description_
-</code></pre>
-<h2 id="returns">Returns:</h2>
-<pre><code>_description_
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def compute_s_p_omega(
-    L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;TODO method to calculate Sp(omega) for a given region.
-
-    Args:
-    ----
-        L: _description_
-        slepian: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
-    sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
-    for p in range(slepian.N):
-        if p % L == 0:
-            sleplet.logger.info(f&#34;compute Sp(omega) p={p+1}/{slepian.N}&#34;)
-        sp[p] = ssht.inverse(
-            slepian.eigenvectors[p],
-            L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
-        )
-    return sp</code></pre>
-</details>
+<div class="desc"><p>Computes <span><span class="MathJax_Preview">S_{p}(\omega)</span><script type="math/tex">S_{p}(\omega)</script></span> for a given region.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd>The spherical harmonic bandlimit.</dd>
+<dt><strong><code>slepian</code></strong></dt>
+<dd>The given Slepian object.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The complex <span><span class="MathJax_Preview">S_{p}(\omega)</span><script type="math/tex">S_{p}(\omega)</script></span> values.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_forward"><code class="name flex">
 <span>def <span class="ident">slepian_forward</span></span>(<span>L: int, slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>, *, f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]] | None = None, flm: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]] | None = None, mask: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]] | None = None, n_coeffs: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO computes the Slepian forward transform for all coefficients.</p>
-<h2 id="args">Args:</h2>
-<pre><code>L: _description_
-slepian: _description_
-f: _description_
-flm: _description_
-mask: _description_
-n_coeffs: _description_
-</code></pre>
-<h2 id="returns">Returns:</h2>
-<pre><code>_description_
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def slepian_forward(
-    L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
-    *,
-    f: npt.NDArray[np.complex_] | None = None,
-    flm: npt.NDArray[np.complex_ | np.float_] | None = None,
-    mask: npt.NDArray[np.float_] | None = None,
-    n_coeffs: int | None = None,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;TODO computes the Slepian forward transform for all coefficients.
-
-    Args:
-    ----
-        L: _description_
-        slepian: _description_
-        f: _description_
-        flm: _description_
-        mask: _description_
-        n_coeffs: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
-        L,
-        slepian,
-        f=f,
-        flm=flm,
-        mask=mask,
-    )
-    n_coeffs = slepian.N if n_coeffs is None else n_coeffs
-    return sd.decompose_all(n_coeffs)</code></pre>
-</details>
+<div class="desc"><p>Computes the Slepian forward transform for all coefficients.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd>The spherical harmonic bandlimit.</dd>
+<dt><strong><code>slepian</code></strong></dt>
+<dd>The given Slepian object.</dd>
+<dt><strong><code>f</code></strong></dt>
+<dd>The field value.</dd>
+<dt><strong><code>flm</code></strong></dt>
+<dd>The spherical harmonic coefficients.</dd>
+<dt><strong><code>mask</code></strong></dt>
+<dd>A boolean mask of the Slepian region.</dd>
+<dt><strong><code>n_coeffs</code></strong></dt>
+<dd>The number of Slepian coefficients to use.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The Slepian coefficients of the inputs.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_inverse"><code class="name flex">
 <span>def <span class="ident">slepian_inverse</span></span>(<span>f_p: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], L: int, slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO computes the Slepian inverse transform up to the Shannon number.</p>
-<h2 id="args">Args:</h2>
-<pre><code>f_p: _description_
-L: _description_
-slepian: _description_
-</code></pre>
-<h2 id="returns">Returns:</h2>
-<pre><code>_description_
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def slepian_inverse(
-    f_p: npt.NDArray[np.complex_ | np.float_],
-    L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
-) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;TODO computes the Slepian inverse transform up to the Shannon number.
-
-    Args:
-    ----
-        f_p: _description_
-        L: _description_
-        slepian: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
-    s_p = compute_s_p_omega(L, slepian)
-    return (f_p_reshape * s_p).sum(axis=0)</code></pre>
-</details>
+<div class="desc"><p>Computes the Slepian inverse transform up to the Shannon number.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>f_p</code></strong></dt>
+<dd>The Slepian coefficients.</dd>
+<dt><strong><code>L</code></strong></dt>
+<dd>The spherical harmonic bandlimit.</dd>
+<dt><strong><code>slepian</code></strong></dt>
+<dd>The given Slepian object.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The values on the sphere in pixel space.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_mesh_forward"><code class="name flex">
 <span>def <span class="ident">slepian_mesh_forward</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>, *, u: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]] | None = None, u_i: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]] | None = None, mask: bool = False, n_coeffs: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO computes the Slepian forward transform for all coefficients.</p>
-<h2 id="args">Args:</h2>
-<pre><code>mesh_slepian: _description_
-u: _description_
-u_i: _description_
-mask: _description_
-n_coeffs: _description_
-</code></pre>
-<h2 id="returns">Returns:</h2>
-<pre><code>_description_
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def slepian_mesh_forward(
-    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
-    *,
-    u: npt.NDArray[np.complex_ | np.float_] | None = None,
-    u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
-    mask: bool = False,
-    n_coeffs: int | None = None,
-) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;TODO computes the Slepian forward transform for all coefficients.
-
-    Args:
-    ----
-        mesh_slepian: _description_
-        u: _description_
-        u_i: _description_
-        mask: _description_
-        n_coeffs: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
-        mesh_slepian,
-        u=u,
-        u_i=u_i,
-        mask=mask,
-    )
-    n_coeffs = mesh_slepian.N if n_coeffs is None else n_coeffs
-    return sd.decompose_all(n_coeffs)</code></pre>
-</details>
+<div class="desc"><p>Computes the Slepian forward transform for all coefficients on the mesh.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mesh_slepian</code></strong></dt>
+<dd>The Slepian mesh object containing the eigensolutions.</dd>
+<dt><strong><code>u</code></strong></dt>
+<dd>The signal field value on the mesh.</dd>
+<dt><strong><code>u_i</code></strong></dt>
+<dd>The Fourier coefficients of the mesh.</dd>
+<dt><strong><code>mask</code></strong></dt>
+<dd>Whether to use the mask to compute the coefficients.</dd>
+<dt><strong><code>n_coeffs</code></strong></dt>
+<dd>The number of Slepian coefficients to use.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The Slepian coefficients on the mesh.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_mesh_inverse"><code class="name flex">
 <span>def <span class="ident">slepian_mesh_inverse</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>, f_p: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO computes the Slepian inverse transform on the mesh up to the Shannon number.</p>
-<h2 id="args">Args:</h2>
-<pre><code>mesh_slepian: _description_
-f_p: _description_
-</code></pre>
-<h2 id="returns">Returns:</h2>
-<pre><code>_description_
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def slepian_mesh_inverse(
-    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
-    f_p: npt.NDArray[np.complex_ | np.float_],
-) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
-
-    Args:
-    ----
-        mesh_slepian: _description_
-        f_p: _description_
-
-    Returns:
-    -------
-        _description_
-    &#34;&#34;&#34;
-    f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
-    s_p = _compute_mesh_s_p_pixel(mesh_slepian)
-    return (f_p_reshape * s_p).sum(axis=0)</code></pre>
-</details>
+<div class="desc"><p>Computes the Slepian inverse transform on the mesh up to the Shannon number.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mesh_slepian</code></strong></dt>
+<dd>The Slepian mesh object containing the eigensolutions.</dd>
+<dt><strong><code>f_p</code></strong></dt>
+<dd>The Slepian wavelet coefficients.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The value of a function on the mesh in pixel space.</p></div>
 </dd>
 </dl>
 </section>

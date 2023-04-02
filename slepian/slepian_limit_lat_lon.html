@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.slepian.slepian_limit_lat_lon API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Contains the `SlepianLimitLatLon` class." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
@@ -22,226 +23,7 @@
 <h1 class="title">Module <code>sleplet.slepian.slepian_limit_lat_lon</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">from pathlib import Path
-
-import numpy as np
-import pyssht as ssht
-from numba import njit, prange
-from numpy import linalg as LA  # noqa: N812
-from numpy import typing as npt
-from pydantic.dataclasses import dataclass
-
-import sleplet._array_methods
-import sleplet._data.setup_pooch
-import sleplet._mask_methods
-import sleplet._validation
-import sleplet._vars
-import sleplet.slepian.region
-from sleplet.slepian.slepian_functions import SlepianFunctions
-
-_data_path = Path(__file__).resolve().parents[1] / &#34;_data&#34;
-
-
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianLimitLatLon(SlepianFunctions):
-    &#34;&#34;&#34;Class to create a limited latitude longitude Slepian region on the sphere.&#34;&#34;&#34;
-
-    phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-    phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-    theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-    theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-
-    def __post_init_post_parse__(self) -&gt; None:
-        super().__post_init_post_parse__()
-
-    def _create_fn_name(self) -&gt; str:
-        return f&#34;slepian_{self.region.name_ending}&#34;
-
-    def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
-        return sleplet.slepian.region.Region(
-            theta_min=self.theta_min,
-            theta_max=self.theta_max,
-            phi_min=self.phi_min,
-            phi_max=self.phi_max,
-        )
-
-    def _create_mask(self) -&gt; npt.NDArray[np.float_]:
-        return sleplet._mask_methods.create_mask_region(self.L, self.region)
-
-    def _calculate_area(self) -&gt; float:
-        return (self.phi_max - self.phi_min) * (
-            np.cos(self.theta_min) - np.cos(self.theta_max)
-        )
-
-    def _create_matrix_location(self) -&gt; str:
-        return f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
-
-    def _solve_eigenproblem(
-        self,
-    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = f&#34;{self.matrix_location}_eigenvalues.npy&#34;
-        evec_loc = f&#34;{self.matrix_location}_eigenvectors.npy&#34;
-        try:
-            return np.load(
-                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
-            ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
-        except TypeError:
-            K = self._create_K_matrix()
-            eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            np.save(_data_path / eval_loc, eigenvalues)
-            np.save(_data_path / evec_loc, eigenvectors[: self.N])
-            return eigenvalues, eigenvectors
-
-    def _create_K_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
-        &#34;&#34;&#34;Computes the K matrix.&#34;&#34;&#34;
-        # Compute sub-integral matrix
-        G = self._slepian_integral()
-
-        # Compute Slepian matrix
-        dl_array = ssht.generate_dl(np.pi / 2, self.L)
-        K = self._slepian_matrix(dl_array, self.L, self.L - 1, G)
-        sleplet._array_methods.fill_upper_triangle_of_hermitian_matrix(K)
-
-        return K
-
-    def _slepian_integral(self) -&gt; npt.NDArray[np.complex_]:
-        &#34;&#34;&#34;Syntax:
-        G = _slepian_integral().
-
-        Output:
-        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
-        Wigner-d functions in computing the Slepian integral) for all orders
-
-        Description:
-        This piece of code computes the sub-integral matrix (obtained after the
-        use of Wigner-D and Wigner-d functions in computing the Slepian integral)
-        for all orders using the formulation given in &#34;Slepian spatialspectral
-        concentration problem on the sphere: Analytical formulation for limited
-        colatitude-longitude spatial region&#34; by A. P. Bates, Z. Khalid and R. A.
-        Kennedy.
-        &#34;&#34;&#34;
-        G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex_)
-
-        def helper(row: int, col: int, S: float) -&gt; None:
-            &#34;&#34;&#34;Using conjugate symmetry property to reduce the number of iterations.&#34;&#34;&#34;
-            try:
-                Q = (1 / (col**2 - 1)) * (
-                    np.exp(1j * col * self.theta_min)
-                    * (1j * col * np.sin(self.theta_min) - np.cos(self.theta_min))
-                    + np.exp(1j * col * self.theta_max)
-                    * (np.cos(self.theta_max) - 1j * col * np.sin(self.theta_max))
-                )
-            except ZeroDivisionError:
-                Q = 0.25 * (
-                    2 * 1j * col * (self.theta_max - self.theta_min)
-                    + np.exp(2 * 1j * col * self.theta_min)
-                    - np.exp(2 * 1j * col * self.theta_max)
-                )
-
-            G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col] = Q * S
-            G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = G[
-                2 * (self.L - 1) + row,
-                2 * (self.L - 1) + col,
-            ].conj()
-
-        # for row equal to zero
-        S = self.phi_max - self.phi_min
-        for col in range(-2 * (self.L - 1), 1):
-            helper(0, col, S)
-
-        # for row not equal to zero
-        for row in range(-2 * (self.L - 1), 0):
-            S = (1j / row) * (
-                np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)
-            )
-            for col in range(-2 * (self.L - 1), 2 * (self.L - 1) + 1):
-                helper(row, col, S)
-
-        return G
-
-    @staticmethod
-    @njit(parallel=True, fastmath=True)
-    def _slepian_matrix(
-        dl: npt.NDArray[np.float_],
-        L: int,
-        N: int,
-        G: npt.NDArray[np.complex_],
-    ) -&gt; npt.NDArray[np.complex_]:
-        &#34;&#34;&#34;Syntax:
-        K = _slepian_matrix(dl, L, N, G).
-
-        Input:
-        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
-        Wigner-d functions in computing the Slepian integral) for all orders
-
-        Output:
-        K  =  Slepian matrix
-
-        Description:
-        This piece of code computes the Slepian matrix using the formulation
-        given in &#34;Slepian spatialspectral concentration problem on the sphere:
-        Analytical formulation for limited colatitude-longitude spatial region&#34;
-        by A. P. Bates, Z. Khalid and R. A. Kennedy.
-        &#34;&#34;&#34;
-        K = np.zeros((L**2, L**2), dtype=np.complex_)
-
-        for ell in prange(L):
-            for p in range(ell + 1):
-                C1 = np.sqrt((2 * ell + 1) * (2 * p + 1)) / (4 * np.pi)
-
-                for m in range(-ell, ell + 1):
-                    ind_lm = ell * (ell + 1) + m
-
-                    for q in range(-p, p + 1):
-                        ind_pq = p * (p + 1) + q
-                        row = m - q
-                        C2 = (-1j) ** row
-                        ind_r = 2 * N + row
-
-                        for mp in range(-ell, ell + 1):
-                            C3 = dl[ell, N + mp, N + m] * dl[ell, N + mp, N]
-                            S1 = 0
-
-                            for qp in range(-p, p + 1):
-                                col = mp - qp
-                                C4 = dl[p, N + qp, N + q] * dl[p, N + qp, N]
-                                ind_c = 2 * N + col
-                                S1 += C4 * G[ind_r, ind_c]
-
-                            K[ind_lm, ind_pq] += C3 * S1
-
-                        K[ind_lm, ind_pq] *= C1 * C2
-        return K
-
-    @staticmethod
-    def _clean_evals_and_evecs(
-        eigendecomposition: tuple,
-    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;Need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
-        # access values
-        eigenvalues, eigenvectors = eigendecomposition
-
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = eigenvectors[:, idx].conj().T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] &lt; 0, -1, 1)[:, np.newaxis]
-
-        return eigenvalues, eigenvectors</code></pre>
-</details>
+<p>Contains the <code><a title="sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon" href="#sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon">SlepianLimitLatLon</a></code> class.</p>
 </section>
 <section>
 </section>
@@ -258,206 +40,6 @@ class SlepianLimitLatLon(SlepianFunctions):
 </code></dt>
 <dd>
 <div class="desc"><p>Class to create a limited latitude longitude Slepian region on the sphere.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
-class SlepianLimitLatLon(SlepianFunctions):
-    &#34;&#34;&#34;Class to create a limited latitude longitude Slepian region on the sphere.&#34;&#34;&#34;
-
-    phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-    phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-    theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-    theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
-    &#34;&#34;&#34;TODO&#34;&#34;&#34;
-
-    def __post_init_post_parse__(self) -&gt; None:
-        super().__post_init_post_parse__()
-
-    def _create_fn_name(self) -&gt; str:
-        return f&#34;slepian_{self.region.name_ending}&#34;
-
-    def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
-        return sleplet.slepian.region.Region(
-            theta_min=self.theta_min,
-            theta_max=self.theta_max,
-            phi_min=self.phi_min,
-            phi_max=self.phi_max,
-        )
-
-    def _create_mask(self) -&gt; npt.NDArray[np.float_]:
-        return sleplet._mask_methods.create_mask_region(self.L, self.region)
-
-    def _calculate_area(self) -&gt; float:
-        return (self.phi_max - self.phi_min) * (
-            np.cos(self.theta_min) - np.cos(self.theta_max)
-        )
-
-    def _create_matrix_location(self) -&gt; str:
-        return f&#34;slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}&#34;
-
-    def _solve_eigenproblem(
-        self,
-    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        eval_loc = f&#34;{self.matrix_location}_eigenvalues.npy&#34;
-        evec_loc = f&#34;{self.matrix_location}_eigenvectors.npy&#34;
-        try:
-            return np.load(
-                sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
-            ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
-        except TypeError:
-            K = self._create_K_matrix()
-            eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            np.save(_data_path / eval_loc, eigenvalues)
-            np.save(_data_path / evec_loc, eigenvectors[: self.N])
-            return eigenvalues, eigenvectors
-
-    def _create_K_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
-        &#34;&#34;&#34;Computes the K matrix.&#34;&#34;&#34;
-        # Compute sub-integral matrix
-        G = self._slepian_integral()
-
-        # Compute Slepian matrix
-        dl_array = ssht.generate_dl(np.pi / 2, self.L)
-        K = self._slepian_matrix(dl_array, self.L, self.L - 1, G)
-        sleplet._array_methods.fill_upper_triangle_of_hermitian_matrix(K)
-
-        return K
-
-    def _slepian_integral(self) -&gt; npt.NDArray[np.complex_]:
-        &#34;&#34;&#34;Syntax:
-        G = _slepian_integral().
-
-        Output:
-        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
-        Wigner-d functions in computing the Slepian integral) for all orders
-
-        Description:
-        This piece of code computes the sub-integral matrix (obtained after the
-        use of Wigner-D and Wigner-d functions in computing the Slepian integral)
-        for all orders using the formulation given in &#34;Slepian spatialspectral
-        concentration problem on the sphere: Analytical formulation for limited
-        colatitude-longitude spatial region&#34; by A. P. Bates, Z. Khalid and R. A.
-        Kennedy.
-        &#34;&#34;&#34;
-        G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex_)
-
-        def helper(row: int, col: int, S: float) -&gt; None:
-            &#34;&#34;&#34;Using conjugate symmetry property to reduce the number of iterations.&#34;&#34;&#34;
-            try:
-                Q = (1 / (col**2 - 1)) * (
-                    np.exp(1j * col * self.theta_min)
-                    * (1j * col * np.sin(self.theta_min) - np.cos(self.theta_min))
-                    + np.exp(1j * col * self.theta_max)
-                    * (np.cos(self.theta_max) - 1j * col * np.sin(self.theta_max))
-                )
-            except ZeroDivisionError:
-                Q = 0.25 * (
-                    2 * 1j * col * (self.theta_max - self.theta_min)
-                    + np.exp(2 * 1j * col * self.theta_min)
-                    - np.exp(2 * 1j * col * self.theta_max)
-                )
-
-            G[2 * (self.L - 1) + row, 2 * (self.L - 1) + col] = Q * S
-            G[2 * (self.L - 1) - row, 2 * (self.L - 1) - col] = G[
-                2 * (self.L - 1) + row,
-                2 * (self.L - 1) + col,
-            ].conj()
-
-        # for row equal to zero
-        S = self.phi_max - self.phi_min
-        for col in range(-2 * (self.L - 1), 1):
-            helper(0, col, S)
-
-        # for row not equal to zero
-        for row in range(-2 * (self.L - 1), 0):
-            S = (1j / row) * (
-                np.exp(1j * row * self.phi_min) - np.exp(1j * row * self.phi_max)
-            )
-            for col in range(-2 * (self.L - 1), 2 * (self.L - 1) + 1):
-                helper(row, col, S)
-
-        return G
-
-    @staticmethod
-    @njit(parallel=True, fastmath=True)
-    def _slepian_matrix(
-        dl: npt.NDArray[np.float_],
-        L: int,
-        N: int,
-        G: npt.NDArray[np.complex_],
-    ) -&gt; npt.NDArray[np.complex_]:
-        &#34;&#34;&#34;Syntax:
-        K = _slepian_matrix(dl, L, N, G).
-
-        Input:
-        G  =  Sub-integral matrix (obtained after the use of Wigner-D and
-        Wigner-d functions in computing the Slepian integral) for all orders
-
-        Output:
-        K  =  Slepian matrix
-
-        Description:
-        This piece of code computes the Slepian matrix using the formulation
-        given in &#34;Slepian spatialspectral concentration problem on the sphere:
-        Analytical formulation for limited colatitude-longitude spatial region&#34;
-        by A. P. Bates, Z. Khalid and R. A. Kennedy.
-        &#34;&#34;&#34;
-        K = np.zeros((L**2, L**2), dtype=np.complex_)
-
-        for ell in prange(L):
-            for p in range(ell + 1):
-                C1 = np.sqrt((2 * ell + 1) * (2 * p + 1)) / (4 * np.pi)
-
-                for m in range(-ell, ell + 1):
-                    ind_lm = ell * (ell + 1) + m
-
-                    for q in range(-p, p + 1):
-                        ind_pq = p * (p + 1) + q
-                        row = m - q
-                        C2 = (-1j) ** row
-                        ind_r = 2 * N + row
-
-                        for mp in range(-ell, ell + 1):
-                            C3 = dl[ell, N + mp, N + m] * dl[ell, N + mp, N]
-                            S1 = 0
-
-                            for qp in range(-p, p + 1):
-                                col = mp - qp
-                                C4 = dl[p, N + qp, N + q] * dl[p, N + qp, N]
-                                ind_c = 2 * N + col
-                                S1 += C4 * G[ind_r, ind_c]
-
-                            K[ind_lm, ind_pq] += C3 * S1
-
-                        K[ind_lm, ind_pq] *= C1 * C2
-        return K
-
-    @staticmethod
-    def _clean_evals_and_evecs(
-        eigendecomposition: tuple,
-    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;Need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
-        # access values
-        eigenvalues, eigenvectors = eigendecomposition
-
-        # eigenvalues should be real
-        eigenvalues = eigenvalues.real
-
-        # Sort eigenvalues and eigenvectors in descending order of eigenvalues
-        idx = eigenvalues.argsort()[::-1]
-        eigenvalues = eigenvalues[idx]
-        eigenvectors = eigenvectors[:, idx].conj().T
-
-        # ensure first element of each eigenvector is positive
-        eigenvectors *= np.where(eigenvectors[:, 0] &lt; 0, -1, 1)[:, np.newaxis]
-
-        return eigenvalues, eigenvectors</code></pre>
-</details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a></li>
@@ -466,19 +48,19 @@ class SlepianLimitLatLon(SlepianFunctions):
 <dl>
 <dt id="sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon.phi_max"><code class="name">var <span class="ident">phi_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>Maximum <span><span class="MathJax_Preview">\phi</span><script type="math/tex">\phi</script></span> value.</p></div>
 </dd>
 <dt id="sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon.phi_min"><code class="name">var <span class="ident">phi_min</span> : float</code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>Minimum <span><span class="MathJax_Preview">\phi</span><script type="math/tex">\phi</script></span> value.</p></div>
 </dd>
 <dt id="sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>Maximum <span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span> value.</p></div>
 </dd>
 <dt id="sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon.theta_min"><code class="name">var <span class="ident">theta_min</span> : float</code></dt>
 <dd>
-<div class="desc"><p>TODO</p></div>
+<div class="desc"><p>Minimum <span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span> value.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
