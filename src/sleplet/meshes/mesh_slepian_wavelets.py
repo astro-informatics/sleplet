@@ -13,14 +13,15 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWavelets(MeshSlepianCoefficients):
-    """TODO."""
+    """Creates the Slepian wavelets of a given mesh."""
 
     B: int = 3
-    """TODO"""
+    r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
-    """TODO"""
+    """The minimum wavelet scale."""
     j: int | None = None
-    """TODO"""
+    """Option to select a given wavelet. `None` indicates the scaling function,
+    whereas `0` would correspond to the selected `j_min`."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

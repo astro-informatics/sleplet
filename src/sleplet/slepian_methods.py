@@ -25,7 +25,7 @@ def choose_slepian_method(
 
     Args:
     ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
         region: _description_
 
     Raises:
@@ -76,8 +76,8 @@ def slepian_inverse(
 
     Args:
     ----
-        f_p: _description_
-        L: _description_
+        f_p: The Slepian wavelet coefficients.
+        L: The spherical harmonic bandlimit.
         slepian: _description_
 
     Returns:
@@ -103,10 +103,10 @@ def slepian_forward(
 
     Args:
     ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
         slepian: _description_
         f: _description_
-        flm: _description_
+        flm: The spherical harmonic coefficients.
         mask: _description_
         n_coeffs: _description_
 
@@ -134,7 +134,7 @@ def compute_s_p_omega(
 
     Args:
     ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
         slepian: _description_
 
     Returns:
@@ -213,7 +213,7 @@ def slepian_mesh_inverse(
     Args:
     ----
         mesh_slepian: _description_
-        f_p: _description_
+        f_p: The Slepian wavelet coefficients.
 
     Returns:
     -------

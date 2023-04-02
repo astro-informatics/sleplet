@@ -18,13 +18,14 @@ class Ridgelets(Flm):
     """TODO."""
 
     B: int = 3
-    """TODO"""
+    r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
-    """TODO"""
+    """The minimum wavelet scale."""
     j: int | None = None
-    """TODO"""
+    """Option to select a given wavelet. `None` indicates the scaling function,
+    whereas would correspond to the selected `j_min`."""
     spin: int = 2
-    """TODO"""
+    """Spin value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

@@ -23,7 +23,7 @@ class MeshSlepian:
     """Creates Slepian object of a given mesh."""
 
     mesh: Mesh
-    """TODO"""
+    """A mesh object."""
 
     def __post_init_post_parse__(self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)

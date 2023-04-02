@@ -30,20 +30,20 @@ class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 
     mesh: sleplet.meshes.mesh.Mesh
-    """TODO"""
+    """The given mesh object."""
     filename: str
-    """TODO"""
+    """The output filename of the plot."""
     f: npt.NDArray[np.complex_ | np.float_]
-    """TODO"""
+    """The field value sampled on the mesh."""
     _: KW_ONLY
     amplitude: float | None = None
-    """TODO"""
+    """Whether to customise the amplitude range of the colour bar."""
     colour: LinearSegmentedColormap = cmocean.cm.ice
-    """TODO"""
+    """The colour of the field on the mesh."""
     normalise: bool = True
-    """TODO"""
+    """Whether to normalise the plot or not."""
     region: bool = False
-    """TODO"""
+    """Whether to set the field values outside of the region to zero."""
 
     def __post_init_post_parse__(self) -> None:
         if self.normalise:

@@ -20,7 +20,7 @@ class MeshCoefficients:
     """Abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 
     mesh: Mesh
-    """TODO"""
+    """A mesh object."""
     _: KW_ONLY
     extra_args: list[int] | None = None
     """TODO"""

@@ -11,10 +11,11 @@ from sleplet.functions.fp import Fp
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Slepian(Fp):
-    """TODO."""
+    """Creates the Slepian functions of the selected region."""
 
     rank: int = 0
-    """TODO"""
+    """Slepian eigenvalues are ordered in decreasing value. The option `rank`
+    selects a given Slepian function from the spectrum."""
 
     def __post_init_post_parse__(self) -> None:
         self._validate_rank()

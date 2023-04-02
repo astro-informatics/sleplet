@@ -33,7 +33,7 @@ def compute_snr(
 
     Returns:
     -------
-        _description_
+        The SNR value of the noised signal.
     """
     snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
     sleplet.logger.info(f"{signal_type} SNR: {snr:.2f}")
@@ -132,7 +132,7 @@ def harmonic_hard_thresholding(
 
     Args:
     ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
         wav_coeffs: _description_
         sigma_j: _description_
         n_sigma: _description_
@@ -166,15 +166,15 @@ def slepian_wavelet_hard_thresholding(
 
     Args:
     ----
-        L: _description_
-        wav_coeffs: _description_
+        L: The spherical harmonic bandlimit.
+        wav_coeffs: The Slepian wavelet coefficients
         sigma_j: _description_
         n_sigma _description_
         slepian: _description_
 
     Returns:
     -------
-        _description_
+        The hard thresholded Slepian wavelet coefficients.
     """
     sleplet.logger.info("begin Slepian hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
@@ -201,7 +201,7 @@ def slepian_function_hard_thresholding(
 
     Args:
     ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
         coefficients: _description_
         sigma: _description_
         n_sigma: _description_

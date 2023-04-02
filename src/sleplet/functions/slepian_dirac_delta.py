@@ -13,7 +13,7 @@ from sleplet.functions.fp import Fp
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(Fp):
-    """TODO."""
+    """Createa a Dirac delta on the sphere of the Slepian coefficients."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

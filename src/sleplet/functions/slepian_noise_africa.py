@@ -12,10 +12,14 @@ from sleplet.functions.fp import Fp
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseAfrica(Fp):
-    """TODO."""
+    """
+    Creates a noised Slepian region on the topographic map of the Earth of
+    the Africa continent.
+    """
 
     SNR: float = -10
-    """TODO"""
+    """A parameter which controls the level of signal to noise in the noised
+    data."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

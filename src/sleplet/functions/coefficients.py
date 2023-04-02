@@ -17,19 +17,23 @@ COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 @dataclass(config=sleplet._validation.Validation)
 class Coefficients:
-    """Abstract parent class to handle harmonic/Slepian coefficients on the sphere."""
+    """
+    Abstract parent class to handle harmonic/Slepian coefficients on the
+    sphere.
+    """
 
     L: int
     """The spherical harmonic bandlimit."""
     _: KW_ONLY
     extra_args: list[int] | None = None
-    """TODO"""
+    """Control the extra arguments for the given set of spherical
+    coefficients. Only to be set by the `sphere` CLI."""
     noise: float | None = None
-    """TODO"""
+    """How much to noise the data."""
     region: sleplet.slepian.region.Region | None = None
-    """TODO"""
+    """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
-    """TODO"""
+    """How much to smooth the topographic map of the Earth by."""
 
     def __post_init_post_parse__(self) -> None:
         self._setup_args()
@@ -58,7 +62,8 @@ class Coefficients:
 
         Returns:
         -------
-            _description_
+            The translated spherical harmonic coefficients used in the sifting
+            convolution.
         """
         g_coefficients = self._translation_helper(alpha, beta)
         return (
@@ -85,7 +90,7 @@ class Coefficients:
 
         Returns:
         -------
-            _description_
+            The sifting convolution of the two inputs.
         """
         # translation/convolution are not real for general function
         self.reality = False
@@ -136,18 +141,18 @@ class Coefficients:
         *,
         gamma: float = 0,
     ) -> npt.NDArray[np.complex_]:
-        """
-        TODO rotates given flm on the sphere by alpha/beta/gamma.
+        r"""
+        Rotates given flm on the sphere by alpha/beta/gamma.
 
         Args:
         ----
-            alpha: _description_
-            beta: _description_
-            gamma: _description_
+            alpha: The third Euler angle, a \(\alpha\) rotation about the z-axis.
+            beta: The second Euler angle, a \(\beta\) rotation about the y-axis.
+            gamma: The first Euler angle, a \(\gamma\) rotation about the z-axis.
 
         Returns:
         -------
-            _description_
+            The rotated spherical harmonic coefficients.
         """
         raise NotImplementedError
 

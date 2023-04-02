@@ -18,9 +18,10 @@ class SlepianWavelets(Fp):
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
-    """TODO"""
+    """The minimum wavelet scale."""
     j: int | None = None
-    """TODO"""
+    """Option to select a given wavelet. `None` indicates the scaling function,
+    whereas `0` would correspond to the selected `j_min`."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

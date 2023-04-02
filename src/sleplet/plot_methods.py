@@ -19,15 +19,15 @@ import sleplet.slepian_methods
 
 def calc_plot_resolution(L: int) -> int:
     """
-    TODO calculate appropriate resolution for given L.
+    Calculate appropriate resolution for given L.
 
     Args:
     ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
 
     Returns:
     -------
-        _description_
+        The output spherical harmonic bandlimit to boost the resolution.
     """
     res_dict = {1: 6, 2: 5, 3: 4, 7: 3, 9: 2, 10: 1}
 

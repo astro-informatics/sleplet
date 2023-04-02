@@ -18,7 +18,7 @@ def slepian_wavelet_forward(
 
     Args:
     ----
-        f_p: _description_
+        f_p: The Slepian wavelet coefficients.
         wavelets: _description_
         shannon: _description_
 
@@ -75,7 +75,7 @@ def axisymmetric_wavelet_forward(
     Args:
     ----
         L  _description_
-        flm: _description_
+        flm: The spherical harmonic coefficients.
         wavelets: _description_
 
     Returns:
@@ -102,7 +102,7 @@ def axisymmetric_wavelet_inverse(
 
     Args:
     ----
-        L: _description_
+        L: The spherical harmonic bandlimit.
         wav_coeffs: _description_
         wavelets: _description_
 

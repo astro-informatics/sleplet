@@ -10,7 +10,7 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation)
 class Earth(Flm):
-    """TODO."""
+    """Creates the topographic map of the Earth."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

@@ -11,10 +11,14 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianNoiseField(MeshSlepianCoefficients):
-    """TODO."""
+    """
+    Creates a noised field on the mesh computed from a Slepian region of the given
+    mesh. The default field is the per-vertex normals of the mesh.
+    """
 
     SNR: float = -5
-    """TODO"""
+    """A parameter which controls the level of signal to noise in the noised
+    data."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

@@ -10,7 +10,7 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation)
 class DiracDelta(Flm):
-    """TODO."""
+    """Creates a Dirac delta on the sphere."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

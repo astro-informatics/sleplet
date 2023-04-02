@@ -11,7 +11,11 @@ from sleplet.functions.flm import Flm
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class ElongatedGaussian(Flm):
-    """TODO."""
+    r"""
+    Creates an elongated Gaussian on the sphere
+    \(\exp\bigg(-\bigg(\frac{{(\theta-\overline{\theta})}^{2}}{2\sigma_{\theta}^{2}}
+    + \frac{{(\phi-\overline{\phi})}^{2}}{2\sigma_{\phi}^{2}}\bigg)\bigg)\).
+    """
 
     p_sigma: float = 0.1
     """TODO"""
