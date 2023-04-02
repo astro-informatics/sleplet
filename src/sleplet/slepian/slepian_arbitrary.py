@@ -30,7 +30,7 @@ class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
-    """TODO"""
+    """The name of the mask of the arbirary region."""
     _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:

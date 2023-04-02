@@ -20,7 +20,7 @@ class Coefficients:
     """Abstract parent class to handle harmonic/Slepian coefficients on the sphere."""
 
     L: int
-    """TODO"""
+    """The spherical harmonic bandlimit."""
     _: KW_ONLY
     extra_args: list[int] | None = None
     """TODO"""

@@ -29,10 +29,10 @@ class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
     theta_max: float
-    """TODO"""
+    """Sets the size of the polar cap region."""
     _: KW_ONLY
     gap: bool = False
-    """TODO"""
+    """Whether to enable a double ended polar cap."""
     order: int | npt.NDArray[np.int_] | None = None
     """TODO"""
 

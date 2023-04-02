@@ -29,7 +29,7 @@ class PlotSphere:
     f: npt.NDArray[np.complex_ | np.float_]
     """TODO"""
     L: int
-    """TODO"""
+    """The spherical harmonic bandlimit."""
     filename: str
     """TODO"""
     _: KW_ONLY

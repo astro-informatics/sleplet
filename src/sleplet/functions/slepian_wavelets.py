@@ -16,7 +16,7 @@ class SlepianWavelets(Fp):
     """TODO."""
 
     B: int = 3
-    """TODO"""
+    r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
     j_min: int = 2
     """TODO"""
     j: int | None = None
