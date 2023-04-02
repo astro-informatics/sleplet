@@ -13,7 +13,7 @@ import sleplet._integration_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
-import sleplet.meshes.mesh
+import sleplet.meshes
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
@@ -22,7 +22,7 @@ _data_path = Path(__file__).resolve().parents[1] / "_data"
 class MeshSlepian:
     """Creates Slepian object of a given mesh."""
 
-    mesh: sleplet.meshes.mesh.Mesh
+    mesh: sleplet.meshes.Mesh
     """TODO"""
 
     def __post_init_post_parse__(self) -> None:

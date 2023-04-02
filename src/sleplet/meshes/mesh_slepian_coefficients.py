@@ -5,8 +5,8 @@ from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
+import sleplet.meshes
 import sleplet.meshes.mesh_coefficients
-import sleplet.meshes.mesh_slepian
 import sleplet.noise
 
 
@@ -15,7 +15,7 @@ class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients)
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
     def __post_init_post_parse__(self) -> None:
-        self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
+        self.mesh_slepian = sleplet.meshes.MeshSlepian(self.mesh)
         super().__post_init_post_parse__()
 
     def _add_noise_to_signal(
