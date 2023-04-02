@@ -78,7 +78,7 @@ def _calc_nearest_grid_point(
 
 def save_plot(path: Path, name: str) -> None:
     """
-    TODO helper method to save plots.
+    Helper method to save plots.
 
     Args:
     ----
@@ -102,7 +102,7 @@ def find_max_amplitude(
     upsample: bool = True,
 ) -> float:
     """
-    TODO for a given set of coefficients it finds the largest absolute value for a
+    For a given set of coefficients it finds the largest absolute value for a
     given plot type such that plots can have the same scale as the input.
 
     Args:
@@ -228,7 +228,7 @@ def compute_amplitude_for_noisy_mesh_plots(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
 ) -> float | None:
     """
-    TODO for the noised mesh plots fix the amplitude to the initial data.
+    For the noised mesh plots fix the amplitude to the initial data.
 
     Args:
     ----
@@ -261,7 +261,7 @@ def compute_amplitude_for_noisy_sphere_plots(
     f: sleplet.functions.coefficients.Coefficients,
 ) -> float | None:
     """
-    TODO for the noised sphere plots fix the amplitude to the initial data.
+    For the noised sphere plots fix the amplitude to the initial data.
 
     Args:
     ----

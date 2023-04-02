@@ -23,7 +23,7 @@ def compute_snr(
     signal_type: str,
 ) -> float:
     """
-    TODO computes the signal to noise ratio.
+    Computes the signal to noise ratio.
 
     Args:
     ----
@@ -47,7 +47,7 @@ def compute_sigma_noise(
     denominator: int | None = None,
 ) -> float:
     """
-    TODO compute the std dev of the noise.
+    Compute the standard deviation of the noise.
 
     Args:
     ----
@@ -128,7 +128,7 @@ def harmonic_hard_thresholding(
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
     """
-    TODO perform thresholding in harmonic space.
+    Perform thresholding in harmonic space.
 
     Args:
     ----
@@ -162,7 +162,7 @@ def slepian_wavelet_hard_thresholding(
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    TODO perform thresholding in Slepian wavelet space.
+    Perform thresholding in Slepian wavelet space.
 
     Args:
     ----
@@ -197,7 +197,7 @@ def slepian_function_hard_thresholding(
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
-    TODO perform thresholding in Slepian function space.
+    Perform thresholding in Slepian function space.
 
     Args:
     ----
@@ -290,7 +290,7 @@ def compute_slepian_mesh_sigma_j(
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
     """
-    TODO compute sigma_j for wavelets used in denoising the signal.
+    Compute sigma_j for wavelets used in denoising the signal.
 
     Args:
     ----
@@ -321,7 +321,7 @@ def slepian_mesh_hard_thresholding(
     n_sigma: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    TODO perform thresholding in Slepian space.
+    Perform thresholding in Slepian space.
 
     Args:
     ----

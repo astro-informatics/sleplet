@@ -117,8 +117,8 @@ def compute_random_signal(
     var_signal: float,
 ) -> npt.NDArray[np.complex_]:
     """
-    TODO generates a normally distributed random signal of a
-    complex signal with mean 0 and variance 1.
+    Generates a normally distributed random signal of a
+    complex signal with mean `0` and variance `1`.
 
     Args:
     ----
@@ -140,7 +140,7 @@ def mesh_forward(
     u: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
-    TODO computes the mesh forward transform from real space to harmonic space.
+    Computes the mesh forward transform from real space to harmonic space.
 
     Args:
     ----
@@ -167,7 +167,7 @@ def mesh_inverse(
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    TODO computes the mesh inverse transform from harmonic space to real space.
+    Computes the mesh inverse transform from harmonic space to real space.
 
     Args:
     ----

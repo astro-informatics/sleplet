@@ -21,7 +21,7 @@ def choose_slepian_method(
     region: sleplet.slepian.region.Region,
 ) -> sleplet.slepian.slepian_functions.SlepianFunctions:
     """
-    TODO initialise Slepian object depending on input.
+    Initialise Slepian object depending on input.
 
     Args:
     ----
@@ -72,7 +72,7 @@ def slepian_inverse(
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
-    TODO computes the Slepian inverse transform up to the Shannon number.
+    Computes the Slepian inverse transform up to the Shannon number.
 
     Args:
     ----
@@ -99,7 +99,7 @@ def slepian_forward(
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.complex_]:
     """
-    TODO computes the Slepian forward transform for all coefficients.
+    Computes the Slepian forward transform for all coefficients.
 
     Args:
     ----
@@ -130,7 +130,7 @@ def compute_s_p_omega(
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
-    TODO method to calculate Sp(omega) for a given region.
+    Method to calculate Sp(omega) for a given region.
 
     Args:
     ----
@@ -179,7 +179,7 @@ def slepian_mesh_forward(
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.float_]:
     """
-    TODO computes the Slepian forward transform for all coefficients.
+    Computes the Slepian forward transform for all coefficients.
 
     Args:
     ----
@@ -208,7 +208,7 @@ def slepian_mesh_inverse(
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
+    Computes the Slepian inverse transform on the mesh up to the Shannon number.
 
     Args:
     ----
