@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.slepian API documentation</title>
-<meta name="description" content="classes to create the Slepian regions on the sphere." />
+<meta name="description" content="Classes to create the Slepian regions on the sphere." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,12 +22,12 @@
 <h1 class="title">Module <code>sleplet.slepian</code></h1>
 </header>
 <section id="section-intro">
-<p>classes to create the Slepian regions on the sphere.</p>
+<p>Classes to create the Slepian regions on the sphere.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;classes to create the Slepian regions on the sphere.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Classes to create the Slepian regions on the sphere.&#34;&#34;&#34;
 
 from .region import Region
 from .slepian_arbitrary import SlepianArbitrary
@@ -79,14 +79,14 @@ __all__ = [
 <span>(</span><span>*, gap: bool = False, mask_name: str = '', phi_max: float = 6.283185307179586, phi_min: float = 0.0, theta_max: float = 3.141592653589793, theta_min: float = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>identifies and creates the appropriate Slepian region for the sphere.</p></div>
+<div class="desc"><p>Identifies and creates the appropriate Slepian region for the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
-    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
 
     gap: bool = False
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -105,7 +105,7 @@ class Region:
         self._identify_region()
 
     def _identify_region(self) -&gt; None:
-        &#34;&#34;&#34;identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
+        &#34;&#34;&#34;Identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
         if sleplet._bool_methods.is_polar_cap(
             self.phi_min,
             self.phi_max,
@@ -219,14 +219,14 @@ class Region:
 <span>(</span><span>L: int, mask_name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>class to create an arbitrary Slepian region on the sphere.</p></div>
+<div class="desc"><p>Class to create an arbitrary Slepian region on the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
-    &#34;&#34;&#34;class to create an arbitrary Slepian region on the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Class to create an arbitrary Slepian region on the sphere.&#34;&#34;&#34;
 
     mask_name: str
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -287,7 +287,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
-        &#34;&#34;&#34;computes the D matrix in parallel.&#34;&#34;&#34;
+        &#34;&#34;&#34;Computes the D matrix in parallel.&#34;&#34;&#34;
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
 
@@ -299,7 +299,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i_ext, shm_i_ext = sleplet._parallel_methods.create_shared_memory_array(D_i)
 
         def func(chunk: list[int]) -&gt; None:
-            &#34;&#34;&#34;calculate D matrix components for each chunk.&#34;&#34;&#34;
+            &#34;&#34;&#34;Calculate D matrix components for each chunk.&#34;&#34;&#34;
             (
                 D_r_int,
                 shm_r_int,
@@ -340,7 +340,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i: npt.NDArray[np.float_],
         i: int,
     ) -&gt; None:
-        &#34;&#34;&#34;used in both serial and parallel calculations.
+        &#34;&#34;&#34;Used in both serial and parallel calculations.
 
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease
@@ -369,7 +369,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -&gt; complex:
-        &#34;&#34;&#34;calculates the D integral between two spherical harmonics.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calculates the D integral between two spherical harmonics.&#34;&#34;&#34;
         if i not in self._fields:
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),
@@ -414,14 +414,14 @@ class SlepianArbitrary(SlepianFunctions):
 <span>(</span><span>L: int, *, phi_max: float = 6.283185307179586, phi_min: float = 0.0, theta_max: float = 3.141592653589793, theta_min: float = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>class to create a limited latitude longitude Slepian region on the sphere.</p></div>
+<div class="desc"><p>Class to create a limited latitude longitude Slepian region on the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
-    &#34;&#34;&#34;class to create a limited latitude longitude Slepian region on the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Class to create a limited latitude longitude Slepian region on the sphere.&#34;&#34;&#34;
 
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -474,7 +474,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
-        &#34;&#34;&#34;computes the K matrix.&#34;&#34;&#34;
+        &#34;&#34;&#34;Computes the K matrix.&#34;&#34;&#34;
         # Compute sub-integral matrix
         G = self._slepian_integral()
 
@@ -598,7 +598,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
+        &#34;&#34;&#34;Need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
         # access values
         eigenvalues, eigenvectors = eigendecomposition
 
@@ -652,14 +652,14 @@ class SlepianLimitLatLon(SlepianFunctions):
 <span>(</span><span>L: int, theta_max: float, *, gap: bool = False, order: int | numpy.ndarray[typing.Any, numpy.dtype[numpy.int64]] | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>class to create a polar cap Slepian region on the sphere.</p></div>
+<div class="desc"><p>Class to create a polar cap Slepian region on the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
-    &#34;&#34;&#34;class to create a polar cap Slepian region on the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Class to create a polar cap Slepian region on the sphere.&#34;&#34;&#34;
 
     theta_max: float
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -704,7 +704,7 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc: str,
         order_loc: str,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;solves eigenproblem with files already saved.&#34;&#34;&#34;
+        &#34;&#34;&#34;Solves eigenproblem with files already saved.&#34;&#34;&#34;
         eigenvalues = np.load(
             sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
         )
@@ -725,7 +725,7 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc: str,
         order_loc: str,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;sovles eigenproblem from scratch and then saves the files.&#34;&#34;&#34;
+        &#34;&#34;&#34;Sovles eigenproblem from scratch and then saves the files.&#34;&#34;&#34;
         if isinstance(self.order, int):
             return self._solve_eigenproblem_order(self.order)
 
@@ -752,7 +752,7 @@ class SlepianPolarCap(SlepianFunctions):
         self,
         m: int,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;solves the eigenproblem for a given order &#39;m;&#34;&#34;&#34;
+        &#34;&#34;&#34;Solves the eigenproblem for a given order &#39;m;&#34;&#34;&#34;
         emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
@@ -765,7 +765,7 @@ class SlepianPolarCap(SlepianFunctions):
         eigenvectors: npt.NDArray[np.complex_],
         orders: npt.NDArray[np.int_],
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_], npt.NDArray[np.int_]]:
-        &#34;&#34;&#34;sorts all eigenvalues and eigenvectors for all orders.&#34;&#34;&#34;
+        &#34;&#34;&#34;Sorts all eigenvalues and eigenvectors for all orders.&#34;&#34;&#34;
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
         eigenvectors = eigenvectors[idx]
@@ -800,7 +800,7 @@ class SlepianPolarCap(SlepianFunctions):
         Dm_ext, shm_ext = sleplet._parallel_methods.create_shared_memory_array(Dm)
 
         def func(chunk: list[int]) -&gt; None:
-            &#34;&#34;&#34;calculate D matrix components for each chunk.&#34;&#34;&#34;
+            &#34;&#34;&#34;Calculate D matrix components for each chunk.&#34;&#34;&#34;
             Dm_int, shm_int = sleplet._parallel_methods.attach_to_shared_memory_block(
                 Dm,
                 shm_ext,
@@ -836,7 +836,7 @@ class SlepianPolarCap(SlepianFunctions):
         self,
         emm: npt.NDArray[np.float_],
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
-        &#34;&#34;&#34;create Legendre polynomials table for matrix calculation.&#34;&#34;&#34;
+        &#34;&#34;&#34;Create Legendre polynomials table for matrix calculation.&#34;&#34;&#34;
         Plm = ssht.create_ylm(self.theta_max, 0, 2 * self.L).real.reshape(-1)
         ind = emm == 0
         ell = np.arange(2 * self.L)[np.newaxis]
@@ -852,7 +852,7 @@ class SlepianPolarCap(SlepianFunctions):
         Pl: npt.NDArray[np.float_],
         ell: npt.NDArray[np.int_],
     ) -&gt; None:
-        &#34;&#34;&#34;used in both serial and parallel calculations.&#34;&#34;&#34;
+        &#34;&#34;&#34;Used in both serial and parallel calculations.&#34;&#34;&#34;
         el = int(lvec[i])
         for j in range(i, self.L - m):
             p = int(lvec[j])
@@ -963,7 +963,7 @@ class SlepianPolarCap(SlepianFunctions):
         return s
 
     def _polar_gap_modification(self, ell1: int, ell2: int) -&gt; int:
-        &#34;&#34;&#34;eq 67 - Spherical Slepian functions and the polar gap in geodesy
+        &#34;&#34;&#34;Eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell&#39;).
         &#34;&#34;&#34;
         return 1 + self.gap * (-1) ** (ell1 + ell2)
@@ -975,7 +975,7 @@ class SlepianPolarCap(SlepianFunctions):
         emm: npt.NDArray[np.float_],
         m: int,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
+        &#34;&#34;&#34;Need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]

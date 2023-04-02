@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.plot_methods API documentation</title>
-<meta name="description" content="methods to help in creating plots." />
+<meta name="description" content="Methods to help in creating plots." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,12 +22,12 @@
 <h1 class="title">Module <code>sleplet.plot_methods</code></h1>
 </header>
 <section id="section-intro">
-<p>methods to help in creating plots.</p>
+<p>Methods to help in creating plots.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;methods to help in creating plots.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Methods to help in creating plots.&#34;&#34;&#34;
 from pathlib import Path
 
 import numpy as np
@@ -74,7 +74,7 @@ def _convert_colourscale(
     *,
     pl_entries: int = 255,
 ) -&gt; list[tuple[float, str]]:
-    &#34;&#34;&#34;converts cmocean colourscale to a plotly colourscale.&#34;&#34;&#34;
+    &#34;&#34;&#34;Converts cmocean colourscale to a plotly colourscale.&#34;&#34;&#34;
     h = 1 / (pl_entries - 1)
     pl_colorscale = []
 
@@ -90,7 +90,7 @@ def _calc_nearest_grid_point(
     alpha_pi_fraction: float,
     beta_pi_fraction: float,
 ) -&gt; tuple[float, float]:
-    &#34;&#34;&#34;calculate nearest index of alpha/beta for translation
+    &#34;&#34;&#34;Calculate nearest index of alpha/beta for translation
     this is due to calculating omega&#39; through the pixel
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small.
@@ -175,7 +175,7 @@ def _create_plot_type(
     field: npt.NDArray[np.complex_ | np.float_],
     plot_type: str,
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;gets the given plot type of the field.&#34;&#34;&#34;
+    &#34;&#34;&#34;Gets the given plot type of the field.&#34;&#34;&#34;
     sleplet.logger.info(f&#34;plotting type: &#39;{plot_type}&#39;&#34;)
     plot_dict = {
         &#34;abs&#34;: np.abs(field),
@@ -191,7 +191,7 @@ def _set_outside_region_to_minimum(
     L: int,
     region: sleplet.slepian.region.Region,
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;for the Slepian region set the outisde area to negative infinity
+    &#34;&#34;&#34;For the Slepian region set the outisde area to negative infinity
     hence it is clear we are only interested in the coloured region.
     &#34;&#34;&#34;
     # create mask of interest
@@ -210,7 +210,7 @@ def _normalise_function(
     *,
     normalise: bool,
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;normalise function between 0 and 1 for visualisation.&#34;&#34;&#34;
+    &#34;&#34;&#34;Normalise function between 0 and 1 for visualisation.&#34;&#34;&#34;
     if not normalise:
         return f
     if (f == 0).all():
@@ -229,7 +229,7 @@ def _boost_field(
     spin: int,
     upsample: bool,
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;inverts and then boosts the field before plotting.&#34;&#34;&#34;
+    &#34;&#34;&#34;Inverts and then boosts the field before plotting.&#34;&#34;&#34;
     if not upsample:
         return field
     flm = ssht.forward(
@@ -272,7 +272,7 @@ def _coefficients_to_field_mesh(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;computes the field over the whole mesh from the harmonic/Slepian coefficients.&#34;&#34;&#34;
+    &#34;&#34;&#34;Computes the field over the whole mesh from the harmonic/Slepian coefficients.&#34;&#34;&#34;
     return (
         sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, coefficients)
         if hasattr(f, &#34;mesh_slepian&#34;)
@@ -304,7 +304,7 @@ def _coefficients_to_field_sphere(
     f: sleplet.functions.coefficients.Coefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
-    &#34;&#34;&#34;computes the field over the samples from the harmonic/Slepian coefficients.&#34;&#34;&#34;
+    &#34;&#34;&#34;Computes the field over the samples from the harmonic/Slepian coefficients.&#34;&#34;&#34;
     return (
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, &#34;slepian&#34;)

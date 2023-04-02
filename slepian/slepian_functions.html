@@ -39,7 +39,7 @@ import sleplet.slepian.region
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
-    &#34;&#34;&#34;abstract parent class of creating the different Slepian regions on the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Abstract parent class of creating the different Slepian regions on the sphere.&#34;&#34;&#34;
 
     L: int
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -58,34 +58,34 @@ class SlepianFunctions:
 
     @abstractmethod
     def _create_fn_name(self) -&gt; str:
-        &#34;&#34;&#34;creates the name for plotting.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates the name for plotting.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
-        &#34;&#34;&#34;creates a region object for area of interest.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates a region object for area of interest.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_mask(self) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;creates a mask of the region of interest.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates a mask of the region of interest.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _calculate_area(self) -&gt; float:
-        &#34;&#34;&#34;calculates area of region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calculates area of region.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_matrix_location(self) -&gt; str:
-        &#34;&#34;&#34;creates the name of the matrix binary.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates the name of the matrix binary.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;solves the eigenproblem for the given function.&#34;&#34;&#34;
+        &#34;&#34;&#34;Solves the eigenproblem for the given function.&#34;&#34;&#34;
         raise NotImplementedError</code></pre>
 </details>
 </section>
@@ -103,14 +103,14 @@ class SlepianFunctions:
 <span>(</span><span>L: int)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>abstract parent class of creating the different Slepian regions on the sphere.</p></div>
+<div class="desc"><p>Abstract parent class of creating the different Slepian regions on the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
-    &#34;&#34;&#34;abstract parent class of creating the different Slepian regions on the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Abstract parent class of creating the different Slepian regions on the sphere.&#34;&#34;&#34;
 
     L: int
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -129,34 +129,34 @@ class SlepianFunctions:
 
     @abstractmethod
     def _create_fn_name(self) -&gt; str:
-        &#34;&#34;&#34;creates the name for plotting.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates the name for plotting.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_region(self) -&gt; &#34;sleplet.slepian.region.Region&#34;:
-        &#34;&#34;&#34;creates a region object for area of interest.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates a region object for area of interest.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_mask(self) -&gt; npt.NDArray[np.float_]:
-        &#34;&#34;&#34;creates a mask of the region of interest.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates a mask of the region of interest.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _calculate_area(self) -&gt; float:
-        &#34;&#34;&#34;calculates area of region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calculates area of region.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _create_matrix_location(self) -&gt; str:
-        &#34;&#34;&#34;creates the name of the matrix binary.&#34;&#34;&#34;
+        &#34;&#34;&#34;Creates the name of the matrix binary.&#34;&#34;&#34;
         raise NotImplementedError
 
     @abstractmethod
     def _solve_eigenproblem(
         self,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        &#34;&#34;&#34;solves the eigenproblem for the given function.&#34;&#34;&#34;
+        &#34;&#34;&#34;Solves the eigenproblem for the given function.&#34;&#34;&#34;
         raise NotImplementedError</code></pre>
 </details>
 <h3>Subclasses</h3>

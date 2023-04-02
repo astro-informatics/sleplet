@@ -37,7 +37,7 @@ import sleplet._vars
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
-    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
 
     gap: bool = False
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -56,7 +56,7 @@ class Region:
         self._identify_region()
 
     def _identify_region(self) -&gt; None:
-        &#34;&#34;&#34;identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
+        &#34;&#34;&#34;Identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
         if sleplet._bool_methods.is_polar_cap(
             self.phi_min,
             self.phi_max,
@@ -152,14 +152,14 @@ class Region:
 <span>(</span><span>*, gap: bool = False, mask_name: str = '', phi_max: float = 6.283185307179586, phi_min: float = 0.0, theta_max: float = 3.141592653589793, theta_min: float = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>identifies and creates the appropriate Slepian region for the sphere.</p></div>
+<div class="desc"><p>Identifies and creates the appropriate Slepian region for the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
-    &#34;&#34;&#34;identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Identifies and creates the appropriate Slepian region for the sphere.&#34;&#34;&#34;
 
     gap: bool = False
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -178,7 +178,7 @@ class Region:
         self._identify_region()
 
     def _identify_region(self) -&gt; None:
-        &#34;&#34;&#34;identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
+        &#34;&#34;&#34;Identify region type based on the angle inputs or a mask name.&#34;&#34;&#34;
         if sleplet._bool_methods.is_polar_cap(
             self.phi_min,
             self.phi_max,

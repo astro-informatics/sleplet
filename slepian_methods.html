@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.slepian_methods API documentation</title>
-<meta name="description" content="methods to work with Slepian coefficients." />
+<meta name="description" content="Methods to work with Slepian coefficients." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,12 +22,12 @@
 <h1 class="title">Module <code>sleplet.slepian_methods</code></h1>
 </header>
 <section id="section-intro">
-<p>methods to work with Slepian coefficients.</p>
+<p>Methods to work with Slepian coefficients.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;methods to work with Slepian coefficients.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Methods to work with Slepian coefficients.&#34;&#34;&#34;
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -185,7 +185,7 @@ def _compute_s_p_omega_prime(
     beta: float,
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;method to pick out the desired angle from Sp(omega).&#34;&#34;&#34;
+    &#34;&#34;&#34;Method to pick out the desired angle from Sp(omega).&#34;&#34;&#34;
     sp_omega = compute_s_p_omega(L, slepian)
     p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
     q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
@@ -196,7 +196,7 @@ def _compute_s_p_omega_prime(
 
 
 def slepian_mesh_forward(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
     *,
     u: npt.NDArray[np.complex_ | np.float_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -228,7 +228,7 @@ def slepian_mesh_forward(
 
 
 def slepian_mesh_inverse(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
     &#34;&#34;&#34;TODO computes the Slepian inverse transform on the mesh up to the Shannon number.
@@ -248,9 +248,9 @@ def slepian_mesh_inverse(
 
 
 def _compute_mesh_s_p_pixel(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
 ) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;method to calculate Sp(omega) for a given region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Method to calculate Sp(omega) for a given region.&#34;&#34;&#34;
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
     for p in range(mesh_slepian.N):
         sp[p] = sleplet.harmonic_methods.mesh_inverse(
@@ -493,7 +493,7 @@ n_coeffs: _description_
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def slepian_mesh_forward(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
     *,
     u: npt.NDArray[np.complex_ | np.float_] | None = None,
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -541,7 +541,7 @@ f_p: _description_
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def slepian_mesh_inverse(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: &#34;sleplet.meshes.mesh_slepian.MeshSlepian&#34;,
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -&gt; npt.NDArray[np.complex_ | np.float_]:
     &#34;&#34;&#34;TODO computes the Slepian inverse transform on the mesh up to the Shannon number.

@@ -55,7 +55,7 @@ SAMPLES = 2
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
-    &#34;&#34;&#34;class to create an arbitrary Slepian region on the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Class to create an arbitrary Slepian region on the sphere.&#34;&#34;&#34;
 
     mask_name: str
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -116,7 +116,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
-        &#34;&#34;&#34;computes the D matrix in parallel.&#34;&#34;&#34;
+        &#34;&#34;&#34;Computes the D matrix in parallel.&#34;&#34;&#34;
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
 
@@ -128,7 +128,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i_ext, shm_i_ext = sleplet._parallel_methods.create_shared_memory_array(D_i)
 
         def func(chunk: list[int]) -&gt; None:
-            &#34;&#34;&#34;calculate D matrix components for each chunk.&#34;&#34;&#34;
+            &#34;&#34;&#34;Calculate D matrix components for each chunk.&#34;&#34;&#34;
             (
                 D_r_int,
                 shm_r_int,
@@ -169,7 +169,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i: npt.NDArray[np.float_],
         i: int,
     ) -&gt; None:
-        &#34;&#34;&#34;used in both serial and parallel calculations.
+        &#34;&#34;&#34;Used in both serial and parallel calculations.
 
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease
@@ -198,7 +198,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -&gt; complex:
-        &#34;&#34;&#34;calculates the D integral between two spherical harmonics.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calculates the D integral between two spherical harmonics.&#34;&#34;&#34;
         if i not in self._fields:
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),
@@ -233,14 +233,14 @@ class SlepianArbitrary(SlepianFunctions):
 <span>(</span><span>L: int, mask_name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>class to create an arbitrary Slepian region on the sphere.</p></div>
+<div class="desc"><p>Class to create an arbitrary Slepian region on the sphere.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
-    &#34;&#34;&#34;class to create an arbitrary Slepian region on the sphere.&#34;&#34;&#34;
+    &#34;&#34;&#34;Class to create an arbitrary Slepian region on the sphere.&#34;&#34;&#34;
 
     mask_name: str
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -301,7 +301,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.complex_]:  # noqa: N802
-        &#34;&#34;&#34;computes the D matrix in parallel.&#34;&#34;&#34;
+        &#34;&#34;&#34;Computes the D matrix in parallel.&#34;&#34;&#34;
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
 
@@ -313,7 +313,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i_ext, shm_i_ext = sleplet._parallel_methods.create_shared_memory_array(D_i)
 
         def func(chunk: list[int]) -&gt; None:
-            &#34;&#34;&#34;calculate D matrix components for each chunk.&#34;&#34;&#34;
+            &#34;&#34;&#34;Calculate D matrix components for each chunk.&#34;&#34;&#34;
             (
                 D_r_int,
                 shm_r_int,
@@ -354,7 +354,7 @@ class SlepianArbitrary(SlepianFunctions):
         D_i: npt.NDArray[np.float_],
         i: int,
     ) -&gt; None:
-        &#34;&#34;&#34;used in both serial and parallel calculations.
+        &#34;&#34;&#34;Used in both serial and parallel calculations.
 
         the hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease
@@ -383,7 +383,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -&gt; complex:
-        &#34;&#34;&#34;calculates the D integral between two spherical harmonics.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calculates the D integral between two spherical harmonics.&#34;&#34;&#34;
         if i not in self._fields:
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),

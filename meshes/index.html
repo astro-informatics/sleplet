@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.meshes API documentation</title>
-<meta name="description" content="classes to create and handle mesh (manifold) data." />
+<meta name="description" content="Classes to create and handle mesh (manifold) data." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,30 +22,46 @@
 <h1 class="title">Module <code>sleplet.meshes</code></h1>
 </header>
 <section id="section-intro">
-<p>classes to create and handle mesh (manifold) data.</p>
+<p>Classes to create and handle mesh (manifold) data.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;classes to create and handle mesh (manifold) data.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Classes to create and handle mesh (manifold) data.&#34;&#34;&#34;
 
 from .mesh import Mesh
+from .mesh_basis_functions import MeshBasisFunctions
+from .mesh_field import MeshField
+from .mesh_noise_field import MeshNoiseField
 from .mesh_slepian import MeshSlepian
+from .mesh_slepian_field import MeshSlepianField
+from .mesh_slepian_functions import MeshSlepianFunctions
+from .mesh_slepian_noise_field import MeshSlepianNoiseField
+from .mesh_slepian_wavelet_coefficients import MeshSlepianWaveletCoefficients
+from .mesh_slepian_wavelets import MeshSlepianWavelets
 
 __all__ = [
     &#34;Mesh&#34;,
+    &#34;MeshBasisFunctions&#34;,
+    &#34;MeshField&#34;,
+    &#34;MeshNoiseField&#34;,
     &#34;MeshSlepian&#34;,
+    &#34;MeshSlepianField&#34;,
+    &#34;MeshSlepianFunctions&#34;,
+    &#34;MeshSlepianNoiseField&#34;,
+    &#34;MeshSlepianWaveletCoefficients&#34;,
+    &#34;MeshSlepianWavelets&#34;,
 ]</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="sleplet.meshes.harmonic_coefficients" href="harmonic_coefficients/index.html">sleplet.meshes.harmonic_coefficients</a></code></dt>
-<dd>
-<div class="desc"><p>classes of functions on the mesh created in Fourier space.</p></div>
-</dd>
 <dt><code class="name"><a title="sleplet.meshes.mesh" href="mesh.html">sleplet.meshes.mesh</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.meshes.mesh_basis_functions" href="mesh_basis_functions.html">sleplet.meshes.mesh_basis_functions</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -53,7 +69,15 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
+<dt><code class="name"><a title="sleplet.meshes.mesh_field" href="mesh_field.html">sleplet.meshes.mesh_field</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt><code class="name"><a title="sleplet.meshes.mesh_harmonic_coefficients" href="mesh_harmonic_coefficients.html">sleplet.meshes.mesh_harmonic_coefficients</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.meshes.mesh_noise_field" href="mesh_noise_field.html">sleplet.meshes.mesh_noise_field</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -65,9 +89,25 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sleplet.meshes.slepian_coefficients" href="slepian_coefficients/index.html">sleplet.meshes.slepian_coefficients</a></code></dt>
+<dt><code class="name"><a title="sleplet.meshes.mesh_slepian_field" href="mesh_slepian_field.html">sleplet.meshes.mesh_slepian_field</a></code></dt>
 <dd>
-<div class="desc"><p>classes of functions on the sphere created in Fourier space.</p></div>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.meshes.mesh_slepian_functions" href="mesh_slepian_functions.html">sleplet.meshes.mesh_slepian_functions</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.meshes.mesh_slepian_noise_field" href="mesh_slepian_noise_field.html">sleplet.meshes.mesh_slepian_noise_field</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.meshes.mesh_slepian_wavelet_coefficients" href="mesh_slepian_wavelet_coefficients.html">sleplet.meshes.mesh_slepian_wavelet_coefficients</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.meshes.mesh_slepian_wavelets" href="mesh_slepian_wavelets.html">sleplet.meshes.mesh_slepian_wavelets</a></code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 </section>
@@ -83,14 +123,14 @@ __all__ = [
 <span>(</span><span>name: str, *, number_basis_functions: int | None = None, zoom: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>creates a mesh object.</p></div>
+<div class="desc"><p>Creates a mesh object.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class Mesh:
-    &#34;&#34;&#34;creates a mesh object.&#34;&#34;&#34;
+    &#34;&#34;&#34;Creates a mesh object.&#34;&#34;&#34;
 
     name: str
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -148,19 +188,224 @@ class Mesh:
 </dd>
 </dl>
 </dd>
+<dt id="sleplet.meshes.MeshBasisFunctions"><code class="flex name class">
+<span>class <span class="ident">MeshBasisFunctions</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshBasisFunctions(MeshHarmonicCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    rank: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        self._validate_rank()
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;Compute field on the vertices of the mesh.&#34;&#34;&#34;
+        sleplet.logger.info(
+            f&#34;Mesh eigenvalue {self.rank}: &#34;
+            f&#34;{self.mesh.mesh_eigenvalues[self.rank]:e}&#34;,
+        )
+        basis_function = self.mesh.basis_functions[self.rank]
+        return sleplet.harmonic_methods.mesh_forward(self.mesh, basis_function)
+
+    def _create_name(self) -&gt; str:
+        return (
+            (
+                f&#34;{self.mesh.name}_rank{self.rank}_&#34;
+                f&#34;lam{self.mesh.mesh_eigenvalues[self.rank]:e}&#34;
+            )
+            .replace(&#34;.&#34;, &#34;-&#34;)
+            .replace(&#34;+&#34;, &#34;&#34;)
+        )
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
+                )
+            self.rank = self.extra_args[0]
+
+    def _validate_rank(self) -&gt; None:
+        &#34;&#34;&#34;Checks the requested rank is valid.&#34;&#34;&#34;
+        if isinstance(self.extra_args, list):
+            limit = self.mesh.mesh_eigenvalues.shape[0]
+            if self.extra_args[0] &gt; limit:
+                raise ValueError(f&#34;rank should be less than or equal to {limit}&#34;)
+
+    @validator(&#34;rank&#34;)
+    def _check_rank(cls, v):
+        if not isinstance(v, int):
+            raise TypeError(&#34;rank should be an integer&#34;)
+        if v &lt; 0:
+            raise ValueError(&#34;rank cannot be negative&#34;)
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshBasisFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.meshes.MeshField"><code class="flex name class">
+<span>class <span class="ident">MeshField</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class MeshField(MeshHarmonicCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;Compute field on the vertices of the mesh.&#34;&#34;&#34;
+        field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
+        return sleplet.harmonic_methods.mesh_forward(self.mesh, field)
+
+    def _create_name(self) -&gt; str:
+        return f&#34;{self.mesh.name}_field&#34;
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.meshes.MeshNoiseField"><code class="flex name class">
+<span>class <span class="ident">MeshNoiseField</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = 10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshNoiseField(MeshHarmonicCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    SNR: float = 10
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        mf = sleplet.meshes.mesh_slepian.MeshField(self.mesh)
+        noise = sleplet.noise._create_mesh_noise(mf.coefficients, self.SNR)
+        sleplet.noise.compute_snr(mf.coefficients, noise, &#34;Harmonic&#34;)
+        return noise
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{self.mesh.name}_noise_field&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.SNR = self.extra_args[0]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshNoiseField.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="sleplet.meshes.MeshSlepian"><code class="flex name class">
 <span>class <span class="ident">MeshSlepian</span></span>
 <span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>creates Slepian object of a given mesh.</p></div>
+<div class="desc"><p>Creates Slepian object of a given mesh.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass(config=sleplet._validation.Validation)
 class MeshSlepian:
-    &#34;&#34;&#34;creates Slepian object of a given mesh.&#34;&#34;&#34;
+    &#34;&#34;&#34;Creates Slepian object of a given mesh.&#34;&#34;&#34;
 
     mesh: Mesh
     &#34;&#34;&#34;TODO&#34;&#34;&#34;
@@ -170,7 +415,7 @@ class MeshSlepian:
         self._compute_slepian_functions()
 
     def _compute_slepian_functions(self) -&gt; None:
-        &#34;&#34;&#34;computes the Slepian functions of the mesh.&#34;&#34;&#34;
+        &#34;&#34;&#34;Computes the Slepian functions of the mesh.&#34;&#34;&#34;
         sleplet.logger.info(&#34;computing slepian functions of mesh&#34;)
 
         # create filenames
@@ -211,7 +456,7 @@ class MeshSlepian:
         np.save(_data_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -&gt; npt.NDArray[np.float_]:  # noqa: N802
-        &#34;&#34;&#34;computes the D matrix for the mesh eigenfunctions.&#34;&#34;&#34;
+        &#34;&#34;&#34;Computes the D matrix for the mesh eigenfunctions.&#34;&#34;&#34;
         D = np.zeros(
             (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0]),
         )
@@ -219,7 +464,7 @@ class MeshSlepian:
         D_ext, shm_ext = sleplet._parallel_methods.create_shared_memory_array(D)
 
         def func(chunk: list[int]) -&gt; None:
-            &#34;&#34;&#34;calculate D matrix components for each chunk.&#34;&#34;&#34;
+            &#34;&#34;&#34;Calculate D matrix components for each chunk.&#34;&#34;&#34;
             D_int, shm_int = sleplet._parallel_methods.attach_to_shared_memory_block(
                 D,
                 shm_ext,
@@ -251,13 +496,13 @@ class MeshSlepian:
         return D
 
     def _fill_D_elements(self, D: npt.NDArray[np.float_], i: int) -&gt; None:  # noqa: N802
-        &#34;&#34;&#34;fill in the D matrix elements using symmetries.&#34;&#34;&#34;
+        &#34;&#34;&#34;Fill in the D matrix elements using symmetries.&#34;&#34;&#34;
         D[i][i] = self._integral(i, i)
         for j in range(i + 1, self.mesh.mesh_eigenvalues.shape[0]):
             D[j][i] = self._integral(j, i)
 
     def _integral(self, i: int, j: int) -&gt; float:
-        &#34;&#34;&#34;calculates the D integral between two mesh basis functions.&#34;&#34;&#34;
+        &#34;&#34;&#34;Calculates the D integral between two mesh basis functions.&#34;&#34;&#34;
         return sleplet._integration_methods.integrate_region_mesh(
             self.mesh.region,
             self.mesh.vertices,
@@ -270,7 +515,7 @@ class MeshSlepian:
     def _clean_evals_and_evecs(
         eigendecomposition: tuple,
     ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
-        &#34;&#34;&#34;need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
+        &#34;&#34;&#34;Need eigenvalues and eigenvectors to be in a certain format.&#34;&#34;&#34;
         # access values
         eigenvalues, eigenvectors = eigendecomposition
 
@@ -288,6 +533,440 @@ class MeshSlepian:
 </dd>
 </dl>
 </dd>
+<dt id="sleplet.meshes.MeshSlepianField"><code class="flex name class">
+<span>class <span class="ident">MeshSlepianField</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class MeshSlepianField(MeshSlepianCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;Compute field on the vertices of the mesh.&#34;&#34;&#34;
+        mf = sleplet.meshes.mesh_field.MeshField(
+            self.mesh,
+            region=True,
+        )
+        return sleplet.slepian_methods.slepian_mesh_forward(
+            self.mesh_slepian,
+            u_i=mf.coefficients,
+        )
+
+    def _create_name(self) -&gt; str:
+        return f&#34;slepian_{self.mesh.name}_field&#34;
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianFunctions"><code class="flex name class">
+<span>class <span class="ident">MeshSlepianFunctions</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, rank: int = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianFunctions(MeshSlepianCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    rank: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        &#34;&#34;&#34;Compute field on the vertices of the mesh.&#34;&#34;&#34;
+        sleplet.logger.info(
+            f&#34;Slepian eigenvalue {self.rank}: &#34;
+            f&#34;{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;,
+        )
+        s_p_i = self.mesh_slepian.slepian_functions[self.rank]
+        return sleplet.slepian_methods.slepian_mesh_forward(
+            self.mesh_slepian,
+            u_i=s_p_i,
+        )
+
+    def _create_name(self) -&gt; str:
+        return (
+            (
+                f&#34;slepian_{self.mesh.name}_rank{self.rank}_&#34;
+                f&#34;lam{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}&#34;
+            )
+            .replace(&#34;.&#34;, &#34;-&#34;)
+            .replace(&#34;+&#34;, &#34;&#34;)
+        )
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
+                )
+            self.rank = self.extra_args[0]
+
+    def _validate_rank(self) -&gt; None:
+        &#34;&#34;&#34;Checks the requested rank is valid.&#34;&#34;&#34;
+        if isinstance(self.extra_args, list):
+            limit = self.mesh.mesh_eigenvalues.shape[0]
+            if self.extra_args[0] &gt; limit:
+                raise ValueError(f&#34;rank should be less than or equal to {limit}&#34;)
+
+    @validator(&#34;rank&#34;)
+    def _check_rank(cls, v):
+        if not isinstance(v, int):
+            raise TypeError(&#34;rank should be an integer&#34;)
+        if v &lt; 0:
+            raise ValueError(&#34;rank cannot be negative&#34;)
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshSlepianFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianNoiseField"><code class="flex name class">
+<span>class <span class="ident">MeshSlepianNoiseField</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, SNR: float = -5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianNoiseField(MeshSlepianCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    SNR: float = -5
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        smf = sleplet.meshes.mesh_slepian_field.MeshSlepianField(
+            self.mesh,
+            region=True,
+        )
+        noise = sleplet.noise._create_slepian_mesh_noise(
+            self.mesh_slepian,
+            smf.coefficients,
+            self.SNR,
+        )
+        sleplet.noise.compute_snr(smf.coefficients, noise, &#34;Slepian&#34;)
+        return noise
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;slepian_{self.mesh.name}_noise_field&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.SNR = self.extra_args[0]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshSlepianNoiseField.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients"><code class="flex name class">
+<span>class <span class="ident">MeshSlepianWaveletCoefficients</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelet coefficients&#34;)
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
+        sleplet.logger.info(&#34;finish computing wavelet coefficients&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelet_coefficients[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;slepian_wavelet_coefficients_{self.mesh.name}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelet_coefficients(
+        self,
+    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
+        &#34;&#34;&#34;Computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
+        smw = sleplet.meshes.mesh_slepian_wavelets.MeshSlepianWavelets(
+            self.mesh,
+            B=self.B,
+            j_min=self.j_min,
+        )
+        smf = sleplet.meshes.mesh_slepian_field.MeshSlepianField(
+            self.mesh,
+        )
+        wavelets = smw.wavelets
+        wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
+            smf.coefficients,
+            wavelets,
+            self.mesh_slepian.N,
+        )
+        return wavelets, wavelet_coefficients
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(
+            values[&#34;B&#34;],
+            values[&#34;mesh&#34;].mesh_eigenvalues.shape[0],
+            values[&#34;j_min&#34;],
+        )
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWavelets"><code class="flex name class">
+<span>class <span class="ident">MeshSlepianWavelets</span></span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, *, extra_args: list[int] | None = None, noise: float | None = None, region: bool = False, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class MeshSlepianWavelets(MeshSlepianCoefficients):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelets&#34;)
+        self.wavelets = self._create_wavelets()
+        sleplet.logger.info(&#34;finish computing wavelets&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelets[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;slepian_wavelets_{self.mesh.name}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelets(self) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;Creates the Slepian wavelets of the mesh.&#34;&#34;&#34;
+        return sleplet.wavelet_methods.create_kappas(
+            self.mesh.mesh_eigenvalues.shape[0],
+            self.B,
+            self.j_min,
+        )
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values) -&gt; int | None:
+        j_max = pys2let_j_max(
+            values[&#34;B&#34;],
+            values[&#34;mesh&#34;].mesh_eigenvalues.shape[0],
+            values[&#34;j_min&#34;],
+        )
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></li>
+<li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshSlepianWavelets.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWavelets.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWavelets.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.extra_args" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.mesh" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.mesh">mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.noise" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients.region" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients.region">region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 </dl>
 </section>
 </article>
@@ -304,13 +983,19 @@ class MeshSlepian:
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="sleplet.meshes.harmonic_coefficients" href="harmonic_coefficients/index.html">sleplet.meshes.harmonic_coefficients</a></code></li>
 <li><code><a title="sleplet.meshes.mesh" href="mesh.html">sleplet.meshes.mesh</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_basis_functions" href="mesh_basis_functions.html">sleplet.meshes.mesh_basis_functions</a></code></li>
 <li><code><a title="sleplet.meshes.mesh_coefficients" href="mesh_coefficients.html">sleplet.meshes.mesh_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_field" href="mesh_field.html">sleplet.meshes.mesh_field</a></code></li>
 <li><code><a title="sleplet.meshes.mesh_harmonic_coefficients" href="mesh_harmonic_coefficients.html">sleplet.meshes.mesh_harmonic_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_noise_field" href="mesh_noise_field.html">sleplet.meshes.mesh_noise_field</a></code></li>
 <li><code><a title="sleplet.meshes.mesh_slepian" href="mesh_slepian.html">sleplet.meshes.mesh_slepian</a></code></li>
 <li><code><a title="sleplet.meshes.mesh_slepian_coefficients" href="mesh_slepian_coefficients.html">sleplet.meshes.mesh_slepian_coefficients</a></code></li>
-<li><code><a title="sleplet.meshes.slepian_coefficients" href="slepian_coefficients/index.html">sleplet.meshes.slepian_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_field" href="mesh_slepian_field.html">sleplet.meshes.mesh_slepian_field</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_functions" href="mesh_slepian_functions.html">sleplet.meshes.mesh_slepian_functions</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_noise_field" href="mesh_slepian_noise_field.html">sleplet.meshes.mesh_slepian_noise_field</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_wavelet_coefficients" href="mesh_slepian_wavelet_coefficients.html">sleplet.meshes.mesh_slepian_wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.mesh_slepian_wavelets" href="mesh_slepian_wavelets.html">sleplet.meshes.mesh_slepian_wavelets</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
@@ -324,9 +1009,55 @@ class MeshSlepian:
 </ul>
 </li>
 <li>
+<h4><code><a title="sleplet.meshes.MeshBasisFunctions" href="#sleplet.meshes.MeshBasisFunctions">MeshBasisFunctions</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshBasisFunctions.rank" href="#sleplet.meshes.MeshBasisFunctions.rank">rank</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.meshes.MeshField" href="#sleplet.meshes.MeshField">MeshField</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.meshes.MeshNoiseField" href="#sleplet.meshes.MeshNoiseField">MeshNoiseField</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshNoiseField.SNR" href="#sleplet.meshes.MeshNoiseField.SNR">SNR</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="sleplet.meshes.MeshSlepian" href="#sleplet.meshes.MeshSlepian">MeshSlepian</a></code></h4>
 <ul class="">
 <li><code><a title="sleplet.meshes.MeshSlepian.mesh" href="#sleplet.meshes.MeshSlepian.mesh">mesh</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.meshes.MeshSlepianField" href="#sleplet.meshes.MeshSlepianField">MeshSlepianField</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.meshes.MeshSlepianFunctions" href="#sleplet.meshes.MeshSlepianFunctions">MeshSlepianFunctions</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshSlepianFunctions.rank" href="#sleplet.meshes.MeshSlepianFunctions.rank">rank</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.meshes.MeshSlepianNoiseField" href="#sleplet.meshes.MeshSlepianNoiseField">MeshSlepianNoiseField</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshSlepianNoiseField.SNR" href="#sleplet.meshes.MeshSlepianNoiseField.SNR">SNR</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients" href="#sleplet.meshes.MeshSlepianWaveletCoefficients">MeshSlepianWaveletCoefficients</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.B" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.B">B</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.j" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.j">j</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.j_min" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.meshes.MeshSlepianWavelets" href="#sleplet.meshes.MeshSlepianWavelets">MeshSlepianWavelets</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshSlepianWavelets.B" href="#sleplet.meshes.MeshSlepianWavelets.B">B</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWavelets.j" href="#sleplet.meshes.MeshSlepianWavelets.j">j</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWavelets.j_min" href="#sleplet.meshes.MeshSlepianWavelets.j_min">j_min</a></code></li>
 </ul>
 </li>
 </ul>

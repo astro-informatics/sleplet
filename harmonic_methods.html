@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.harmonic_methods API documentation</title>
-<meta name="description" content="methods to perform operations in Fourier space of the sphere or mesh." />
+<meta name="description" content="Methods to perform operations in Fourier space of the sphere or mesh." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,12 +22,12 @@
 <h1 class="title">Module <code>sleplet.harmonic_methods</code></h1>
 </header>
 <section id="section-intro">
-<p>methods to perform operations in Fourier space of the sphere or mesh.</p>
+<p>Methods to perform operations in Fourier space of the sphere or mesh.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;methods to perform operations in Fourier space of the sphere or mesh.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Methods to perform operations in Fourier space of the sphere or mesh.&#34;&#34;&#34;
 from collections.abc import Callable
 from typing import Any
 
@@ -70,7 +70,7 @@ def _boost_coefficient_resolution(
     flm: npt.NDArray[Any],
     boost: int,
 ) -&gt; npt.NDArray[Any]:
-    &#34;&#34;&#34;calculates a boost in resolution for given flm.&#34;&#34;&#34;
+    &#34;&#34;&#34;Calculates a boost in resolution for given flm.&#34;&#34;&#34;
     return np.pad(flm, (0, boost), &#34;constant&#34;)
 
 
@@ -117,7 +117,7 @@ def _ensure_f_bandlimited(
     reality: bool,
     spin: int,
 ) -&gt; npt.NDArray[np.complex_]:
-    &#34;&#34;&#34;if the function created is created in pixel space rather than harmonic
+    &#34;&#34;&#34;If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     &#34;&#34;&#34;
     thetas, phis = ssht.sample_positions(
@@ -136,7 +136,7 @@ def _ensure_f_bandlimited(
 
 
 def _create_emm_vector(L: int) -&gt; npt.NDArray[np.float_]:
-    &#34;&#34;&#34;create vector of m values for a given L.&#34;&#34;&#34;
+    &#34;&#34;&#34;Create vector of m values for a given L.&#34;&#34;&#34;
     emm = np.zeros(2 * L * 2 * L)
     k = 0
 

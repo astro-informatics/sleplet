@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet.functions API documentation</title>
-<meta name="description" content="set of classes to create functions on the sphere." />
+<meta name="description" content="Set of classes to create functions on the sphere." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,36 +22,208 @@
 <h1 class="title">Module <code>sleplet.functions</code></h1>
 </header>
 <section id="section-intro">
-<p>set of classes to create functions on the sphere.</p>
+<p>Set of classes to create functions on the sphere.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;set of classes to create functions on the sphere.&#34;&#34;&#34;</code></pre>
+<pre><code class="python">&#34;&#34;&#34;Set of classes to create functions on the sphere.&#34;&#34;&#34;
+
+from .africa import Africa
+from .axisymmetric_wavelet_coefficients_africa import (
+    AxisymmetricWaveletCoefficientsAfrica,
+)
+from .axisymmetric_wavelet_coefficients_earth import (
+    AxisymmetricWaveletCoefficientsEarth,
+)
+from .axisymmetric_wavelet_coefficients_south_america import (
+    AxisymmetricWaveletCoefficientsSouthAmerica,
+)
+from .axisymmetric_wavelets import AxisymmetricWavelets
+from .dirac_delta import DiracDelta
+from .directional_spin_wavelets import DirectionalSpinWavelets
+from .earth import Earth
+from .elongated_gaussian import ElongatedGaussian
+from .gaussian import Gaussian
+from .harmonic_gaussian import HarmonicGaussian
+from .identity import Identity
+from .noise_earth import NoiseEarth
+from .ridgelets import Ridgelets
+from .slepian import Slepian
+from .slepian_africa import SlepianAfrica
+from .slepian_dirac_delta import SlepianDiracDelta
+from .slepian_identity import SlepianIdentity
+from .slepian_noise_africa import SlepianNoiseAfrica
+from .slepian_noise_south_america import SlepianNoiseSouthAmerica
+from .slepian_south_america import SlepianSouthAmerica
+from .slepian_wavelet_coefficients_africa import SlepianWaveletCoefficientsAfrica
+from .slepian_wavelet_coefficients_south_america import (
+    SlepianWaveletCoefficientsSouthAmerica,
+)
+from .slepian_wavelets import SlepianWavelets
+from .south_america import SouthAmerica
+from .spherical_harmonic import SphericalHarmonic
+from .squashed_gaussian import SquashedGaussian
+from .wmap import Wmap
+
+__all__ = [
+    &#34;Africa&#34;,
+    &#34;AxisymmetricWaveletCoefficientsAfrica&#34;,
+    &#34;AxisymmetricWaveletCoefficientsEarth&#34;,
+    &#34;AxisymmetricWaveletCoefficientsSouthAmerica&#34;,
+    &#34;AxisymmetricWavelets&#34;,
+    &#34;DiracDelta&#34;,
+    &#34;DirectionalSpinWavelets&#34;,
+    &#34;Earth&#34;,
+    &#34;ElongatedGaussian&#34;,
+    &#34;Gaussian&#34;,
+    &#34;HarmonicGaussian&#34;,
+    &#34;Identity&#34;,
+    &#34;NoiseEarth&#34;,
+    &#34;Ridgelets&#34;,
+    &#34;Slepian&#34;,
+    &#34;SlepianAfrica&#34;,
+    &#34;SlepianDiracDelta&#34;,
+    &#34;SlepianIdentity&#34;,
+    &#34;SlepianNoiseAfrica&#34;,
+    &#34;SlepianNoiseSouthAmerica&#34;,
+    &#34;SlepianSouthAmerica&#34;,
+    &#34;SlepianWaveletCoefficientsAfrica&#34;,
+    &#34;SlepianWaveletCoefficientsSouthAmerica&#34;,
+    &#34;SlepianWavelets&#34;,
+    &#34;SouthAmerica&#34;,
+    &#34;SphericalHarmonic&#34;,
+    &#34;SquashedGaussian&#34;,
+    &#34;Wmap&#34;,
+]</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
+<dt><code class="name"><a title="sleplet.functions.africa" href="africa.html">sleplet.functions.africa</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.axisymmetric_wavelet_coefficients_africa" href="axisymmetric_wavelet_coefficients_africa.html">sleplet.functions.axisymmetric_wavelet_coefficients_africa</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.axisymmetric_wavelet_coefficients_earth" href="axisymmetric_wavelet_coefficients_earth.html">sleplet.functions.axisymmetric_wavelet_coefficients_earth</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.axisymmetric_wavelet_coefficients_south_america" href="axisymmetric_wavelet_coefficients_south_america.html">sleplet.functions.axisymmetric_wavelet_coefficients_south_america</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.axisymmetric_wavelets" href="axisymmetric_wavelets.html">sleplet.functions.axisymmetric_wavelets</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt><code class="name"><a title="sleplet.functions.coefficients" href="coefficients.html">sleplet.functions.coefficients</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sleplet.functions.f_lm" href="f_lm.html">sleplet.functions.f_lm</a></code></dt>
+<dt><code class="name"><a title="sleplet.functions.dirac_delta" href="dirac_delta.html">sleplet.functions.dirac_delta</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sleplet.functions.f_p" href="f_p.html">sleplet.functions.f_p</a></code></dt>
+<dt><code class="name"><a title="sleplet.functions.directional_spin_wavelets" href="directional_spin_wavelets.html">sleplet.functions.directional_spin_wavelets</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sleplet.functions.flm" href="flm/index.html">sleplet.functions.flm</a></code></dt>
+<dt><code class="name"><a title="sleplet.functions.earth" href="earth.html">sleplet.functions.earth</a></code></dt>
 <dd>
-<div class="desc"><p>classes of functions on the sphere created in harmonic space.</p></div>
+<div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="sleplet.functions.fp" href="fp/index.html">sleplet.functions.fp</a></code></dt>
+<dt><code class="name"><a title="sleplet.functions.elongated_gaussian" href="elongated_gaussian.html">sleplet.functions.elongated_gaussian</a></code></dt>
 <dd>
-<div class="desc"><p>classes of functions on the sphere created in Slepian space.</p></div>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.flm" href="flm.html">sleplet.functions.flm</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.fp" href="fp.html">sleplet.functions.fp</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.gaussian" href="gaussian.html">sleplet.functions.gaussian</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.harmonic_gaussian" href="harmonic_gaussian.html">sleplet.functions.harmonic_gaussian</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.identity" href="identity.html">sleplet.functions.identity</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.noise_earth" href="noise_earth.html">sleplet.functions.noise_earth</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.ridgelets" href="ridgelets.html">sleplet.functions.ridgelets</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian" href="slepian.html">sleplet.functions.slepian</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_africa" href="slepian_africa.html">sleplet.functions.slepian_africa</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_dirac_delta" href="slepian_dirac_delta.html">sleplet.functions.slepian_dirac_delta</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_identity" href="slepian_identity.html">sleplet.functions.slepian_identity</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_noise_africa" href="slepian_noise_africa.html">sleplet.functions.slepian_noise_africa</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_noise_south_america" href="slepian_noise_south_america.html">sleplet.functions.slepian_noise_south_america</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_south_america" href="slepian_south_america.html">sleplet.functions.slepian_south_america</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_wavelet_coefficients_africa" href="slepian_wavelet_coefficients_africa.html">sleplet.functions.slepian_wavelet_coefficients_africa</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_wavelet_coefficients_south_america" href="slepian_wavelet_coefficients_south_america.html">sleplet.functions.slepian_wavelet_coefficients_south_america</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.slepian_wavelets" href="slepian_wavelets.html">sleplet.functions.slepian_wavelets</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.south_america" href="south_america.html">sleplet.functions.south_america</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.spherical_harmonic" href="spherical_harmonic.html">sleplet.functions.spherical_harmonic</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.squashed_gaussian" href="squashed_gaussian.html">sleplet.functions.squashed_gaussian</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="sleplet.functions.wmap" href="wmap.html">sleplet.functions.wmap</a></code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 </section>
@@ -60,6 +232,2595 @@
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sleplet.functions.Africa"><code class="flex name class">
+<span>class <span class="ident">Africa</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class Africa(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return sleplet.harmonic_methods._ensure_f_bandlimited(
+            self._grid_fun,
+            self.L,
+            reality=self.reality,
+            spin=self.spin,
+        )
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )
+
+    def _grid_fun(
+        self,
+        theta: npt.NDArray[np.float_],  # noqa: ARG002
+        phi: npt.NDArray[np.float_],  # noqa: ARG002
+    ) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;Function on the grid.&#34;&#34;&#34;
+        earth_flm = sleplet._data.create_earth_flm.create_flm(
+            self.L,
+            smoothing=self.smoothing,
+        )
+        rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, self.L)
+        earth_f = ssht.inverse(
+            rot_flm,
+            self.L,
+            Reality=self.reality,
+            Method=sleplet._vars.SAMPLING_SCHEME,
+        )
+        mask_name = f&#34;{self.name}_L{self.L}.npy&#34;
+        mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(
+            f&#34;slepian_masks_{mask_name}&#34;,
+        )
+        mask = (
+            sleplet._mask_methods.create_mask(self.L, mask_name)
+            if mask_location is None
+            else np.load(mask_location)
+        )
+        return np.where(mask, earth_f, 0)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica"><code class="flex name class">
+<span>class <span class="ident">AxisymmetricWaveletCoefficientsAfrica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class AxisymmetricWaveletCoefficientsAfrica(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelet coefficients&#34;)
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
+        sleplet.logger.info(&#34;finish computing wavelet coefficients&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelet_coefficients[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelet_coefficients(
+        self,
+    ) -&gt; tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
+        &#34;&#34;&#34;Computes wavelet coefficients of Africa.&#34;&#34;&#34;
+        wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
+            self.L,
+            self.B,
+            self.j_min,
+        )
+        self.africa = sleplet.functions.africa.Africa(
+            self.L,
+            smoothing=self.smoothing,
+        )
+        wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
+            self.L,
+            self.africa.coefficients,
+            wavelets,
+        )
+        return wavelets, wavelet_coefficients
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;], values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsEarth"><code class="flex name class">
+<span>class <span class="ident">AxisymmetricWaveletCoefficientsEarth</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class AxisymmetricWaveletCoefficientsEarth(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelet coefficients&#34;)
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
+        sleplet.logger.info(&#34;finish computing wavelet coefficients&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelet_coefficients[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelet_coefficients(
+        self,
+    ) -&gt; tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
+        &#34;&#34;&#34;Computes wavelet coefficients of the Earth.&#34;&#34;&#34;
+        wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
+            self.L,
+            self.B,
+            self.j_min,
+        )
+        self.earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
+        wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
+            self.L,
+            self.earth.coefficients,
+            wavelets,
+        )
+        return wavelets, wavelet_coefficients
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;], values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsEarth.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsEarth.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsEarth.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica"><code class="flex name class">
+<span>class <span class="ident">AxisymmetricWaveletCoefficientsSouthAmerica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelet coefficients&#34;)
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
+        sleplet.logger.info(&#34;finish computing wavelet coefficients&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelet_coefficients[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelet_coefficients(
+        self,
+    ) -&gt; tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
+        &#34;&#34;&#34;Computes wavelet coefficients of South America.&#34;&#34;&#34;
+        wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
+            self.L,
+            self.B,
+            self.j_min,
+        )
+        self.south_america = sleplet.functions.south_america.SouthAmerica(
+            self.L,
+            smoothing=self.smoothing,
+        )
+        wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
+            self.L,
+            self.south_america.coefficients,
+            wavelets,
+        )
+        return wavelets, wavelet_coefficients
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;], values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWavelets"><code class="flex name class">
+<span>class <span class="ident">AxisymmetricWavelets</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class AxisymmetricWavelets(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelets&#34;)
+        self.wavelets = self._create_wavelets()
+        sleplet.logger.info(&#34;finish computing wavelets&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelets[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelets(self) -&gt; npt.NDArray[np.complex_]:
+        &#34;&#34;&#34;Compute all wavelets.&#34;&#34;&#34;
+        return sleplet.wavelet_methods._create_axisymmetric_wavelets(
+            self.L,
+            self.B,
+            self.j_min,
+        )
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;], values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.AxisymmetricWavelets.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWavelets.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.AxisymmetricWavelets.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.DiracDelta"><code class="flex name class">
+<span>class <span class="ident">DiracDelta</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class DiracDelta(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        flm = np.zeros(self.L**2, dtype=np.complex_)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
+        return flm
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.DirectionalSpinWavelets"><code class="flex name class">
+<span>class <span class="ident">DirectionalSpinWavelets</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None, N: int = 2, spin: int = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class DirectionalSpinWavelets(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    N: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    spin: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelets&#34;)
+        self.wavelets = self._create_wavelets()
+        sleplet.logger.info(&#34;finish computing wavelets&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelets[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.spin, &#39;spin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.N, &#39;N&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return self.j is None or self.spin == 0
+
+    def _set_spin(self) -&gt; int:
+        return self.spin
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 5
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.spin, self.N, self.j = self.extra_args
+
+    def _create_wavelets(self) -&gt; npt.NDArray[np.complex_]:
+        &#34;&#34;&#34;Compute all wavelets.&#34;&#34;&#34;
+        phi_l, psi_lm = wavelet_tiling(self.B, self.L, self.N, self.j_min, self.spin)
+        wavelets = np.zeros((psi_lm.shape[1] + 1, self.L**2), dtype=np.complex_)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            wavelets[0, ind] = phi_l[ell]
+        wavelets[1:] = psi_lm.T
+        return wavelets
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;], values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.DirectionalSpinWavelets.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.DirectionalSpinWavelets.N"><code class="name">var <span class="ident">N</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.DirectionalSpinWavelets.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.DirectionalSpinWavelets.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.DirectionalSpinWavelets.spin"><code class="name">var <span class="ident">spin</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.Earth"><code class="flex name class">
+<span>class <span class="ident">Earth</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class Earth(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return sleplet._data.create_earth_flm.create_flm(
+            self.L,
+            smoothing=self.smoothing,
+        )
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.ElongatedGaussian"><code class="flex name class">
+<span>class <span class="ident">ElongatedGaussian</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, p_sigma: float = 0.1, t_sigma: float = 1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class ElongatedGaussian(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    p_sigma: float = 0.1
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    t_sigma: float = 1
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return sleplet.harmonic_methods._ensure_f_bandlimited(
+            self._grid_fun,
+            self.L,
+            reality=self.reality,
+            spin=self.spin,
+        )
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.t_sigma, &#39;tsig&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.p_sigma, &#39;psig&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 2
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.t_sigma, self.p_sigma = (
+                np.float_power(10, x) for x in self.extra_args
+            )
+
+    def _grid_fun(
+        self,
+        theta: npt.NDArray[np.float_],
+        phi: npt.NDArray[np.float_],
+    ) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;Function on the grid.&#34;&#34;&#34;
+        return np.exp(
+            -(
+                ((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2
+                + ((phi - sleplet._vars.PHI_0) / self.p_sigma) ** 2
+            )
+            / 2,
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.ElongatedGaussian.p_sigma"><code class="name">var <span class="ident">p_sigma</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.ElongatedGaussian.t_sigma"><code class="name">var <span class="ident">t_sigma</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.Gaussian"><code class="flex name class">
+<span>class <span class="ident">Gaussian</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, sigma: float = 10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class Gaussian(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    sigma: float = 10
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        flm = np.zeros(self.L**2, dtype=np.complex_)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma**2))
+        return flm
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.sigma, &#39;sig&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.sigma = np.float_power(10, self.extra_args[0])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.Gaussian.sigma"><code class="name">var <span class="ident">sigma</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.HarmonicGaussian"><code class="flex name class">
+<span>class <span class="ident">HarmonicGaussian</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, l_sigma: float = 10, m_sigma: float = 10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class HarmonicGaussian(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    l_sigma: float = 10
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    m_sigma: float = 10
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        flm = np.zeros(self.L**2, dtype=np.complex_)
+        for ell in range(self.L):
+            upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
+            for m in range(-ell, ell + 1):
+                ind = ssht.elm2ind(ell, m)
+                flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
+        return flm
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.l_sigma, &#39;lsig&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.m_sigma, &#39;msig&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 2
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.l_sigma, self.m_sigma = (
+                np.float_power(10, x) for x in self.extra_args
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.HarmonicGaussian.l_sigma"><code class="name">var <span class="ident">l_sigma</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.HarmonicGaussian.m_sigma"><code class="name">var <span class="ident">m_sigma</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.Identity"><code class="flex name class">
+<span>class <span class="ident">Identity</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class Identity(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return np.ones(self.L**2, dtype=np.complex_)
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.NoiseEarth"><code class="flex name class">
+<span>class <span class="ident">NoiseEarth</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = 10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class NoiseEarth(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    SNR: float = 10
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
+        noise = sleplet.noise._create_noise(self.L, earth.coefficients, self.SNR)
+        sleplet.noise.compute_snr(earth.coefficients, noise, &#34;Harmonic&#34;)
+        return noise
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.SNR = self.extra_args[0]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.NoiseEarth.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.Ridgelets"><code class="flex name class">
+<span>class <span class="ident">Ridgelets</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None, spin: int = 2)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class Ridgelets(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    spin: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelets&#34;)
+        self.wavelets = self._create_wavelets()
+        sleplet.logger.info(&#34;finish computing wavelets&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelets[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.spin, &#39;spin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return self.spin
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 4
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.spin, self.j = self.extra_args
+
+    def _create_wavelets(self) -&gt; npt.NDArray[np.complex_]:
+        &#34;&#34;&#34;Compute all wavelets.&#34;&#34;&#34;
+        ring_lm = self._compute_ring()
+        kappas = sleplet.wavelet_methods.create_kappas(self.L, self.B, self.j_min)
+        wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
+        for ell in range(self.L):
+            ind = ssht.elm2ind(ell, 0)
+            wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
+            wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
+        return wavelets
+
+    def _compute_ring(self) -&gt; npt.NDArray[np.complex_]:
+        &#34;&#34;&#34;Compute ring in harmonic space.&#34;&#34;&#34;
+        ring_lm = np.zeros(self.L**2, dtype=np.complex_)
+        for ell in range(abs(self.spin), self.L):
+            logp2 = (
+                gammaln(ell + self.spin + 1)
+                - ell * np.log(2)
+                - gammaln((ell + self.spin) / 2 + 1)
+                - gammaln((ell - self.spin) / 2 + 1)
+            )
+            p0 = np.real((-1) ** ((ell + self.spin) / 2)) * np.exp(logp2)
+            ind = ssht.elm2ind(ell, 0)
+            ring_lm[ind] = (
+                2
+                * np.pi
+                * np.sqrt((2 * ell + 1) / (4 * np.pi))
+                * p0
+                * (-1) ** self.spin
+                * np.sqrt(
+                    np.exp(gammaln(ell - self.spin + 1) - gammaln(ell + self.spin + 1)),
+                )
+            )
+        return ring_lm
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;], values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.Ridgelets.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.Ridgelets.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.Ridgelets.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.Ridgelets.spin"><code class="name">var <span class="ident">spin</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.Slepian"><code class="flex name class">
+<span>class <span class="ident">Slepian</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, rank: int = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class Slepian(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    rank: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        self._validate_rank()
+        super().__post_init_post_parse__()
+
+    def _create_name(self) -&gt; str:
+        order = (
+            f&#34;_m{self.slepian.order[self.rank]}&#34;
+            if hasattr(self.slepian, &#34;order&#34;)
+            else &#34;&#34;
+        )
+        return (
+            (
+                f&#34;{self.slepian.name}{order}_rank{self.rank}&#34;
+                f&#34;_lam{self.slepian.eigenvalues[self.rank]:e}&#34;
+            )
+            .replace(&#34;.&#34;, &#34;-&#34;)
+            .replace(&#34;+&#34;, &#34;&#34;)
+        )
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(f&#34;Shannon number: {self.slepian.N}&#34;)
+        sleplet.logger.info(
+            f&#34;Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}&#34;,
+        )
+        return sleplet.slepian_methods.slepian_forward(
+            self.L,
+            self.slepian,
+            flm=self.slepian.eigenvectors[self.rank],
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(
+                    f&#34;The number of extra arguments should be 1 or {num_args}&#34;,
+                )
+            self.rank = self.extra_args[0]
+
+    def _validate_rank(self) -&gt; None:
+        &#34;&#34;&#34;Checks the requested rank is valid.&#34;&#34;&#34;
+        if isinstance(self.extra_args, list):
+            limit = self.L**2
+            if self.extra_args[0] &gt;= limit:
+                raise ValueError(f&#34;rank should be less than {limit}&#34;)
+
+    @validator(&#34;rank&#34;)
+    def _check_rank(cls, v):
+        if not isinstance(v, int):
+            raise TypeError(&#34;rank should be an integer&#34;)
+        if v &lt; 0:
+            raise ValueError(&#34;rank cannot be negative&#34;)
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.Slepian.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianAfrica"><code class="flex name class">
+<span>class <span class="ident">SlepianAfrica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class SlepianAfrica(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+        if (
+            isinstance(self.region, sleplet.slepian.region.Region)
+            and self.region.name_ending != &#34;africa&#34;
+        ):
+            raise RuntimeError(&#34;Slepian region selected must be &#39;africa&#39;&#34;)
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        a = sleplet.functions.africa.Africa(self.L, smoothing=self.smoothing)
+        return sleplet.slepian_methods.slepian_forward(
+            self.L,
+            self.slepian,
+            flm=a.coefficients,
+        )
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianDiracDelta"><code class="flex name class">
+<span>class <span class="ident">SlepianDiracDelta</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class SlepianDiracDelta(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        self._compute_angles()
+        return sleplet.slepian_methods._compute_s_p_omega_prime(
+            self.L,
+            self.alpha,
+            self.beta,
+            self.slepian,
+        ).conj()
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;_{self.slepian.region.name_ending}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )
+
+    def _compute_angles(self) -&gt; None:
+        &#34;&#34;&#34;Computes alpha/beta if not provided.&#34;&#34;&#34;
+        thetas, phis = ssht.sample_positions(
+            self.L,
+            Grid=True,
+            Method=sleplet._vars.SAMPLING_SCHEME,
+        )
+        sp = ssht.inverse(
+            self.slepian.eigenvectors[0],
+            self.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
+        )
+        idx = tuple(np.argwhere(sp == sp.max())[0])
+        self.alpha = phis[idx]
+        self.beta = thetas[idx]
+        sleplet.logger.info(
+            f&#34;angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})&#34;,
+        )
+        sleplet.logger.info(
+            f&#34;grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})&#34;,
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianIdentity"><code class="flex name class">
+<span>class <span class="ident">SlepianIdentity</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class SlepianIdentity(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return np.ones(self.L**2, dtype=np.complex_)
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;_{self.slepian.region.name_ending}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianNoiseAfrica"><code class="flex name class">
+<span>class <span class="ident">SlepianNoiseAfrica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = -10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SlepianNoiseAfrica(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    SNR: float = -10
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+        if (
+            isinstance(self.region, sleplet.slepian.region.Region)
+            and self.region.name_ending != &#34;africa&#34;
+        ):
+            raise RuntimeError(&#34;Slepian region selected must be &#39;africa&#39;&#34;)
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sa = sleplet.functions.slepian_africa.SlepianAfrica(
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
+        )
+        noise = sleplet.noise._create_slepian_noise(
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
+        )
+        sleplet.noise.compute_snr(sa.coefficients, noise, &#34;Slepian&#34;)
+        return noise
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.SNR = self.extra_args[0]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.SlepianNoiseAfrica.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianNoiseSouthAmerica"><code class="flex name class">
+<span>class <span class="ident">SlepianNoiseSouthAmerica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = -10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SlepianNoiseSouthAmerica(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    SNR: float = -10
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+        if (
+            isinstance(self.region, sleplet.slepian.region.Region)
+            and self.region.name_ending != &#34;south_america&#34;
+        ):
+            raise RuntimeError(&#34;Slepian region selected must be &#39;south_america&#39;&#34;)
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sa = sleplet.functions.slepian_south_america.SlepianSouthAmerica(
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
+        )
+        noise = sleplet.noise._create_slepian_noise(
+            self.L,
+            sa.coefficients,
+            self.slepian,
+            self.SNR,
+        )
+        sleplet.noise.compute_snr(sa.coefficients, noise, &#34;Slepian&#34;)
+        return noise
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.SNR, &#39;snr&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 1
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.SNR = self.extra_args[0]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.SlepianNoiseSouthAmerica.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianSouthAmerica"><code class="flex name class">
+<span>class <span class="ident">SlepianSouthAmerica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class SlepianSouthAmerica(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+        if (
+            isinstance(self.region, sleplet.slepian.region.Region)
+            and self.region.name_ending != &#34;south_america&#34;
+        ):
+            raise RuntimeError(&#34;Slepian region selected must be &#39;south_america&#39;&#34;)
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sa = sleplet.functions.south_america.SouthAmerica(
+            self.L,
+            smoothing=self.smoothing,
+        )
+        return sleplet.slepian_methods.slepian_forward(
+            self.L,
+            self.slepian,
+            flm=sa.coefficients,
+        )
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsAfrica"><code class="flex name class">
+<span>class <span class="ident">SlepianWaveletCoefficientsAfrica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SlepianWaveletCoefficientsAfrica(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+        if (
+            isinstance(self.region, sleplet.slepian.region.Region)
+            and self.region.name_ending != &#34;africa&#34;
+        ):
+            raise RuntimeError(&#34;Slepian region selected must be &#39;africa&#39;&#34;)
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelet coefficients&#34;)
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
+        sleplet.logger.info(&#34;finish computing wavelet coefficients&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelet_coefficients[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelet_coefficients(
+        self,
+    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
+        &#34;&#34;&#34;Computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
+        sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
+            self.L,
+            B=self.B,
+            j_min=self.j_min,
+            region=self.region,
+        )
+        sa = sleplet.functions.slepian_africa.SlepianAfrica(
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
+        )
+        wavelets = sw.wavelets
+        wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
+            sa.coefficients,
+            wavelets,
+            self.slepian.N,
+        )
+        return wavelets, wavelet_coefficients
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;] ** 2, values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsAfrica.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsAfrica.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsAfrica.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica"><code class="flex name class">
+<span>class <span class="ident">SlepianWaveletCoefficientsSouthAmerica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SlepianWaveletCoefficientsSouthAmerica(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+        if (
+            isinstance(self.region, sleplet.slepian.region.Region)
+            and self.region.name_ending != &#34;south_america&#34;
+        ):
+            raise RuntimeError(&#34;Slepian region selected must be &#39;south_america&#39;&#34;)
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelet coefficients&#34;)
+        self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
+        sleplet.logger.info(&#34;finish computing wavelet coefficients&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelet_coefficients[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelet_coefficients(
+        self,
+    ) -&gt; tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
+        &#34;&#34;&#34;Computes wavelet coefficients in Slepian space.&#34;&#34;&#34;
+        sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
+            self.L,
+            B=self.B,
+            j_min=self.j_min,
+            region=self.region,
+        )
+        sa = sleplet.functions.slepian_south_america.SlepianSouthAmerica(
+            self.L,
+            region=self.region,
+            smoothing=self.smoothing,
+        )
+        wavelets = sw.wavelets
+        wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
+            sa.coefficients,
+            wavelets,
+            self.slepian.N,
+        )
+        return wavelets, wavelet_coefficients
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;] ** 2, values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SlepianWavelets"><code class="flex name class">
+<span>class <span class="ident">SlepianWavelets</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SlepianWavelets(Fp):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    B: int = 3
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j_min: int = 2
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    j: int | None = None
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        sleplet.logger.info(&#34;start computing wavelets&#34;)
+        self.wavelets = self._create_wavelets()
+        sleplet.logger.info(&#34;finish computing wavelets&#34;)
+        jth = 0 if self.j is None else self.j + 1
+        return self.wavelets[jth]
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;_{self.slepian.region.name_ending}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.B, &#39;B&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.j_min, &#39;jmin&#39;)}&#34;
+            f&#34;{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 3
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.B, self.j_min, self.j = self.extra_args
+
+    def _create_wavelets(self) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;Computes wavelets in Slepian space.&#34;&#34;&#34;
+        return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
+
+    @validator(&#34;j&#34;)
+    def _check_j(cls, v, values):
+        j_max = pys2let_j_max(values[&#34;B&#34;], values[&#34;L&#34;] ** 2, values[&#34;j_min&#34;])
+        if v is not None and v &lt; 0:
+            raise ValueError(&#34;j should be positive&#34;)
+        if v is not None and v &gt; j_max - values[&#34;j_min&#34;]:
+            raise ValueError(
+                f&#34;j should be less than j_max - j_min: {j_max - values[&#39;j_min&#39;] + 1}&#34;,
+            )
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.SlepianWavelets.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SlepianWavelets.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SlepianWavelets.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.fp.Fp" href="fp.html#sleplet.functions.fp.Fp">Fp</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.fp.Fp.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.fp.Fp.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SouthAmerica"><code class="flex name class">
+<span>class <span class="ident">SouthAmerica</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class SouthAmerica(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return sleplet.harmonic_methods._ensure_f_bandlimited(
+            self._grid_fun,
+            self.L,
+            reality=self.reality,
+            spin=self.spin,
+        )
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )
+
+    def _grid_fun(
+        self,
+        theta: npt.NDArray[np.float_],  # noqa: ARG002
+        phi: npt.NDArray[np.float_],  # noqa: ARG002
+    ) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;Function on the grid.&#34;&#34;&#34;
+        earth_flm = sleplet._data.create_earth_flm.create_flm(
+            self.L,
+            smoothing=self.smoothing,
+        )
+        rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(
+            earth_flm,
+            self.L,
+        )
+        earth_f = ssht.inverse(
+            rot_flm,
+            self.L,
+            Reality=self.reality,
+            Method=sleplet._vars.SAMPLING_SCHEME,
+        )
+        mask_name = f&#34;{self.name}_L{self.L}.npy&#34;
+        mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(
+            f&#34;slepian_masks_{mask_name}&#34;,
+        )
+        mask = (
+            sleplet._mask_methods.create_mask(self.L, mask_name)
+            if mask_location is None
+            else np.load(mask_location)
+        )
+        return np.where(mask, earth_f, 0)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SphericalHarmonic"><code class="flex name class">
+<span>class <span class="ident">SphericalHarmonic</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, ell: int = 0, m: int = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SphericalHarmonic(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    ell: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    m: int = 0
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        ind = ssht.elm2ind(self.ell, self.m)
+        return sleplet.harmonic_methods._create_spherical_harmonic(self.L, ind)
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.ell, &#39;l&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.m, &#39;m&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return False
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 2
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.ell, self.m = self.extra_args
+
+    @validator(&#34;ell&#34;)
+    def _check_ell(cls, v, values):
+        if not isinstance(v, int):
+            raise TypeError(&#34;ell should be an integer&#34;)
+        if v &lt; 0:
+            raise ValueError(&#34;ell should be positive&#34;)
+        if v &gt;= values[&#34;L&#34;]:
+            raise ValueError(&#34;ell should be less than or equal to L&#34;)
+        return v
+
+    @validator(&#34;m&#34;)
+    def _check_m(cls, v, values):
+        if not isinstance(v, int):
+            raise TypeError(&#34;m should be an integer&#34;)
+        if abs(v) &gt; values[&#34;ell&#34;]:
+            raise ValueError(&#34;the magnitude of m should be less than ell&#34;)
+        return v</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.SphericalHarmonic.ell"><code class="name">var <span class="ident">ell</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SphericalHarmonic.m"><code class="name">var <span class="ident">m</span> : int</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.SquashedGaussian"><code class="flex name class">
+<span>class <span class="ident">SquashedGaussian</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, freq: float = 0.1, t_sigma: float = 1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation, kw_only=True)
+class SquashedGaussian(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    freq: float = 0.1
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+    t_sigma: float = 1
+    &#34;&#34;&#34;TODO&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return sleplet.harmonic_methods._ensure_f_bandlimited(
+            self._grid_fun,
+            self.L,
+            reality=self.reality,
+            spin=self.spin,
+        )
+
+    def _create_name(self) -&gt; str:
+        return (
+            f&#34;{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.t_sigma, &#39;tsig&#39;)}&#34;
+            f&#34;{sleplet._string_methods.filename_args(self.freq, &#39;freq&#39;)}&#34;
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            num_args = 2
+            if len(self.extra_args) != num_args:
+                raise ValueError(f&#34;The number of extra arguments should be {num_args}&#34;)
+            self.t_sigma, self.freq = (np.float_power(10, x) for x in self.extra_args)
+
+    def _grid_fun(
+        self,
+        theta: npt.NDArray[np.float_],
+        phi: npt.NDArray[np.float_],
+    ) -&gt; npt.NDArray[np.float_]:
+        &#34;&#34;&#34;Function on the grid.&#34;&#34;&#34;
+        return np.exp(
+            -(((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2) / 2,
+        ) * np.sin(self.freq * phi)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.functions.SquashedGaussian.freq"><code class="name">var <span class="ident">freq</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+<dt id="sleplet.functions.SquashedGaussian.t_sigma"><code class="name">var <span class="ident">t_sigma</span> : float</code></dt>
+<dd>
+<div class="desc"><p>TODO</p></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="sleplet.functions.Wmap"><code class="flex name class">
+<span>class <span class="ident">Wmap</span></span>
+<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(config=sleplet._validation.Validation)
+class Wmap(Flm):
+    &#34;&#34;&#34;TODO.&#34;&#34;&#34;
+
+    def __post_init_post_parse__(self) -&gt; None:
+        super().__post_init_post_parse__()
+
+    def _create_coefficients(self) -&gt; npt.NDArray[np.complex_ | np.float_]:
+        return sleplet._data.create_wmap_flm.create_flm(self.L)
+
+    def _create_name(self) -&gt; str:
+        return sleplet._string_methods._convert_camel_case_to_snake_case(
+            self.__class__.__name__,
+        )
+
+    def _set_reality(self) -&gt; bool:
+        return True
+
+    def _set_spin(self) -&gt; int:
+        return 0
+
+    def _setup_args(self) -&gt; None:
+        if isinstance(self.extra_args, list):
+            raise AttributeError(
+                f&#34;{self.__class__.__name__} does not support extra arguments&#34;,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></li>
+<li><a title="sleplet.functions.coefficients.Coefficients" href="coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="sleplet.functions.flm.Flm" href="flm.html#sleplet.functions.flm.Flm">Flm</a></b></code>:
+<ul class="hlist">
+<li><code><a title="sleplet.functions.flm.Flm.L" href="coefficients.html#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.convolve" href="coefficients.html#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.extra_args" href="coefficients.html#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.noise" href="coefficients.html#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.region" href="coefficients.html#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.rotate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.smoothing" href="coefficients.html#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.flm.Flm.translate" href="coefficients.html#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -75,11 +2836,204 @@
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
+<li><code><a title="sleplet.functions.africa" href="africa.html">sleplet.functions.africa</a></code></li>
+<li><code><a title="sleplet.functions.axisymmetric_wavelet_coefficients_africa" href="axisymmetric_wavelet_coefficients_africa.html">sleplet.functions.axisymmetric_wavelet_coefficients_africa</a></code></li>
+<li><code><a title="sleplet.functions.axisymmetric_wavelet_coefficients_earth" href="axisymmetric_wavelet_coefficients_earth.html">sleplet.functions.axisymmetric_wavelet_coefficients_earth</a></code></li>
+<li><code><a title="sleplet.functions.axisymmetric_wavelet_coefficients_south_america" href="axisymmetric_wavelet_coefficients_south_america.html">sleplet.functions.axisymmetric_wavelet_coefficients_south_america</a></code></li>
+<li><code><a title="sleplet.functions.axisymmetric_wavelets" href="axisymmetric_wavelets.html">sleplet.functions.axisymmetric_wavelets</a></code></li>
 <li><code><a title="sleplet.functions.coefficients" href="coefficients.html">sleplet.functions.coefficients</a></code></li>
-<li><code><a title="sleplet.functions.f_lm" href="f_lm.html">sleplet.functions.f_lm</a></code></li>
-<li><code><a title="sleplet.functions.f_p" href="f_p.html">sleplet.functions.f_p</a></code></li>
-<li><code><a title="sleplet.functions.flm" href="flm/index.html">sleplet.functions.flm</a></code></li>
-<li><code><a title="sleplet.functions.fp" href="fp/index.html">sleplet.functions.fp</a></code></li>
+<li><code><a title="sleplet.functions.dirac_delta" href="dirac_delta.html">sleplet.functions.dirac_delta</a></code></li>
+<li><code><a title="sleplet.functions.directional_spin_wavelets" href="directional_spin_wavelets.html">sleplet.functions.directional_spin_wavelets</a></code></li>
+<li><code><a title="sleplet.functions.earth" href="earth.html">sleplet.functions.earth</a></code></li>
+<li><code><a title="sleplet.functions.elongated_gaussian" href="elongated_gaussian.html">sleplet.functions.elongated_gaussian</a></code></li>
+<li><code><a title="sleplet.functions.flm" href="flm.html">sleplet.functions.flm</a></code></li>
+<li><code><a title="sleplet.functions.fp" href="fp.html">sleplet.functions.fp</a></code></li>
+<li><code><a title="sleplet.functions.gaussian" href="gaussian.html">sleplet.functions.gaussian</a></code></li>
+<li><code><a title="sleplet.functions.harmonic_gaussian" href="harmonic_gaussian.html">sleplet.functions.harmonic_gaussian</a></code></li>
+<li><code><a title="sleplet.functions.identity" href="identity.html">sleplet.functions.identity</a></code></li>
+<li><code><a title="sleplet.functions.noise_earth" href="noise_earth.html">sleplet.functions.noise_earth</a></code></li>
+<li><code><a title="sleplet.functions.ridgelets" href="ridgelets.html">sleplet.functions.ridgelets</a></code></li>
+<li><code><a title="sleplet.functions.slepian" href="slepian.html">sleplet.functions.slepian</a></code></li>
+<li><code><a title="sleplet.functions.slepian_africa" href="slepian_africa.html">sleplet.functions.slepian_africa</a></code></li>
+<li><code><a title="sleplet.functions.slepian_dirac_delta" href="slepian_dirac_delta.html">sleplet.functions.slepian_dirac_delta</a></code></li>
+<li><code><a title="sleplet.functions.slepian_identity" href="slepian_identity.html">sleplet.functions.slepian_identity</a></code></li>
+<li><code><a title="sleplet.functions.slepian_noise_africa" href="slepian_noise_africa.html">sleplet.functions.slepian_noise_africa</a></code></li>
+<li><code><a title="sleplet.functions.slepian_noise_south_america" href="slepian_noise_south_america.html">sleplet.functions.slepian_noise_south_america</a></code></li>
+<li><code><a title="sleplet.functions.slepian_south_america" href="slepian_south_america.html">sleplet.functions.slepian_south_america</a></code></li>
+<li><code><a title="sleplet.functions.slepian_wavelet_coefficients_africa" href="slepian_wavelet_coefficients_africa.html">sleplet.functions.slepian_wavelet_coefficients_africa</a></code></li>
+<li><code><a title="sleplet.functions.slepian_wavelet_coefficients_south_america" href="slepian_wavelet_coefficients_south_america.html">sleplet.functions.slepian_wavelet_coefficients_south_america</a></code></li>
+<li><code><a title="sleplet.functions.slepian_wavelets" href="slepian_wavelets.html">sleplet.functions.slepian_wavelets</a></code></li>
+<li><code><a title="sleplet.functions.south_america" href="south_america.html">sleplet.functions.south_america</a></code></li>
+<li><code><a title="sleplet.functions.spherical_harmonic" href="spherical_harmonic.html">sleplet.functions.spherical_harmonic</a></code></li>
+<li><code><a title="sleplet.functions.squashed_gaussian" href="squashed_gaussian.html">sleplet.functions.squashed_gaussian</a></code></li>
+<li><code><a title="sleplet.functions.wmap" href="wmap.html">sleplet.functions.wmap</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sleplet.functions.Africa" href="#sleplet.functions.Africa">Africa</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica" href="#sleplet.functions.AxisymmetricWaveletCoefficientsAfrica">AxisymmetricWaveletCoefficientsAfrica</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.B" href="#sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.B">B</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.j" href="#sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.j">j</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.j_min" href="#sleplet.functions.AxisymmetricWaveletCoefficientsAfrica.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsEarth" href="#sleplet.functions.AxisymmetricWaveletCoefficientsEarth">AxisymmetricWaveletCoefficientsEarth</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsEarth.B" href="#sleplet.functions.AxisymmetricWaveletCoefficientsEarth.B">B</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsEarth.j" href="#sleplet.functions.AxisymmetricWaveletCoefficientsEarth.j">j</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsEarth.j_min" href="#sleplet.functions.AxisymmetricWaveletCoefficientsEarth.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica" href="#sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica">AxisymmetricWaveletCoefficientsSouthAmerica</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.B" href="#sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.B">B</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.j" href="#sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.j">j</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.j_min" href="#sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.AxisymmetricWavelets" href="#sleplet.functions.AxisymmetricWavelets">AxisymmetricWavelets</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.AxisymmetricWavelets.B" href="#sleplet.functions.AxisymmetricWavelets.B">B</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWavelets.j" href="#sleplet.functions.AxisymmetricWavelets.j">j</a></code></li>
+<li><code><a title="sleplet.functions.AxisymmetricWavelets.j_min" href="#sleplet.functions.AxisymmetricWavelets.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.DiracDelta" href="#sleplet.functions.DiracDelta">DiracDelta</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.DirectionalSpinWavelets" href="#sleplet.functions.DirectionalSpinWavelets">DirectionalSpinWavelets</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.DirectionalSpinWavelets.B" href="#sleplet.functions.DirectionalSpinWavelets.B">B</a></code></li>
+<li><code><a title="sleplet.functions.DirectionalSpinWavelets.N" href="#sleplet.functions.DirectionalSpinWavelets.N">N</a></code></li>
+<li><code><a title="sleplet.functions.DirectionalSpinWavelets.j" href="#sleplet.functions.DirectionalSpinWavelets.j">j</a></code></li>
+<li><code><a title="sleplet.functions.DirectionalSpinWavelets.j_min" href="#sleplet.functions.DirectionalSpinWavelets.j_min">j_min</a></code></li>
+<li><code><a title="sleplet.functions.DirectionalSpinWavelets.spin" href="#sleplet.functions.DirectionalSpinWavelets.spin">spin</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.Earth" href="#sleplet.functions.Earth">Earth</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.ElongatedGaussian" href="#sleplet.functions.ElongatedGaussian">ElongatedGaussian</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.ElongatedGaussian.p_sigma" href="#sleplet.functions.ElongatedGaussian.p_sigma">p_sigma</a></code></li>
+<li><code><a title="sleplet.functions.ElongatedGaussian.t_sigma" href="#sleplet.functions.ElongatedGaussian.t_sigma">t_sigma</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.Gaussian" href="#sleplet.functions.Gaussian">Gaussian</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.Gaussian.sigma" href="#sleplet.functions.Gaussian.sigma">sigma</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.HarmonicGaussian" href="#sleplet.functions.HarmonicGaussian">HarmonicGaussian</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.HarmonicGaussian.l_sigma" href="#sleplet.functions.HarmonicGaussian.l_sigma">l_sigma</a></code></li>
+<li><code><a title="sleplet.functions.HarmonicGaussian.m_sigma" href="#sleplet.functions.HarmonicGaussian.m_sigma">m_sigma</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.Identity" href="#sleplet.functions.Identity">Identity</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.NoiseEarth" href="#sleplet.functions.NoiseEarth">NoiseEarth</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.NoiseEarth.SNR" href="#sleplet.functions.NoiseEarth.SNR">SNR</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.Ridgelets" href="#sleplet.functions.Ridgelets">Ridgelets</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.Ridgelets.B" href="#sleplet.functions.Ridgelets.B">B</a></code></li>
+<li><code><a title="sleplet.functions.Ridgelets.j" href="#sleplet.functions.Ridgelets.j">j</a></code></li>
+<li><code><a title="sleplet.functions.Ridgelets.j_min" href="#sleplet.functions.Ridgelets.j_min">j_min</a></code></li>
+<li><code><a title="sleplet.functions.Ridgelets.spin" href="#sleplet.functions.Ridgelets.spin">spin</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.Slepian" href="#sleplet.functions.Slepian">Slepian</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.Slepian.rank" href="#sleplet.functions.Slepian.rank">rank</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianAfrica" href="#sleplet.functions.SlepianAfrica">SlepianAfrica</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianDiracDelta" href="#sleplet.functions.SlepianDiracDelta">SlepianDiracDelta</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianIdentity" href="#sleplet.functions.SlepianIdentity">SlepianIdentity</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianNoiseAfrica" href="#sleplet.functions.SlepianNoiseAfrica">SlepianNoiseAfrica</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.SlepianNoiseAfrica.SNR" href="#sleplet.functions.SlepianNoiseAfrica.SNR">SNR</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianNoiseSouthAmerica" href="#sleplet.functions.SlepianNoiseSouthAmerica">SlepianNoiseSouthAmerica</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.SlepianNoiseSouthAmerica.SNR" href="#sleplet.functions.SlepianNoiseSouthAmerica.SNR">SNR</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianSouthAmerica" href="#sleplet.functions.SlepianSouthAmerica">SlepianSouthAmerica</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianWaveletCoefficientsAfrica" href="#sleplet.functions.SlepianWaveletCoefficientsAfrica">SlepianWaveletCoefficientsAfrica</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.SlepianWaveletCoefficientsAfrica.B" href="#sleplet.functions.SlepianWaveletCoefficientsAfrica.B">B</a></code></li>
+<li><code><a title="sleplet.functions.SlepianWaveletCoefficientsAfrica.j" href="#sleplet.functions.SlepianWaveletCoefficientsAfrica.j">j</a></code></li>
+<li><code><a title="sleplet.functions.SlepianWaveletCoefficientsAfrica.j_min" href="#sleplet.functions.SlepianWaveletCoefficientsAfrica.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica" href="#sleplet.functions.SlepianWaveletCoefficientsSouthAmerica">SlepianWaveletCoefficientsSouthAmerica</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.B" href="#sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.B">B</a></code></li>
+<li><code><a title="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.j" href="#sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.j">j</a></code></li>
+<li><code><a title="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.j_min" href="#sleplet.functions.SlepianWaveletCoefficientsSouthAmerica.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SlepianWavelets" href="#sleplet.functions.SlepianWavelets">SlepianWavelets</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.SlepianWavelets.B" href="#sleplet.functions.SlepianWavelets.B">B</a></code></li>
+<li><code><a title="sleplet.functions.SlepianWavelets.j" href="#sleplet.functions.SlepianWavelets.j">j</a></code></li>
+<li><code><a title="sleplet.functions.SlepianWavelets.j_min" href="#sleplet.functions.SlepianWavelets.j_min">j_min</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SouthAmerica" href="#sleplet.functions.SouthAmerica">SouthAmerica</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SphericalHarmonic" href="#sleplet.functions.SphericalHarmonic">SphericalHarmonic</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.SphericalHarmonic.ell" href="#sleplet.functions.SphericalHarmonic.ell">ell</a></code></li>
+<li><code><a title="sleplet.functions.SphericalHarmonic.m" href="#sleplet.functions.SphericalHarmonic.m">m</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.SquashedGaussian" href="#sleplet.functions.SquashedGaussian">SquashedGaussian</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.functions.SquashedGaussian.freq" href="#sleplet.functions.SquashedGaussian.freq">freq</a></code></li>
+<li><code><a title="sleplet.functions.SquashedGaussian.t_sigma" href="#sleplet.functions.SquashedGaussian.t_sigma">t_sigma</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sleplet.functions.Wmap" href="#sleplet.functions.Wmap">Wmap</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>
