@@ -45,10 +45,10 @@ To the author's knowledge, there is no public software which allows one to compu
 (or a similar approach) on the sphere or general manifolds/meshes.
 `SHTools` [@Wieczorek2018] is a `Python` code used for spherical harmonic transforms, which allows one to compute the Slepian functions of the spherical polar cap [@Simons2006].
 A series of `MATLAB` scripts exist in `slepian_alpha` [@Simons2020] which permits the calculation of the Slepian functions on the sphere.
-In both cases, however, the codes only support the spherical setting and not the general manifold setting.
+However, these scripts are very specialised and hard to generalise.
 
 `SLEPLET` [@RoddySLEPLET] is a Python package for the construction of Slepian wavelets in the spherical and manifold (via meshes) settings.
-In contrast to the aforementioned codes, `SLEPLET` handles any spherical region as well as the manifold setting.
+In contrast to the aforementioned codes, `SLEPLET` handles any spherical region as well as the general manifold setting.
 The API is documented and easily extendible, designed in an object-orientated manner.
 Upon installation, `SLEPLET` comes with two command line interfaces - `sphere` and `mesh` - which allows one to easily generate plots on the sphere and a set of meshes using `plotly`.
 Whilst these scripts are the primary intended use, `SLEPLET` may be used directly to generate the Slepian coefficients in the spherical/manifold setting and use methods to convert these into real space for visualisation or other intended purposes.
