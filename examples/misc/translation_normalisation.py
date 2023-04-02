@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import pyssht as ssht
 import seaborn as sns
@@ -9,7 +7,6 @@ from sleplet import logger
 from sleplet.functions import HarmonicGaussian
 from sleplet.plot_methods import save_plot
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 ALPHA_DEFAULT = 0.75
@@ -31,7 +28,7 @@ def compute_translation_normalisation_theta() -> None:
     plt.ylabel(r"${\Vert f_{\ell m} Y_{\ell m}(\omega')\Vert}_{2}$")
     plt.xlim(0, 180)
     plt.ylim(0, np.ceil(norm.max()))
-    save_plot(_fig_path, f"harmonic_gaussian_translation_normalisation_L{L}")
+    save_plot(f"harmonic_gaussian_translation_normalisation_L{L}")
 
 
 if __name__ == "__main__":

@@ -144,8 +144,8 @@ def mesh_forward(
 
     Args:
     ----
-        mesh: _description_
-        u: _description_
+        mesh: The given mesh object.
+        u: The signal field value on the mesh.
 
     Returns:
     -------
@@ -171,8 +171,8 @@ def mesh_inverse(
 
     Args:
     ----
-        mesh: _description_
-        u_i: _description_
+        mesh: The given mesh object.
+        u_i: The Fourier coefficients on the mesh.
 
     Returns:
     -------

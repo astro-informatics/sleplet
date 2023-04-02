@@ -1,5 +1,4 @@
 from argparse import ArgumentParser
-from pathlib import Path
 
 import numpy as np
 import seaborn as sns
@@ -10,7 +9,6 @@ from sleplet.meshes import Mesh, MeshSlepian
 from sleplet.plot_methods import save_plot
 from sleplet.wavelet_methods import create_kappas
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 B = 3
@@ -64,10 +62,7 @@ def main(mesh_name: str) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.legend()
-    save_plot(
-        _fig_path,
-        f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}",
-    )
+    save_plot(f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
 
 
 if __name__ == "__main__":

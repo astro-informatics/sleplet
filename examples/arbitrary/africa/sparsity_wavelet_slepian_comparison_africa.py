@@ -1,5 +1,4 @@
 from argparse import ArgumentParser
-from pathlib import Path
 
 import numpy as np
 import seaborn as sns
@@ -12,7 +11,6 @@ from sleplet.functions import (
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region
 
-_fig_path = Path(__file__).resolve().parents[3] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 B = 3
@@ -69,7 +67,7 @@ def main(*, limit: bool) -> None:
         plt.xlim(right=300)
         plt.ylim(top=50)
         filename += "_limit"
-    save_plot(_fig_path, filename)
+    save_plot(filename)
 
 
 if __name__ == "__main__":

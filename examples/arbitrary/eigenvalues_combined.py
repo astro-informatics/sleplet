@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -7,7 +5,6 @@ from matplotlib import pyplot as plt
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import SlepianArbitrary
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 COLOURS = ["b", "k"]
@@ -44,7 +41,7 @@ def main() -> None:
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     plt.legend(loc=3)
-    save_plot(_fig_path, f"combined_eigenvalues_L{L}")
+    save_plot(f"combined_eigenvalues_L{L}")
 
 
 if __name__ == "__main__":

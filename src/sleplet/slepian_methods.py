@@ -184,8 +184,8 @@ def slepian_mesh_forward(
     Args:
     ----
         mesh_slepian: _description_
-        u: _description_
-        u_i: _description_
+        u: The signal field value on the mesh.
+        u_i: The Fourier coefficients on the mesh.
         mask: _description_
         n_coeffs: _description_
 

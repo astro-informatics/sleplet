@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -10,7 +8,6 @@ from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region, SlepianPolarCap
 from sleplet.slepian_methods import choose_slepian_method, slepian_forward
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 L = 16
@@ -50,7 +47,7 @@ def main() -> None:
     sns.scatterplot(x=range(N), y=flm, ax=ax, label="harmonic", linewidth=0, marker=".")
     ax.set_xlabel("coefficients")
     ax.set_ylabel("magnitude")
-    save_plot(_fig_path, f"fp_earth_polar{THETA_MAX}_L{L}")
+    save_plot(f"fp_earth_polar{THETA_MAX}_L{L}")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -9,7 +7,6 @@ from sleplet import logger
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import SlepianPolarCap
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 L = 16
@@ -26,7 +23,7 @@ def main() -> None:
     for theta_max, position in THETA_RANGE.items():
         _create_plot(ax, position, theta_max)
     ax[LEGEND_POS].legend(ncol=2)
-    save_plot(_fig_path, "simons_5_3")
+    save_plot("simons_5_3")
 
 
 def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> None:

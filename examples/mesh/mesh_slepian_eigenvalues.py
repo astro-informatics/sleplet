@@ -1,5 +1,4 @@
 from argparse import ArgumentParser
-from pathlib import Path
 
 import numpy as np
 import seaborn as sns
@@ -8,7 +7,6 @@ from matplotlib import pyplot as plt
 from sleplet.meshes import Mesh, MeshSlepian
 from sleplet.plot_methods import save_plot
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 MESHES = [
@@ -42,10 +40,7 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(
-        _fig_path,
-        f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}",
-    )
+    save_plot(f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}")
 
 
 if __name__ == "__main__":

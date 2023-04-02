@@ -16,6 +16,8 @@ import sleplet.meshes.mesh_coefficients
 import sleplet.slepian.region
 import sleplet.slepian_methods
 
+_fig_path = Path(__file__).resolve().parent / "figures"
+
 
 def calc_plot_resolution(L: int) -> int:
     """
@@ -76,18 +78,17 @@ def _calc_nearest_grid_point(
     return alpha, beta
 
 
-def save_plot(path: Path, name: str) -> None:
+def save_plot(name: str) -> None:
     """
     Helper method to save plots.
 
     Args:
     ----
-        path: _description_
         name: _description_
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
-        filename = path / file_type / f"{name}.{file_type}"
+        filename = _fig_path / file_type / f"{name}.{file_type}"
         sleplet.logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
     plt.show(block=False)

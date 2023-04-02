@@ -15,7 +15,7 @@ class NoiseEarth(Flm):
     """Creates a noised signal of the topographic map of the Earth."""
 
     SNR: float = 10
-    """A parameter which controls the level of signal to noise in the noised
+    """A parameter which controls the level of signal-to-noise in the noised
     data."""
 
     def __post_init_post_parse__(self) -> None:

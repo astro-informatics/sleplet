@@ -18,9 +18,9 @@ def slepian_wavelet_forward(
 
     Args:
     ----
-        f_p: The Slepian wavelet coefficients.
-        wavelets: _description_
-        shannon: _description_
+        f_p: The Slepian coefficients.
+        wavelets: The Slepian wavelets.
+        shannon: The Shannon number.
 
     Returns:
     -------
@@ -46,9 +46,9 @@ def slepian_wavelet_inverse(
 
     Args:
     ----
-        wav_coeffs: _description_
-        wavelets: _description_
-        shannon: _description_
+        wav_coeffs: The Slepian wavelet coefficients.
+        wavelets: The Slepian wavelets.
+        shannon: The Shannon number.
 
     Returns:
     -------
@@ -76,7 +76,7 @@ def axisymmetric_wavelet_forward(
     ----
         L  _description_
         flm: The spherical harmonic coefficients.
-        wavelets: _description_
+        wavelets: The axisymmetric wavelets.
 
     Returns:
     -------
@@ -103,8 +103,8 @@ def axisymmetric_wavelet_inverse(
     Args:
     ----
         L: The spherical harmonic bandlimit.
-        wav_coeffs: _description_
-        wavelets: _description_
+        wav_coeffs: The axisymmetric wavelet coefficients.
+        wavelets: The axisymmetric wavelets.
 
     Returns:
     -------
@@ -136,14 +136,14 @@ def _create_axisymmetric_wavelets(
 
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
-    """
+    r"""
     Computes the Slepian wavelets.
 
     Args:
     ----
         xlim: _description_
-        B: _description_
-        j_min: _description_
+        B: The wavelet parameter. Represented as \(\lambda\) in the papers.
+        j_min: The minimum wavelet scale.
 
     Returns:
     -------
@@ -163,7 +163,7 @@ def find_non_zero_wavelet_coefficients(
 
     Args:
     ----
-        wav_coeffs: _description_
+        wav_coeffs: The wavelet coefficients.
         axis: _description_
 
     Returns:

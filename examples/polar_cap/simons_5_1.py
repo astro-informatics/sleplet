@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -10,7 +8,6 @@ from sleplet.harmonic_methods import invert_flm_boosted
 from sleplet.plot_methods import calc_plot_resolution, save_plot
 from sleplet.slepian import SlepianPolarCap
 
-_fig_path = Path(__file__).resolve().parents[2] / "src" / "sleplet" / "_figures"
 sns.set(context="paper")
 
 L = 16
@@ -45,7 +42,7 @@ def main() -> None:
         slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
             _helper(ax, slepian, RESOLUTION, x, i, order, rank)
-    save_plot(_fig_path, "slepian_colatitude")
+    save_plot("slepian_colatitude")
 
 
 def _helper(  # noqa: PLR0913

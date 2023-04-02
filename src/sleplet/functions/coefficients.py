@@ -52,14 +52,14 @@ class Coefficients:
         *,
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
-        """
+        r"""
         Performs the translation of the coefficients, used in the sifting convolution.
 
         Args:
         ----
-            alpha: _description_
-            beta: _description_
-            shannon: _description_
+            alpha: The third Euler angle, a \(\alpha\).
+            beta: The second Euler angle, a \(\beta\).
+            shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
         -------
@@ -87,7 +87,7 @@ class Coefficients:
         ----
             f_coefficient: _description_
             g_coefficien: _description_
-            shannon: _description_
+            shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
         -------
