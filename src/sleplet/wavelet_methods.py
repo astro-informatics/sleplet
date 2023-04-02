@@ -22,7 +22,7 @@ def slepian_wavelet_forward(
         shannon: The Shannon number.
 
     Returns:
-        The Slepian wavelets in pixel space.
+        The Slepian wavelets coefficients of the signal.
     """
     return find_non_zero_wavelet_coefficients(
         sleplet._convolution_methods.sifting_convolution(
@@ -48,7 +48,7 @@ def slepian_wavelet_inverse(
         shannon: The Shannon number.
 
     Returns:
-        The Slepian wavelets in Slepian space.
+        The coefficients of the signal in Slepian space.
     """
     # ensure wavelets are the same shape as the coefficients
     wavelets_shannon = wavelets[: len(wav_coeffs)]
@@ -71,10 +71,10 @@ def axisymmetric_wavelet_forward(
     Args:
         L: The spherical harmonic bandlimit.
         flm: The spherical harmonic coefficients.
-        wavelets: The axisymmetric wavelets in harmonic space.
+        wavelets: Axisymmetric wavelets.
 
     Returns:
-        The axisymmetric wavelets in pixel space.
+        Axisymmetric wavelets coefficients.
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
@@ -96,11 +96,11 @@ def axisymmetric_wavelet_inverse(
 
     Args:
         L: The spherical harmonic bandlimit.
-        wav_coeffs: The axisymmetric wavelet coefficients.
-        wavelets: The axisymmetric wavelets in pixel space.
+        wav_coeffs: Axisymmetric wavelet coefficients.
+        wavelets: Axisymmetric wavelets.
 
     Returns:
-        The axisymmetric wavelet coefficients in harmonic space.
+        Spherical harmonic coefficients of the signal.
     """
     flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(L):
@@ -132,7 +132,7 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
     Computes the Slepian wavelets.
 
     Args:
-        xlim: The x-axis value. \(L\)/\(L^2\) in the harmonic/Slepian case.
+        xlim: The x-axis value. \(L\) or \(L^2\) in the harmonic or Slepian case.
         B: The wavelet parameter. Represented as \(\lambda\) in the papers.
         j_min: The minimum wavelet scale. Represented as \(J_{0}\) in the papers.
 

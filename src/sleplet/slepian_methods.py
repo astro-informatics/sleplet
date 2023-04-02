@@ -28,7 +28,7 @@ def choose_slepian_method(
         region: The Slepian region.
 
     Raises:
-        ValueError: Invalid region_type.
+        ValueError: Invalid `region_type`, likely cause is invalid `mask_name`.
 
     Returns:
         The given Slepian object.
@@ -72,12 +72,12 @@ def slepian_inverse(
     Computes the Slepian inverse transform up to the Shannon number.
 
     Args:
-        f_p: The Slepian wavelet coefficients.
+        f_p: The Slepian coefficients.
         L: The spherical harmonic bandlimit.
         slepian: The given Slepian object.
 
     Returns:
-        The value on the sphere in pixel space.
+        The values on the sphere in pixel space.
     """
     f_p_reshape = f_p[: slepian.N, np.newaxis, np.newaxis]
     s_p = compute_s_p_omega(L, slepian)
@@ -105,7 +105,7 @@ def slepian_forward(
         n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
-        The value in Slepian space.
+        The Slepian coefficients of the inputs.
     """
     sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
         L,
@@ -123,14 +123,14 @@ def compute_s_p_omega(
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     r"""
-    Method to calculate \(S_{p}(\omega)\) for a given region.
+    Computes \(S_{p}(\omega)\) for a given region.
 
     Args:
         L: The spherical harmonic bandlimit.
         slepian: The given Slepian object.
 
     Returns:
-        The complex \(S_{p}(\omega)\) value.
+        The complex \(S_{p}(\omega)\) values.
     """
     n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
@@ -170,17 +170,17 @@ def slepian_mesh_forward(
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.float_]:
     """
-    Computes the Slepian forward transform for all coefficients.
+    Computes the Slepian forward transform for all coefficients on the mesh.
 
     Args:
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
         u: The signal field value on the mesh.
-        u_i: The Fourier coefficients on the mesh.
-        mask: A boolean mask of the Slepian region.
+        u_i: The Fourier coefficients of the mesh.
+        mask: Whether to use the mask to compute the coefficients.
         n_coeffs: The number of Slepian coefficients to use.
 
     Returns:
-        The value of a function on the mesh in Slepian space.
+        The Slepian coefficients on the mesh.
     """
     sd = sleplet.meshes._mesh_slepian_decomposition.MeshSlepianDecomposition(
         mesh_slepian,

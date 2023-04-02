@@ -36,7 +36,7 @@ class SlepianPolarCap(SlepianFunctions):
     """Whether to enable a double ended polar cap."""
     order: int | npt.NDArray[np.int_] | None = None
     """
-    By default (i.e. `None`) all orders (i.e. m) will be computed. If
+    By default (i.e. `None`) all orders (i.e. `m`) will be computed. If
     `order` is specified by an integer then only a given order `m` will be
     computed. In the Slepian eigenproblem formulation this simplifies the
     mathematical formulation."""

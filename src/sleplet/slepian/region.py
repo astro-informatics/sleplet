@@ -27,7 +27,7 @@ class Region:
     variable."""
     theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
     """Set by the `THETA_MAX` environment variable. When set without the
-    other angles it controls a poalr cap region. When in conjuction with the
+    other angles it controls a polar cap region. When in conjuction with the
     others it is for a limited latitude longitude region."""
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
     """For a limited latitude longitude region, set by the `THETA_MIN` environment

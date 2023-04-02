@@ -24,13 +24,13 @@ class SlepianLimitLatLon(SlepianFunctions):
     """Class to create a limited latitude longitude Slepian region on the sphere."""
 
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
-    """For a limited latitude longitude region."""
+    r"""Maximum \(\phi\) value."""
     phi_min: float = sleplet._vars.PHI_MIN_DEFAULT
-    """For a limited latitude longitude region."""
+    r"""Minimum \(\phi\) value."""
     theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
-    """For a limited latitude longitude region."""
+    r"""Maximum \(\theta\) value."""
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
-    """For a limited latitude longitude region."""
+    r"""Minimum \(\theta\) value."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

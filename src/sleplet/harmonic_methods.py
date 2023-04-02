@@ -44,17 +44,17 @@ def invert_flm_boosted(
     spin: int = 0,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Performs the inverse harmonic transform.
+    Upsamples the signal and performs the inverse harmonic transform .
 
     Args:
         flm: The spherical harmonic coefficients.
         L: The spherical harmonic bandlimit.
-        resolution: The output resolution of the spherical harmonic coefficients.
+        resolution: The output resolution of the field values.
         reality: Whether the given spherical signal is real or not.
         spin: The value of the spin.
 
     Returns:
-        The boosted spherical harmonic coefficients.
+        The boosted field value.
     """
     boost = resolution**2 - L**2
     flm = _boost_coefficient_resolution(flm, boost)
@@ -124,7 +124,7 @@ def compute_random_signal(
         var_signal: The variance of the signal.
 
     Returns:
-        A random signal on the sphere.
+        The coefficients of a random signal on the sphere.
     """
     return np.sqrt(var_signal / 2) * (
         rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
@@ -136,7 +136,7 @@ def mesh_forward(
     u: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
-    Computes the mesh forward transform from real space to harmonic space.
+    Computes the mesh forward transform from pixel space to Fourier space.
 
     Args:
         mesh: The given mesh object.
@@ -161,7 +161,7 @@ def mesh_inverse(
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Computes the mesh inverse transform from harmonic space to real space.
+    Computes the mesh inverse transform from Fourier space to pixel space.
 
     Args:
         mesh: The given mesh object.
@@ -178,7 +178,7 @@ def rotate_earth_to_south_america(
     L: int,
 ) -> npt.NDArray[np.complex_]:
     """
-    Rotates the flms of the Earth to a view centered on South America.
+    Rotates the harmonic coefficients of the Earth to a view centered on South America.
 
     Args:
         earth_flm: The spherical harmonic coefficients of the Earth.
@@ -201,7 +201,7 @@ def rotate_earth_to_africa(
     L: int,
 ) -> npt.NDArray[np.complex_]:
     """
-    Rotates the flms of the Earth to a view centered on Africa.
+    Rotates the harmonic coefficients of the Earth to a view centered on Africa.
 
     Args:
         earth_flm: The spherical harmonic coefficients of the Earth.

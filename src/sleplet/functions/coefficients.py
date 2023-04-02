@@ -56,13 +56,12 @@ class Coefficients:
         Performs the translation of the coefficients, used in the sifting convolution.
 
         Args:
-            alpha: The third Euler angle, a \(\alpha\).
-            beta: The second Euler angle, a \(\beta\).
+            alpha: The point on the 2-sphere to translate to, i.e. the \(\phi\) value.
+            beta: The point on the 2-sphere to translate to, i.e. the \(\theta\) value.
             shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
-            The translated spherical harmonic coefficients used in the sifting
-            convolution.
+            The translated spherical harmonic coefficients.
         """
         g_coefficients = self._translation_helper(alpha, beta)
         return (

@@ -105,7 +105,7 @@ def find_max_amplitude(
 
     Args:
         function: The `Coefficients` value to find the amplitude of.
-        plot_type: Plot `real` or another field value.
+        plot_type: Select the `real`, `imag`, `abs` or `sum` value of the field.
         upsample: Whether to upsample the output.
 
     Returns:
@@ -224,7 +224,7 @@ def compute_amplitude_for_noisy_mesh_plots(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
 ) -> float | None:
     """
-    For the noised mesh plots fix the amplitude to the initial data.
+    For the noised mesh plots fix the amplitude.
 
     Args:
         f: The mesh field value.
@@ -255,7 +255,7 @@ def compute_amplitude_for_noisy_sphere_plots(
     f: sleplet.functions.coefficients.Coefficients,
 ) -> float | None:
     """
-    For the noised sphere plots fix the amplitude to the initial data.
+    For the noised sphere plots fix the amplitude.
 
     Args:
         f: The spherical field value.
