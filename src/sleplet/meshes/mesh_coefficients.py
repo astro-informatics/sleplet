@@ -10,7 +10,7 @@ import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-from sleplet.meshes import Mesh
+from sleplet.meshes.mesh import Mesh
 
 COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 

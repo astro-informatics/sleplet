@@ -13,7 +13,7 @@ import sleplet._integration_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
-from sleplet.meshes import Mesh
+from sleplet.meshes.mesh import Mesh
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
 
