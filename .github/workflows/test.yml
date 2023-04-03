@@ -34,10 +34,4 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pooch
-
-      - name: Find pooch cache
-        run: python temp.py
-
-      - name: hello
-        run: cd ~ && pwd
+          python -m pip install tox tox-gh-actions
