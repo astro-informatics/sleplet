@@ -9,17 +9,17 @@ import sleplet.harmonic_methods
 import sleplet.meshes._mesh_slepian_decomposition
 import sleplet.meshes.mesh_slepian
 import sleplet.slepian._slepian_decomposition
-import sleplet.slepian.region
 import sleplet.slepian.slepian_arbitrary
-import sleplet.slepian.slepian_functions
 import sleplet.slepian.slepian_limit_lat_lon
 import sleplet.slepian.slepian_polar_cap
+from sleplet.slepian.region import Region
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
 def choose_slepian_method(
     L: int,
-    region: sleplet.slepian.region.Region,
-) -> sleplet.slepian.slepian_functions.SlepianFunctions:
+    region: Region,
+) -> SlepianFunctions:
     """
     Initialise Slepian object depending on input.
 
@@ -66,7 +66,7 @@ def choose_slepian_method(
 def slepian_inverse(
     f_p: npt.NDArray[np.complex_ | np.float_],
     L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
     Computes the Slepian inverse transform up to the Shannon number.
@@ -86,7 +86,7 @@ def slepian_inverse(
 
 def slepian_forward(
     L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
     *,
     f: npt.NDArray[np.complex_] | None = None,
     flm: npt.NDArray[np.complex_ | np.float_] | None = None,
@@ -120,7 +120,7 @@ def slepian_forward(
 
 def compute_s_p_omega(
     L: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     r"""
     Computes \(S_{p}(\omega)\) for a given region.
@@ -149,7 +149,7 @@ def _compute_s_p_omega_prime(
     L: int,
     alpha: float,
     beta: float,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """Method to pick out the desired angle from Sp(omega)."""
     sp_omega = compute_s_p_omega(L, slepian)
