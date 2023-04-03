@@ -69,6 +69,12 @@ def read_args() -> Namespace:
         help="flag turns off normalisation for plot",
     )
     parser.add_argument(
+        "--version",
+        "-v",
+        action="version",
+        version=sleplet.__version__,
+    )
+    parser.add_argument(
         "--zoom",
         "-z",
         action="store_true",

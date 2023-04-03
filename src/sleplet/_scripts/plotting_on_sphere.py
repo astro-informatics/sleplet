@@ -113,6 +113,16 @@ def read_args() -> Namespace:
         help="flag which removes any annotation",
     )
     parser.add_argument(
+        "--perspective",
+        "-p",
+        type=str,
+        nargs="?",
+        default="south_america",
+        const="south_america",
+        choices=["africa", "south_america"],
+        help="view of Earth: defaults to 'south_america'",
+    )
+    parser.add_argument(
         "--region",
         "-r",
         action="store_true",
@@ -147,14 +157,10 @@ def read_args() -> Namespace:
         help="flag turns off upsampling for plot",
     )
     parser.add_argument(
-        "--view",
+        "--version",
         "-v",
-        type=str,
-        nargs="?",
-        default="south_america",
-        const="south_america",
-        choices=["africa", "south_america"],
-        help="view of Earth: defaults to 'south_america'",
+        action="version",
+        version=sleplet.__version__,
     )
     return parser.parse_args()
 
@@ -372,7 +378,7 @@ def main() -> None:
         method=args.method,
         plot_type=args.type,
         upsample=not args.unzeropad,
-        earth_view=args.view,
+        earth_view=args.perspective,
         amplitude=amplitude,
     )
 

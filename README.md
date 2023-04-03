@@ -308,7 +308,7 @@ PlotSphere(
 ```sh
 export SLEPIAN_MASK="africa"
 # a
-sphere earth -L 128 -s 2 -u -v africa
+sphere earth -L 128 -p -s 2 -u africa
 # b
 sphere slepian_africa -L 128 -s 2 -u
 ```

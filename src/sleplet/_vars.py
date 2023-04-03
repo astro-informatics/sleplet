@@ -1,5 +1,8 @@
+import os
+
 import numpy as np
 
+NCPU = int(os.getenv("NCPU", "4"))
 PHI_0 = np.pi
 PHI_MAX_DEFAULT = 2 * np.pi
 PHI_MIN_DEFAULT = 0.0

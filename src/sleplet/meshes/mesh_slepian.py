@@ -1,5 +1,4 @@
 """Contains the `MeshSlepian` class."""
-import os
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -15,6 +14,7 @@ import sleplet._integration_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
+import sleplet._vars
 from sleplet.meshes.mesh import Mesh
 
 _data_path = Path(__file__).resolve().parents[1] / "_data"
@@ -95,15 +95,14 @@ class MeshSlepian:
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
-        ncpu = int(os.getenv("NCPU", "4"))
-        sleplet.logger.info(f"Number of CPU={ncpu}")
+        sleplet.logger.info(f"Number of CPU={sleplet._vars.NCPU}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.mesh.mesh_eigenvalues.shape[0],
-            ncpu,
+            sleplet._vars.NCPU,
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=ncpu) as e:
+        with ThreadPoolExecutor(max_workers=sleplet._vars.NCPU) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
