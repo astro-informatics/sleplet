@@ -4,8 +4,8 @@ from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
+import sleplet.functions
 from sleplet._vars import RANDOM_SEED, SAMPLING_SCHEME
-from sleplet.functions import DiracDelta
 from sleplet.plot_methods import _calc_nearest_grid_point
 from sleplet.slepian_methods import slepian_inverse
 
@@ -31,7 +31,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     Test to ensure that rotation and translation
     give the same result for the Dirac delta.
     """
-    dd = DiracDelta(L)
+    dd = sleplet.functions.DiracDelta(L)
     alpha, beta = _calc_nearest_grid_point(L, alpha_pi_frac, beta_pi_frac)
     dd_rot = dd.rotate(alpha, beta)
     dd_trans = dd.translate(alpha, beta)

@@ -25,8 +25,21 @@ A clear and concise description of what you expected to happen.
 Be a specific and detailed as you can. Paste any output or stack traces of
 errors you receive.
 
+**Version In Use**
+Can be found by any of the following:
+
+```python
+import sleplet
+
+print(sleplet.__version__)
+```
+
+```sh
+mesh -v
+sphere -v
+```
+
 **Additional Context**
 
-- Which version of `sleplet` are you using, `print(sleplet.__version__)`?
 - Which version of `Python` are you using?
 - Which OS are you using?
