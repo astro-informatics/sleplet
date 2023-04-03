@@ -1,5 +1,6 @@
 """Contains the `SlepianArbitrary` class."""
 import logging
+import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 
@@ -119,14 +120,15 @@ class SlepianArbitrary(SlepianFunctions):
             sleplet._parallel_methods.free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        logger.info(f"Number of CPU={sleplet._vars.NCPU}")
+        ncpu = int(os.getenv("NCPU", "4"))
+        logger.info(f"Number of CPU={ncpu}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L**2,
-            sleplet._vars.NCPU,
+            ncpu,
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=sleplet._vars.NCPU) as e:
+        with ThreadPoolExecutor(max_workers=ncpu) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
