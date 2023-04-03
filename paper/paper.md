@@ -47,7 +47,7 @@ To the author's knowledge, there is no public software which allows one to compu
 A series of `MATLAB` scripts exist in `slepian_alpha` [@Simons2020] which permits the calculation of the Slepian functions on the sphere.
 However, these scripts are very specialised and hard to generalise.
 
-`SLEPLET` [@RoddySLEPLET] is a Python package for the construction of Slepian wavelets in the spherical and manifold (via meshes) settings.
+`SLEPLET` [@Roddy2023a] is a Python package for the construction of Slepian wavelets in the spherical and manifold (via meshes) settings.
 In contrast to the aforementioned codes, `SLEPLET` handles any spherical region as well as the general manifold setting.
 The API is documented and easily extendible, designed in an object-orientated manner.
 Upon installation, `SLEPLET` comes with two command line interfaces - `sphere` and `mesh` - which allows one to easily generate plots on the sphere and a set of meshes using `plotly`.
