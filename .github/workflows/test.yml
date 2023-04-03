@@ -38,3 +38,6 @@ jobs:
 
       - name: Find pooch cache
         run: python temp.py
+
+      - name: hello
+        run: cd ~ && pwd
