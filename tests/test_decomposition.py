@@ -3,7 +3,6 @@ import pyssht as ssht
 from numpy.testing import assert_allclose, assert_raises
 
 import sleplet
-import sleplet.slepian
 
 
 def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:

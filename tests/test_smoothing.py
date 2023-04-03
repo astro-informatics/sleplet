@@ -1,6 +1,6 @@
 from numpy.testing import assert_array_equal, assert_raises
 
-import sleplet.functions
+import sleplet
 
 L = 128
 SMOOTHING = 2

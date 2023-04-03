@@ -5,7 +5,6 @@ from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
 import sleplet
-import sleplet.functions
 
 L = 128
 THETA_MAX = np.pi / 3

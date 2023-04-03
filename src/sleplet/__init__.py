@@ -6,14 +6,17 @@ the rest of the documentation.
 import logging
 
 from . import (
+    functions,
     harmonic_methods,
+    meshes,
     noise,
     plot_methods,
     plotting,
+    slepian,
     slepian_methods,
     wavelet_methods,
 )
-from ._version import __version__
+from ._version import __version__  # noqa: F401
 
 _logger = logging.getLogger(__name__)
 
@@ -28,11 +31,13 @@ _logger.setLevel("INFO")
 _logger.propagate = False
 
 __all__ = [
-    "__version__",
+    "functions",
     "harmonic_methods",
+    "meshes",
     "noise",
     "plot_methods",
     "plotting",
     "slepian_methods",
+    "slepian",
     "wavelet_methods",
 ]

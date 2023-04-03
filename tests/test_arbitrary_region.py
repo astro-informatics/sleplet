@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from numpy.testing import assert_allclose
 
-import sleplet.slepian
+import sleplet
 
 
 @pytest.mark.slow()

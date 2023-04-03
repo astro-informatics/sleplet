@@ -4,9 +4,6 @@ from numpy import typing as npt
 from numpy.random import default_rng
 
 import sleplet
-import sleplet.functions
-import sleplet.meshes
-import sleplet.slepian
 
 ARRAY_DIM = 10
 L = 16
