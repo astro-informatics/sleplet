@@ -5,7 +5,15 @@ the rest of the documentation.
 
 import logging
 
-from ._version import __version__  # noqa: F401
+from . import (
+    harmonic_methods,
+    noise,
+    plot_methods,
+    plotting,
+    slepian_methods,
+    wavelet_methods,
+)
+from ._version import __version__
 
 logger = logging.getLogger(__name__)
 
@@ -18,3 +26,13 @@ console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.setLevel("INFO")
 logger.propagate = False
+
+__all__ = [
+    "__version__",
+    "harmonic_methods",
+    "noise",
+    "plot_methods",
+    "plotting",
+    "slepian_methods",
+    "wavelet_methods",
+]

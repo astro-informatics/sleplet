@@ -1,8 +1,8 @@
 import numpy as np
 from numpy.testing import assert_allclose, assert_array_equal
 
+import sleplet
 import sleplet.functions
-from sleplet.slepian_methods import slepian_forward
 
 L = 128
 
@@ -39,7 +39,7 @@ def test_south_america_slepian_identity_convolution(
     Test to ensure that the convolving with the Slepian
     identity function doesn't change the map in Slepian space.
     """
-    f_p = slepian_forward(
+    f_p = sleplet.slepian_methods.slepian_forward(
         slepian_arbitrary.L,
         slepian_arbitrary,
         flm=south_america_arbitrary.coefficients,
