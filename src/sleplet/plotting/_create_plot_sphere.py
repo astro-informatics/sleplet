@@ -1,5 +1,5 @@
+import logging
 from dataclasses import KW_ONLY, field
-from pathlib import Path
 
 import cmocean
 import numpy as np
@@ -10,14 +10,13 @@ from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._plotly_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.plot_methods
 import sleplet.slepian.region
 
-_fig_path = Path(__file__).resolve().parents[1] / "_figures"
+logger = logging.getLogger(__name__)
 
 MW_POLE_LENGTH = 2
 
@@ -117,13 +116,15 @@ class PlotSphere:
 
         fig = Figure(data=data, layout=layout)
 
-        html_filename = str(_fig_path / "html" / f"{self.filename}.html")
+        html_filename = str(sleplet._vars.FIG_PATH / "html" / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename)
 
         for file_type in {"png", "pdf"}:
-            filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-            sleplet.logger.info(f"saving {filename}")
+            filename = str(
+                sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
+            )
+            logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     @staticmethod

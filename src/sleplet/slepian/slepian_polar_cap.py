@@ -1,7 +1,7 @@
 """Contains the `SlepianPolarCap` class."""
+import logging
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
-from pathlib import Path
 
 import gmpy2 as gp
 import numpy as np
@@ -21,7 +21,7 @@ import sleplet.harmonic_methods
 import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[1] / "_data"
+logger = logging.getLogger(__name__)
 
 L_SAVE_ALL = 16
 
@@ -116,9 +116,9 @@ class SlepianPolarCap(SlepianFunctions):
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
         limit = self.N if self.L > L_SAVE_ALL else None
-        np.save(_data_path / eval_loc, eigenvalues)
-        np.save(_data_path / evec_loc, eigenvectors[:limit])
-        np.save(_data_path / order_loc, self.order)
+        np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
+        np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[:limit])
+        np.save(sleplet._vars.DATA_PATH / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(
@@ -182,15 +182,15 @@ class SlepianPolarCap(SlepianFunctions):
 
             # deal with chunk
             for i in chunk:
-                sleplet.logger.info(f"start ell: {i}")
+                logger.info(f"start ell: {i}")
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
-                sleplet.logger.info(f"finish ell: {i}")
+                logger.info(f"finish ell: {i}")
 
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
 
-        sleplet.logger.info(f"Number of CPU={sleplet._vars.NCPU}")
+        logger.info(f"Number of CPU={sleplet._vars.NCPU}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L - m,
             sleplet._vars.NCPU,

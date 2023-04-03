@@ -1,7 +1,10 @@
 import os
+from pathlib import Path
 
 import numpy as np
 
+DATA_PATH = Path(__file__).resolve().parent / "_data"
+FIG_PATH = Path(__file__).resolve().parent / "_figures"
 NCPU = int(os.getenv("NCPU", "4"))
 PHI_0 = np.pi
 PHI_MAX_DEFAULT = 2 * np.pi

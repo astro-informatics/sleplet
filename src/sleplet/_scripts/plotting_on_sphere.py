@@ -1,10 +1,10 @@
+import logging
 from argparse import ArgumentParser, Namespace
 
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-import sleplet
 import sleplet._class_lists
 import sleplet._mask_methods
 import sleplet._string_methods
@@ -13,6 +13,9 @@ import sleplet.harmonic_methods
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_sphere
 import sleplet.slepian_methods
+
+logger = logging.getLogger(__name__)
+
 
 ALPHA_DEFAULT = 0.75
 ANNOTATION_COLOUR = "gold"
@@ -185,13 +188,13 @@ def plot(
     coefficients = f.coefficients
 
     # turn off annotation if needed
-    sleplet.logger.info(f"annotations on: {annotations}")
+    logger.info(f"annotations on: {annotations}")
     annotation = []
 
     # Shannon number for Slepian coefficients
     shannon = f.slepian.N if hasattr(f, "slepian") else None
 
-    sleplet.logger.info(f"plotting method: '{method}'")
+    logger.info(f"plotting method: '{method}'")
     match method:
         case "rotate":
             coefficients, filename = _rotation_helper(
@@ -265,7 +268,7 @@ def _rotation_helper(
     gamma_pi_frac: float,
 ) -> tuple[npt.NDArray[np.complex_], str]:
     """Performs the rotation specific steps."""
-    sleplet.logger.info(
+    logger.info(
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
     )
@@ -295,7 +298,7 @@ def _translation_helper(
     shannon: int | None,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
     """Performs the translation specific steps."""
-    sleplet.logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
+    logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
     filename += (
         "_translate_"

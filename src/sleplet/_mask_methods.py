@@ -1,11 +1,10 @@
+import logging
 import os
-from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-import sleplet
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
 import sleplet._vars
@@ -13,7 +12,7 @@ import sleplet.harmonic_methods
 import sleplet.meshes.mesh
 import sleplet.slepian.region
 
-_data_path = Path(__file__).resolve().parent / "_data"
+logger = logging.getLogger(__name__)
 
 AFRICA_RANGE = np.deg2rad(41)
 SOUTH_AMERICA_RANGE = np.deg2rad(40)
@@ -39,7 +38,7 @@ def create_mask_region(
 
     match region.region_type:
         case "arbitrary":
-            sleplet.logger.info("loading and checking shape of provided mask")
+            logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
             mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
@@ -48,7 +47,7 @@ def create_mask_region(
             )
 
         case "lim_lat_lon":
-            sleplet.logger.info("creating limited latitude longitude mask")
+            logger.info("creating limited latitude longitude mask")
             mask = (
                 (thetas >= region.theta_min)
                 & (thetas <= region.theta_max)
@@ -57,10 +56,10 @@ def create_mask_region(
             )
 
         case "polar":
-            sleplet.logger.info("creating polar cap mask")
+            logger.info("creating polar cap mask")
             mask = thetas <= region.theta_max
             if region.gap:
-                sleplet.logger.info("creating polar gap mask")
+                logger.info("creating polar gap mask")
                 mask += thetas >= np.pi - region.theta_max
     return mask
 
@@ -197,5 +196,5 @@ def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
         mask = _create_south_america_mask(L, earth_flm)
     else:
         raise ValueError(f"Mask name {mask_name} not recognised")
-    np.save(_data_path / f"slepian_masks_{mask_name}", mask)
+    np.save(sleplet._vars.DATA_PATH / f"slepian_masks_{mask_name}", mask)
     return mask

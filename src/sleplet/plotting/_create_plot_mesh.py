@@ -1,5 +1,5 @@
+import logging
 from dataclasses import KW_ONLY
-from pathlib import Path
 
 import cmocean
 import numpy as np
@@ -10,15 +10,15 @@ from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._mask_methods
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
+import sleplet._vars
 import sleplet.meshes.mesh
 import sleplet.plot_methods
 
-_fig_path = Path(__file__).resolve().parents[1] / "_figures"
+logger = logging.getLogger(__name__)
 
 MESH_CBAR_LEN = 0.95
 MESH_CBAR_FONT_SIZE = 32
@@ -95,13 +95,15 @@ class PlotMesh:
 
         fig = Figure(data=data, layout=layout)
 
-        html_filename = str(_fig_path / "html" / f"{self.filename}.html")
+        html_filename = str(sleplet._vars.FIG_PATH / "html" / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename)
 
         for file_type in {"png", "pdf"}:
-            filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-            sleplet.logger.info(f"saving {filename}")
+            filename = str(
+                sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
+            )
+            logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(

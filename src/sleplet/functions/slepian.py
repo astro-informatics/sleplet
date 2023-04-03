@@ -1,13 +1,16 @@
 """Contains the `Slepian` class."""
+import logging
+
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._validation
 import sleplet.slepian_methods
 from sleplet.functions.fp import Fp
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -38,8 +41,8 @@ class Slepian(Fp):
         )
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        sleplet.logger.info(f"Shannon number: {self.slepian.N}")
-        sleplet.logger.info(
+        logger.info(f"Shannon number: {self.slepian.N}")
+        logger.info(
             f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}",
         )
         return sleplet.slepian_methods.slepian_forward(

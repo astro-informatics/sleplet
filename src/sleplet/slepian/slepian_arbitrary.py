@@ -1,7 +1,7 @@
 """Contains the `SlepianArbitrary` class."""
+import logging
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
-from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
@@ -9,7 +9,6 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._array_methods
 import sleplet._data.setup_pooch
 import sleplet._integration_methods
@@ -22,7 +21,7 @@ import sleplet.harmonic_methods
 import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[1] / "_data"
+logger = logging.getLogger(__name__)
 
 SAMPLES = 2
 
@@ -85,8 +84,8 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvalues,
             eigenvectors,
         ) = sleplet._slepian_arbitrary_methods.clean_evals_and_evecs(LA.eigh(D))
-        np.save(_data_path / eval_loc, eigenvalues)
-        np.save(_data_path / evec_loc, eigenvectors[: self.N])
+        np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
+        np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
@@ -113,14 +112,14 @@ class SlepianArbitrary(SlepianFunctions):
             ) = sleplet._parallel_methods.attach_to_shared_memory_block(D_i, shm_i_ext)
 
             for i in chunk:
-                sleplet.logger.info(f"start ell: {i}")
+                logger.info(f"start ell: {i}")
                 self._matrix_helper(D_r_int, D_i_int, i)
-                sleplet.logger.info(f"finish ell: {i}")
+                logger.info(f"finish ell: {i}")
 
             sleplet._parallel_methods.free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
-        sleplet.logger.info(f"Number of CPU={sleplet._vars.NCPU}")
+        logger.info(f"Number of CPU={sleplet._vars.NCPU}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L**2,
             sleplet._vars.NCPU,

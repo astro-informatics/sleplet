@@ -1,15 +1,18 @@
 """Contains the `SlepianDiracDelta` class."""
+import logging
+
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.slepian_methods
 from sleplet.functions.fp import Fp
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -61,9 +64,9 @@ class SlepianDiracDelta(Fp):
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]
-        sleplet.logger.info(
+        logger.info(
             f"angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})",
         )
-        sleplet.logger.info(
+        logger.info(
             f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})",
         )

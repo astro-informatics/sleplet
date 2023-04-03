@@ -1,12 +1,14 @@
+import logging
 from argparse import ArgumentParser, Namespace
 
-import sleplet
 import sleplet._class_lists
 import sleplet._string_methods
 import sleplet.meshes.mesh
 import sleplet.meshes.mesh_coefficients
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_mesh
+
+logger = logging.getLogger(__name__)
 
 
 def valid_meshes(mesh_name: str) -> str:
@@ -103,7 +105,7 @@ def plot(
 
 def main() -> None:
     args = read_args()
-    sleplet.logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
+    logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
     mesh = sleplet.meshes.mesh.Mesh(args.function, zoom=args.zoom)

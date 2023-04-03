@@ -1,5 +1,5 @@
 """Methods to help in creating plots."""
-from pathlib import Path
+import logging
 
 import numpy as np
 import pyssht as ssht
@@ -7,7 +7,6 @@ from matplotlib import colors
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-import sleplet
 import sleplet._mask_methods
 import sleplet._vars
 import sleplet.functions.coefficients
@@ -16,7 +15,7 @@ import sleplet.meshes.mesh_coefficients
 import sleplet.slepian.region
 import sleplet.slepian_methods
 
-_fig_path = Path(__file__).resolve().parent / "_figures"
+logger = logging.getLogger(__name__)
 
 
 def calc_plot_resolution(L: int) -> int:
@@ -72,7 +71,7 @@ def _calc_nearest_grid_point(
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
-    sleplet.logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
+    logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
     return alpha, beta
 
 
@@ -85,8 +84,8 @@ def save_plot(name: str) -> None:
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
-        filename = _fig_path / file_type / f"{name}.{file_type}"
-        sleplet.logger.info(f"saving {filename}")
+        filename = sleplet._vars.FIG_PATH / file_type / f"{name}.{file_type}"
+        logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
     plt.show(block=False)
     plt.pause(3)
@@ -147,7 +146,7 @@ def _create_plot_type(
     plot_type: str,
 ) -> npt.NDArray[np.float_]:
     """Gets the given plot type of the field."""
-    sleplet.logger.info(f"plotting type: '{plot_type}'")
+    logger.info(f"plotting type: '{plot_type}'")
     plot_dict = {
         "abs": np.abs(field),
         "imag": field.imag,

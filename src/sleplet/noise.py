@@ -1,15 +1,18 @@
 """Methods to handle noise in Fourier or wavelet space."""
+import logging
+
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from numpy.random import default_rng
 
-import sleplet
 import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes.mesh_slepian
 import sleplet.slepian_methods
 from sleplet.slepian.slepian_functions import SlepianFunctions
+
+logger = logging.getLogger(__name__)
 
 
 def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:
@@ -34,7 +37,7 @@ def compute_snr(
         The signal-to-noise value of the noised signal.
     """
     snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
-    sleplet.logger.info(f"{signal_type} SNR: {snr:.2f}")
+    logger.info(f"{signal_type} SNR: {snr:.2f}")
     return snr
 
 
@@ -135,9 +138,9 @@ def harmonic_hard_thresholding(
     Returns:
         The thresholded wavelet coefficients.
     """
-    sleplet.logger.info("begin harmonic hard thresholding")
+    logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
-        sleplet.logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
+        logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
         f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = ssht.forward(
@@ -168,9 +171,9 @@ def slepian_wavelet_hard_thresholding(
     Returns:
         The hard thresholded Slepian wavelet coefficients.
     """
-    sleplet.logger.info("begin Slepian hard thresholding")
+    logger.info("begin Slepian hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
-        sleplet.logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
+        logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
         f = sleplet.slepian_methods.slepian_inverse(coefficient, L, slepian)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j] = sleplet.slepian_methods.slepian_forward(
@@ -201,7 +204,7 @@ def slepian_function_hard_thresholding(
     Returns:
         The thresholded Slepian coefficients.
     """
-    sleplet.logger.info("begin Slepian hard thresholding")
+    logger.info("begin Slepian hard thresholding")
     f = sleplet.slepian_methods.slepian_inverse(coefficients, L, slepian)
     f_thresholded = _perform_hard_thresholding(f, sigma, n_sigma)
     return sleplet.slepian_methods.slepian_forward(L, slepian, f=f_thresholded)
@@ -320,9 +323,9 @@ def slepian_mesh_hard_thresholding(
     Returns:
         The thresholded wavelet coefficients of the mesh.
     """
-    sleplet.logger.info("begin Slepian mesh hard thresholding")
+    logger.info("begin Slepian mesh hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
-        sleplet.logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
+        logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
         f = sleplet.slepian_methods.slepian_mesh_inverse(mesh_slepian, coefficient)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j] = sleplet.slepian_methods.slepian_mesh_forward(

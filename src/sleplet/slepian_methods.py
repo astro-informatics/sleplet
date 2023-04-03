@@ -1,9 +1,10 @@
 """Methods to work with Slepian coefficients."""
+import logging
+
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-import sleplet
 import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes._mesh_slepian_decomposition
@@ -14,6 +15,8 @@ import sleplet.slepian.slepian_limit_lat_lon
 import sleplet.slepian.slepian_polar_cap
 from sleplet.slepian.region import Region
 from sleplet.slepian.slepian_functions import SlepianFunctions
+
+logger = logging.getLogger(__name__)
 
 
 def choose_slepian_method(
@@ -35,7 +38,7 @@ def choose_slepian_method(
     """
     match region.region_type:
         case "polar":
-            sleplet.logger.info("polar cap region detected")
+            logger.info("polar cap region detected")
             return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
                 L,
                 region.theta_max,
@@ -43,7 +46,7 @@ def choose_slepian_method(
             )
 
         case "lim_lat_lon":
-            sleplet.logger.info("limited latitude longitude region detected")
+            logger.info("limited latitude longitude region detected")
             return sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon(
                 L,
                 theta_min=region.theta_min,
@@ -53,7 +56,7 @@ def choose_slepian_method(
             )
 
         case "arbitrary":
-            sleplet.logger.info("mask specified in file detected")
+            logger.info("mask specified in file detected")
             return sleplet.slepian.slepian_arbitrary.SlepianArbitrary(
                 L,
                 region.mask_name,
@@ -136,7 +139,7 @@ def compute_s_p_omega(
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
     for p in range(slepian.N):
         if p % L == 0:
-            sleplet.logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
+            logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
         sp[p] = ssht.inverse(
             slepian.eigenvectors[p],
             L,
