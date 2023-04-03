@@ -34,28 +34,6 @@ pip install -e .
 This will install two scripts `sphere` and `mesh` which can be used to generate
 the figures in [the figure section](#paper-figures).
 
-## Citing
-
-If you use `SLEPLET` in your research, please cite the paper.
-
-```bibtex
-@article{SLEPLET2023,
-  author    = {Roddy, Patrick J.},
-  title     = {{SLEPLET: Slepian scale-discretised wavelets in Python}},
-  journal   = {Journal of Open Source Software},
-  volume    = ,
-  number    = ,
-  pages     = ,
-  year      = 2023,
-  doi       = {},
-}
-```
-
-Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
-`SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394) in
-the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497) in
-mesh setting.
-
 ## Bandlimit
 
 The bandlimit is set as `L` throughout the code and the CLIs. The default value
@@ -93,6 +71,28 @@ The default region is the `south_america` arbitrary region.
   - for a Slepian `limited latitude longitude region`
 - `SLEPIAN_MASK`
   - for an arbitrary Slepian region, currently `africa`/`south_america` supported
+
+## Citing
+
+If you use `SLEPLET` in your research, please cite the paper.
+
+```bibtex
+@article{SLEPLET2023,
+  author    = {Roddy, Patrick J.},
+  title     = {{SLEPLET: Slepian scale-discretised wavelets in Python}},
+  journal   = {Journal of Open Source Software},
+  volume    = ,
+  number    = ,
+  pages     = ,
+  year      = 2023,
+  doi       = {},
+}
+```
+
+Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
+`SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394)
+in the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497)
+in the mesh setting.
 
 ## Paper Figures
 
