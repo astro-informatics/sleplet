@@ -1,4 +1,5 @@
 """Contains the `SlepianPolarCap` class."""
+import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
 from pathlib import Path
@@ -188,13 +189,15 @@ class SlepianPolarCap(SlepianFunctions):
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
+
+        ncpu = sleplet.logger.info(f"Number of CPU={int(os.getenv('NCPU', '4'))}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L - m,
-            sleplet.NCPU,
+            ncpu,
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=sleplet.NCPU) as e:
+        with ThreadPoolExecutor(max_workers=ncpu) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

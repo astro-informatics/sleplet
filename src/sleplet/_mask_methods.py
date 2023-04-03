@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import numpy as np
@@ -102,12 +103,12 @@ def ensure_masked_flm_bandlimited(
 def create_default_region() -> "sleplet.slepian.region.Region":
     """Creates default region."""
     return sleplet.slepian.region.Region(
-        gap=sleplet.POLAR_GAP,
-        mask_name=sleplet.SLEPIAN_MASK,
-        phi_max=np.deg2rad(sleplet.PHI_MAX),
-        phi_min=np.deg2rad(sleplet.PHI_MIN),
-        theta_max=np.deg2rad(sleplet.THETA_MAX),
-        theta_min=np.deg2rad(sleplet.THETA_MIN),
+        gap=os.getenv("POLAR_GAP", "False").lower() == "true",
+        mask_name=os.getenv("SLEPIAN_MASK", "south_america"),
+        phi_max=np.deg2rad(int(os.getenv("PHI_MAX", "360"))),
+        phi_min=np.deg2rad(int(os.getenv("PHI_MIN", "0"))),
+        theta_max=np.deg2rad(int(os.getenv("THETA_MAX", "180"))),
+        theta_min=np.deg2rad(int(os.getenv("THETA_MIN", "0"))),
     )
 
 

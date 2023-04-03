@@ -38,6 +38,15 @@ class Region:
 
     def _identify_region(self) -> None:
         """Identify region type based on the angle inputs or a mask name."""
+        sleplet.logger.info(
+            "Slepian region values detected: "
+            f"POLAR_GAP={self.gap}, "
+            f"THETA_MAX={self.theta_max}, "
+            f"THETA_MIN={self.theta_min}, "
+            f"PHI_MAX={self.phi_max}, "
+            f"PHI_MIN={self.phi_min}, "
+            f"SLEPIAN_MASK={self.mask_name}.",
+        )
         if sleplet._bool_methods.is_polar_cap(
             self.phi_min,
             self.phi_max,
