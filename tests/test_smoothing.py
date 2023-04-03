@@ -1,6 +1,6 @@
 from numpy.testing import assert_array_equal, assert_raises
 
-from sleplet.functions import Earth
+import sleplet
 
 L = 128
 SMOOTHING = 2
@@ -8,8 +8,8 @@ SMOOTHING = 2
 
 def test_smoothing_changes_flm() -> None:
     """Tests the addition of Gaussian noise changes the coefficients."""
-    earth = Earth(L)
-    earth_smoothed = Earth(L, smoothing=SMOOTHING)
+    earth = sleplet.functions.Earth(L)
+    earth_smoothed = sleplet.functions.Earth(L, smoothing=SMOOTHING)
     assert_raises(
         AssertionError,
         assert_array_equal,

@@ -1,12 +1,14 @@
+import logging
 from argparse import ArgumentParser, Namespace
 
-import sleplet
 import sleplet._class_lists
 import sleplet._string_methods
 import sleplet.meshes.mesh
 import sleplet.meshes.mesh_coefficients
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_mesh
+
+_logger = logging.getLogger(__name__)
 
 
 def valid_meshes(mesh_name: str) -> str:
@@ -69,6 +71,12 @@ def read_args() -> Namespace:
         help="flag turns off normalisation for plot",
     )
     parser.add_argument(
+        "--version",
+        "-v",
+        action="version",
+        version=sleplet.__version__,
+    )
+    parser.add_argument(
         "--zoom",
         "-z",
         action="store_true",
@@ -97,7 +105,7 @@ def plot(
 
 def main() -> None:
     args = read_args()
-    sleplet.logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
+    _logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
     mesh = sleplet.meshes.mesh.Mesh(args.function, zoom=args.zoom)

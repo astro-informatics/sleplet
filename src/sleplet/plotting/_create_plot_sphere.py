@@ -1,5 +1,5 @@
+import logging
 from dataclasses import KW_ONLY, field
-from pathlib import Path
 
 import cmocean
 import numpy as np
@@ -10,16 +10,15 @@ from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._plotly_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.plot_methods
 import sleplet.slepian.region
 
-_fig_path = Path(__file__).resolve().parents[1] / "_figures"
+_logger = logging.getLogger(__name__)
 
-MW_POLE_LENGTH = 2
+_MW_POLE_LENGTH = 2
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -117,13 +116,15 @@ class PlotSphere:
 
         fig = Figure(data=data, layout=layout)
 
-        html_filename = str(_fig_path / "html" / f"{self.filename}.html")
+        html_filename = str(sleplet._vars.FIG_PATH / "html" / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename)
 
         for file_type in {"png", "pdf"}:
-            filename = str(_fig_path / file_type / f"{self.filename}.{file_type}")
-            sleplet.logger.info(f"saving {filename}")
+            filename = str(
+                sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
+            )
+            _logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     @staticmethod
@@ -148,7 +149,7 @@ class PlotSphere:
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
         if method == "MW_pole":
-            if len(f) == MW_POLE_LENGTH:
+            if len(f) == _MW_POLE_LENGTH:
                 f, _ = f
             else:
                 f, _, _ = f

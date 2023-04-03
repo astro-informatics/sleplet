@@ -1,3 +1,4 @@
+import logging
 from dataclasses import KW_ONLY
 
 import numpy as np
@@ -5,17 +6,18 @@ import pyssht as ssht
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._integration_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.slepian.slepian_functions
+from sleplet.slepian.slepian_functions import SlepianFunctions
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianDecomposition:
     L: int
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions
+    slepian: SlepianFunctions
     _: KW_ONLY
     f: npt.NDArray[np.complex_] | None = None
     flm: npt.NDArray[np.complex_ | np.float_] | None = None
@@ -99,13 +101,13 @@ class SlepianDecomposition:
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""
         if isinstance(self.flm, np.ndarray):
-            sleplet.logger.info("harmonic sum method selected")
+            _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
         elif isinstance(self.f, np.ndarray) and not isinstance(self.mask, np.ndarray):
-            sleplet.logger.info("integrating the whole sphere method selected")
+            _logger.info("integrating the whole sphere method selected")
             self.method = "integrate_sphere"
         elif isinstance(self.f, np.ndarray):
-            sleplet.logger.info("integrating a region on the sphere method selected")
+            _logger.info("integrating a region on the sphere method selected")
             self.method = "integrate_region"
         else:
             raise RuntimeError(

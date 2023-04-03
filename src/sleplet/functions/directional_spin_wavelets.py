@@ -1,4 +1,6 @@
 """Contains the `DirectionalSpinWavelets` class."""
+import logging
+
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
@@ -6,10 +8,11 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max, wavelet_tiling
 
-import sleplet
 import sleplet._string_methods
 import sleplet._validation
 from sleplet.functions.flm import Flm
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -35,9 +38,9 @@ class DirectionalSpinWavelets(Flm):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        sleplet.logger.info("start computing wavelets")
+        _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
-        sleplet.logger.info("finish computing wavelets")
+        _logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
 

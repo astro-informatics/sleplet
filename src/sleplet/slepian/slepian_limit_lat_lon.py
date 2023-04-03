@@ -1,5 +1,4 @@
 """Contains the `SlepianLimitLatLon` class."""
-from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
@@ -15,8 +14,6 @@ import sleplet._validation
 import sleplet._vars
 import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
-
-_data_path = Path(__file__).resolve().parents[1] / "_data"
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -69,8 +66,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            np.save(_data_path / eval_loc, eigenvalues)
-            np.save(_data_path / evec_loc, eigenvectors[: self.N])
+            np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
+            np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802

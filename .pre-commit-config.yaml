@@ -1,10 +1,10 @@
 repos:
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.259
+    rev: v0.0.260
     hooks:
       - id: ruff
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.4.2
+    rev: v1.5.1
     hooks:
       - id: forbid-tabs
   - repo: https://github.com/pappasam/toml-sort

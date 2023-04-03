@@ -1,10 +1,10 @@
-from pathlib import Path
+import logging
+import os
 
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 
-import sleplet
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
 import sleplet._vars
@@ -12,10 +12,10 @@ import sleplet.harmonic_methods
 import sleplet.meshes.mesh
 import sleplet.slepian.region
 
-_data_path = Path(__file__).resolve().parent / "_data"
+_logger = logging.getLogger(__name__)
 
-AFRICA_RANGE = np.deg2rad(41)
-SOUTH_AMERICA_RANGE = np.deg2rad(40)
+_AFRICA_RANGE = np.deg2rad(41)
+_SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 
 def create_mask_region(
@@ -38,7 +38,7 @@ def create_mask_region(
 
     match region.region_type:
         case "arbitrary":
-            sleplet.logger.info("loading and checking shape of provided mask")
+            _logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
             mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
@@ -47,7 +47,7 @@ def create_mask_region(
             )
 
         case "lim_lat_lon":
-            sleplet.logger.info("creating limited latitude longitude mask")
+            _logger.info("creating limited latitude longitude mask")
             mask = (
                 (thetas >= region.theta_min)
                 & (thetas <= region.theta_max)
@@ -56,10 +56,10 @@ def create_mask_region(
             )
 
         case "polar":
-            sleplet.logger.info("creating polar cap mask")
+            _logger.info("creating polar cap mask")
             mask = thetas <= region.theta_max
             if region.gap:
-                sleplet.logger.info("creating polar gap mask")
+                _logger.info("creating polar gap mask")
                 mask += thetas >= np.pi - region.theta_max
     return mask
 
@@ -102,12 +102,12 @@ def ensure_masked_flm_bandlimited(
 def create_default_region() -> "sleplet.slepian.region.Region":
     """Creates default region."""
     return sleplet.slepian.region.Region(
-        gap=sleplet.POLAR_GAP,
-        mask_name=sleplet.SLEPIAN_MASK,
-        phi_max=np.deg2rad(sleplet.PHI_MAX),
-        phi_min=np.deg2rad(sleplet.PHI_MIN),
-        theta_max=np.deg2rad(sleplet.THETA_MAX),
-        theta_min=np.deg2rad(sleplet.THETA_MIN),
+        gap=os.getenv("POLAR_GAP", "False").lower() == "true",
+        mask_name=os.getenv("SLEPIAN_MASK", "south_america"),
+        phi_max=np.deg2rad(int(os.getenv("PHI_MAX", "360"))),
+        phi_min=np.deg2rad(int(os.getenv("PHI_MIN", "0"))),
+        theta_max=np.deg2rad(int(os.getenv("THETA_MAX", "180"))),
+        theta_min=np.deg2rad(int(os.getenv("THETA_MIN", "0"))),
     )
 
 
@@ -164,7 +164,7 @@ def _create_africa_mask(
         Grid=True,
         Method=sleplet._vars.SAMPLING_SCHEME,
     )
-    return (thetas <= AFRICA_RANGE) & (earth_f >= 0)
+    return (thetas <= _AFRICA_RANGE) & (earth_f >= 0)
 
 
 def _create_south_america_mask(
@@ -184,7 +184,7 @@ def _create_south_america_mask(
         Grid=True,
         Method=sleplet._vars.SAMPLING_SCHEME,
     )
-    return (thetas <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
+    return (thetas <= _SOUTH_AMERICA_RANGE) & (earth_f >= 0)
 
 
 def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
@@ -196,5 +196,5 @@ def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
         mask = _create_south_america_mask(L, earth_flm)
     else:
         raise ValueError(f"Mask name {mask_name} not recognised")
-    np.save(_data_path / f"slepian_masks_{mask_name}", mask)
+    np.save(sleplet._vars.DATA_PATH / f"slepian_masks_{mask_name}", mask)
     return mask

@@ -12,12 +12,12 @@ import sleplet._integration_methods
 import sleplet._vars
 import sleplet.meshes.mesh
 
-AFRICA_ALPHA = np.deg2rad(44)
-AFRICA_BETA = np.deg2rad(87)
-AFRICA_GAMMA = np.deg2rad(341)
-SOUTH_AMERICA_ALPHA = np.deg2rad(54)
-SOUTH_AMERICA_BETA = np.deg2rad(108)
-SOUTH_AMERICA_GAMMA = np.deg2rad(63)
+_AFRICA_ALPHA = np.deg2rad(44)
+_AFRICA_BETA = np.deg2rad(87)
+_AFRICA_GAMMA = np.deg2rad(341)
+_SOUTH_AMERICA_ALPHA = np.deg2rad(54)
+_SOUTH_AMERICA_BETA = np.deg2rad(108)
+_SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
 def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
@@ -189,9 +189,9 @@ def rotate_earth_to_south_america(
     """
     return ssht.rotate_flms(
         earth_flm,
-        SOUTH_AMERICA_ALPHA,
-        SOUTH_AMERICA_BETA,
-        SOUTH_AMERICA_GAMMA,
+        _SOUTH_AMERICA_ALPHA,
+        _SOUTH_AMERICA_BETA,
+        _SOUTH_AMERICA_GAMMA,
         L,
     )
 
@@ -210,4 +210,4 @@ def rotate_earth_to_africa(
     Returns:
         The spherical harmonic coefficients of the Earth centered on Africa.
     """
-    return ssht.rotate_flms(earth_flm, AFRICA_ALPHA, AFRICA_BETA, AFRICA_GAMMA, L)
+    return ssht.rotate_flms(earth_flm, _AFRICA_ALPHA, _AFRICA_BETA, _AFRICA_GAMMA, L)

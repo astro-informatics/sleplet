@@ -3,7 +3,6 @@ from argparse import ArgumentParser
 import numpy as np
 from numpy import typing as npt
 
-from sleplet import logger
 from sleplet.meshes import Mesh, MeshSlepianField, MeshSlepianWavelets
 from sleplet.noise import (
     compute_slepian_mesh_sigma_j,
@@ -75,7 +74,7 @@ def _denoising_mesh_slepian(
 
 def main(mesh_name: str, snr: float, sigma: int) -> None:
     """Denoising demo using Slepian wavelets."""
-    logger.info(f"SNR={snr}, n_sigma={sigma}")
+    print(f"SNR={snr}, n_sigma={sigma}")
     # setup
     mesh = Mesh(mesh_name, zoom=True)
 

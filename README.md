@@ -93,15 +93,18 @@ done
 ```python
 import numpy as np
 import pyssht as ssht
-
-from sleplet.functions import HarmonicGaussian
-from sleplet.plotting import PlotSphere
+import sleplet
 
 for ell in range(2, 0, -1):
-    f = HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
     flm = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
     f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
-    PlotSphere(f_sphere, f.L, f"fig_1_ell_{ell}", annotations=[]).execute()
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_1_ell_{ell}",
+        annotations=[],
+    ).execute()
 ```
 
 #### Sifting Convolution on the Sphere: Fig. 2
@@ -112,15 +115,12 @@ sphere earth -L 128
 
 ```python
 import pyssht as ssht
+import sleplet
 
-from sleplet.functions import Earth
-from sleplet.harmonic_methods import rotate_earth_to_south_america
-from sleplet.plotting import PlotSphere
-
-f = Earth(L=128)
-flm = rotate_earth_to_south_america(f.coefficients, f.L)
+f = sleplet.functions.Earth(128)
+flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
 f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, "fig_2").execute()
+sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2").execute()
 ```
 
 #### Sifting Convolution on the Sphere: Fig. 3
@@ -133,18 +133,15 @@ done
 
 ```python
 import pyssht as ssht
-
-from sleplet.functions import Earth, HarmonicGaussian
-from sleplet.harmonic_methods import rotate_earth_to_south_america
-from sleplet.plotting import PlotSphere
+import sleplet
 
 for ell in range(2, 0, -1):
-    f = HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
-    g = Earth(L=128)
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
+    g = sleplet.functions.Earth(128)
     flm = f.convolve(f.coefficients, g.coefficients.conj())
-    flm_rot = rotate_earth_to_south_america(flm, f.L)
+    flm_rot = sleplet.harmonic_methods.rotate_earth_to_south_america(flm, f.L)
     f_sphere = ssht.inverse(flm_rot, f.L, Method="MWSS")
-    PlotSphere(f_sphere, f.L, f"fig_3_ell_{ell}").execute()
+    sleplet.plotting.PlotSphere(f_sphere, f.L, f"fig_3_ell_{ell}").execute()
 ```
 
 ### Slepian Scale-Discretised Wavelets on the Sphere
@@ -169,23 +166,24 @@ sphere slepian_south_america -L 128 -s 2 -u
 
 ```python
 import pyssht as ssht
-
-from sleplet.functions import Earth, SlepianSouthAmerica
-from sleplet.harmonic_methods import rotate_earth_to_south_america
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
 # a
-f = Earth(L=128, smoothing=2)
-flm = rotate_earth_to_south_america(f.coefficients, f.L)
+f = sleplet.functions.Earth(128, smoothing=2)
+flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
 f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, "fig_3_a", normalise=False).execute()
+sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_a", normalise=False).execute()
 # b
-region = Region(mask_name="south_america")
-g = SlepianSouthAmerica(L=128, region=region, smoothing=2)
-g_sphere = slepian_inverse(g.coefficients, g.L, g.slepian)
-PlotSphere(g_sphere, g.L, "fig_3_b", normalise=False, region=g.region).execute()
+region = sleplet.slepian.Region(mask_name="south_america")
+g = sleplet.functions.SlepianSouthAmerica(128, region=region, smoothing=2)
+g_sphere = sleplet.slepian_methods.slepian_inverse(g.coefficients, g.L, g.slepian)
+sleplet.plotting.PlotSphere(
+    g_sphere,
+    g.L,
+    "fig_3_b",
+    normalise=False,
+    region=g.region,
+).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 4
@@ -198,17 +196,18 @@ done
 ```
 
 ```python
-from sleplet.functions import Slepian
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
-region = Region(mask_name="south_america")
+region = sleplet.slepian.Region(mask_name="south_america")
 for p in [0, 9, 24, 49, 99, 199]:
-    f = Slepian(L=128, region=region, rank=p)
-    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    PlotSphere(
-        f_sphere, f.L, f"fig_4_p_{p}", normalise=False, region=f.region
+    f = sleplet.functions.Slepian(128, region=region, rank=p)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_4_p_{p}",
+        normalise=False,
+        region=f.region,
     ).execute()
 ```
 
@@ -231,17 +230,18 @@ done
 ```
 
 ```python
-from sleplet.functions import SlepianWavelets
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
-region = Region(mask_name="south_america")
+region = sleplet.slepian.Region(mask_name="south_america")
 for j in [None, *list(range(5))]:
-    f = SlepianWavelets(L=128, region=region, B=3, j_min=2, j=j)
-    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    PlotSphere(
-        f_sphere, f.L, f"fig_6_j_{j}", normalise=False, region=f.region
+    f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=j)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_6_j_{j}",
+        normalise=False,
+        region=f.region,
     ).execute()
 ```
 
@@ -258,19 +258,25 @@ done
 ```
 
 ```python
-from sleplet.functions import SlepianWaveletCoefficientsSouthAmerica
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
-region = Region(mask_name="south_america")
+region = sleplet.slepian.Region(mask_name="south_america")
 for j in [None, *list(range(5))]:
-    f = SlepianWaveletCoefficientsSouthAmerica(
-        L=128, region=region, B=3, j_min=2, j=j, smoothing=2
+    f = sleplet.functions.SlepianWaveletCoefficientsSouthAmerica(
+        128,
+        region=region,
+        B=3,
+        j_min=2,
+        j=j,
+        smoothing=2,
     )
-    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    PlotSphere(
-        f_sphere, f.L, f"fig_7_j_{j}", normalise=False, region=f.region
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_7_j_{j}",
+        normalise=False,
+        region=f.region,
     ).execute()
 ```
 
@@ -287,19 +293,20 @@ done
 ```
 
 ```python
-from sleplet.functions import SlepianSouthAmerica
-from sleplet.plot_methods import compute_amplitude_for_noisy_sphere_plots
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
 # a
-region = Region(mask_name="south_america")
-f = SlepianSouthAmerica(L=128, region=region, noise=-10, smoothing=2)
-f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-amplitude = compute_amplitude_for_noisy_sphere_plots(f)
-PlotSphere(
-    f_sphere, f.L, "fig_8_a", amplitude=amplitude, normalise=False, region=f.region
+region = sleplet.slepian.Region(mask_name="south_america")
+f = sleplet.functions.SlepianSouthAmerica(128, region=region, noise=-10, smoothing=2)
+f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(f)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_8_a",
+    amplitude=amplitude,
+    normalise=False,
+    region=f.region,
 ).execute()
 ```
 
@@ -308,30 +315,31 @@ PlotSphere(
 ```sh
 export SLEPIAN_MASK="africa"
 # a
-sphere earth -L 128 -s 2 -u -v africa
+sphere earth -L 128 -p africa -s 2 -u
 # b
 sphere slepian_africa -L 128 -s 2 -u
 ```
 
 ```python
 import pyssht as ssht
-
-from sleplet.functions import Earth, SlepianAfrica
-from sleplet.harmonic_methods import rotate_earth_to_africa
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
 # a
-f = Earth(L=128, smoothing=2)
-flm = rotate_earth_to_africa(f.coefficients, f.L)
+f = sleplet.functions.Earth(128, smoothing=2)
+flm = sleplet.harmonic_methods.rotate_earth_to_africa(f.coefficients, f.L)
 f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, "fig_9_a", normalise=False).execute()
+sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_9_a", normalise=False).execute()
 # b
-region = Region(mask_name="africa")
-g = SlepianAfrica(L=128, region=region, smoothing=2)
-g_sphere = slepian_inverse(g.coefficients, g.L, g.slepian)
-PlotSphere(g_sphere, g.L, "fig_9_b", normalise=False, region=g.region).execute()
+region = sleplet.slepian.Region(mask_name="africa")
+g = sleplet.functions.SlepianAfrica(128, region=region, smoothing=2)
+g_sphere = sleplet.slepian_methods.slepian_inverse(g.coefficients, g.L, g.slepian)
+sleplet.plotting.PlotSphere(
+    g_sphere,
+    g.L,
+    "fig_9_b",
+    normalise=False,
+    region=g.region,
+).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 10
@@ -350,17 +358,18 @@ done
 ```
 
 ```python
-from sleplet.functions import Slepian
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
-region = Region(mask_name="africa")
+region = sleplet.slepian.Region(mask_name="africa")
 for p in [0, 9, 24, 49, 99, 199]:
-    f = Slepian(L=128, region=region, rank=p)
-    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    PlotSphere(
-        f_sphere, f.L, f"fig_11_p{p}", normalise=False, region=f.region
+    f = sleplet.functions.Slepian(128, region=region, rank=p)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_11_p{p}",
+        normalise=False,
+        region=f.region,
     ).execute()
 ```
 
@@ -377,17 +386,18 @@ done
 ```
 
 ```python
-from sleplet.functions import SlepianWavelets
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
-region = Region(mask_name="africa")
+region = sleplet.slepian.Region(mask_name="africa")
 for j in [None, *list(range(6))]:
-    f = SlepianWavelets(L=128, region=region, B=3, j_min=2, j=j)
-    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    PlotSphere(
-        f_sphere, f.L, f"fig_12_j_{j}", normalise=False, region=f.region
+    f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=j)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_12_j_{j}",
+        normalise=False,
+        region=f.region,
     ).execute()
 ```
 
@@ -404,19 +414,25 @@ done
 ```
 
 ```python
-from sleplet.functions import SlepianWaveletCoefficientsAfrica
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
-region = Region(mask_name="africa")
+region = sleplet.slepian.Region(mask_name="africa")
 for j in [None, *list(range(6))]:
-    f = SlepianWaveletCoefficientsAfrica(
-        L=128, region=region, B=3, j_min=2, j=j, smoothing=2
+    f = sleplet.functions.SlepianWaveletCoefficientsAfrica(
+        128,
+        region=region,
+        B=3,
+        j_min=2,
+        j=j,
+        smoothing=2,
     )
-    f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-    PlotSphere(
-        f_sphere, f.L, f"fig_13_j_{j}", normalise=False, region=f.region
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_13_j_{j}",
+        normalise=False,
+        region=f.region,
     ).execute()
 ```
 
@@ -433,19 +449,20 @@ done
 ```
 
 ```python
-from sleplet.functions import SlepianAfrica
-from sleplet.plot_methods import compute_amplitude_for_noisy_sphere_plots
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
 # a
-region = Region(mask_name="africa")
-f = SlepianAfrica(L=128, region=region, noise=-10, smoothing=2)
-f_sphere = slepian_inverse(f.coefficients, f.L, f.slepian)
-amplitude = compute_amplitude_for_noisy_sphere_plots(f)
-PlotSphere(
-    f_sphere, f.L, "fig_14_a", amplitude=amplitude, normalise=False, region=f.region
+region = sleplet.slepian.Region(mask_name="africa")
+f = sleplet.functions.SlepianAfrica(128, region=region, noise=-10, smoothing=2)
+f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(f)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_14_a",
+    amplitude=amplitude,
+    normalise=False,
+    region=f.region,
 ).execute()
 ```
 
@@ -462,15 +479,13 @@ done
 ```
 
 ```python
-from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes import Mesh, MeshBasisFunctions
-from sleplet.plotting import PlotMesh
+import sleplet
 
-mesh = Mesh("homer")
+mesh = sleplet.meshes.Mesh("homer")
 for r in range(2, 10):
-    f = MeshBasisFunctions(mesh, rank=r)
-    f_mesh = mesh_inverse(f.mesh, f.coefficients)
-    PlotMesh(mesh, f"fig_2_r_{r}", f_mesh, normalise=False).execute()
+    f = sleplet.meshes.MeshBasisFunctions(mesh, rank=r)
+    f_mesh = sleplet.harmonic_methods.mesh_inverse(f.mesh, f.coefficients)
+    sleplet.plotting.PlotMesh(mesh, f"fig_2_r_{r}", f_mesh, normalise=False).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 4
@@ -494,15 +509,22 @@ done
 ```
 
 ```python
-from sleplet.meshes import Mesh, MeshSlepianFunctions
-from sleplet.plotting import PlotMesh
-from sleplet.slepian_methods import slepian_mesh_inverse
+import sleplet
 
-mesh = Mesh("homer", zoom=True)
+mesh = sleplet.meshes.Mesh("homer", zoom=True)
 for p in [0, 9, 24, 49, 99, 199]:
-    f = MeshSlepianFunctions(mesh, rank=p)
-    f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
-    PlotMesh(mesh, f"fig_6_p_{p}", f_mesh, normalise=False, region=True).execute()
+    f = sleplet.meshes.MeshSlepianFunctions(mesh, rank=p)
+    f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
+        f.mesh_slepian,
+        f.coefficients,
+    )
+    sleplet.plotting.PlotMesh(
+        mesh,
+        f"fig_6_p_{p}",
+        f_mesh,
+        normalise=False,
+        region=True,
+    ).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 7
@@ -523,15 +545,22 @@ done
 ```
 
 ```python
-from sleplet.meshes import Mesh, MeshSlepianWavelets
-from sleplet.plotting import PlotMesh
-from sleplet.slepian_methods import slepian_mesh_inverse
+import sleplet
 
-mesh = Mesh("homer", zoom=True)
+mesh = sleplet.meshes.Mesh("homer", zoom=True)
 for j in [None, *list(range(5))]:
-    f = MeshSlepianWavelets(mesh, B=3, j_min=2, j=j)
-    f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
-    PlotMesh(mesh, f"fig_8_j_{j}", f_mesh, normalise=False, region=True).execute()
+    f = sleplet.meshes.MeshSlepianWavelets(mesh, B=3, j_min=2, j=j)
+    f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
+        f.mesh_slepian,
+        f.coefficients,
+    )
+    sleplet.plotting.PlotMesh(
+        mesh,
+        f"fig_8_j_{j}",
+        f_mesh,
+        normalise=False,
+        region=True,
+    ).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 9
@@ -541,14 +570,12 @@ mesh homer -m field -u
 ```
 
 ```python
-from sleplet.harmonic_methods import mesh_inverse
-from sleplet.meshes import Mesh, MeshField
-from sleplet.plotting import PlotMesh
+import sleplet
 
-mesh = Mesh("homer")
-f = MeshField(mesh)
-f_mesh = mesh_inverse(f.mesh, f.coefficients)
-PlotMesh(mesh, "fig_9", f_mesh, normalise=False).execute()
+mesh = sleplet.meshes.Mesh("homer")
+f = sleplet.meshes.MeshField(mesh)
+f_mesh = sleplet.harmonic_methods.mesh_inverse(f.mesh, f.coefficients)
+sleplet.plotting.PlotMesh(mesh, "fig_9", f_mesh, normalise=False).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 10
@@ -563,15 +590,22 @@ done
 ```
 
 ```python
-from sleplet.meshes import Mesh, MeshSlepianWaveletCoefficients
-from sleplet.plotting import PlotMesh
-from sleplet.slepian_methods import slepian_mesh_inverse
+import sleplet
 
-mesh = Mesh("homer", zoom=True)
+mesh = sleplet.meshes.Mesh("homer", zoom=True)
 for j in [None, *list(range(5))]:
-    f = MeshSlepianWaveletCoefficients(mesh, B=3, j_min=2, j=j)
-    f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
-    PlotMesh(mesh, f"fig_10_j_{j}", f_mesh, normalise=False, region=True).execute()
+    f = sleplet.meshes.MeshSlepianWaveletCoefficients(mesh, B=3, j_min=2, j=j)
+    f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
+        f.mesh_slepian,
+        f.coefficients,
+    )
+    sleplet.plotting.PlotMesh(
+        mesh,
+        f"fig_10_j_{j}",
+        f_mesh,
+        normalise=False,
+        region=True,
+    ).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 11
@@ -586,22 +620,30 @@ python -m examples.mesh.denoising_slepian_mesh homer -n -5 -s 2
 ```
 
 ```python
-from sleplet.meshes import Mesh, MeshSlepianField
-from sleplet.plot_methods import compute_amplitude_for_noisy_mesh_plots
-from sleplet.plotting import PlotMesh
-from sleplet.slepian_methods import slepian_mesh_inverse
+import sleplet
 
-mesh = Mesh("homer", zoom=True)
+mesh = sleplet.meshes.Mesh("homer", zoom=True)
 # a
-f = MeshSlepianField(mesh)
-f_mesh = slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
-PlotMesh(mesh, "fig_11_a", f_mesh, normalise=False, region=True).execute()
+f = sleplet.meshes.MeshSlepianField(mesh)
+f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
+sleplet.plotting.PlotMesh(
+    mesh,
+    "fig_11_a",
+    f_mesh,
+    normalise=False,
+    region=True,
+).execute()
 # b
-g = MeshSlepianField(mesh, noise=-5)
-g_mesh = slepian_mesh_inverse(g.mesh_slepian, g.coefficients)
-amplitude = compute_amplitude_for_noisy_mesh_plots(g)
-PlotMesh(
-    mesh, "fig_11_b", g_mesh, amplitude=amplitude, normalise=False, region=True
+g = sleplet.meshes.MeshSlepianField(mesh, noise=-5)
+g_mesh = sleplet.slepian_methods.slepian_mesh_inverse(g.mesh_slepian, g.coefficients)
+amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_mesh_plots(g)
+sleplet.plotting.PlotMesh(
+    mesh,
+    "fig_11_b",
+    g_mesh,
+    amplitude=amplitude,
+    normalise=False,
+    region=True,
 ).execute()
 ```
 
@@ -637,16 +679,18 @@ done
 
 ```python
 import pyssht as ssht
-
-from sleplet.functions import SphericalHarmonic
-from sleplet.plotting import PlotSphere
+import sleplet
 
 for ell in range(5):
     for m in range(ell + 1):
-        f = SphericalHarmonic(L=128, ell=ell, m=m)
+        f = sleplet.functions.SphericalHarmonic(128, ell=ell, m=m)
         f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-        PlotSphere(
-            f_sphere, f.L, f"fig_2_1_ell_{ell}_m_{m}", normalise=False, unzeropad=True
+        sleplet.plotting.PlotSphere(
+            f_sphere,
+            f.L,
+            f"fig_2_1_ell_{ell}_m_{m}",
+            normalise=False,
+            unzeropad=True,
         ).execute()
 ```
 
@@ -666,19 +710,22 @@ sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0.25 -b 0.25 -g 0.25
 ```python
 import numpy as np
 import pyssht as ssht
-
-from sleplet.functions import ElongatedGaussian
-from sleplet.plotting import PlotSphere
+import sleplet
 
 # a
-f = ElongatedGaussian(L=128, p_sigma=0.1, t_sigma=0.1)
+f = sleplet.functions.ElongatedGaussian(128, p_sigma=0.1, t_sigma=0.1)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, "fig_2_2_a", annotations=[]).execute()
+sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2_2_a", annotations=[]).execute()
 # b-d
 for a, b, g in [(0, 0, 0.25), (0, 0.25, 0.25), (0.25, 0.25, 0.25)]:
     glm_rot = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
     g_sphere = ssht.inverse(glm_rot, f.L, Method="MWSS")
-    PlotSphere(g_sphere, f.L, f"fig_2_2_a_{a}_b_{b}_g_{g}", annotations=[]).execute()
+    sleplet.plotting.PlotSphere(
+        g_sphere,
+        f.L,
+        f"fig_2_2_a_{a}_b_{b}_g_{g}",
+        annotations=[],
+    ).execute()
 ```
 
 ##### Fig. 2.3
@@ -706,14 +753,17 @@ done
 
 ```python
 import pyssht as ssht
-
-from sleplet.functions import AxisymmetricWavelets
-from sleplet.plotting import PlotSphere
+import sleplet
 
 for j in [None, *list(range(4))]:
-    f = AxisymmetricWavelets(L=128, B=3, j_min=2, j=j)
+    f = sleplet.functions.AxisymmetricWavelets(128, B=3, j_min=2, j=j)
     f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-    PlotSphere(f_sphere, f.L, f"fig_2_5_j_{j}", normalise=False).execute()
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_2_5_j_{j}",
+        normalise=False,
+    ).execute()
 ```
 
 ##### Fig. 2.6
@@ -748,18 +798,16 @@ sphere gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 ```python
 import numpy as np
 import pyssht as ssht
-
-from sleplet.functions import Gaussian
-from sleplet.plotting import PlotSphere
+import sleplet
 
 # a
-f = Gaussian(L=128)
+f = sleplet.functions.Gaussian(128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, "fig_3_1_a", annotations=[]).execute()
+sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_1_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
-PlotSphere(g_sphere, f.L, "fig_3_1_b", annotations=[]).execute()
+sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_1_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.2
@@ -774,18 +822,16 @@ sphere squashed_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 ```python
 import numpy as np
 import pyssht as ssht
-
-from sleplet.functions import SquashedGaussian
-from sleplet.plotting import PlotSphere
+import sleplet
 
 # a
-f = SquashedGaussian(L=128)
+f = sleplet.functions.SquashedGaussian(128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, "fig_3_2_a", annotations=[]).execute()
+sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_2_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
-PlotSphere(g_sphere, f.L, "fig_3_2_b", annotations=[]).execute()
+sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_2_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.3
@@ -800,18 +846,16 @@ sphere elongated_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
 ```python
 import numpy as np
 import pyssht as ssht
-
-from sleplet.functions import ElongatedGaussian
-from sleplet.plotting import PlotSphere
+import sleplet
 
 # a
-f = ElongatedGaussian(L=128)
+f = sleplet.functions.ElongatedGaussian(128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-PlotSphere(f_sphere, f.L, "fig_3_3_a", annotations=[]).execute()
+sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_3_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = ssht.inverse(glm_trans, f.L, Method="MWSS")
-PlotSphere(g_sphere, f.L, "fig_3_3_b", annotations=[]).execute()
+sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_3_b", annotations=[]).execute()
 ```
 
 ##### Fig. 3.4
@@ -826,14 +870,17 @@ done
 
 ```python
 import pyssht as ssht
-
-from sleplet.functions import HarmonicGaussian
-from sleplet.plotting import PlotSphere
+import sleplet
 
 for ell in range(2, 0, -1):
-    f = HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
     f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
-    PlotSphere(f_sphere, f.L, f"fig_3_4_ell_{ell}", annotations=[]).execute()
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_3_4_ell_{ell}",
+        annotations=[],
+    ).execute()
 ```
 
 ##### Fig. 3.5

@@ -1,7 +1,8 @@
 """Contains the `SlepianArbitrary` class."""
+import logging
+import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
-from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
@@ -9,7 +10,6 @@ from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._array_methods
 import sleplet._data.setup_pooch
 import sleplet._integration_methods
@@ -17,13 +17,14 @@ import sleplet._mask_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
+import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
-_data_path = Path(__file__).resolve().parents[1] / "_data"
+_logger = logging.getLogger(__name__)
 
-SAMPLES = 2
+_SAMPLES = 2
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -35,7 +36,7 @@ class SlepianArbitrary(SlepianFunctions):
     _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:
-        self.resolution = SAMPLES * self.L
+        self.resolution = _SAMPLES * self.L
         super().__post_init_post_parse__()
 
     def _create_fn_name(self) -> str:
@@ -84,8 +85,8 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvalues,
             eigenvectors,
         ) = sleplet._slepian_arbitrary_methods.clean_evals_and_evecs(LA.eigh(D))
-        np.save(_data_path / eval_loc, eigenvalues)
-        np.save(_data_path / evec_loc, eigenvectors[: self.N])
+        np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
+        np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
@@ -112,20 +113,22 @@ class SlepianArbitrary(SlepianFunctions):
             ) = sleplet._parallel_methods.attach_to_shared_memory_block(D_i, shm_i_ext)
 
             for i in chunk:
-                sleplet.logger.info(f"start ell: {i}")
+                _logger.info(f"start ell: {i}")
                 self._matrix_helper(D_r_int, D_i_int, i)
-                sleplet.logger.info(f"finish ell: {i}")
+                _logger.info(f"finish ell: {i}")
 
             sleplet._parallel_methods.free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise effiency
+        ncpu = int(os.getenv("NCPU", "4"))
+        _logger.info(f"Number of CPU={ncpu}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L**2,
-            sleplet.NCPU,
+            ncpu,
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=sleplet.NCPU) as e:
+        with ThreadPoolExecutor(max_workers=ncpu) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
