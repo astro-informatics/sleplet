@@ -7,7 +7,6 @@ import sleplet
 import sleplet.functions
 import sleplet.meshes
 import sleplet.slepian
-from sleplet._vars import RANDOM_SEED
 
 ARRAY_DIM = 10
 L = 16
@@ -109,14 +108,14 @@ def slepian_wavelets_lim_lat_lon(
 @pytest.fixture(scope="session")
 def random_flm() -> npt.NDArray[np.complex_]:
     """Creates random flm."""
-    rng = default_rng(RANDOM_SEED)
+    rng = default_rng(sleplet._vars.RANDOM_SEED)
     return sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=1)
 
 
 @pytest.fixture(scope="session")
 def random_nd_flm() -> npt.NDArray[np.complex_]:
     """Creates multiple random flm."""
-    rng = default_rng(RANDOM_SEED)
+    rng = default_rng(sleplet._vars.RANDOM_SEED)
     return np.array(
         [
             sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=1)

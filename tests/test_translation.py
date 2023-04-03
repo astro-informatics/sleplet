@@ -6,7 +6,6 @@ from numpy.testing import assert_allclose, assert_equal, assert_raises
 
 import sleplet
 import sleplet.functions
-from sleplet._vars import RANDOM_SEED, SAMPLING_SCHEME
 
 L = 128
 THETA_MAX = np.pi / 3
@@ -22,7 +21,7 @@ def valid_betas() -> SearchStrategy[float]:
     return floats(min_value=0, max_value=1)
 
 
-@seed(RANDOM_SEED)
+@seed(sleplet._vars.RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(alpha_pi_frac=valid_alphas(), beta_pi_frac=valid_betas())
 def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
@@ -62,7 +61,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     thetas, _ = ssht.sample_positions(
         slepian_dirac_delta_polar_cap.L,
         Grid=True,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     assert_raises(
         AssertionError,
@@ -95,7 +94,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     thetas, _ = ssht.sample_positions(
         slepian_dirac_delta_lim_lat_lon.L,
         Grid=True,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     assert_raises(
         AssertionError,

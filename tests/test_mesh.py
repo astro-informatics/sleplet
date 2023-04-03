@@ -3,7 +3,6 @@ import pytest
 from numpy.testing import assert_allclose
 
 import sleplet
-from sleplet._integration_methods import integrate_whole_mesh
 
 
 def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
@@ -34,7 +33,7 @@ def test_orthonormality_over_mesh_full(mesh) -> None:
     )
     for i, phi_i in enumerate(mesh.basis_functions):
         for j, phi_j in enumerate(mesh.basis_functions):
-            orthonormality[i, j] = integrate_whole_mesh(
+            orthonormality[i, j] = sleplet._integration_methods.integrate_whole_mesh(
                 mesh.vertices,
                 mesh.faces,
                 phi_i,

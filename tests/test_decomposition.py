@@ -4,8 +4,6 @@ from numpy.testing import assert_allclose, assert_raises
 
 import sleplet
 import sleplet.slepian
-from sleplet._mask_methods import create_mask_region
-from sleplet._vars import SAMPLING_SCHEME
 
 
 def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
@@ -13,7 +11,7 @@ def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
     field = ssht.inverse(
         earth_polar_cap.coefficients,
         slepian_polar_cap.L,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     harmonic_sum_p = sleplet.slepian_methods.slepian_forward(
         slepian_polar_cap.L,
@@ -51,7 +49,7 @@ def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> No
     field = ssht.inverse(
         earth_lim_lat_lon.coefficients,
         slepian_lim_lat_lon.L,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     harmonic_sum_p = sleplet.slepian_methods.slepian_forward(
         slepian_lim_lat_lon.L,
@@ -99,9 +97,12 @@ def test_equality_to_harmonic_transform_polar(
     f_harmonic = ssht.inverse(
         earth_polar_cap.coefficients,
         slepian_polar_cap.L,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
-    mask = create_mask_region(slepian_polar_cap.L, slepian_polar_cap.region)
+    mask = sleplet._mask_methods.create_mask_region(
+        slepian_polar_cap.L,
+        slepian_polar_cap.region,
+    )
     assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=89)
 
 
@@ -123,9 +124,12 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
     f_harmonic = ssht.inverse(
         earth_lim_lat_lon.coefficients,
         slepian_lim_lat_lon.L,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
-    mask = create_mask_region(slepian_lim_lat_lon.L, slepian_lim_lat_lon.region)
+    mask = sleplet._mask_methods.create_mask_region(
+        slepian_lim_lat_lon.L,
+        slepian_lim_lat_lon.region,
+    )
     assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=248)
 
 
