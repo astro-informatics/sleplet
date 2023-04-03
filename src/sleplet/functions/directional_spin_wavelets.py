@@ -8,7 +8,6 @@ from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max, wavelet_tiling
 
-import sleplet
 import sleplet._string_methods
 import sleplet._validation
 from sleplet.functions.flm import Flm

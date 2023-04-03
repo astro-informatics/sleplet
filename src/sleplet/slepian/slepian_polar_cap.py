@@ -12,7 +12,6 @@ from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._data.setup_pooch
 import sleplet._mask_methods
 import sleplet._parallel_methods
