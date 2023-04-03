@@ -33,7 +33,7 @@ __all__ = [
 _logger = logging.getLogger(__name__)
 
 _formatter = logging.Formatter(
-    "[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",
+    "%(levelname)s [%(asctime)s] sleplet: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 _console_handler = logging.StreamHandler()

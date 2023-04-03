@@ -4,7 +4,6 @@ from numpy import typing as npt
 from numpy.random import default_rng
 from numpy.testing import assert_equal
 
-from sleplet import logger
 from sleplet.functions import AxisymmetricWavelets
 from sleplet.harmonic_methods import compute_random_signal
 from sleplet.wavelet_methods import axisymmetric_wavelet_forward
@@ -60,7 +59,7 @@ def axisymmetric_wavelet_covariance(
 
     should we use the actual variance of each realisation instead?
     """
-    logger.info(f"L={L}, B={B}, j_min={j_min}")
+    print(f"L={L}, B={B}, j_min={j_min}")
 
     # compute wavelets
     aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
@@ -77,7 +76,7 @@ def axisymmetric_wavelet_covariance(
     rng = default_rng(RANDOM_SEED)
 
     for i in range(runs):
-        logger.info(f"start run: {i+1}/{runs}")
+        print(f"start run: {i+1}/{runs}")
 
         # Generate normally distributed random complex signal
         flm = compute_random_signal(L, rng, var_signal=var_flm)
@@ -114,7 +113,7 @@ def axisymmetric_wavelet_covariance(
             if _is_ergodic(j_min, j=j)
             else f"absolute error: {error_absolute[j]:e}"
         )
-        logger.info(f"axisymmetric wavelet covariance {j}: '{message}'")
+        print(f"axisymmetric wavelet covariance {j}: '{message}'")
 
 
 if __name__ == "__main__":

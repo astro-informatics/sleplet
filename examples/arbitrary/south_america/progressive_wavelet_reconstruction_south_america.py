@@ -1,6 +1,5 @@
 import numpy as np
 
-from sleplet import logger
 from sleplet.functions import SlepianWaveletCoefficientsSouthAmerica
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
@@ -28,7 +27,7 @@ def main() -> None:
     # plot
     f_p = np.zeros(swc.slepian.N, dtype=np.complex_)
     for p, coeff in enumerate(swc.wavelet_coefficients):
-        logger.info(f"plot reconstruction: {p}")
+        print(f"plot reconstruction: {p}")
         f_p += slepian_wavelet_inverse(coeff, swc.wavelets, swc.slepian.N)
         f = slepian_inverse(f_p, L, swc.slepian)
         name = f"south_america_wavelet_reconstruction_progressive_{p}_L{L}"

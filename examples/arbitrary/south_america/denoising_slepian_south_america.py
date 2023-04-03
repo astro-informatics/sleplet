@@ -2,7 +2,6 @@ import sys
 from argparse import ArgumentParser
 from pathlib import Path
 
-from sleplet import logger
 from sleplet.functions import SlepianSouthAmerica, SlepianWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
@@ -23,7 +22,7 @@ SNR_IN = -10
 
 def main(snr: float, sigma: int) -> None:
     """Denoising demo using Slepian wavelets."""
-    logger.info(f"SNR={snr}, n_sigma={sigma}")
+    print(f"SNR={snr}, n_sigma={sigma}")
     # setup
     region = Region(mask_name="south_america")
 

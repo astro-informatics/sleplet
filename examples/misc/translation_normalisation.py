@@ -3,7 +3,6 @@ import pyssht as ssht
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet import logger
 from sleplet.functions import HarmonicGaussian
 from sleplet.plot_methods import save_plot
 
@@ -20,7 +19,7 @@ def compute_translation_normalisation_theta() -> None:
     thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
     norm = np.zeros(len(thetas))
     for i, theta in enumerate(thetas):
-        logger.info(f"compute norm {i+1}/{len(thetas)}")
+        print(f"compute norm {i+1}/{len(thetas)}")
         ylm_omega_prime = ssht.create_ylm(theta, ALPHA_DEFAULT, L).reshape(L**2)
         norm[i] = np.sqrt((np.abs(hg.coefficients * ylm_omega_prime) ** 2).sum())
     plt.plot(np.rad2deg(thetas), norm)

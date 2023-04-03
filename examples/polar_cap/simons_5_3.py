@@ -3,7 +3,6 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet import logger
 from sleplet.plot_methods import save_plot
 from sleplet.slepian import SlepianPolarCap
 
@@ -28,7 +27,7 @@ def main() -> None:
 
 def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> None:
     """Helper method which actually makes the plot."""
-    logger.info(f"theta_max={theta_max}")
+    print(f"theta_max={theta_max}")
     slepian = SlepianPolarCap(L, np.deg2rad(theta_max))
     axs = ax[position]
     legend = "full" if position == LEGEND_POS else False
