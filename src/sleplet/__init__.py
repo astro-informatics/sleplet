@@ -18,18 +18,6 @@ from . import (
 )
 from ._version import __version__  # noqa: F401
 
-_logger = logging.getLogger(__name__)
-
-_formatter = logging.Formatter(
-    "[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
-_console_handler = logging.StreamHandler()
-_console_handler.setFormatter(_formatter)
-_logger.addHandler(_console_handler)
-_logger.setLevel("INFO")
-_logger.propagate = False
-
 __all__ = [
     "functions",
     "harmonic_methods",
@@ -41,3 +29,15 @@ __all__ = [
     "slepian",
     "wavelet_methods",
 ]
+
+_logger = logging.getLogger(__name__)
+
+_formatter = logging.Formatter(
+    "[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+_console_handler = logging.StreamHandler()
+_console_handler.setFormatter(_formatter)
+_logger.addHandler(_console_handler)
+_logger.setLevel("INFO")
+_logger.propagate = False
