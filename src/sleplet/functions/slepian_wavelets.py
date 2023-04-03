@@ -12,7 +12,7 @@ import sleplet._validation
 import sleplet.wavelet_methods
 from sleplet.functions.fp import Fp
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -31,9 +31,9 @@ class SlepianWavelets(Fp):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        logger.info("start computing wavelets")
+        _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
-        logger.info("finish computing wavelets")
+        _logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
 

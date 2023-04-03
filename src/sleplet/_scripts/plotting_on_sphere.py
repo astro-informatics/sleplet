@@ -14,12 +14,12 @@ import sleplet.plot_methods
 import sleplet.plotting._create_plot_sphere
 import sleplet.slepian_methods
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
-ALPHA_DEFAULT = 0.75
-ANNOTATION_COLOUR = "gold"
-ARROW_STYLE = {
+_ALPHA_DEFAULT = 0.75
+_ANNOTATION_COLOUR = "gold"
+_ARROW_STYLE = {
     "arrowhead": 0,
     "arrowside": "start",
     "ax": 4,
@@ -27,7 +27,7 @@ ARROW_STYLE = {
     "startarrowsize": 0.5,
     "startarrowhead": 6,
 }
-BETA_DEFAULT = 0.125
+_BETA_DEFAULT = 0.125
 
 
 def valid_maps(map_name: str) -> str:
@@ -63,16 +63,16 @@ def read_args() -> Namespace:
         "--alpha",
         "-a",
         type=float,
-        default=ALPHA_DEFAULT,
-        help=f"alpha/phi pi fraction - defaults to {ALPHA_DEFAULT}",
+        default=_ALPHA_DEFAULT,
+        help=f"alpha/phi pi fraction - defaults to {_ALPHA_DEFAULT}",
     )
     parser.add_argument("--bandlimit", "-L", type=int, default=16, help="bandlimit")
     parser.add_argument(
         "--beta",
         "-b",
         type=float,
-        default=BETA_DEFAULT,
-        help=f"beta/theta pi fraction - defaults to {BETA_DEFAULT}",
+        default=_BETA_DEFAULT,
+        help=f"beta/theta pi fraction - defaults to {_BETA_DEFAULT}",
     )
     parser.add_argument(
         "--convolve",
@@ -188,13 +188,13 @@ def plot(
     coefficients = f.coefficients
 
     # turn off annotation if needed
-    logger.info(f"annotations on: {annotations}")
+    _logger.info(f"annotations on: {annotations}")
     annotation = []
 
     # Shannon number for Slepian coefficients
     shannon = f.slepian.N if hasattr(f, "slepian") else None
 
-    logger.info(f"plotting method: '{method}'")
+    _logger.info(f"plotting method: '{method}'")
     match method:
         case "rotate":
             coefficients, filename = _rotation_helper(
@@ -268,7 +268,7 @@ def _rotation_helper(
     gamma_pi_frac: float,
 ) -> tuple[npt.NDArray[np.complex_], str]:
     """Performs the rotation specific steps."""
-    logger.info(
+    _logger.info(
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
     )
@@ -298,7 +298,7 @@ def _translation_helper(
     shannon: int | None,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
     """Performs the translation specific steps."""
-    logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
+    _logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
     filename += (
         "_translate_"
@@ -317,7 +317,12 @@ def _translation_helper(
 
     # annotate translation point
     x, y, z = ssht.s2_to_cart(beta, alpha)
-    annotation = {"x": x, "y": y, "z": z, "arrowcolor": ANNOTATION_COLOUR} | ARROW_STYLE
+    annotation = {
+        "x": x,
+        "y": y,
+        "z": z,
+        "arrowcolor": _ANNOTATION_COLOUR,
+    } | _ARROW_STYLE
     return coefficients, filename, annotation
 
 

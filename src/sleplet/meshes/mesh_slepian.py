@@ -17,7 +17,7 @@ import sleplet._validation
 import sleplet._vars
 from sleplet.meshes.mesh import Mesh
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -33,7 +33,7 @@ class MeshSlepian:
 
     def _compute_slepian_functions(self) -> None:
         """Computes the Slepian functions of the mesh."""
-        logger.info("computing slepian functions of mesh")
+        _logger.info("computing slepian functions of mesh")
 
         # create filenames
         eigd_loc = (
@@ -55,7 +55,7 @@ class MeshSlepian:
 
     def _compute_slepian_functions_from_scratch(self, eval_loc, evec_loc):
         D = self._create_D_matrix()
-        logger.info(
+        _logger.info(
             f"Shannon number from vertices: {self.N}, "
             f"Trace of D matrix: {round(D.trace())}, "
             f"difference: {round(np.abs(self.N - D.trace()))}",
@@ -88,15 +88,15 @@ class MeshSlepian:
             )
 
             for i in chunk:
-                logger.info(f"start basis function: {i}")
+                _logger.info(f"start basis function: {i}")
                 self._fill_D_elements(D_int, i)
-                logger.info(f"finish basis function: {i}")
+                _logger.info(f"finish basis function: {i}")
 
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise effiency
         ncpu = int(os.getenv("NCPU", "4"))
-        logger.info(f"Number of CPU={ncpu}")
+        _logger.info(f"Number of CPU={ncpu}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.mesh.mesh_eigenvalues.shape[0],
             ncpu,

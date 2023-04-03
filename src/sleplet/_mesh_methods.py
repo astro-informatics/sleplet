@@ -11,7 +11,7 @@ import sleplet._data.setup_pooch
 import sleplet._integration_methods
 import sleplet._vars
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 def average_functions_on_vertices_to_faces(
@@ -22,7 +22,7 @@ def average_functions_on_vertices_to_faces(
     The integrals require all functions to be defined on faces
     this method handles an arbitrary number of functions.
     """
-    logger.info("converting function on vertices to faces")
+    _logger.info("converting function on vertices to faces")
     # handle the case of a 1D array
     array_is_1d = len(functions_on_vertices.shape) == 1
     if array_is_1d:
@@ -76,7 +76,7 @@ def mesh_eigendecomposition(
     # determine number of basis functions
     if number_basis_functions is None:
         number_basis_functions = vertices.shape[0] // 4
-    logger.info(
+    _logger.info(
         f"finding {number_basis_functions}/{vertices.shape[0]} "
         f"basis functions of {name} mesh",
     )
@@ -102,7 +102,7 @@ def mesh_eigendecomposition(
             sigma=0,
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
-        logger.info("saving binaries...")
+        _logger.info("saving binaries...")
         np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
         np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
@@ -130,7 +130,7 @@ def _orthonormalise_basis_functions(
     basis_functions: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.float_]:
     """For computing the Slepian D matrix the basis functions must be orthonormal."""
-    logger.info("orthonormalising basis functions")
+    _logger.info("orthonormalising basis functions")
     factor = np.zeros(basis_functions.shape[0])
     for i, phi_i in enumerate(basis_functions):
         factor[i] = sleplet._integration_methods.integrate_whole_mesh(

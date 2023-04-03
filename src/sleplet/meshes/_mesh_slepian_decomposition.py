@@ -10,7 +10,7 @@ import sleplet._validation
 import sleplet.harmonic_methods
 from sleplet.meshes.mesh_slepian import MeshSlepian
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -95,13 +95,13 @@ class MeshSlepianDecomposition:
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""
         if isinstance(self.u_i, np.ndarray):
-            logger.info("harmonic sum method selected")
+            _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
         elif isinstance(self.u, np.ndarray) and not self.mask:
-            logger.info("integrating the whole mesh method selected")
+            _logger.info("integrating the whole mesh method selected")
             self.method = "integrate_mesh"
         elif isinstance(self.u, np.ndarray):
-            logger.info("integrating a region on the mesh method selected")
+            _logger.info("integrating a region on the mesh method selected")
             self.method = "integrate_region"
         else:
             raise RuntimeError(

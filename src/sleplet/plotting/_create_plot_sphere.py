@@ -16,9 +16,9 @@ import sleplet._vars
 import sleplet.plot_methods
 import sleplet.slepian.region
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
-MW_POLE_LENGTH = 2
+_MW_POLE_LENGTH = 2
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -124,7 +124,7 @@ class PlotSphere:
             filename = str(
                 sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
             )
-            logger.info(f"saving {filename}")
+            _logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     @staticmethod
@@ -149,7 +149,7 @@ class PlotSphere:
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
         if method == "MW_pole":
-            if len(f) == MW_POLE_LENGTH:
+            if len(f) == _MW_POLE_LENGTH:
                 f, _ = f
             else:
                 f, _, _ = f

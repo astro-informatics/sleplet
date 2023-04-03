@@ -13,7 +13,7 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.slepian.region
 
-COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
+_COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -103,7 +103,7 @@ class Coefficients:
         """
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
-            and not set(self.name.split("_")) & COEFFICIENTS_TO_NOT_MASK
+            and not set(self.name.split("_")) & _COEFFICIENTS_TO_NOT_MASK
         ):
             self.name += f"_{self.region.name_ending}"
         if self.noise is not None:
@@ -118,7 +118,7 @@ class Coefficients:
     def _check_coefficients(cls, v, values):
         if (
             values["region"]
-            and not set(values["name"].split("_")) & COEFFICIENTS_TO_NOT_MASK
+            and not set(values["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
         ):
             v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
                 v,

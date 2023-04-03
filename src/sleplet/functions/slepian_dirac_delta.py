@@ -12,7 +12,7 @@ import sleplet._vars
 import sleplet.slepian_methods
 from sleplet.functions.fp import Fp
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -64,9 +64,9 @@ class SlepianDiracDelta(Fp):
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self.alpha = phis[idx]
         self.beta = thetas[idx]
-        logger.info(
+        _logger.info(
             f"angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})",
         )
-        logger.info(
+        _logger.info(
             f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})",
         )

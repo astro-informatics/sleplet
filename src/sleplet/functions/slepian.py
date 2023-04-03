@@ -10,7 +10,7 @@ import sleplet._validation
 import sleplet.slepian_methods
 from sleplet.functions.fp import Fp
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -41,8 +41,8 @@ class Slepian(Fp):
         )
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        logger.info(f"Shannon number: {self.slepian.N}")
-        logger.info(
+        _logger.info(f"Shannon number: {self.slepian.N}")
+        _logger.info(
             f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}",
         )
         return sleplet.slepian_methods.slepian_forward(

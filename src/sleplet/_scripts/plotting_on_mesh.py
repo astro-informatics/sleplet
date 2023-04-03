@@ -8,7 +8,7 @@ import sleplet.meshes.mesh_coefficients
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_mesh
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 def valid_meshes(mesh_name: str) -> str:
@@ -105,7 +105,7 @@ def plot(
 
 def main() -> None:
     args = read_args()
-    logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
+    _logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
     # function to plot
     mesh = sleplet.meshes.mesh.Mesh(args.function, zoom=args.zoom)

@@ -15,7 +15,7 @@ import sleplet.slepian.region
 import sleplet.wavelet_methods
 from sleplet.functions.fp import Fp
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -39,9 +39,9 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        logger.info("start computing wavelet coefficients")
+        _logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
-        logger.info("finish computing wavelet coefficients")
+        _logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelet_coefficients[jth]
 

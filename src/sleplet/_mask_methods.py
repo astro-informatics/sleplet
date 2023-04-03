@@ -12,10 +12,10 @@ import sleplet.harmonic_methods
 import sleplet.meshes.mesh
 import sleplet.slepian.region
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
-AFRICA_RANGE = np.deg2rad(41)
-SOUTH_AMERICA_RANGE = np.deg2rad(40)
+_AFRICA_RANGE = np.deg2rad(41)
+_SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 
 def create_mask_region(
@@ -38,7 +38,7 @@ def create_mask_region(
 
     match region.region_type:
         case "arbitrary":
-            logger.info("loading and checking shape of provided mask")
+            _logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"
             mask = _load_mask(L, name)
             assert mask.shape == thetas.shape, (  # noqa: S101
@@ -47,7 +47,7 @@ def create_mask_region(
             )
 
         case "lim_lat_lon":
-            logger.info("creating limited latitude longitude mask")
+            _logger.info("creating limited latitude longitude mask")
             mask = (
                 (thetas >= region.theta_min)
                 & (thetas <= region.theta_max)
@@ -56,10 +56,10 @@ def create_mask_region(
             )
 
         case "polar":
-            logger.info("creating polar cap mask")
+            _logger.info("creating polar cap mask")
             mask = thetas <= region.theta_max
             if region.gap:
-                logger.info("creating polar gap mask")
+                _logger.info("creating polar gap mask")
                 mask += thetas >= np.pi - region.theta_max
     return mask
 
@@ -164,7 +164,7 @@ def _create_africa_mask(
         Grid=True,
         Method=sleplet._vars.SAMPLING_SCHEME,
     )
-    return (thetas <= AFRICA_RANGE) & (earth_f >= 0)
+    return (thetas <= _AFRICA_RANGE) & (earth_f >= 0)
 
 
 def _create_south_america_mask(
@@ -184,7 +184,7 @@ def _create_south_america_mask(
         Grid=True,
         Method=sleplet._vars.SAMPLING_SCHEME,
     )
-    return (thetas <= SOUTH_AMERICA_RANGE) & (earth_f >= 0)
+    return (thetas <= _SOUTH_AMERICA_RANGE) & (earth_f >= 0)
 
 
 def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:

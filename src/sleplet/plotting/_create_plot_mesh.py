@@ -18,11 +18,11 @@ import sleplet._vars
 import sleplet.meshes.mesh
 import sleplet.plot_methods
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
-MESH_CBAR_LEN = 0.95
-MESH_CBAR_FONT_SIZE = 32
-MESH_UNSEEN = -1e5  # kaleido bug
+_MESH_CBAR_LEN = 0.95
+_MESH_CBAR_FONT_SIZE = 32
+_MESH_UNSEEN = -1e5  # kaleido bug
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -81,9 +81,9 @@ class PlotMesh:
                 colorbar=sleplet._plotly_methods.create_colour_bar(
                     tick_mark,
                     normalise=self.normalise,
-                    bar_len=MESH_CBAR_LEN,
+                    bar_len=_MESH_CBAR_LEN,
                     bar_pos=self.mesh.colourbar_pos,
-                    font_size=MESH_CBAR_FONT_SIZE,
+                    font_size=_MESH_CBAR_FONT_SIZE,
                 ),
                 colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
                 lighting=Lighting(ambient=1),
@@ -103,7 +103,7 @@ class PlotMesh:
             filename = str(
                 sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
             )
-            logger.info(f"saving {filename}")
+            _logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
 
     def _prepare_field(
@@ -130,4 +130,4 @@ class PlotMesh:
         region_on_faces = sleplet._mask_methods.convert_region_on_vertices_to_faces(
             self.mesh,
         )
-        return np.where(region_on_faces, f, MESH_UNSEEN)
+        return np.where(region_on_faces, f, _MESH_UNSEEN)

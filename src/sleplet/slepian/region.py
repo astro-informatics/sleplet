@@ -9,7 +9,7 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -42,7 +42,7 @@ class Region:
 
     def _identify_region(self) -> None:
         """Identify region type based on the angle inputs or a mask name."""
-        logger.info(
+        _logger.info(
             "Slepian region values detected: "
             f"POLAR_GAP={self.gap}, "
             f"THETA_MAX={self.theta_max}, "

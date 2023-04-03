@@ -15,17 +15,17 @@ from . import (
 )
 from ._version import __version__
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
-formatter = logging.Formatter(
+_formatter = logging.Formatter(
     "[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-logger.addHandler(console_handler)
-logger.setLevel("INFO")
-logger.propagate = False
+_console_handler = logging.StreamHandler()
+_console_handler.setFormatter(_formatter)
+_logger.addHandler(_console_handler)
+_logger.setLevel("INFO")
+_logger.propagate = False
 
 __all__ = [
     "__version__",
