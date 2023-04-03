@@ -15,6 +15,25 @@ installation, `SLEPLET` comes with two command line interfaces - `sphere` and
 `mesh` - which allows one to easily generate plots on the sphere and a set of
 meshes using `plotly`.
 
+## Installation
+
+The recommended way to install `SLEPLET` is via
+[pip](https://pypi.org/project/pip/)
+
+```sh
+pip install sleplet
+```
+
+To install the latest development version of `SLEPLET` clone this repository
+and run
+
+```sh
+pip install -e .
+```
+
+This will install two scripts `sphere` and `mesh` which can be used to generate
+the figures in [the figure section](#paper-figures).
+
 ## Citing
 
 If you use `SLEPLET` in your research, please cite the paper.
@@ -36,25 +55,6 @@ Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
 `SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394) in
 the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497) in
 mesh setting.
-
-## Installation
-
-The recommended way to install `SLEPLET` is via
-[pip](https://pypi.org/project/pip/)
-
-```sh
-pip install sleplet
-```
-
-To install the latest development version of `SLEPLET` clone this repository
-and run
-
-```sh
-pip install -e .
-```
-
-This will install two scripts `sphere` and `mesh` which can be used to generate
-the figures in [the figure section](#paper-figures).
 
 ## Bandlimit
 
