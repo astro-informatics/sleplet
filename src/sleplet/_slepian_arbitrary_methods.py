@@ -6,7 +6,7 @@ from numpy import typing as npt
 if TYPE_CHECKING:
     import sleplet.meshes.mesh
 
-MACHINE_EPSILON = 1e-14
+_MACHINE_EPSILON = 1e-14
 
 
 def clean_evals_and_evecs(
@@ -28,7 +28,7 @@ def clean_evals_and_evecs(
     eigenvectors *= np.where(eigenvectors[:, 0] < 0, -1, 1)[:, np.newaxis]
 
     # find repeating eigenvalues and ensure orthorgonality
-    pairs = np.where(np.abs(np.diff(eigenvalues)) < MACHINE_EPSILON)[0] + 1
+    pairs = np.where(np.abs(np.diff(eigenvalues)) < _MACHINE_EPSILON)[0] + 1
     eigenvectors[pairs] *= 1j
 
     return eigenvalues, eigenvectors

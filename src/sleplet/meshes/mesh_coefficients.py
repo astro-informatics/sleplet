@@ -13,7 +13,7 @@ import sleplet._validation
 import sleplet._vars
 from sleplet.meshes.mesh import Mesh
 
-COEFFICIENTS_TO_NOT_MASK: str = "slepian"
+_COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
 @dataclass(config=sleplet._validation.Validation)
@@ -51,7 +51,7 @@ class MeshCoefficients:
     def _check_coefficients(cls, v, values):
         if (
             values["region"]
-            and COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
+            and _COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
             v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
                 values["mesh"],

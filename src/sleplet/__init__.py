@@ -4,32 +4,40 @@ the rest of the documentation.
 """
 
 import logging
-import os
 
+from . import (
+    functions,
+    harmonic_methods,
+    meshes,
+    noise,
+    plot_methods,
+    plotting,
+    slepian,
+    slepian_methods,
+    wavelet_methods,
+)
 from ._version import __version__  # noqa: F401
 
-logging.basicConfig(
-    format="[%(asctime)s] [%(levelname)s] --- %(message)s (%(filename)s:%(lineno)s)",
+__all__ = [
+    "functions",
+    "harmonic_methods",
+    "meshes",
+    "noise",
+    "plot_methods",
+    "plotting",
+    "slepian_methods",
+    "slepian",
+    "wavelet_methods",
+]
+
+_logger = logging.getLogger(__name__)
+
+_formatter = logging.Formatter(
+    "%(levelname)s [%(asctime)s] sleplet: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
-    level=logging.INFO,
 )
-logger = logging.getLogger(__name__)
-
-NCPU = int(os.getenv("NCPU", "4"))
-PHI_MAX = int(os.getenv("PHI_MAX", "360"))
-PHI_MIN = int(os.getenv("PHI_MIN", "0"))
-POLAR_GAP = os.getenv("POLAR_GAP", "False").lower() == "true"
-SLEPIAN_MASK = os.getenv("SLEPIAN_MASK", "south_america")
-THETA_MAX = int(os.getenv("THETA_MAX", "180"))
-THETA_MIN = int(os.getenv("THETA_MIN", "0"))
-
-logger.info(
-    "Environment variables set as "
-    f"NCPU={NCPU}, "
-    f"POLAR_GAP={POLAR_GAP}, "
-    f"THETA_MAX={THETA_MAX}, "
-    f"THETA_MIN={THETA_MIN}, "
-    f"PHI_MAX={PHI_MAX}, "
-    f"PHI_MIN={PHI_MIN}, "
-    f"SLEPIAN_MASK={SLEPIAN_MASK}.",
-)
+_console_handler = logging.StreamHandler()
+_console_handler.setFormatter(_formatter)
+_logger.addHandler(_console_handler)
+_logger.setLevel("INFO")
+_logger.propagate = False

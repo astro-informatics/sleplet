@@ -4,7 +4,6 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet import logger
 from sleplet.harmonic_methods import invert_flm_boosted
 from sleplet.plot_methods import calc_plot_resolution, save_plot
 from sleplet.slepian import SlepianPolarCap
@@ -56,7 +55,7 @@ def _helper(
     rank: int,
 ) -> None:
     """Helper which plots the required order and specified ranks."""
-    logger.info(f"plotting rank={rank}")
+    print(f"plotting rank={rank}")
     flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
     f = invert_flm_boosted(flm, L, RESOLUTION).real

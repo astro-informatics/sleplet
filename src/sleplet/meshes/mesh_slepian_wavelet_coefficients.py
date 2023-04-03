@@ -1,17 +1,20 @@
 """Contains the `MeshSlepianWaveletCoefficients` class."""
+import logging
+
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
-import sleplet
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.meshes.mesh_slepian_field
 import sleplet.meshes.mesh_slepian_wavelets
 import sleplet.wavelet_methods
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -30,9 +33,9 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        sleplet.logger.info("start computing wavelet coefficients")
+        _logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
-        sleplet.logger.info("finish computing wavelet coefficients")
+        _logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelet_coefficients[jth]
 

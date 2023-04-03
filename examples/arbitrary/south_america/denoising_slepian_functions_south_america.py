@@ -3,7 +3,6 @@ from argparse import ArgumentParser
 import numpy as np
 from numpy import typing as npt
 
-from sleplet import logger
 from sleplet.functions import SlepianSouthAmerica
 from sleplet.noise import (
     compute_sigma_noise,
@@ -55,7 +54,7 @@ def _denoising_slepian_function(
 
 def main(snr: float, sigma: int) -> None:
     """Denoising demo using Slepian wavelets."""
-    logger.info(f"SNR={snr}, n_sigma={sigma}")
+    print(f"SNR={snr}, n_sigma={sigma}")
     # setup
     region = Region(mask_name="south_america")
 

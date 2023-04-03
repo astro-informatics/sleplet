@@ -4,10 +4,7 @@ from hypothesis import given, seed, settings
 from hypothesis.strategies import SearchStrategy, floats
 from numpy.testing import assert_allclose, assert_equal, assert_raises
 
-from sleplet._vars import RANDOM_SEED, SAMPLING_SCHEME
-from sleplet.functions import DiracDelta
-from sleplet.plot_methods import _calc_nearest_grid_point
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
 L = 128
 THETA_MAX = np.pi / 3
@@ -23,7 +20,7 @@ def valid_betas() -> SearchStrategy[float]:
     return floats(min_value=0, max_value=1)
 
 
-@seed(RANDOM_SEED)
+@seed(sleplet._vars.RANDOM_SEED)
 @settings(max_examples=8, deadline=None)
 @given(alpha_pi_frac=valid_alphas(), beta_pi_frac=valid_betas())
 def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
@@ -31,8 +28,12 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
     Test to ensure that rotation and translation
     give the same result for the Dirac delta.
     """
-    dd = DiracDelta(L)
-    alpha, beta = _calc_nearest_grid_point(L, alpha_pi_frac, beta_pi_frac)
+    dd = sleplet.functions.DiracDelta(L)
+    alpha, beta = sleplet.plot_methods._calc_nearest_grid_point(
+        L,
+        alpha_pi_frac,
+        beta_pi_frac,
+    )
     dd_rot = dd.rotate(alpha, beta)
     dd_trans = dd.translate(alpha, beta)
     assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=0)
@@ -40,7 +41,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
 
 def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) -> None:
     """Test to ensure the location of the maximum of a field moves when translated."""
-    _, beta = _calc_nearest_grid_point(
+    _, beta = sleplet.plot_methods._calc_nearest_grid_point(
         slepian_dirac_delta_polar_cap.L,
         0,
         THETA_MAX / np.pi,
@@ -50,7 +51,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
         beta,
         shannon=slepian_dirac_delta_polar_cap.slepian.N,
     )
-    field = slepian_inverse(
+    field = sleplet.slepian_methods.slepian_inverse(
         sdd_trans,
         slepian_dirac_delta_polar_cap.L,
         slepian_dirac_delta_polar_cap.slepian,
@@ -59,7 +60,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     thetas, _ = ssht.sample_positions(
         slepian_dirac_delta_polar_cap.L,
         Grid=True,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     assert_raises(
         AssertionError,
@@ -73,7 +74,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     slepian_dirac_delta_lim_lat_lon,
 ) -> None:
     """Test to ensure the location of the maximum of a field moves when translated."""
-    _, beta = _calc_nearest_grid_point(
+    _, beta = sleplet.plot_methods._calc_nearest_grid_point(
         slepian_dirac_delta_lim_lat_lon.L,
         0,
         THETA_MAX / np.pi,
@@ -83,7 +84,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
         beta,
         shannon=slepian_dirac_delta_lim_lat_lon.slepian.N,
     )
-    field = slepian_inverse(
+    field = sleplet.slepian_methods.slepian_inverse(
         sdd_trans,
         slepian_dirac_delta_lim_lat_lon.L,
         slepian_dirac_delta_lim_lat_lon.slepian,
@@ -92,7 +93,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     thetas, _ = ssht.sample_positions(
         slepian_dirac_delta_lim_lat_lon.L,
         Grid=True,
-        Method=SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     assert_raises(
         AssertionError,

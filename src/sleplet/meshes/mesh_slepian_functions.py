@@ -1,13 +1,16 @@
 """Contains the `MeshSlepianFunctions` class."""
+import logging
+
 import numpy as np
 from numpy import typing as npt
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
-import sleplet
 import sleplet._validation
 import sleplet.slepian_methods
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
@@ -23,7 +26,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
-        sleplet.logger.info(
+        _logger.info(
             f"Slepian eigenvalue {self.rank}: "
             f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",
         )
