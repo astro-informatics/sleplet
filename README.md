@@ -96,7 +96,7 @@ import pyssht as ssht
 import sleplet
 
 for ell in range(2, 0, -1):
-    f = sleplet.functions.HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
     flm = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
     f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
     sleplet.plotting.PlotSphere(
@@ -117,7 +117,7 @@ sphere earth -L 128
 import pyssht as ssht
 import sleplet
 
-f = sleplet.functions.Earth(L=128)
+f = sleplet.functions.Earth(128)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
 f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2").execute()
@@ -136,8 +136,8 @@ import pyssht as ssht
 import sleplet
 
 for ell in range(2, 0, -1):
-    f = sleplet.functions.HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
-    g = sleplet.functions.Earth(L=128)
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
+    g = sleplet.functions.Earth(128)
     flm = f.convolve(f.coefficients, g.coefficients.conj())
     flm_rot = sleplet.harmonic_methods.rotate_earth_to_south_america(flm, f.L)
     f_sphere = ssht.inverse(flm_rot, f.L, Method="MWSS")
@@ -169,13 +169,13 @@ import pyssht as ssht
 import sleplet
 
 # a
-f = sleplet.functions.Earth(L=128, smoothing=2)
+f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
 f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_a", normalise=False).execute()
 # b
 region = sleplet.slepian.Region(mask_name="south_america")
-g = sleplet.functions.SlepianSouthAmerica(L=128, region=region, smoothing=2)
+g = sleplet.functions.SlepianSouthAmerica(128, region=region, smoothing=2)
 g_sphere = sleplet.slepian_methods.slepian_inverse(g.coefficients, g.L, g.slepian)
 sleplet.plotting.PlotSphere(
     g_sphere,
@@ -200,7 +200,7 @@ import sleplet
 
 region = sleplet.slepian.Region(mask_name="south_america")
 for p in [0, 9, 24, 49, 99, 199]:
-    f = sleplet.functions.Slepian(L=128, region=region, rank=p)
+    f = sleplet.functions.Slepian(128, region=region, rank=p)
     f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
     sleplet.plotting.PlotSphere(
         f_sphere,
@@ -234,7 +234,7 @@ import sleplet
 
 region = sleplet.slepian.Region(mask_name="south_america")
 for j in [None, *list(range(5))]:
-    f = sleplet.functions.SlepianWavelets(L=128, region=region, B=3, j_min=2, j=j)
+    f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=j)
     f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
     sleplet.plotting.PlotSphere(
         f_sphere,
@@ -263,7 +263,7 @@ import sleplet
 region = sleplet.slepian.Region(mask_name="south_america")
 for j in [None, *list(range(5))]:
     f = sleplet.functions.SlepianWaveletCoefficientsSouthAmerica(
-        L=128,
+        128,
         region=region,
         B=3,
         j_min=2,
@@ -297,7 +297,7 @@ import sleplet
 
 # a
 region = sleplet.slepian.Region(mask_name="south_america")
-f = sleplet.functions.SlepianSouthAmerica(L=128, region=region, noise=-10, smoothing=2)
+f = sleplet.functions.SlepianSouthAmerica(128, region=region, noise=-10, smoothing=2)
 f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
 amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(f)
 sleplet.plotting.PlotSphere(
@@ -325,13 +325,13 @@ import pyssht as ssht
 import sleplet
 
 # a
-f = sleplet.functions.Earth(L=128, smoothing=2)
+f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_africa(f.coefficients, f.L)
 f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_9_a", normalise=False).execute()
 # b
 region = sleplet.slepian.Region(mask_name="africa")
-g = sleplet.functions.SlepianAfrica(L=128, region=region, smoothing=2)
+g = sleplet.functions.SlepianAfrica(128, region=region, smoothing=2)
 g_sphere = sleplet.slepian_methods.slepian_inverse(g.coefficients, g.L, g.slepian)
 sleplet.plotting.PlotSphere(
     g_sphere,
@@ -362,7 +362,7 @@ import sleplet
 
 region = sleplet.slepian.Region(mask_name="africa")
 for p in [0, 9, 24, 49, 99, 199]:
-    f = sleplet.functions.Slepian(L=128, region=region, rank=p)
+    f = sleplet.functions.Slepian(128, region=region, rank=p)
     f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
     sleplet.plotting.PlotSphere(
         f_sphere,
@@ -390,7 +390,7 @@ import sleplet
 
 region = sleplet.slepian.Region(mask_name="africa")
 for j in [None, *list(range(6))]:
-    f = sleplet.functions.SlepianWavelets(L=128, region=region, B=3, j_min=2, j=j)
+    f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=j)
     f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
     sleplet.plotting.PlotSphere(
         f_sphere,
@@ -419,7 +419,7 @@ import sleplet
 region = sleplet.slepian.Region(mask_name="africa")
 for j in [None, *list(range(6))]:
     f = sleplet.functions.SlepianWaveletCoefficientsAfrica(
-        L=128,
+        128,
         region=region,
         B=3,
         j_min=2,
@@ -453,7 +453,7 @@ import sleplet
 
 # a
 region = sleplet.slepian.Region(mask_name="africa")
-f = sleplet.functions.SlepianAfrica(L=128, region=region, noise=-10, smoothing=2)
+f = sleplet.functions.SlepianAfrica(128, region=region, noise=-10, smoothing=2)
 f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
 amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(f)
 sleplet.plotting.PlotSphere(
@@ -683,7 +683,7 @@ import sleplet
 
 for ell in range(5):
     for m in range(ell + 1):
-        f = sleplet.functions.SphericalHarmonic(L=128, ell=ell, m=m)
+        f = sleplet.functions.SphericalHarmonic(128, ell=ell, m=m)
         f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
         sleplet.plotting.PlotSphere(
             f_sphere,
@@ -713,7 +713,7 @@ import pyssht as ssht
 import sleplet
 
 # a
-f = sleplet.functions.ElongatedGaussian(L=128, p_sigma=0.1, t_sigma=0.1)
+f = sleplet.functions.ElongatedGaussian(128, p_sigma=0.1, t_sigma=0.1)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2_2_a", annotations=[]).execute()
 # b-d
@@ -756,7 +756,7 @@ import pyssht as ssht
 import sleplet
 
 for j in [None, *list(range(4))]:
-    f = sleplet.functions.AxisymmetricWavelets(L=128, B=3, j_min=2, j=j)
+    f = sleplet.functions.AxisymmetricWavelets(128, B=3, j_min=2, j=j)
     f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
     sleplet.plotting.PlotSphere(
         f_sphere,
@@ -801,7 +801,7 @@ import pyssht as ssht
 import sleplet
 
 # a
-f = sleplet.functions.Gaussian(L=128)
+f = sleplet.functions.Gaussian(128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_1_a", annotations=[]).execute()
 # b
@@ -825,7 +825,7 @@ import pyssht as ssht
 import sleplet
 
 # a
-f = sleplet.functions.SquashedGaussian(L=128)
+f = sleplet.functions.SquashedGaussian(128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_2_a", annotations=[]).execute()
 # b
@@ -849,7 +849,7 @@ import pyssht as ssht
 import sleplet
 
 # a
-f = sleplet.functions.ElongatedGaussian(L=128)
+f = sleplet.functions.ElongatedGaussian(128)
 f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_3_a", annotations=[]).execute()
 # b
@@ -873,7 +873,7 @@ import pyssht as ssht
 import sleplet
 
 for ell in range(2, 0, -1):
-    f = sleplet.functions.HarmonicGaussian(L=128, l_sigma=10**ell, m_sigma=10)
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
     f_sphere = ssht.inverse(f.coefficients, f.L, Method="MWSS")
     sleplet.plotting.PlotSphere(
         f_sphere,
