@@ -38,6 +38,7 @@ jobs:
           git clone https://github.com/astro-informatics/s2fft.git
           pip install -e ./s2wav
           pip install -e ./s2fft
+          pip install jaxlib
 
       - name: Check s2wav installation worked
         run: |
