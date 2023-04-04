@@ -1,3 +1,5 @@
+[API](#header-submodules).
+
 ## Bandlimit
 
 The bandlimit is set as `L` throughout the code and the CLIs. The default value
