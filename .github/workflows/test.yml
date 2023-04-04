@@ -34,4 +34,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e .
+          git clone https://github.com/astro-informatics/s2wav.git
+          git clone https://github.com/astro-informatics/s2fft.git
+          pip install -e ./s2wav
+          pip install -e ./s2fft
+
+      - name: Check s2wav installation worked
+        run: |
+          import s2wav
+        shell: python
+
+      - name: Check s2fft installation worked
+        run: |
+          import s2fft
+        shell: python
