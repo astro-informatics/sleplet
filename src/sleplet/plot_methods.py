@@ -1,5 +1,6 @@
 """Methods to help in creating plots."""
 import logging
+from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
@@ -84,7 +85,7 @@ def save_plot(name: str) -> None:
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
-        filename = sleplet._vars.FIG_PATH / file_type / f"{name}.{file_type}"
+        filename = Path.cwd() / f"{name}.{file_type}"
         _logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
     plt.show(block=False)

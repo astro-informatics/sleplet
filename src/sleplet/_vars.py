@@ -1,8 +1,5 @@
-from pathlib import Path
-
 import numpy as np
 
-FIG_PATH = Path(__file__).resolve().parent / "_figures"
 PHI_0 = np.pi
 PHI_MAX_DEFAULT = 2 * np.pi
 PHI_MIN_DEFAULT = 0.0

@@ -1,5 +1,6 @@
 import logging
 from dataclasses import KW_ONLY, field
+from pathlib import Path
 
 import cmocean
 import numpy as np
@@ -116,13 +117,13 @@ class PlotSphere:
 
         fig = Figure(data=data, layout=layout)
 
-        html_filename = str(sleplet._vars.FIG_PATH / "html" / f"{self.filename}.html")
+        html_filename = str(Path.cwd() / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename)
 
         for file_type in {"png", "pdf"}:
             filename = str(
-                sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
+                Path.cwd() / f"{self.filename}.{file_type}",
             )
             _logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
