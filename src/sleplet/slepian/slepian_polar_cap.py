@@ -3,6 +3,7 @@ import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
+from pathlib import Path
 
 import gmpy2 as gp
 import numpy as np
@@ -16,7 +17,6 @@ import sleplet._data.setup_pooch
 import sleplet._mask_methods
 import sleplet._parallel_methods
 import sleplet._validation
-import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
@@ -116,9 +116,9 @@ class SlepianPolarCap(SlepianFunctions):
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
         limit = self.N if self.L > _L_SAVE_ALL else None
-        np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
-        np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[:limit])
-        np.save(sleplet._vars.DATA_PATH / order_loc, self.order)
+        np.save(Path.cwd() / eval_loc, eigenvalues)
+        np.save(Path.cwd() / evec_loc, eigenvectors[:limit])
+        np.save(Path.cwd() / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(

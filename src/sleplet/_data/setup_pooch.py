@@ -1,9 +1,8 @@
 import logging
 import os
+from pathlib import Path
 
 import pooch
-
-import sleplet._vars
 
 _logger = logging.getLogger(__name__)
 
@@ -22,8 +21,8 @@ def find_on_pooch_then_local(filename: str) -> os.PathLike | None:
     if filename in _POOCH.registry:
         _logger.info(f"Found {filename} at https://doi.org/{_ZENODO_DATA_DOI}")
         return _POOCH.fetch(filename, progressbar=True)
-    if (sleplet._vars.DATA_PATH / filename).exists():
-        _logger.info(f"Found {filename} at {sleplet._vars.DATA_PATH / filename}")
-        return sleplet._vars.DATA_PATH / filename
+    if (Path.cwd() / filename).exists():
+        _logger.info(f"Found {filename} at {Path.cwd() / filename}")
+        return Path.cwd() / filename
     _logger.info(f"No {filename} found, calculating...")
     return None
