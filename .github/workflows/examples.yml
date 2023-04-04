@@ -30,7 +30,7 @@ jobs:
           python -m pip install -e .[readme]
 
       - name: Run examples in the README
-        run: python -m pytest --codeblocks .github README.md
+        run: python -m pytest --codeblocks .github documentation
 
   examples:
     runs-on: ubuntu-latest
