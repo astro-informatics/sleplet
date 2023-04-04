@@ -2,6 +2,7 @@
 import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 import numpy as np
 from numpy import linalg as LA  # noqa: N812
@@ -14,7 +15,6 @@ import sleplet._integration_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
-import sleplet._vars
 from sleplet.meshes.mesh import Mesh
 
 _logger = logging.getLogger(__name__)
@@ -69,8 +69,8 @@ class MeshSlepian:
             self.slepian_eigenvalues,
             self.slepian_functions,
         ) = self._clean_evals_and_evecs(LA.eigh(D))
-        np.save(sleplet._vars.DATA_PATH / eval_loc, self.slepian_eigenvalues)
-        np.save(sleplet._vars.DATA_PATH / evec_loc, self.slepian_functions[: self.N])
+        np.save(Path.cwd() / eval_loc, self.slepian_eigenvalues)
+        np.save(Path.cwd() / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
         """Computes the D matrix for the mesh eigenfunctions."""

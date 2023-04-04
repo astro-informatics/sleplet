@@ -9,8 +9,8 @@ from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 import sleplet._data.setup_pooch
 import sleplet._integration_methods
-import sleplet._vars
 
+_data_path = Path(__file__).resolve().parent / "_data"
 _logger = logging.getLogger(__name__)
 
 
@@ -56,7 +56,7 @@ def create_mesh_region(
 def extract_mesh_config(mesh_name: str) -> dict:
     """Reads in the given mesh region settings file."""
     with Path.open(
-        sleplet._vars.DATA_PATH / f"meshes_regions_{mesh_name}.toml",
+        _data_path / f"meshes_regions_{mesh_name}.toml",
         "rb",
     ) as f:
         return tomli.load(f)
@@ -103,15 +103,15 @@ def mesh_eigendecomposition(
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         _logger.info("saving binaries...")
-        np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
-        np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors)
+        np.save(Path.cwd() / eval_loc, eigenvalues)
+        np.save(Path.cwd() / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
 
 
 def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
     """Reads in the given mesh."""
     vertices, faces = read_triangle_mesh(
-        str(sleplet._vars.DATA_PATH / f"meshes_polygons_{mesh_config['FILENAME']}"),
+        str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}"),
     )
     return upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
 

@@ -3,6 +3,7 @@ import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
+from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
@@ -17,7 +18,6 @@ import sleplet._mask_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
-import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
@@ -85,8 +85,8 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvalues,
             eigenvectors,
         ) = sleplet._slepian_arbitrary_methods.clean_evals_and_evecs(LA.eigh(D))
-        np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
-        np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[: self.N])
+        np.save(Path.cwd() / eval_loc, eigenvalues)
+        np.save(Path.cwd() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802

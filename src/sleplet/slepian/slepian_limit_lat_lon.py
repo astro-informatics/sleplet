@@ -1,5 +1,7 @@
 """Contains the `SlepianLimitLatLon` class."""
 
+from pathlib import Path
+
 import numpy as np
 import pyssht as ssht
 from numba import njit, prange
@@ -66,8 +68,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
-            np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[: self.N])
+            np.save(Path.cwd() / eval_loc, eigenvalues)
+            np.save(Path.cwd() / evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
