@@ -6,6 +6,7 @@ import numpy as np
 import plotly.offline as py
 import pyssht as ssht
 from numpy import typing as npt
+from platformdirs import user_documents_path
 from plotly.graph_objs import Figure, Surface
 from plotly.graph_objs.surface import Lighting
 from pydantic.dataclasses import dataclass
@@ -116,13 +117,13 @@ class PlotSphere:
 
         fig = Figure(data=data, layout=layout)
 
-        html_filename = str(sleplet._vars.FIG_PATH / "html" / f"{self.filename}.html")
+        html_filename = str(user_documents_path() / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename)
 
         for file_type in {"png", "pdf"}:
             filename = str(
-                sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
+                user_documents_path() / f"{self.filename}.{file_type}",
             )
             _logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")

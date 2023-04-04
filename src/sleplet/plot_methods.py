@@ -6,6 +6,7 @@ import pyssht as ssht
 from matplotlib import colors
 from matplotlib import pyplot as plt
 from numpy import typing as npt
+from platformdirs import user_documents_path
 
 import sleplet._mask_methods
 import sleplet._vars
@@ -84,7 +85,7 @@ def save_plot(name: str) -> None:
     """
     plt.tight_layout()
     for file_type in {"png", "pdf"}:
-        filename = sleplet._vars.FIG_PATH / file_type / f"{name}.{file_type}"
+        filename = user_documents_path() / f"{name}.{file_type}"
         _logger.info(f"saving {filename}")
         plt.savefig(filename, bbox_inches="tight")
     plt.show(block=False)
