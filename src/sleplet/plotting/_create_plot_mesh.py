@@ -1,12 +1,12 @@
 import logging
 from dataclasses import KW_ONLY
-from pathlib import Path
 
 import cmocean
 import numpy as np
 import plotly.offline as py
 from matplotlib.colors import LinearSegmentedColormap
 from numpy import typing as npt
+from platformdirs import user_documents_path
 from plotly.graph_objs import Figure, Mesh3d
 from plotly.graph_objs.mesh3d import Lighting
 from pydantic.dataclasses import dataclass
@@ -95,13 +95,13 @@ class PlotMesh:
 
         fig = Figure(data=data, layout=layout)
 
-        html_filename = str(Path.cwd() / f"{self.filename}.html")
+        html_filename = str(user_documents_path() / f"{self.filename}.html")
 
         py.plot(fig, filename=html_filename)
 
         for file_type in {"png", "pdf"}:
             filename = str(
-                Path.cwd() / f"{self.filename}.{file_type}",
+                user_documents_path() / f"{self.filename}.{file_type}",
             )
             _logger.info(f"saving {filename}")
             fig.write_image(filename, engine="kaleido")
