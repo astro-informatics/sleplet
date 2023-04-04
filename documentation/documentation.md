@@ -22,21 +22,15 @@ arbitrary region,
 [as seen in the code](https://github.com/astro-informatics/sleplet/blob/main/src/sleplet/utils/region.py).
 The default region is the `south_america` arbitrary region.
 
-- `POLAR_GAP`
-  - for a Slepian `polar cap region`, when set in conjunction with `THETA_MAX`
-    but without the other `PHI`/`THETA` variables
-- `THETA_MAX`
-  - for a Slepian `polar cap region`, when set without the other `PHI`/`THETA`
-    variables
-  - for a Slepian `limited latitude longitude region`
-- `THETA_MIN`
-  - for a Slepian `limited latitude longitude region`
-- `PHI_MAX`
-  - for a Slepian `limited latitude longitude region`
-- `PHI_MIN`
-  - for a Slepian `limited latitude longitude region`
-- `SLEPIAN_MASK`
-  - for an arbitrary Slepian region, currently `africa`/`south_america` supported
+- `POLAR_GAP`: for a Slepian `polar cap region`, when set in conjunction with
+  `THETA_MAX` but without the other `PHI`/`THETA` variables
+- `THETA_MAX`: for a Slepian `polar cap region`, when set without the other
+  `PHI`/`THETA` variables OR for a Slepian `limited latitude longitude region`
+- `THETA_MIN`: for a Slepian `limited latitude longitude region`
+- `PHI_MAX`: for a Slepian `limited latitude longitude region`
+- `PHI_MIN`: for a Slepian `limited latitude longitude region`
+- `SLEPIAN_MASK`: for an arbitrary Slepian region, currently `africa`/
+  `south_america` supported
 
 ## Paper Figures
 
