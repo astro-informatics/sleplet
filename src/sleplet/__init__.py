@@ -1,6 +1,8 @@
 """
-API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
-the rest of the documentation.
+The documentation of the API of the `SLEPLET` package. See
+[PyPI](https://pypi.org/project/sleplet) for more details.
+
+.. include:: ./documentation.md
 """
 
 import logging
