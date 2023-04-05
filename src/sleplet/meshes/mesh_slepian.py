@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
+from platformdirs import user_data_path
 from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
@@ -14,7 +15,6 @@ import sleplet._integration_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
-import sleplet._vars
 from sleplet.meshes.mesh import Mesh
 
 _logger = logging.getLogger(__name__)
@@ -69,8 +69,8 @@ class MeshSlepian:
             self.slepian_eigenvalues,
             self.slepian_functions,
         ) = self._clean_evals_and_evecs(LA.eigh(D))
-        np.save(sleplet._vars.DATA_PATH / eval_loc, self.slepian_eigenvalues)
-        np.save(sleplet._vars.DATA_PATH / evec_loc, self.slepian_functions[: self.N])
+        np.save(user_data_path() / eval_loc, self.slepian_eigenvalues)
+        np.save(user_data_path() / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
         """Computes the D matrix for the mesh eigenfunctions."""

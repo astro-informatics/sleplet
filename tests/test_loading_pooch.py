@@ -9,11 +9,13 @@ def test_known_file_exists_on_pooch() -> None:
     assert isinstance(sleplet._data.setup_pooch.find_on_pooch_then_local(filename), str)
 
 
-def test_known_file_exists_in_data_folder() -> None:
-    """Checks that a known file exists in the data folder."""
-    filename = "meshes_regions_bird.toml"
+def test_file_exists_in_data_folder_after_initial_run() -> None:
+    """Checks that a file exists in the data folder after it has been saved."""
+    new_south_america = sleplet.functions.SouthAmerica(15)
     assert isinstance(
-        sleplet._data.setup_pooch.find_on_pooch_then_local(filename),
+        sleplet._data.setup_pooch.find_on_pooch_then_local(
+            f"slepian_masks_{new_south_america.name}.npy",
+        ),
         Path,
     )
 

@@ -3,7 +3,6 @@ from dataclasses import KW_ONLY
 
 import cmocean
 import numpy as np
-import plotly.offline as py
 from matplotlib.colors import LinearSegmentedColormap
 from numpy import typing as npt
 from plotly.graph_objs import Figure, Mesh3d
@@ -14,7 +13,6 @@ import sleplet._mask_methods
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
-import sleplet._vars
 import sleplet.meshes.mesh
 import sleplet.plot_methods
 
@@ -93,18 +91,9 @@ class PlotMesh:
 
         layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
 
+        _logger.info(f"Saving: {self.filename}")
         fig = Figure(data=data, layout=layout)
-
-        html_filename = str(sleplet._vars.FIG_PATH / "html" / f"{self.filename}.html")
-
-        py.plot(fig, filename=html_filename)
-
-        for file_type in {"png", "pdf"}:
-            filename = str(
-                sleplet._vars.FIG_PATH / file_type / f"{self.filename}.{file_type}",
-            )
-            _logger.info(f"saving {filename}")
-            fig.write_image(filename, engine="kaleido")
+        fig.show()
 
     def _prepare_field(
         self,

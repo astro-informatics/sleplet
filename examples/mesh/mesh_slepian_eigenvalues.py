@@ -5,7 +5,6 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 
 from sleplet.meshes import Mesh, MeshSlepian
-from sleplet.plot_methods import save_plot
 
 sns.set(context="paper")
 
@@ -40,7 +39,11 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot(f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}")
+    print(f"Saving: {mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}")
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(10)
+    plt.close()
 
 
 if __name__ == "__main__":

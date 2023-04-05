@@ -1,7 +1,6 @@
 from glob import glob
 from pathlib import Path
 
-import sleplet._vars
 import sleplet.functions.africa
 import sleplet.functions.axisymmetric_wavelet_coefficients_africa
 import sleplet.functions.axisymmetric_wavelet_coefficients_earth
@@ -41,9 +40,10 @@ import sleplet.meshes.mesh_slepian_noise_field
 import sleplet.meshes.mesh_slepian_wavelet_coefficients
 import sleplet.meshes.mesh_slepian_wavelets
 
+_data_path = Path(__file__).resolve().parent / "_data"
 MESHES: list[str] = [
     Path(x).stem.removeprefix("meshes_regions_")
-    for x in glob(str(sleplet._vars.DATA_PATH / "*.toml"))
+    for x in glob(str(_data_path / "*.toml"))
 ]
 
 FLM: list[type[sleplet.functions.coefficients.Coefficients]] = [
