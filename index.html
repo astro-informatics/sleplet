@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>sleplet API documentation</title>
-<meta name="description" content="API of the `SLEPLET` package. See [PyPI](https://pypi.org/project/sleplet) for
-the rest of the documentation." />
+<meta name="description" content="Documentation of the `SLEPLET` package. The
+[API documentation](#header-submodules) is included at the end of this page. See
+…" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -24,8 +25,677 @@ the rest of the documentation." />
 <h1 class="title">Package <code>sleplet</code></h1>
 </header>
 <section id="section-intro">
-<p>API of the <code>SLEPLET</code> package. See <a href="https://pypi.org/project/sleplet">PyPI</a> for
-the rest of the documentation.</p>
+<p>Documentation of the <code>SLEPLET</code> package. The
+<a href="#header-submodules">API documentation</a> is included at the end of this page. See
+<a href="https://pypi.org/project/sleplet">PyPI</a> for more details.</p>
+<h2 id="bandlimit">Bandlimit</h2>
+<p>The bandlimit is set as <code>L</code> throughout the code and the CLIs. The default value
+is set to <code>L=16</code> and the figures created in <a href="#paper-figures">the figure section</a>
+all use <code>L=128</code>. The pre-computed data exists on
+<a href="https://doi.org/10.5281/zenodo.7767698">Zenodo</a> for powers of two up to <code>L=128</code>.
+Other values will be computed when running the appropriate code (and saved for
+future use). Note that beyond <code>L=32</code> the code can be slow due to the
+difficulties of computing the Slepian matrix prior to the eigendecomposition, as
+such it is recommended to stick to the powers of two up to <code>L=128</code>.</p>
+<h2 id="environment-variables">Environment Variables</h2>
+<ul>
+<li><code>NCPU</code>: sets the number of cores to use</li>
+</ul>
+<p>When it comes to selecting a Slepian region the order precedence is
+<a href="https://doi.org/10.1111/j.1365-246X.2006.03065.x">polar cap region</a> &gt;
+<a href="https://doi.org/10.1109/TSP.2016.2646668">limited latitude longitude region</a> &gt;
+arbitrary region,
+<a href="https://github.com/astro-informatics/sleplet/blob/main/src/sleplet/utils/region.py">as seen in the code</a>.
+The default region is the <code>south_america</code> arbitrary region.</p>
+<ul>
+<li><code>POLAR_GAP</code>: for a Slepian <code>polar cap region</code>, when set in conjunction with
+<code>THETA_MAX</code> but without the other <code>PHI</code>/<code>THETA</code> variables</li>
+<li><code>THETA_MAX</code>: for a Slepian <code>polar cap region</code>, when set without the other
+<code>PHI</code>/<code>THETA</code> variables OR for a Slepian <code>limited latitude longitude region</code></li>
+<li><code>THETA_MIN</code>: for a Slepian <code>limited latitude longitude region</code></li>
+<li><code>PHI_MAX</code>: for a Slepian <code>limited latitude longitude region</code></li>
+<li><code>PHI_MIN</code>: for a Slepian <code>limited latitude longitude region</code></li>
+<li><code>SLEPIAN_MASK</code>: for an arbitrary Slepian region, currently <code>africa</code>/
+<code>south_america</code> supported</li>
+</ul>
+<h2 id="paper-figures">Paper Figures</h2>
+<p>To recreate the figures from the below papers, one may use the CLI or the API.
+For those which don't use the <code>mesh</code> or <code>sphere</code> CLIs, the relevant API code
+isn't provided as it is contained within the
+<a href="https://github.com/astro-informatics/sleplet/tree/main/examples">examples folder</a>.</p>
+<h3 id="sifting-convolution-on-the-sphere">Sifting Convolution on the Sphere</h3>
+<p><a href="https://dx.doi.org/10.1109/LSP.2021.3050961"><img alt="Sifting Convolution on the Sphere" src="https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg"></a></p>
+<h4 id="sifting-convolution-on-the-sphere-fig-1">Sifting Convolution on the Sphere: Fig. 1</h4>
+<pre><code class="language-sh">for ell in $(seq 2 -1 1); do
+    sphere harmonic_gaussian -a 0.75 -b 0.125 -e ${ell} 1 -L 128 -m translate -o
+done
+</code></pre>
+<pre><code class="language-python">import numpy as np
+import pyssht as ssht
+import sleplet
+
+for ell in range(2, 0, -1):
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
+    flm = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
+    f_sphere = ssht.inverse(flm, f.L, Method=&quot;MWSS&quot;)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_1_ell_{ell}&quot;,
+        annotations=[],
+    ).execute()
+</code></pre>
+<h4 id="sifting-convolution-on-the-sphere-fig-2">Sifting Convolution on the Sphere: Fig. 2</h4>
+<pre><code class="language-sh">sphere earth -L 128
+</code></pre>
+<pre><code class="language-python">import pyssht as ssht
+import sleplet
+
+f = sleplet.functions.Earth(128)
+flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
+f_sphere = ssht.inverse(flm, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(f_sphere, f.L, &quot;fig_2&quot;).execute()
+</code></pre>
+<h4 id="sifting-convolution-on-the-sphere-fig-3">Sifting Convolution on the Sphere: Fig. 3</h4>
+<pre><code class="language-sh">for ell in $(seq 2 -1 1); do
+    sphere harmonic_gaussian -c earth -e ${ell} 1 -L 128
+done
+</code></pre>
+<pre><code class="language-python">import pyssht as ssht
+import sleplet
+
+for ell in range(2, 0, -1):
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
+    g = sleplet.functions.Earth(128)
+    flm = f.convolve(f.coefficients, g.coefficients.conj())
+    flm_rot = sleplet.harmonic_methods.rotate_earth_to_south_america(flm, f.L)
+    f_sphere = ssht.inverse(flm_rot, f.L, Method=&quot;MWSS&quot;)
+    sleplet.plotting.PlotSphere(f_sphere, f.L, f&quot;fig_3_ell_{ell}&quot;).execute()
+</code></pre>
+<h3 id="slepian-scale-discretised-wavelets-on-the-sphere">Slepian Scale-Discretised Wavelets on the Sphere</h3>
+<p><a href="https://dx.doi.org/10.1109/TSP.2022.3233309"><img alt="Slepian Scale-Discretised Wavelets on the Sphere" src="https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg"></a></p>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-2">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 2</h4>
+<pre><code class="language-sh">python -m examples.arbitrary.south_america.tiling_south_america
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-3">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 3</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;south_america&quot;
+# a
+sphere earth -L 128 -s 2 -u
+# b
+sphere slepian_south_america -L 128 -s 2 -u
+</code></pre>
+<pre><code class="language-python">import pyssht as ssht
+import sleplet
+
+# a
+f = sleplet.functions.Earth(128, smoothing=2)
+flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
+f_sphere = ssht.inverse(flm, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(f_sphere, f.L, &quot;fig_3_a&quot;, normalise=False).execute()
+# b
+region = sleplet.slepian.Region(mask_name=&quot;south_america&quot;)
+g = sleplet.functions.SlepianSouthAmerica(128, region=region, smoothing=2)
+g_sphere = sleplet.slepian_methods.slepian_inverse(g.coefficients, g.L, g.slepian)
+sleplet.plotting.PlotSphere(
+    g_sphere,
+    g.L,
+    &quot;fig_3_b&quot;,
+    normalise=False,
+    region=g.region,
+).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-4">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 4</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;south_america&quot;
+for p in 0 9 24 49 99 199; do
+    sphere slepian -e ${p} -L 128 -u
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+region = sleplet.slepian.Region(mask_name=&quot;south_america&quot;)
+for p in [0, 9, 24, 49, 99, 199]:
+    f = sleplet.functions.Slepian(128, region=region, rank=p)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_4_p_{p}&quot;,
+        normalise=False,
+        region=f.region,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-5">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 5</h4>
+<pre><code class="language-sh">python -m examples.arbitrary.south_america.eigenvalues_south_america
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-6">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 6</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;south_america&quot;
+# a
+sphere slepian_wavelets -L 128 -u
+# b-f
+for j in $(seq 0 4); do
+    sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+region = sleplet.slepian.Region(mask_name=&quot;south_america&quot;)
+for j in [None, *list(range(5))]:
+    f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=j)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_6_j_{j}&quot;,
+        normalise=False,
+        region=f.region,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-7">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 7</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;south_america&quot;
+# a
+sphere slepian_wavelet_coefficients_south_america -L 128 -s 2 -u
+# b-f
+for j in $(seq 0 4); do
+    sphere slepian_wavelet_coefficients_south_america -e 3 2 ${j} -L 128 -s 2 -u
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+region = sleplet.slepian.Region(mask_name=&quot;south_america&quot;)
+for j in [None, *list(range(5))]:
+    f = sleplet.functions.SlepianWaveletCoefficientsSouthAmerica(
+        128,
+        region=region,
+        B=3,
+        j_min=2,
+        j=j,
+        smoothing=2,
+    )
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_7_j_{j}&quot;,
+        normalise=False,
+        region=f.region,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-8">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 8</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;south_america&quot;
+# a
+sphere slepian_south_america -L 128 -n -10 -s 2 -u
+# b-d
+for s in 2 3 5; do
+    python -m examples.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+# a
+region = sleplet.slepian.Region(mask_name=&quot;south_america&quot;)
+f = sleplet.functions.SlepianSouthAmerica(128, region=region, noise=-10, smoothing=2)
+f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(f)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    &quot;fig_8_a&quot;,
+    amplitude=amplitude,
+    normalise=False,
+    region=f.region,
+).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-9">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 9</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;africa&quot;
+# a
+sphere earth -L 128 -p africa -s 2 -u
+# b
+sphere slepian_africa -L 128 -s 2 -u
+</code></pre>
+<pre><code class="language-python">import pyssht as ssht
+import sleplet
+
+# a
+f = sleplet.functions.Earth(128, smoothing=2)
+flm = sleplet.harmonic_methods.rotate_earth_to_africa(f.coefficients, f.L)
+f_sphere = ssht.inverse(flm, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(f_sphere, f.L, &quot;fig_9_a&quot;, normalise=False).execute()
+# b
+region = sleplet.slepian.Region(mask_name=&quot;africa&quot;)
+g = sleplet.functions.SlepianAfrica(128, region=region, smoothing=2)
+g_sphere = sleplet.slepian_methods.slepian_inverse(g.coefficients, g.L, g.slepian)
+sleplet.plotting.PlotSphere(
+    g_sphere,
+    g.L,
+    &quot;fig_9_b&quot;,
+    normalise=False,
+    region=g.region,
+).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-10">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 10</h4>
+<pre><code class="language-sh">python -m examples.arbitrary.africa.eigenvalues_africa
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-11">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 11</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;africa&quot;
+for p in 0 9 24 49 99 199; do
+    sphere slepian -e ${p} -L 128 -u
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+region = sleplet.slepian.Region(mask_name=&quot;africa&quot;)
+for p in [0, 9, 24, 49, 99, 199]:
+    f = sleplet.functions.Slepian(128, region=region, rank=p)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_11_p{p}&quot;,
+        normalise=False,
+        region=f.region,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-12">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 12</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;africa&quot;
+# a
+sphere slepian_wavelets -L 128 -u
+# b
+for j in $(seq 0 5); do
+    sphere slepian_wavelets -e 3 2 ${j} -L 128 -u
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+region = sleplet.slepian.Region(mask_name=&quot;africa&quot;)
+for j in [None, *list(range(6))]:
+    f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=j)
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_12_j_{j}&quot;,
+        normalise=False,
+        region=f.region,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-13">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 13</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;africa&quot;
+# a
+sphere slepian_wavelet_coefficients_africa -L 128 -s 2 -u
+# b
+for j in $(seq 0 5); do
+    sphere slepian_wavelet_coefficients_africa -e 3 2 ${j} -L 128 -s 2 -u
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+region = sleplet.slepian.Region(mask_name=&quot;africa&quot;)
+for j in [None, *list(range(6))]:
+    f = sleplet.functions.SlepianWaveletCoefficientsAfrica(
+        128,
+        region=region,
+        B=3,
+        j_min=2,
+        j=j,
+        smoothing=2,
+    )
+    f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_13_j_{j}&quot;,
+        normalise=False,
+        region=f.region,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-the-sphere-fig-14">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 14</h4>
+<pre><code class="language-sh">export SLEPIAN_MASK=&quot;africa&quot;
+# a
+sphere slepian_africa -L 128 -n -10 -s 2 -u
+# b-d
+for s in 2 3 5; do
+    python -m examples.arbitrary.africa.denoising_slepian_africa -n -10 -s ${s}
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+# a
+region = sleplet.slepian.Region(mask_name=&quot;africa&quot;)
+f = sleplet.functions.SlepianAfrica(128, region=region, noise=-10, smoothing=2)
+f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(f)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    &quot;fig_14_a&quot;,
+    amplitude=amplitude,
+    normalise=False,
+    region=f.region,
+).execute()
+</code></pre>
+<h3 id="slepian-scale-discretised-wavelets-on-manifolds">Slepian Scale-Discretised Wavelets on Manifolds</h3>
+<p><a href="https://doi.org/10.48550/arXiv.2302.06006"><img alt="Slepian Scale-Discretised Wavelets on Manifolds" src="https://img.shields.io/badge/DOI-10.48550/arXiv.2302.06006-pink.svg"></a></p>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-2">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 2</h4>
+<pre><code class="language-sh">for r in $(seq 2 9); do
+    mesh homer -e ${r} -u
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+mesh = sleplet.meshes.Mesh(&quot;homer&quot;)
+for r in range(2, 10):
+    f = sleplet.meshes.MeshBasisFunctions(mesh, rank=r)
+    f_mesh = sleplet.harmonic_methods.mesh_inverse(f.mesh, f.coefficients)
+    sleplet.plotting.PlotMesh(mesh, f&quot;fig_2_r_{r}&quot;, f_mesh, normalise=False).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-4">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 4</h4>
+<pre><code class="language-sh">python -m examples.mesh.mesh_tiling homer
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-5">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 5</h4>
+<pre><code class="language-sh">python -m examples.mesh.mesh_region homer
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-6">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 6</h4>
+<pre><code class="language-sh">for p in 0 9 24 49 99 199; do
+    mesh homer -m slepian_functions -e ${p} -u -z
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+mesh = sleplet.meshes.Mesh(&quot;homer&quot;, zoom=True)
+for p in [0, 9, 24, 49, 99, 199]:
+    f = sleplet.meshes.MeshSlepianFunctions(mesh, rank=p)
+    f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
+        f.mesh_slepian,
+        f.coefficients,
+    )
+    sleplet.plotting.PlotMesh(
+        mesh,
+        f&quot;fig_6_p_{p}&quot;,
+        f_mesh,
+        normalise=False,
+        region=True,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-7">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 7</h4>
+<pre><code class="language-sh">python -m examples.mesh.mesh_slepian_eigenvalues homer
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-8">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 8</h4>
+<pre><code class="language-sh"># a
+mesh homer -m slepian_wavelets -u -z
+# b-f
+for j in $(seq 0 4); do
+    mesh homer -e 3 2 ${j} -m slepian_wavelets -u -z
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+mesh = sleplet.meshes.Mesh(&quot;homer&quot;, zoom=True)
+for j in [None, *list(range(5))]:
+    f = sleplet.meshes.MeshSlepianWavelets(mesh, B=3, j_min=2, j=j)
+    f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
+        f.mesh_slepian,
+        f.coefficients,
+    )
+    sleplet.plotting.PlotMesh(
+        mesh,
+        f&quot;fig_8_j_{j}&quot;,
+        f_mesh,
+        normalise=False,
+        region=True,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-9">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 9</h4>
+<pre><code class="language-sh">mesh homer -m field -u
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+mesh = sleplet.meshes.Mesh(&quot;homer&quot;)
+f = sleplet.meshes.MeshField(mesh)
+f_mesh = sleplet.harmonic_methods.mesh_inverse(f.mesh, f.coefficients)
+sleplet.plotting.PlotMesh(mesh, &quot;fig_9&quot;, f_mesh, normalise=False).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-10">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 10</h4>
+<pre><code class="language-sh"># a
+mesh homer -m slepian_wavelet_coefficients -u -z
+# b-f
+for j in $(seq 0 4); do
+    mesh homer -e 3 2 ${j} -m slepian_wavelet_coefficients -u -z
+done
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+mesh = sleplet.meshes.Mesh(&quot;homer&quot;, zoom=True)
+for j in [None, *list(range(5))]:
+    f = sleplet.meshes.MeshSlepianWaveletCoefficients(mesh, B=3, j_min=2, j=j)
+    f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
+        f.mesh_slepian,
+        f.coefficients,
+    )
+    sleplet.plotting.PlotMesh(
+        mesh,
+        f&quot;fig_10_j_{j}&quot;,
+        f_mesh,
+        normalise=False,
+        region=True,
+    ).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-11">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 11</h4>
+<pre><code class="language-sh"># a
+mesh homer -m slepian_field -u -z
+# b
+mesh homer -m slepian_field -n -5 -u -z
+# c
+python -m examples.mesh.denoising_slepian_mesh homer -n -5 -s 2
+</code></pre>
+<pre><code class="language-python">import sleplet
+
+mesh = sleplet.meshes.Mesh(&quot;homer&quot;, zoom=True)
+# a
+f = sleplet.meshes.MeshSlepianField(mesh)
+f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, f.coefficients)
+sleplet.plotting.PlotMesh(
+    mesh,
+    &quot;fig_11_a&quot;,
+    f_mesh,
+    normalise=False,
+    region=True,
+).execute()
+# b
+g = sleplet.meshes.MeshSlepianField(mesh, noise=-5)
+g_mesh = sleplet.slepian_methods.slepian_mesh_inverse(g.mesh_slepian, g.coefficients)
+amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_mesh_plots(g)
+sleplet.plotting.PlotMesh(
+    mesh,
+    &quot;fig_11_b&quot;,
+    g_mesh,
+    amplitude=amplitude,
+    normalise=False,
+    region=True,
+).execute()
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-fig-12">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 12</h4>
+<pre><code class="language-sh">for f in cheetah dragon bird teapot cube; do
+    python -m examples.mesh.mesh_region ${f}
+done
+</code></pre>
+<h4 id="slepian-scale-discretised-wavelets-on-manifolds-tab-1">Slepian Scale-Discretised Wavelets on Manifolds: Tab. 1</h4>
+<pre><code class="language-sh">python -m examples.mesh.produce_table
+</code></pre>
+<h3 id="slepian-wavelets-for-the-analysis-of-incomplete-data-on-manifolds">Slepian Wavelets for the Analysis of Incomplete Data on Manifolds</h3>
+<p><a href="https://paddyroddy.github.io/thesis"><img alt="Slepian Wavelets for the Analysis of Incomplete Data on Manifolds" src="https://img.shields.io/badge/PhD%20Thesis-Patrick%20J.%20Roddy-pink.svg"></a></p>
+<h4 id="chapter-2">Chapter 2</h4>
+<h5 id="fig-21">Fig. 2.1</h5>
+<pre><code class="language-sh">for ell in $(seq 0 4); do
+    for m in $(seq 0 ${ell}); do
+        sphere spherical_harmonic -e ${ell} ${m} -L 128 -u -z
+    done
+done
+</code></pre>
+<pre><code class="language-python">import pyssht as ssht
+import sleplet
+
+for ell in range(5):
+    for m in range(ell + 1):
+        f = sleplet.functions.SphericalHarmonic(128, ell=ell, m=m)
+        f_sphere = ssht.inverse(f.coefficients, f.L, Method=&quot;MWSS&quot;)
+        sleplet.plotting.PlotSphere(
+            f_sphere,
+            f.L,
+            f&quot;fig_2_1_ell_{ell}_m_{m}&quot;,
+            normalise=False,
+            unzeropad=True,
+        ).execute()
+</code></pre>
+<h5 id="fig-22">Fig. 2.2</h5>
+<pre><code class="language-sh"># a
+sphere elongated_gaussian -e -1 -1 -L 128
+# b
+sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0 -b 0 -g 0.25
+# c
+sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0 -b 0.25 -g 0.25
+# d
+sphere elongated_gaussian -e -1 -1 -L 128 -m rotate -a 0.25 -b 0.25 -g 0.25
+</code></pre>
+<pre><code class="language-python">import numpy as np
+import pyssht as ssht
+import sleplet
+
+# a
+f = sleplet.functions.ElongatedGaussian(128, p_sigma=0.1, t_sigma=0.1)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(f_sphere, f.L, &quot;fig_2_2_a&quot;, annotations=[]).execute()
+# b-d
+for a, b, g in [(0, 0, 0.25), (0, 0.25, 0.25), (0.25, 0.25, 0.25)]:
+    glm_rot = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
+    g_sphere = ssht.inverse(glm_rot, f.L, Method=&quot;MWSS&quot;)
+    sleplet.plotting.PlotSphere(
+        g_sphere,
+        f.L,
+        f&quot;fig_2_2_a_{a}_b_{b}_g_{g}&quot;,
+        annotations=[],
+    ).execute()
+</code></pre>
+<h5 id="fig-23">Fig. 2.3</h5>
+<pre><code class="language-sh">python -m examples.misc.wavelet_transform
+</code></pre>
+<h5 id="fig-24">Fig. 2.4</h5>
+<pre><code class="language-sh">python -m examples.wavelets.axisymmetric_tiling
+</code></pre>
+<h5 id="fig-25">Fig. 2.5</h5>
+<pre><code class="language-sh"># a
+sphere axisymmetric_wavelets -L 128 -u
+# b-e
+for j in $(seq 0 3); do
+    sphere axisymmetric_wavelets -e 3 2 ${j} -L 128 -u
+done
+</code></pre>
+<pre><code class="language-python">import pyssht as ssht
+import sleplet
+
+for j in [None, *list(range(4))]:
+    f = sleplet.functions.AxisymmetricWavelets(128, B=3, j_min=2, j=j)
+    f_sphere = ssht.inverse(f.coefficients, f.L, Method=&quot;MWSS&quot;)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_2_5_j_{j}&quot;,
+        normalise=False,
+    ).execute()
+</code></pre>
+<h5 id="fig-26">Fig. 2.6</h5>
+<pre><code class="language-sh">python -m examples.polar_cap.eigenvalues
+</code></pre>
+<h5 id="fig-27">Fig. 2.7</h5>
+<pre><code class="language-sh">python -m examples.polar_cap.fried_egg
+</code></pre>
+<h5 id="fig-28">Fig. 2.8</h5>
+<pre><code class="language-sh">python -m examples.polar_cap.eigenfunctions
+</code></pre>
+<h4 id="chapter-3">Chapter 3</h4>
+<h5 id="fig-31">Fig. 3.1</h5>
+<pre><code class="language-sh"># a
+sphere gaussian -L 128
+# b
+sphere gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
+</code></pre>
+<pre><code class="language-python">import numpy as np
+import pyssht as ssht
+import sleplet
+
+# a
+f = sleplet.functions.Gaussian(128)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(f_sphere, f.L, &quot;fig_3_1_a&quot;, annotations=[]).execute()
+# b
+glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
+g_sphere = ssht.inverse(glm_trans, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(g_sphere, f.L, &quot;fig_3_1_b&quot;, annotations=[]).execute()
+</code></pre>
+<h5 id="fig-32">Fig. 3.2</h5>
+<pre><code class="language-sh"># a
+sphere squashed_gaussian -L 128
+# b
+sphere squashed_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
+</code></pre>
+<pre><code class="language-python">import numpy as np
+import pyssht as ssht
+import sleplet
+
+# a
+f = sleplet.functions.SquashedGaussian(128)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(f_sphere, f.L, &quot;fig_3_2_a&quot;, annotations=[]).execute()
+# b
+glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
+g_sphere = ssht.inverse(glm_trans, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(g_sphere, f.L, &quot;fig_3_2_b&quot;, annotations=[]).execute()
+</code></pre>
+<h5 id="fig-33">Fig. 3.3</h5>
+<pre><code class="language-sh"># a
+sphere elongated_gaussian -L 128
+# b
+sphere elongated_gaussian -a 0.75 -b 0.125 -L 128 -m translate -o
+</code></pre>
+<pre><code class="language-python">import numpy as np
+import pyssht as ssht
+import sleplet
+
+# a
+f = sleplet.functions.ElongatedGaussian(128)
+f_sphere = ssht.inverse(f.coefficients, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(f_sphere, f.L, &quot;fig_3_3_a&quot;, annotations=[]).execute()
+# b
+glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
+g_sphere = ssht.inverse(glm_trans, f.L, Method=&quot;MWSS&quot;)
+sleplet.plotting.PlotSphere(g_sphere, f.L, &quot;fig_3_3_b&quot;, annotations=[]).execute()
+</code></pre>
+<h5 id="fig-34">Fig. 3.4</h5>
+<p>Figs. (c-d) correspond to (a-b) in <a href="#sifting-convolution-on-the-sphere-fig-1">Fig. 1 of the Sifting Convolution on the Sphere paper</a>. The following creates Figs. (a-b).</p>
+<pre><code class="language-sh">for ell in $(seq 2 -1 1); do
+    sphere harmonic_gaussian -e ${ell} 1 -L 128
+done
+</code></pre>
+<pre><code class="language-python">import pyssht as ssht
+import sleplet
+
+for ell in range(2, 0, -1):
+    f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
+    f_sphere = ssht.inverse(f.coefficients, f.L, Method=&quot;MWSS&quot;)
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f&quot;fig_3_4_ell_{ell}&quot;,
+        annotations=[],
+    ).execute()
+</code></pre>
+<h5 id="fig-35">Fig. 3.5</h5>
+<p>The same as <a href="#sifting-convolution-on-the-sphere-fig-2">Fig. 2 of the Sifting Convolution on the Sphere paper</a>.</p>
+<h5 id="fig-36">Fig. 3.6</h5>
+<p>The same as <a href="#sifting-convolution-on-the-sphere-fig-3">Fig. 3 of the Sifting Convolution on the Sphere paper</a>.</p>
+<h4 id="chapter-4">Chapter 4</h4>
+<p>The plots here are the same as the <a href="#slepian-scale-discretised-wavelets-on-the-sphere">Slepian Scale-Discretised Wavelets on the Sphere paper</a> without the Africa examples, i.e. <a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-10">Fig. 10 onwards</a>.</p>
+<h4 id="chapter-5">Chapter 5</h4>
+<p>The plots here are the same as the <a href="#slepian-scale-discretised-wavelets-on-manifolds">Slepian Scale-Discretised Wavelets on Manifolds paper</a>.</p>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
@@ -78,7 +748,74 @@ the rest of the documentation.</p>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#bandlimit">Bandlimit</a></li>
+<li><a href="#environment-variables">Environment Variables</a></li>
+<li><a href="#paper-figures">Paper Figures</a><ul>
+<li><a href="#sifting-convolution-on-the-sphere">Sifting Convolution on the Sphere</a><ul>
+<li><a href="#sifting-convolution-on-the-sphere-fig-1">Sifting Convolution on the Sphere: Fig. 1</a></li>
+<li><a href="#sifting-convolution-on-the-sphere-fig-2">Sifting Convolution on the Sphere: Fig. 2</a></li>
+<li><a href="#sifting-convolution-on-the-sphere-fig-3">Sifting Convolution on the Sphere: Fig. 3</a></li>
+</ul>
+</li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere">Slepian Scale-Discretised Wavelets on the Sphere</a><ul>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-2">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 2</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-3">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 3</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-4">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 4</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-5">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 5</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-6">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 6</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-7">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 7</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-8">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 8</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-9">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 9</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-10">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 10</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-11">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 11</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-12">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 12</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-13">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 13</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-the-sphere-fig-14">Slepian Scale-Discretised Wavelets on the Sphere: Fig. 14</a></li>
+</ul>
+</li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds">Slepian Scale-Discretised Wavelets on Manifolds</a><ul>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-2">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 2</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-4">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 4</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-5">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 5</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-6">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 6</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-7">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 7</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-8">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 8</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-9">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 9</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-10">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 10</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-11">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 11</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-fig-12">Slepian Scale-Discretised Wavelets on Manifolds: Fig. 12</a></li>
+<li><a href="#slepian-scale-discretised-wavelets-on-manifolds-tab-1">Slepian Scale-Discretised Wavelets on Manifolds: Tab. 1</a></li>
+</ul>
+</li>
+<li><a href="#slepian-wavelets-for-the-analysis-of-incomplete-data-on-manifolds">Slepian Wavelets for the Analysis of Incomplete Data on Manifolds</a><ul>
+<li><a href="#chapter-2">Chapter 2</a><ul>
+<li><a href="#fig-21">Fig. 2.1</a></li>
+<li><a href="#fig-22">Fig. 2.2</a></li>
+<li><a href="#fig-23">Fig. 2.3</a></li>
+<li><a href="#fig-24">Fig. 2.4</a></li>
+<li><a href="#fig-25">Fig. 2.5</a></li>
+<li><a href="#fig-26">Fig. 2.6</a></li>
+<li><a href="#fig-27">Fig. 2.7</a></li>
+<li><a href="#fig-28">Fig. 2.8</a></li>
+</ul>
+</li>
+<li><a href="#chapter-3">Chapter 3</a><ul>
+<li><a href="#fig-31">Fig. 3.1</a></li>
+<li><a href="#fig-32">Fig. 3.2</a></li>
+<li><a href="#fig-33">Fig. 3.3</a></li>
+<li><a href="#fig-34">Fig. 3.4</a></li>
+<li><a href="#fig-35">Fig. 3.5</a></li>
+<li><a href="#fig-36">Fig. 3.6</a></li>
+</ul>
+</li>
+<li><a href="#chapter-4">Chapter 4</a></li>
+<li><a href="#chapter-5">Chapter 5</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
