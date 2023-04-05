@@ -18,7 +18,7 @@ meshes using `plotly`.
 ## Installation
 
 The recommended way to install `SLEPLET` is via
-[pip](https://pypi.org/project/pip/)
+[pip](https://pypi.org/project/pip)
 
 ```sh
 pip install sleplet
@@ -33,7 +33,7 @@ pip install -e .
 
 This will install two scripts `sphere` and `mesh` which can be used to generate
 the figures in
-[the associated papers](https://astro-informatics.github.io/sleplet/#paper-figures).
+[the associated papers](https://astro-informatics.github.io/sleplet#paper-figures).
 
 ### Supported Platforms
 
@@ -43,9 +43,9 @@ Windows is not currently supported as `SLEPLET` relies on
 [pyssht](https://pypi.org/project/pyssht) and
 [pys2let](https://pypi.org/project/pys2let) which do not work on Windows.
 These can hopefully be replaced with
-[s2fft](https://github.com/astro-informatics/s2fft/) and
+[s2fft](https://github.com/astro-informatics/s2fft) and
 [s2wav](https://github.com/astro-informatics/s2wav) in the future when they
-are available on [PyPI](https://pypi.org/).
+are available on [PyPI](https://pypi.org).
 
 ## Example Usage
 
@@ -73,7 +73,7 @@ sleplet.plotting.PlotSphere(
 ).execute()
 ```
 
-![Slepian Wavelet j=2](./documentation/slepian_wavelets_south_america_3B_2jmin_2j_L128_res512_real.png)
+![Slepian Wavelet j=2](https://github.com/astro-informatics/sleplet/blob/main/documentation/slepian_wavelets_south_america_3B_2jmin_2j_L128_res512_real.png)
 
 ### CLI Usage
 
@@ -84,19 +84,19 @@ region of a Homer Simpson mesh for a per-vertex normals field.
 mesh homer -e 3 2 0 -m slepian_wavelet_coefficients -u -z
 ```
 
-![Slepian Mesh Wavelet Coefficients j=2](./documentation/slepian_wavelet_coefficients_homer_3B_2jmin_2j_zoom.png)
+![Slepian Mesh Wavelet Coefficients j=2](https://github.com/astro-informatics/sleplet/blob/main/documentation/slepian_wavelet_coefficients_homer_3B_2jmin_2j_zoom.png)
 
 ## Documentation
 
 See here for the [documentation](https://astro-informatics.github.io/sleplet).
 This includes demonstrations of the figures from the associated papers along
 with the API documentation. Further examples are included in the
-[examples folder](./examples).
+[examples folder](https://github.com/astro-informatics/sleplet/tree/main/examples).
 
 ## Community Guidelines
 
 We'd love any contributions you may have, please see the
-[contributing guidelines](./CONTRIBUTING.md).
+[contributing guidelines](https://github.com/astro-informatics/sleplet/blob/main/CONTRIBUTING.md).
 
 ## Citing
 
