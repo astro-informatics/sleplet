@@ -15,6 +15,12 @@ installation, `SLEPLET` comes with two command line interfaces - `sphere` and
 `mesh` - which allows one to easily generate plots on the sphere and a set of
 meshes using `plotly`.
 
+To read more about Slepian wavelets please see the following publications
+[![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://dx.doi.org/10.1109/LSP.2021.3050961)
+[![Slepian Scale-Discretised Wavelets on the Sphere](https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg)](https://dx.doi.org/10.1109/TSP.2022.3233309)
+[![Slepian Scale-Discretised Wavelets on Manifolds](https://img.shields.io/badge/DOI-10.48550/arXiv.2302.06006-pink.svg)](https://doi.org/10.48550/arXiv.2302.06006)
+[![Slepian Wavelets for the Analysis of Incomplete Data on Manifolds](https://img.shields.io/badge/PhD%20Thesis-Patrick%20J.%20Roddy-pink.svg)](https://paddyroddy.github.io/thesis)
+
 ## Installation
 
 The recommended way to install `SLEPLET` is via
