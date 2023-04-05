@@ -48,6 +48,13 @@ are available on [PyPI](https://pypi.org/).
 
 ## Example Usage
 
+`SLEPLET` may be interacted with via the API or the CLIs.
+
+### API Usage
+
+The following demonstrates the first wavelet (ignoring the scaling function) of
+the South America region on the sphere.
+
 ```python
 import sleplet
 
@@ -63,7 +70,18 @@ sleplet.plotting.PlotSphere(
 ).execute()
 ```
 
-![Slepian Wavelet j=2](./documentation/slepian_wavelets_south_america_3B_2jmin_2j_L128_res512_real.pdf)
+![Slepian Wavelet j=2](./documentation/slepian_wavelets_south_america_3B_2jmin_2j_L128_res512_real.png)
+
+### CLI Usage
+
+The demonstrates the first wavelet (ignoring the scaling function) of the head
+region of a Homer Simpson mesh for a per-vertex normals field.
+
+```mesh
+mesh homer -e 3 2 0 -m slepian_wavelet_coefficients -u -z
+```
+
+![Slepian Mesh Wavelet Coefficients j=2](./documentation/slepian_wavelet_coefficients_homer_3B_2jmin_2j_zoom.png)
 
 ## Documentation
 
