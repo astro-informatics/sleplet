@@ -6,6 +6,7 @@ import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from numpy import typing as npt
 from plotly import graph_objs as go
+from plotly import io as pio
 from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
@@ -90,9 +91,10 @@ class PlotMesh:
 
         layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
 
-        _logger.info(f"Opening: {self.filename}")
         fig = go.Figure(data=data, layout=layout)
-        fig.show()
+
+        _logger.info(f"Opening: {self.filename}")
+        pio.show(fig)
 
     def _prepare_field(
         self,

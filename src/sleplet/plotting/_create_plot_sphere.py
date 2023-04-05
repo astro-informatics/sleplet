@@ -6,6 +6,7 @@ import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
 from plotly import graph_objs as go
+from plotly import io as pio
 from pydantic.dataclasses import dataclass
 
 import sleplet._plotly_methods
@@ -112,9 +113,10 @@ class PlotSphere:
             annotations=self.annotations,
         )
 
-        _logger.info(f"Opening: {self.filename}")
         fig = go.Figure(data=data, layout=layout)
-        fig.show()
+
+        _logger.info(f"Opening: {self.filename}")
+        pio.show(fig)
 
     @staticmethod
     def _setup_plot(
