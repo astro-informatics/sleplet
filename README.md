@@ -86,6 +86,8 @@ mesh homer -e 3 2 0 -m slepian_wavelet_coefficients -u -z
 ## Documentation
 
 See here for the [documentation](https://astro-informatics.github.io/sleplet).
+This includes demonstrations of the figures from the associated papers along
+with the API documentation.
 
 ## Community Guidelines
 
