@@ -1,10 +1,10 @@
 import logging
 import os
-from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
+from platformdirs import user_data_path
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
@@ -197,5 +197,5 @@ def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
         mask = _create_south_america_mask(L, earth_flm)
     else:
         raise ValueError(f"Mask name {mask_name} not recognised")
-    np.save(Path.cwd() / f"slepian_masks_{mask_name}", mask)
+    np.save(user_data_path() / f"slepian_masks_{mask_name}", mask)
     return mask

@@ -3,12 +3,12 @@ import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
-from pathlib import Path
 
 import numpy as np
 import pyssht as ssht
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
+from platformdirs import user_data_path
 from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
@@ -85,8 +85,8 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvalues,
             eigenvectors,
         ) = sleplet._slepian_arbitrary_methods.clean_evals_and_evecs(LA.eigh(D))
-        np.save(Path.cwd() / eval_loc, eigenvalues)
-        np.save(Path.cwd() / evec_loc, eigenvectors[: self.N])
+        np.save(user_data_path() / eval_loc, eigenvalues)
+        np.save(user_data_path() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802

@@ -3,13 +3,13 @@ import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import KW_ONLY
-from pathlib import Path
 
 import gmpy2 as gp
 import numpy as np
 import pyssht as ssht
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
+from platformdirs import user_data_path
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 
@@ -116,9 +116,9 @@ class SlepianPolarCap(SlepianFunctions):
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
         limit = self.N if self.L > _L_SAVE_ALL else None
-        np.save(Path.cwd() / eval_loc, eigenvalues)
-        np.save(Path.cwd() / evec_loc, eigenvectors[:limit])
-        np.save(Path.cwd() / order_loc, self.order)
+        np.save(user_data_path() / eval_loc, eigenvalues)
+        np.save(user_data_path() / evec_loc, eigenvectors[:limit])
+        np.save(user_data_path() / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(
