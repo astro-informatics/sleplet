@@ -100,8 +100,20 @@ We'd love any contributions you may have, please see the
 
 ## Citing
 
-If you use `SLEPLET` in your research, please cite the JOSS paper.
-[![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
+If you use `SLEPLET` in your research, please cite the paper.
+
+```bibtex
+@article{Roddy2023,
+  title   = {{SLEPLET: Slepian Scale-Discretised Wavelets in Python}},
+  author  = {Roddy, Patrick J.},
+  year    = 2023,
+  journal = {Journal of Open Source Software},
+  volume  = ,
+  number  = ,
+  pages   = ,
+  doi     = {}
+}
+```
 
 Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
 `SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394)
