@@ -68,6 +68,6 @@ To this end, Slepian wavelets may be exploited at present at low resolutions, bu
 
 The author would like to thank Jason D. McEwen for his advice and guidance on the mathematics behind `SLEPLET`.
 Further, the author would like to thank Zubair Khalid for providing his `MATLAB` implementation to compute the Slepian functions of a polar cap region, as well as the formulation for a limited colatitude-longitude region [@Bates2017].
-`SLEPLET` makes use of several libraries the author would like to acknowledge, in particular, `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013], and `libigl` [@Libigl2017].
+`SLEPLET` makes use of several libraries the author would like to acknowledge, in particular, `libigl` [@Libigl2017], `NumPy` [@Harris2020], `plotly` [@Plotly2015], `SSHT` [@McEwen2011], `S2LET` [@Leistedt2013].
 
 # References
