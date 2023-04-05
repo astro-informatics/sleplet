@@ -43,7 +43,7 @@ def main() -> None:
     ax.set_xlabel("coefficients")
     ax.set_ylabel("relative error")
     ax.set_yscale("log")
-    # f"fp_error_earth_polar{THETA_MAX}_L{L}"
+    print(f"Saving: fp_error_earth_polar{THETA_MAX}_L{L}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)

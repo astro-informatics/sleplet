@@ -40,7 +40,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.legend()
-    # f"south_america_slepian_tiling_L{L}"
+    print(f"Saving: south_america_slepian_tiling_L{L}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)

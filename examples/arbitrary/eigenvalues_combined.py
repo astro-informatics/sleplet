@@ -40,7 +40,11 @@ def main() -> None:
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     plt.legend(loc=3)
-    # f"combined_eigenvalues_L{L}"
+    print(f"Saving: combined_eigenvalues_L{L}")
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(10)
+    plt.close()
 
 
 if __name__ == "__main__":

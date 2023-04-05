@@ -39,7 +39,7 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    # f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
+    print(f"Saving: {mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)

@@ -117,7 +117,6 @@ ignore = [
 ]
 per-file-ignores = {"examples/*" = [
     "D100",
-    "ERA001",
     "T201",
 ], "test_*" = [
     "S101",

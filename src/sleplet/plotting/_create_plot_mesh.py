@@ -91,7 +91,7 @@ class PlotMesh:
 
         layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
 
-        _logger.info(f"Saving {self.filename}")
+        _logger.info(f"Saving: {self.filename}")
         fig = Figure(data=data, layout=layout)
         fig.show()
 

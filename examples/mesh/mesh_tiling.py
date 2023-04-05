@@ -61,7 +61,7 @@ def main(mesh_name: str) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.legend()
-    # f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}"
+    print(f"Saving: {mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)
