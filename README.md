@@ -3,6 +3,7 @@
 [![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 [![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org)
 [![Documentation](https://img.shields.io/badge/Documentation-SLEPLET-blueviolet.svg)](https://astro-informatics.github.io/sleplet)
+[![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
 [![Test](https://github.com/astro-informatics/sleplet/actions/workflows/test.yml/badge.svg)](https://github.com/astro-informatics/sleplet/actions/workflows/test.yml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
@@ -96,3 +97,13 @@ with the API documentation. Further examples are included in the
 
 We'd love any contributions you may have, please see the
 [contributing guidelines](./CONTRIBUTING.md).
+
+## Citing
+
+If you use `SLEPLET` in your research, please cite the JOSS paper.
+[![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
+
+Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
+`SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394)
+in the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497)
+in the mesh setting.
