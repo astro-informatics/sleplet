@@ -5,8 +5,7 @@ import cmocean
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
-from plotly.graph_objs import Figure, Surface
-from plotly.graph_objs.surface import Lighting
+from plotly import graph_objs as go
 from pydantic.dataclasses import dataclass
 
 import sleplet._plotly_methods
@@ -90,7 +89,7 @@ class PlotSphere:
         )
 
         data = [
-            Surface(
+            go.Surface(
                 x=x,
                 y=y,
                 z=z,
@@ -103,7 +102,7 @@ class PlotSphere:
                     normalise=self.normalise,
                 ),
                 colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
-                lighting=Lighting(ambient=1),
+                lighting=go.surface.Lighting(ambient=1),
                 reversescale=True,
             ),
         ]
@@ -114,7 +113,7 @@ class PlotSphere:
         )
 
         _logger.info(f"Opening: {self.filename}")
-        fig = Figure(data=data, layout=layout)
+        fig = go.Figure(data=data, layout=layout)
         fig.show()
 
     @staticmethod

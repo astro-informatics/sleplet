@@ -5,8 +5,7 @@ import cmocean
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from numpy import typing as npt
-from plotly.graph_objs import Figure, Mesh3d
-from plotly.graph_objs.mesh3d import Lighting
+from plotly import graph_objs as go
 from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
@@ -64,7 +63,7 @@ class PlotMesh:
         )
 
         data = [
-            Mesh3d(
+            go.Mesh3d(
                 x=self.mesh.vertices[:, 0],
                 y=self.mesh.vertices[:, 2],
                 z=self.mesh.vertices[:, 1],
@@ -84,7 +83,7 @@ class PlotMesh:
                     font_size=_MESH_CBAR_FONT_SIZE,
                 ),
                 colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
-                lighting=Lighting(ambient=1),
+                lighting=go.mesh3d.Lighting(ambient=1),
                 reversescale=True,
             ),
         ]
@@ -92,7 +91,7 @@ class PlotMesh:
         layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
 
         _logger.info(f"Opening: {self.filename}")
-        fig = Figure(data=data, layout=layout)
+        fig = go.Figure(data=data, layout=layout)
         fig.show()
 
     def _prepare_field(
