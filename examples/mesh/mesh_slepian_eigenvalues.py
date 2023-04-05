@@ -42,7 +42,7 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
     # f"{mesh_name}_slepian_eigenvalues_b{mesh.number_basis_functions}"
     plt.tight_layout()
     plt.show(block=False)
-    plt.pause(3)
+    plt.pause(10)
     plt.close()
 
 

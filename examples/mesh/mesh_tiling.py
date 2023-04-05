@@ -64,7 +64,7 @@ def main(mesh_name: str) -> None:
     # f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}"
     plt.tight_layout()
     plt.show(block=False)
-    plt.pause(3)
+    plt.pause(10)
     plt.close()
 
 

@@ -46,7 +46,7 @@ def main() -> None:
     # f"fp_error_earth_polar{THETA_MAX}_L{L}"
     plt.tight_layout()
     plt.show(block=False)
-    plt.pause(3)
+    plt.pause(10)
     plt.close()
 
 

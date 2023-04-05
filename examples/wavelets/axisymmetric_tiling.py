@@ -32,7 +32,7 @@ def main() -> None:
     # f"axisymmetric_tiling_L{L}"
     plt.tight_layout()
     plt.show(block=False)
-    plt.pause(3)
+    plt.pause(10)
     plt.close()
 
 

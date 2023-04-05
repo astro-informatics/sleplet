@@ -30,7 +30,7 @@ def main() -> None:
     # f"south_america_eigenvalues_L{L}"
     plt.tight_layout()
     plt.show(block=False)
-    plt.pause(3)
+    plt.pause(10)
     plt.close()
 
 

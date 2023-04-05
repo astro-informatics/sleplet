@@ -29,7 +29,7 @@ def compute_translation_normalisation_theta() -> None:
     # f"harmonic_gaussian_translation_normalisation_L{L}"
     plt.tight_layout()
     plt.show(block=False)
-    plt.pause(3)
+    plt.pause(10)
     plt.close()
 
 
