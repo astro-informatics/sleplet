@@ -48,4 +48,9 @@ are available on [PyPI](https://pypi.org/).
 
 ## Documentation
 
-Further documentation of may be [viewed here](https://astro-informatics.github.io/sleplet).
+See here for the [documentation](https://astro-informatics.github.io/sleplet).
+
+## Community Guidelines
+
+We'd love any contributions you may have, please see the
+[contributing guidelines](./CONTRIBUTING.md).
