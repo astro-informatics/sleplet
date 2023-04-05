@@ -18,7 +18,7 @@ meshes using `plotly`.
 ## Installation
 
 The recommended way to install `SLEPLET` is via
-[pip](https://pypi.org/project/pip/)
+[pip](https://pypi.org/project/pip)
 
 ```sh
 pip install sleplet
@@ -45,7 +45,7 @@ Windows is not currently supported as `SLEPLET` relies on
 These can hopefully be replaced with
 [s2fft](https://github.com/astro-informatics/s2fft) and
 [s2wav](https://github.com/astro-informatics/s2wav) in the future when they
-are available on [PyPI](https://pypi.org/).
+are available on [PyPI](https://pypi.org).
 
 ## Example Usage
 
