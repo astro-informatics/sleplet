@@ -45,3 +45,7 @@ These can hopefully be replaced with
 [s2fft](https://github.com/astro-informatics/s2fft/) and
 [s2wav](https://github.com/astro-informatics/s2wav) in the future when they
 are available on [PyPI](https://pypi.org/).
+
+## Documentation
+
+Further documentation of may be [viewed here](https://astro-informatics.github.io/sleplet).
