@@ -94,7 +94,7 @@ class PlotMesh:
         fig = go.Figure(data=data, layout=layout)
 
         _logger.info(f"Opening: {self.filename}")
-        pio.show(fig)
+        pio.show(fig, config={"toImageButtonOptions": {"filename": self.filename}})
 
     def _prepare_field(
         self,
