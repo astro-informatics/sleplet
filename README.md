@@ -46,6 +46,25 @@ These can hopefully be replaced with
 [s2wav](https://github.com/astro-informatics/s2wav) in the future when they
 are available on [PyPI](https://pypi.org/).
 
+## Example Usage
+
+```python
+import sleplet
+
+region = sleplet.slepian.Region(mask_name="south_america")
+f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=0)
+f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "wavelet_j_2",
+    normalise=False,
+    region=f.region,
+).execute()
+```
+
+![Slepian Wavelet j=2](./documentation/slepian_wavelets_south_america_3B_2jmin_2j_L128_res512_real.pdf)
+
 ## Documentation
 
 See here for the [documentation](https://astro-informatics.github.io/sleplet).
