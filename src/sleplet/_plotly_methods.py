@@ -1,7 +1,4 @@
-from plotly.graph_objs import Layout
-from plotly.graph_objs.layout import Margin, Scene
-from plotly.graph_objs.layout.scene import Camera, XAxis, YAxis, ZAxis
-from plotly.graph_objs.layout.scene.camera import Center, Eye
+from plotly import graph_objs as go
 
 _axis = {
     "title": "",
@@ -22,26 +19,30 @@ def create_camera(
     x_center: float = 0,
     y_center: float = 0,
     z_center: float = 0,
-) -> Camera:
+) -> go.layout.scene.Camera:
     """Creates default camera view with a zoom factor."""
-    return Camera(
-        eye=Eye(x=x_eye / zoom, y=y_eye / zoom, z=z_eye / zoom),
-        center=Center(x=x_center, y=y_center, z=z_center),
+    return go.layout.scene.Camera(
+        eye=go.layout.scene.camera.Eye(x=x_eye / zoom, y=y_eye / zoom, z=z_eye / zoom),
+        center=go.layout.scene.camera.Center(x=x_center, y=y_center, z=z_center),
     )
 
 
-def create_layout(camera: Camera, *, annotations: list[dict] | None = None) -> Layout:
+def create_layout(
+    camera: go.layout.scene.Camera,
+    *,
+    annotations: list[dict] | None = None,
+) -> go.Layout:
     """Default plotly layout."""
-    return Layout(
-        scene=Scene(
+    return go.Layout(
+        scene=go.layout.Scene(
             dragmode="orbit",
             camera=camera,
-            xaxis=XAxis(_axis),
-            yaxis=YAxis(_axis),
-            zaxis=ZAxis(_axis),
+            xaxis=go.layout.scene.XAxis(_axis),
+            yaxis=go.layout.scene.YAxis(_axis),
+            zaxis=go.layout.scene.ZAxis(_axis),
             annotations=annotations,
         ),
-        margin=Margin(l=0, r=0, b=0, t=0),
+        margin=go.layout.Margin(l=0, r=0, b=0, t=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )

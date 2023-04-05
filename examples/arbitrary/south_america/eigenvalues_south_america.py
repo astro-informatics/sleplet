@@ -27,7 +27,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    print(f"Saving: south_america_eigenvalues_L{L}")
+    print(f"Opening: south_america_eigenvalues_L{L}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)
