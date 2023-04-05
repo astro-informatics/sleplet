@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet.harmonic_methods import invert_flm_boosted
-from sleplet.plot_methods import calc_plot_resolution, save_plot
+from sleplet.plot_methods import calc_plot_resolution
 from sleplet.slepian import SlepianPolarCap
 
 sns.set(context="paper")
@@ -41,7 +41,11 @@ def main() -> None:
         slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
             _helper(ax, slepian, RESOLUTION, x, i, order, rank)
-    save_plot("slepian_colatitude")
+    # "slepian_colatitude"
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 def _helper(  # noqa: PLR0913

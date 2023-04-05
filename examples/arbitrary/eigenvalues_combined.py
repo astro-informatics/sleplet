@@ -2,7 +2,6 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.plot_methods import save_plot
 from sleplet.slepian import SlepianArbitrary
 
 sns.set(context="paper")
@@ -41,7 +40,7 @@ def main() -> None:
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
     plt.legend(loc=3)
-    save_plot(f"combined_eigenvalues_L{L}")
+    # f"combined_eigenvalues_L{L}"
 
 
 if __name__ == "__main__":

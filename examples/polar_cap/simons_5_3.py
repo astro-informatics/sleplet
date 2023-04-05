@@ -3,7 +3,6 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet.plot_methods import save_plot
 from sleplet.slepian import SlepianPolarCap
 
 sns.set(context="paper")
@@ -22,7 +21,11 @@ def main() -> None:
     for theta_max, position in THETA_RANGE.items():
         _create_plot(ax, position, theta_max)
     ax[LEGEND_POS].legend(ncol=2)
-    save_plot("simons_5_3")
+    # "simons_5_3"
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> None:

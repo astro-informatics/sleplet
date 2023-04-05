@@ -3,7 +3,6 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
-from sleplet.plot_methods import save_plot
 from sleplet.wavelet_methods import create_kappas
 
 sns.set(context="paper")
@@ -30,7 +29,11 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$\ell$")
     plt.legend(loc=6)
-    save_plot(f"axisymmetric_tiling_L{L}")
+    # f"axisymmetric_tiling_L{L}"
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 if __name__ == "__main__":

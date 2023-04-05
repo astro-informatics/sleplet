@@ -3,8 +3,6 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from numpy import typing as npt
 
-from sleplet.plot_methods import save_plot
-
 sns.set(context="paper")
 
 DELTA_T = 0.001
@@ -21,7 +19,11 @@ def main() -> None:
     plt.plot(amplitude)
     plt.xticks([])
     plt.xlabel(r"$t$")
-    save_plot("ricker_wavelets")
+    # "ricker_wavelets"
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 def _ricker(freq: float) -> npt.NDArray[np.float_]:

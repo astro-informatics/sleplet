@@ -2,7 +2,6 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from sleplet.plot_methods import save_plot
 from sleplet.slepian import SlepianPolarCap
 
 sns.set(context="paper")
@@ -29,7 +28,11 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    save_plot("polar_cap_eigenvalues")
+    # "polar_cap_eigenvalues"
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 if __name__ == "__main__":

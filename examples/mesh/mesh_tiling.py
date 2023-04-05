@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import pchip
 
 from sleplet.meshes import Mesh, MeshSlepian
-from sleplet.plot_methods import save_plot
 from sleplet.wavelet_methods import create_kappas
 
 sns.set(context="paper")
@@ -62,7 +61,11 @@ def main(mesh_name: str) -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.legend()
-    save_plot(f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}")
+    # f"{mesh_name}_slepian_tiling_b{mesh.mesh_eigenvalues.shape[0]}"
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 if __name__ == "__main__":

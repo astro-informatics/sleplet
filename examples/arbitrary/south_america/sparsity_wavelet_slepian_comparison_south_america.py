@@ -8,7 +8,6 @@ from sleplet.functions import (
     AxisymmetricWaveletCoefficientsSouthAmerica,
     SlepianWaveletCoefficientsSouthAmerica,
 )
-from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region
 
 sns.set(context="paper")
@@ -67,7 +66,10 @@ def main(*, limit: bool) -> None:
         plt.xlim(right=300)
         plt.ylim(top=50)
         filename += "_limit"
-    save_plot(filename)
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
 
 
 if __name__ == "__main__":
