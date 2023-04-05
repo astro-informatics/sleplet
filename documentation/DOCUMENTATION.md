@@ -1,4 +1,6 @@
-[API](#header-submodules).
+Documentation of the `SLEPLET` package. The
+[API documentation](#header-submodules) is included at the end of this page. See
+[PyPI](https://pypi.org/project/sleplet) for more details.
 
 ## Bandlimit
 

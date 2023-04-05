@@ -1,9 +1,4 @@
-"""
-Documentation of the `SLEPLET` package. See
-[PyPI](https://pypi.org/project/sleplet) for more details.
-
-.. include:: ./../../documentation/documentation.md
-"""
+""".. include:: ./../../documentation/documentation.md"""  # noqa: D400,D415
 
 import logging
 
