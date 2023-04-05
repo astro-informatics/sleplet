@@ -4,9 +4,7 @@ import logging
 import numpy as np
 import pyssht as ssht
 from matplotlib import colors
-from matplotlib import pyplot as plt
 from numpy import typing as npt
-from platformdirs import user_documents_path
 
 import sleplet._mask_methods
 import sleplet._vars
@@ -74,23 +72,6 @@ def _calc_nearest_grid_point(
     alpha, beta = phis[pix_j], thetas[pix_i]
     _logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
     return alpha, beta
-
-
-def save_plot(name: str) -> None:
-    """
-    Helper method to save plots.
-
-    Args:
-        name: The output filename.
-    """
-    plt.tight_layout()
-    for file_type in {"png", "pdf"}:
-        filename = user_documents_path() / f"{name}.{file_type}"
-        _logger.info(f"saving {filename}")
-        plt.savefig(filename, bbox_inches="tight")
-    plt.show(block=False)
-    plt.pause(3)
-    plt.close()
 
 
 def find_max_amplitude(

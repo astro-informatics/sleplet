@@ -11,6 +11,7 @@ _version.py
 *.c
 *.egg-info
 *.html
+*.ipynb*
 *.mat
 *.npy
 *.pdf

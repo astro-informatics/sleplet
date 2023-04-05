@@ -4,7 +4,6 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet.functions import Earth
-from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region, SlepianPolarCap
 from sleplet.slepian_methods import choose_slepian_method, slepian_forward
 
@@ -47,7 +46,11 @@ def main() -> None:
     sns.scatterplot(x=range(N), y=flm, ax=ax, label="harmonic", linewidth=0, marker=".")
     ax.set_xlabel("coefficients")
     ax.set_ylabel("magnitude")
-    save_plot(f"fp_earth_polar{THETA_MAX}_L{L}")
+    print(f"Saving: fp_earth_polar{THETA_MAX}_L{L}")
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(10)
+    plt.close()
 
 
 if __name__ == "__main__":
