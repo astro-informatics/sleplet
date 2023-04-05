@@ -5,7 +5,6 @@ from matplotlib import pyplot as plt
 from numpy import typing as npt
 
 from sleplet.functions import Earth
-from sleplet.plot_methods import save_plot
 from sleplet.slepian import Region, SlepianPolarCap
 from sleplet.slepian_methods import choose_slepian_method, slepian_forward
 
@@ -44,7 +43,11 @@ def main() -> None:
     ax.set_xlabel("coefficients")
     ax.set_ylabel("relative error")
     ax.set_yscale("log")
-    save_plot(f"fp_error_earth_polar{THETA_MAX}_L{L}")
+    print(f"Saving: fp_error_earth_polar{THETA_MAX}_L{L}")
+    plt.tight_layout()
+    plt.show(block=False)
+    plt.pause(10)
+    plt.close()
 
 
 def _helper_sphere(

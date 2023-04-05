@@ -1,10 +1,12 @@
 """Contains the `SlepianLimitLatLon` class."""
 
+
 import numpy as np
 import pyssht as ssht
 from numba import njit, prange
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
+from platformdirs import user_data_path
 from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
@@ -66,8 +68,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            np.save(sleplet._vars.DATA_PATH / eval_loc, eigenvalues)
-            np.save(sleplet._vars.DATA_PATH / evec_loc, eigenvectors[: self.N])
+            np.save(user_data_path() / eval_loc, eigenvalues)
+            np.save(user_data_path() / evec_loc, eigenvectors[: self.N])
             return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802

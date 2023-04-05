@@ -31,4 +31,5 @@ pip install -e .
 ```
 
 This will install two scripts `sphere` and `mesh` which can be used to generate
-the figures in [the associated papers](./../src/sleplet/documentation.md#paper-figures).
+the figures in
+[the associated papers](https://astro-informatics.github.io/sleplet/#paper-figures).
