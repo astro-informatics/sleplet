@@ -5,6 +5,7 @@ import numpy as np
 import tomli
 from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
 from numpy import typing as npt
+from platformdirs import user_data_path
 from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 import sleplet._data.setup_pooch
@@ -103,8 +104,8 @@ def mesh_eigendecomposition(
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         _logger.info("saving binaries...")
-        np.save(Path.cwd() / eval_loc, eigenvalues)
-        np.save(Path.cwd() / evec_loc, eigenvectors)
+        np.save(user_data_path() / eval_loc, eigenvalues)
+        np.save(user_data_path() / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
 
 

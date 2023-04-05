@@ -1,8 +1,8 @@
 import logging
 import os
-from pathlib import Path
 
 import pooch
+from platformdirs import user_data_path
 
 _logger = logging.getLogger(__name__)
 
@@ -21,8 +21,8 @@ def find_on_pooch_then_local(filename: str) -> os.PathLike | None:
     if filename in _POOCH.registry:
         _logger.info(f"Found {filename} at https://doi.org/{_ZENODO_DATA_DOI}")
         return _POOCH.fetch(filename, progressbar=True)
-    if (Path.cwd() / filename).exists():
-        _logger.info(f"Found {filename} at {Path.cwd() / filename}")
-        return Path.cwd() / filename
+    if (user_data_path() / filename).exists():
+        _logger.info(f"Found {filename} at {user_data_path() / filename}")
+        return user_data_path() / filename
     _logger.info(f"No {filename} found, calculating...")
     return None
