@@ -118,15 +118,7 @@ class PlotSphere:
         fig = Figure(data=data, layout=layout)
 
         html_filename = str(user_documents_path() / f"{self.filename}.html")
-
         py.plot(fig, filename=html_filename)
-
-        for file_type in {"png", "pdf"}:
-            filename = str(
-                user_documents_path() / f"{self.filename}.{file_type}",
-            )
-            _logger.info(f"saving {filename}")
-            fig.write_image(filename, engine="kaleido")
 
     @staticmethod
     def _setup_plot(
