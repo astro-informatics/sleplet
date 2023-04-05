@@ -19,7 +19,7 @@ def main() -> None:
     plt.plot(amplitude)
     plt.xticks([])
     plt.xlabel(r"$t$")
-    print("Saving: ricker_wavelets")
+    print("Opening: ricker_wavelets")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)
