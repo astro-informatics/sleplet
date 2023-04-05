@@ -113,7 +113,7 @@ class PlotSphere:
             annotations=self.annotations,
         )
 
-        _logger.info(f"Saving: {self.filename}")
+        _logger.info(f"Opening: {self.filename}")
         fig = Figure(data=data, layout=layout)
         fig.show()
 

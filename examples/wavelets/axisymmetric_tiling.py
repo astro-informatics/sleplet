@@ -29,7 +29,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$\ell$")
     plt.legend(loc=6)
-    print(f"Saving: axisymmetric_tiling_L{L}")
+    print(f"Opening: axisymmetric_tiling_L{L}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)

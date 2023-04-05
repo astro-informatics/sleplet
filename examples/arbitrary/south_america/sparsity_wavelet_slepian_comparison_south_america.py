@@ -66,7 +66,7 @@ def main(*, limit: bool) -> None:
         plt.xlim(right=300)
         plt.ylim(top=50)
         filename += "_limit"
-    print(f"Saving: {filename}")
+    print(f"Opening: {filename}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)

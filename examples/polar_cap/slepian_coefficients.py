@@ -46,7 +46,7 @@ def main() -> None:
     sns.scatterplot(x=range(N), y=flm, ax=ax, label="harmonic", linewidth=0, marker=".")
     ax.set_xlabel("coefficients")
     ax.set_ylabel("magnitude")
-    print(f"Saving: fp_earth_polar{THETA_MAX}_L{L}")
+    print(f"Opening: fp_earth_polar{THETA_MAX}_L{L}")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)
