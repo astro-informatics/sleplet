@@ -73,7 +73,7 @@ sleplet.plotting.PlotSphere(
 ).execute()
 ```
 
-![Slepian Wavelet j=2](https://github.com/astro-informatics/sleplet/blob/main/documentation/slepian_wavelets_south_america_3B_2jmin_2j_L128_res512_real.png)
+![Slepian Wavelet j=2](https://github.com/astro-informatics/sleplet/blob/main/documentation/slepian_wavelets_south_america_3B_2jmin_2j_L128_res512_real.png?raw=true)
 
 ### CLI Usage
 
@@ -84,7 +84,7 @@ region of a Homer Simpson mesh for a per-vertex normals field.
 mesh homer -e 3 2 0 -m slepian_wavelet_coefficients -u -z
 ```
 
-![Slepian Mesh Wavelet Coefficients j=2](https://github.com/astro-informatics/sleplet/blob/main/documentation/slepian_wavelet_coefficients_homer_3B_2jmin_2j_zoom.png)
+![Slepian Mesh Wavelet Coefficients j=2](https://github.com/astro-informatics/sleplet/blob/main/documentation/slepian_wavelet_coefficients_homer_3B_2jmin_2j_zoom.png?raw=true)
 
 ## Documentation
 
