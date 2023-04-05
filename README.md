@@ -77,7 +77,7 @@ sleplet.plotting.PlotSphere(
 The demonstrates the first wavelet (ignoring the scaling function) of the head
 region of a Homer Simpson mesh for a per-vertex normals field.
 
-```mesh
+```sh
 mesh homer -e 3 2 0 -m slepian_wavelet_coefficients -u -z
 ```
 
