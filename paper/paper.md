@@ -1,5 +1,5 @@
 ---
-title: "SLEPLET: Slepian scale-discretised wavelets in Python"
+title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
 tags:
   - manifolds
   - python
