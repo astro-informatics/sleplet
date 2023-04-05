@@ -116,7 +116,7 @@ class PlotSphere:
         fig = go.Figure(data=data, layout=layout)
 
         _logger.info(f"Opening: {self.filename}")
-        pio.show(fig)
+        pio.show(fig, config={"toImageButtonOptions": {"filename": self.filename}})
 
     @staticmethod
     def _setup_plot(

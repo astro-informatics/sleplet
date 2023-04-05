@@ -59,13 +59,15 @@ the South America region on the sphere.
 ```python
 import sleplet
 
+B, J, J_MIN, L = 3, 0, 2, 128
+
 region = sleplet.slepian.Region(mask_name="south_america")
-f = sleplet.functions.SlepianWavelets(128, region=region, B=3, j_min=2, j=0)
+f = sleplet.functions.SlepianWavelets(L, region=region, B=B, j_min=J_MIN, j=J)
 f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepian)
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
-    "wavelet_j_2",
+    f"slepian_wavelets_south_america_{B}B_{J_MIN}jmin_{J_MIN+J}j_L{L}",
     normalise=False,
     region=f.region,
 ).execute()
