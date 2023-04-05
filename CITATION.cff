@@ -7,3 +7,18 @@ authors:
 title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
 doi: 10.5281/zenodo.7268074
 url: "https://github.com/astro-informatics/sleplet"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Roddy"
+      given-names: "Patrick J."
+      orcid: "https://orcid.org/0000-0002-6271-1700"
+  doi: ""
+  journal: "Journal of Open Source Software"
+  month:
+  start:
+  end:
+  title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
+  issue:
+  volume:
+  year: 2023
