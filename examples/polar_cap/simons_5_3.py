@@ -21,7 +21,7 @@ def main() -> None:
     for theta_max, position in THETA_RANGE.items():
         _create_plot(ax, position, theta_max)
     ax[LEGEND_POS].legend(ncol=2)
-    # "simons_5_3"
+    print("Saving: simons_5_3")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)

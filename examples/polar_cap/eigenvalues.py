@@ -28,7 +28,7 @@ def main() -> None:
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
-    # "polar_cap_eigenvalues"
+    print("Saving: polar_cap_eigenvalues")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)

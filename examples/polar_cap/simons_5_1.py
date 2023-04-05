@@ -41,7 +41,7 @@ def main() -> None:
         slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=order)
         for rank in range(RANKS):
             _helper(ax, slepian, RESOLUTION, x, i, order, rank)
-    # "slepian_colatitude"
+    print("Saving: slepian_colatitude")
     plt.tight_layout()
     plt.show(block=False)
     plt.pause(10)
