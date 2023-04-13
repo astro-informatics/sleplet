@@ -41,7 +41,7 @@ dependencies = [
     "tomli>=2.0.1",
     "tqdm>=4.65.0",
 ]
-description = "Slepian scale-discretised wavelets in Python"
+description = "Slepian Scale-Discretised Wavelets in Python"
 dynamic = [
     "version",
 ]
