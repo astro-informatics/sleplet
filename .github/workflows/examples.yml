@@ -58,7 +58,7 @@ jobs:
           python -m pip install -e .[docs]
 
       - name: Run examples in the examples folder
-        run: >
+        run: >-
           find examples -name "*.py"
           -exec sh -c 'for f;
           do echo $f;
