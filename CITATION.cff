@@ -4,6 +4,6 @@ authors:
   - family-names: "Roddy"
     given-names: "Patrick J."
     orcid: "https://orcid.org/0000-0002-6271-1700"
-title: "SLEPLET"
+title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
 doi: 10.5281/zenodo.7268074
 url: "https://github.com/astro-informatics/sleplet"
