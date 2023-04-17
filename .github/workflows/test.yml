@@ -22,7 +22,7 @@ jobs:
       - name: Cache tox/pooch
         uses: actions/cache@v3
         with:
-          path: |
+          path: |-
             .tox
             ~/.cache/sleplet
           key: test-${{ hashFiles('pyproject.toml') }}

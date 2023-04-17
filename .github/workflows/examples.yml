@@ -20,8 +20,7 @@ jobs:
       - name: Cache pooch
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.cache/sleplet
+          path: ~/.cache/sleplet
           key: readme-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
@@ -46,8 +45,7 @@ jobs:
       - name: Cache pooch
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.cache/sleplet
+          path: ~/.cache/sleplet
           key: examples-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
