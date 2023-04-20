@@ -33,8 +33,3 @@ jobs:
 
       - name: Run pre-commit
         run: pre-commit run --all-files --color always
-
-      - name: run sourcery
-        uses: sourcery-ai/action@v1
-        with:
-          token: ${{ secrets.SOURCERY_TOKEN }}
