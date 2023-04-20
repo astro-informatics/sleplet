@@ -115,10 +115,10 @@ If you use `SLEPLET` in your research, please cite the paper.
   author  = {Roddy, Patrick J.},
   year    = 2023,
   journal = {Journal of Open Source Software},
-  volume  = ,
-  number  = ,
-  pages   = ,
-  doi     = {}
+  volume  = 8,
+  number  = 84,
+  pages   = 5221,
+  doi     = {10.21105/joss.05221},
 }
 ```
 
