@@ -1,9 +1,26 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+cff-version: "1.2.0"
 authors:
-  - family-names: "Roddy"
-    given-names: "Patrick J."
+  - family-names: Roddy
+    given-names: Patrick J.
     orcid: "https://orcid.org/0000-0002-6271-1700"
-title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
 doi: 10.5281/zenodo.7268074
-url: "https://github.com/astro-informatics/sleplet"
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+    - family-names: Roddy
+      given-names: Patrick J.
+      orcid: "https://orcid.org/0000-0002-6271-1700"
+  date-published: 2023-04-20
+  doi: 10.21105/joss.05221
+  issn: 2475-9066
+  issue: 84
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 5221
+  title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.05221"
+  volume: 8
+title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"

@@ -15,6 +15,13 @@ installation, `SLEPLET` comes with two command line interfaces - `sphere` and
 `mesh` - which allows one to easily generate plots on the sphere and a set of
 meshes using `plotly`.
 
+To read more about Slepian wavelets please see the following publications
+
+[![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://dx.doi.org/10.1109/LSP.2021.3050961)
+[![Slepian Scale-Discretised Wavelets on the Sphere](https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg)](https://dx.doi.org/10.1109/TSP.2022.3233309)
+[![Slepian Scale-Discretised Wavelets on Manifolds](https://img.shields.io/badge/DOI-10.48550/arXiv.2302.06006-pink.svg)](https://doi.org/10.48550/arXiv.2302.06006)
+[![Slepian Wavelets for the Analysis of Incomplete Data on Manifolds](https://img.shields.io/badge/PhD%20Thesis-Patrick%20J.%20Roddy-pink.svg)](https://paddyroddy.github.io/thesis)
+
 ## Installation
 
 The recommended way to install `SLEPLET` is via
@@ -100,8 +107,20 @@ We'd love any contributions you may have, please see the
 
 ## Citing
 
-If you use `SLEPLET` in your research, please cite the JOSS paper.
-[![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
+If you use `SLEPLET` in your research, please cite the paper.
+
+```bibtex
+@article{Roddy2023,
+  title   = {{SLEPLET: Slepian Scale-Discretised Wavelets in Python}},
+  author  = {Roddy, Patrick J.},
+  year    = 2023,
+  journal = {Journal of Open Source Software},
+  volume  = ,
+  number  = ,
+  pages   = ,
+  doi     = {}
+}
+```
 
 Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
 `SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394)

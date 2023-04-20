@@ -20,14 +20,11 @@ jobs:
       - name: Cache pooch
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.cache/sleplet
+          path: ~/.cache/sleplet
           key: readme-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e .[readme]
+        run: python -m pip install -e .[readme]
 
       - name: Run examples in the README
         run: python -m pytest --codeblocks .github README.md documentation
@@ -48,19 +45,16 @@ jobs:
       - name: Cache pooch
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.cache/sleplet
+          path: ~/.cache/sleplet
           key: examples-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e .[docs]
+        run: python -m pip install -e .[docs]
 
       - name: Run examples in the examples folder
-        run: |
-          find examples -name "*.py" \
-          -exec sh -c 'for f; \
-          do echo $f; \
-          python "$f" || exit 1\
+        run: >-
+          find examples -name "*.py"
+          -exec sh -c 'for f;
+          do echo $f;
+          python "$f" || exit 1
           ; done' sh {} +
