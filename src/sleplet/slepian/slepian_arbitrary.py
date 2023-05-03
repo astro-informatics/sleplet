@@ -64,11 +64,14 @@ class SlepianArbitrary(SlepianFunctions):
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
 
         try:
-            return np.load(
+            eigenvalues, eigenvectors = np.load(
                 sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
-            ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
+            ), np.load(
+                sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc),
+            )
         except TypeError:
-            return self._solve_D_matrix(eval_loc, evec_loc)
+            eigenvalues, eigenvectors = self._solve_D_matrix(eval_loc, evec_loc)
+        return eigenvalues, eigenvectors
 
     def _solve_D_matrix(  # noqa: N802
         self,
