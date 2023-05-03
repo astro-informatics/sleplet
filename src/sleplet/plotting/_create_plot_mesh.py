@@ -1,5 +1,5 @@
 import logging
-from dataclasses import KW_ONLY
+from dataclasses import KW_ONLY, field
 
 import cmocean
 import numpy as np
@@ -36,7 +36,7 @@ class PlotMesh:
     _: KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
-    colour: LinearSegmentedColormap = cmocean.cm.ice
+    colour: LinearSegmentedColormap = field(default_factory=cmocean.cm.ice)
     """The colour of the field on the mesh."""
     normalise: bool = True
     """Whether to normalise the plot or not."""
