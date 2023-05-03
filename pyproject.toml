@@ -185,7 +185,7 @@ legacy_tox_ini = """
 
     [testenv]
     commands =
-        pytest --cov --slow
+        pytest --cov --cov-report=lcov --slow
     deps =
         pytest-cov
         pytest-skip-slow

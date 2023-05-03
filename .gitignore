@@ -15,6 +15,7 @@ _version.py
 *.fls
 *.html
 *.ipynb*
+*.lcov
 *.log
 *.mat
 *.npy
