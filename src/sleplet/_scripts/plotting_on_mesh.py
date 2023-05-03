@@ -1,3 +1,4 @@
+# noqa: D100
 import logging
 from argparse import ArgumentParser, Namespace
 
@@ -103,7 +104,7 @@ def plot(
     ).execute()
 
 
-def main() -> None:
+def main() -> None:  # noqa: D103
     args = read_args()
     _logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
 
