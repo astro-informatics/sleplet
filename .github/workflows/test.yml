@@ -11,10 +11,12 @@ on:
 
 jobs:
   test:
+    name: ${{ matrix.os }} py${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+        python-version: ["3.10", "3.11"]
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -30,7 +32,7 @@ jobs:
       - name: Set up python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
           cache: "pip"
           cache-dependency-path: "pyproject.toml"
 
