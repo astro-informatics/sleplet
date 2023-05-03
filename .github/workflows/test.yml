@@ -39,3 +39,6 @@ jobs:
 
       - name: Test with tox
         run: tox
+
+      - name: Coverage
+        uses: coverallsapp/github-action@v2
