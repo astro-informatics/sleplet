@@ -169,7 +169,7 @@ def read_args() -> Namespace:
     return parser.parse_args()
 
 
-def plot(
+def plot(  # noqa: PLR0913
     f: sleplet.functions.coefficients.Coefficients,
     g: sleplet.functions.coefficients.Coefficients | None,
     *,

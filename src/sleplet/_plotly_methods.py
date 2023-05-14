@@ -10,7 +10,7 @@ _axis = {
 }
 
 
-def create_camera(
+def create_camera(  # noqa: PLR0913
     x_eye: float,
     y_eye: float,
     z_eye: float,

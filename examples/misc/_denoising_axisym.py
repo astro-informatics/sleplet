@@ -13,7 +13,7 @@ from sleplet.wavelet_methods import (
 SAMPLING_SCHEME = "MWSS"
 
 
-def denoising_axisym(
+def denoising_axisym(  # noqa: PLR0913
     signal: Africa | Earth | SouthAmerica,
     noised_signal: Africa | Earth | SouthAmerica,
     axisymmetric_wavelets: AxisymmetricWavelets,
