@@ -87,7 +87,7 @@ def slepian_inverse(
     return (f_p_reshape * s_p).sum(axis=0)
 
 
-def slepian_forward(
+def slepian_forward(  # noqa: PLR0913
     L: int,
     slepian: SlepianFunctions,
     *,
