@@ -119,7 +119,7 @@ class PlotSphere:
         pio.show(fig, config={"toImageButtonOptions": {"filename": self.filename}})
 
     @staticmethod
-    def _setup_plot(
+    def _setup_plot(  # noqa: PLR0913
         f: npt.NDArray[np.float_],
         resolution: int,
         *,

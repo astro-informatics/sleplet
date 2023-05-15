@@ -301,8 +301,8 @@ class SlepianPolarCap(SlepianFunctions):
             t4 = l1 - m1
             t5 = l2 + m2
 
-            tmin = max(0, max(t1, t2))
-            tmax = min(t3, min(t4, t5))
+            tmin = max(0, t1, t2)
+            tmax = min(t3, t4, t5)
 
             # sum is over all those t for which the
             # following factorials have non-zero arguments

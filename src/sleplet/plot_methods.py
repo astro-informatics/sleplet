@@ -173,7 +173,7 @@ def _normalise_function(
     return f / f.max() if np.allclose(f, f.max()) else (f - f.min()) / f.ptp()
 
 
-def _boost_field(
+def _boost_field(  # noqa: PLR0913
     field: npt.NDArray[np.complex_ | np.float_],
     L: int,
     resolution: int,
