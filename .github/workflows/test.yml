@@ -36,11 +36,16 @@ jobs:
           cache: "pip"
           cache-dependency-path: "pyproject.toml"
 
-      - name: Install dependencies
-        run: python -m pip install tox tox-gh-actions
+      #   - name: Install dependencies
+      #     run: python -m pip install tox tox-gh-actions
 
-      - name: Test with tox
-        run: tox
+      #   - name: Test with tox
+      #     run: tox
 
-      - name: Coverage
-        uses: coverallsapp/github-action@v2
+      #   - name: Coverage
+      #     uses: coverallsapp/github-action@v2
+
+      - run: |-
+          python -m install -e .
+          python -m pip install pytest
+          pytest
