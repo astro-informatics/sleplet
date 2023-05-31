@@ -46,6 +46,6 @@ jobs:
       #     uses: coverallsapp/github-action@v2
 
       - run: |-
-          python -m install -e .
+          python -m pip install -e .
           python -m pip install pytest
           pytest
