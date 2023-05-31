@@ -182,6 +182,7 @@ overrides."tool.coverage.paths.source".inline_arrays = false
 legacy_tox_ini = """
     [gh-actions]
     python =
+        3.10: py310
         3.11: py311
 
     [testenv]
@@ -193,5 +194,5 @@ legacy_tox_ini = """
 
     [tox]
     env_list =
-        py311
+        py3{10,11}
 """
