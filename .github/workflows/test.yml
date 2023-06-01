@@ -42,6 +42,8 @@ jobs:
 
       - name: Test with tox
         run: tox
+        env:
+          PLATFORM: ${{ matrix.platform }}
 
       - name: Coverage
         uses: coverallsapp/github-action@v2
