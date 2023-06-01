@@ -198,6 +198,5 @@ legacy_tox_ini = """
         pytest-skip-slow
 
     [tox]
-    env_list =
-        py3{10,11}
+    env_list = py{310,311}-{linux,macos}
 """
