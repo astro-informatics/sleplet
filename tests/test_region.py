@@ -34,13 +34,13 @@ def test_arbitrary_region() -> None:
     assert_equal(region.region_type, "arbitrary")
 
 
-def test_polar_hierarchy_over_arbirary() -> None:
+def test_polar_hierarchy_over_arbitrary() -> None:
     """Ensures polar cap is made instead of arbitrary."""
     region = sleplet.slepian.Region(theta_max=THETA_MAX, mask_name=MASK)
     assert_equal(region.region_type, "polar")
 
 
-def test_lim_lat_lon_hierarchy_over_arbirary() -> None:
+def test_lim_lat_lon_hierarchy_over_arbitrary() -> None:
     """Ensures limited latitude longitude region is made instead of arbitrary."""
     region = sleplet.slepian.Region(
         theta_min=THETA_0,

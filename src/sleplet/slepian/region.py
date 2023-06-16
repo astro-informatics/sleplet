@@ -21,7 +21,7 @@ class Region:
     environment variable. Only relevant if `theta_max` is not `180` and the
     other angles are at their default values."""
     mask_name: str = ""
-    """The name of the mask of the arbirary region, set by the `SLEPIAN_MASK`
+    """The name of the mask of the arbitrary region, set by the `SLEPIAN_MASK`
     environment variable. Current options are `africa` and `south_america`."""
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
     """For a limited latitude longitude region, set by the `PHI_MAX` environment
@@ -31,7 +31,7 @@ class Region:
     variable."""
     theta_max: float = sleplet._vars.THETA_MAX_DEFAULT
     """Set by the `THETA_MAX` environment variable. When set without the
-    other angles it controls a polar cap region. When in conjuction with the
+    other angles it controls a polar cap region. When in conjunction with the
     others it is for a limited latitude longitude region."""
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
     """For a limited latitude longitude region, set by the `THETA_MIN` environment

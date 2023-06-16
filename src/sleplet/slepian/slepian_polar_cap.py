@@ -188,7 +188,7 @@ class SlepianPolarCap(SlepianFunctions):
 
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
-        # split up L range to maximise effiency
+        # split up L range to maximise efficiency
         ncpu = int(os.getenv("NCPU", "4"))
         _logger.info(f"Number of CPU={ncpu}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
