@@ -33,7 +33,7 @@ dependencies = [
     "numpy>=1.23.5",
     "platformdirs>=3.2.0",
     "plotly>=5.14.0",
-    "pooch@git+https://github.com/fatiando/pooch.git@9c57dd38c8fa8d20e2c4f2cfa41ac3d33be78138",
+    "pooch>=1.7.0",
     "pydantic>=1.10.7",
     "pys2let>=2.2.5",
     "pyssht>=1.5.2",
