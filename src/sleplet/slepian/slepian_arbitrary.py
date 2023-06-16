@@ -70,9 +70,9 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvectors = np.load(
                 sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc),
             )
-            return eigenvalues, eigenvectors
         except TypeError:
-            return self._solve_D_matrix(eval_loc, evec_loc)
+            eigenvalues, eigenvectors = self._solve_D_matrix(eval_loc, evec_loc)
+        return eigenvalues, eigenvectors
 
     def _solve_D_matrix(  # noqa: N802
         self,
