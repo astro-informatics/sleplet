@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 
 @dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWavelets(Fp):
-    """Creats the Slepian wavelets."""
+    """Creates the Slepian wavelets."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""

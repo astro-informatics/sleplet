@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 
 @dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(Fp):
-    """Createa a Dirac delta of the Slepian coefficients."""
+    """Creates a Dirac delta of the Slepian coefficients."""
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

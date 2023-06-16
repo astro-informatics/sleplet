@@ -32,7 +32,7 @@ class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
-    """The name of the mask of the arbirary region."""
+    """The name of the mask of the arbitrary region."""
     _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:
@@ -119,7 +119,7 @@ class SlepianArbitrary(SlepianFunctions):
 
             sleplet._parallel_methods.free_shared_memory(shm_r_int, shm_i_int)
 
-        # split up L range to maximise effiency
+        # split up L range to maximise efficiency
         ncpu = int(os.getenv("NCPU", "4"))
         _logger.info(f"Number of CPU={ncpu}")
         chunks = sleplet._parallel_methods.split_arr_into_chunks(

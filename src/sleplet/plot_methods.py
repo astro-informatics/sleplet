@@ -144,7 +144,7 @@ def _set_outside_region_to_minimum(
     region: sleplet.slepian.region.Region,
 ) -> npt.NDArray[np.float_]:
     """
-    For the Slepian region set the outisde area to negative infinity
+    For the Slepian region set the outside area to negative infinity
     hence it is clear we are only interested in the coloured region.
     """
     # create mask of interest
