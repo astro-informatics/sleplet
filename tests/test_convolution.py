@@ -21,7 +21,7 @@ def test_earth_identity_convolution() -> None:
 def test_earth_harmonic_gaussian_convolution() -> None:
     """
     Test to ensure that convolving the Earth with the harmonic
-    Gausian does not change significantly change the map.
+    Gaussian does not change significantly change the map.
     """
     f = sleplet.functions.Earth(L)
     g = sleplet.functions.HarmonicGaussian(L)
