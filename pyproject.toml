@@ -115,8 +115,6 @@ per-file-ignores = {"examples/*" = [
     "T201",
 ], "test_*" = [
     "S101",
-], "test_arbitrary_region.py" = [
-    "ERA001",
 ], "tests/*" = [
     "D100",
 ]}
