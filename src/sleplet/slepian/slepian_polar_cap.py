@@ -67,9 +67,18 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
         order_loc = f"{self.matrix_location}_orders.npy"
         try:
-            return self._solve_eigenproblem_from_files(eval_loc, evec_loc, order_loc)
+            eigenvalues, eigenvectors = self._solve_eigenproblem_from_files(
+                eval_loc,
+                evec_loc,
+                order_loc,
+            )
         except TypeError:
-            return self._solve_eigenproblem_from_scratch(eval_loc, evec_loc, order_loc)
+            eigenvalues, eigenvectors = self._solve_eigenproblem_from_scratch(
+                eval_loc,
+                evec_loc,
+                order_loc,
+            )
+        return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_files(
         self,

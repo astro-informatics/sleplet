@@ -36,8 +36,6 @@ class PlotMesh:
     _: KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
-    colour: LinearSegmentedColormap = cmocean.cm.ice
-    """The colour of the field on the mesh."""
     normalise: bool = True
     """Whether to normalise the plot or not."""
     region: bool = False
@@ -47,8 +45,13 @@ class PlotMesh:
         if self.normalise:
             self.filename += "_norm"
 
-    def execute(self) -> None:
-        """Performs the plot."""
+    def execute(self, colour: LinearSegmentedColormap = cmocean.cm.ice) -> None:
+        """
+        Performs the plot.
+
+        Args:
+            colour: From the `cmocean.cm` module
+        """
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
 
@@ -83,7 +86,7 @@ class PlotMesh:
                     bar_pos=self.mesh.colourbar_pos,
                     font_size=_MESH_CBAR_FONT_SIZE,
                 ),
-                colorscale=sleplet.plot_methods._convert_colourscale(self.colour),
+                colorscale=sleplet.plot_methods._convert_colourscale(colour),
                 lighting=go.mesh3d.Lighting(ambient=1),
                 reversescale=True,
             ),

@@ -26,7 +26,7 @@ def main(mesh_name: str) -> None:
     field[mesh.region] = 1
 
     name = f"{mesh_name}_region"
-    PlotMesh(mesh, name, field, colour=cmocean.cm.haline, region=True).execute()
+    PlotMesh(mesh, name, field, region=True).execute(cmocean.cm.haline)
 
 
 if __name__ == "__main__":

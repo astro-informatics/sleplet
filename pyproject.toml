@@ -15,6 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering :: Image Processing",
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Physics",
@@ -182,6 +183,12 @@ legacy_tox_ini = """
     [gh-actions]
     python =
         3.10: py310
+        3.11: py311
+
+    [gh-actions:env]
+    OS =
+        ubuntu-latest: linux
+        macos-latest: macos
 
     [testenv]
     commands =
@@ -191,6 +198,5 @@ legacy_tox_ini = """
         pytest-skip-slow
 
     [tox]
-    env_list =
-        py310
+    env_list = py{310,311}-{linux,macos}
 """

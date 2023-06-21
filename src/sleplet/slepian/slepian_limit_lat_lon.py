@@ -62,15 +62,18 @@ class SlepianLimitLatLon(SlepianFunctions):
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
         try:
-            return np.load(
+            eigenvalues = np.load(
                 sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
-            ), np.load(sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc))
+            )
+            eigenvectors = np.load(
+                sleplet._data.setup_pooch.find_on_pooch_then_local(evec_loc),
+            )
         except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
             np.save(user_data_path() / eval_loc, eigenvalues)
             np.save(user_data_path() / evec_loc, eigenvectors[: self.N])
-            return eigenvalues, eigenvectors
+        return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
         """Computes the K matrix."""
