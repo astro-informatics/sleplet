@@ -36,7 +36,7 @@
 <dl>
 <dt id="sleplet.plotting.PlotMesh"><code class="flex name class">
 <span>class <span class="ident">PlotMesh</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, filename: str, f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, amplitude: float | None = None, colour: matplotlib.colors.LinearSegmentedColormap = &lt;matplotlib.colors.LinearSegmentedColormap object&gt;, normalise: bool = True, region: bool = False)</span>
+<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, filename: str, f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, amplitude: float | None = None, normalise: bool = True, region: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates surface mesh plot via <code>plotly</code>.</p></div>
@@ -45,10 +45,6 @@
 <dt id="sleplet.plotting.PlotMesh.amplitude"><code class="name">var <span class="ident">amplitude</span> : float | None</code></dt>
 <dd>
 <div class="desc"><p>Whether to customise the amplitude range of the colour bar.</p></div>
-</dd>
-<dt id="sleplet.plotting.PlotMesh.colour"><code class="name">var <span class="ident">colour</span> : matplotlib.colors.LinearSegmentedColormap</code></dt>
-<dd>
-<div class="desc"><p>The colour of the field on the mesh.</p></div>
 </dd>
 <dt id="sleplet.plotting.PlotMesh.f"><code class="name">var <span class="ident">f</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
@@ -74,10 +70,15 @@
 <h3>Methods</h3>
 <dl>
 <dt id="sleplet.plotting.PlotMesh.execute"><code class="name flex">
-<span>def <span class="ident">execute</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">execute</span></span>(<span>self, colour: matplotlib.colors.LinearSegmentedColormap = &lt;matplotlib.colors.LinearSegmentedColormap object&gt;) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Performs the plot.</p></div>
+<div class="desc"><p>Performs the plot.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>colour</code></strong></dt>
+<dd>From the <code>cmocean.cm</code> module</dd>
+</dl></div>
 </dd>
 </dl>
 </dd>
@@ -164,7 +165,6 @@
 <h4><code><a title="sleplet.plotting.PlotMesh" href="#sleplet.plotting.PlotMesh">PlotMesh</a></code></h4>
 <ul class="two-column">
 <li><code><a title="sleplet.plotting.PlotMesh.amplitude" href="#sleplet.plotting.PlotMesh.amplitude">amplitude</a></code></li>
-<li><code><a title="sleplet.plotting.PlotMesh.colour" href="#sleplet.plotting.PlotMesh.colour">colour</a></code></li>
 <li><code><a title="sleplet.plotting.PlotMesh.execute" href="#sleplet.plotting.PlotMesh.execute">execute</a></code></li>
 <li><code><a title="sleplet.plotting.PlotMesh.f" href="#sleplet.plotting.PlotMesh.f">f</a></code></li>
 <li><code><a title="sleplet.plotting.PlotMesh.filename" href="#sleplet.plotting.PlotMesh.filename">filename</a></code></li>
