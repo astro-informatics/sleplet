@@ -186,7 +186,7 @@ legacy_tox_ini = """
         3.11: py311
 
     [gh-actions:env]
-    PLATFORM =
+    OS =
         ubuntu-latest: linux
         macos-latest: macos
 
