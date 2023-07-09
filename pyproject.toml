@@ -164,7 +164,7 @@ isort.known-first-party = ["sleplet"]
 mccabe.max-complexity = 18
 pep8-naming.classmethod-decorators = [
     "classmethod",
-    "pydantic.validator",
+    "pydantic.field_validator",
 ]
 
 [tool.setuptools_scm]

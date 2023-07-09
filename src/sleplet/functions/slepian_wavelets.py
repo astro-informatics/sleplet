@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import validator
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
@@ -63,7 +63,7 @@ class SlepianWavelets(Fp):
         """Computes wavelets in Slepian space."""
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
-    @validator("j")
+    @field_validator("j")
     def _check_j(cls, v, values):
         j_max = pys2let_j_max(values["B"], values["L"] ** 2, values["j_min"])
         if v is not None and v < 0:

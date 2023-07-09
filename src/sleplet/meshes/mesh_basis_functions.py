@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import validator
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
@@ -60,7 +60,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             if self.extra_args[0] > limit:
                 raise ValueError(f"rank should be less than or equal to {limit}")
 
-    @validator("rank")
+    @field_validator("rank")
     def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")

@@ -4,7 +4,7 @@ from dataclasses import KW_ONLY
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import validator
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
@@ -47,7 +47,7 @@ class MeshCoefficients:
         if self.mesh.zoom:
             self.name += "_zoom"
 
-    @validator("coefficients", check_fields=False)
+    @field_validator("coefficients", check_fields=False)
     def _check_coefficients(cls, v, values):
         if (
             values["region"]

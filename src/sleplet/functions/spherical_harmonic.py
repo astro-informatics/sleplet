@@ -2,7 +2,7 @@
 import numpy as np
 import pyssht as ssht
 from numpy import typing as npt
-from pydantic import validator
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
@@ -44,7 +44,7 @@ class SphericalHarmonic(Flm):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 
-    @validator("ell")
+    @field_validator("ell")
     def _check_ell(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("ell should be an integer")
@@ -54,7 +54,7 @@ class SphericalHarmonic(Flm):
             raise ValueError("ell should be less than or equal to L")
         return v
 
-    @validator("m")
+    @field_validator("m")
     def _check_m(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("m should be an integer")

@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import validator
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
@@ -60,7 +60,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             self.j_min,
         )
 
-    @validator("j")
+    @field_validator("j")
     def _check_j(cls, v, values) -> int | None:
         j_max = pys2let_j_max(
             values["B"],
