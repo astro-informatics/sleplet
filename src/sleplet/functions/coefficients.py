@@ -4,7 +4,7 @@ from dataclasses import KW_ONLY
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import field_validator
+from pydantic import FieldValidationInfo, field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._convolution_methods
@@ -115,17 +115,17 @@ class Coefficients:
         self.name += f"_L{self.L}"
 
     @field_validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, info: FieldValidationInfo):
         if (
-            values["region"]
-            and not set(values["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
+            info.data["region"]
+            and not set(info.data["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
         ):
             v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
                 v,
-                values["L"],
-                values["region"],
-                reality=values["reality"],
-                spin=values["spin"],
+                info.data["L"],
+                info.data["region"],
+                reality=info.data["reality"],
+                spin=info.data["spin"],
             )
         return v
 

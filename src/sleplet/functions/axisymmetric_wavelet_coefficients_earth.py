@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import field_validator
+from pydantic import FieldValidationInfo, field_validator
 from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
@@ -77,12 +77,13 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
         return wavelets, wavelet_coefficients
 
     @field_validator("j")
-    def _check_j(cls, v, values):
-        j_max = pys2let_j_max(values["B"], values["L"], values["j_min"])
+    def _check_j(cls, v, info: FieldValidationInfo):
+        j_max = pys2let_j_max(info.data["B"], info.data["L"], info.data["j_min"])
         if v is not None and v < 0:
             raise ValueError("j should be positive")
-        if v is not None and v > j_max - values["j_min"]:
+        if v is not None and v > j_max - info.data["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
+                "j should be less than j_max - j_min: "
+                f"{j_max - info.data['j_min'] + 1}",
             )
         return v

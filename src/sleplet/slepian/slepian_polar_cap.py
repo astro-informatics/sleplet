@@ -10,7 +10,7 @@ import pyssht as ssht
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from platformdirs import user_data_path
-from pydantic import field_validator
+from pydantic import FieldValidationInfo, field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._data.setup_pooch
@@ -384,9 +384,9 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     @field_validator("order")
-    def _check_order(cls, v, values):
-        if v is not None and (np.abs(v) >= values["L"]).any():
-            raise ValueError(f"Order magnitude should be less than {values['L']}")
+    def _check_order(cls, v, info: FieldValidationInfo):
+        if v is not None and (np.abs(v) >= info.data["L"]).any():
+            raise ValueError(f"Order magnitude should be less than {info.data['L']}")
         return v
 
     @field_validator("theta_max")

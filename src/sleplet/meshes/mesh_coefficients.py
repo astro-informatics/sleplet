@@ -4,7 +4,7 @@ from dataclasses import KW_ONLY
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import field_validator
+from pydantic import FieldValidationInfo, field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
@@ -48,13 +48,13 @@ class MeshCoefficients:
             self.name += "_zoom"
 
     @field_validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, info: FieldValidationInfo):
         if (
-            values["region"]
+            info.data["region"]
             and _COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
             v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
-                values["mesh"],
+                info.data["mesh"],
                 v,
             )
         return v
