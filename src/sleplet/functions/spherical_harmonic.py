@@ -11,7 +11,7 @@ import sleplet.harmonic_methods
 from sleplet.functions.flm import Flm
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class SphericalHarmonic(Flm):
     """Creates spherical harmonic functions."""
 

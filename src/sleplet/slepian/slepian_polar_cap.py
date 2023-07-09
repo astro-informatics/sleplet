@@ -26,7 +26,7 @@ _logger = logging.getLogger(__name__)
 _L_SAVE_ALL = 16
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
@@ -42,8 +42,8 @@ class SlepianPolarCap(SlepianFunctions):
     computed. In the Slepian eigenproblem formulation this simplifies the
     mathematical formulation."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"

@@ -16,7 +16,7 @@ from sleplet.meshes.mesh import Mesh
 _COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class MeshCoefficients:
     """Abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 
@@ -31,7 +31,7 @@ class MeshCoefficients:
     region: bool = False
     """Whether to set a region or not, used in the Slepian case."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.coefficients = self._create_coefficients()

@@ -12,7 +12,7 @@ import sleplet._vars
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class Region:
     """Identifies and creates the appropriate Slepian region for the sphere."""
 
@@ -37,7 +37,7 @@ class Region:
     """For a limited latitude longitude region, set by the `THETA_MIN` environment
     variable."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._identify_region()
 
     def _identify_region(self) -> None:

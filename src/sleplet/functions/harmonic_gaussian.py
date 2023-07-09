@@ -9,7 +9,7 @@ import sleplet._validation
 from sleplet.functions.flm import Flm
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class HarmonicGaussian(Flm):
     r"""
     Creates a harmonic Gaussian
@@ -22,8 +22,8 @@ class HarmonicGaussian(Flm):
     m_sigma: float = 10
     r"""Sets the \(\sigma_{m}\) value."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         flm = np.zeros(self.L**2, dtype=np.complex_)

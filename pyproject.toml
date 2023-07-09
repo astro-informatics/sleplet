@@ -192,10 +192,9 @@ legacy_tox_ini = """
 
     [testenv]
     commands =
-        pytest --cov --cov-report=lcov --slow
+        pytest --cov --cov-report=lcov
     deps =
         pytest-cov
-        pytest-skip-slow
 
     [tox]
     env_list = py{310,311}-{linux,macos}

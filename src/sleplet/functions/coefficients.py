@@ -16,7 +16,7 @@ import sleplet.slepian.region
 _COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class Coefficients:
     """
     Abstract parent class to handle harmonic/Slepian coefficients on the
@@ -36,7 +36,7 @@ class Coefficients:
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.spin = self._set_spin()

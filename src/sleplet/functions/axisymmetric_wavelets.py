@@ -15,7 +15,7 @@ from sleplet.functions.flm import Flm
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class AxisymmetricWavelets(Flm):
     """
     Creates scale-discretised axisymmetric wavelets. As
@@ -30,8 +30,8 @@ class AxisymmetricWavelets(Flm):
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         _logger.info("start computing wavelets")
