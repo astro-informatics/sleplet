@@ -4,7 +4,7 @@ from dataclasses import KW_ONLY
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import validator
+from pydantic import FieldValidationInfo, field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._convolution_methods
@@ -16,7 +16,7 @@ import sleplet.slepian.region
 _COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class Coefficients:
     """
     Abstract parent class to handle harmonic/Slepian coefficients on the
@@ -36,7 +36,7 @@ class Coefficients:
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.spin = self._set_spin()
@@ -114,18 +114,18 @@ class Coefficients:
             )
         self.name += f"_L{self.L}"
 
-    @validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, values):
+    @field_validator("coefficients", check_fields=False)
+    def _check_coefficients(cls, v, info: FieldValidationInfo):
         if (
-            values["region"]
-            and not set(values["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
+            info.data["region"]
+            and not set(info.data["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
         ):
             v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
                 v,
-                values["L"],
-                values["region"],
-                reality=values["reality"],
-                spin=values["spin"],
+                info.data["L"],
+                info.data["region"],
+                reality=info.data["reality"],
+                spin=info.data["spin"],
             )
         return v
 

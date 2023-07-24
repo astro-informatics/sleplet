@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 from numpy import typing as npt
-from pydantic import validator
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._validation
@@ -13,7 +13,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
     """Creates the eigenfunctions of the Laplacian of the mesh."""
 
@@ -21,9 +21,9 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
     """Slepian eigenvalues are ordered in decreasing value. The option `rank`
     selects a given Slepian function from the spectrum (p in the papers)."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._validate_rank()
-        super().__post_init_post_parse__()
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
@@ -60,7 +60,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             if self.extra_args[0] > limit:
                 raise ValueError(f"rank should be less than or equal to {limit}")
 
-    @validator("rank")
+    @field_validator("rank")
     def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")

@@ -20,14 +20,14 @@ from sleplet.meshes.mesh import Mesh
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class MeshSlepian:
     """Creates Slepian object of a given mesh."""
 
     mesh: Mesh
     """A mesh object."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 

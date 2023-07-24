@@ -18,7 +18,7 @@ import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
     """Class to create a limited latitude longitude Slepian region on the sphere."""
 
@@ -31,8 +31,8 @@ class SlepianLimitLatLon(SlepianFunctions):
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
     r"""Minimum \(\theta\) value."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"

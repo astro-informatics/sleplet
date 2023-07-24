@@ -27,7 +27,7 @@ _logger = logging.getLogger(__name__)
 _SAMPLES = 2
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
@@ -35,9 +35,9 @@ class SlepianArbitrary(SlepianFunctions):
     """The name of the mask of the arbitrary region."""
     _: KW_ONLY
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.resolution = _SAMPLES * self.L
-        super().__post_init_post_parse__()
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"
