@@ -13,7 +13,7 @@ from sleplet.meshes.mesh_slepian import MeshSlepian
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: KW_ONLY
@@ -21,7 +21,7 @@ class MeshSlepianDecomposition:
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None
     u: npt.NDArray[np.complex_ | np.float_] | None = None
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._detect_method()
 
     def decompose(self, rank: int) -> float:

@@ -14,7 +14,7 @@ from sleplet.slepian.slepian_functions import SlepianFunctions
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
@@ -23,7 +23,7 @@ class SlepianDecomposition:
     flm: npt.NDArray[np.complex_ | np.float_] | None = None
     mask: npt.NDArray[np.float_] | None = None
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._detect_method()
 
     def decompose(self, rank: int) -> complex:
