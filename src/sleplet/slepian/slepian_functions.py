@@ -12,14 +12,14 @@ import sleplet.slepian.region
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class SlepianFunctions:
     """Abstract parent class of creating the different Slepian regions on the sphere."""
 
     L: int
     """The spherical harmonic bandlimit."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.region = self._create_region()
         self.mask = self._create_mask()
         self.name = self._create_fn_name()

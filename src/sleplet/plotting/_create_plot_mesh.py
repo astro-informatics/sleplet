@@ -23,7 +23,7 @@ _MESH_CBAR_FONT_SIZE = 32
 _MESH_UNSEEN = -1e5  # kaleido bug
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 
@@ -41,7 +41,7 @@ class PlotMesh:
     region: bool = False
     """Whether to set the field values outside of the region to zero."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         if self.normalise:
             self.filename += "_norm"
 

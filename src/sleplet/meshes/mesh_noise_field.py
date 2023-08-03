@@ -10,7 +10,7 @@ import sleplet.noise
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshNoiseField(MeshHarmonicCoefficients):
     """Creates a noised per-vertex normals field on a given mesh."""
 
@@ -18,8 +18,8 @@ class MeshNoiseField(MeshHarmonicCoefficients):
     """A parameter which controls the level of signal-to-noise in the noised
     data."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         mf = sleplet.meshes.mesh_slepian.MeshField(self.mesh)
