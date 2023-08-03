@@ -10,7 +10,7 @@ import pyssht as ssht
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from platformdirs import user_data_path
-from pydantic import validator
+from pydantic import FieldValidationInfo, field_validator
 from pydantic.dataclasses import dataclass
 
 import sleplet._data.setup_pooch
@@ -26,7 +26,7 @@ _logger = logging.getLogger(__name__)
 _L_SAVE_ALL = 16
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
@@ -42,8 +42,8 @@ class SlepianPolarCap(SlepianFunctions):
     computed. In the Slepian eigenproblem formulation this simplifies the
     mathematical formulation."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"
@@ -383,13 +383,13 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @validator("order")
-    def _check_order(cls, v, values):
-        if v is not None and (np.abs(v) >= values["L"]).any():
-            raise ValueError(f"Order magnitude should be less than {values['L']}")
+    @field_validator("order")
+    def _check_order(cls, v, info: FieldValidationInfo):
+        if v is not None and (np.abs(v) >= info.data["L"]).any():
+            raise ValueError(f"Order magnitude should be less than {info.data['L']}")
         return v
 
-    @validator("theta_max")
+    @field_validator("theta_max")
     def _check_theta_max(cls, v):
         if v == 0:
             raise ValueError("theta_max cannot be zero")
