@@ -10,7 +10,7 @@ import sleplet.noise
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshSlepianNoiseField(MeshSlepianCoefficients):
     """
     Creates a noisedfield on a given mesh computed from a Slepian region of the
@@ -21,8 +21,8 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
     """A parameter which controls the level of signal-to-noise in the noised
     data."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         smf = sleplet.meshes.mesh_slepian_field.MeshSlepianField(
