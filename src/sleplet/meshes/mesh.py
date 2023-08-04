@@ -8,7 +8,7 @@ import sleplet._plotly_methods
 import sleplet._validation
 
 
-@dataclass(config=sleplet._validation.Validation)
+@dataclass(config=sleplet._validation.validation)
 class Mesh:
     """Creates a mesh object."""
 
@@ -23,7 +23,7 @@ class Mesh:
     """Whether to zoom in on the pre-selected region of the mesh in the
     plots."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         mesh_config = sleplet._mesh_methods.extract_mesh_config(self.name)
         self.camera_view = sleplet._plotly_methods.create_camera(
             mesh_config["CAMERA_X"],

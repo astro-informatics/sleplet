@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 from numpy.testing import assert_allclose
 
 import sleplet
@@ -22,7 +21,6 @@ def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
     )
 
 
-@pytest.mark.slow()
 def test_orthonormality_over_mesh_full(mesh) -> None:
     """
     For the computation of the Slepian D matrix the basis
