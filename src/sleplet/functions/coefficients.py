@@ -34,6 +34,10 @@ class Coefficients:
     """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
+    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
+    name: str = dataclasses.field(default="", repr=False)
+    spin: int = dataclasses.field(default=0, repr=False)
+    reality: bool = dataclasses.field(default=False, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args()

@@ -1,4 +1,5 @@
 """Contains the `Region` class."""
+import dataclasses
 import logging
 
 import pydantic
@@ -35,6 +36,9 @@ class Region:
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
     """For a limited latitude longitude region, set by the `THETA_MIN` environment
     variable."""
+    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
+    region_type: str = dataclasses.field(default="", repr=False)
+    name_ending: str = dataclasses.field(default="", repr=False)
 
     def __post_init__(self) -> None:
         self._identify_region()
