@@ -1,6 +1,6 @@
 """Contains the abstract `Coefficients` class."""
+import dataclasses
 from abc import abstractmethod
-from dataclasses import KW_ONLY
 
 import numpy as np
 from numpy import typing as npt
@@ -25,7 +25,7 @@ class Coefficients:
 
     L: int
     """The spherical harmonic bandlimit."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     extra_args: list[int] | None = None
     """Control the extra arguments for the given set of spherical
     coefficients. Only to be set by the `sphere` CLI."""

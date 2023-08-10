@@ -1,5 +1,5 @@
+import dataclasses
 import logging
-from dataclasses import KW_ONLY
 
 import cmocean
 import numpy as np
@@ -33,7 +33,7 @@ class PlotMesh:
     """The output filename of the plot."""
     f: npt.NDArray[np.complex_ | np.float_]
     """The field value sampled on the mesh."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
     normalise: bool = True

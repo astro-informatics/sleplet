@@ -1,6 +1,6 @@
 """Contains the abstract `MeshCoefficients` class."""
+import dataclasses
 from abc import abstractmethod
-from dataclasses import KW_ONLY
 
 import numpy as np
 from numpy import typing as npt
@@ -22,7 +22,7 @@ class MeshCoefficients:
 
     mesh: Mesh
     """A mesh object."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     extra_args: list[int] | None = None
     """Control the extra arguments for the given set of mesh
     coefficients. Only to be set by the `mesh` CLI."""

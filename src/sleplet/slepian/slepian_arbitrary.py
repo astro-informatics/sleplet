@@ -1,8 +1,8 @@
 """Contains the `SlepianArbitrary` class."""
+import dataclasses
 import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import KW_ONLY
 
 import numpy as np
 import pyssht as ssht
@@ -33,7 +33,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     mask_name: str
     """The name of the mask of the arbitrary region."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
 
     def __post_init__(self) -> None:
         self.resolution = _SAMPLES * self.L

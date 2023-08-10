@@ -1,5 +1,5 @@
+import dataclasses
 import logging
-from dataclasses import KW_ONLY
 
 import numpy as np
 import pyssht as ssht
@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     f: npt.NDArray[np.complex_] | None = None
     flm: npt.NDArray[np.complex_ | np.float_] | None = None
     mask: npt.NDArray[np.float_] | None = None

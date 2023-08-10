@@ -1,5 +1,6 @@
+import dataclasses
 import logging
-from dataclasses import KW_ONLY, field
+from dataclasses import field
 
 import cmocean
 import numpy as np
@@ -30,7 +31,7 @@ class PlotSphere:
     """The spherical harmonic bandlimit."""
     filename: str
     """The output filename of the plot."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
     annotations: list[dict] = field(default_factory=list)

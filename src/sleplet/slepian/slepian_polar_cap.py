@@ -1,8 +1,8 @@
 """Contains the `SlepianPolarCap` class."""
+import dataclasses
 import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import KW_ONLY
 
 import gmpy2 as gp
 import numpy as np
@@ -32,7 +32,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     theta_max: float
     """Sets the size of the polar cap region."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     gap: bool = False
     """Whether to enable a double ended polar cap."""
     order: int | npt.NDArray[np.int_] | None = None
