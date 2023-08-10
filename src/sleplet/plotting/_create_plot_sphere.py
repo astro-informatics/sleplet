@@ -1,6 +1,5 @@
 import dataclasses
 import logging
-from dataclasses import field
 
 import cmocean
 import numpy as np
@@ -34,7 +33,7 @@ class PlotSphere:
     _: dataclasses.KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
-    annotations: list[dict] = field(default_factory=list)
+    annotations: list[dict] = dataclasses.field(default_factory=list)
     """Whether to display any annotations on the surface plot or not."""
     normalise: bool = True
     """Whether to normalise the plot or not."""
