@@ -3,8 +3,8 @@ import logging
 from abc import abstractmethod
 
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._validation
 import sleplet.slepian.region
@@ -12,7 +12,7 @@ import sleplet.slepian.region
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianFunctions:
     """Abstract parent class of creating the different Slepian regions on the sphere."""
 

@@ -2,16 +2,16 @@
 from abc import abstractmethod
 
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._validation
 import sleplet.noise
 from sleplet.functions.coefficients import Coefficients
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Flm(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 

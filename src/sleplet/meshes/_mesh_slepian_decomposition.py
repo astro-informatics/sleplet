@@ -2,8 +2,8 @@ import dataclasses
 import logging
 
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._integration_methods
 import sleplet._validation
@@ -13,7 +13,7 @@ from sleplet.meshes.mesh_slepian import MeshSlepian
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: dataclasses.KW_ONLY

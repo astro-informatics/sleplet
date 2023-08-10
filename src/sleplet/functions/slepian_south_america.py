@@ -1,7 +1,7 @@
 """Contains the `SlepianSouthAmerica` class."""
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
@@ -10,7 +10,7 @@ import sleplet.slepian.region
 from sleplet.functions.fp import Fp
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianSouthAmerica(Fp):
     """
     Creates a Slepian region on the topographic map of the Earth of the

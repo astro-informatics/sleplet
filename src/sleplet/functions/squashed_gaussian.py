@@ -1,7 +1,7 @@
 """Contains the `SquashedGaussian` class."""
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
@@ -10,7 +10,7 @@ import sleplet.harmonic_methods
 from sleplet.functions.flm import Flm
 
 
-@dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SquashedGaussian(Flm):
     r"""
     Creates a squashed Gaussian

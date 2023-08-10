@@ -3,11 +3,11 @@ import logging
 
 import cmocean
 import numpy as np
+import pydantic
 from matplotlib.colors import LinearSegmentedColormap
 from numpy import typing as npt
 from plotly import graph_objs as go
 from plotly import io as pio
-from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -23,7 +23,7 @@ _MESH_CBAR_FONT_SIZE = 32
 _MESH_UNSEEN = -1e5  # kaleido bug
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 

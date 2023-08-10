@@ -2,10 +2,9 @@
 import logging
 
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numpy import typing as npt
-from pydantic import FieldValidationInfo, field_validator
-from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max, wavelet_tiling
 
 import sleplet._string_methods
@@ -15,7 +14,7 @@ from sleplet.functions.flm import Flm
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class DirectionalSpinWavelets(Flm):
     """
     Creates directional spin scale-discretised wavelets.
@@ -77,8 +76,8 @@ class DirectionalSpinWavelets(Flm):
         wavelets[1:] = psi_lm.T
         return wavelets
 
-    @field_validator("j")
-    def _check_j(cls, v, info: FieldValidationInfo):
+    @pydantic.field_validator("j")
+    def _check_j(cls, v, info: pydantic.FieldValidationInfo):
         j_max = pys2let_j_max(info.data["B"], info.data["L"], info.data["j_min"])
         if v is not None and v < 0:
             raise ValueError("j should be positive")

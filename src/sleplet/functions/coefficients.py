@@ -3,9 +3,8 @@ import dataclasses
 from abc import abstractmethod
 
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic import FieldValidationInfo, field_validator
-from pydantic.dataclasses import dataclass
 
 import sleplet._convolution_methods
 import sleplet._mask_methods
@@ -16,7 +15,7 @@ import sleplet.slepian.region
 _COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Coefficients:
     """
     Abstract parent class to handle harmonic/Slepian coefficients on the
@@ -114,8 +113,8 @@ class Coefficients:
             )
         self.name += f"_L{self.L}"
 
-    @field_validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, info: FieldValidationInfo):
+    @pydantic.field_validator("coefficients", check_fields=False)
+    def _check_coefficients(cls, v, info: pydantic.FieldValidationInfo):
         if (
             info.data["region"]
             and not set(info.data["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK

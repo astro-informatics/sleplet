@@ -2,8 +2,8 @@
 from abc import abstractmethod
 
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
 import sleplet._validation
@@ -13,7 +13,7 @@ import sleplet.slepian_methods
 from sleplet.functions.coefficients import Coefficients
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Fp(Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 

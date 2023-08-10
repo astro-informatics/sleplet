@@ -2,9 +2,9 @@ import dataclasses
 import logging
 
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._integration_methods
 import sleplet._validation
@@ -14,7 +14,7 @@ from sleplet.slepian.slepian_functions import SlepianFunctions
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions

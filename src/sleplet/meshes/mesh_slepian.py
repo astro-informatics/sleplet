@@ -4,10 +4,10 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
+import pydantic
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from platformdirs import user_data_path
-from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -20,7 +20,7 @@ from sleplet.meshes.mesh import Mesh
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepian:
     """Creates Slepian object of a given mesh."""
 

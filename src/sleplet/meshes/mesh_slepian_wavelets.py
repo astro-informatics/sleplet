@@ -2,9 +2,8 @@
 import logging
 
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic import FieldValidationInfo, field_validator
-from pydantic.dataclasses import dataclass
 from pys2let import pys2let_j_max
 
 import sleplet._string_methods
@@ -15,7 +14,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshSlepianWavelets(MeshSlepianCoefficients):
     """Creates Slepian wavelets of a given mesh."""
 
@@ -60,8 +59,8 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             self.j_min,
         )
 
-    @field_validator("j")
-    def _check_j(cls, v, info: FieldValidationInfo) -> int | None:
+    @pydantic.field_validator("j")
+    def _check_j(cls, v, info: pydantic.FieldValidationInfo) -> int | None:
         j_max = pys2let_j_max(
             info.data["B"],
             info.data["mesh"].mesh_eigenvalues.shape[0],

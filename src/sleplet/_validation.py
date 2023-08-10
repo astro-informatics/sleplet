@@ -1,6 +1,6 @@
-from pydantic import ConfigDict
+import pydantic
 
-validation = ConfigDict(
+validation = pydantic.ConfigDict(
     arbitrary_types_allowed=True,
     validate_assignment=True,
     validate_default=True,

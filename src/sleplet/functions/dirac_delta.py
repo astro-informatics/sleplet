@@ -1,15 +1,15 @@
 """Contains the `DiracDelta` class."""
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
 from sleplet.functions.flm import Flm
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class DiracDelta(Flm):
     """Creates a Dirac delta."""
 

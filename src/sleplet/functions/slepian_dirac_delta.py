@@ -2,9 +2,9 @@
 import logging
 
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
@@ -15,7 +15,7 @@ from sleplet.functions.fp import Fp
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianDiracDelta(Fp):
     """Creates a Dirac delta of the Slepian coefficients."""
 

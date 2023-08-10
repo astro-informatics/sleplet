@@ -2,9 +2,8 @@
 import logging
 
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic import field_validator
-from pydantic.dataclasses import dataclass
 
 import sleplet._validation
 import sleplet.harmonic_methods
@@ -13,7 +12,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
     """Creates the eigenfunctions of the Laplacian of the mesh."""
 
@@ -60,7 +59,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             if self.extra_args[0] > limit:
                 raise ValueError(f"rank should be less than or equal to {limit}")
 
-    @field_validator("rank")
+    @pydantic.field_validator("rank")
     def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")

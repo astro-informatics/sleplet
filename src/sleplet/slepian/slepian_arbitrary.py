@@ -5,11 +5,11 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from platformdirs import user_data_path
-from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -27,7 +27,7 @@ _logger = logging.getLogger(__name__)
 _SAMPLES = 2
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 

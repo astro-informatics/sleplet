@@ -1,7 +1,7 @@
 """Contains the `Wmap` class."""
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._data.create_wmap_flm
 import sleplet._string_methods
@@ -9,7 +9,7 @@ import sleplet._validation
 from sleplet.functions.flm import Flm
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Wmap(Flm):
     """Creates the WMAP data."""
 

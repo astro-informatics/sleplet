@@ -2,12 +2,12 @@
 
 
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numba import njit, prange
 from numpy import linalg as LA  # noqa: N812
 from numpy import typing as npt
 from platformdirs import user_data_path
-from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -18,7 +18,7 @@ import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
-@dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
     """Class to create a limited latitude longitude Slepian region on the sphere."""
 

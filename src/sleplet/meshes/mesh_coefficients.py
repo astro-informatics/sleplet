@@ -3,9 +3,8 @@ import dataclasses
 from abc import abstractmethod
 
 import numpy as np
+import pydantic
 from numpy import typing as npt
-from pydantic import FieldValidationInfo, field_validator
-from pydantic.dataclasses import dataclass
 
 import sleplet._mask_methods
 import sleplet._string_methods
@@ -16,7 +15,7 @@ from sleplet.meshes.mesh import Mesh
 _COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshCoefficients:
     """Abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 
@@ -47,8 +46,8 @@ class MeshCoefficients:
         if self.mesh.zoom:
             self.name += "_zoom"
 
-    @field_validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, info: FieldValidationInfo):
+    @pydantic.field_validator("coefficients", check_fields=False)
+    def _check_coefficients(cls, v, info: pydantic.FieldValidationInfo):
         if (
             info.data["region"]
             and _COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()

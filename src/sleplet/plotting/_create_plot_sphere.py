@@ -3,11 +3,11 @@ import logging
 
 import cmocean
 import numpy as np
+import pydantic
 import pyssht as ssht
 from numpy import typing as npt
 from plotly import graph_objs as go
 from plotly import io as pio
-from pydantic.dataclasses import dataclass
 
 import sleplet._plotly_methods
 import sleplet._validation
@@ -20,7 +20,7 @@ _logger = logging.getLogger(__name__)
 _MW_POLE_LENGTH = 2
 
 
-@dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 
