@@ -1,4 +1,3 @@
-from glob import glob
 from pathlib import Path
 
 import sleplet.functions.africa
@@ -43,7 +42,7 @@ import sleplet.meshes.mesh_slepian_wavelets
 _data_path = Path(__file__).resolve().parent / "_data"
 MESHES: list[str] = [
     Path(x).stem.removeprefix("meshes_regions_")
-    for x in glob(str(_data_path / "*.toml"))
+    for x in Path(_data_path).glob("*.toml")
 ]
 
 FLM: list[type[sleplet.functions.coefficients.Coefficients]] = [
