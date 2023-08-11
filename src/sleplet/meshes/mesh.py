@@ -9,7 +9,6 @@ import pydantic
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
-import sleplet.slepian.region
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
@@ -37,6 +36,18 @@ class Mesh:
         repr=False,
     )
     faces: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        repr=False,
+    )
+    region: npt.NDArray[np.bool_] = dataclasses.field(
+        default_factory=lambda: np.empty(0, dtype=np.bool_),
+        repr=False,
+    )
+    mesh_eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        repr=False,
+    )
+    basis_functions: npt.NDArray[np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         repr=False,
     )

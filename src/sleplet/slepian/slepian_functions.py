@@ -27,9 +27,22 @@ class SlepianFunctions:
         repr=False,
     )
     mask: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=np.empty(0),
+        default_factory=lambda: np.empty(0),
         kw_only=True,
         repr=False,
+    )
+    name: str = dataclasses.field(default="", kw_only=True, repr=False)
+    N: int = dataclasses.field(default=0, kw_only=True, repr=False)
+    matrix_location: str = dataclasses.field(default="", kw_only=True, repr=False)
+    eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        kw_only=True,
+        repr=True,
+    )
+    eigenvectors: npt.NDArray[np.complex_] = dataclasses.field(
+        default_factory=lambda: np.empty(0, dtype=np.complex_),
+        kw_only=True,
+        repr=True,
     )
 
     def __post_init__(self) -> None:

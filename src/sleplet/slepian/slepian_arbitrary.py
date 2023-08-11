@@ -1,5 +1,6 @@
 """Contains the `SlepianArbitrary` class."""
 import concurrent.futures
+import dataclasses
 import logging
 import os
 
@@ -32,6 +33,11 @@ class SlepianArbitrary(SlepianFunctions):
 
     mask_name: str
     """The name of the mask of the arbitrary region."""
+    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
+    weight: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         self.resolution = _SAMPLES * self.L
