@@ -1,6 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from matplotlib import pyplot as plt
 
 from sleplet.slepian import SlepianArbitrary
 

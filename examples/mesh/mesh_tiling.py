@@ -1,9 +1,9 @@
-from argparse import ArgumentParser
+import argparse
 
+import matplotlib.pyplot as plt
 import numpy as np
+import scipy.interpolate
 import seaborn as sns
-from matplotlib import pyplot as plt
-from scipy.interpolate import pchip
 
 from sleplet.meshes import Mesh, MeshSlepian
 from sleplet.wavelet_methods import create_kappas
@@ -36,12 +36,12 @@ def main(mesh_name: str) -> None:
     # scaling function
     xi = np.arange(0, xlim - 1 + STEP, STEP)
     kappas = create_kappas(xlim, B, J_MIN)
-    yi = pchip(x, kappas[0])
+    yi = scipy.interpolate.pchip(x, kappas[0])
     plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
 
     # wavelets
     for j, k in enumerate(kappas[1:]):
-        yi = pchip(x, k)
+        yi = scipy.interpolate.pchip(x, k)
         plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_p$")
 
     # add vertical line
@@ -69,7 +69,7 @@ def main(mesh_name: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="mesh tiling")
+    parser = argparse.ArgumentParser(description="mesh tiling")
     parser.add_argument(
         "function",
         type=str,

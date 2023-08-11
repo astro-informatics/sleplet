@@ -1,8 +1,6 @@
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
-from numpy.random import default_rng
-from numpy.testing import assert_equal
 
 from sleplet.functions import AxisymmetricWavelets
 from sleplet.harmonic_methods import compute_random_signal
@@ -66,14 +64,14 @@ def axisymmetric_wavelet_covariance(
 
     # theoretical covariance
     covar_theory = _compute_wavelet_covariance(aw.wavelets, var_signal=var_flm)
-    assert_equal(aw.wavelets.shape[0], covar_theory.shape[0])
+    np.testing.assert_equal(aw.wavelets.shape[0], covar_theory.shape[0])
 
     # initialise matrix
     covar_runs_shape = (runs, *covar_theory.shape)
     covar_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
-    rng = default_rng(RANDOM_SEED)
+    rng = np.random.default_rng(RANDOM_SEED)
 
     for i in range(runs):
         print(f"start run: {i+1}/{runs}")

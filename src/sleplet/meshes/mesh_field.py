@@ -1,8 +1,8 @@
 """Contains the `MeshField` class."""
+import igl
 import numpy as np
+import numpy.typing as npt
 import pydantic
-from igl import per_vertex_normals
-from numpy import typing as npt
 
 import sleplet._validation
 import sleplet.harmonic_methods
@@ -18,7 +18,7 @@ class MeshField(MeshHarmonicCoefficients):
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
-        field = per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
+        field = igl.per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
         return sleplet.harmonic_methods.mesh_forward(self.mesh, field)
 
     def _create_name(self) -> str:

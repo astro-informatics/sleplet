@@ -2,8 +2,8 @@ import dataclasses
 import logging
 
 import numpy as np
+import numpy.typing as npt
 import pydantic
-from numpy import typing as npt
 
 import sleplet._integration_methods
 import sleplet._validation

@@ -2,10 +2,10 @@
 import logging
 
 import numpy as np
+import numpy.typing as npt
 import pydantic
+import pys2let
 import pyssht as ssht
-from numpy import typing as npt
-from pys2let import pys2let_j_max, wavelet_tiling
 
 import sleplet._string_methods
 import sleplet._validation
@@ -68,7 +68,13 @@ class DirectionalSpinWavelets(Flm):
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
         """Compute all wavelets."""
-        phi_l, psi_lm = wavelet_tiling(self.B, self.L, self.N, self.j_min, self.spin)
+        phi_l, psi_lm = pys2let.wavelet_tiling(
+            self.B,
+            self.L,
+            self.N,
+            self.j_min,
+            self.spin,
+        )
         wavelets = np.zeros((psi_lm.shape[1] + 1, self.L**2), dtype=np.complex_)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
@@ -78,7 +84,11 @@ class DirectionalSpinWavelets(Flm):
 
     @pydantic.field_validator("j")
     def _check_j(cls, v, info: pydantic.FieldValidationInfo):
-        j_max = pys2let_j_max(info.data["B"], info.data["L"], info.data["j_min"])
+        j_max = pys2let.pys2let_j_max(
+            info.data["B"],
+            info.data["L"],
+            info.data["j_min"],
+        )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
         if v is not None and v > j_max - info.data["j_min"]:

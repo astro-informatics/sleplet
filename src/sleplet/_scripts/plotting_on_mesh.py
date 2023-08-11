@@ -1,6 +1,6 @@
 # noqa: D100
+import argparse
 import logging
-from argparse import ArgumentParser, Namespace
 
 import sleplet._class_lists
 import sleplet._string_methods
@@ -29,9 +29,9 @@ def valid_methods(method_name: str) -> str:
     raise ValueError(f"'{method_name}' is not a valid method to plot")
 
 
-def read_args() -> Namespace:
+def read_args() -> argparse.Namespace:
     """Method to read args from the command line."""
-    parser = ArgumentParser(description="Create mesh plot")
+    parser = argparse.ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",
         type=valid_meshes,

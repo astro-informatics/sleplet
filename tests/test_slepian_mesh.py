@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.testing import assert_allclose
 
 import sleplet
 
@@ -23,12 +22,12 @@ def test_decompose_all_mesh(mesh_slepian, mesh_field_region) -> None:
         u=field,
         mask=True,
     )
-    assert_allclose(
+    np.testing.assert_allclose(
         np.abs(integrate_sphere_p - harmonic_sum_p)[: mesh_slepian.N].mean(),
         0,
         atol=1e-14,
     )
-    assert_allclose(
+    np.testing.assert_allclose(
         np.abs(integrate_region_p - harmonic_sum_p)[: mesh_slepian.N].mean(),
         0,
         atol=1e-14,
@@ -46,7 +45,7 @@ def test_forward_inverse_transform_slepian(mesh_slepian, mesh_field_region) -> N
         mesh_slepian.mesh,
         mesh_field_region.coefficients,
     )
-    assert_allclose(
+    np.testing.assert_allclose(
         np.abs(f_slepian - f_harmonic)[mesh_slepian.mesh.region].mean(),
         0,
         atol=7e-3,
@@ -69,7 +68,7 @@ def test_synthesis_mesh(mesh_slepian_wavelets, mesh_field_region) -> None:
         mesh_slepian_wavelets.wavelets,
         mesh_slepian_wavelets.mesh_slepian.N,
     )
-    assert_allclose(
+    np.testing.assert_allclose(
         np.abs(f_p - coefficients)[: mesh_slepian_wavelets.mesh_slepian.N].mean(),
         0,
         atol=1e-16,

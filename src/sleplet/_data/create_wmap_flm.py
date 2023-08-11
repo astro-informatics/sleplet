@@ -1,9 +1,8 @@
 # noqa: D100
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
-from numpy.random import default_rng
-from scipy import io as sio
+import scipy.io as sio
 
 import sleplet._data.setup_pooch
 import sleplet._vars
@@ -15,7 +14,7 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
     cl = _load_cl()
 
     # same random seed
-    rng = default_rng(sleplet._vars.RANDOM_SEED)
+    rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # Simulate CMB in harmonic space.
     flm = np.zeros(L**2, dtype=np.complex_)

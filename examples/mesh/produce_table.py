@@ -1,7 +1,7 @@
+import pathlib
 import sys
-from pathlib import Path
 
-sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 
 from denoising_slepian_mesh import main  # noqa: E402
 

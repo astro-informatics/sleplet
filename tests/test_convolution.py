@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.testing import assert_allclose, assert_array_equal
 
 import sleplet
 
@@ -15,7 +14,7 @@ def test_earth_identity_convolution() -> None:
     g = sleplet.functions.Identity(L)
     flm = f.coefficients
     flm_conv = f.convolve(flm, g.coefficients)
-    assert_array_equal(flm, flm_conv)
+    np.testing.assert_array_equal(flm, flm_conv)
 
 
 def test_earth_harmonic_gaussian_convolution() -> None:
@@ -27,7 +26,7 @@ def test_earth_harmonic_gaussian_convolution() -> None:
     g = sleplet.functions.HarmonicGaussian(L)
     flm = f.coefficients
     flm_conv = f.convolve(flm, g.coefficients)
-    assert_allclose(np.abs(flm_conv - flm).mean(), 0, atol=7)
+    np.testing.assert_allclose(np.abs(flm_conv - flm).mean(), 0, atol=7)
 
 
 def test_south_america_slepian_identity_convolution(
@@ -52,4 +51,4 @@ def test_south_america_slepian_identity_convolution(
         g.coefficients,
         shannon=slepian_arbitrary.N,
     )
-    assert_array_equal(f_p, fp_conv)
+    np.testing.assert_array_equal(f_p, fp_conv)

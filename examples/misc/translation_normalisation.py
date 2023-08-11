@@ -1,7 +1,7 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pyssht as ssht
 import seaborn as sns
-from matplotlib import pyplot as plt
 
 from sleplet.functions import HarmonicGaussian
 

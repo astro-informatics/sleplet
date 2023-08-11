@@ -1,12 +1,12 @@
+import fractions
 import re
-from fractions import Fraction
 
 import numpy as np
 
 
 def _get_angle_num_dem(angle_fraction: float) -> tuple[int, int]:
     """Get numerator and denominator for a given decimal."""
-    angle = Fraction(angle_fraction).limit_denominator()
+    angle = fractions.Fraction(angle_fraction).limit_denominator()
     return angle.numerator, angle.denominator
 
 

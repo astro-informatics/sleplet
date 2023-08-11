@@ -1,8 +1,8 @@
-from argparse import ArgumentParser
+import argparse
 
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from matplotlib import pyplot as plt
 
 from sleplet.functions import (
     AxisymmetricWaveletCoefficientsSouthAmerica,
@@ -74,7 +74,7 @@ def main(*, limit: bool) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="South America sparsity")
+    parser = argparse.ArgumentParser(description="South America sparsity")
     parser.add_argument(
         "--limit",
         "-l",

@@ -1,7 +1,7 @@
-from argparse import ArgumentParser
+import argparse
 
 import numpy as np
-from numpy import typing as npt
+import numpy.typing as npt
 
 from sleplet.functions import SlepianSouthAmerica
 from sleplet.noise import (
@@ -78,7 +78,7 @@ def main(snr: float, sigma: int) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="denoising")
+    parser = argparse.ArgumentParser(description="denoising")
     parser.add_argument(
         "--noise",
         "-n",

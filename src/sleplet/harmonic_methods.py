@@ -1,11 +1,10 @@
 """Methods to perform operations in Fourier space of the sphere or mesh."""
-from collections.abc import Callable
-from typing import Any
+import collections.abc
+import typing
 
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
-from numpy.random import Generator
 
 import sleplet._data.create_earth_flm
 import sleplet._integration_methods
@@ -28,9 +27,9 @@ def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
 
 
 def _boost_coefficient_resolution(
-    flm: npt.NDArray[Any],
+    flm: npt.NDArray[typing.Any],
     boost: int,
-) -> npt.NDArray[Any]:
+) -> npt.NDArray[typing.Any]:
     """Calculates a boost in resolution for given flm."""
     return np.pad(flm, (0, boost), "constant")
 
@@ -68,7 +67,7 @@ def invert_flm_boosted(
 
 
 def _ensure_f_bandlimited(
-    grid_fun: Callable[
+    grid_fun: collections.abc.Callable[
         [npt.NDArray[np.float_], npt.NDArray[np.float_]],
         npt.NDArray[np.float_],
     ],
@@ -110,7 +109,7 @@ def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
 
 def compute_random_signal(
     L: int,
-    rng: Generator,
+    rng: np.random.Generator,
     *,
     var_signal: float,
 ) -> npt.NDArray[np.complex_]:

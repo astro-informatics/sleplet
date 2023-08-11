@@ -1,10 +1,10 @@
 """Methods to help in creating plots."""
 import logging
 
+import matplotlib as mpl
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from matplotlib import colors
-from numpy import typing as npt
 
 import sleplet._mask_methods
 import sleplet._vars
@@ -40,7 +40,7 @@ def calc_plot_resolution(L: int) -> int:
 
 
 def _convert_colourscale(
-    cmap: colors,
+    cmap: mpl.colors,
     *,
     pl_entries: int = 255,
 ) -> list[tuple[float, str]]:

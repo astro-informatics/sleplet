@@ -1,11 +1,11 @@
+import pathlib
 import sys
-from pathlib import Path
 
 from sleplet.functions import Africa, AxisymmetricWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
 
-sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 
 from _denoising_axisym import denoising_axisym  # noqa: E402
 

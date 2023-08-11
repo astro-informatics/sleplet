@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+import argparse
 
 import cmocean
 import numpy as np
@@ -30,7 +30,7 @@ def main(mesh_name: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="mesh tiling")
+    parser = argparse.ArgumentParser(description="mesh tiling")
     parser.add_argument(
         "function",
         type=str,

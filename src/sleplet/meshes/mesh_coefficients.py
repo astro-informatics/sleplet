@@ -1,10 +1,10 @@
 """Contains the abstract `MeshCoefficients` class."""
+import abc
 import dataclasses
-from abc import abstractmethod
 
 import numpy as np
+import numpy.typing as npt
 import pydantic
-from numpy import typing as npt
 
 import sleplet._mask_methods
 import sleplet._string_methods
@@ -58,24 +58,24 @@ class MeshCoefficients:
             )
         return v
 
-    @abstractmethod
+    @abc.abstractmethod
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """Adds Gaussian white noise to the signal."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Creates the flm on the north pole."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_name(self) -> str:
         """Creates the name of the function."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _setup_args(self) -> None:
         """
         Initialises function specific args

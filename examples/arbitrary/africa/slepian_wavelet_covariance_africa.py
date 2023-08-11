@@ -1,8 +1,7 @@
+import pathlib
 import sys
-from pathlib import Path
 
 import numpy as np
-from numpy.random import default_rng
 
 from sleplet.functions import SlepianWavelets
 from sleplet.harmonic_methods import compute_random_signal
@@ -14,7 +13,7 @@ from sleplet.wavelet_methods import (
     slepian_wavelet_forward,
 )
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
 
 from _slepian_wavelet_covariance import compute_slepian_wavelet_covariance  # noqa: E402
 
@@ -44,7 +43,7 @@ def main() -> None:
     covar_data_runs = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
-    rng = default_rng(RANDOM_SEED)
+    rng = np.random.default_rng(RANDOM_SEED)
 
     for i in range(RUNS):
         # Generate normally distributed random complex signal

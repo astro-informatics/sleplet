@@ -1,8 +1,8 @@
 """Methods to work with wavelet and wavelet coefficients."""
 import numpy as np
+import numpy.typing as npt
+import pys2let
 import pyssht as ssht
-from numpy import typing as npt
-from pys2let import axisym_wav_l
 
 import sleplet._convolution_methods
 import sleplet.slepian_methods
@@ -139,7 +139,7 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
     Returns:
         The Slepian wavelet generating functions.
     """
-    kappa0, kappa = axisym_wav_l(B, xlim, j_min)
+    kappa0, kappa = pys2let.axisym_wav_l(B, xlim, j_min)
     return np.concatenate((kappa0[np.newaxis], kappa.T))
 
 

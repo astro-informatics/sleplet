@@ -1,7 +1,7 @@
-from argparse import ArgumentParser
+import argparse
 
 import numpy as np
-from numpy import typing as npt
+import numpy.typing as npt
 
 from sleplet.meshes import Mesh, MeshSlepianField, MeshSlepianWavelets
 from sleplet.noise import (
@@ -103,7 +103,7 @@ def main(mesh_name: str, snr: float, sigma: int) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="denoising")
+    parser = argparse.ArgumentParser(description="denoising")
     parser.add_argument(
         "function",
         type=str,

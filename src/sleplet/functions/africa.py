@@ -1,8 +1,8 @@
 """Contains the `Africa` class."""
 import numpy as np
+import numpy.typing as npt
 import pydantic
 import pyssht as ssht
-from numpy import typing as npt
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch

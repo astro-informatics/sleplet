@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.testing import assert_allclose
 
 import sleplet
 
@@ -14,7 +13,7 @@ def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
         mesh_field_region.coefficients,
     )
     kernel_recov = sleplet.harmonic_methods.mesh_forward(mesh_field_region.mesh, u)
-    assert_allclose(
+    np.testing.assert_allclose(
         np.abs(mesh_field_region.coefficients - kernel_recov).mean(),
         0,
         atol=1e-14,
@@ -38,4 +37,8 @@ def test_orthonormality_over_mesh_full(mesh) -> None:
                 phi_j,
             )
     identity = np.identity(mesh.mesh_eigenvalues.shape[0])
-    np.testing.assert_allclose(np.abs(orthonormality - identity).mean(), 0, atol=1e-16)
+    np.testing.assert_allclose(
+        np.abs(orthonormality - identity).mean(),
+        0,
+        atol=1e-16,
+    )

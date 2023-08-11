@@ -1,9 +1,9 @@
-from typing import TYPE_CHECKING
+import typing
 
 import numpy as np
-from numpy import typing as npt
+import numpy.typing as npt
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     import sleplet.meshes.mesh
 
 _MACHINE_EPSILON = 1e-14

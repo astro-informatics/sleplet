@@ -1,13 +1,13 @@
+import argparse
+import pathlib
 import sys
-from argparse import ArgumentParser
-from pathlib import Path
 
 from sleplet.functions import SlepianSouthAmerica, SlepianWavelets
 from sleplet.plot_methods import find_max_amplitude
 from sleplet.plotting import PlotSphere
 from sleplet.slepian import Region
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
 
 from _denoising_slepian_wavelet import denoising_slepian_wavelet  # noqa: E402
 
@@ -49,7 +49,7 @@ def main(snr: float, sigma: int) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="denoising")
+    parser = argparse.ArgumentParser(description="denoising")
     parser.add_argument(
         "--noise",
         "-n",

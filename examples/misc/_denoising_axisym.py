@@ -1,6 +1,6 @@
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
 
 from sleplet.functions import Africa, AxisymmetricWavelets, Earth, SouthAmerica
 from sleplet.harmonic_methods import rotate_earth_to_south_america

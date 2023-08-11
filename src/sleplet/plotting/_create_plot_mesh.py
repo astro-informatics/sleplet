@@ -2,12 +2,12 @@ import dataclasses
 import logging
 
 import cmocean
+import matplotlib.colors
 import numpy as np
+import numpy.typing as npt
+import plotly.graph_objs as go
+import plotly.io as pio
 import pydantic
-from matplotlib.colors import LinearSegmentedColormap
-from numpy import typing as npt
-from plotly import graph_objs as go
-from plotly import io as pio
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -45,7 +45,10 @@ class PlotMesh:
         if self.normalise:
             self.filename += "_norm"
 
-    def execute(self, colour: LinearSegmentedColormap = cmocean.cm.ice) -> None:
+    def execute(
+        self,
+        colour: matplotlib.colors.LinearSegmentedColormap = cmocean.cm.ice,
+    ) -> None:
         """
         Performs the plot.
 

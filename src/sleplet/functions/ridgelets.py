@@ -2,11 +2,11 @@
 import logging
 
 import numpy as np
+import numpy.typing as npt
 import pydantic
+import pys2let
 import pyssht as ssht
-from numpy import typing as npt
-from pys2let import pys2let_j_max
-from scipy.special import gammaln
+import scipy.special
 
 import sleplet._string_methods
 import sleplet._validation
@@ -81,10 +81,10 @@ class Ridgelets(Flm):
         ring_lm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(abs(self.spin), self.L):
             logp2 = (
-                gammaln(ell + self.spin + 1)
+                scipy.special.gammaln(ell + self.spin + 1)
                 - ell * np.log(2)
-                - gammaln((ell + self.spin) / 2 + 1)
-                - gammaln((ell - self.spin) / 2 + 1)
+                - scipy.special.gammaln((ell + self.spin) / 2 + 1)
+                - scipy.special.gammaln((ell - self.spin) / 2 + 1)
             )
             p0 = np.real((-1) ** ((ell + self.spin) / 2)) * np.exp(logp2)
             ind = ssht.elm2ind(ell, 0)
@@ -95,14 +95,21 @@ class Ridgelets(Flm):
                 * p0
                 * (-1) ** self.spin
                 * np.sqrt(
-                    np.exp(gammaln(ell - self.spin + 1) - gammaln(ell + self.spin + 1)),
+                    np.exp(
+                        scipy.special.gammaln(ell - self.spin + 1)
+                        - scipy.special.gammaln(ell + self.spin + 1),
+                    ),
                 )
             )
         return ring_lm
 
     @pydantic.field_validator("j")
     def _check_j(cls, v, info: pydantic.FieldValidationInfo):
-        j_max = pys2let_j_max(info.data["B"], info.data["L"], info.data["j_min"])
+        j_max = pys2let.pys2let_j_max(
+            info.data["B"],
+            info.data["L"],
+            info.data["j_min"],
+        )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
         if v is not None and v > j_max - info.data["j_min"]:

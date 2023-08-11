@@ -1,8 +1,8 @@
-from argparse import ArgumentParser
+import argparse
 
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from matplotlib import pyplot as plt
 
 from sleplet.meshes import Mesh, MeshSlepian
 
@@ -47,7 +47,7 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="mesh Slepian eigenvalues")
+    parser = argparse.ArgumentParser(description="mesh Slepian eigenvalues")
     parser.add_argument(
         "function",
         type=str,

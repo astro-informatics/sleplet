@@ -1,8 +1,8 @@
 """Contains the `Gaussian` class."""
 import numpy as np
+import numpy.typing as npt
 import pydantic
 import pyssht as ssht
-from numpy import typing as npt
 
 import sleplet._string_methods
 import sleplet._validation

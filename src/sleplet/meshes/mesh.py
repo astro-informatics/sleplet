@@ -3,8 +3,8 @@ import dataclasses
 
 import numpy as np
 import numpy.typing as npt
+import plotly.graph_objs as go
 import pydantic
-from plotly import graph_objs as go
 
 import sleplet._mesh_methods
 import sleplet._plotly_methods

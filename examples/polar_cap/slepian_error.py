@@ -1,8 +1,8 @@
+import matplotlib.pyplot as plt
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
 import seaborn as sns
-from matplotlib import pyplot as plt
-from numpy import typing as npt
 
 from sleplet.functions import Earth
 from sleplet.slepian import Region, SlepianPolarCap

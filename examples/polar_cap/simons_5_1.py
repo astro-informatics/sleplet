@@ -1,7 +1,7 @@
+import matplotlib.pyplot as plt
 import numpy as np
+import numpy.typing as npt
 import seaborn as sns
-from matplotlib import pyplot as plt
-from numpy import typing as npt
 
 from sleplet.harmonic_methods import invert_flm_boosted
 from sleplet.plot_methods import calc_plot_resolution

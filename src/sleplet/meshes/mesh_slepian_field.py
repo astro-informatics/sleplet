@@ -1,7 +1,7 @@
 """Contains the `MeshSlepianField` class."""
 import numpy as np
+import numpy.typing as npt
 import pydantic
-from numpy import typing as npt
 
 import sleplet._validation
 import sleplet.meshes.mesh_field

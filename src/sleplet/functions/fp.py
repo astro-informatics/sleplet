@@ -1,9 +1,9 @@
 """Contains the abstract `Fp` class."""
-from abc import abstractmethod
+import abc
 
 import numpy as np
+import numpy.typing as npt
 import pydantic
-from numpy import typing as npt
 
 import sleplet._mask_methods
 import sleplet._validation
@@ -68,22 +68,22 @@ class Fp(Coefficients):
             return unnoised_coefficients, snr
         return None, None
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_name(self) -> str:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _set_reality(self) -> bool:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _set_spin(self) -> int:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _setup_args(self) -> None:
         raise NotImplementedError
