@@ -4,11 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-from sleplet.functions import (
-    AxisymmetricWaveletCoefficientsSouthAmerica,
-    SlepianWaveletCoefficientsSouthAmerica,
-)
-from sleplet.slepian import Region
+import sleplet
 
 sns.set(context="paper")
 
@@ -21,8 +17,13 @@ STEP = 0.01
 def _plot_slepian_coefficients() -> int:
     """Plot the Slepian wavelet coefficients for the South America region."""
     # initialise wavelet coefficients
-    region = Region(mask_name="south_america")
-    swc = SlepianWaveletCoefficientsSouthAmerica(L, B=B, j_min=J_MIN, region=region)
+    region = sleplet.slepian.Region(mask_name="south_america")
+    swc = sleplet.functions.SlepianWaveletCoefficientsSouthAmerica(
+        L,
+        B=B,
+        j_min=J_MIN,
+        region=region,
+    )
 
     # find sorted coefficients
     w_p = np.sort(np.abs(swc.wavelet_coefficients), axis=1)[:, ::-1]
@@ -39,7 +40,11 @@ def _plot_slepian_coefficients() -> int:
 def _plot_axisymmetric_coefficients(shannon: int) -> None:
     """Plot the axisymmetric wavelet coefficients for the South America region."""
     # initialise wavelet coefficients
-    awc = AxisymmetricWaveletCoefficientsSouthAmerica(L, B=B, j_min=J_MIN)
+    awc = sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica(
+        L,
+        B=B,
+        j_min=J_MIN,
+    )
 
     # find sorted coefficients
     w_lm = np.sort(np.abs(awc.wavelet_coefficients), axis=1)[:, ::-1]

@@ -3,7 +3,7 @@ import numpy as np
 import pyssht as ssht
 import seaborn as sns
 
-from sleplet.functions import HarmonicGaussian
+import sleplet
 
 sns.set(context="paper")
 
@@ -14,7 +14,7 @@ SAMPLING_SCHEME = "MWSS"
 
 def compute_translation_normalisation_theta() -> None:
     """Analysis of the translation norm for referee."""
-    hg = HarmonicGaussian(L)
+    hg = sleplet.functions.HarmonicGaussian(L)
     thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
     norm = np.zeros(len(thetas))
     for i, theta in enumerate(thetas):

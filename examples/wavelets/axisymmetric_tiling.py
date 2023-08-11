@@ -3,7 +3,7 @@ import numpy as np
 import scipy.interpolate
 import seaborn as sns
 
-from sleplet.wavelet_methods import create_kappas
+import sleplet
 
 sns.set(context="paper")
 
@@ -18,7 +18,7 @@ def main() -> None:
     xlim = L
     x = np.arange(xlim)
     xi = np.arange(0, xlim - 1 + STEP, STEP)
-    kappas = create_kappas(xlim, B, J_MIN)
+    kappas = sleplet.wavelet_methods.create_kappas(xlim, B, J_MIN)
     yi = scipy.interpolate.pchip(x, kappas[0])
     plt.semilogx(xi, yi(xi), label=r"$\Phi_{\ell0}$")
     for j, k in enumerate(kappas[1:]):

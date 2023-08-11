@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-from sleplet.meshes import Mesh, MeshSlepian
+import sleplet
 
 sns.set(context="paper")
 
@@ -20,11 +20,11 @@ MESHES = [
 
 def main(mesh_name: str, num_basis_fun: int) -> None:
     """Plots the Slepian eigenvalues of the given mesh."""
-    mesh = Mesh(
+    mesh = sleplet.meshes.Mesh(
         mesh_name,
         number_basis_functions=num_basis_fun,
     )
-    mesh_slepian = MeshSlepian(mesh)
+    mesh_slepian = sleplet.meshes.MeshSlepian(mesh)
     plt.semilogx(mesh_slepian.slepian_eigenvalues, "k.")
     plt.axvline(mesh_slepian.N, c="k", ls="--", alpha=0.8)
     plt.annotate(

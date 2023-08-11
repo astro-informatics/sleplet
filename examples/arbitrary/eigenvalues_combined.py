@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-from sleplet.slepian import SlepianArbitrary
+import sleplet
 
 sns.set(context="paper")
 
@@ -16,7 +16,7 @@ ZORDER = [2, 1]
 def main() -> None:
     """Plots the tiling of the Slepian line."""
     for c, region in enumerate(REGIONS):
-        slepian = SlepianArbitrary(L, region)
+        slepian = sleplet.slepian.SlepianArbitrary(L, region)
         p_range = np.arange(0, L**2)
         plt.semilogx(
             p_range,

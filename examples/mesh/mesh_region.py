@@ -3,8 +3,7 @@ import argparse
 import cmocean
 import numpy as np
 
-from sleplet.meshes import Mesh
-from sleplet.plotting import PlotMesh
+import sleplet
 
 MESHES = [
     "bird",
@@ -19,14 +18,14 @@ MESHES = [
 def main(mesh_name: str) -> None:
     """Plots the tiling of the Slepian line."""
     # initialise mesh and Slepian mesh
-    mesh = Mesh(mesh_name)
+    mesh = sleplet.meshes.Mesh(mesh_name)
 
     # create region masking
     field = np.zeros(mesh.vertices.shape[0])
     field[mesh.region] = 1
 
     name = f"{mesh_name}_region"
-    PlotMesh(mesh, name, field, region=True).execute(cmocean.cm.haline)
+    sleplet.plotting.PlotMesh(mesh, name, field, region=True).execute(cmocean.cm.haline)
 
 
 if __name__ == "__main__":

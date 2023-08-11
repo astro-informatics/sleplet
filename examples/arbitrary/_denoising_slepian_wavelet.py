@@ -1,33 +1,27 @@
 import numpy as np
 import numpy.typing as npt
 
-from sleplet.functions import SlepianAfrica, SlepianSouthAmerica, SlepianWavelets
-from sleplet.noise import (
-    _compute_slepian_sigma_j,
-    compute_snr,
-    slepian_wavelet_hard_thresholding,
-)
-from sleplet.slepian_methods import slepian_inverse
-from sleplet.wavelet_methods import slepian_wavelet_forward, slepian_wavelet_inverse
+import sleplet
 
 
 def denoising_slepian_wavelet(
-    signal: SlepianAfrica | SlepianSouthAmerica,
-    noised_signal: SlepianAfrica | SlepianSouthAmerica,
-    slepian_wavelets: SlepianWavelets,
+    signal: sleplet.functions.SlepianAfrica | sleplet.functions.SlepianSouthAmerica,
+    noised_signal: sleplet.functions.SlepianAfrica
+    | sleplet.functions.SlepianSouthAmerica,
+    slepian_wavelets: sleplet.functions.SlepianWavelets,
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
     """Denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
-    w = slepian_wavelet_forward(
+    w = sleplet.wavelet_methods.slepian_wavelet_forward(
         noised_signal.coefficients,
         slepian_wavelets.wavelets,
         slepian_wavelets.slepian.N,
     )
 
     # compute wavelet noise
-    sigma_j = _compute_slepian_sigma_j(
+    sigma_j = sleplet.noise._compute_slepian_sigma_j(
         signal.L,
         signal.coefficients,
         slepian_wavelets.wavelets,
@@ -36,7 +30,7 @@ def denoising_slepian_wavelet(
     )
 
     # hard thresholding
-    w_denoised = slepian_wavelet_hard_thresholding(
+    w_denoised = sleplet.noise.slepian_wavelet_hard_thresholding(
         signal.L,
         w,
         sigma_j,
@@ -45,13 +39,17 @@ def denoising_slepian_wavelet(
     )
 
     # wavelet synthesis
-    f_p = slepian_wavelet_inverse(
+    f_p = sleplet.wavelet_methods.slepian_wavelet_inverse(
         w_denoised,
         slepian_wavelets.wavelets,
         slepian_wavelets.slepian.N,
     )
 
     # compute SNR
-    compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
+    sleplet.noise.compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
 
-    return slepian_inverse(f_p, signal.L, slepian_wavelets.slepian)
+    return sleplet.slepian_methods.slepian_inverse(
+        f_p,
+        signal.L,
+        slepian_wavelets.slepian,
+    )

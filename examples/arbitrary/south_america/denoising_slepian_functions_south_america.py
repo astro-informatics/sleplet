@@ -3,16 +3,7 @@ import argparse
 import numpy as np
 import numpy.typing as npt
 
-from sleplet.functions import SlepianSouthAmerica
-from sleplet.noise import (
-    compute_sigma_noise,
-    compute_snr,
-    slepian_function_hard_thresholding,
-)
-from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
+import sleplet
 
 B = 3
 J_MIN = 2
@@ -24,21 +15,21 @@ SNR_IN = -10
 
 
 def _denoising_slepian_function(
-    signal: SlepianSouthAmerica,
-    noised_signal: SlepianSouthAmerica,
+    signal: sleplet.functions.SlepianSouthAmerica,
+    noised_signal: sleplet.functions.SlepianSouthAmerica,
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_]:
     """Denoising demo using Slepian function."""
     # compute Slepian noise
-    sigma_noise = compute_sigma_noise(
+    sigma_noise = sleplet.noise.compute_sigma_noise(
         signal.coefficients,
         snr_in,
         denominator=signal.L**2,
     )
 
     # hard thresholding
-    f_p = slepian_function_hard_thresholding(
+    f_p = sleplet.noise.slepian_function_hard_thresholding(
         signal.L,
         noised_signal.coefficients,
         sigma_noise,
@@ -47,27 +38,32 @@ def _denoising_slepian_function(
     )
 
     # compute SNR
-    compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
+    sleplet.noise.compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
 
-    return slepian_inverse(f_p, signal.L, signal.slepian)
+    return sleplet.slepian_methods.slepian_inverse(f_p, signal.L, signal.slepian)
 
 
 def main(snr: float, sigma: int) -> None:
     """Denoising demo using Slepian wavelets."""
     print(f"SNR={snr}, n_sigma={sigma}")
     # setup
-    region = Region(mask_name="south_america")
+    region = sleplet.slepian.Region(mask_name="south_america")
 
     # create map & noised map
-    fun = SlepianSouthAmerica(L, region=region, smoothing=SMOOTHING)
-    fun_noised = SlepianSouthAmerica(L, noise=snr, region=region, smoothing=SMOOTHING)
+    fun = sleplet.functions.SlepianSouthAmerica(L, region=region, smoothing=SMOOTHING)
+    fun_noised = sleplet.functions.SlepianSouthAmerica(
+        L,
+        noise=snr,
+        region=region,
+        smoothing=SMOOTHING,
+    )
 
     # fix amplitude
-    amplitude = find_max_amplitude(fun)
+    amplitude = sleplet.plot_methods.find_max_amplitude(fun)
 
     f = _denoising_slepian_function(fun, fun_noised, snr, sigma)
     name = f"{fun.name}_{snr}snr_{sigma}n_denoised_function"
-    PlotSphere(
+    sleplet.plotting.PlotSphere(
         f,
         L,
         name,

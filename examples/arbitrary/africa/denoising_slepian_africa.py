@@ -2,10 +2,7 @@ import argparse
 import pathlib
 import sys
 
-from sleplet.functions import SlepianAfrica, SlepianWavelets
-from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
+import sleplet
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -24,21 +21,26 @@ def main(snr: float, sigma: int) -> None:
     """Denoising demo using Slepian wavelets."""
     print(f"SNR={snr}, n_sigma={sigma}")
     # setup
-    region = Region(mask_name="africa")
+    region = sleplet.slepian.Region(mask_name="africa")
 
     # create map & noised map
-    fun = SlepianAfrica(L, region=region, smoothing=SMOOTHING)
-    fun_noised = SlepianAfrica(L, noise=snr, region=region, smoothing=SMOOTHING)
+    fun = sleplet.functions.SlepianAfrica(L, region=region, smoothing=SMOOTHING)
+    fun_noised = sleplet.functions.SlepianAfrica(
+        L,
+        noise=snr,
+        region=region,
+        smoothing=SMOOTHING,
+    )
 
     # create wavelets
-    sw = SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
+    sw = sleplet.functions.SlepianWavelets(L, B=B, j_min=J_MIN, region=region)
 
     # fix amplitude
-    amplitude = find_max_amplitude(fun)
+    amplitude = sleplet.plot_methods.find_max_amplitude(fun)
 
     f = denoising_slepian_wavelet(fun, fun_noised, sw, snr, sigma)
     name = f"{fun.name}_{snr}snr_{sigma}n_denoised"
-    PlotSphere(
+    sleplet.plotting.PlotSphere(
         f,
         L,
         name,

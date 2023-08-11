@@ -2,9 +2,7 @@ import numpy as np
 import numpy.typing as npt
 import pyssht as ssht
 
-from sleplet.functions import AxisymmetricWavelets
-from sleplet.harmonic_methods import compute_random_signal
-from sleplet.wavelet_methods import axisymmetric_wavelet_forward
+import sleplet
 
 B = 3
 J_MIN = 2
@@ -60,7 +58,7 @@ def axisymmetric_wavelet_covariance(
     print(f"L={L}, B={B}, j_min={j_min}")
 
     # compute wavelets
-    aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
+    aw = sleplet.functions.AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # theoretical covariance
     covar_theory = _compute_wavelet_covariance(aw.wavelets, var_signal=var_flm)
@@ -77,10 +75,10 @@ def axisymmetric_wavelet_covariance(
         print(f"start run: {i+1}/{runs}")
 
         # Generate normally distributed random complex signal
-        flm = compute_random_signal(L, rng, var_signal=var_flm)
+        flm = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=var_flm)
 
         # compute wavelet coefficients
-        wlm = axisymmetric_wavelet_forward(L, flm, aw.wavelets)
+        wlm = sleplet.wavelet_methods.axisymmetric_wavelet_forward(L, flm, aw.wavelets)
 
         # compute covariance from data
         for j, coefficient in enumerate(wlm):

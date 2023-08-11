@@ -2,20 +2,19 @@ import numpy as np
 import numpy.typing as npt
 import pyssht as ssht
 
-from sleplet.functions import SlepianWavelets
-from sleplet.slepian_methods import compute_s_p_omega
+import sleplet
 
 SAMPLING_SCHEME = "MWSS"
 
 
 def compute_slepian_wavelet_covariance(
     L: int,
-    slepian_wavelets: SlepianWavelets,
+    slepian_wavelets: sleplet.functions.SlepianWavelets,
     *,
     var_signal: float,
 ) -> npt.NDArray[np.float_]:
     """Computes the theoretical covariance of the wavelet coefficients."""
-    s_p = compute_s_p_omega(L, slepian_wavelets.slepian)
+    s_p = sleplet.slepian_methods.compute_s_p_omega(L, slepian_wavelets.slepian)
     wavelets_reshape = slepian_wavelets.wavelets[
         :,
         : slepian_wavelets.slepian.N,
