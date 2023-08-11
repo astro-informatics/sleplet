@@ -49,6 +49,14 @@ class Coefficients:
         repr=False,
     )
     snr: float | None = dataclasses.field(default=None, repr=False)
+    wavelets: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        repr=False,
+    )
+    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         self._setup_args()

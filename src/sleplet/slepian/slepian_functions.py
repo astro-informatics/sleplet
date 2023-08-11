@@ -8,6 +8,7 @@ import numpy.typing as npt
 import pydantic
 
 import sleplet._validation
+from sleplet.slepian.region import Region
 
 _logger = logging.getLogger(__name__)
 
@@ -20,6 +21,16 @@ class SlepianFunctions:
     """The spherical harmonic bandlimit."""
     # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
     resolution: int = dataclasses.field(default=0, kw_only=True, repr=False)
+    region: Region = dataclasses.field(
+        default_factory=lambda: Region(theta_max=0),
+        kw_only=True,
+        repr=False,
+    )
+    mask: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=np.empty(0),
+        kw_only=True,
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         self.region = self._create_region()

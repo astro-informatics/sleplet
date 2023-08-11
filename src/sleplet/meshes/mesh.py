@@ -9,6 +9,7 @@ import pydantic
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
+import sleplet.slepian.region
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
