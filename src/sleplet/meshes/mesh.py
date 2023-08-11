@@ -26,16 +26,20 @@ class Mesh:
     """Whether to zoom in on the pre-selected region of the mesh in the
     plots."""
     # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
+    basis_functions: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        repr=False,
+    )
     camera_view: go.layout.scene.Camera = dataclasses.field(
         default_factory=lambda: go.layout.scene.Camera(),
         repr=False,
     )
     colourbar_pos: float = dataclasses.field(default=0, repr=False)
-    vertices: npt.NDArray[np.float_] = dataclasses.field(
+    faces: npt.NDArray[np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         repr=False,
     )
-    faces: npt.NDArray[np.float_] = dataclasses.field(
+    mesh_eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         repr=False,
     )
@@ -43,11 +47,7 @@ class Mesh:
         default_factory=lambda: np.empty(0, dtype=np.bool_),
         repr=False,
     )
-    mesh_eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
-    basis_functions: npt.NDArray[np.float_] = dataclasses.field(
+    vertices: npt.NDArray[np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         repr=False,
     )

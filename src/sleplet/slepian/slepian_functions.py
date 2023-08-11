@@ -20,20 +20,6 @@ class SlepianFunctions:
     L: int
     """The spherical harmonic bandlimit."""
     # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    resolution: int = dataclasses.field(default=0, kw_only=True, repr=False)
-    region: Region = dataclasses.field(
-        default_factory=lambda: Region(theta_max=0),
-        kw_only=True,
-        repr=False,
-    )
-    mask: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        kw_only=True,
-        repr=False,
-    )
-    name: str = dataclasses.field(default="", kw_only=True, repr=False)
-    N: int = dataclasses.field(default=0, kw_only=True, repr=False)
-    matrix_location: str = dataclasses.field(default="", kw_only=True, repr=False)
     eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         kw_only=True,
@@ -44,6 +30,20 @@ class SlepianFunctions:
         kw_only=True,
         repr=True,
     )
+    mask: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        kw_only=True,
+        repr=False,
+    )
+    matrix_location: str = dataclasses.field(default="", kw_only=True, repr=False)
+    N: int = dataclasses.field(default=0, kw_only=True, repr=False)
+    name: str = dataclasses.field(default="", kw_only=True, repr=False)
+    region: Region = dataclasses.field(
+        default_factory=lambda: Region(theta_max=0),
+        kw_only=True,
+        repr=False,
+    )
+    resolution: int = dataclasses.field(default=0, kw_only=True, repr=False)
 
     def __post_init__(self) -> None:
         self.region = self._create_region()

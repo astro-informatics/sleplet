@@ -35,25 +35,25 @@ class Coefficients:
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
     # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    name: str = dataclasses.field(default="", repr=False)
-    spin: int = dataclasses.field(default=0, repr=False)
-    reality: bool = dataclasses.field(default=False, repr=False)
     coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0, dtype=np.complex_),
         repr=False,
     )
+    name: str = dataclasses.field(default="", repr=False)
+    reality: bool = dataclasses.field(default=False, repr=False)
+    snr: float | None = dataclasses.field(default=None, repr=False)
+    spin: int = dataclasses.field(default=0, repr=False)
     unnoised_coefficients: npt.NDArray[
         np.complex_ | np.float_
     ] | None = dataclasses.field(
         default=None,
         repr=False,
     )
-    snr: float | None = dataclasses.field(default=None, repr=False)
-    wavelets: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
+    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         repr=False,
     )
-    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
+    wavelets: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         repr=False,
     )
