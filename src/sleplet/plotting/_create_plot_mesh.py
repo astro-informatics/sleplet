@@ -2,7 +2,7 @@ import dataclasses
 import logging
 
 import cmocean
-import matplotlib.colors
+import matplotlib as mpl
 import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
@@ -47,7 +47,7 @@ class PlotMesh:
 
     def execute(
         self,
-        colour: matplotlib.colors.LinearSegmentedColormap = cmocean.cm.ice,
+        colour: mpl.colors.LinearSegmentedColormap = cmocean.cm.ice,
     ) -> None:
         """
         Performs the plot.
