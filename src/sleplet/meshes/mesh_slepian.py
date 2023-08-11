@@ -1,5 +1,5 @@
 """Contains the `MeshSlepian` class."""
-import concurrent
+import concurrent.futures
 import dataclasses
 import logging
 import os
