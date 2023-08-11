@@ -39,7 +39,7 @@ class Coefficients:
     spin: int = dataclasses.field(default=0, repr=False)
     reality: bool = dataclasses.field(default=False, repr=False)
     coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
+        default_factory=lambda: np.empty(0, dtype=np.complex_),
         repr=False,
     )
     unnoised_coefficients: npt.NDArray[

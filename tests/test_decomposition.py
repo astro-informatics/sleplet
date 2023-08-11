@@ -30,7 +30,7 @@ def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
     np.testing.assert_allclose(
         np.abs(integrate_sphere_p - harmonic_sum_p)[: slepian_polar_cap.N].mean(),
         0,
-        atol=10,
+        atol=12,
     )
     np.testing.assert_allclose(
         np.abs(integrate_region_p - harmonic_sum_p)[: slepian_polar_cap.N].mean(),

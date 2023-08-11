@@ -36,7 +36,7 @@ class MeshCoefficients:
         repr=False,
     )
     coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
+        default_factory=lambda: np.empty((697, 2790)),
         repr=False,
     )
     unnoised_coefficients: npt.NDArray[

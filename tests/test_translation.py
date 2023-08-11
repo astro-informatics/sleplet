@@ -45,7 +45,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
         THETA_MAX / np.pi,
     )
     sdd_trans = slepian_dirac_delta_polar_cap.translate(
-        slepian_dirac_delta_polar_cap.alpha,
+        slepian_dirac_delta_polar_cap._alpha,
         beta,
         shannon=slepian_dirac_delta_polar_cap.slepian.N,
     )
@@ -63,7 +63,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     np.testing.assert_raises(
         AssertionError,
         np.testing.assert_equal,
-        slepian_dirac_delta_polar_cap.beta,
+        slepian_dirac_delta_polar_cap._beta,
         thetas[new_max],
     )
 
@@ -78,7 +78,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
         THETA_MAX / np.pi,
     )
     sdd_trans = slepian_dirac_delta_lim_lat_lon.translate(
-        slepian_dirac_delta_lim_lat_lon.alpha,
+        slepian_dirac_delta_lim_lat_lon._alpha,
         beta,
         shannon=slepian_dirac_delta_lim_lat_lon.slepian.N,
     )
@@ -96,6 +96,6 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     np.testing.assert_raises(
         AssertionError,
         np.testing.assert_equal,
-        slepian_dirac_delta_lim_lat_lon.beta,
+        slepian_dirac_delta_lim_lat_lon._beta,
         thetas[new_max],
     )
