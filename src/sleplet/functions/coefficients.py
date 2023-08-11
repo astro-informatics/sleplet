@@ -38,6 +38,17 @@ class Coefficients:
     name: str = dataclasses.field(default="", repr=False)
     spin: int = dataclasses.field(default=0, repr=False)
     reality: bool = dataclasses.field(default=False, repr=False)
+    coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        repr=False,
+    )
+    unnoised_coefficients: npt.NDArray[
+        np.complex_ | np.float_
+    ] | None = dataclasses.field(
+        default=None,
+        repr=False,
+    )
+    snr: float | None = dataclasses.field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         self._setup_args()
