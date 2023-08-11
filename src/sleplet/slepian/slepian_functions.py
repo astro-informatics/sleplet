@@ -19,8 +19,7 @@ class SlepianFunctions:
     L: int
     """The spherical harmonic bandlimit."""
     # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    _: dataclasses.KW_ONLY
-    resolution: int = dataclasses.field(default=1, repr=False)
+    resolution: int = dataclasses.field(default=0, kw_only=True, repr=False)
 
     def __post_init__(self) -> None:
         self.region = self._create_region()
