@@ -63,7 +63,7 @@ def test_axisymmetric_synthesis_earth() -> None:
         awc.wavelet_coefficients,
         awc.wavelets,
     )
-    assert_allclose(np.abs(flm - awc.earth.coefficients).mean(), 0, atol=1e-13)
+    assert_allclose(np.abs(flm - awc._earth.coefficients).mean(), 0, atol=1e-13)
 
 
 def test_axisymmetric_synthesis_south_america() -> None:
@@ -78,7 +78,7 @@ def test_axisymmetric_synthesis_south_america() -> None:
         awc.wavelet_coefficients,
         awc.wavelets,
     )
-    assert_allclose(np.abs(flm - awc.south_america.coefficients).mean(), 0, atol=1e-14)
+    assert_allclose(np.abs(flm - awc._south_america.coefficients).mean(), 0, atol=1e-14)
 
 
 def test_only_wavelet_coefficients_within_shannon_returned() -> None:

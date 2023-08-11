@@ -67,10 +67,10 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
             self.B,
             self.j_min,
         )
-        self.earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
+        self._earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
         wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
             self.L,
-            self.earth.coefficients,
+            self._earth.coefficients,
             wavelets,
         )
         return wavelets, wavelet_coefficients

@@ -67,13 +67,13 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
             self.B,
             self.j_min,
         )
-        self.south_america = sleplet.functions.south_america.SouthAmerica(
+        self._south_america = sleplet.functions.south_america.SouthAmerica(
             self.L,
             smoothing=self.smoothing,
         )
         wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
             self.L,
-            self.south_america.coefficients,
+            self._south_america.coefficients,
             wavelets,
         )
         return wavelets, wavelet_coefficients
