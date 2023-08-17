@@ -90,10 +90,9 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
 
     @pydantic.validator("j")
     def _check_j(cls, v, values):
-        j_max = pys2let.pys2let_j_max(
-            values["B"],
+        j_max = s2wav.j_max(
             values["L"] ** 2,
-            values["j_min"],
+            values["B"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
