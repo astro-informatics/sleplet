@@ -59,7 +59,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             self.j_min,
         )
 
-    @pydantic.field_validator("j")
+    @pydantic.validator("j")
     def _check_j(cls, v, info: pydantic.FieldValidationInfo) -> int | None:
         j_max = pys2let.pys2let_j_max(
             info.data["B"],

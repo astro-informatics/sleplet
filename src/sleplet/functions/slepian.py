@@ -72,7 +72,7 @@ class Slepian(Fp):
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 
-    @pydantic.field_validator("rank")
+    @pydantic.validator("rank")
     def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")

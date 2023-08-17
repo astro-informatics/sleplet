@@ -136,7 +136,7 @@ class Coefficients:
             )
         self.name += f"_L{self.L}"
 
-    @pydantic.field_validator("coefficients", check_fields=False)
+    @pydantic.validator("coefficients", check_fields=False)
     def _check_coefficients(cls, v, info: pydantic.FieldValidationInfo):
         if (
             info.data["region"]
