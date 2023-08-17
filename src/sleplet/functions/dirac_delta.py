@@ -19,7 +19,7 @@ class DiracDelta(Flm):
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
-            ind = ssht.elm2ind(ell, 0)
+            ind = s2fft.samples.elm2ind(ell, 0)
             flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
         return flm
 

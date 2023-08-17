@@ -168,7 +168,7 @@ class SlepianArbitrary(SlepianFunctions):
                     integral = self._integral(j, i)
                     D_r[j][i] = integral.real
                     D_i[j][i] = integral.imag
-                    k = ssht.elm2ind(ell_j, -m_j)
+                    k = s2fft.samples.elm2ind(ell_j, -m_j)
                     D_r[k][i] = (-1) ** m_j * D_r[j][i]
                     D_i[k][i] = (-1) ** (m_j + 1) * D_i[j][i]
             else:

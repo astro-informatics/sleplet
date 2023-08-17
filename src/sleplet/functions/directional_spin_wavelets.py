@@ -77,7 +77,7 @@ class DirectionalSpinWavelets(Flm):
         )
         wavelets = np.zeros((psi_lm.shape[1] + 1, self.L**2), dtype=np.complex_)
         for ell in range(self.L):
-            ind = ssht.elm2ind(ell, 0)
+            ind = s2fft.samples.elm2ind(ell, 0)
             wavelets[0, ind] = phi_l[ell]
         wavelets[1:] = psi_lm.T
         return wavelets

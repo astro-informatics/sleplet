@@ -71,7 +71,7 @@ class Ridgelets(Flm):
         kappas = sleplet.wavelet_methods.create_kappas(self.L, self.B, self.j_min)
         wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
         for ell in range(self.L):
-            ind = ssht.elm2ind(ell, 0)
+            ind = s2fft.samples.elm2ind(ell, 0)
             wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
             wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
         return wavelets
@@ -87,7 +87,7 @@ class Ridgelets(Flm):
                 - scipy.special.gammaln((ell - self.spin) / 2 + 1)
             )
             p0 = np.real((-1) ** ((ell + self.spin) / 2)) * np.exp(logp2)
-            ind = ssht.elm2ind(ell, 0)
+            ind = s2fft.samples.elm2ind(ell, 0)
             ring_lm[ind] = (
                 2
                 * np.pi

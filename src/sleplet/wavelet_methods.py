@@ -78,10 +78,10 @@ def axisymmetric_wavelet_forward(
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
-        ind_m0 = ssht.elm2ind(ell, 0)
+        ind_m0 = s2fft.samples.elm2ind(ell, 0)
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0].conj()
         for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
+            ind = s2fft.samples.elm2ind(ell, m)
             w[:, ind] = wav_0 * flm[ind]
     return w
 
@@ -104,10 +104,10 @@ def axisymmetric_wavelet_inverse(
     """
     flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(L):
-        ind_m0 = ssht.elm2ind(ell, 0)
+        ind_m0 = s2fft.samples.elm2ind(ell, 0)
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0]
         for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
+            ind = s2fft.samples.elm2ind(ell, m)
             flm[ind] = (wav_coeffs[:, ind] * wav_0).sum()
     return flm
 
@@ -122,7 +122,7 @@ def _create_axisymmetric_wavelets(
     wavelets = np.zeros((kappas.shape[0], L**2), dtype=np.complex_)
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
-        ind = ssht.elm2ind(ell, 0)
+        ind = s2fft.samples.elm2ind(ell, 0)
         wavelets[:, ind] = factor * kappas[:, ell]
     return wavelets
 

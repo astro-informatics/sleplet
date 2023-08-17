@@ -30,7 +30,7 @@ class HarmonicGaussian(Flm):
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
+                ind = s2fft.samples.elm2ind(ell, m)
                 flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
         return flm
 
