@@ -18,8 +18,8 @@ class MeshNoiseField(MeshHarmonicCoefficients):
     """A parameter which controls the level of signal-to-noise in the noised
     data."""
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         mf = sleplet.meshes.mesh_slepian.MeshField(self.mesh)

@@ -23,7 +23,7 @@ class MeshSlepianDecomposition:
     # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
     method: str = dataclasses.field(default="", repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._detect_method()
 
     def decompose(self, rank: int) -> float:

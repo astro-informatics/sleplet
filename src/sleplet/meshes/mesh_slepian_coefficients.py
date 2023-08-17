@@ -22,9 +22,9 @@ class MeshSlepianCoefficients(MeshCoefficients):
         default_factory=lambda: MeshSlepian(Mesh("bird")),
     )
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
     def _add_noise_to_signal(
         self,

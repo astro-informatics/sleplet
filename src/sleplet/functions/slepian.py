@@ -20,9 +20,9 @@ class Slepian(Fp):
     r"""Slepian eigenvalues are ordered in decreasing value. The option `rank`
     selects a given Slepian function from the spectrum (p in the papers)."""
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._validate_rank()
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
     def _create_name(self) -> str:
         order = (

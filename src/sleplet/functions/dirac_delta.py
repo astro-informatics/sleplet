@@ -13,8 +13,8 @@ from sleplet.functions.flm import Flm
 class DiracDelta(Flm):
     """Creates a Dirac delta."""
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         flm = np.zeros(self.L**2, dtype=np.complex_)

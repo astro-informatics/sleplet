@@ -38,7 +38,7 @@ class MeshSlepian:
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 

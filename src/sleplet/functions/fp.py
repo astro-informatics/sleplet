@@ -29,7 +29,7 @@ class Fp(Coefficients):
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.region: sleplet.slepian.region.Region | None = (
             self.region
             if isinstance(self.region, sleplet.slepian.region.Region)
@@ -39,7 +39,7 @@ class Fp(Coefficients):
             self.L,
             self.region,
         )
-        super().__post_init__()
+        super().__post_init_post_parse__()
 
     def rotate(  # noqa: D102
         self,

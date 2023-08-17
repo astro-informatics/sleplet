@@ -13,8 +13,8 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 class MeshField(MeshHarmonicCoefficients):
     """Creates a per-vertex normals field on a given mesh."""
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""

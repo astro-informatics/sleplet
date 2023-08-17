@@ -29,8 +29,8 @@ class SlepianWaveletCoefficientsAfrica(Fp):
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
             and self.region.name_ending != "africa"

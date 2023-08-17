@@ -40,7 +40,7 @@ class Region:
     name_ending: str = dataclasses.field(default="", repr=False)
     region_type: str = dataclasses.field(default="", repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self._identify_region()
 
     def _identify_region(self) -> None:

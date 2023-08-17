@@ -48,7 +48,7 @@ class PlotSphere:
     upsample: bool = True
     """Whether to upsample the current field."""
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.resolution = (
             sleplet.plot_methods.calc_plot_resolution(self.L)
             if self.upsample

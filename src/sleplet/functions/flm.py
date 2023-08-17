@@ -15,8 +15,8 @@ from sleplet.functions.coefficients import Coefficients
 class Flm(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def rotate(  # noqa: D102
         self,

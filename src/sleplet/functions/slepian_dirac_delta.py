@@ -24,8 +24,8 @@ class SlepianDiracDelta(Fp):
     _alpha: float = dataclasses.field(default=0, repr=False)
     _beta: float = dataclasses.field(default=0, repr=False)
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __post_init_post_parse__(self) -> None:
+        super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()

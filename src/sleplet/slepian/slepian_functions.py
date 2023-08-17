@@ -45,7 +45,7 @@ class SlepianFunctions:
     )
     resolution: int = dataclasses.field(default=0, kw_only=True, repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init_post_parse__(self) -> None:
         self.region = self._create_region()
         self.mask = self._create_mask()
         self.name = self._create_fn_name()
