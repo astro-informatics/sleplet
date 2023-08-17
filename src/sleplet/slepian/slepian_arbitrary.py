@@ -157,10 +157,10 @@ class SlepianArbitrary(SlepianFunctions):
         integral = self._integral(i, i)
         D_r[i][i] = integral.real
         D_i[i][i] = integral.imag
-        _, m_i = ssht.ind2elm(i)
+        _, m_i = s2fft.samples.ind2elm(i)
 
         for j in range(i + 1, D_r.shape[0]):
-            ell_j, m_j = ssht.ind2elm(j)
+            ell_j, m_j = s2fft.samples.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
                 # if positive m then use conjugate relation
