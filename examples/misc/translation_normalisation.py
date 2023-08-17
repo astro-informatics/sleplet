@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pyssht as ssht
+import s2fft
 import seaborn as sns
 
 import sleplet

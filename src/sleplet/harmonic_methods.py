@@ -4,7 +4,7 @@ import typing
 
 import numpy as np
 import numpy.typing as npt
-import pyssht as ssht
+import s2fft
 
 import sleplet._data.create_earth_flm
 import sleplet._integration_methods
@@ -57,7 +57,7 @@ def invert_flm_boosted(
     """
     boost = resolution**2 - L**2
     flm = _boost_coefficient_resolution(flm, boost)
-    return ssht.inverse(
+    return s2fft.inverse(
         flm,
         resolution,
         Reality=reality,

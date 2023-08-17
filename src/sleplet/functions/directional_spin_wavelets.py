@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import pydantic
 import pys2let
-import pyssht as ssht
+import s2fft
 
 import sleplet._string_methods
 import sleplet._validation

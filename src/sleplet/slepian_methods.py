@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pyssht as ssht
+import s2fft
 
 import sleplet._vars
 import sleplet.harmonic_methods
@@ -140,7 +140,7 @@ def compute_s_p_omega(
     for p in range(slepian.N):
         if p % L == 0:
             _logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
-        sp[p] = ssht.inverse(
+        sp[p] = s2fft.inverse(
             slepian.eigenvectors[p],
             L,
             Method=sleplet._vars.SAMPLING_SCHEME,

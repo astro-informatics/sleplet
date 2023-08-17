@@ -4,7 +4,7 @@ import os
 import numpy as np
 import numpy.typing as npt
 import platformdirs
-import pyssht as ssht
+import s2fft
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
@@ -82,7 +82,7 @@ def ensure_masked_flm_bandlimited(
     spin: int,
 ) -> npt.NDArray[np.complex_]:
     """Ensures the coefficients is bandlimited for a given region."""
-    field = ssht.inverse(
+    field = s2fft.inverse(
         flm,
         L,
         Reality=reality,
@@ -154,7 +154,7 @@ def _create_africa_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, L)
-    earth_f = ssht.inverse(
+    earth_f = s2fft.inverse(
         rot_flm,
         L,
         Reality=True,
@@ -174,7 +174,7 @@ def _create_south_america_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(earth_flm, L)
-    earth_f = ssht.inverse(
+    earth_f = s2fft.inverse(
         rot_flm,
         L,
         Reality=True,

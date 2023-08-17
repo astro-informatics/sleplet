@@ -4,7 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
-import pyssht as ssht
+import s2fft
 
 import sleplet._integration_methods
 import sleplet._validation
@@ -56,7 +56,7 @@ class SlepianDecomposition:
         """
         assert isinstance(self.mask, np.ndarray)  # noqa: S101
         assert isinstance(self.f, np.ndarray)  # noqa: S101
-        s_p = ssht.inverse(
+        s_p = s2fft.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
             Method=sleplet._vars.SAMPLING_SCHEME,
@@ -77,7 +77,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}.
         """
         assert isinstance(self.f, np.ndarray)  # noqa: S101
-        s_p = ssht.inverse(
+        s_p = s2fft.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
             Method=sleplet._vars.SAMPLING_SCHEME,

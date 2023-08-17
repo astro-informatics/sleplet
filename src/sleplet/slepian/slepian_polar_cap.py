@@ -10,7 +10,7 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
-import pyssht as ssht
+import s2fft
 
 import sleplet._data.setup_pooch
 import sleplet._mask_methods

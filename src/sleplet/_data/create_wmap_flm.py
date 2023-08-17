@@ -1,7 +1,7 @@
 # noqa: D100
 import numpy as np
 import numpy.typing as npt
-import pyssht as ssht
+import s2fft
 import scipy.io as sio
 
 import sleplet._data.setup_pooch

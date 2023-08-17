@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pyssht as ssht
+import s2fft
 
 import sleplet._vars
 import sleplet.harmonic_methods
@@ -140,7 +140,7 @@ def harmonic_hard_thresholding(
     _logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
         _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
-        f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
+        f = s2fft.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = ssht.forward(
             f_thresholded,

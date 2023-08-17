@@ -4,7 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
-import pyssht as ssht
+import s2fft
 
 import sleplet._string_methods
 import sleplet._validation
@@ -56,7 +56,7 @@ class SlepianDiracDelta(Fp):
             Grid=True,
             Method=sleplet._vars.SAMPLING_SCHEME,
         )
-        sp = ssht.inverse(
+        sp = s2fft.inverse(
             self.slepian.eigenvectors[0],
             self.L,
             Method=sleplet._vars.SAMPLING_SCHEME,
