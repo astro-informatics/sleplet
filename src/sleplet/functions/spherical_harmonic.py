@@ -44,19 +44,19 @@ class SphericalHarmonic(Flm):
             self.ell, self.m = self.extra_args
 
     @pydantic.validator("ell")
-    def _check_ell(cls, v, info: pydantic.FieldValidationInfo):
+    def _check_ell(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("ell should be an integer")
         if v < 0:
             raise ValueError("ell should be positive")
-        if v >= info.data["L"]:
+        if v >= values["L"]:
             raise ValueError("ell should be less than or equal to L")
         return v
 
     @pydantic.validator("m")
-    def _check_m(cls, v, info: pydantic.FieldValidationInfo):
+    def _check_m(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("m should be an integer")
-        if abs(v) > info.data["ell"]:
+        if abs(v) > values["ell"]:
             raise ValueError("the magnitude of m should be less than ell")
         return v

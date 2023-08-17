@@ -47,13 +47,13 @@ class MeshCoefficients:
             self.name += "_zoom"
 
     @pydantic.validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, info: pydantic.FieldValidationInfo):
+    def _check_coefficients(cls, v, values):
         if (
-            info.data["region"]
+            values["region"]
             and _COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
         ):
             v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
-                info.data["mesh"],
+                values["mesh"],
                 v,
             )
         return v

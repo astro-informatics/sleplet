@@ -74,17 +74,17 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
         return wavelets, wavelet_coefficients
 
     @pydantic.validator("j")
-    def _check_j(cls, v, info: pydantic.FieldValidationInfo):
+    def _check_j(cls, v, values):
         j_max = pys2let.pys2let_j_max(
-            info.data["B"],
-            info.data["mesh"].mesh_eigenvalues.shape[0],
-            info.data["j_min"],
+            values["B"],
+            values["mesh"].mesh_eigenvalues.shape[0],
+            values["j_min"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
-        if v is not None and v > j_max - info.data["j_min"]:
+        if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
                 "j should be less than j_max - j_min: "
-                f"{j_max - info.data['j_min'] + 1}",
+                f"{j_max - values['j_min'] + 1}",
             )
         return v

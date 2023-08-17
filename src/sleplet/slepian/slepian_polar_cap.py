@@ -383,9 +383,9 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     @pydantic.validator("order")
-    def _check_order(cls, v, info: pydantic.FieldValidationInfo):
-        if v is not None and (np.abs(v) >= info.data["L"]).any():
-            raise ValueError(f"Order magnitude should be less than {info.data['L']}")
+    def _check_order(cls, v, values):
+        if v is not None and (np.abs(v) >= values["L"]).any():
+            raise ValueError(f"Order magnitude should be less than {values['L']}")
         return v
 
     @pydantic.validator("theta_max")
