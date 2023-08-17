@@ -1,6 +1,5 @@
 """Contains the `MeshSlepian` class."""
 import concurrent.futures
-import dataclasses
 import logging
 import os
 
@@ -27,16 +26,6 @@ class MeshSlepian:
 
     mesh: Mesh
     """A mesh object."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    N: int = dataclasses.field(default=0, repr=False)
-    slepian_eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
-    slepian_functions: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
 
     def __post_init_post_parse__(self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)

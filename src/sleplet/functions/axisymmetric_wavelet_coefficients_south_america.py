@@ -1,5 +1,4 @@
 """Contains the `AxisymmetricWaveletCoefficientsSouthAmerica` class."""
-import dataclasses
 import logging
 
 import numpy as np
@@ -11,7 +10,6 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.wavelet_methods
 from sleplet.functions.flm import Flm
-from sleplet.functions.south_america import SouthAmerica
 
 _logger = logging.getLogger(__name__)
 
@@ -27,11 +25,6 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    _south_america: SouthAmerica = dataclasses.field(
-        default_factory=lambda: SouthAmerica(1),
-        repr=False,
-    )
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

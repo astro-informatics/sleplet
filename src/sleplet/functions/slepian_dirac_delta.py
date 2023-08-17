@@ -1,5 +1,4 @@
 """Contains the `SlepianDiracDelta` class."""
-import dataclasses
 import logging
 
 import numpy as np
@@ -19,10 +18,6 @@ _logger = logging.getLogger(__name__)
 @pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(Fp):
     """Creates a Dirac delta of the Slepian coefficients."""
-
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    _alpha: float = dataclasses.field(default=0, repr=False)
-    _beta: float = dataclasses.field(default=0, repr=False)
 
     def __post_init_post_parse__(self) -> None:
         super().__post_init_post_parse__()

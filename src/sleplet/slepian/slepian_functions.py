@@ -1,6 +1,5 @@
 """Contains the abstract `SlepianFunctions` class."""
 import abc
-import dataclasses
 import logging
 
 import numpy as np
@@ -8,7 +7,6 @@ import numpy.typing as npt
 import pydantic
 
 import sleplet._validation
-from sleplet.slepian.region import Region
 
 _logger = logging.getLogger(__name__)
 
@@ -19,31 +17,6 @@ class SlepianFunctions:
 
     L: int
     """The spherical harmonic bandlimit."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        kw_only=True,
-        repr=True,
-    )
-    eigenvectors: npt.NDArray[np.complex_] = dataclasses.field(
-        default_factory=lambda: np.empty(0, dtype=np.complex_),
-        kw_only=True,
-        repr=True,
-    )
-    mask: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        kw_only=True,
-        repr=False,
-    )
-    matrix_location: str = dataclasses.field(default="", kw_only=True, repr=False)
-    N: int = dataclasses.field(default=0, kw_only=True, repr=False)
-    name: str = dataclasses.field(default="", kw_only=True, repr=False)
-    region: Region = dataclasses.field(
-        default_factory=lambda: Region(theta_max=0),
-        kw_only=True,
-        repr=False,
-    )
-    resolution: int = dataclasses.field(default=0, kw_only=True, repr=False)
 
     def __post_init_post_parse__(self) -> None:
         self.region = self._create_region()

@@ -29,23 +29,6 @@ class MeshCoefficients:
     """How much to noise the data."""
     region: bool = False
     """Whether to set a region or not, used in the Slepian case."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty((697, 2790)),
-        repr=False,
-    )
-    name: str = dataclasses.field(default="", repr=False)
-    snr: float | None = dataclasses.field(default=None, repr=False)
-    unnoised_coefficients: npt.NDArray[
-        np.complex_ | np.float_
-    ] | None = dataclasses.field(
-        default=None,
-        repr=False,
-    )
-    wavelets: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
 
     def __post_init_post_parse__(self) -> None:
         self._setup_args()

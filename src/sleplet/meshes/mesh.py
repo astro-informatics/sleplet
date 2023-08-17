@@ -1,9 +1,6 @@
 """Contains the `Mesh` class."""
 import dataclasses
 
-import numpy as np
-import numpy.typing as npt
-import plotly.graph_objs as go
 import pydantic
 
 import sleplet._mesh_methods
@@ -25,32 +22,6 @@ class Mesh:
     zoom: bool = False
     """Whether to zoom in on the pre-selected region of the mesh in the
     plots."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    basis_functions: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
-    camera_view: go.layout.scene.Camera = dataclasses.field(
-        default_factory=lambda: go.layout.scene.Camera(),
-        repr=False,
-    )
-    colourbar_pos: float = dataclasses.field(default=0, repr=False)
-    faces: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
-    mesh_eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
-    region: npt.NDArray[np.bool_] = dataclasses.field(
-        default_factory=lambda: np.empty(0, dtype=np.bool_),
-        repr=False,
-    )
-    vertices: npt.NDArray[np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0),
-        repr=False,
-    )
 
     def __post_init_post_parse__(self) -> None:
         mesh_config = sleplet._mesh_methods.extract_mesh_config(self.name)
