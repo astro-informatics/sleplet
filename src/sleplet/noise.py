@@ -2,9 +2,8 @@
 import logging
 
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
-from numpy.random import default_rng
 
 import sleplet._vars
 import sleplet.harmonic_methods
@@ -70,7 +69,7 @@ def _create_noise(
 ) -> npt.NDArray[np.complex_]:
     """Computes Gaussian white noise."""
     # set random seed
-    rng = default_rng(sleplet._vars.RANDOM_SEED)
+    rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # initialise
     nlm = np.zeros(L**2, dtype=np.complex_)
@@ -242,7 +241,7 @@ def _create_mesh_noise(
 ) -> npt.NDArray[np.float_]:
     """Computes Gaussian white noise."""
     # set random seed
-    rng = default_rng(sleplet._vars.RANDOM_SEED)
+    rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # initialise
     n_i = np.zeros(u_i.shape[0])

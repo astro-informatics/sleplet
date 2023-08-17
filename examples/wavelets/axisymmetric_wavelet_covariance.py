@@ -1,12 +1,8 @@
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
-from numpy.random import default_rng
-from numpy.testing import assert_equal
 
-from sleplet.functions import AxisymmetricWavelets
-from sleplet.harmonic_methods import compute_random_signal
-from sleplet.wavelet_methods import axisymmetric_wavelet_forward
+import sleplet
 
 B = 3
 J_MIN = 2
@@ -62,27 +58,27 @@ def axisymmetric_wavelet_covariance(
     print(f"L={L}, B={B}, j_min={j_min}")
 
     # compute wavelets
-    aw = AxisymmetricWavelets(L, B=B, j_min=j_min)
+    aw = sleplet.functions.AxisymmetricWavelets(L, B=B, j_min=j_min)
 
     # theoretical covariance
     covar_theory = _compute_wavelet_covariance(aw.wavelets, var_signal=var_flm)
-    assert_equal(aw.wavelets.shape[0], covar_theory.shape[0])
+    np.testing.assert_equal(aw.wavelets.shape[0], covar_theory.shape[0])
 
     # initialise matrix
     covar_runs_shape = (runs, *covar_theory.shape)
     covar_data = np.zeros(covar_runs_shape, dtype=np.complex_)
 
     # set seed
-    rng = default_rng(RANDOM_SEED)
+    rng = np.random.default_rng(RANDOM_SEED)
 
     for i in range(runs):
         print(f"start run: {i+1}/{runs}")
 
         # Generate normally distributed random complex signal
-        flm = compute_random_signal(L, rng, var_signal=var_flm)
+        flm = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=var_flm)
 
         # compute wavelet coefficients
-        wlm = axisymmetric_wavelet_forward(L, flm, aw.wavelets)
+        wlm = sleplet.wavelet_methods.axisymmetric_wavelet_forward(L, flm, aw.wavelets)
 
         # compute covariance from data
         for j, coefficient in enumerate(wlm):

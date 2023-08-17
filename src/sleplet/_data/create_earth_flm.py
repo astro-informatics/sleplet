@@ -1,8 +1,8 @@
 # noqa: D100
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
-from scipy import io as sio
+import scipy.io as sio
 
 import sleplet._data.setup_pooch
 import sleplet._smoothing

@@ -2,8 +2,8 @@
 import logging
 
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
 
 import sleplet._vars
 import sleplet.harmonic_methods

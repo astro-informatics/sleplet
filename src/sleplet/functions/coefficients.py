@@ -1,11 +1,10 @@
 """Contains the abstract `Coefficients` class."""
-from abc import abstractmethod
-from dataclasses import KW_ONLY
+import abc
+import dataclasses
 
 import numpy as np
-from numpy import typing as npt
-from pydantic import validator
-from pydantic.dataclasses import dataclass
+import numpy.typing as npt
+import pydantic
 
 import sleplet._convolution_methods
 import sleplet._mask_methods
@@ -16,7 +15,7 @@ import sleplet.slepian.region
 _COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class Coefficients:
     """
     Abstract parent class to handle harmonic/Slepian coefficients on the
@@ -25,7 +24,7 @@ class Coefficients:
 
     L: int
     """The spherical harmonic bandlimit."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     extra_args: list[int] | None = None
     """Control the extra arguments for the given set of spherical
     coefficients. Only to be set by the `sphere` CLI."""
@@ -114,7 +113,7 @@ class Coefficients:
             )
         self.name += f"_L{self.L}"
 
-    @validator("coefficients", check_fields=False)
+    @pydantic.validator("coefficients", check_fields=False)
     def _check_coefficients(cls, v, values):
         if (
             values["region"]
@@ -129,7 +128,7 @@ class Coefficients:
             )
         return v
 
-    @abstractmethod
+    @abc.abstractmethod
     def rotate(
         self,
         alpha: float,
@@ -150,7 +149,7 @@ class Coefficients:
         """
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _translation_helper(
         self,
         alpha: float,
@@ -159,34 +158,34 @@ class Coefficients:
         """Compute the basis function at omega' for translation."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """Adds Gaussian white noise to the signal."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Creates the flm on the north pole."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_name(self) -> str:
         """Creates the name of the function."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _set_reality(self) -> bool:
         """Sets the reality flag to speed up computations."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _set_spin(self) -> int:
         """Sets the spin value in computations."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _setup_args(self) -> None:
         """
         Initialises function specific args

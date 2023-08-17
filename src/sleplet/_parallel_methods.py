@@ -1,6 +1,6 @@
+import multiprocess.shared_memory
 import numpy as np
-from multiprocess.shared_memory import SharedMemory
-from numpy import typing as npt
+import numpy.typing as npt
 
 
 def split_arr_into_chunks(arr_max: int, ncpu: int) -> list[npt.NDArray[np.int_]]:
@@ -13,9 +13,12 @@ def split_arr_into_chunks(arr_max: int, ncpu: int) -> list[npt.NDArray[np.int_]]
 
 def create_shared_memory_array(
     array: npt.NDArray[np.float_],
-) -> tuple[npt.NDArray[np.float_], SharedMemory]:
+) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
     """Creates a shared memory array to be used in a parallel function."""
-    ext_shared_memory = SharedMemory(create=True, size=array.nbytes)
+    ext_shared_memory = multiprocess.shared_memory.SharedMemory(
+        create=True,
+        size=array.nbytes,
+    )
     array_ext: npt.NDArray[np.float_] = np.ndarray(
         array.shape,
         dtype=array.dtype,
@@ -26,10 +29,12 @@ def create_shared_memory_array(
 
 def attach_to_shared_memory_block(
     array: npt.NDArray[np.float_],
-    ext_shared_memory: SharedMemory,
-) -> tuple[npt.NDArray[np.float_], SharedMemory]:
+    ext_shared_memory: multiprocess.shared_memory.SharedMemory,
+) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
     """Used within the parallel function to attach an array to the shared memory."""
-    int_shared_memory = SharedMemory(name=ext_shared_memory.name)
+    int_shared_memory = multiprocess.shared_memory.SharedMemory(
+        name=ext_shared_memory.name,
+    )
     array_int: npt.NDArray[np.float_] = np.ndarray(
         array.shape,
         dtype=array.dtype,
@@ -38,13 +43,15 @@ def attach_to_shared_memory_block(
     return array_int, int_shared_memory
 
 
-def free_shared_memory(*shared_memory: SharedMemory) -> None:
+def free_shared_memory(*shared_memory: multiprocess.shared_memory.SharedMemory) -> None:
     """Closes the shared memory object."""
     for shm in shared_memory:
         shm.close()
 
 
-def release_shared_memory(*shared_memory: SharedMemory) -> None:
+def release_shared_memory(
+    *shared_memory: multiprocess.shared_memory.SharedMemory,
+) -> None:
     """Releases the shared memory object."""
     for shm in shared_memory:
         shm.unlink()

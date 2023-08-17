@@ -1,8 +1,8 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from matplotlib import pyplot as plt
 
-from sleplet.slepian import SlepianPolarCap
+import sleplet
 
 sns.set(context="paper")
 
@@ -12,7 +12,7 @@ THETA_MAX = 40
 
 def main() -> None:
     """Creates a plot of Slepian eigenvalues against rank."""
-    slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX))
+    slepian = sleplet.slepian.SlepianPolarCap(L, np.deg2rad(THETA_MAX))
     p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")
     plt.axvline(x=slepian.N, c="k", ls="--", alpha=0.5)

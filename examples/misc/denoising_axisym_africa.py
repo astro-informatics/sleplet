@@ -1,11 +1,9 @@
+import pathlib
 import sys
-from pathlib import Path
 
-from sleplet.functions import Africa, AxisymmetricWavelets
-from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting import PlotSphere
+import sleplet
 
-sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 
 from _denoising_axisym import denoising_axisym  # noqa: E402
 
@@ -20,18 +18,24 @@ SNR_IN = 10
 def main() -> None:
     """Contrast denosiing with an Earth map versus Africa map."""
     # create map & noised map
-    fun = Africa(L)
-    fun_noised = Africa(L, noise=SNR_IN)
+    fun = sleplet.functions.Africa(L)
+    fun_noised = sleplet.functions.Africa(L, noise=SNR_IN)
 
     # create wavelets
-    aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
+    aw = sleplet.functions.AxisymmetricWavelets(L, B=B, j_min=J_MIN)
 
     # fix amplitude
-    amplitude = find_max_amplitude(fun)
+    amplitude = sleplet.plot_methods.find_max_amplitude(fun)
 
     f, _, _ = denoising_axisym(fun, fun_noised, aw, SNR_IN, N_SIGMA)
     name = f"{fun.name}_denoised_axisym"
-    PlotSphere(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
+    sleplet.plotting.PlotSphere(
+        f,
+        L,
+        name,
+        amplitude=amplitude,
+        normalise=NORMALISE,
+    ).execute()
 
 
 if __name__ == "__main__":

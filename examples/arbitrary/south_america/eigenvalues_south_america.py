@@ -1,8 +1,8 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from matplotlib import pyplot as plt
 
-from sleplet.slepian import SlepianArbitrary
+import sleplet
 
 sns.set(context="paper")
 
@@ -11,7 +11,7 @@ L = 128
 
 def main() -> None:
     """Plots the tiling of the Slepian line."""
-    slepian = SlepianArbitrary(L, "south_america")
+    slepian = sleplet.slepian.SlepianArbitrary(L, "south_america")
     p_range = np.arange(0, L**2)
     plt.semilogx(p_range, slepian.eigenvalues, "k.")
     plt.axvline(slepian.N, c="k", ls="--", alpha=0.8)

@@ -1,13 +1,13 @@
+import dataclasses
 import logging
-from dataclasses import KW_ONLY, field
 
 import cmocean
 import numpy as np
+import numpy.typing as npt
+import plotly.graph_objs as go
+import plotly.io as pio
+import pydantic
 import pyssht as ssht
-from numpy import typing as npt
-from plotly import graph_objs as go
-from plotly import io as pio
-from pydantic.dataclasses import dataclass
 
 import sleplet._plotly_methods
 import sleplet._validation
@@ -20,7 +20,7 @@ _logger = logging.getLogger(__name__)
 _MW_POLE_LENGTH = 2
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 
@@ -30,10 +30,10 @@ class PlotSphere:
     """The spherical harmonic bandlimit."""
     filename: str
     """The output filename of the plot."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
-    annotations: list[dict] = field(default_factory=list)
+    annotations: list[dict] = dataclasses.field(default_factory=list)
     """Whether to display any annotations on the surface plot or not."""
     normalise: bool = True
     """Whether to normalise the plot or not."""

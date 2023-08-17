@@ -1,17 +1,17 @@
 """Contains the abstract `Flm` class."""
-from abc import abstractmethod
+import abc
 
 import numpy as np
+import numpy.typing as npt
+import pydantic
 import pyssht as ssht
-from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._validation
 import sleplet.noise
 from sleplet.functions.coefficients import Coefficients
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class Flm(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
@@ -47,22 +47,22 @@ class Flm(Coefficients):
             return unnoised_coefficients, snr
         return None, None
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_name(self) -> str:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _set_reality(self) -> bool:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _set_spin(self) -> int:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _setup_args(self) -> None:
         raise NotImplementedError

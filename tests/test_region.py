@@ -1,7 +1,6 @@
 import numpy as np
-from numpy.testing import assert_equal
 
-import sleplet.slepian
+import sleplet
 
 MASK = "south_america"
 PHI_0 = np.pi / 6
@@ -14,7 +13,7 @@ THETA_MAX = 2 * np.pi / 9
 def test_polar_cap_region() -> None:
     """Tests that a polar cap is created."""
     region = sleplet.slepian.Region(theta_max=THETA_MAX)
-    assert_equal(region.region_type, "polar")
+    np.testing.assert_equal(region.region_type, "polar")
 
 
 def test_lim_lat_lon_region() -> None:
@@ -25,19 +24,19 @@ def test_lim_lat_lon_region() -> None:
         phi_min=PHI_0,
         phi_max=PHI_1,
     )
-    assert_equal(region.region_type, "lim_lat_lon")
+    np.testing.assert_equal(region.region_type, "lim_lat_lon")
 
 
 def test_arbitrary_region() -> None:
     """Tests that an arbitrary region is created."""
     region = sleplet.slepian.Region(mask_name=MASK)
-    assert_equal(region.region_type, "arbitrary")
+    np.testing.assert_equal(region.region_type, "arbitrary")
 
 
 def test_polar_hierarchy_over_arbitrary() -> None:
     """Ensures polar cap is made instead of arbitrary."""
     region = sleplet.slepian.Region(theta_max=THETA_MAX, mask_name=MASK)
-    assert_equal(region.region_type, "polar")
+    np.testing.assert_equal(region.region_type, "polar")
 
 
 def test_lim_lat_lon_hierarchy_over_arbitrary() -> None:
@@ -49,4 +48,4 @@ def test_lim_lat_lon_hierarchy_over_arbitrary() -> None:
         phi_max=PHI_1,
         mask_name=MASK,
     )
-    assert_equal(region.region_type, "lim_lat_lon")
+    np.testing.assert_equal(region.region_type, "lim_lat_lon")

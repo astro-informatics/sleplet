@@ -1,6 +1,5 @@
 import numpy as np
-from numpy.testing import assert_allclose, assert_array_equal, assert_equal
-from pys2let import pys2let_j_max
+import pys2let
 
 import sleplet
 
@@ -28,7 +27,7 @@ def test_synthesis_polar(slepian_wavelets_polar_cap, earth_polar_cap) -> None:
         slepian_wavelets_polar_cap.wavelets,
         slepian_wavelets_polar_cap.slepian.N,
     )
-    assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-14)
+    np.testing.assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-14)
 
 
 def test_synthesis_lim_lat_lon(slepian_wavelets_lim_lat_lon, earth_lim_lat_lon) -> None:
@@ -48,7 +47,7 @@ def test_synthesis_lim_lat_lon(slepian_wavelets_lim_lat_lon, earth_lim_lat_lon) 
         slepian_wavelets_lim_lat_lon.wavelets,
         slepian_wavelets_lim_lat_lon.slepian.N,
     )
-    assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=0)
+    np.testing.assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=0)
 
 
 def test_axisymmetric_synthesis_earth() -> None:
@@ -63,7 +62,11 @@ def test_axisymmetric_synthesis_earth() -> None:
         awc.wavelet_coefficients,
         awc.wavelets,
     )
-    assert_allclose(np.abs(flm - awc.earth.coefficients).mean(), 0, atol=1e-13)
+    np.testing.assert_allclose(
+        np.abs(flm - awc._earth.coefficients).mean(),
+        0,
+        atol=1e-13,
+    )
 
 
 def test_axisymmetric_synthesis_south_america() -> None:
@@ -78,7 +81,11 @@ def test_axisymmetric_synthesis_south_america() -> None:
         awc.wavelet_coefficients,
         awc.wavelets,
     )
-    assert_allclose(np.abs(flm - awc.south_america.coefficients).mean(), 0, atol=1e-14)
+    np.testing.assert_allclose(
+        np.abs(flm - awc._south_america.coefficients).mean(),
+        0,
+        atol=1e-14,
+    )
 
 
 def test_only_wavelet_coefficients_within_shannon_returned() -> None:
@@ -89,12 +96,12 @@ def test_only_wavelet_coefficients_within_shannon_returned() -> None:
         coeffs_in,
         axis=1,
     )
-    assert_array_equal(shannon_coeffs, coeffs_out)
+    np.testing.assert_array_equal(shannon_coeffs, coeffs_out)
 
 
 def test_create_kappas() -> None:
     """Checks that the method creates the scaling function and wavelets."""
     wavelets = sleplet.wavelet_methods.create_kappas(L_LARGE**2, B, J_MIN)
-    j_max = pys2let_j_max(B, L_LARGE**2, J_MIN)
-    assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
-    assert_equal(L_LARGE**2, wavelets.shape[1])
+    j_max = pys2let.pys2let_j_max(B, L_LARGE**2, J_MIN)
+    np.testing.assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
+    np.testing.assert_equal(L_LARGE**2, wavelets.shape[1])

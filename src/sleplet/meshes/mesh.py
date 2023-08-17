@@ -1,21 +1,21 @@
 """Contains the `Mesh` class."""
-from dataclasses import KW_ONLY
+import dataclasses
 
-from pydantic.dataclasses import dataclass
+import pydantic
 
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class Mesh:
     """Creates a mesh object."""
 
     name: str
     """The name of the mesh. Current options `bird`, `cheetah`, `cube`, `dragon`
     `homer` and `teapot`."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     number_basis_functions: int | None = None
     """The number of basis functions to compute from the Laplacian of the given
     mesh. Defaults to one quarter of the number of vertices o the given mesh."""

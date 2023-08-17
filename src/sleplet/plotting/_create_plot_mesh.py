@@ -1,13 +1,13 @@
+import dataclasses
 import logging
-from dataclasses import KW_ONLY
 
 import cmocean
+import matplotlib as mpl
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap
-from numpy import typing as npt
-from plotly import graph_objs as go
-from plotly import io as pio
-from pydantic.dataclasses import dataclass
+import numpy.typing as npt
+import plotly.graph_objs as go
+import plotly.io as pio
+import pydantic
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -23,7 +23,7 @@ _MESH_CBAR_FONT_SIZE = 32
 _MESH_UNSEEN = -1e5  # kaleido bug
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 
@@ -33,7 +33,7 @@ class PlotMesh:
     """The output filename of the plot."""
     f: npt.NDArray[np.complex_ | np.float_]
     """The field value sampled on the mesh."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
     normalise: bool = True
@@ -45,7 +45,10 @@ class PlotMesh:
         if self.normalise:
             self.filename += "_norm"
 
-    def execute(self, colour: LinearSegmentedColormap = cmocean.cm.ice) -> None:
+    def execute(
+        self,
+        colour: mpl.colors.LinearSegmentedColormap = cmocean.cm.ice,
+    ) -> None:
         """
         Performs the plot.
 

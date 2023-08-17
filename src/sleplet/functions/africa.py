@@ -1,8 +1,8 @@
 """Contains the `Africa` class."""
 import numpy as np
+import numpy.typing as npt
+import pydantic
 import pyssht as ssht
-from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
@@ -14,7 +14,7 @@ import sleplet.harmonic_methods
 from sleplet.functions.flm import Flm
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class Africa(Flm):
     """
     Creates a topographic map of the Earth setting everything outide of the

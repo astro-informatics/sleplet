@@ -1,10 +1,10 @@
 # noqa: D100
+import argparse
 import logging
-from argparse import ArgumentParser, Namespace
 
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
 
 import sleplet._class_lists
 import sleplet._mask_methods
@@ -49,9 +49,9 @@ def valid_plotting(func_name: str) -> str:
     raise ValueError(f"{func_name} is not a valid function to plot")
 
 
-def read_args() -> Namespace:
+def read_args() -> argparse.Namespace:
     """Method to read args from the command line."""
-    parser = ArgumentParser(description="Create SSHT plot")
+    parser = argparse.ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
         "function",
         type=valid_plotting,

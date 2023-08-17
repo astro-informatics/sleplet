@@ -1,22 +1,20 @@
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
 
-from sleplet.functions import Africa, AxisymmetricWavelets, Earth, SouthAmerica
-from sleplet.harmonic_methods import rotate_earth_to_south_america
-from sleplet.noise import _compute_sigma_j, compute_snr, harmonic_hard_thresholding
-from sleplet.wavelet_methods import (
-    axisymmetric_wavelet_forward,
-    axisymmetric_wavelet_inverse,
-)
+import sleplet
 
 SAMPLING_SCHEME = "MWSS"
 
 
 def denoising_axisym(  # noqa: PLR0913
-    signal: Africa | Earth | SouthAmerica,
-    noised_signal: Africa | Earth | SouthAmerica,
-    axisymmetric_wavelets: AxisymmetricWavelets,
+    signal: sleplet.functions.Africa
+    | sleplet.functions.Earth
+    | sleplet.functions.SouthAmerica,
+    noised_signal: sleplet.functions.Africa
+    | sleplet.functions.Earth
+    | sleplet.functions.SouthAmerica,
+    axisymmetric_wavelets: sleplet.functions.AxisymmetricWavelets,
     snr_in: float,
     n_sigma: int,
     *,
@@ -24,31 +22,31 @@ def denoising_axisym(  # noqa: PLR0913
 ) -> tuple[npt.NDArray[np.complex_], float | None, float]:
     """Reproduce the denoising demo from s2let paper."""
     # compute wavelet coefficients
-    w = axisymmetric_wavelet_forward(
+    w = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
         signal.L,
         noised_signal.coefficients,
         axisymmetric_wavelets.wavelets,
     )
 
     # compute wavelet noise
-    sigma_j = _compute_sigma_j(
+    sigma_j = sleplet.noise._compute_sigma_j(
         signal.coefficients,
         axisymmetric_wavelets.wavelets[1:],
         snr_in,
     )
 
     # hard thresholding
-    w_denoised = harmonic_hard_thresholding(signal.L, w, sigma_j, n_sigma)
+    w_denoised = sleplet.noise.harmonic_hard_thresholding(signal.L, w, sigma_j, n_sigma)
 
     # wavelet synthesis
-    flm = axisymmetric_wavelet_inverse(
+    flm = sleplet.wavelet_methods.axisymmetric_wavelet_inverse(
         signal.L,
         w_denoised,
         axisymmetric_wavelets.wavelets,
     )
 
     # compute SNR
-    denoised_snr = compute_snr(
+    denoised_snr = sleplet.noise.compute_snr(
         signal.coefficients,
         flm - signal.coefficients,
         "Harmonic",
@@ -56,7 +54,9 @@ def denoising_axisym(  # noqa: PLR0913
 
     # rotate to South America
     flm = (
-        rotate_earth_to_south_america(flm, signal.L) if rotate_to_south_america else flm
+        sleplet.harmonic_methods.rotate_earth_to_south_america(flm, signal.L)
+        if rotate_to_south_america
+        else flm
     )
 
     f = ssht.inverse(flm, signal.L, Method=SAMPLING_SCHEME)

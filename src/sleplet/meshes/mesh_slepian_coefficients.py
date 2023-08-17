@@ -1,17 +1,16 @@
 """Contains the abstract `MeshSlepianCoefficients` class."""
-from abc import abstractmethod
+import abc
 
 import numpy as np
-from numpy import typing as npt
-from pydantic.dataclasses import dataclass
+import numpy.typing as npt
+import pydantic
 
 import sleplet._validation
-import sleplet.meshes.mesh_slepian
 import sleplet.noise
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshSlepianCoefficients(MeshCoefficients):
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
@@ -36,14 +35,14 @@ class MeshSlepianCoefficients(MeshCoefficients):
             return unnoised_coefficients, snr
         return None, None
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_name(self) -> str:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _setup_args(self) -> None:
         raise NotImplementedError

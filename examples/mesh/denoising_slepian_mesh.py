@@ -1,17 +1,9 @@
-from argparse import ArgumentParser
+import argparse
 
 import numpy as np
-from numpy import typing as npt
+import numpy.typing as npt
 
-from sleplet.meshes import Mesh, MeshSlepianField, MeshSlepianWavelets
-from sleplet.noise import (
-    compute_slepian_mesh_sigma_j,
-    compute_snr,
-    slepian_mesh_hard_thresholding,
-)
-from sleplet.plotting import PlotMesh
-from sleplet.slepian_methods import slepian_mesh_inverse
-from sleplet.wavelet_methods import slepian_wavelet_forward, slepian_wavelet_inverse
+import sleplet
 
 B = 3
 J_MIN = 2
@@ -29,22 +21,22 @@ SNR_IN = -5
 
 
 def _denoising_mesh_slepian(
-    signal: MeshSlepianField,
-    noised_signal: MeshSlepianField,
-    mesh_slepian_wavelets: MeshSlepianWavelets,
+    signal: sleplet.meshes.MeshSlepianField,
+    noised_signal: sleplet.meshes.MeshSlepianField,
+    mesh_slepian_wavelets: sleplet.meshes.MeshSlepianWavelets,
     snr_in: float,
     n_sigma: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """Denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
-    w = slepian_wavelet_forward(
+    w = sleplet.wavelet_methods.slepian_wavelet_forward(
         noised_signal.coefficients,
         mesh_slepian_wavelets.wavelets,
         mesh_slepian_wavelets.mesh_slepian.N,
     )
 
     # compute wavelet noise
-    sigma_j = compute_slepian_mesh_sigma_j(
+    sigma_j = sleplet.noise.compute_slepian_mesh_sigma_j(
         mesh_slepian_wavelets.mesh_slepian,
         signal.coefficients,
         mesh_slepian_wavelets.wavelets,
@@ -52,7 +44,7 @@ def _denoising_mesh_slepian(
     )
 
     # hard thresholding
-    w_denoised = slepian_mesh_hard_thresholding(
+    w_denoised = sleplet.noise.slepian_mesh_hard_thresholding(
         mesh_slepian_wavelets.mesh_slepian,
         w,
         sigma_j,
@@ -60,39 +52,45 @@ def _denoising_mesh_slepian(
     )
 
     # wavelet synthesis
-    f_p = slepian_wavelet_inverse(
+    f_p = sleplet.wavelet_methods.slepian_wavelet_inverse(
         w_denoised,
         mesh_slepian_wavelets.wavelets,
         mesh_slepian_wavelets.mesh_slepian.N,
     )
 
     # compute SNR
-    compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
+    sleplet.noise.compute_snr(signal.coefficients, f_p - signal.coefficients, "Slepian")
 
-    return slepian_mesh_inverse(mesh_slepian_wavelets.mesh_slepian, f_p)
+    return sleplet.slepian_methods.slepian_mesh_inverse(
+        mesh_slepian_wavelets.mesh_slepian,
+        f_p,
+    )
 
 
 def main(mesh_name: str, snr: float, sigma: int) -> None:
     """Denoising demo using Slepian wavelets."""
     print(f"SNR={snr}, n_sigma={sigma}")
     # setup
-    mesh = Mesh(mesh_name, zoom=True)
+    mesh = sleplet.meshes.Mesh(mesh_name, zoom=True)
 
     # create map & noised map
-    fun = MeshSlepianField(mesh)
-    fun_noised = MeshSlepianField(mesh, noise=snr)
+    fun = sleplet.meshes.MeshSlepianField(mesh)
+    fun_noised = sleplet.meshes.MeshSlepianField(mesh, noise=snr)
 
     # create wavelets
-    smw = MeshSlepianWavelets(mesh, B=B, j_min=J_MIN)
+    smw = sleplet.meshes.MeshSlepianWavelets(mesh, B=B, j_min=J_MIN)
 
     # fix amplitude
     amplitude = np.abs(
-        slepian_mesh_inverse(fun_noised.mesh_slepian, fun.coefficients),
+        sleplet.slepian_methods.slepian_mesh_inverse(
+            fun_noised.mesh_slepian,
+            fun.coefficients,
+        ),
     ).max()
 
     f = _denoising_mesh_slepian(fun, fun_noised, smw, snr, sigma)
     name = f"{mesh_name}_{snr}snr_{sigma}n_denoised"
-    PlotMesh(
+    sleplet.plotting.PlotMesh(
         mesh,
         name,
         f,
@@ -103,7 +101,7 @@ def main(mesh_name: str, snr: float, sigma: int) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="denoising")
+    parser = argparse.ArgumentParser(description="denoising")
     parser.add_argument(
         "function",
         type=str,

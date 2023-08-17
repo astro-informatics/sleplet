@@ -1,4 +1,4 @@
-from plotly import graph_objs as go
+import plotly.graph_objs as go
 
 _axis = {
     "title": "",

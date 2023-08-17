@@ -2,12 +2,11 @@
 import logging
 
 import numpy as np
+import numpy.typing as npt
+import pydantic
+import pys2let
 import pyssht as ssht
-from numpy import typing as npt
-from pydantic import validator
-from pydantic.dataclasses import dataclass
-from pys2let import pys2let_j_max
-from scipy.special import gammaln
+import scipy.special
 
 import sleplet._string_methods
 import sleplet._validation
@@ -17,7 +16,7 @@ from sleplet.functions.flm import Flm
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Ridgelets(Flm):
     """
     Crates scale-discretised wavelets. As seen in
@@ -82,10 +81,10 @@ class Ridgelets(Flm):
         ring_lm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(abs(self.spin), self.L):
             logp2 = (
-                gammaln(ell + self.spin + 1)
+                scipy.special.gammaln(ell + self.spin + 1)
                 - ell * np.log(2)
-                - gammaln((ell + self.spin) / 2 + 1)
-                - gammaln((ell - self.spin) / 2 + 1)
+                - scipy.special.gammaln((ell + self.spin) / 2 + 1)
+                - scipy.special.gammaln((ell - self.spin) / 2 + 1)
             )
             p0 = np.real((-1) ** ((ell + self.spin) / 2)) * np.exp(logp2)
             ind = ssht.elm2ind(ell, 0)
@@ -96,18 +95,26 @@ class Ridgelets(Flm):
                 * p0
                 * (-1) ** self.spin
                 * np.sqrt(
-                    np.exp(gammaln(ell - self.spin + 1) - gammaln(ell + self.spin + 1)),
+                    np.exp(
+                        scipy.special.gammaln(ell - self.spin + 1)
+                        - scipy.special.gammaln(ell + self.spin + 1),
+                    ),
                 )
             )
         return ring_lm
 
-    @validator("j")
+    @pydantic.validator("j")
     def _check_j(cls, v, values):
-        j_max = pys2let_j_max(values["B"], values["L"], values["j_min"])
+        j_max = pys2let.pys2let_j_max(
+            values["B"],
+            values["L"],
+            values["j_min"],
+        )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
+                "j should be less than j_max - j_min: "
+                f"{j_max - values['j_min'] + 1}",
             )
         return v

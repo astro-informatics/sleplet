@@ -1,8 +1,4 @@
-from sleplet.functions import SlepianWaveletCoefficientsSouthAmerica
-from sleplet.plotting import PlotSphere
-from sleplet.slepian import Region
-from sleplet.slepian_methods import slepian_inverse
-from sleplet.wavelet_methods import slepian_wavelet_inverse
+import sleplet
 
 B = 3
 J_MIN = 2
@@ -13,20 +9,30 @@ SMOOTHING = 2
 
 def main() -> None:
     """The reconstruction of a signal in Slepian space."""
-    region = Region(mask_name="south_america")
-    swc = SlepianWaveletCoefficientsSouthAmerica(
+    region = sleplet.slepian.Region(mask_name="south_america")
+    swc = sleplet.functions.SlepianWaveletCoefficientsSouthAmerica(
         L,
         B=B,
         j_min=J_MIN,
         region=region,
         smoothing=SMOOTHING,
     )
-    f_p = slepian_wavelet_inverse(swc.wavelet_coefficients, swc.wavelets, swc.slepian.N)
+    f_p = sleplet.wavelet_methods.slepian_wavelet_inverse(
+        swc.wavelet_coefficients,
+        swc.wavelets,
+        swc.slepian.N,
+    )
 
     # plot
-    f = slepian_inverse(f_p, L, swc.slepian)
+    f = sleplet.slepian_methods.slepian_inverse(f_p, L, swc.slepian)
     name = f"south_america_wavelet_reconstruction_L{L}"
-    PlotSphere(f, L, name, normalise=NORMALISE, region=swc.region).execute()
+    sleplet.plotting.PlotSphere(
+        f,
+        L,
+        name,
+        normalise=NORMALISE,
+        region=swc.region,
+    ).execute()
 
 
 if __name__ == "__main__":

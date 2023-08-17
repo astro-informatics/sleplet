@@ -1,18 +1,17 @@
 """Contains the abstract `SlepianFunctions` class."""
+import abc
 import logging
-from abc import abstractmethod
 
 import numpy as np
-from numpy import typing as npt
-from pydantic.dataclasses import dataclass
+import numpy.typing as npt
+import pydantic
 
 import sleplet._validation
-import sleplet.slepian.region
 
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
     """Abstract parent class of creating the different Slepian regions on the sphere."""
 
@@ -31,32 +30,32 @@ class SlepianFunctions:
         self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
         _logger.info("finished solving eigenproblem")
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_fn_name(self) -> str:
         """Creates the name for plotting."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_region(self) -> "sleplet.slepian.region.Region":
         """Creates a region object for area of interest."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_mask(self) -> npt.NDArray[np.float_]:
         """Creates a mask of the region of interest."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _calculate_area(self) -> float:
         """Calculates area of region."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_matrix_location(self) -> str:
         """Creates the name of the matrix binary."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:

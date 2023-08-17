@@ -1,13 +1,11 @@
+import pathlib
 import sys
-from pathlib import Path
 
-from numpy.testing import assert_array_less
+import numpy as np
 
-from sleplet.functions import AxisymmetricWavelets, Earth
-from sleplet.plot_methods import find_max_amplitude
-from sleplet.plotting import PlotSphere
+import sleplet
 
-sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 
 from _denoising_axisym import denoising_axisym  # noqa: E402
 
@@ -22,14 +20,14 @@ SNR_IN = 10
 def main() -> None:
     """Reproduce the denoising demo from s2let paper."""
     # create map & noised map
-    fun = Earth(L)
-    fun_noised = Earth(L, noise=SNR_IN)
+    fun = sleplet.functions.Earth(L)
+    fun_noised = sleplet.functions.Earth(L, noise=SNR_IN)
 
     # create wavelets
-    aw = AxisymmetricWavelets(L, B=B, j_min=J_MIN)
+    aw = sleplet.functions.AxisymmetricWavelets(L, B=B, j_min=J_MIN)
 
     # fix amplitude
-    amplitude = find_max_amplitude(fun)
+    amplitude = sleplet.plot_methods.find_max_amplitude(fun)
 
     f, noised_snr, denoised_snr = denoising_axisym(
         fun,
@@ -39,9 +37,15 @@ def main() -> None:
         N_SIGMA,
         rotate_to_south_america=True,
     )
-    assert_array_less(noised_snr, denoised_snr)
+    np.testing.assert_array_less(noised_snr, denoised_snr)
     name = f"{fun.name}_denoised_axisym"
-    PlotSphere(f, L, name, amplitude=amplitude, normalise=NORMALISE).execute()
+    sleplet.plotting.PlotSphere(
+        f,
+        L,
+        name,
+        amplitude=amplitude,
+        normalise=NORMALISE,
+    ).execute()
 
 
 if __name__ == "__main__":

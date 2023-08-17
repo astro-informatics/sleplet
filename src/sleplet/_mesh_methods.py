@@ -1,17 +1,17 @@
 import logging
-from pathlib import Path
+import pathlib
 
+import igl
 import numpy as np
+import numpy.typing as npt
+import platformdirs
+import scipy.sparse.linalg as LA_sparse  # noqa: N812
 import tomli
-from igl import average_onto_faces, cotmatrix, read_triangle_mesh, upsample
-from numpy import typing as npt
-from platformdirs import user_data_path
-from scipy.sparse import linalg as LA_sparse  # noqa: N812
 
 import sleplet._data.setup_pooch
 import sleplet._integration_methods
 
-_data_path = Path(__file__).resolve().parent / "_data"
+_data_path = pathlib.Path(__file__).resolve().parent / "_data"
 _logger = logging.getLogger(__name__)
 
 
@@ -31,7 +31,7 @@ def average_functions_on_vertices_to_faces(
 
     functions_on_faces = np.zeros((functions_on_vertices.shape[0], faces.shape[0]))
     for i, f in enumerate(functions_on_vertices):
-        functions_on_faces[i] = average_onto_faces(faces, f)
+        functions_on_faces[i] = igl.average_onto_faces(faces, f)
 
     # put the vector back in 1D form
     if array_is_1d:
@@ -56,7 +56,7 @@ def create_mesh_region(
 
 def extract_mesh_config(mesh_name: str) -> dict:
     """Reads in the given mesh region settings file."""
-    with Path.open(
+    with pathlib.Path.open(
         _data_path / f"meshes_regions_{mesh_name}.toml",
         "rb",
     ) as f:
@@ -104,17 +104,17 @@ def mesh_eigendecomposition(
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         _logger.info("saving binaries...")
-        np.save(user_data_path() / eval_loc, eigenvalues)
-        np.save(user_data_path() / evec_loc, eigenvectors)
+        np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
+        np.save(platformdirs.user_data_path() / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
 
 
 def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
     """Reads in the given mesh."""
-    vertices, faces = read_triangle_mesh(
+    vertices, faces = igl.read_triangle_mesh(
         str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}"),
     )
-    return upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
+    return igl.upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
 
 
 def _mesh_laplacian(
@@ -122,7 +122,7 @@ def _mesh_laplacian(
     faces: npt.NDArray[np.int_],
 ) -> npt.NDArray[np.float_]:
     """Computes the cotagent mesh laplacian."""
-    return -cotmatrix(vertices, faces)
+    return -igl.cotmatrix(vertices, faces)
 
 
 def _orthonormalise_basis_functions(

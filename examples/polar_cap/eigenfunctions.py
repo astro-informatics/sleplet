@@ -1,12 +1,10 @@
+import matplotlib.pyplot as plt
 import numpy as np
+import numpy.typing as npt
 import pooch
 import seaborn as sns
-from matplotlib import pyplot as plt
-from numpy import typing as npt
 
-from sleplet.harmonic_methods import invert_flm_boosted
-from sleplet.plot_methods import calc_plot_resolution
-from sleplet.slepian import SlepianPolarCap
+import sleplet
 
 sns.set(context="paper")
 
@@ -15,7 +13,7 @@ L = 16
 ORDER = 0
 PHI_IDX = 0
 ROWS = 2
-RESOLUTION = calc_plot_resolution(L)
+RESOLUTION = sleplet.plot_methods.calc_plot_resolution(L)
 SIGNS = [1, -1, 1, -1, 1, -1]
 TEXT_BOX: dict[str, str | float] = {"boxstyle": "round", "color": "w"}
 THETA_MAX = 40
@@ -41,7 +39,7 @@ def main() -> None:
         ylim=[-3, 3],
         yticks=[-2, 0, 2],
     )
-    slepian = SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER)
+    slepian = sleplet.slepian.SlepianPolarCap(L, np.deg2rad(THETA_MAX), order=ORDER)
     for rank in range(ROWS * COLUMNS):
         _helper(axes[rank], slepian, x, i, rank)
     print("Opening: slepian_colatitude")
@@ -53,7 +51,7 @@ def main() -> None:
 
 def _helper(
     ax: plt.Axes,
-    slepian: SlepianPolarCap,
+    slepian: sleplet.slepian.SlepianPolarCap,
     x: npt.NDArray[np.float_],
     i: int,
     rank: int,
@@ -62,7 +60,7 @@ def _helper(
     print(f"plotting rank={rank}")
     flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
-    f = invert_flm_boosted(flm, L, RESOLUTION).real
+    f = sleplet.harmonic_methods.invert_flm_boosted(flm, L, RESOLUTION).real
     if rank > COLUMNS - 1:
         ax.set_xlabel(r"colatitude $\theta$")
     ax.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])

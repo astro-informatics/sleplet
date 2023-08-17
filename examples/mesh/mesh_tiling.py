@@ -1,12 +1,11 @@
-from argparse import ArgumentParser
+import argparse
 
+import matplotlib.pyplot as plt
 import numpy as np
+import scipy.interpolate
 import seaborn as sns
-from matplotlib import pyplot as plt
-from scipy.interpolate import pchip
 
-from sleplet.meshes import Mesh, MeshSlepian
-from sleplet.wavelet_methods import create_kappas
+import sleplet
 
 sns.set(context="paper")
 
@@ -26,8 +25,8 @@ STEP = 0.01
 def main(mesh_name: str) -> None:
     """Plots the tiling of the Slepian line."""
     # initialise mesh and Slepian mesh
-    mesh = Mesh(mesh_name)
-    mesh_slepian = MeshSlepian(mesh)
+    mesh = sleplet.meshes.Mesh(mesh_name)
+    mesh_slepian = sleplet.meshes.MeshSlepian(mesh)
 
     # set up x-axis
     xlim = mesh.mesh_eigenvalues.shape[0]
@@ -35,13 +34,13 @@ def main(mesh_name: str) -> None:
 
     # scaling function
     xi = np.arange(0, xlim - 1 + STEP, STEP)
-    kappas = create_kappas(xlim, B, J_MIN)
-    yi = pchip(x, kappas[0])
+    kappas = sleplet.wavelet_methods.create_kappas(xlim, B, J_MIN)
+    yi = scipy.interpolate.pchip(x, kappas[0])
     plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
 
     # wavelets
     for j, k in enumerate(kappas[1:]):
-        yi = pchip(x, k)
+        yi = scipy.interpolate.pchip(x, k)
         plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_p$")
 
     # add vertical line
@@ -69,7 +68,7 @@ def main(mesh_name: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="mesh tiling")
+    parser = argparse.ArgumentParser(description="mesh tiling")
     parser.add_argument(
         "function",
         type=str,

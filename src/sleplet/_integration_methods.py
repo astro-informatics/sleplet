@@ -1,9 +1,9 @@
-from functools import reduce
-from typing import Any
+import functools
+import typing
 
 import numpy as np
+import numpy.typing as npt
 import pyssht as ssht
-from numpy import typing as npt
 
 import sleplet._vars
 
@@ -60,6 +60,6 @@ def integrate_region_mesh(
     return (multiplied_inputs * mask).sum()
 
 
-def _multiply_args(*args: npt.NDArray[Any]) -> npt.NDArray[Any]:
+def _multiply_args(*args: npt.NDArray[typing.Any]) -> npt.NDArray[typing.Any]:
     """Method to multiply an unknown number of arguments."""
-    return reduce((lambda x, y: x * y), args)
+    return functools.reduce((lambda x, y: x * y), args)

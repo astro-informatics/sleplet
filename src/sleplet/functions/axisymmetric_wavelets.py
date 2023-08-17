@@ -2,10 +2,9 @@
 import logging
 
 import numpy as np
-from numpy import typing as npt
-from pydantic import validator
-from pydantic.dataclasses import dataclass
-from pys2let import pys2let_j_max
+import numpy.typing as npt
+import pydantic
+import pys2let
 
 import sleplet._string_methods
 import sleplet._validation
@@ -15,7 +14,7 @@ from sleplet.functions.flm import Flm
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class AxisymmetricWavelets(Flm):
     """
     Creates scale-discretised axisymmetric wavelets. As
@@ -69,13 +68,18 @@ class AxisymmetricWavelets(Flm):
             self.j_min,
         )
 
-    @validator("j")
+    @pydantic.validator("j")
     def _check_j(cls, v, values):
-        j_max = pys2let_j_max(values["B"], values["L"], values["j_min"])
+        j_max = pys2let.pys2let_j_max(
+            values["B"],
+            values["L"],
+            values["j_min"],
+        )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
             raise ValueError(
-                f"j should be less than j_max - j_min: {j_max - values['j_min'] + 1}",
+                "j should be less than j_max - j_min: "
+                f"{j_max - values['j_min'] + 1}",
             )
         return v

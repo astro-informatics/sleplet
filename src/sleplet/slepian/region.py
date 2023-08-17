@@ -1,8 +1,7 @@
 """Contains the `Region` class."""
 import logging
 
-from pydantic import validator
-from pydantic.dataclasses import dataclass
+import pydantic
 
 import sleplet._bool_methods
 import sleplet._string_methods
@@ -12,7 +11,7 @@ import sleplet._vars
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
     """Identifies and creates the appropriate Slepian region for the sphere."""
 
@@ -87,7 +86,7 @@ class Region:
                 "longitude region, or a file with a mask",
             )
 
-    @validator("phi_max")
+    @pydantic.validator("phi_max")
     def _check_phi_max(cls, v):
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
@@ -98,7 +97,7 @@ class Region:
             )
         return v
 
-    @validator("phi_min")
+    @pydantic.validator("phi_min")
     def _check_phi_min(cls, v):
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
@@ -109,7 +108,7 @@ class Region:
             )
         return v
 
-    @validator("theta_max")
+    @pydantic.validator("theta_max")
     def _check_theta_max(cls, v):
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
@@ -120,7 +119,7 @@ class Region:
             )
         return v
 
-    @validator("theta_min")
+    @pydantic.validator("theta_min")
     def _check_theta_min(cls, v):
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")

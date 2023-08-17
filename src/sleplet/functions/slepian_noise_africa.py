@@ -1,7 +1,7 @@
 """Contains the `SlepianNoiseAfrica` class."""
 import numpy as np
-from numpy import typing as npt
-from pydantic.dataclasses import dataclass
+import numpy.typing as npt
+import pydantic
 
 import sleplet._string_methods
 import sleplet._validation
@@ -11,7 +11,7 @@ import sleplet.slepian.region
 from sleplet.functions.fp import Fp
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseAfrica(Fp):
     """
     Creates a noised Slepian region on the topographic map of the Earth of

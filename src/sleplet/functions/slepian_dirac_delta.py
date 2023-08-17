@@ -2,9 +2,9 @@
 import logging
 
 import numpy as np
+import numpy.typing as npt
+import pydantic
 import pyssht as ssht
-from numpy import typing as npt
-from pydantic.dataclasses import dataclass
 
 import sleplet._string_methods
 import sleplet._validation
@@ -15,7 +15,7 @@ from sleplet.functions.fp import Fp
 _logger = logging.getLogger(__name__)
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianDiracDelta(Fp):
     """Creates a Dirac delta of the Slepian coefficients."""
 
@@ -26,8 +26,8 @@ class SlepianDiracDelta(Fp):
         self._compute_angles()
         return sleplet.slepian_methods._compute_s_p_omega_prime(
             self.L,
-            self.alpha,
-            self.beta,
+            self._alpha,
+            self._beta,
             self.slepian,
         ).conj()
 
@@ -62,11 +62,11 @@ class SlepianDiracDelta(Fp):
             Method=sleplet._vars.SAMPLING_SCHEME,
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
-        self.alpha = phis[idx]
-        self.beta = thetas[idx]
+        self._alpha = phis[idx]
+        self._beta = thetas[idx]
         _logger.info(
-            f"angles: (alpha, beta) = ({self.alpha/np.pi:.5f},{self.beta/np.pi:.5f})",
+            f"angles: (alpha, beta) = ({self._alpha/np.pi:.5f},{self._beta/np.pi:.5f})",
         )
         _logger.info(
-            f"grid point: (alpha, beta) = ({self.alpha:e},{self.beta:e})",
+            f"grid point: (alpha, beta) = ({self._alpha:e},{self._beta:e})",
         )

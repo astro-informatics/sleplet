@@ -1,11 +1,10 @@
 """Contains the abstract `MeshCoefficients` class."""
-from abc import abstractmethod
-from dataclasses import KW_ONLY
+import abc
+import dataclasses
 
 import numpy as np
-from numpy import typing as npt
-from pydantic import validator
-from pydantic.dataclasses import dataclass
+import numpy.typing as npt
+import pydantic
 
 import sleplet._mask_methods
 import sleplet._string_methods
@@ -16,13 +15,13 @@ from sleplet.meshes.mesh import Mesh
 _COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
     """Abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 
     mesh: Mesh
     """A mesh object."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     extra_args: list[int] | None = None
     """Control the extra arguments for the given set of mesh
     coefficients. Only to be set by the `mesh` CLI."""
@@ -47,7 +46,7 @@ class MeshCoefficients:
         if self.mesh.zoom:
             self.name += "_zoom"
 
-    @validator("coefficients", check_fields=False)
+    @pydantic.validator("coefficients", check_fields=False)
     def _check_coefficients(cls, v, values):
         if (
             values["region"]
@@ -59,24 +58,24 @@ class MeshCoefficients:
             )
         return v
 
-    @abstractmethod
+    @abc.abstractmethod
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """Adds Gaussian white noise to the signal."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Creates the flm on the north pole."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _create_name(self) -> str:
         """Creates the name of the function."""
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def _setup_args(self) -> None:
         """
         Initialises function specific args

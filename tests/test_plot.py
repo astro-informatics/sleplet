@@ -1,6 +1,5 @@
 import cmocean
 import numpy as np
-from numpy.testing import assert_equal
 
 import sleplet
 
@@ -15,7 +14,10 @@ def test_resolution_values() -> None:
     arguments = [1, 10, 100, 1000]
     output = [64, 80, 800, 2000]
     for c, arg in enumerate(arguments):
-        assert_equal(sleplet.plot_methods.calc_plot_resolution(arg), output[c])
+        np.testing.assert_equal(
+            sleplet.plot_methods.calc_plot_resolution(arg),
+            output[c],
+        )
 
 
 def test_create_colourscale() -> None:
@@ -24,7 +26,7 @@ def test_create_colourscale() -> None:
         cmocean.cm.ice,
         pl_entries=PL_ENTRIES,
     )
-    assert_equal(len(colourscale), PL_ENTRIES)
+    np.testing.assert_equal(len(colourscale), PL_ENTRIES)
 
 
 def test_find_nearest_grid_point() -> None:
@@ -34,5 +36,5 @@ def test_find_nearest_grid_point() -> None:
         PHI_0 / np.pi,
         THETA_MAX / np.pi,
     )
-    assert_equal(alpha, 0.5154175447295755)
-    assert_equal(beta, 1.055378782065321)
+    np.testing.assert_equal(alpha, 0.5154175447295755)
+    np.testing.assert_equal(beta, 1.055378782065321)

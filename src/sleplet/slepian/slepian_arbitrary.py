@@ -1,15 +1,14 @@
 """Contains the `SlepianArbitrary` class."""
+import concurrent.futures
 import logging
 import os
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import KW_ONLY
 
 import numpy as np
+import numpy.linalg as LA  # noqa: N812
+import numpy.typing as npt
+import platformdirs
+import pydantic
 import pyssht as ssht
-from numpy import linalg as LA  # noqa: N812
-from numpy import typing as npt
-from platformdirs import user_data_path
-from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -27,13 +26,12 @@ _logger = logging.getLogger(__name__)
 _SAMPLES = 2
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
     """The name of the mask of the arbitrary region."""
-    _: KW_ONLY
 
     def __post_init_post_parse__(self) -> None:
         self.resolution = _SAMPLES * self.L
@@ -89,8 +87,8 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvalues,
             eigenvectors,
         ) = sleplet._slepian_arbitrary_methods.clean_evals_and_evecs(LA.eigh(D))
-        np.save(user_data_path() / eval_loc, eigenvalues)
-        np.save(user_data_path() / evec_loc, eigenvectors[: self.N])
+        np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
+        np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
@@ -132,7 +130,7 @@ class SlepianArbitrary(SlepianFunctions):
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=ncpu) as e:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=ncpu) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function

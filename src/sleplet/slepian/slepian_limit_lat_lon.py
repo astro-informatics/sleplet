@@ -1,13 +1,13 @@
 """Contains the `SlepianLimitLatLon` class."""
 
 
+import numba
 import numpy as np
+import numpy.linalg as LA  # noqa: N812
+import numpy.typing as npt
+import platformdirs
+import pydantic
 import pyssht as ssht
-from numba import njit, prange
-from numpy import linalg as LA  # noqa: N812
-from numpy import typing as npt
-from platformdirs import user_data_path
-from pydantic.dataclasses import dataclass
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -18,7 +18,7 @@ import sleplet.slepian.region
 from sleplet.slepian.slepian_functions import SlepianFunctions
 
 
-@dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianLimitLatLon(SlepianFunctions):
     """Class to create a limited latitude longitude Slepian region on the sphere."""
 
@@ -71,8 +71,8 @@ class SlepianLimitLatLon(SlepianFunctions):
         except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            np.save(user_data_path() / eval_loc, eigenvalues)
-            np.save(user_data_path() / evec_loc, eigenvectors[: self.N])
+            np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
+            np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
@@ -144,7 +144,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         return G
 
     @staticmethod
-    @njit(parallel=True, fastmath=True)
+    @numba.njit(parallel=True, fastmath=True)
     def _slepian_matrix(
         dl: npt.NDArray[np.float_],
         L: int,
@@ -170,7 +170,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         """
         K = np.zeros((L**2, L**2), dtype=np.complex_)
 
-        for ell in prange(L):
+        for ell in numba.prange(L):
             for p in range(ell + 1):
                 C1 = np.sqrt((2 * ell + 1) * (2 * p + 1)) / (4 * np.pi)
 

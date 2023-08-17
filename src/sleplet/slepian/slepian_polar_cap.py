@@ -1,17 +1,16 @@
 """Contains the `SlepianPolarCap` class."""
+import concurrent.futures
+import dataclasses
 import logging
 import os
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import KW_ONLY
 
 import gmpy2 as gp
 import numpy as np
+import numpy.linalg as LA  # noqa: N812
+import numpy.typing as npt
+import platformdirs
+import pydantic
 import pyssht as ssht
-from numpy import linalg as LA  # noqa: N812
-from numpy import typing as npt
-from platformdirs import user_data_path
-from pydantic import validator
-from pydantic.dataclasses import dataclass
 
 import sleplet._data.setup_pooch
 import sleplet._mask_methods
@@ -26,13 +25,13 @@ _logger = logging.getLogger(__name__)
 _L_SAVE_ALL = 16
 
 
-@dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
     theta_max: float
     """Sets the size of the polar cap region."""
-    _: KW_ONLY
+    _: dataclasses.KW_ONLY
     gap: bool = False
     """Whether to enable a double ended polar cap."""
     order: int | npt.NDArray[np.int_] | None = None
@@ -125,9 +124,9 @@ class SlepianPolarCap(SlepianFunctions):
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
         limit = self.N if self.L > _L_SAVE_ALL else None
-        np.save(user_data_path() / eval_loc, eigenvalues)
-        np.save(user_data_path() / evec_loc, eigenvectors[:limit])
-        np.save(user_data_path() / order_loc, self.order)
+        np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
+        np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[:limit])
+        np.save(platformdirs.user_data_path() / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(
@@ -206,7 +205,7 @@ class SlepianPolarCap(SlepianFunctions):
         )
 
         # initialise pool and apply function
-        with ThreadPoolExecutor(max_workers=ncpu) as e:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=ncpu) as e:
             e.map(func, chunks)
 
         # retrieve from parallel function
@@ -383,13 +382,13 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @validator("order")
+    @pydantic.validator("order")
     def _check_order(cls, v, values):
         if v is not None and (np.abs(v) >= values["L"]).any():
             raise ValueError(f"Order magnitude should be less than {values['L']}")
         return v
 
-    @validator("theta_max")
+    @pydantic.validator("theta_max")
     def _check_theta_max(cls, v):
         if v == 0:
             raise ValueError("theta_max cannot be zero")

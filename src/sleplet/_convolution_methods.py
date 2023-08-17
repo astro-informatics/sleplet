@@ -1,5 +1,5 @@
 import numpy as np
-from numpy import typing as npt
+import numpy.typing as npt
 
 
 def sifting_convolution(
