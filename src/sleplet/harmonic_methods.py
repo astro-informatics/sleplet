@@ -86,7 +86,7 @@ def _ensure_f_bandlimited(
         Method=sleplet._vars.SAMPLING_SCHEME,
     )
     f = grid_fun(thetas, phis)
-    return ssht.forward(
+    return s2fft.forward(
         f,
         L,
         Reality=reality,

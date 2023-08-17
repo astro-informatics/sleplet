@@ -91,7 +91,7 @@ def ensure_masked_flm_bandlimited(
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
-    return ssht.forward(
+    return s2fft.forward(
         field,
         L,
         Reality=reality,

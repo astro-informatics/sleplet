@@ -185,7 +185,7 @@ def _boost_field(  # noqa: PLR0913
     """Inverts and then boosts the field before plotting."""
     if not upsample:
         return field
-    flm = ssht.forward(
+    flm = s2fft.forward(
         field,
         L,
         Reality=reality,
