@@ -15,7 +15,7 @@ from sleplet.meshes.mesh import Mesh
 _COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshCoefficients:
     """Abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 

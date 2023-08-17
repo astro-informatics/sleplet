@@ -13,7 +13,7 @@ from sleplet.slepian.region import Region
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianFunctions:
     """Abstract parent class of creating the different Slepian regions on the sphere."""
 

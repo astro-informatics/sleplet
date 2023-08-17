@@ -10,7 +10,7 @@ import sleplet.noise
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianNoiseField(MeshSlepianCoefficients):
     """
     Creates a noisedfield on a given mesh computed from a Slepian region of the

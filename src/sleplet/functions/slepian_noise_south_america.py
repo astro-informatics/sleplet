@@ -11,7 +11,7 @@ import sleplet.slepian.region
 from sleplet.functions.fp import Fp
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianNoiseSouthAmerica(Fp):
     """
     Creates a noised Slepian region on the topographic map of the Earth of the

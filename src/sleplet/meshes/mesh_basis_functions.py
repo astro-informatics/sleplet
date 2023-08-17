@@ -12,7 +12,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
     """Creates the eigenfunctions of the Laplacian of the mesh."""
 

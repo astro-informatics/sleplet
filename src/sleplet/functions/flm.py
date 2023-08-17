@@ -11,7 +11,7 @@ import sleplet.noise
 from sleplet.functions.coefficients import Coefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class Flm(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 

@@ -14,7 +14,7 @@ import sleplet.harmonic_methods
 from sleplet.functions.flm import Flm
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SouthAmerica(Flm):
     """Creates the South America region of the topographic map of the Earth."""
 

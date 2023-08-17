@@ -16,7 +16,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
     """Creates Slepian wavelet coefficients of a given mesh."""
 

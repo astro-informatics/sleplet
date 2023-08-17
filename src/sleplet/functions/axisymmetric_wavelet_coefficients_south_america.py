@@ -16,7 +16,7 @@ from sleplet.functions.south_america import SouthAmerica
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
     """Creates axisymmetric wavelet coefficients of the South America region."""
 

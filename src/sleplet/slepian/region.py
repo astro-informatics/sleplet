@@ -12,7 +12,7 @@ import sleplet._vars
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Region:
     """Identifies and creates the appropriate Slepian region for the sphere."""
 

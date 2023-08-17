@@ -14,7 +14,7 @@ from sleplet.slepian.slepian_functions import SlepianFunctions
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions

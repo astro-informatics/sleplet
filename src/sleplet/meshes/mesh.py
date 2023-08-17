@@ -11,7 +11,7 @@ import sleplet._plotly_methods
 import sleplet._validation
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class Mesh:
     """Creates a mesh object."""
 

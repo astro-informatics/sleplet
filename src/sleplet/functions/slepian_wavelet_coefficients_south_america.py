@@ -17,7 +17,7 @@ from sleplet.functions.fp import Fp
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsSouthAmerica(Fp):
     """Creates Slepian wavelet coefficients of the South America region."""
 

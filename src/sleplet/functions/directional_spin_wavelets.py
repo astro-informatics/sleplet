@@ -14,7 +14,7 @@ from sleplet.functions.flm import Flm
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class DirectionalSpinWavelets(Flm):
     """
     Creates directional spin scale-discretised wavelets.

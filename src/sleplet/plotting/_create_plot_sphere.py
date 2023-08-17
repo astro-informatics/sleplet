@@ -20,7 +20,7 @@ _logger = logging.getLogger(__name__)
 _MW_POLE_LENGTH = 2
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 

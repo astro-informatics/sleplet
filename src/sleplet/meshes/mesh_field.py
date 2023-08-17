@@ -9,7 +9,7 @@ import sleplet.harmonic_methods
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshField(MeshHarmonicCoefficients):
     """Creates a per-vertex normals field on a given mesh."""
 

@@ -10,7 +10,7 @@ import sleplet.noise
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class MeshNoiseField(MeshHarmonicCoefficients):
     """Creates a noised per-vertex normals field on a given mesh."""
 

@@ -10,7 +10,7 @@ import sleplet.slepian.region
 from sleplet.functions.fp import Fp
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianSouthAmerica(Fp):
     """
     Creates a Slepian region on the topographic map of the Earth of the

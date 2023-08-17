@@ -23,7 +23,7 @@ _MESH_CBAR_FONT_SIZE = 32
 _MESH_UNSEEN = -1e5  # kaleido bug
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 

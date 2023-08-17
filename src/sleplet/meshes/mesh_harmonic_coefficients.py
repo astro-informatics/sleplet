@@ -10,7 +10,7 @@ import sleplet.noise
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshHarmonicCoefficients(MeshCoefficients):
     """Abstract parent class to handle Fourier coefficients on the mesh."""
 

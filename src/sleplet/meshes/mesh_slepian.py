@@ -21,7 +21,7 @@ from sleplet.meshes.mesh import Mesh
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshSlepian:
     """Creates Slepian object of a given mesh."""
 
