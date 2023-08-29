@@ -1,7 +1,7 @@
 """Methods to work with wavelet and wavelet coefficients."""
 import numpy as np
 import numpy.typing as npt
-import s2wav
+import pys2let
 import pyssht as ssht
 
 import sleplet._convolution_methods
