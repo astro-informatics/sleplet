@@ -105,7 +105,7 @@ class Ridgelets(Flm):
 
     @pydantic.validator("j")
     def _check_j(cls, v, values):
-        j_max = s2wav.j_max(
+        j_max = s2wav.utils.shapes.j_max(
             values["L"],
             values["B"],
         )

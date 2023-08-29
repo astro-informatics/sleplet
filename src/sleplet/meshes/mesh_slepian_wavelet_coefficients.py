@@ -75,7 +75,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
 
     @pydantic.validator("j")
     def _check_j(cls, v, values):
-        j_max = s2wav.j_max(
+        j_max = s2wav.utils.shapes.j_max(
             values["mesh"].mesh_eigenvalues.shape[0],
             values["B"],
         )

@@ -102,6 +102,6 @@ def test_only_wavelet_coefficients_within_shannon_returned() -> None:
 def test_create_kappas() -> None:
     """Checks that the method creates the scaling function and wavelets."""
     wavelets = sleplet.wavelet_methods.create_kappas(L_LARGE**2, B, J_MIN)
-    j_max = s2wav.j_max(L_LARGE**2, B)
+    j_max = s2wav.utils.shapes.j_max(L_LARGE**2, B)
     np.testing.assert_equal(j_max - J_MIN + 2, wavelets.shape[0])
     np.testing.assert_equal(L_LARGE**2, wavelets.shape[1])
