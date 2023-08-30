@@ -104,7 +104,7 @@ def find_max_amplitude(
         field = s2fft.inverse(
             function.coefficients,
             function.L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
 
     # find resolution of final plot for boosting if necessary
@@ -189,9 +189,9 @@ def _boost_field(  # noqa: PLR0913
     flm = s2fft.forward(
         field,
         L,
-        Reality=reality,
-        Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        reality=reality,
+        spin=spin,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     return sleplet.harmonic_methods.invert_flm_boosted(
         flm,
@@ -263,8 +263,8 @@ def _coefficients_to_field_sphere(
         else s2fft.inverse(
             coefficients,
             f.L,
-            Reality=f.reality,
-            Spin=f.spin,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            reality=f.reality,
+            spin=f.spin,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
     )

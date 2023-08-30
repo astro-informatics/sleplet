@@ -61,9 +61,9 @@ def invert_flm_boosted(
     return s2fft.inverse(
         flm,
         resolution,
-        Reality=reality,
-        Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        reality=reality,
+        spin=spin,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
 
 
@@ -90,9 +90,9 @@ def _ensure_f_bandlimited(
     return s2fft.forward(
         f,
         L,
-        Reality=reality,
-        Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        reality=reality,
+        spin=spin,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
 
 

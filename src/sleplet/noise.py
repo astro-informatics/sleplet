@@ -103,7 +103,7 @@ def _create_slepian_noise(
     flm = s2fft.forward(
         sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
         L,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     nlm = _create_noise(L, flm, snr_in)
     return sleplet.slepian_methods.slepian_forward(L, slepian, flm=nlm)
@@ -140,12 +140,12 @@ def harmonic_hard_thresholding(
     _logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
         _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
-        f = s2fft.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
+        f = s2fft.inverse(coefficient, L, sampling=sleplet._vars.SAMPLING_SCHEME)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = s2fft.forward(
             f_thresholded,
             L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
     return wav_coeffs
 

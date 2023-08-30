@@ -59,7 +59,7 @@ class SlepianDecomposition:
         s_p = s2fft.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
         integration = sleplet._integration_methods.integrate_region_sphere(
@@ -80,7 +80,7 @@ class SlepianDecomposition:
         s_p = s2fft.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
         return sleplet._integration_methods.integrate_whole_sphere(

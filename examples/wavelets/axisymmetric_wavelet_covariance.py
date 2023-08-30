@@ -82,7 +82,7 @@ def axisymmetric_wavelet_covariance(
 
         # compute covariance from data
         for j, coefficient in enumerate(wlm):
-            f_wav_j = s2fft.inverse(coefficient, L, Method=SAMPLING_SCHEME)
+            f_wav_j = s2fft.inverse(coefficient, L, sampling=SAMPLING_SCHEME)
             covar_data[i, j] = (
                 f_wav_j.var() if _is_ergodic(j_min, j=j) else f_wav_j[0, 0]
             )

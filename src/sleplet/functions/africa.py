@@ -63,8 +63,8 @@ class Africa(Flm):
         earth_f = s2fft.inverse(
             rot_flm,
             self.L,
-            Reality=self.reality,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            reality=self.reality,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         mask_name = f"{self.name}_L{self.L}.npy"
         mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(
