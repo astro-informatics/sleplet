@@ -48,11 +48,9 @@ the figures in
 `SLEPLET` has been tested with
 [![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org).
 Windows is not currently supported as `SLEPLET` relies on
-[pyssht](https://pypi.org/project/pyssht) and
-[pys2let](https://pypi.org/project/pys2let) which do not work on Windows.
+[pyssht](https://pypi.org/project/pyssht) which does not work on Windows.
 These can hopefully be replaced with
-[s2fft](https://github.com/astro-informatics/s2fft) and
-[s2wav](https://github.com/astro-informatics/s2wav) in the future when they
+[s2fft](https://github.com/astro-informatics/s2fft) in the future when they
 are available on [PyPI](https://pypi.org).
 
 ## Example Usage
