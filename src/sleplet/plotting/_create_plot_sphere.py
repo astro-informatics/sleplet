@@ -7,7 +7,7 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic
-import s2fft
+import pyssht as ssht
 
 import sleplet._plotly_methods
 import sleplet._validation

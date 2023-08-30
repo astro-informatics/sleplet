@@ -4,7 +4,7 @@ import abc
 import numpy as np
 import numpy.typing as npt
 import pydantic
-import s2fft
+import pyssht as ssht
 
 import sleplet._validation
 import sleplet.noise

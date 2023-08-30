@@ -4,7 +4,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import s2fft
+import pyssht as ssht
 
 import sleplet._class_lists
 import sleplet._mask_methods

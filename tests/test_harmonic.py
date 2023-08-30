@@ -1,5 +1,5 @@
 import numpy as np
-import s2fft
+import pyssht as ssht
 
 import sleplet
 

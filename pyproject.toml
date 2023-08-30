@@ -37,6 +37,7 @@ dependencies = [
     "pydantic<2",
     "pys2let>=2.2.6",
     "pyssht>=1.5.2",
+    "s2fft@git+https://github.com/astro-informatics/s2fft.git@a796dfe8a4e4e7cbde1869ef1c0c4a9898d902ad",
     "scipy>=1.10.1",
     "seaborn>=0.12.2",
     "tomli>=2.0.1",
