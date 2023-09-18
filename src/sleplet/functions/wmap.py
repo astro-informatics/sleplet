@@ -1,7 +1,7 @@
 """Contains the `Wmap` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 
 import sleplet._data.create_wmap_flm
 import sleplet._string_methods

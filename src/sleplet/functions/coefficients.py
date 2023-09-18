@@ -4,7 +4,7 @@ import dataclasses
 
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 
 import sleplet._convolution_methods
 import sleplet._mask_methods
@@ -114,7 +114,7 @@ class Coefficients:
         self.name += f"_L{self.L}"
 
     @pydantic.validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, values):
+    def _check_coefficients(cls, v, values):  # noqa: N805
         if (
             values["region"]
             and not set(values["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK

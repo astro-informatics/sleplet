@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 import pys2let
 import pyssht as ssht
 import scipy.special
@@ -104,7 +104,7 @@ class Ridgelets(Flm):
         return ring_lm
 
     @pydantic.validator("j")
-    def _check_j(cls, v, values):
+    def _check_j(cls, v, values):  # noqa: N805
         j_max = pys2let.pys2let_j_max(
             values["B"],
             values["L"],

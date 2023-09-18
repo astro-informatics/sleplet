@@ -9,7 +9,7 @@ import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
-import pydantic
+import pydantic.v1 as pydantic
 import pyssht as ssht
 
 import sleplet._data.setup_pooch
@@ -383,13 +383,13 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     @pydantic.validator("order")
-    def _check_order(cls, v, values):
+    def _check_order(cls, v, values):  # noqa: N805
         if v is not None and (np.abs(v) >= values["L"]).any():
             raise ValueError(f"Order magnitude should be less than {values['L']}")
         return v
 
     @pydantic.validator("theta_max")
-    def _check_theta_max(cls, v):
+    def _check_theta_max(cls, v):  # noqa: N805
         if v == 0:
             raise ValueError("theta_max cannot be zero")
         return v
