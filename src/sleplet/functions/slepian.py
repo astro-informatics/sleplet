@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 
 import sleplet._validation
 import sleplet.slepian_methods
@@ -73,7 +73,7 @@ class Slepian(Fp):
                 raise ValueError(f"rank should be less than {limit}")
 
     @pydantic.validator("rank")
-    def _check_rank(cls, v):
+    def _check_rank(cls, v):  # noqa: N805
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")
         if v < 0:

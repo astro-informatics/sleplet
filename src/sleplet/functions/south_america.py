@@ -1,7 +1,7 @@
 """Contains the `SouthAmerica` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 import pyssht as ssht
 
 import sleplet._data.create_earth_flm

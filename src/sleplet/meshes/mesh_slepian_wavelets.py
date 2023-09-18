@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 import pys2let
 
 import sleplet._string_methods
@@ -60,7 +60,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         )
 
     @pydantic.validator("j")
-    def _check_j(cls, v, values) -> int | None:
+    def _check_j(cls, v, values) -> int | None:  # noqa: N805
         j_max = pys2let.pys2let_j_max(
             values["B"],
             values["mesh"].mesh_eigenvalues.shape[0],
