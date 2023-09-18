@@ -45,12 +45,7 @@ the figures in
 
 ### Supported Platforms
 
-`SLEPLET` has been tested with
-[![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org).
-Windows is not currently supported as `SLEPLET` relies on
-[pyssht](https://pypi.org/project/pyssht) which does not work on Windows. This
-can hopefully be replaced with [s2fft](https://github.com/astro-informatics/s2fft)
-in the future when it is available on [PyPI](https://pypi.org).
+`SLEPLET` has been tested on macOS, Linux & Windows.
 
 ## Example Usage
 
@@ -120,7 +115,7 @@ If you use `SLEPLET` in your research, please cite the paper.
 }
 ```
 
-Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
-`SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394)
+Please also cite [S2WAV]() upon which
+`SLEPLET` is built, along with [S2FFT]()
 in the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497)
 in the mesh setting.
