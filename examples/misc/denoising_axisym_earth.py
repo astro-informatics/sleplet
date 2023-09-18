@@ -18,7 +18,7 @@ SNR_IN = 10
 
 
 def main() -> None:
-    """Reproduce the denoising demo from s2let paper."""
+    """Reproduce the denoising demo from S2LET paper."""
     # create map & noised map
     fun = sleplet.functions.Earth(L)
     fun_noised = sleplet.functions.Earth(L, noise=SNR_IN)
