@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
-import pydantic
+import pydantic.v1 as pydantic
 
 import sleplet._mask_methods
 import sleplet._mesh_methods

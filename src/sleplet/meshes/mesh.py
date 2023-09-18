@@ -1,7 +1,7 @@
 """Contains the `Mesh` class."""
 import dataclasses
 
-import pydantic
+import pydantic.v1 as pydantic
 
 import sleplet._mesh_methods
 import sleplet._plotly_methods

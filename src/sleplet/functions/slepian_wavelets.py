@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 import pys2let
 
 import sleplet._string_methods
@@ -63,7 +63,7 @@ class SlepianWavelets(Fp):
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
     @pydantic.validator("j")
-    def _check_j(cls, v, values):
+    def _check_j(cls, v, values):  # noqa: N805
         j_max = pys2let.pys2let_j_max(
             values["B"],
             values["L"] ** 2,
