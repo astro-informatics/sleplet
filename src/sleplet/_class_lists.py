@@ -7,7 +7,6 @@ import sleplet.functions.axisymmetric_wavelet_coefficients_south_america
 import sleplet.functions.axisymmetric_wavelets
 import sleplet.functions.coefficients
 import sleplet.functions.dirac_delta
-import sleplet.functions.directional_spin_wavelets
 import sleplet.functions.earth
 import sleplet.functions.elongated_gaussian
 import sleplet.functions.gaussian
@@ -52,7 +51,6 @@ FLM: list[type[sleplet.functions.coefficients.Coefficients]] = [
     sleplet.functions.axisymmetric_wavelet_coefficients_south_america.AxisymmetricWaveletCoefficientsSouthAmerica,
     sleplet.functions.axisymmetric_wavelets.AxisymmetricWavelets,
     sleplet.functions.dirac_delta.DiracDelta,
-    sleplet.functions.directional_spin_wavelets.DirectionalSpinWavelets,
     sleplet.functions.earth.Earth,
     sleplet.functions.elongated_gaussian.ElongatedGaussian,
     sleplet.functions.gaussian.Gaussian,

@@ -1,8 +1,8 @@
 """Methods to work with wavelet and wavelet coefficients."""
 import numpy as np
 import numpy.typing as npt
-import pys2let
 import s2fft
+import s2wav
 
 import sleplet._convolution_methods
 import sleplet.slepian_methods
@@ -139,8 +139,12 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
     Returns:
         The Slepian wavelet generating functions.
     """
-    kappa0, kappa = pys2let.axisym_wav_l(B, xlim, j_min)
-    return np.concatenate((kappa0[np.newaxis], kappa.T))
+    kappa, kappa0 = s2wav.filter_factory.filters.filters_axisym(
+        xlim,
+        J_min=j_min,
+        lam=B,
+    )
+    return np.concatenate((kappa0[np.newaxis], kappa[j_min:]))
 
 
 def find_non_zero_wavelet_coefficients(
