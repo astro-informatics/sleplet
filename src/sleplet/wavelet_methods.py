@@ -144,7 +144,7 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
         J_min=j_min,
         lam=B,
     )
-    return np.concatenate((kappa0[np.newaxis], kappa))
+    return np.concatenate((kappa0[np.newaxis], kappa[j_min:]))
 
 
 def find_non_zero_wavelet_coefficients(
