@@ -4,7 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
-import pys2let
+import s2wav
 
 import sleplet._string_methods
 import sleplet._validation
@@ -79,10 +79,9 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
 
     @pydantic.validator("j")
     def _check_j(cls, v, values):  # noqa: N805
-        j_max = pys2let.pys2let_j_max(
-            values["B"],
+        j_max = s2wav.utils.shapes.j_max(
             values["L"],
-            values["j_min"],
+            values["B"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
