@@ -1,7 +1,7 @@
 """Contains the `SphericalHarmonic` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic
+import pydantic.v1 as pydantic
 import pyssht as ssht
 
 import sleplet._string_methods
@@ -44,7 +44,7 @@ class SphericalHarmonic(Flm):
             self.ell, self.m = self.extra_args
 
     @pydantic.validator("ell")
-    def _check_ell(cls, v, values):
+    def _check_ell(cls, v, values):  # noqa: N805
         if not isinstance(v, int):
             raise TypeError("ell should be an integer")
         if v < 0:
@@ -54,7 +54,7 @@ class SphericalHarmonic(Flm):
         return v
 
     @pydantic.validator("m")
-    def _check_m(cls, v, values):
+    def _check_m(cls, v, values):  # noqa: N805
         if not isinstance(v, int):
             raise TypeError("m should be an integer")
         if abs(v) > values["ell"]:
