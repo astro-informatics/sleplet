@@ -4,7 +4,7 @@ import s2fft
 
 import sleplet
 
-SAMPLING_SCHEME = "MWSS"
+SAMPLING_SCHEME = "mwss"
 
 
 def denoising_axisym(  # noqa: PLR0913

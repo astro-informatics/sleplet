@@ -4,7 +4,7 @@ import pyssht as ssht
 
 import sleplet
 
-SAMPLING_SCHEME = "MWSS"
+SAMPLING_SCHEME = "mwss"
 
 
 def compute_slepian_wavelet_covariance(

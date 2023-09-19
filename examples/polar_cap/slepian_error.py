@@ -9,7 +9,7 @@ import sleplet
 sns.set(context="paper")
 
 L = 16
-SAMPLING_SCHEME = "MWSS"
+SAMPLING_SCHEME = "mwss"
 THETA_MAX = 40
 
 
