@@ -190,8 +190,8 @@ def _boost_field(  # noqa: PLR0913
         field,
         L,
         reality=reality,
-        spin=spin,
         sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
     return sleplet.harmonic_methods.invert_flm_boosted(
         flm,
@@ -264,7 +264,7 @@ def _coefficients_to_field_sphere(
             coefficients,
             f.L,
             reality=f.reality,
-            spin=f.spin,
             sampling=sleplet._vars.SAMPLING_SCHEME,
+            spin=f.spin,
         )
     )

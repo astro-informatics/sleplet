@@ -89,8 +89,8 @@ def ensure_masked_flm_bandlimited(
         flm,
         L,
         reality=reality,
-        spin=spin,
         sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
@@ -98,8 +98,8 @@ def ensure_masked_flm_bandlimited(
         field,
         L,
         reality=reality,
-        spin=spin,
         sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
 
 

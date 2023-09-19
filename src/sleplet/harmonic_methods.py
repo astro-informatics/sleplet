@@ -62,8 +62,8 @@ def invert_flm_boosted(
         flm,
         resolution,
         reality=reality,
-        spin=spin,
         sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
 
 
@@ -94,8 +94,8 @@ def _ensure_f_bandlimited(
         f,
         L,
         reality=reality,
-        spin=spin,
         sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
 
 
