@@ -12,11 +12,11 @@ def calc_integration_weight(L: int) -> npt.NDArray[np.float_]:
     """Computes the spherical Jacobian for the integration."""
     thetas = np.tile(
         s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[1], 1),
+        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     ).T
     phis = np.tile(
         s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[0], 1),
+        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     delta_theta = np.ediff1d(thetas[:, 0]).mean()
     delta_phi = np.ediff1d(phis[0]).mean()

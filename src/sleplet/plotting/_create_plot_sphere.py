@@ -149,10 +149,10 @@ class PlotSphere:
         thetas = np.tile(
             s2fft.samples.thetas(resolution, sampling=sleplet._vars.SAMPLING_SCHEME),
             (
-                s2fft.samples.f_shape(
+                s2fft.samples.nphi_equiang(
                     resolution,
                     sampling=sleplet._vars.SAMPLING_SCHEME,
-                )[1],
+                ),
                 1,
             ),
         ).T
@@ -162,10 +162,10 @@ class PlotSphere:
                 sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             (
-                s2fft.samples.f_shape(
+                s2fft.samples.ntheta(
                     resolution,
                     sampling=sleplet._vars.SAMPLING_SCHEME,
-                )[0],
+                ),
                 1,
             ),
         )
@@ -198,7 +198,7 @@ class PlotSphere:
 
         # Close plot.
         if close:
-            _, n_phi = ssht.sample_shape(resolution, Method=method)
+            n_phi = s2fft.samples.nphi_equiang(resolution, sampling=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(

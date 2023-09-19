@@ -83,11 +83,11 @@ def _ensure_f_bandlimited(
     """
     thetas = np.tile(
         s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[1], 1),
+        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     ).T
     phis = np.tile(
         s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[0], 1),
+        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
     return s2fft.forward(

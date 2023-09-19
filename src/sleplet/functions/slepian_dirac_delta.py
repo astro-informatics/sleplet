@@ -54,18 +54,17 @@ class SlepianDiracDelta(Fp):
         thetas = np.tile(
             s2fft.samples.thetas(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
             (
-                s2fft.samples.f_shape(self.L, sampling=sleplet._vars.SAMPLING_SCHEME)[
-                    1
-                ],
+                s2fft.samples.nphi_equiang(
+                    self.L,
+                    sampling=sleplet._vars.SAMPLING_SCHEME,
+                ),
                 1,
             ),
         ).T
         phis = np.tile(
             s2fft.samples.phis_equiang(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
             (
-                s2fft.samples.f_shape(self.L, sampling=sleplet._vars.SAMPLING_SCHEME)[
-                    0
-                ],
+                s2fft.samples.ntheta(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
                 1,
             ),
         )
