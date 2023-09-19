@@ -12,7 +12,6 @@ from .axisymmetric_wavelet_coefficients_south_america import (
 )
 from .axisymmetric_wavelets import AxisymmetricWavelets
 from .dirac_delta import DiracDelta
-from .directional_spin_wavelets import DirectionalSpinWavelets
 from .earth import Earth
 from .elongated_gaussian import ElongatedGaussian
 from .gaussian import Gaussian
@@ -44,7 +43,6 @@ __all__ = [
     "AxisymmetricWaveletCoefficientsSouthAmerica",
     "AxisymmetricWavelets",
     "DiracDelta",
-    "DirectionalSpinWavelets",
     "Earth",
     "ElongatedGaussian",
     "Gaussian",
