@@ -56,8 +56,11 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     )
     new_max = tuple(np.argwhere(field == field.max())[0])
     thetas = np.tile(
-        s2fft.samples.thetas(slepian_dirac_delta_polar_cap.L, sampling="mwss"),
-        (s2fft.samples.f_shape(L, sampling="mwss")[1], 1),
+        s2fft.samples.thetas(
+            slepian_dirac_delta_polar_cap.L,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
+        ),
+        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[1], 1),
     ).T
     np.testing.assert_raises(
         AssertionError,
@@ -88,8 +91,11 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     )
     new_max = tuple(np.argwhere(field == field.max())[0])
     thetas = np.tile(
-        s2fft.samples.thetas(slepian_dirac_delta_lim_lat_lon.L, sampling="mwss"),
-        (s2fft.samples.f_shape(L, sampling="mwss")[1], 1),
+        s2fft.samples.thetas(
+            slepian_dirac_delta_lim_lat_lon.L,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
+        ),
+        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[1], 1),
     ).T
     np.testing.assert_raises(
         AssertionError,

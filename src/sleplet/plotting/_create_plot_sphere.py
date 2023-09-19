@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic.v1 as pydantic
 import pyssht as ssht
+import s2fft
 
 import sleplet._plotly_methods
 import sleplet._validation
@@ -145,7 +146,29 @@ class PlotSphere:
             else:
                 f, _, _ = f
 
-        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
+        thetas = np.tile(
+            s2fft.samples.thetas(resolution, sampling=sleplet._vars.SAMPLING_SCHEME),
+            (
+                s2fft.samples.f_shape(
+                    resolution,
+                    sampling=sleplet._vars.SAMPLING_SCHEME,
+                )[1],
+                1,
+            ),
+        ).T
+        phis = np.tile(
+            s2fft.samples.phis_equiang(
+                resolution,
+                sampling=sleplet._vars.SAMPLING_SCHEME,
+            ),
+            (
+                s2fft.samples.f_shape(
+                    resolution,
+                    sampling=sleplet._vars.SAMPLING_SCHEME,
+                )[0],
+                1,
+            ),
+        )
 
         if thetas.size != f.size:
             raise AttributeError("Bandlimit L deos not match that of f")

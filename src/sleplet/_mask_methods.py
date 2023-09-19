@@ -32,10 +32,13 @@ def create_mask_region(
                                    phi_min or phi_max is provided
     * arbitrary - just checks the shape of the input mask.
     """
-    thetas, phis = ssht.sample_positions(
-        L,
-        Grid=True,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+    thetas = np.tile(
+        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[1], 1),
+    ).T
+    phis = np.tile(
+        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)[0], 1),
     )
 
     match region.region_type:
