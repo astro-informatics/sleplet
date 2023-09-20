@@ -144,7 +144,10 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
         J_min=j_min,
         lam=B,
     )
-    return np.concatenate((kappa0[np.newaxis], kappa[j_min:]))
+    kappas = np.concatenate((kappa0[np.newaxis], kappa[j_min:]))
+    # this step is required when migrating from S2LET to S2WAV
+    kappas[kappas == np.inf] = 1
+    return kappas
 
 
 def find_non_zero_wavelet_coefficients(
