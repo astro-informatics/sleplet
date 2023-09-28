@@ -105,15 +105,16 @@ class SlepianDecomposition:
 
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""
-        if isinstance(self.flm, np.ndarray):
+        if self.flm is not None:
             _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
-        elif isinstance(self.f, np.ndarray) and not isinstance(self.mask, np.ndarray):
-            _logger.info("integrating the whole sphere method selected")
-            self.method = "integrate_sphere"
-        elif isinstance(self.f, np.ndarray):
-            _logger.info("integrating a region on the sphere method selected")
-            self.method = "integrate_region"
+        elif self.f is not None:
+            if self.mask is None:
+                _logger.info("integrating the whole sphere method selected")
+                self.method = "integrate_sphere"
+            else:
+                _logger.info("integrating a region on the sphere method selected")
+                self.method = "integrate_region"
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "
