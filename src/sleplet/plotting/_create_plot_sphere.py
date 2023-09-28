@@ -2,6 +2,7 @@ import dataclasses
 import logging
 
 import cmocean
+import jax
 import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
@@ -84,10 +85,12 @@ class PlotSphere:
         camera = sleplet._plotly_methods.create_camera(-0.1, -0.1, 10, 7.88)
 
         # pick largest tick max value
-        tick_mark = sleplet._plotly_methods.create_tick_mark(
-            vmin,
-            vmax,
-            amplitude=self.amplitude,
+        tick_mark = float(
+            sleplet._plotly_methods.create_tick_mark(
+                vmin,
+                vmax,
+                amplitude=self.amplitude,
+            ),
         )
 
         data = [
@@ -121,7 +124,7 @@ class PlotSphere:
 
     @staticmethod
     def _setup_plot(  # noqa: PLR0913
-        f: npt.NDArray[np.float_],
+        f: jax.Array,
         resolution: int,
         *,
         method: str = "MW",
