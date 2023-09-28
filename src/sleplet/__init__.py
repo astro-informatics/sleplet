@@ -2,6 +2,8 @@
 
 import logging
 
+import jax
+
 from . import (
     functions,
     harmonic_methods,
@@ -38,3 +40,5 @@ _console_handler.setFormatter(_formatter)
 _logger.addHandler(_console_handler)
 _logger.setLevel("INFO")
 _logger.propagate = False
+
+jax.config.update("jax_enable_x64", True)  # noqa: FBT003
