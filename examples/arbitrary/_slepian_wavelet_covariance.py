@@ -28,7 +28,7 @@ def compute_slepian_wavelet_covariance(
         covariance.shape[0],
     )
     np.testing.assert_equal(
-        ssht.sample_shape(slepian_wavelets.L, Method=SAMPLING_SCHEME),
+        ssht.sample_shape(slepian_wavelets.L, Method=SAMPLING_SCHEME.upper()),
         covariance.shape[1:],
     )
     return covariance

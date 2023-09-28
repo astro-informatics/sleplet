@@ -15,7 +15,7 @@ SAMPLING_SCHEME = "mwss"
 def compute_translation_normalisation_theta() -> None:
     """Analysis of the translation norm for referee."""
     hg = sleplet.functions.HarmonicGaussian(L)
-    thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME.upper())
     norm = np.zeros(len(thetas))
     for i, theta in enumerate(thetas):
         print(f"compute norm {i+1}/{len(thetas)}")
