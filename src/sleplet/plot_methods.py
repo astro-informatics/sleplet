@@ -102,7 +102,7 @@ def find_max_amplitude(
         )
     else:
         field = s2fft.inverse(
-            function.coefficients,
+            s2fft.sampling.s2_samples.flm_1d_to_2d(function.coefficients, function.L),
             function.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
@@ -263,7 +263,7 @@ def _coefficients_to_field_sphere(
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, "slepian")
         else s2fft.inverse(
-            coefficients,
+            s2fft.sampling.s2_samples.flm_1d_to_2d(coefficients, f.L),
             f.L,
             method=sleplet._vars.EXECUTION_MODE,
             reality=f.reality,

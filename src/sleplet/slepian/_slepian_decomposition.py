@@ -57,7 +57,10 @@ class SlepianDecomposition:
         assert isinstance(self.mask, np.ndarray)  # noqa: S101
         assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = s2fft.inverse(
-            self.slepian.eigenvectors[rank],
+            s2fft.sampling.s2_samples.flm_1d_to_2d(
+                self.slepian.eigenvectors[rank],
+                self.L,
+            ),
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
@@ -79,7 +82,10 @@ class SlepianDecomposition:
         """
         assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = s2fft.inverse(
-            self.slepian.eigenvectors[rank],
+            s2fft.sampling.s2_samples.flm_1d_to_2d(
+                self.slepian.eigenvectors[rank],
+                self.L,
+            ),
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,

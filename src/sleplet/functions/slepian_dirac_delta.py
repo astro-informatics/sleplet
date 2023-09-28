@@ -69,7 +69,10 @@ class SlepianDiracDelta(Fp):
             ),
         )
         sp = s2fft.inverse(
-            self.slepian.eigenvectors[0],
+            s2fft.sampling.s2_samples.flm_1d_to_2d(
+                self.slepian.eigenvectors[0],
+                self.L,
+            ),
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,

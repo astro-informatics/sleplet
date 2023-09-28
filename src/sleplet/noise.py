@@ -142,7 +142,7 @@ def harmonic_hard_thresholding(
     for j, coefficient in enumerate(wav_coeffs[1:]):
         _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
         f = s2fft.inverse(
-            coefficient,
+            s2fft.sampling.s2_samples.flm_1d_to_2d(coefficient, L),
             L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,

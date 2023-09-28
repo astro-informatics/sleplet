@@ -61,7 +61,7 @@ class Africa(Flm):
         )
         rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, self.L)
         earth_f = s2fft.inverse(
-            rot_flm,
+            s2fft.sampling.s2_samples.flm_1d_to_2d(rot_flm, self.L),
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             reality=self.reality,
