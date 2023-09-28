@@ -95,13 +95,16 @@ def ensure_masked_flm_bandlimited(
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
-    return s2fft.forward(
-        field,
+    return s2fft.sampling.s2_samples.flm_2d_to_1d(
+        s2fft.forward(
+            field,
+            L,
+            method=sleplet._vars.EXECUTION_MODE,
+            reality=reality,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
+            spin=spin,
+        ),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
-        spin=spin,
     )
 
 

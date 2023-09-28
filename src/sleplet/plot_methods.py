@@ -187,13 +187,16 @@ def _boost_field(  # noqa: PLR0913
     """Inverts and then boosts the field before plotting."""
     if not upsample:
         return field
-    flm = s2fft.forward(
-        field,
+    flm = s2fft.sampling.s2_samples.flm_2d_to_1d(
+        s2fft.forward(
+            field,
+            L,
+            method=sleplet._vars.EXECUTION_MODE,
+            reality=reality,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
+            spin=spin,
+        ),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
-        spin=spin,
     )
     return sleplet.harmonic_methods.invert_flm_boosted(
         flm,

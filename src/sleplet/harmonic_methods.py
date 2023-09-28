@@ -91,13 +91,16 @@ def _ensure_f_bandlimited(
         (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
-    return s2fft.forward(
-        f,
+    return s2fft.sampling.s2_samples.flm_2d_to_1d(
+        s2fft.forward(
+            f,
+            L,
+            method=sleplet._vars.EXECUTION_MODE,
+            reality=reality,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
+            spin=spin,
+        ),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
-        spin=spin,
     )
 
 
