@@ -63,6 +63,7 @@ class Africa(Flm):
         earth_f = s2fft.inverse(
             rot_flm,
             self.L,
+            method=sleplet._vars.EXECUTION_MODE,
             reality=self.reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )

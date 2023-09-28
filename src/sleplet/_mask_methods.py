@@ -88,6 +88,7 @@ def ensure_masked_flm_bandlimited(
     field = s2fft.inverse(
         flm,
         L,
+        method=sleplet._vars.EXECUTION_MODE,
         reality=reality,
         sampling=sleplet._vars.SAMPLING_SCHEME,
         spin=spin,
@@ -97,6 +98,7 @@ def ensure_masked_flm_bandlimited(
     return s2fft.forward(
         field,
         L,
+        method=sleplet._vars.EXECUTION_MODE,
         reality=reality,
         sampling=sleplet._vars.SAMPLING_SCHEME,
         spin=spin,
@@ -160,6 +162,7 @@ def _create_africa_mask(
     earth_f = s2fft.inverse(
         rot_flm,
         L,
+        method=sleplet._vars.EXECUTION_MODE,
         reality=True,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
@@ -179,6 +182,7 @@ def _create_south_america_mask(
     earth_f = s2fft.inverse(
         rot_flm,
         L,
+        method=sleplet._vars.EXECUTION_MODE,
         reality=True,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )

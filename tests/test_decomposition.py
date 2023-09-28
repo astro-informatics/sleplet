@@ -9,6 +9,7 @@ def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
     field = s2fft.inverse(
         earth_polar_cap.coefficients,
         slepian_polar_cap.L,
+        method=sleplet._vars.EXECUTION_MODE,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     harmonic_sum_p = sleplet.slepian_methods.slepian_forward(
@@ -47,6 +48,7 @@ def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> No
     field = s2fft.inverse(
         earth_lim_lat_lon.coefficients,
         slepian_lim_lat_lon.L,
+        method=sleplet._vars.EXECUTION_MODE,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     harmonic_sum_p = sleplet.slepian_methods.slepian_forward(
@@ -95,6 +97,7 @@ def test_equality_to_harmonic_transform_polar(
     f_harmonic = s2fft.inverse(
         earth_polar_cap.coefficients,
         slepian_polar_cap.L,
+        method=sleplet._vars.EXECUTION_MODE,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     mask = sleplet._mask_methods.create_mask_region(
@@ -122,6 +125,7 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
     f_harmonic = s2fft.inverse(
         earth_lim_lat_lon.coefficients,
         slepian_lim_lat_lon.L,
+        method=sleplet._vars.EXECUTION_MODE,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     mask = sleplet._mask_methods.create_mask_region(

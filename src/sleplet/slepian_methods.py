@@ -144,6 +144,7 @@ def compute_s_p_omega(
         sp[p] = s2fft.inverse(
             slepian.eigenvectors[p],
             L,
+            method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
     return sp

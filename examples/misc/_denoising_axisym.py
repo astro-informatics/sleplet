@@ -59,5 +59,10 @@ def denoising_axisym(  # noqa: PLR0913
         else flm
     )
 
-    f = s2fft.inverse(flm, signal.L, sampling=SAMPLING_SCHEME)
+    f = s2fft.inverse(
+        flm,
+        signal.L,
+        method=sleplet._vars.EXECUTION_MODE,
+        sampling=SAMPLING_SCHEME,
+    )
     return f, noised_signal.snr, denoised_snr
