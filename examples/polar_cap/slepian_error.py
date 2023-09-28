@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
-import s2fft
 import seaborn as sns
+
+import s2fft
 
 import sleplet
 

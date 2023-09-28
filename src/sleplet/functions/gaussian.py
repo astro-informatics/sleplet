@@ -2,6 +2,7 @@
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
+
 import s2fft
 
 import sleplet._string_methods

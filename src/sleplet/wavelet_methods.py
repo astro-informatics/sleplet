@@ -1,6 +1,7 @@
 """Methods to work with wavelet and wavelet coefficients."""
 import numpy as np
 import numpy.typing as npt
+
 import s2fft
 import s2wav
 

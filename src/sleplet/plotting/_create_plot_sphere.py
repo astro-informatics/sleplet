@@ -8,6 +8,7 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic.v1 as pydantic
+
 import pyssht as ssht
 import s2fft
 
