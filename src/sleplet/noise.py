@@ -82,13 +82,12 @@ def _create_noise(
     for ell in range(L):
         nlm[ell, L - 1] = sigma_noise * rng.standard_normal()
         for m in range(1, ell + 1):
-            ind_pm = (ell, L + m - 1)
-            nlm[ind_pm] = (
+            nlm[ell, L + m - 1] = (
                 sigma_noise
                 / np.sqrt(2)
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
-            nlm[ell, L - m - 1] = (-1) ** m * nlm[ind_pm].conj()
+            nlm[ell, L - m - 1] = (-1) ** m * nlm[ell, L + m - 1].conj()
     return s2fft.sampling.s2_samples.flm_2d_to_1d(nlm, L)
 
 
