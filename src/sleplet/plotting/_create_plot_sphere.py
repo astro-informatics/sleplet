@@ -27,7 +27,7 @@ _MW_POLE_LENGTH = 2
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 
-    f: npt.NDArray[np.complex_ | np.float_]
+    f: jax.Array
     """The field value sampled on the sphere."""
     L: int
     """The spherical harmonic bandlimit."""
