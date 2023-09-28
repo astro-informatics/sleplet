@@ -59,7 +59,12 @@ import sleplet
 for ell in range(2, 0, -1):
     f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
     flm = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
-    f_sphere = s2fft.inverse(flm, f.L, method="jax", sampling="mwss")
+    f_sphere = s2fft.inverse(
+        s2fft.sampling.s2_samples.flm_1d_to_2d(flm, f.L),
+        f.L,
+        method="jax",
+        sampling="mwss",
+    )
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -80,8 +85,17 @@ import sleplet
 
 f = sleplet.functions.Earth(128)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
-f_sphere = s2fft.inverse(flm, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2").execute()
+f_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(flm, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_2",
+).execute()
 ```
 
 #### Sifting Convolution on the Sphere: Fig. 3
@@ -101,8 +115,17 @@ for ell in range(2, 0, -1):
     g = sleplet.functions.Earth(128)
     flm = f.convolve(f.coefficients, g.coefficients.conj())
     flm_rot = sleplet.harmonic_methods.rotate_earth_to_south_america(flm, f.L)
-    f_sphere = s2fft.inverse(flm_rot, f.L, method="jax", sampling="mwss")
-    sleplet.plotting.PlotSphere(f_sphere, f.L, f"fig_3_ell_{ell}").execute()
+    f_sphere = s2fft.inverse(
+        s2fft.sampling.s2_samples.flm_1d_to_2d(flm_rot, f.L),
+        f.L,
+        method="jax",
+        sampling="mwss",
+    )
+    sleplet.plotting.PlotSphere(
+        f_sphere,
+        f.L,
+        f"fig_3_ell_{ell}",
+    ).execute()
 ```
 
 ### Slepian Scale-Discretised Wavelets on the Sphere
@@ -132,8 +155,18 @@ import sleplet
 # a
 f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
-f_sphere = s2fft.inverse(flm, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_a", normalise=False).execute()
+f_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(flm, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_3_a",
+    normalise=False,
+).execute()
 # b
 region = sleplet.slepian.Region(mask_name="south_america")
 g = sleplet.functions.SlepianSouthAmerica(128, region=region, smoothing=2)
@@ -288,8 +321,18 @@ import sleplet
 # a
 f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_africa(f.coefficients, f.L)
-f_sphere = s2fft.inverse(flm, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_9_a", normalise=False).execute()
+f_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(flm, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_9_a",
+    normalise=False,
+).execute()
 # b
 region = sleplet.slepian.Region(mask_name="africa")
 g = sleplet.functions.SlepianAfrica(128, region=region, smoothing=2)
@@ -446,7 +489,12 @@ mesh = sleplet.meshes.Mesh("homer")
 for r in range(2, 10):
     f = sleplet.meshes.MeshBasisFunctions(mesh, rank=r)
     f_mesh = sleplet.harmonic_methods.mesh_inverse(f.mesh, f.coefficients)
-    sleplet.plotting.PlotMesh(mesh, f"fig_2_r_{r}", f_mesh, normalise=False).execute()
+    sleplet.plotting.PlotMesh(
+        mesh,
+        f"fig_2_r_{r}",
+        f_mesh,
+        normalise=False,
+    ).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 4
@@ -536,7 +584,12 @@ import sleplet
 mesh = sleplet.meshes.Mesh("homer")
 f = sleplet.meshes.MeshField(mesh)
 f_mesh = sleplet.harmonic_methods.mesh_inverse(f.mesh, f.coefficients)
-sleplet.plotting.PlotMesh(mesh, "fig_9", f_mesh, normalise=False).execute()
+sleplet.plotting.PlotMesh(
+    mesh,
+    "fig_9",
+    f_mesh,
+    normalise=False,
+).execute()
 ```
 
 #### Slepian Scale-Discretised Wavelets on Manifolds: Fig. 10
@@ -645,7 +698,12 @@ import sleplet
 for ell in range(5):
     for m in range(ell + 1):
         f = sleplet.functions.SphericalHarmonic(128, ell=ell, m=m)
-        f_sphere = s2fft.inverse(f.coefficients, f.L, method="jax", sampling="mwss")
+        f_sphere = s2fft.inverse(
+            s2fft.sampling.s2_samples.flm_1d_to_2d(f.coefficients, f.L),
+            f.L,
+            method="jax",
+            sampling="mwss",
+        )
         sleplet.plotting.PlotSphere(
             f_sphere,
             f.L,
@@ -675,12 +733,27 @@ import sleplet
 
 # a
 f = sleplet.functions.ElongatedGaussian(128, p_sigma=0.1, t_sigma=0.1)
-f_sphere = s2fft.inverse(f.coefficients, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2_2_a", annotations=[]).execute()
+f_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_2_2_a",
+    annotations=[],
+).execute()
 # b-d
 for a, b, g in [(0, 0, 0.25), (0, 0.25, 0.25), (0.25, 0.25, 0.25)]:
     glm_rot = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
-    g_sphere = s2fft.inverse(glm_rot, f.L, method="jax", sampling="mwss")
+    g_sphere = s2fft.inverse(
+        s2fft.sampling.s2_samples.flm_1d_to_2d(glm_rot, f.L),
+        f.L,
+        method="jax",
+        sampling="mwss",
+    )
     sleplet.plotting.PlotSphere(
         g_sphere,
         f.L,
@@ -718,7 +791,12 @@ import sleplet
 
 for j in [None, *list(range(4))]:
     f = sleplet.functions.AxisymmetricWavelets(128, B=3, j_min=2, j=j)
-    f_sphere = s2fft.inverse(f.coefficients, f.L, method="jax", sampling="mwss")
+    f_sphere = s2fft.inverse(
+        s2fft.sampling.s2_samples.flm_1d_to_2d(f.coefficients, f.L),
+        f.L,
+        method="jax",
+        sampling="mwss",
+    )
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -763,12 +841,32 @@ import sleplet
 
 # a
 f = sleplet.functions.Gaussian(128)
-f_sphere = s2fft.inverse(f.coefficients, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_1_a", annotations=[]).execute()
+f_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_3_1_a",
+    annotations=[],
+).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
-g_sphere = s2fft.inverse(glm_trans, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_1_b", annotations=[]).execute()
+g_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(glm_trans, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    g_sphere,
+    f.L,
+    "fig_3_1_b",
+    annotations=[],
+).execute()
 ```
 
 ##### Fig. 3.2
@@ -787,12 +885,32 @@ import sleplet
 
 # a
 f = sleplet.functions.SquashedGaussian(128)
-f_sphere = s2fft.inverse(f.coefficients, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_2_a", annotations=[]).execute()
+f_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_3_2_a",
+    annotations=[],
+).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
-g_sphere = s2fft.inverse(glm_trans, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_2_b", annotations=[]).execute()
+g_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(glm_trans, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    g_sphere,
+    f.L,
+    "fig_3_2_b",
+    annotations=[],
+).execute()
 ```
 
 ##### Fig. 3.3
@@ -811,12 +929,32 @@ import sleplet
 
 # a
 f = sleplet.functions.ElongatedGaussian(128)
-f_sphere = s2fft.inverse(f.coefficients, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_3_a", annotations=[]).execute()
+f_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    f_sphere,
+    f.L,
+    "fig_3_3_a",
+    annotations=[],
+).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
-g_sphere = s2fft.inverse(glm_trans, f.L, method="jax", sampling="mwss")
-sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_3_b", annotations=[]).execute()
+g_sphere = s2fft.inverse(
+    s2fft.sampling.s2_samples.flm_1d_to_2d(glm_trans, f.L),
+    f.L,
+    method="jax",
+    sampling="mwss",
+)
+sleplet.plotting.PlotSphere(
+    g_sphere,
+    f.L,
+    "fig_3_3_b",
+    annotations=[],
+).execute()
 ```
 
 ##### Fig. 3.4
@@ -835,7 +973,12 @@ import sleplet
 
 for ell in range(2, 0, -1):
     f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
-    f_sphere = s2fft.inverse(f.coefficients, f.L, method="jax", sampling="mwss")
+    f_sphere = s2fft.inverse(
+        s2fft.sampling.s2_samples.flm_1d_to_2d(f.coefficients, f.L),
+        f.L,
+        method="jax",
+        sampling="mwss",
+    )
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
