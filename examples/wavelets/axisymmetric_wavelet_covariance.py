@@ -5,6 +5,7 @@ import s2fft
 import sleplet
 
 B = 3
+EXECUTION_MODE = "jax"
 J_MIN = 2
 L = 128
 RANDOM_SEED = 30
@@ -85,7 +86,7 @@ def axisymmetric_wavelet_covariance(
             f_wav_j = s2fft.inverse(
                 s2fft.sampling.s2_samples.flm_1d_to_2d(coefficient, L),
                 L,
-                method=sleplet._vars.EXECUTION_MODE,
+                method=EXECUTION_MODE,
                 sampling=SAMPLING_SCHEME,
             )
             covar_data[i, j] = (

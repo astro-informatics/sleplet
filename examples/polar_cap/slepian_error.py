@@ -8,6 +8,7 @@ import sleplet
 
 sns.set(context="paper")
 
+EXECUTION_MODE = "jax"
 L = 16
 SAMPLING_SCHEME = "mwss"
 THETA_MAX = 40
@@ -20,7 +21,7 @@ def main() -> None:
     field = s2fft.inverse(
         s2fft.sampling.s2_samples.flm_1d_to_2d(earth.coefficients, L),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
+        method=EXECUTION_MODE,
         sampling=SAMPLING_SCHEME,
     )
     integrate_region = _helper_region(L, region, field, earth.coefficients)

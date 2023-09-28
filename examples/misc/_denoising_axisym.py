@@ -4,6 +4,7 @@ import s2fft
 
 import sleplet
 
+EXECUTION_MODE = "jax"
 SAMPLING_SCHEME = "mwss"
 
 
@@ -62,7 +63,7 @@ def denoising_axisym(  # noqa: PLR0913
     f = s2fft.inverse(
         s2fft.sampling.s2_samples.flm_1d_to_2d(flm, signal.L),
         signal.L,
-        method=sleplet._vars.EXECUTION_MODE,
+        method=EXECUTION_MODE,
         sampling=SAMPLING_SCHEME,
     )
     return f, noised_signal.snr, denoised_snr
