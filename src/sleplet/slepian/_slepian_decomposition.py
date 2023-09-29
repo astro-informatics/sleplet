@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
+
 import pyssht as ssht
 
 import sleplet._integration_methods

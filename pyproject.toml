@@ -111,6 +111,19 @@ ignore = [
     "N803",
     "N806",
 ]
+isort = {known-first-party = [
+    "sleplet",
+], section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "astro-info",
+    "first-party",
+    "local-folder",
+], sections = {"astro-info" = [
+    "pyssht",
+    "s2wav",
+]}}
 per-file-ignores = {"examples/*" = [
     "D100",
     "T201",
@@ -161,7 +174,6 @@ select = [
     "YTT",
 ]
 target-version = "py310"
-isort.known-first-party = ["sleplet"]
 mccabe.max-complexity = 18
 pep8-naming.classmethod-decorators = [
     "classmethod",
@@ -178,6 +190,7 @@ spaces_indent_inline_array = 4
 trailing_comma_inline_array = true
 overrides."project.classifiers".inline_arrays = false
 overrides."tool.coverage.paths.source".inline_arrays = false
+overrides."tool.ruff.isort.section-order".inline_arrays = false
 
 [tool.tox]
 legacy_tox_ini = """

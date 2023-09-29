@@ -1,5 +1,6 @@
 import hypothesis
 import numpy as np
+
 import pyssht as ssht
 
 import sleplet
