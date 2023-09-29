@@ -79,8 +79,10 @@ def axisymmetric_wavelet_forward(
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
-        ind_m0 = s2fft.samples.elm2ind(ell, 0)
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0].conj()
+        wav_0 = (
+            np.sqrt((4 * np.pi) / (2 * ell + 1))
+            * wavelets[:, s2fft.samples.elm2ind(ell, 0)].conj()
+        )
         for m in range(-ell, ell + 1):
             ind = s2fft.samples.elm2ind(ell, m)
             w[:, ind] = wav_0 * flm[ind]
@@ -105,11 +107,14 @@ def axisymmetric_wavelet_inverse(
     """
     flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
     for ell in range(L):
-        ind_m0 = s2fft.samples.elm2ind(ell, 0)
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0]
+        wav_0 = (
+            np.sqrt((4 * np.pi) / (2 * ell + 1))
+            * wavelets[:, s2fft.samples.elm2ind(ell, 0)]
+        )
         for m in range(-ell, ell + 1):
-            ind = s2fft.samples.elm2ind(ell, m)
-            flm[ell, L + m - 1] = (wav_coeffs[:, ind] * wav_0).sum()
+            flm[ell, L + m - 1] = (
+                wav_coeffs[:, s2fft.samples.elm2ind(ell, m)] * wav_0
+            ).sum()
     return s2fft.samples.flm_2d_to_1d(flm, L)
 
 
