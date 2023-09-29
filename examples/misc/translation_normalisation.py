@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import s2fft
 import seaborn as sns
 
 import pyssht as ssht
+import s2fft
 
 import sleplet
 

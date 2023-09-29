@@ -3,9 +3,9 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import s2fft
 
 import pyssht as ssht
+import s2fft
 
 import sleplet._vars
 import sleplet.harmonic_methods
@@ -74,25 +74,22 @@ def _create_noise(
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # initialise
-    nlm = np.zeros(L**2, dtype=np.complex_)
+    nlm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
 
     # std dev of the noise
     sigma_noise = compute_sigma_noise(signal, snr_in)
 
     # compute noise
     for ell in range(L):
-        ind = s2fft.samples.elm2ind(ell, 0)
-        nlm[ind] = sigma_noise * rng.standard_normal()
+        nlm[ell, L - 1] = sigma_noise * rng.standard_normal()
         for m in range(1, ell + 1):
-            ind_pm = s2fft.samples.elm2ind(ell, m)
-            ind_nm = s2fft.samples.elm2ind(ell, -m)
-            nlm[ind_pm] = (
+            nlm[ell, L - 1 + m] = (
                 sigma_noise
                 / np.sqrt(2)
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
-            nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
-    return nlm
+            nlm[ell, L - 1 - m] = (-1) ** m * nlm[ell, L - 1 + m].conj()
+    return s2fft.samples.flm_2d_to_1d(nlm, L)
 
 
 def _create_slepian_noise(
