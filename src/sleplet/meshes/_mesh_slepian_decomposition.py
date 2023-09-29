@@ -96,12 +96,12 @@ class MeshSlepianDecomposition:
             _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
         elif self.u is not None:
-            if self.mask is None:
-                _logger.info("integrating the whole mesh method selected")
-                self.method = "integrate_mesh"
-            else:
+            if self.mask:
                 _logger.info("integrating a region on the mesh method selected")
                 self.method = "integrate_region"
+            else:
+                _logger.info("integrating the whole mesh method selected")
+                self.method = "integrate_mesh"
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "
