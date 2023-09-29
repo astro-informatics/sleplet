@@ -2,6 +2,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
+
 import pyssht as ssht
 
 _logger = logging.getLogger(__name__)
