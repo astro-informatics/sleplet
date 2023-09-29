@@ -92,15 +92,16 @@ class MeshSlepianDecomposition:
 
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""
-        if isinstance(self.u_i, np.ndarray):
+        if self.u_i is not None:
             _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
-        elif isinstance(self.u, np.ndarray) and not self.mask:
-            _logger.info("integrating the whole mesh method selected")
-            self.method = "integrate_mesh"
-        elif isinstance(self.u, np.ndarray):
-            _logger.info("integrating a region on the mesh method selected")
-            self.method = "integrate_region"
+        elif self.u is not None:
+            if self.mask is None:
+                _logger.info("integrating the whole mesh method selected")
+                self.method = "integrate_mesh"
+            else:
+                _logger.info("integrating a region on the mesh method selected")
+                self.method = "integrate_region"
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "
