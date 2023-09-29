@@ -7,7 +7,9 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic
+
 import pyssht as ssht
+import s2fft
 
 import sleplet._plotly_methods
 import sleplet._validation
@@ -16,8 +18,6 @@ import sleplet.plot_methods
 import sleplet.slepian.region
 
 _logger = logging.getLogger(__name__)
-
-_MW_POLE_LENGTH = 2
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
@@ -123,7 +123,7 @@ class PlotSphere:
         f: npt.NDArray[np.float_],
         resolution: int,
         *,
-        method: str = "MW",
+        method: str = "mw",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: list[float] | None = None,
@@ -139,13 +139,15 @@ class PlotSphere:
         """Function which creates the data for the matplotlib/plotly plot."""
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
-        if method == "MW_pole":
-            if len(f) == _MW_POLE_LENGTH:
-                f, _ = f
-            else:
-                f, _, _ = f
 
-        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
+        thetas = np.tile(
+            s2fft.samples.thetas(resolution, sampling=method),
+            (s2fft.samples.nphi_equiang(resolution, sampling=method), 1),
+        ).T
+        phis = np.tile(
+            s2fft.samples.phis_equiang(resolution, sampling=method),
+            (s2fft.samples.ntheta(resolution, sampling=method), 1),
+        )
 
         if thetas.size != f.size:
             raise AttributeError("Bandlimit L deos not match that of f")
@@ -175,7 +177,7 @@ class PlotSphere:
 
         # Close plot.
         if close:
-            _, n_phi = ssht.sample_shape(resolution, Method=method)
+            n_phi = s2fft.samples.nphi_equiang(resolution, sampling=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(

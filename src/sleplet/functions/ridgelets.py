@@ -4,9 +4,10 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
-import pyssht as ssht
-import s2wav
 import scipy.special
+
+import s2fft
+import s2wav
 
 import sleplet._string_methods
 import sleplet._validation
@@ -69,16 +70,20 @@ class Ridgelets(Flm):
         """Compute all wavelets."""
         ring_lm = self._compute_ring()
         kappas = sleplet.wavelet_methods.create_kappas(self.L, self.B, self.j_min)
-        wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
+        wavelets = np.zeros(
+            (kappas.shape[0], *s2fft.samples.flm_shape(self.L)),
+            dtype=np.complex_,
+        )
         for ell in range(self.L):
-            ind = ssht.elm2ind(ell, 0)
-            wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
-            wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
-        return wavelets
+            wavelets[0, ell, self.L - 1] = kappas[0, ell] * ring_lm[ell, self.L - 1]
+            wavelets[1:, ell, self.L - 1] = (
+                kappas[1:, ell] * ring_lm[ell, self.L - 1] / np.sqrt(2 * np.pi)
+            )
+        return np.array([s2fft.samples.flm_2d_to_1d(w, self.L) for w in wavelets])
 
     def _compute_ring(self) -> npt.NDArray[np.complex_]:
         """Compute ring in harmonic space."""
-        ring_lm = np.zeros(self.L**2, dtype=np.complex_)
+        ring_lm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
         for ell in range(abs(self.spin), self.L):
             logp2 = (
                 scipy.special.gammaln(ell + self.spin + 1)
@@ -87,8 +92,7 @@ class Ridgelets(Flm):
                 - scipy.special.gammaln((ell - self.spin) / 2 + 1)
             )
             p0 = np.real((-1) ** ((ell + self.spin) / 2)) * np.exp(logp2)
-            ind = ssht.elm2ind(ell, 0)
-            ring_lm[ind] = (
+            ring_lm[ell, self.L - 1] = (
                 2
                 * np.pi
                 * np.sqrt((2 * ell + 1) / (4 * np.pi))

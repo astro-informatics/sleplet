@@ -4,6 +4,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
+
 import pyssht as ssht
 
 import sleplet._class_lists

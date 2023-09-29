@@ -5,6 +5,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
+
 import s2wav
 
 import sleplet._string_methods

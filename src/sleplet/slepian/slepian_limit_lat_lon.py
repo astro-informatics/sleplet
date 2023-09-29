@@ -7,6 +7,7 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
+
 import pyssht as ssht
 
 import sleplet._array_methods

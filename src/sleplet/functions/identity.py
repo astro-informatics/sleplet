@@ -3,6 +3,8 @@ import numpy as np
 import numpy.typing as npt
 import pydantic
 
+import s2fft
+
 import sleplet._string_methods
 import sleplet._validation
 from sleplet.functions.flm import Flm
@@ -16,7 +18,10 @@ class Identity(Flm):
         super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return np.ones(self.L**2, dtype=np.complex_)
+        return s2fft.samples.flm_2d_to_1d(
+            np.ones(s2fft.samples.flm_shape(self.L), dtype=np.complex_),
+            self.L,
+        )
 
     def _create_name(self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(

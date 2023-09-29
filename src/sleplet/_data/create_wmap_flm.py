@@ -1,8 +1,9 @@
 # noqa: D100
 import numpy as np
 import numpy.typing as npt
-import pyssht as ssht
 import scipy.io as sio
+
+import s2fft
 
 import sleplet._data.setup_pooch
 import sleplet._vars
@@ -17,21 +18,18 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # Simulate CMB in harmonic space.
-    flm = np.zeros(L**2, dtype=np.complex_)
+    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
     for ell in range(2, L):
         sigma = np.sqrt(2 * np.pi / (ell * (ell + 1)) * cl[ell - 2])
-        ind = ssht.elm2ind(ell, 0)
-        flm[ind] = sigma * rng.standard_normal()
+        flm[ell, L - 1] = sigma * rng.standard_normal()
         for m in range(1, ell + 1):
-            ind_pm = ssht.elm2ind(ell, m)
-            ind_nm = ssht.elm2ind(ell, -m)
-            flm[ind_pm] = (
+            flm[ell, L - 1 + m] = (
                 sigma
                 / np.sqrt(2)
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
-            flm[ind_nm] = (-1) ** m * flm[ind_pm].conj()
-    return flm
+            flm[ell, L - 1 - m] = (-1) ** m * flm[ell, L - 1 + m].conj()
+    return s2fft.samples.flm_2d_to_1d(flm, L)
 
 
 def _load_cl(

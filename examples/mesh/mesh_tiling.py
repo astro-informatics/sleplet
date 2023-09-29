@@ -2,7 +2,7 @@ import argparse
 
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy.interpolate
+import scipy
 import seaborn as sns
 
 import sleplet

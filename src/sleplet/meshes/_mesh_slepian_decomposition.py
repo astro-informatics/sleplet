@@ -54,7 +54,6 @@ class MeshSlepianDecomposition:
         \int\limits_{R} \dd{x}
         f(x) \overline{S_{p}(x)}.
         """
-        assert isinstance(self.u, np.ndarray)  # noqa: S101
         s_p = sleplet.harmonic_methods.mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
@@ -74,7 +73,6 @@ class MeshSlepianDecomposition:
         \int\limits_{x} \dd{x}
         f(x) \overline{S_{p}(x)}.
         """
-        assert isinstance(self.u, np.ndarray)  # noqa: S101
         s_p = sleplet.harmonic_methods.mesh_inverse(
             self.mesh_slepian.mesh,
             self.mesh_slepian.slepian_functions[rank],
@@ -96,15 +94,16 @@ class MeshSlepianDecomposition:
 
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""
-        if isinstance(self.u_i, np.ndarray):
+        if self.u_i is not None:
             _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
-        elif isinstance(self.u, np.ndarray) and not self.mask:
-            _logger.info("integrating the whole mesh method selected")
-            self.method = "integrate_mesh"
-        elif isinstance(self.u, np.ndarray):
-            _logger.info("integrating a region on the mesh method selected")
-            self.method = "integrate_region"
+        elif self.u is not None:
+            if self.mask:
+                _logger.info("integrating a region on the mesh method selected")
+                self.method = "integrate_region"
+            else:
+                _logger.info("integrating the whole mesh method selected")
+                self.method = "integrate_mesh"
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "
@@ -113,10 +112,6 @@ class MeshSlepianDecomposition:
 
     def _validate_rank(self, rank: int) -> None:
         """Checks the requested rank is valid."""
-        assert isinstance(  # noqa: S101
-            self.mesh_slepian.mesh.number_basis_functions,
-            int,
-        )
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:

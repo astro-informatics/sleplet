@@ -1,7 +1,8 @@
 """Methods to work with wavelet and wavelet coefficients."""
 import numpy as np
 import numpy.typing as npt
-import pyssht as ssht
+
+import s2fft
 import s2wav
 
 import sleplet._convolution_methods
@@ -78,11 +79,9 @@ def axisymmetric_wavelet_forward(
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
-        ind_m0 = ssht.elm2ind(ell, 0)
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0].conj()
+        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1].conj()
         for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
-            w[:, ind] = wav_0 * flm[ind]
+            w[:, ell, L - 1 + m] = wav_0 * flm[s2fft.samples.elm2ind(ell, m)]
     return w
 
 
@@ -102,14 +101,12 @@ def axisymmetric_wavelet_inverse(
     Returns:
         Spherical harmonic coefficients of the signal.
     """
-    flm = np.zeros(L**2, dtype=np.complex_)
+    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
     for ell in range(L):
-        ind_m0 = ssht.elm2ind(ell, 0)
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0]
+        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1]
         for m in range(-ell, ell + 1):
-            ind = ssht.elm2ind(ell, m)
-            flm[ind] = (wav_coeffs[:, ind] * wav_0).sum()
-    return flm
+            flm[ell, L - 1 + m] = (wav_coeffs[:, ell, L - 1 + m] * wav_0).sum()
+    return s2fft.samples.flm_2d_to_1d(flm, L)
 
 
 def _create_axisymmetric_wavelets(
@@ -119,11 +116,13 @@ def _create_axisymmetric_wavelets(
 ) -> npt.NDArray[np.complex_]:
     """Computes the axisymmetric wavelets."""
     kappas = create_kappas(L, B, j_min)
-    wavelets = np.zeros((kappas.shape[0], L**2), dtype=np.complex_)
+    wavelets = np.zeros(
+        (kappas.shape[0], *s2fft.samples.flm_shape(L)),
+        dtype=np.complex_,
+    )
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
-        ind = ssht.elm2ind(ell, 0)
-        wavelets[:, ind] = factor * kappas[:, ell]
+        wavelets[:, ell, L - 1] = factor * kappas[:, ell]
     return wavelets
 
 

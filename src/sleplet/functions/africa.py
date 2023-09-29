@@ -2,6 +2,7 @@
 import numpy as np
 import numpy.typing as npt
 import pydantic
+
 import pyssht as ssht
 
 import sleplet._data.create_earth_flm
@@ -64,7 +65,7 @@ class Africa(Flm):
             rot_flm,
             self.L,
             Reality=self.reality,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
         mask_name = f"{self.name}_L{self.L}.npy"
         mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(

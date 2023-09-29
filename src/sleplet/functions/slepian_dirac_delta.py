@@ -5,7 +5,9 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
+
 import pyssht as ssht
+import s2fft
 
 import sleplet._string_methods
 import sleplet._validation
@@ -56,15 +58,24 @@ class SlepianDiracDelta(Fp):
 
     def _compute_angles(self) -> None:
         """Computes alpha/beta if not provided."""
-        thetas, phis = ssht.sample_positions(
-            self.L,
-            Grid=True,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+        thetas = np.tile(
+            s2fft.samples.thetas(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
+            (
+                s2fft.samples.nphi_equiang(
+                    self.L,
+                    sampling=sleplet._vars.SAMPLING_SCHEME,
+                ),
+                1,
+            ),
+        ).T
+        phis = np.tile(
+            s2fft.samples.phis_equiang(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
+            (s2fft.samples.ntheta(self.L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
         )
         sp = ssht.inverse(
             self.slepian.eigenvectors[0],
             self.L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self._alpha = phis[idx]

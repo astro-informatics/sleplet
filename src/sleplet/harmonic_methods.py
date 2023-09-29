@@ -1,10 +1,12 @@
 """Methods to perform operations in Fourier space of the sphere or mesh."""
-import collections.abc
+import collections
 import typing
 
 import numpy as np
 import numpy.typing as npt
+
 import pyssht as ssht
+import s2fft
 
 import sleplet._data.create_earth_flm
 import sleplet._integration_methods
@@ -19,11 +21,11 @@ _SOUTH_AMERICA_BETA = np.deg2rad(108)
 _SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
-def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
+def _create_spherical_harmonic(L: int, ell: int, m: int) -> npt.NDArray[np.complex_]:
     """Create a spherical harmonic in harmonic space for the given index."""
-    flm = np.zeros(L**2, dtype=np.complex_)
-    flm[ind] = 1
-    return flm
+    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
+    flm[ell, L - 1 + m] = 1
+    return s2fft.samples.flm_2d_to_1d(flm, L)
 
 
 def _boost_coefficient_resolution(
@@ -62,7 +64,7 @@ def invert_flm_boosted(
         resolution,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 
@@ -80,10 +82,13 @@ def _ensure_f_bandlimited(
     If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     """
-    thetas, phis = ssht.sample_positions(
-        L,
-        Grid=True,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+    thetas = np.tile(
+        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
+    ).T
+    phis = np.tile(
+        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
     return ssht.forward(
@@ -91,7 +96,7 @@ def _ensure_f_bandlimited(
         L,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 

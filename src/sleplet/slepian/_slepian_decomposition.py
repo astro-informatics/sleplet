@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
+
 import pyssht as ssht
 
 import sleplet._integration_methods
@@ -56,12 +57,10 @@ class SlepianDecomposition:
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
         """
-        assert isinstance(self.mask, np.ndarray)  # noqa: S101
-        assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = ssht.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
         integration = sleplet._integration_methods.integrate_region_sphere(
@@ -78,11 +77,10 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
         """
-        assert isinstance(self.f, np.ndarray)  # noqa: S101
         s_p = ssht.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
         return sleplet._integration_methods.integrate_whole_sphere(
@@ -102,15 +100,16 @@ class SlepianDecomposition:
 
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""
-        if isinstance(self.flm, np.ndarray):
+        if self.flm is not None:
             _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
-        elif isinstance(self.f, np.ndarray) and not isinstance(self.mask, np.ndarray):
-            _logger.info("integrating the whole sphere method selected")
-            self.method = "integrate_sphere"
-        elif isinstance(self.f, np.ndarray):
-            _logger.info("integrating a region on the sphere method selected")
-            self.method = "integrate_region"
+        elif self.f is not None:
+            if self.mask is None:
+                _logger.info("integrating the whole sphere method selected")
+                self.method = "integrate_sphere"
+            else:
+                _logger.info("integrating a region on the sphere method selected")
+                self.method = "integrate_region"
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "
