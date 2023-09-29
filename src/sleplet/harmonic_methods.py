@@ -1,5 +1,5 @@
 """Methods to perform operations in Fourier space of the sphere or mesh."""
-import collections.abc
+import collections
 import typing
 
 import numpy as np
