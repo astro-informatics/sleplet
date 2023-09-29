@@ -1,9 +1,8 @@
 # noqa: D100
 import numpy as np
 import numpy.typing as npt
+import s2fft
 import scipy.io as sio
-
-import pyssht as ssht
 
 import sleplet._data.setup_pooch
 import sleplet._smoothing
@@ -18,8 +17,8 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
     # avoid confusion with zero values
     for ell in range(1, L):
         for m in range(1, ell + 1):
-            ind_pm = ssht.elm2ind(ell, m)
-            ind_nm = ssht.elm2ind(ell, -m)
+            ind_pm = s2fft.samples.elm2ind(ell, m)
+            ind_nm = s2fft.samples.elm2ind(ell, -m)
             flm_pm = flm[ind_pm]
             flm[ind_nm] = (-1) ** m * flm_pm.conj()
 

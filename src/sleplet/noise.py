@@ -3,6 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
+import s2fft
 
 import pyssht as ssht
 
@@ -80,11 +81,11 @@ def _create_noise(
 
     # compute noise
     for ell in range(L):
-        ind = ssht.elm2ind(ell, 0)
+        ind = s2fft.samples.elm2ind(ell, 0)
         nlm[ind] = sigma_noise * rng.standard_normal()
         for m in range(1, ell + 1):
-            ind_pm = ssht.elm2ind(ell, m)
-            ind_nm = ssht.elm2ind(ell, -m)
+            ind_pm = s2fft.samples.elm2ind(ell, m)
+            ind_nm = s2fft.samples.elm2ind(ell, -m)
             nlm[ind_pm] = (
                 sigma_noise
                 / np.sqrt(2)
