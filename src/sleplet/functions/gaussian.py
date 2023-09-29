@@ -2,8 +2,7 @@
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
-
-import pyssht as ssht
+import s2fft
 
 import sleplet._string_methods
 import sleplet._validation
@@ -23,7 +22,7 @@ class Gaussian(Flm):
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
-            ind = ssht.elm2ind(ell, 0)
+            ind = s2fft.samples.elm2ind(ell, 0)
             flm[ind] = np.exp(-ell * (ell + 1) / (2 * self.sigma**2))
         return flm
 
