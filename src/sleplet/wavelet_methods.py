@@ -79,11 +79,13 @@ def axisymmetric_wavelet_forward(
     """
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1].conj()
+        wav_0 = (
+            np.sqrt((4 * np.pi) / (2 * ell + 1))
+            * wavelets[:, s2fft.samples.elm2ind(ell, 0)].conj()
+        )
         for m in range(-ell, ell + 1):
-            w[:, ell, L + m - 1] = (
-                wav_0 * s2fft.sampling.s2_samples.flm_1d_to_2d(flm, L)[ell, L + m - 1]
-            )
+            ind = s2fft.samples.elm2ind(ell, m)
+            w[:, ind] = wav_0 * flm[ind]
     return w
 
 
@@ -103,12 +105,17 @@ def axisymmetric_wavelet_inverse(
     Returns:
         Spherical harmonic coefficients of the signal.
     """
-    flm = np.zeros((L, 2 * L - 1), dtype=np.complex_)
+    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
     for ell in range(L):
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1]
+        wav_0 = (
+            np.sqrt((4 * np.pi) / (2 * ell + 1))
+            * wavelets[:, s2fft.samples.elm2ind(ell, 0)]
+        )
         for m in range(-ell, ell + 1):
-            flm[ell, L + m - 1] = (wav_coeffs[:, ell, L + m - 1] * wav_0).sum()
-    return s2fft.sampling.s2_samples.flm_2d_to_1d(flm, L)
+            flm[ell, L + m - 1] = (
+                wav_coeffs[:, s2fft.samples.elm2ind(ell, m)] * wav_0
+            ).sum()
+    return s2fft.samples.flm_2d_to_1d(flm, L)
 
 
 def _create_axisymmetric_wavelets(
@@ -118,11 +125,14 @@ def _create_axisymmetric_wavelets(
 ) -> npt.NDArray[np.complex_]:
     """Computes the axisymmetric wavelets."""
     kappas = create_kappas(L, B, j_min)
-    wavelets = np.zeros((kappas.shape[0], L, 2 * L - 1), dtype=np.complex_)
+    wavelets = np.zeros(
+        (kappas.shape[0], *s2fft.samples.flm_shape(L)),
+        dtype=np.complex_,
+    )
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
         wavelets[:, ell, L - 1] = factor * kappas[:, ell]
-    return wavelets
+    return np.array([s2fft.samples.flm_2d_to_1d(wav, L) for wav in wavelets])
 
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
