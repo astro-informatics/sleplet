@@ -23,9 +23,9 @@ _SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 def _create_spherical_harmonic(L: int, ell: int, m: int) -> npt.NDArray[np.complex_]:
     """Create a spherical harmonic in harmonic space for the given index."""
-    flm = np.zeros((L, 2 * L - 1), dtype=np.complex_)
-    flm[ell, L + m - 1] = 1
-    return s2fft.sampling.s2_samples.flm_2d_to_1d(flm, L)
+    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
+    flm[ell, L - 1 + m] = 1
+    return s2fft.samples.flm_2d_to_1d(flm, L)
 
 
 def _boost_coefficient_resolution(
