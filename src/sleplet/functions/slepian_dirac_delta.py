@@ -63,11 +63,11 @@ class SlepianDiracDelta(Fp):
             ),
         ).T
         phis = np.tile(
-            s2fft.samples.phis_equiang(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
-            (
-                s2fft.samples.ntheta(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
-                1,
+            s2fft.samples.phis_equiang(
+                self.L,
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
+            (s2fft.samples.ntheta(self.L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
         )
         sp = s2fft.inverse(
             s2fft.sampling.s2_samples.flm_1d_to_2d(

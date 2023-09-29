@@ -21,10 +21,10 @@ class Gaussian(Flm):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        flm = np.zeros((self.L, 2 * self.L - 1), dtype=np.complex_)
+        flm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
         for ell in range(self.L):
             flm[ell, self.L - 1] = np.exp(-ell * (ell + 1) / (2 * self.sigma**2))
-        return s2fft.sampling.s2_samples.flm_2d_to_1d(flm, self.L)
+        return s2fft.samples.flm_2d_to_1d(flm, self.L)
 
     def _create_name(self) -> str:
         return (

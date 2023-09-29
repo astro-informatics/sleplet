@@ -158,13 +158,7 @@ class PlotSphere:
                 resolution,
                 sampling=method,
             ),
-            (
-                s2fft.samples.ntheta(
-                    resolution,
-                    sampling=method,
-                ),
-                1,
-            ),
+            (s2fft.samples.ntheta(resolution, sampling=method), 1),
         )
 
         if thetas.size != f.size:

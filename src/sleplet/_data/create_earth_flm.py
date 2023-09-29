@@ -16,18 +16,21 @@ def create_flm(
 ) -> npt.NDArray[np.complex_]:
     """Creates the flm for the whole Earth."""
     # load in data
-    flm, L_full = _load_flm()
+    flm_full, L_full = _load_flm()
 
-    # fill in negative m components so as to
-    # avoid confusion with zero values
+    # fill in negative m components so as to avoid confusion with zero values
     for ell in range(1, L):
         for m in range(1, ell + 1):
-            flm_pm = flm[ell, L_full + m - 1]
-            flm[ell, L_full - m - 1] = (-1) ** m * flm_pm.conj()
+            flm_full[ell, L_full - 1 - m] = (-1) ** m * flm_full[
+                ell,
+                L_full - 1 + m,
+            ].conj()
 
-    # don't take the full L
-    # invert dataset as Earth backwards
-    flm = flm[:L, L_full - L - 1 : L_full + L - 2].conj()
+    # don't take the full L, invert dataset as Earth backwards
+    flm = s2fft.samples.flm_2d_to_1d(
+        flm_full[:L, L_full - L : L_full + L - 1].conj(),
+        L,
+    )
 
     if isinstance(smoothing, int):
         flm = sleplet._smoothing.apply_gaussian_smoothing(flm, L, smoothing)
@@ -42,7 +45,7 @@ def _load_flm() -> tuple[npt.NDArray[np.complex_], int]:
         ),
     )
     L = int(mat_contents["L"])
-    flm = s2fft.sampling.s2_samples.flm_1d_to_2d(
+    flm = s2fft.samples.flm_1d_to_2d(
         np.ascontiguousarray(mat_contents["flm"][:, 0]),
         L,
     )
