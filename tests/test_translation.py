@@ -60,13 +60,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
             slepian_dirac_delta_polar_cap.L,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         ),
-        (
-            s2fft.samples.nphi_equiang(
-                L,
-                sampling=sleplet._vars.SAMPLING_SCHEME,
-            ),
-            1,
-        ),
+        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     ).T
     np.testing.assert_raises(
         AssertionError,
@@ -101,13 +95,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
             slepian_dirac_delta_lim_lat_lon.L,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         ),
-        (
-            s2fft.samples.nphi_equiang(
-                L,
-                sampling=sleplet._vars.SAMPLING_SCHEME,
-            ),
-            1,
-        ),
+        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     ).T
     np.testing.assert_raises(
         AssertionError,

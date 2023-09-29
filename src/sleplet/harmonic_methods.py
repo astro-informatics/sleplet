@@ -84,13 +84,7 @@ def _ensure_f_bandlimited(
     """
     thetas = np.tile(
         s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (
-            s2fft.samples.nphi_equiang(
-                L,
-                sampling=sleplet._vars.SAMPLING_SCHEME,
-            ),
-            1,
-        ),
+        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     ).T
     phis = np.tile(
         s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),

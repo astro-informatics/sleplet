@@ -71,13 +71,7 @@ class SlepianDiracDelta(Fp):
                 self.L,
                 sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
-            (
-                s2fft.samples.ntheta(
-                    self.L,
-                    sampling=sleplet._vars.SAMPLING_SCHEME,
-                ),
-                1,
-            ),
+            (s2fft.samples.ntheta(self.L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
         )
         sp = ssht.inverse(
             self.slepian.eigenvectors[0],
