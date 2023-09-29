@@ -3,6 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
+import s2fft
 
 import pyssht as ssht
 
@@ -136,7 +137,7 @@ def compute_s_p_omega(
     Returns:
         The complex \(S_{p}(\omega)\) values.
     """
-    n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME.upper())
+    n_theta, n_phi = s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
     for p in range(slepian.N):
         if p % L == 0:
