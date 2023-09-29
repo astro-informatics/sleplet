@@ -10,6 +10,7 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic.v1 as pydantic
+
 import pyssht as ssht
 
 import sleplet._data.setup_pooch

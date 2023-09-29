@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pyssht as ssht
 import seaborn as sns
+
+import pyssht as ssht
 
 import sleplet
 
