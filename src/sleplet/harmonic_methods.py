@@ -4,6 +4,7 @@ import typing
 
 import numpy as np
 import numpy.typing as npt
+import s2fft
 
 import pyssht as ssht
 
@@ -63,7 +64,7 @@ def invert_flm_boosted(
         resolution,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 
@@ -81,10 +82,19 @@ def _ensure_f_bandlimited(
     If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     """
-    thetas, phis = ssht.sample_positions(
-        L,
-        Grid=True,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+    thetas = np.tile(
+        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (
+            s2fft.samples.nphi_equiang(
+                L,
+                sampling=sleplet._vars.SAMPLING_SCHEME,
+            ),
+            1,
+        ),
+    ).T
+    phis = np.tile(
+        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
     return ssht.forward(
@@ -92,7 +102,7 @@ def _ensure_f_bandlimited(
         L,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import s2fft
 import seaborn as sns
 
 import pyssht as ssht
@@ -10,13 +11,13 @@ sns.set(context="paper")
 
 ALPHA_DEFAULT = 0.75
 L = 128
-SAMPLING_SCHEME = "MWSS"
+SAMPLING_SCHEME = "mwss"
 
 
 def compute_translation_normalisation_theta() -> None:
     """Analysis of the translation norm for referee."""
     hg = sleplet.functions.HarmonicGaussian(L)
-    thetas, _ = ssht.sample_positions(L, Method=SAMPLING_SCHEME)
+    thetas = s2fft.samples.thetas(L, sampling=SAMPLING_SCHEME)
     norm = np.zeros(len(thetas))
     for i, theta in enumerate(thetas):
         print(f"compute norm {i+1}/{len(thetas)}")
