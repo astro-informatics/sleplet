@@ -142,19 +142,10 @@ class PlotSphere:
 
         thetas = np.tile(
             s2fft.samples.thetas(resolution, sampling=method),
-            (
-                s2fft.samples.nphi_equiang(
-                    resolution,
-                    sampling=method,
-                ),
-                1,
-            ),
+            (s2fft.samples.nphi_equiang(resolution, sampling=method), 1),
         ).T
         phis = np.tile(
-            s2fft.samples.phis_equiang(
-                resolution,
-                sampling=method,
-            ),
+            s2fft.samples.phis_equiang(resolution, sampling=method),
             (s2fft.samples.ntheta(resolution, sampling=method), 1),
         )
 
