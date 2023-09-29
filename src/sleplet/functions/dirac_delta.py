@@ -20,7 +20,7 @@ class DiracDelta(Flm):
         flm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
         for ell in range(self.L):
             flm[ell, self.L - 1] = np.sqrt((2 * ell + 1) / (4 * np.pi))
-        return s2fft.sampling.s2_samples.flm_2d_to_1d(flm, self.L)
+        return s2fft.samples.flm_2d_to_1d(flm, self.L)
 
     def _create_name(self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(

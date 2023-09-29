@@ -89,7 +89,7 @@ def _create_noise(
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
             nlm[ell, L - 1 - m] = (-1) ** m * nlm[L - 1 + m].conj()
-    return s2fft.sampling.s2_samples.flm_2d_to_1d(nlm, L)
+    return s2fft.samples.flm_2d_to_1d(nlm, L)
 
 
 def _create_slepian_noise(
