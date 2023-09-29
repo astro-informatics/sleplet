@@ -132,7 +132,7 @@ def _create_axisymmetric_wavelets(
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
         wavelets[:, ell, L - 1] = factor * kappas[:, ell]
-    return np.array([s2fft.samples.flm_2d_to_1d(wav, L) for wav in wavelets])
+    return np.array([s2fft.samples.flm_2d_to_1d(w, L) for w in wavelets])
 
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
