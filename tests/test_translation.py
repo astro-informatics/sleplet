@@ -58,12 +58,12 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     thetas = np.tile(
         s2fft.samples.thetas(
             slepian_dirac_delta_polar_cap.L,
-            sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         ),
         (
             s2fft.samples.nphi_equiang(
                 L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             1,
         ),
@@ -99,12 +99,12 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     thetas = np.tile(
         s2fft.samples.thetas(
             slepian_dirac_delta_lim_lat_lon.L,
-            sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         ),
         (
             s2fft.samples.nphi_equiang(
                 L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             1,
         ),

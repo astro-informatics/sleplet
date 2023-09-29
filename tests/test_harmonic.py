@@ -20,6 +20,9 @@ def test_harmonic_coefficients_padded(random_flm) -> None:
 
 def test_invert_flm_and_boost(random_flm) -> None:
     """Tests that the flm has been boosted and has right shape."""
-    n_theta, n_phi = ssht.sample_shape(L_LARGE, Method=sleplet._vars.SAMPLING_SCHEME)
+    n_theta, n_phi = ssht.sample_shape(
+        L_LARGE,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+    )
     f = sleplet.harmonic_methods.invert_flm_boosted(random_flm, L_SMALL, L_LARGE)
     np.testing.assert_equal(f.shape, (n_theta, n_phi))

@@ -34,18 +34,18 @@ def create_mask_region(
     * arbitrary - just checks the shape of the input mask.
     """
     thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()),
+        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
         (
             s2fft.samples.nphi_equiang(
                 L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             1,
         ),
     ).T
     phis = np.tile(
-        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()),
-        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()), 1),
+        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
 
     match region.region_type:
@@ -98,7 +98,7 @@ def ensure_masked_flm_bandlimited(
         L,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
@@ -107,7 +107,7 @@ def ensure_masked_flm_bandlimited(
         L,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 
@@ -169,14 +169,14 @@ def _create_africa_mask(
         rot_flm,
         L,
         Reality=True,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
     thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()),
+        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
         (
             s2fft.samples.nphi_equiang(
                 L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             1,
         ),
@@ -194,14 +194,14 @@ def _create_south_america_mask(
         rot_flm,
         L,
         Reality=True,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
     thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()),
+        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
         (
             s2fft.samples.nphi_equiang(
                 L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             1,
         ),

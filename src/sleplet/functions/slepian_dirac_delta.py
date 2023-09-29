@@ -56,12 +56,12 @@ class SlepianDiracDelta(Fp):
         thetas = np.tile(
             s2fft.samples.thetas(
                 self.L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             (
                 s2fft.samples.nphi_equiang(
                     self.L,
-                    sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                    sampling=sleplet._vars.SAMPLING_SCHEME,
                 ),
                 1,
             ),
@@ -69,12 +69,12 @@ class SlepianDiracDelta(Fp):
         phis = np.tile(
             s2fft.samples.phis_equiang(
                 self.L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             (
                 s2fft.samples.ntheta(
                     self.L,
-                    sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                    sampling=sleplet._vars.SAMPLING_SCHEME,
                 ),
                 1,
             ),
@@ -82,7 +82,7 @@ class SlepianDiracDelta(Fp):
         sp = ssht.inverse(
             self.slepian.eigenvectors[0],
             self.L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self._alpha = phis[idx]

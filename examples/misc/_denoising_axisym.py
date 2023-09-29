@@ -5,7 +5,7 @@ import pyssht as ssht
 
 import sleplet
 
-SAMPLING_SCHEME = "MWSS"
+SAMPLING_SCHEME = "mwss"
 
 
 def denoising_axisym(  # noqa: PLR0913
@@ -60,5 +60,5 @@ def denoising_axisym(  # noqa: PLR0913
         else flm
     )
 
-    f = ssht.inverse(flm, signal.L, Method=SAMPLING_SCHEME)
+    f = ssht.inverse(flm, signal.L, Method=SAMPLING_SCHEME.upper())
     return f, noised_signal.snr, denoised_snr

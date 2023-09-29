@@ -136,7 +136,7 @@ def compute_s_p_omega(
     Returns:
         The complex \(S_{p}(\omega)\) values.
     """
-    n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
+    n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME.upper())
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
     for p in range(slepian.N):
         if p % L == 0:
@@ -144,7 +144,7 @@ def compute_s_p_omega(
         sp[p] = ssht.inverse(
             slepian.eigenvectors[p],
             L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
     return sp
 
@@ -157,8 +157,8 @@ def _compute_s_p_omega_prime(
 ) -> npt.NDArray[np.complex_]:
     """Method to pick out the desired angle from Sp(omega)."""
     sp_omega = compute_s_p_omega(L, slepian)
-    p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
-    q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
+    p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME.upper())
+    q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME.upper())
     sp_omega_prime = sp_omega[:, p, q]
     # pad with zeros so it has the expected shape
     boost = L**2 - slepian.N

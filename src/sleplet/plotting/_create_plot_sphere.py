@@ -70,7 +70,7 @@ class PlotSphere:
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f,
             self.resolution,
-            method=sleplet._vars.SAMPLING_SCHEME,
+            method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
 
         if isinstance(self.region, sleplet.slepian.region.Region):

@@ -64,7 +64,7 @@ def invert_flm_boosted(
         resolution,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 
@@ -83,18 +83,18 @@ def _ensure_f_bandlimited(
     space then need to transform it into harmonic space first before using it.
     """
     thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()),
+        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
         (
             s2fft.samples.nphi_equiang(
                 L,
-                sampling=sleplet._vars.SAMPLING_SCHEME.lower(),
+                sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             1,
         ),
     ).T
     phis = np.tile(
-        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()),
-        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower()), 1),
+        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
     return ssht.forward(
@@ -102,7 +102,7 @@ def _ensure_f_bandlimited(
         L,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 
