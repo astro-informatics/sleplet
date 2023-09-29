@@ -3,9 +3,9 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import s2fft
 
 import pyssht as ssht
+import s2fft
 
 import sleplet._vars
 import sleplet.harmonic_methods

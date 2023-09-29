@@ -3,6 +3,7 @@ import typing
 
 import numpy as np
 import numpy.typing as npt
+
 import s2fft
 
 import sleplet._vars

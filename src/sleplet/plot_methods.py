@@ -4,9 +4,9 @@ import logging
 import matplotlib as mpl
 import numpy as np
 import numpy.typing as npt
-import s2fft
 
 import pyssht as ssht
+import s2fft
 
 import sleplet._mask_methods
 import sleplet._vars

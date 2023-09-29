@@ -4,9 +4,9 @@ import os
 import numpy as np
 import numpy.typing as npt
 import platformdirs
-import s2fft
 
 import pyssht as ssht
+import s2fft
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch

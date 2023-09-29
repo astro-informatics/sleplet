@@ -1,5 +1,6 @@
 import hypothesis
 import numpy as np
+
 import s2fft
 
 import sleplet
