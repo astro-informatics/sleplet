@@ -2,8 +2,7 @@
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
-
-import pyssht as ssht
+import s2fft
 
 import sleplet._string_methods
 import sleplet._validation
@@ -27,13 +26,14 @@ class HarmonicGaussian(Flm):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        flm = np.zeros(self.L**2, dtype=np.complex_)
+        flm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
-                ind = ssht.elm2ind(ell, m)
-                flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
-        return flm
+                flm[ell, self.L - 1 + m] = upsilon_l * np.exp(
+                    -((m / self.m_sigma) ** 2) / 2,
+                )
+        return s2fft.samples.flm_2d_to_1d(flm, self.L)
 
     def _create_name(self) -> str:
         return (
