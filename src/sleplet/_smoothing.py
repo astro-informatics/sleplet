@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
+import s2fft
 
 _logger = logging.getLogger(__name__)
 
@@ -23,4 +24,11 @@ def apply_gaussian_smoothing(
     sigma = np.pi / (smoothing_factor * L)
     fwhm = 2 * np.sqrt(np.log(2)) * sigma
     _logger.info(f"FWHM = {np.rad2deg(fwhm):.2f}degrees")
-    return ssht.gaussian_smoothing(flm, L, sigma)
+    return s2fft.sampling.s2_samples.flm_1d_to_2d(
+        ssht.gaussian_smoothing(
+            s2fft.sampling.s2_samples.flm_2d_to_1d(flm, L),
+            L,
+            sigma,
+        ),
+        L,
+    )

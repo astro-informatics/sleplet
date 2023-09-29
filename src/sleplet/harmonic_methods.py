@@ -58,9 +58,15 @@ def invert_flm_boosted(
         The boosted field value.
     """
     boost = resolution**2 - L**2
-    flm = _boost_coefficient_resolution(flm, boost)
+    flm = s2fft.sampling.s2_samples.flm_1d_to_2d(
+        _boost_coefficient_resolution(
+            s2fft.sampling.s2_samples.flm_2d_to_1d(flm, L),
+            boost,
+        ),
+        resolution,
+    )
     return s2fft.inverse(
-        s2fft.sampling.s2_samples.flm_1d_to_2d(flm, resolution),
+        flm,
         resolution,
         method=sleplet._vars.EXECUTION_MODE,
         reality=reality,
@@ -196,11 +202,14 @@ def rotate_earth_to_south_america(
     Returns:
         The spherical harmonic coefficients of the Earth centered on South America.
     """
-    return ssht.rotate_flms(
-        earth_flm,
-        _SOUTH_AMERICA_ALPHA,
-        _SOUTH_AMERICA_BETA,
-        _SOUTH_AMERICA_GAMMA,
+    return s2fft.sampling.s2_samples.flm_1d_to_2d(
+        ssht.rotate_flms(
+            s2fft.sampling.s2_samples.flm_2d_to_1d(earth_flm, L),
+            _SOUTH_AMERICA_ALPHA,
+            _SOUTH_AMERICA_BETA,
+            _SOUTH_AMERICA_GAMMA,
+            L,
+        ),
         L,
     )
 
