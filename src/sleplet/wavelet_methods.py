@@ -105,7 +105,7 @@ def axisymmetric_wavelet_inverse(
     for ell in range(L):
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1]
         for m in range(-ell, ell + 1):
-            flm[ell, L + m - 1] = (wav_coeffs[:, ell, L - 1 + m] * wav_0).sum()
+            flm[ell, L - 1 + m] = (wav_coeffs[:, ell, L - 1 + m] * wav_0).sum()
     return s2fft.samples.flm_2d_to_1d(flm, L)
 
 
