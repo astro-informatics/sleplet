@@ -102,12 +102,12 @@ class SlepianDecomposition:
             _logger.info("harmonic sum method selected")
             self.method = "harmonic_sum"
         elif self.f is not None:
-            if self.mask is None:
-                _logger.info("integrating the whole sphere method selected")
-                self.method = "integrate_sphere"
-            else:
+            if self.mask:
                 _logger.info("integrating a region on the sphere method selected")
                 self.method = "integrate_region"
+            else:
+                _logger.info("integrating the whole sphere method selected")
+                self.method = "integrate_sphere"
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "
