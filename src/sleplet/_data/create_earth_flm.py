@@ -22,8 +22,8 @@ def create_flm(
     # avoid confusion with zero values
     for ell in range(1, L):
         for m in range(1, ell + 1):
-            flm_pm = flm[ell, L + m - 1]
-            flm[ell, L - m - 1] = (-1) ** m * flm_pm.conj()
+            flm_pm = flm[ell, L_full + m - 1]
+            flm[ell, L_full - m - 1] = (-1) ** m * flm_pm.conj()
 
     # don't take the full L
     # invert dataset as Earth backwards
