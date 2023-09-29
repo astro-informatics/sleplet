@@ -7,6 +7,7 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic.v1 as pydantic
+import s2fft
 
 import pyssht as ssht
 
@@ -146,7 +147,29 @@ class PlotSphere:
             else:
                 f, _, _ = f
 
-        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
+        thetas = np.tile(
+            s2fft.samples.thetas(resolution, sampling=method),
+            (
+                s2fft.samples.nphi_equiang(
+                    resolution,
+                    sampling=method,
+                ),
+                1,
+            ),
+        ).T
+        phis = np.tile(
+            s2fft.samples.phis_equiang(
+                resolution,
+                sampling=method,
+            ),
+            (
+                s2fft.samples.ntheta(
+                    resolution,
+                    sampling=method,
+                ),
+                1,
+            ),
+        )
 
         if thetas.size != f.size:
             raise AttributeError("Bandlimit L deos not match that of f")

@@ -4,6 +4,7 @@ import logging
 import matplotlib as mpl
 import numpy as np
 import numpy.typing as npt
+import s2fft
 
 import pyssht as ssht
 
@@ -67,7 +68,8 @@ def _calc_nearest_grid_point(
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small.
     """
-    thetas, phis = ssht.sample_positions(L, Method=sleplet._vars.SAMPLING_SCHEME)
+    thetas = s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower())
+    phis = s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME.lower())
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
