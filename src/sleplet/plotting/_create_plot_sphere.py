@@ -19,8 +19,6 @@ import sleplet.slepian.region
 
 _logger = logging.getLogger(__name__)
 
-_MW_POLE_LENGTH = 2
-
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
@@ -70,7 +68,7 @@ class PlotSphere:
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f,
             self.resolution,
-            method=sleplet._vars.SAMPLING_SCHEME.upper(),
+            method=sleplet._vars.SAMPLING_SCHEME,
         )
 
         if isinstance(self.region, sleplet.slepian.region.Region):
@@ -125,7 +123,7 @@ class PlotSphere:
         f: npt.NDArray[np.float_],
         resolution: int,
         *,
-        method: str = "MW",
+        method: str = "mw",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: list[float] | None = None,
@@ -141,11 +139,6 @@ class PlotSphere:
         """Function which creates the data for the matplotlib/plotly plot."""
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
-        if method == "MW_pole":
-            if len(f) == _MW_POLE_LENGTH:
-                f, _ = f
-            else:
-                f, _, _ = f
 
         thetas = np.tile(
             s2fft.samples.thetas(resolution, sampling=method),
@@ -193,7 +186,7 @@ class PlotSphere:
 
         # Close plot.
         if close:
-            _, n_phi = ssht.sample_shape(resolution, Method=method)
+            n_phi = s2fft.samples.nphi_equiang(resolution, sampling=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
