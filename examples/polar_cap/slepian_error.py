@@ -3,12 +3,13 @@ import numpy as np
 import numpy.typing as npt
 import seaborn as sns
 
-import pyssht as ssht
+import s2fft
 
 import sleplet
 
 sns.set(context="paper")
 
+EXECUTION_MODE = "jax"
 L = 16
 SAMPLING_SCHEME = "mwss"
 THETA_MAX = 40
@@ -18,7 +19,12 @@ def main() -> None:
     """Creates a plot of Slepian coefficients against rank."""
     region = sleplet.slepian.Region(theta_max=np.deg2rad(THETA_MAX))
     earth = sleplet.functions.Earth(L, region=region)
-    field = ssht.inverse(earth.coefficients, L, Method=SAMPLING_SCHEME.upper())
+    field = s2fft.inverse(
+        s2fft.samples.flm_1d_to_2d(earth.coefficients, L),
+        L,
+        method=EXECUTION_MODE,
+        sampling=SAMPLING_SCHEME,
+    )
     integrate_region = _helper_region(L, region, field, earth.coefficients)
     integrate_sphere = _helper_sphere(L, region, field, earth.coefficients)
     N = sleplet.slepian.SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N

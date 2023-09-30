@@ -142,10 +142,11 @@ def compute_s_p_omega(
     for p in range(slepian.N):
         if p % L == 0:
             _logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
-        sp[p] = ssht.inverse(
-            slepian.eigenvectors[p],
+        sp[p] = s2fft.inverse(
+            s2fft.samples.flm_1d_to_2d(slepian.eigenvectors[p], L),
             L,
-            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+            method=sleplet._vars.EXECUTION_MODE,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
     return sp
 

@@ -1,11 +1,12 @@
 import numpy as np
 import numpy.typing as npt
 
-import pyssht as ssht
+import s2fft
 
 import sleplet
 
 B = 3
+EXECUTION_MODE = "jax"
 J_MIN = 2
 L = 128
 RANDOM_SEED = 30
@@ -83,7 +84,12 @@ def axisymmetric_wavelet_covariance(
 
         # compute covariance from data
         for j, coefficient in enumerate(wlm):
-            f_wav_j = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME.upper())
+            f_wav_j = s2fft.inverse(
+                s2fft.samples.flm_1d_to_2d(coefficient, L),
+                L,
+                method=EXECUTION_MODE,
+                sampling=SAMPLING_SCHEME,
+            )
             covar_data[i, j] = (
                 f_wav_j.var() if _is_ergodic(j_min, j=j) else f_wav_j[0, 0]
             )
