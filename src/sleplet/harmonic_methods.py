@@ -58,15 +58,9 @@ def invert_flm_boosted(
         The boosted field value.
     """
     boost = resolution**2 - L**2
-    flm = s2fft.sampling.s2_samples.flm_1d_to_2d(
-        _boost_coefficient_resolution(
-            s2fft.sampling.s2_samples.flm_2d_to_1d(flm, L),
-            boost,
-        ),
-        resolution,
-    )
+    flm = _boost_coefficient_resolution(flm, boost)
     return s2fft.inverse(
-        flm,
+        s2fft.samples.flm_1d_to_2d(flm, resolution),
         resolution,
         method=sleplet._vars.EXECUTION_MODE,
         reality=reality,
@@ -98,7 +92,7 @@ def _ensure_f_bandlimited(
         (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
-    return s2fft.sampling.s2_samples.flm_2d_to_1d(
+    return s2fft.samples.flm_2d_to_1d(
         s2fft.forward(
             f,
             L,

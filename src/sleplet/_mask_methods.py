@@ -87,7 +87,7 @@ def ensure_masked_flm_bandlimited(
 ) -> npt.NDArray[np.complex_]:
     """Ensures the coefficients is bandlimited for a given region."""
     field = s2fft.inverse(
-        s2fft.sampling.s2_samples.flm_1d_to_2d(flm, L),
+        s2fft.samples.flm_1d_to_2d(flm, L),
         L,
         method=sleplet._vars.EXECUTION_MODE,
         reality=reality,
@@ -96,7 +96,7 @@ def ensure_masked_flm_bandlimited(
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
-    return s2fft.sampling.s2_samples.flm_2d_to_1d(
+    return s2fft.samples.flm_2d_to_1d(
         s2fft.forward(
             field,
             L,
@@ -164,7 +164,7 @@ def _create_africa_mask(
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, L)
     earth_f = s2fft.inverse(
-        s2fft.sampling.s2_samples.flm_1d_to_2d(rot_flm, L),
+        s2fft.samples.flm_1d_to_2d(rot_flm, L),
         L,
         method=sleplet._vars.EXECUTION_MODE,
         reality=True,
@@ -184,7 +184,7 @@ def _create_south_america_mask(
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(earth_flm, L)
     earth_f = s2fft.inverse(
-        s2fft.sampling.s2_samples.flm_1d_to_2d(rot_flm, L),
+        s2fft.samples.flm_1d_to_2d(rot_flm, L),
         L,
         method=sleplet._vars.EXECUTION_MODE,
         reality=True,

@@ -20,7 +20,7 @@ def main() -> None:
     region = sleplet.slepian.Region(theta_max=np.deg2rad(THETA_MAX))
     earth = sleplet.functions.Earth(L, region=region)
     field = s2fft.inverse(
-        s2fft.sampling.s2_samples.flm_1d_to_2d(earth.coefficients, L),
+        s2fft.samples.flm_1d_to_2d(earth.coefficients, L),
         L,
         method=EXECUTION_MODE,
         sampling=SAMPLING_SCHEME,

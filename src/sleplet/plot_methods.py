@@ -103,7 +103,7 @@ def find_max_amplitude(
         )
     else:
         field = s2fft.inverse(
-            s2fft.sampling.s2_samples.flm_1d_to_2d(function.coefficients, function.L),
+            s2fft.samples.flm_1d_to_2d(function.coefficients, function.L),
             function.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
@@ -188,13 +188,16 @@ def _boost_field(  # noqa: PLR0913
     """Inverts and then boosts the field before plotting."""
     if not upsample:
         return field
-    flm = s2fft.forward(
-        field,
+    flm = s2fft.samples.flm_2d_to_1d(
+        s2fft.forward(
+            field,
+            L,
+            method=sleplet._vars.EXECUTION_MODE,
+            reality=reality,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
+            spin=spin,
+        ),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
-        spin=spin,
     )
     return sleplet.harmonic_methods.invert_flm_boosted(
         flm,
@@ -264,7 +267,7 @@ def _coefficients_to_field_sphere(
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, "slepian")
         else s2fft.inverse(
-            coefficients,
+            s2fft.samples.flm_1d_to_2d(coefficients, f.L),
             f.L,
             method=sleplet._vars.EXECUTION_MODE,
             reality=f.reality,
