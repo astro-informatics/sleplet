@@ -1,10 +1,11 @@
 import numpy as np
 import numpy.typing as npt
 
-import pyssht as ssht
+import s2fft
 
 import sleplet
 
+EXECUTION_MODE = "jax"
 SAMPLING_SCHEME = "mwss"
 
 
@@ -60,5 +61,10 @@ def denoising_axisym(  # noqa: PLR0913
         else flm
     )
 
-    f = ssht.inverse(flm, signal.L, Method=SAMPLING_SCHEME.upper())
+    f = s2fft.inverse(
+        s2fft.samples.flm_1d_to_2d(flm, signal.L),
+        signal.L,
+        method=EXECUTION_MODE,
+        sampling=SAMPLING_SCHEME,
+    )
     return f, noised_signal.snr, denoised_snr
