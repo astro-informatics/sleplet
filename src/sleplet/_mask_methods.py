@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 import platformdirs
 
-import pyssht as ssht
 import s2fft
 
 import sleplet._data.create_earth_flm
@@ -87,12 +86,13 @@ def ensure_masked_flm_bandlimited(
     spin: int,
 ) -> npt.NDArray[np.complex_]:
     """Ensures the coefficients is bandlimited for a given region."""
-    field = ssht.inverse(
-        flm,
+    field = s2fft.inverse(
+        s2fft.samples.flm_1d_to_2d(flm, L),
         L,
-        Reality=reality,
-        Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+        method=sleplet._vars.EXECUTION_MODE,
+        reality=reality,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
@@ -163,11 +163,12 @@ def _create_africa_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, L)
-    earth_f = ssht.inverse(
-        rot_flm,
+    earth_f = s2fft.inverse(
+        s2fft.samples.flm_1d_to_2d(rot_flm, L),
         L,
-        Reality=True,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+        method=sleplet._vars.EXECUTION_MODE,
+        reality=True,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas = np.tile(
         s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
@@ -182,11 +183,12 @@ def _create_south_america_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(earth_flm, L)
-    earth_f = ssht.inverse(
-        rot_flm,
+    earth_f = s2fft.inverse(
+        s2fft.samples.flm_1d_to_2d(rot_flm, L),
         L,
-        Reality=True,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+        method=sleplet._vars.EXECUTION_MODE,
+        reality=True,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas = np.tile(
         s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),

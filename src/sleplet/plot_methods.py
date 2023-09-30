@@ -5,7 +5,6 @@ import matplotlib as mpl
 import numpy as np
 import numpy.typing as npt
 
-import pyssht as ssht
 import s2fft
 
 import sleplet._mask_methods
@@ -103,10 +102,11 @@ def find_max_amplitude(
             function.slepian,
         )
     else:
-        field = ssht.inverse(
-            function.coefficients,
+        field = s2fft.inverse(
+            s2fft.samples.flm_1d_to_2d(function.coefficients, function.L),
             function.L,
-            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+            method=sleplet._vars.EXECUTION_MODE,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
 
     # find resolution of final plot for boosting if necessary
@@ -266,11 +266,12 @@ def _coefficients_to_field_sphere(
     return (
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, "slepian")
-        else ssht.inverse(
-            coefficients,
+        else s2fft.inverse(
+            s2fft.samples.flm_1d_to_2d(coefficients, f.L),
             f.L,
-            Reality=f.reality,
-            Spin=f.spin,
-            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+            method=sleplet._vars.EXECUTION_MODE,
+            reality=f.reality,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
+            spin=f.spin,
         )
     )

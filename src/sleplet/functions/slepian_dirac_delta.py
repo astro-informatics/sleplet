@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
-import pyssht as ssht
 import s2fft
 
 import sleplet._string_methods
@@ -67,10 +66,11 @@ class SlepianDiracDelta(Fp):
             s2fft.samples.phis_equiang(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
             (s2fft.samples.ntheta(self.L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
         )
-        sp = ssht.inverse(
-            self.slepian.eigenvectors[0],
+        sp = s2fft.inverse(
+            s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[0], self.L),
             self.L,
-            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+            method=sleplet._vars.EXECUTION_MODE,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self._alpha = phis[idx]

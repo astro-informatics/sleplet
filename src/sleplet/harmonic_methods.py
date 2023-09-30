@@ -59,12 +59,13 @@ def invert_flm_boosted(
     """
     boost = resolution**2 - L**2
     flm = _boost_coefficient_resolution(flm, boost)
-    return ssht.inverse(
-        flm,
+    return s2fft.inverse(
+        s2fft.samples.flm_1d_to_2d(flm, resolution),
         resolution,
-        Reality=reality,
-        Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+        method=sleplet._vars.EXECUTION_MODE,
+        reality=reality,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
 
 
