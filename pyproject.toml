@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Image Processing",
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Physics",
@@ -199,6 +200,7 @@ legacy_tox_ini = """
     python =
         3.10: py310
         3.11: py311
+        3.12: py312
 
     [gh-actions:env]
     OS =
@@ -212,5 +214,5 @@ legacy_tox_ini = """
         pytest-cov
 
     [tox]
-    env_list = py{310,311}-{linux,macos}
+    env_list = py{310,311,312}-{linux,macos}
 """
