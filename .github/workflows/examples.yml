@@ -6,6 +6,12 @@ on:
       - main
   pull_request:
 
+concurrency:
+  cancel-in-progress: true
+  group: >-
+    ${{ github.workflow }}-
+    ${{ github.event.pull_request.number || github.ref }}
+
 jobs:
   codeblocks:
     runs-on: ubuntu-latest
