@@ -6,6 +6,8 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
+import s2fft
+
 import sleplet._convolution_methods
 import sleplet._mask_methods
 import sleplet._string_methods
@@ -89,10 +91,13 @@ class Coefficients:
         """
         # translation/convolution are not real for general function
         self.reality = False
-        return sleplet._convolution_methods.sifting_convolution(
-            f_coefficient,
-            g_coefficient,
-            shannon=shannon,
+        return s2fft.samples.flm_1d_to_2d(
+            sleplet._convolution_methods.sifting_convolution(
+                s2fft.samples.flm_2d_to_1d(f_coefficient, self.L),
+                s2fft.samples.flm_2d_to_1d(g_coefficient, self.L),
+                shannon=shannon,
+            ),
+            self.L,
         )
 
     def _add_details_to_name(self) -> None:

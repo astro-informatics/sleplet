@@ -25,7 +25,7 @@ def _create_spherical_harmonic(L: int, ell: int, m: int) -> npt.NDArray[np.compl
     """Create a spherical harmonic in harmonic space for the given index."""
     flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
     flm[ell, L - 1 + m] = 1
-    return s2fft.samples.flm_2d_to_1d(flm, L)
+    return flm
 
 
 def _boost_coefficient_resolution(
@@ -58,9 +58,12 @@ def invert_flm_boosted(
         The boosted field value.
     """
     boost = resolution**2 - L**2
-    flm = _boost_coefficient_resolution(flm, boost)
+    flm = s2fft.samples.flm_1d_to_2d(
+        _boost_coefficient_resolution(s2fft.samples.flm_2d_to_1d(flm, L), boost),
+        resolution,
+    )
     return s2fft.inverse(
-        s2fft.samples.flm_1d_to_2d(flm, resolution),
+        flm,
         resolution,
         method=sleplet._vars.EXECUTION_MODE,
         reality=reality,
@@ -92,16 +95,13 @@ def _ensure_f_bandlimited(
         (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
-    return s2fft.samples.flm_2d_to_1d(
-        s2fft.forward(
-            f,
-            L,
-            method=sleplet._vars.EXECUTION_MODE,
-            reality=reality,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
-            spin=spin,
-        ),
+    return s2fft.forward(
+        f,
         L,
+        method=sleplet._vars.EXECUTION_MODE,
+        reality=reality,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
 
 
@@ -135,8 +135,10 @@ def compute_random_signal(
     Returns:
         The coefficients of a random signal on the sphere.
     """
-    return np.sqrt(var_signal / 2) * (
-        rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
+    return s2fft.samples.flm_1d_to_2d(
+        np.sqrt(var_signal / 2)
+        * (rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)),
+        L,
     )
 
 
@@ -196,11 +198,14 @@ def rotate_earth_to_south_america(
     Returns:
         The spherical harmonic coefficients of the Earth centered on South America.
     """
-    return ssht.rotate_flms(
-        earth_flm,
-        _SOUTH_AMERICA_ALPHA,
-        _SOUTH_AMERICA_BETA,
-        _SOUTH_AMERICA_GAMMA,
+    return s2fft.samples.flm_1d_to_2d(
+        ssht.rotate_flms(
+            s2fft.samples.flm_2d_to_1d(earth_flm, L),
+            _SOUTH_AMERICA_ALPHA,
+            _SOUTH_AMERICA_BETA,
+            _SOUTH_AMERICA_GAMMA,
+            L,
+        ),
         L,
     )
 
@@ -219,4 +224,13 @@ def rotate_earth_to_africa(
     Returns:
         The spherical harmonic coefficients of the Earth centered on Africa.
     """
-    return ssht.rotate_flms(earth_flm, _AFRICA_ALPHA, _AFRICA_BETA, _AFRICA_GAMMA, L)
+    return s2fft.samples.flm_1d_to_2d(
+        ssht.rotate_flms(
+            s2fft.samples.flm_2d_to_1d(earth_flm, L),
+            _AFRICA_ALPHA,
+            _AFRICA_BETA,
+            _AFRICA_GAMMA,
+            L,
+        ),
+        L,
+    )

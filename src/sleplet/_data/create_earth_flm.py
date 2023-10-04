@@ -23,8 +23,6 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
             # invert dataset as Earth backwards
             flm[ell, L - 1 + m] = (-1) ** m * flm[ell, L - 1 - m].conj()
 
-    flm = s2fft.samples.flm_2d_to_1d(flm, L)
-
     if isinstance(smoothing, int):
         flm = sleplet._smoothing.apply_gaussian_smoothing(flm, L, smoothing)
     return flm

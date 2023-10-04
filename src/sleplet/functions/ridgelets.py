@@ -79,7 +79,7 @@ class Ridgelets(Flm):
             wavelets[1:, ell, self.L - 1] = (
                 kappas[1:, ell] * ring_lm[ell, self.L - 1] / np.sqrt(2 * np.pi)
             )
-        return np.array([s2fft.samples.flm_2d_to_1d(w, self.L) for w in wavelets])
+        return wavelets
 
     def _compute_ring(self) -> npt.NDArray[np.complex_]:
         """Compute ring in harmonic space."""
