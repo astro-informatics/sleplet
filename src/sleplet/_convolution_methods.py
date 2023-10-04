@@ -12,8 +12,8 @@ def sifting_convolution(
     n = shannon if shannon is not None else np.newaxis
     # change shape if the sizes don't match
     g_reshape = (
-        g_coefficient[:, np.newaxis]
+        g_coefficient[np.newaxis]
         if len(g_coefficient.shape) < len(f_coefficient.shape)
         else g_coefficient
     )
-    return (f_coefficient.T[:n] * g_reshape.conj()[:n]).T
+    return (f_coefficient.T[:n] * g_reshape.conj().T[:n]).T
