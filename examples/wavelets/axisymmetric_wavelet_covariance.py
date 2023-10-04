@@ -85,7 +85,7 @@ def axisymmetric_wavelet_covariance(
         # compute covariance from data
         for j, coefficient in enumerate(wlm):
             f_wav_j = s2fft.inverse(
-                s2fft.samples.flm_1d_to_2d(coefficient, L),
+                coefficient,
                 L,
                 method=EXECUTION_MODE,
                 sampling=SAMPLING_SCHEME,

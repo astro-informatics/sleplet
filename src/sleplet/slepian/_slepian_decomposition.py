@@ -22,7 +22,7 @@ class SlepianDecomposition:
     slepian: SlepianFunctions
     _: dataclasses.KW_ONLY
     f: jax.Array | npt.NDArray[np.complex_] | None = None
-    flm: npt.NDArray[np.complex_ | np.float_] | None = None
+    flm: jax.Array | npt.NDArray[np.complex_ | np.float_] | None = None
     mask: npt.NDArray[np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
@@ -97,7 +97,10 @@ class SlepianDecomposition:
         \sum\limits_{m=-\ell}^{\ell}
         f_{\ell m} (S_{p})_{\ell m}^{*}.
         """
-        return (self.flm * self.slepian.eigenvectors[rank].conj()).sum()
+        return (
+            self.flm
+            * s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank].conj(), self.L)
+        ).sum()
 
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""

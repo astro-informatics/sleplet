@@ -24,7 +24,7 @@ class Gaussian(Flm):
         flm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
         for ell in range(self.L):
             flm[ell, self.L - 1] = np.exp(-ell * (ell + 1) / (2 * self.sigma**2))
-        return s2fft.samples.flm_2d_to_1d(flm, self.L)
+        return flm
 
     def _create_name(self) -> str:
         return (

@@ -55,7 +55,7 @@ def slepian_wavelet_inverse(
     wavelets_shannon = wavelets[: len(wav_coeffs)]
     wavelet_reconstruction = sleplet._convolution_methods.sifting_convolution(
         wavelets_shannon,
-        wav_coeffs.T,
+        wav_coeffs,
         shannon=shannon,
     )
     return wavelet_reconstruction.sum(axis=0)
@@ -77,13 +77,12 @@ def axisymmetric_wavelet_forward(
     Returns:
         Axisymmetric wavelets coefficients.
     """
-    wavelets = np.array([s2fft.samples.flm_1d_to_2d(wav, L) for wav in wavelets])
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1].conj()
         for m in range(-ell, ell + 1):
-            w[:, ell, L - 1 + m] = wav_0 * flm[s2fft.samples.elm2ind(ell, m)]
-    return np.array([s2fft.samples.flm_2d_to_1d(wav, L) for wav in w])
+            w[:, ell, L - 1 + m] = wav_0 * flm[ell, L - 1 + m]
+    return w
 
 
 def axisymmetric_wavelet_inverse(
@@ -103,13 +102,11 @@ def axisymmetric_wavelet_inverse(
         Spherical harmonic coefficients of the signal.
     """
     flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
-    wavelets = np.array([s2fft.samples.flm_1d_to_2d(w, L) for w in wavelets])
-    wav_coeffs = np.array([s2fft.samples.flm_1d_to_2d(wc, L) for wc in wav_coeffs])
     for ell in range(L):
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1]
         for m in range(-ell, ell + 1):
             flm[ell, L - 1 + m] = (wav_coeffs[:, ell, L - 1 + m] * wav_0).sum()
-    return s2fft.samples.flm_2d_to_1d(flm, L)
+    return flm
 
 
 def _create_axisymmetric_wavelets(
@@ -126,7 +123,7 @@ def _create_axisymmetric_wavelets(
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
         wavelets[:, ell, L - 1] = factor * kappas[:, ell]
-    return np.array([s2fft.samples.flm_2d_to_1d(wav, L) for wav in wavelets])
+    return wavelets
 
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
