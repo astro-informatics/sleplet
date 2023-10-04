@@ -26,7 +26,6 @@ dependencies = [
     "cmocean>=3.0.3",
     "gmpy2>=2.1.5",
     "hypothesis>=6.70.2",
-    "jax[cuda11_cudnn82]>=0.4.16",
     "jaxlib>=0.4.16",
     "libigl>=2.4.1",
     "matplotlib>=3.7.1",

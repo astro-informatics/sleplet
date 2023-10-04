@@ -60,7 +60,7 @@ for ell in range(2, 0, -1):
     f = sleplet.functions.HarmonicGaussian(128, l_sigma=10**ell, m_sigma=10)
     flm = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
     f_sphere = s2fft.inverse(
-        s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="jax", sampling="mwss"
+        s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="numpy", sampling="mwss"
     )
     sleplet.plotting.PlotSphere(
         f_sphere,
@@ -83,7 +83,7 @@ import sleplet
 f = sleplet.functions.Earth(128)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
 f_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="numpy", sampling="mwss"
 )
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2").execute()
 ```
@@ -106,7 +106,7 @@ for ell in range(2, 0, -1):
     flm = f.convolve(f.coefficients, g.coefficients.conj())
     flm_rot = sleplet.harmonic_methods.rotate_earth_to_south_america(flm, f.L)
     f_sphere = s2fft.inverse(
-        s2fft.samples.flm_1d_to_2d(flm_rot, f.L), f.L, method="jax", sampling="mwss"
+        s2fft.samples.flm_1d_to_2d(flm_rot, f.L), f.L, method="numpy", sampling="mwss"
     )
     sleplet.plotting.PlotSphere(f_sphere, f.L, f"fig_3_ell_{ell}").execute()
 ```
@@ -139,7 +139,7 @@ import sleplet
 f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
 f_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="numpy", sampling="mwss"
 )
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_a", normalise=False).execute()
 # b
@@ -297,7 +297,7 @@ import sleplet
 f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_africa(f.coefficients, f.L)
 f_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(flm, f.L), f.L, method="numpy", sampling="mwss"
 )
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_9_a", normalise=False).execute()
 # b
@@ -658,7 +658,7 @@ for ell in range(5):
         f_sphere = s2fft.inverse(
             s2fft.samples.flm_1d_to_2d(f.coefficients, f.L),
             f.L,
-            method="jax",
+            method="numpy",
             sampling="mwss",
         )
         sleplet.plotting.PlotSphere(
@@ -691,14 +691,17 @@ import sleplet
 # a
 f = sleplet.functions.ElongatedGaussian(128, p_sigma=0.1, t_sigma=0.1)
 f_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="numpy",
+    sampling="mwss",
 )
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2_2_a", annotations=[]).execute()
 # b-d
 for a, b, g in [(0, 0, 0.25), (0, 0.25, 0.25), (0.25, 0.25, 0.25)]:
     glm_rot = f.rotate(alpha=a * np.pi, beta=b * np.pi, gamma=g * np.pi)
     g_sphere = s2fft.inverse(
-        s2fft.samples.flm_1d_to_2d(glm_rot, f.L), f.L, method="jax", sampling="mwss"
+        s2fft.samples.flm_1d_to_2d(glm_rot, f.L), f.L, method="numpy", sampling="mwss"
     )
     sleplet.plotting.PlotSphere(
         g_sphere,
@@ -740,7 +743,7 @@ for j in [None, *list(range(4))]:
     f_sphere = s2fft.inverse(
         s2fft.samples.flm_1d_to_2d(f.coefficients, f.L),
         f.L,
-        method="jax",
+        method="numpy",
         sampling="mwss",
     )
     sleplet.plotting.PlotSphere(
@@ -788,13 +791,16 @@ import sleplet
 # a
 f = sleplet.functions.Gaussian(128)
 f_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="numpy",
+    sampling="mwss",
 )
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_1_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(glm_trans, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(glm_trans, f.L), f.L, method="numpy", sampling="mwss"
 )
 sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_1_b", annotations=[]).execute()
 ```
@@ -816,13 +822,16 @@ import sleplet
 # a
 f = sleplet.functions.SquashedGaussian(128)
 f_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="numpy",
+    sampling="mwss",
 )
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_2_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(glm_trans, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(glm_trans, f.L), f.L, method="numpy", sampling="mwss"
 )
 sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_2_b", annotations=[]).execute()
 ```
@@ -844,13 +853,16 @@ import sleplet
 # a
 f = sleplet.functions.ElongatedGaussian(128)
 f_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(f.coefficients, f.L),
+    f.L,
+    method="numpy",
+    sampling="mwss",
 )
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_3_a", annotations=[]).execute()
 # b
 glm_trans = f.translate(alpha=0.75 * np.pi, beta=0.125 * np.pi)
 g_sphere = s2fft.inverse(
-    s2fft.samples.flm_1d_to_2d(glm_trans, f.L), f.L, method="jax", sampling="mwss"
+    s2fft.samples.flm_1d_to_2d(glm_trans, f.L), f.L, method="numpy", sampling="mwss"
 )
 sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_3_b", annotations=[]).execute()
 ```
@@ -874,7 +886,7 @@ for ell in range(2, 0, -1):
     f_sphere = s2fft.inverse(
         s2fft.samples.flm_1d_to_2d(f.coefficients, f.L),
         f.L,
-        method="jax",
+        method="numpy",
         sampling="mwss",
     )
     sleplet.plotting.PlotSphere(

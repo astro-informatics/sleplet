@@ -6,7 +6,7 @@ import s2fft
 import sleplet
 
 B = 3
-EXECUTION_MODE = "jax"
+EXECUTION_MODE = "numpy"
 J_MIN = 2
 L = 128
 RANDOM_SEED = 30

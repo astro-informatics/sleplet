@@ -9,7 +9,7 @@ import sleplet
 
 sns.set(context="paper")
 
-EXECUTION_MODE = "jax"
+EXECUTION_MODE = "numpy"
 L = 16
 SAMPLING_SCHEME = "mwss"
 THETA_MAX = 40

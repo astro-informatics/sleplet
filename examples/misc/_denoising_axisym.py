@@ -5,7 +5,7 @@ import s2fft
 
 import sleplet
 
-EXECUTION_MODE = "jax"
+EXECUTION_MODE = "numpy"
 SAMPLING_SCHEME = "mwss"
 
 
