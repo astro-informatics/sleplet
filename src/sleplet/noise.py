@@ -145,10 +145,10 @@ def harmonic_hard_thresholding(
         )
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = ssht.forward(
-                f_thresholded,
-                L,
-                Method=sleplet._vars.SAMPLING_SCHEME,
-            )
+            f_thresholded,
+            L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
+        )
     return wav_coeffs
 
 

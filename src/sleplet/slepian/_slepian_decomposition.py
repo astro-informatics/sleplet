@@ -1,7 +1,6 @@
 import dataclasses
 import logging
 
-import jax
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
@@ -21,7 +20,7 @@ class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
     _: dataclasses.KW_ONLY
-    f: jax.Array | npt.NDArray[np.complex_] | None = None
+    f: npt.NDArray[np.complex_] | None = None
     flm: npt.NDArray[np.complex_ | np.float_] | None = None
     mask: npt.NDArray[np.float_] | None = None
 

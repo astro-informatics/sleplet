@@ -67,8 +67,7 @@ def _calc_nearest_grid_point(
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small.
     """
-    thetas = s2fft.samples.thetas(L, Method=sleplet._vars.SAMPLING_SCHEME)
-    phis = s2fft.samples.phis_equiang(L, Method=sleplet._vars.SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(L, Method=sleplet._vars.SAMPLING_SCHEME)
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]

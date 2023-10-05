@@ -2,7 +2,6 @@ import dataclasses
 import logging
 
 import cmocean
-import jax
 import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
@@ -24,7 +23,7 @@ _logger = logging.getLogger(__name__)
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 
-    f: jax.Array | npt.NDArray[np.complex_ | np.float_]
+    f: npt.NDArray[np.complex_ | np.float_]
     """The field value sampled on the sphere."""
     L: int
     """The spherical harmonic bandlimit."""
