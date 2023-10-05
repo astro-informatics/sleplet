@@ -123,8 +123,8 @@ class Coefficients:
                 v,
                 values["L"],
                 values["region"],
-                Reality=values["reality"],
-                Spin=values["spin"],
+                reality=values["reality"],
+                spin=values["spin"],
             )
         return v
 

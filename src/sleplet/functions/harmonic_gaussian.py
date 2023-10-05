@@ -3,6 +3,8 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
+import pyssht as ssht
+
 import sleplet._string_methods
 import sleplet._validation
 from sleplet.functions.flm import Flm
@@ -29,9 +31,8 @@ class HarmonicGaussian(Flm):
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
-                flm[ell, self.L - 1 + m] = upsilon_l * np.exp(
-                    -((m / self.m_sigma) ** 2) / 2,
-                )
+                ind = ssht.elm2ind(ell, m)
+                flm[ind] = upsilon_l * np.exp(-((m / self.m_sigma) ** 2) / 2)
         return flm
 
     def _create_name(self) -> str:

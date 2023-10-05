@@ -122,7 +122,7 @@ class PlotSphere:
         f: npt.NDArray[np.float_],
         resolution: int,
         *,
-        method: str = "mw",
+        method: str = "MW",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: list[float] | None = None,
