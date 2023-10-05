@@ -11,7 +11,7 @@ sns.set(context="paper")
 
 
 L = 16
-SAMPLING_SCHEME = "mwss"
+SAMPLING_SCHEME = "MWSS"
 THETA_MAX = 40
 
 

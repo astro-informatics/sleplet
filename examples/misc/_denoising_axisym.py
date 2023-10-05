@@ -6,7 +6,7 @@ import pyssht as ssht
 import sleplet
 
 
-SAMPLING_SCHEME = "mwss"
+SAMPLING_SCHEME = "MWSS"
 
 
 def denoising_axisym(  # noqa: PLR0913

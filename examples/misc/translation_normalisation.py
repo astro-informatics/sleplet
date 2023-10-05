@@ -11,7 +11,7 @@ sns.set(context="paper")
 
 ALPHA_DEFAULT = 0.75
 L = 128
-SAMPLING_SCHEME = "mwss"
+SAMPLING_SCHEME = "MWSS"
 
 
 def compute_translation_normalisation_theta() -> None:

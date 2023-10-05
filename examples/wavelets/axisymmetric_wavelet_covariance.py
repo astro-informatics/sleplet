@@ -10,7 +10,7 @@ B = 3
 J_MIN = 2
 L = 128
 RANDOM_SEED = 30
-SAMPLING_SCHEME = "mwss"
+SAMPLING_SCHEME = "MWSS"
 
 
 def _compute_wavelet_covariance(
