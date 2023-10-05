@@ -38,7 +38,7 @@ def main() -> None:
     rng = np.random.default_rng(RANDOM_SEED)
 
     for i in range(RUNS):
-        # Generate random complex signal
+        # Generate normally distributed random complex signal
         f_p = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=VAR_FP)
 
         # compute wavelet coefficients
