@@ -24,7 +24,7 @@ def _create_spherical_harmonic(L: int, ell: int, m: int) -> npt.NDArray[np.compl
     """Create a spherical harmonic in harmonic space for the given index."""
     flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
     flm[ell, L - 1 + m] = 1
-    return s2fft.samples.flm_2d_to_1d(flm, L)
+    return flm
 
 
 def _boost_coefficient_resolution(
@@ -59,7 +59,7 @@ def invert_flm_boosted(
     boost = resolution**2 - L**2
     flm = _boost_coefficient_resolution(flm, boost)
     return ssht.inverse(
-        s2fft.samples.flm_1d_to_2d(flm, resolution),
+        flm,
         resolution,
         Reality=reality,
         sampling=sleplet._vars.SAMPLING_SCHEME,

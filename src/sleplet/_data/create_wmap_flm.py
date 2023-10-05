@@ -27,7 +27,7 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
             flm[ell, L - 1 - m] = (-1) ** m * flm[ell, L - 1 + m].conj()
-    return s2fft.samples.flm_2d_to_1d(flm, L)
+    return flm
 
 
 def _load_cl(

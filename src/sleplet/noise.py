@@ -88,7 +88,7 @@ def _create_noise(
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
             nlm[ell, L - 1 - m] = (-1) ** m * nlm[ell, L - 1 + m].conj()
-    return s2fft.samples.flm_2d_to_1d(nlm, L)
+    return nlm
 
 
 def _create_slepian_noise(
@@ -142,7 +142,7 @@ def harmonic_hard_thresholding(
     for j, coefficient in enumerate(wav_coeffs[1:]):
         _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
         f = ssht.inverse(
-            s2fft.samples.flm_1d_to_2d(coefficient, L),
+            coefficient,
             L,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
