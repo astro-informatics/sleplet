@@ -63,8 +63,9 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
     @pydantic.validator("j")
     def _check_j(cls, v, values) -> int | None:  # noqa: N805
         j_max = pys2let.pys2let_j_max(
-            values["mesh"].mesh_eigenvalues.shape[0],
             values["B"],
+            values["mesh"].mesh_eigenvalues.shape[0],
+            values["j_min"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")

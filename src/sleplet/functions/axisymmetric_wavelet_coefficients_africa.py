@@ -81,10 +81,7 @@ class AxisymmetricWaveletCoefficientsAfrica(Flm):
 
     @pydantic.validator("j")
     def _check_j(cls, v, values):  # noqa: N805
-        j_max = pys2let.pys2let_j_max(
-            values["L"],
-            values["B"],
-        )
+        j_max = pys2let.pys2let_j_max(values["B"], values["L"], values["j_min"])
         if v is not None and v < 0:
             raise ValueError("j should be positive")
         if v is not None and v > j_max - values["j_min"]:
