@@ -52,19 +52,10 @@ class SlepianDiracDelta(Fp):
 
     def _compute_angles(self) -> None:
         """Computes alpha/beta if not provided."""
-        thetas = np.tile(
-            s2fft.samples.thetas(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
-            (
-                s2fft.samples.nphi_equiang(
-                    self.L,
-                    sampling=sleplet._vars.SAMPLING_SCHEME,
-                ),
-                1,
-            ),
-        ).T
-        phis = np.tile(
-            s2fft.samples.phis_equiang(self.L, sampling=sleplet._vars.SAMPLING_SCHEME),
-            (s2fft.samples.ntheta(self.L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
+        thetas, phis = ssht.sample_positions(
+            self.L,
+            Grid=True,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         sp = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[0], self.L),
