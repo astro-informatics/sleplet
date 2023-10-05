@@ -115,17 +115,21 @@ class Coefficients:
         self.name += f"_L{self.L}"
 
     @pydantic.field_validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, values):
+    def _check_coefficients(
+        cls,
+        v: npt.NDArray[np.complex_ | np.float_],
+        info: pydantic.ValidationInfo,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         if (
-            values["region"]
-            and not set(values["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
+            info.data["region"]
+            and not set(info.data["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
         ):
             v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
                 v,
-                values["L"],
-                values["region"],
-                reality=values["reality"],
-                spin=values["spin"],
+                info.data["L"],
+                info.data["region"],
+                reality=info.data["reality"],
+                spin=info.data["spin"],
             )
         return v
 

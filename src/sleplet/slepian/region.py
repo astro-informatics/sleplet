@@ -88,7 +88,7 @@ class Region:
             )
 
     @pydantic.field_validator("phi_max")
-    def _check_phi_max(cls, v):
+    def _check_phi_max(cls, v: float) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
         if v > sleplet._vars.PHI_MAX_DEFAULT:
@@ -99,7 +99,7 @@ class Region:
         return v
 
     @pydantic.field_validator("phi_min")
-    def _check_phi_min(cls, v):
+    def _check_phi_min(cls, v: float) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
         if v > sleplet._vars.PHI_MAX_DEFAULT:
@@ -110,7 +110,7 @@ class Region:
         return v
 
     @pydantic.field_validator("theta_max")
-    def _check_theta_max(cls, v):
+    def _check_theta_max(cls, v: float) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
         if v > sleplet._vars.THETA_MAX_DEFAULT:
@@ -121,7 +121,7 @@ class Region:
         return v
 
     @pydantic.field_validator("theta_min")
-    def _check_theta_min(cls, v):
+    def _check_theta_min(cls, v: float) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
         if v > sleplet._vars.THETA_MAX_DEFAULT:
