@@ -10,7 +10,6 @@ import plotly.io as pio
 import pydantic.v1 as pydantic
 
 import pyssht as ssht
-import pyssht as ssht
 
 import sleplet._plotly_methods
 import sleplet._validation

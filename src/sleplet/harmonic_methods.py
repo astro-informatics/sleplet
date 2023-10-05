@@ -6,7 +6,6 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-import pyssht as ssht
 
 import sleplet._data.create_earth_flm
 import sleplet._integration_methods
@@ -62,7 +61,6 @@ def invert_flm_boosted(
     return ssht.inverse(
         s2fft.samples.flm_1d_to_2d(flm, resolution),
         resolution,
-        
         Reality=reality,
         sampling=sleplet._vars.SAMPLING_SCHEME,
         Spin=spin,
@@ -96,7 +94,6 @@ def _ensure_f_bandlimited(
         ssht.forward(
             f,
             L,
-            
             Reality=reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
             Spin=spin,

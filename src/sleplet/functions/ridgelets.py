@@ -4,10 +4,8 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
-import scipy.special
-
-import pyssht as ssht
 import s2wav
+import scipy.special
 
 import sleplet._string_methods
 import sleplet._validation

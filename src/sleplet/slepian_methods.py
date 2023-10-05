@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-import pyssht as ssht
 
 import sleplet._vars
 import sleplet.harmonic_methods
@@ -145,7 +144,6 @@ def compute_s_p_omega(
         sp[p] = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(slepian.eigenvectors[p], L),
             L,
-            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
     return sp

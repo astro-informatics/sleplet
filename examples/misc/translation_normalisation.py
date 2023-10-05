@@ -3,7 +3,6 @@ import numpy as np
 import seaborn as sns
 
 import pyssht as ssht
-import pyssht as ssht
 
 import sleplet
 

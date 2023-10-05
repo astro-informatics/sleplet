@@ -5,7 +5,6 @@ import pyssht as ssht
 
 import sleplet
 
-
 SAMPLING_SCHEME = "MWSS"
 
 

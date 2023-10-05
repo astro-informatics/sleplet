@@ -69,7 +69,6 @@ class SlepianDiracDelta(Fp):
         sp = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[0], self.L),
             self.L,
-            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         idx = tuple(np.argwhere(sp == sp.max())[0])

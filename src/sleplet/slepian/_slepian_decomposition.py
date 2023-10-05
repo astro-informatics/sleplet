@@ -59,7 +59,6 @@ class SlepianDecomposition:
         s_p = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
             self.L,
-            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
@@ -80,7 +79,6 @@ class SlepianDecomposition:
         s_p = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
             self.L,
-            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)

@@ -105,7 +105,6 @@ def find_max_amplitude(
         field = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(function.coefficients, function.L),
             function.L,
-            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
 
@@ -192,7 +191,6 @@ def _boost_field(  # noqa: PLR0913
         ssht.forward(
             field,
             L,
-            
             Reality=reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
             Spin=spin,
@@ -269,7 +267,6 @@ def _coefficients_to_field_sphere(
         else ssht.inverse(
             s2fft.samples.flm_1d_to_2d(coefficients, f.L),
             f.L,
-            
             Reality=f.reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
             Spin=f.spin,
