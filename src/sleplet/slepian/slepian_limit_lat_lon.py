@@ -1,6 +1,5 @@
 """Contains the `SlepianLimitLatLon` class."""
 
-
 import numba
 import numpy as np
 import numpy.linalg as LA  # noqa: N812

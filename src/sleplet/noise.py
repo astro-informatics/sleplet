@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-import s2fft
 
 import sleplet._vars
 import sleplet.harmonic_methods
@@ -74,22 +73,25 @@ def _create_noise(
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # initialise
-    nlm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
+    nlm = np.zeros(L**2, dtype=np.complex_)
 
     # std dev of the noise
     sigma_noise = compute_sigma_noise(signal, snr_in)
 
     # compute noise
     for ell in range(L):
-        nlm[ell, L - 1] = sigma_noise * rng.standard_normal()
+        ind = ssht.elm2ind(ell, 0)
+        nlm[ind] = sigma_noise * rng.standard_normal()
         for m in range(1, ell + 1):
-            nlm[ell, L - 1 + m] = (
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            nlm[ind_pm] = (
                 sigma_noise
                 / np.sqrt(2)
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
-            nlm[ell, L - 1 - m] = (-1) ** m * nlm[ell, L - 1 + m].conj()
-    return s2fft.samples.flm_2d_to_1d(nlm, L)
+            nlm[ind_nm] = (-1) ** m * nlm[ind_pm].conj()
+    return nlm
 
 
 def _create_slepian_noise(
@@ -102,7 +104,7 @@ def _create_slepian_noise(
     flm = ssht.forward(
         sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
         L,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     nlm = _create_noise(L, flm, snr_in)
     return sleplet.slepian_methods.slepian_forward(L, slepian, flm=nlm)
@@ -139,12 +141,12 @@ def harmonic_hard_thresholding(
     _logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
         _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
-        f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME.upper())
+        f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = ssht.forward(
             f_thresholded,
             L,
-            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
     return wav_coeffs
 

@@ -97,7 +97,7 @@ class Region:
         if v > sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
                 f"phi_max cannot be greater than "
-                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}",  # noqa: E501
+                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}",
             )
         return v
 
@@ -108,7 +108,7 @@ class Region:
         if v > sleplet._vars.PHI_MAX_DEFAULT:
             raise ValueError(
                 f"phi_min cannot be greater than "
-                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}",  # noqa: E501
+                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}",
             )
         return v
 

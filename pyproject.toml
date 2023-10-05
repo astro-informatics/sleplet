@@ -26,7 +26,6 @@ dependencies = [
     "cmocean>=3.0.3",
     "gmpy2>=2.1.5",
     "hypothesis>=6.70.2",
-    "jaxlib>=0.4.14",
     "libigl>=2.4.1",
     "matplotlib>=3.7.1",
     "multiprocess>=0.70.14",
@@ -36,8 +35,8 @@ dependencies = [
     "plotly>=5.14.0",
     "pooch>=1.7.0",
     "pydantic>=2.4.0",
+    "pys2let>=2.2.6",
     "pyssht>=1.5.2",
-    "s2wav@git+https://github.com/astro-informatics/s2wav.git@main#egg=s2wav",
     "scipy>=1.10.1",
     "seaborn>=0.12.2",
     "tomli>=2.0.1",
@@ -121,9 +120,8 @@ isort = {known-first-party = [
     "first-party",
     "local-folder",
 ], sections = {"astro-info" = [
+    "pys2let",
     "pyssht",
-    "s2fft",
-    "s2wav",
 ]}}
 per-file-ignores = {"examples/*" = [
     "D100",

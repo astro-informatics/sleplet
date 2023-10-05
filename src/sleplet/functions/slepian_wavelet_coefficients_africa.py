@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import pydantic
 
-import s2wav
+import pys2let
 
 import sleplet._string_methods
 import sleplet._validation
@@ -91,9 +91,10 @@ class SlepianWaveletCoefficientsAfrica(Fp):
 
     @pydantic.field_validator("j")
     def _check_j(cls, v, info: pydantic.FieldValidationInfo):
-        j_max = s2wav.utils.shapes.j_max(
-            info.data["L"] ** 2,
+        j_max = pys2let.pys2let_j_max(
             info.data["B"],
+            info.data["L"] ** 2,
+            info.data["j_min"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")

@@ -6,8 +6,8 @@ import numpy.typing as npt
 import pydantic
 import scipy.special
 
-import s2fft
-import s2wav
+import pys2let
+import pyssht as ssht
 
 import sleplet._string_methods
 import sleplet._validation
@@ -70,20 +70,16 @@ class Ridgelets(Flm):
         """Compute all wavelets."""
         ring_lm = self._compute_ring()
         kappas = sleplet.wavelet_methods.create_kappas(self.L, self.B, self.j_min)
-        wavelets = np.zeros(
-            (kappas.shape[0], *s2fft.samples.flm_shape(self.L)),
-            dtype=np.complex_,
-        )
+        wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
         for ell in range(self.L):
-            wavelets[0, ell, self.L - 1] = kappas[0, ell] * ring_lm[ell, self.L - 1]
-            wavelets[1:, ell, self.L - 1] = (
-                kappas[1:, ell] * ring_lm[ell, self.L - 1] / np.sqrt(2 * np.pi)
-            )
-        return np.array([s2fft.samples.flm_2d_to_1d(w, self.L) for w in wavelets])
+            ind = ssht.elm2ind(ell, 0)
+            wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
+            wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
+        return wavelets
 
     def _compute_ring(self) -> npt.NDArray[np.complex_]:
         """Compute ring in harmonic space."""
-        ring_lm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
+        ring_lm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(abs(self.spin), self.L):
             logp2 = (
                 scipy.special.gammaln(ell + self.spin + 1)
@@ -92,7 +88,8 @@ class Ridgelets(Flm):
                 - scipy.special.gammaln((ell - self.spin) / 2 + 1)
             )
             p0 = np.real((-1) ** ((ell + self.spin) / 2)) * np.exp(logp2)
-            ring_lm[ell, self.L - 1] = (
+            ind = ssht.elm2ind(ell, 0)
+            ring_lm[ind] = (
                 2
                 * np.pi
                 * np.sqrt((2 * ell + 1) / (4 * np.pi))
@@ -109,9 +106,10 @@ class Ridgelets(Flm):
 
     @pydantic.field_validator("j")
     def _check_j(cls, v, info: pydantic.FieldValidationInfo):
-        j_max = s2wav.utils.shapes.j_max(
-            info.data["L"],
+        j_max = pys2let.pys2let_j_max(
             info.data["B"],
+            info.data["L"],
+            info.data["j_min"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")

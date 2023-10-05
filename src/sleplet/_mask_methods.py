@@ -6,7 +6,6 @@ import numpy.typing as npt
 import platformdirs
 
 import pyssht as ssht
-import s2fft
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
@@ -33,13 +32,10 @@ def create_mask_region(
                                    phi_min or phi_max is provided
     * arbitrary - just checks the shape of the input mask.
     """
-    thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
-    ).T
-    phis = np.tile(
-        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
+    thetas, phis = ssht.sample_positions(
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
 
     match region.region_type:
@@ -90,18 +86,18 @@ def ensure_masked_flm_bandlimited(
     field = ssht.inverse(
         flm,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
     return ssht.forward(
         field,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
 
 
@@ -162,13 +158,14 @@ def _create_africa_mask(
     earth_f = ssht.inverse(
         rot_flm,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=True,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
-    thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
-    ).T
+    thetas, _ = ssht.sample_positions(
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+    )
     return (thetas <= _AFRICA_RANGE) & (earth_f >= 0)
 
 
@@ -181,13 +178,14 @@ def _create_south_america_mask(
     earth_f = ssht.inverse(
         rot_flm,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=True,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
-    thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
-    ).T
+    thetas, _ = ssht.sample_positions(
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+    )
     return (thetas <= _SOUTH_AMERICA_RANGE) & (earth_f >= 0)
 
 

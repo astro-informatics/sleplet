@@ -1,11 +1,11 @@
 import numpy as np
 import numpy.typing as npt
 
-import s2fft
+import pyssht as ssht
 
 import sleplet
 
-SAMPLING_SCHEME = "mwss"
+SAMPLING_SCHEME = "MWSS"
 
 
 def compute_slepian_wavelet_covariance(
@@ -29,7 +29,7 @@ def compute_slepian_wavelet_covariance(
         covariance.shape[0],
     )
     np.testing.assert_equal(
-        s2fft.samples.f_shape(slepian_wavelets.L, sampling=SAMPLING_SCHEME),
+        ssht.sample_shape(slepian_wavelets.L, Method=SAMPLING_SCHEME),
         covariance.shape[1:],
     )
     return covariance

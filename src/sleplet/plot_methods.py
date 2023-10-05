@@ -6,7 +6,6 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-import s2fft
 
 import sleplet._mask_methods
 import sleplet._vars
@@ -68,8 +67,7 @@ def _calc_nearest_grid_point(
     values - the translation needs to be at the same position
     as the rotation such that the difference error is small.
     """
-    thetas = s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME)
-    phis = s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME)
+    thetas, phis = ssht.sample_positions(L, Method=sleplet._vars.SAMPLING_SCHEME)
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
@@ -106,7 +104,7 @@ def find_max_amplitude(
         field = ssht.inverse(
             function.coefficients,
             function.L,
-            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
 
     # find resolution of final plot for boosting if necessary
@@ -154,7 +152,7 @@ def _set_outside_region_to_minimum(
     mask = sleplet._mask_methods.create_mask_region(L, region)
 
     # adapt for closed plot
-    n_phi = s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME)
+    _, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     closed_mask = np.insert(mask, n_phi, mask[:, 0], axis=1)
 
     # set values outside mask to negative infinity
@@ -191,9 +189,9 @@ def _boost_field(  # noqa: PLR0913
     flm = ssht.forward(
         field,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=reality,
         Spin=spin,
-        Method=sleplet._vars.SAMPLING_SCHEME.upper(),
     )
     return sleplet.harmonic_methods.invert_flm_boosted(
         flm,
@@ -265,8 +263,8 @@ def _coefficients_to_field_sphere(
         else ssht.inverse(
             coefficients,
             f.L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
             Reality=f.reality,
             Spin=f.spin,
-            Method=sleplet._vars.SAMPLING_SCHEME.upper(),
         )
     )

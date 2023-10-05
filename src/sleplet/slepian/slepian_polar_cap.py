@@ -107,7 +107,7 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc: str,
         order_loc: str,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """Sovles eigenproblem from scratch and then saves the files."""
+        """Solves eigenproblem from scratch and then saves the files."""
         if isinstance(self.order, int):
             return self._solve_eigenproblem_order(self.order)
 
