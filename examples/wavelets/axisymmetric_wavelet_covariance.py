@@ -76,7 +76,7 @@ def axisymmetric_wavelet_covariance(
         print(f"start run: {i+1}/{runs}")
 
         # Generate random complex signal
-        flm = sleplet.harmonic_methods.compute_random_signal(rng, L, var_signal=var_flm)
+        flm = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=var_flm)
 
         # compute wavelet coefficients
         wlm = sleplet.wavelet_methods.axisymmetric_wavelet_forward(L, flm, aw.wavelets)

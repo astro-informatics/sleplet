@@ -39,7 +39,7 @@ def main() -> None:
 
     for i in range(RUNS):
         # Generate random complex signal
-        f_p = sleplet.harmonic_methods.compute_random_signal(rng, L, var_signal=VAR_FP)
+        f_p = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=VAR_FP)
 
         # compute wavelet coefficients
         w_p = sleplet.wavelet_methods.slepian_wavelet_forward(
