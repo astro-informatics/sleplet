@@ -60,11 +60,7 @@ def _helper(
     print(f"plotting rank={rank}")
     flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
-    f = sleplet.harmonic_methods.invert_flm_boosted(
-        flm,
-        L,
-        RESOLUTION,
-    ).real
+    f = sleplet.harmonic_methods.invert_flm_boosted(flm, L, RESOLUTION).real
     if rank > COLUMNS - 1:
         ax.set_xlabel(r"colatitude $\theta$")
     ax.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])

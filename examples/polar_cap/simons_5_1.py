@@ -60,11 +60,7 @@ def _helper(  # noqa: PLR0913
     axs = ax[order, rank]
     flm = slepian.eigenvectors[rank] * SIGNS[order][rank]
     lam = slepian.eigenvalues[rank]
-    f = sleplet.harmonic_methods.invert_flm_boosted(
-        flm,
-        L,
-        resolution,
-    ).real
+    f = sleplet.harmonic_methods.invert_flm_boosted(flm, L, resolution).real
     if rank == 0:
         axs.set_ylabel(rf"$m={{{order}}}$")
     if order == 0:

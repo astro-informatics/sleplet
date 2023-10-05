@@ -117,31 +117,6 @@ def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
     return emm
 
 
-def compute_random_signal(
-    L: int,
-    rng: np.random.Generator,
-    *,
-    var_signal: float,
-) -> npt.NDArray[np.complex_]:
-    """
-    Generates a normally distributed random signal of a
-    complex signal with mean `0` and variance `1`.
-
-    Args:
-        L: The spherical harmonic bandlimit.
-        rng: The random number generator object.
-        var_signal: The variance of the signal.
-
-    Returns:
-        The coefficients of a random signal on the sphere.
-    """
-    return s2fft.samples.flm_1d_to_2d(
-        np.sqrt(var_signal / 2)
-        * (rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)),
-        L,
-    )
-
-
 def mesh_forward(
     mesh: "sleplet.meshes.mesh.Mesh",
     u: npt.NDArray[np.complex_ | np.float_],
