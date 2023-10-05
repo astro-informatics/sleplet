@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-import s2fft
+import pyssht as ssht
 
 import sleplet._data.create_earth_flm
 import sleplet._integration_methods

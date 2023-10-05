@@ -3,7 +3,7 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
-import s2fft
+import pyssht as ssht
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch

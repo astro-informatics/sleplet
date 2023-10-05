@@ -6,7 +6,7 @@ import numpy.typing as npt
 import pydantic.v1 as pydantic
 import scipy.special
 
-import s2fft
+import pyssht as ssht
 import s2wav
 
 import sleplet._string_methods

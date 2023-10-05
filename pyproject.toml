@@ -37,7 +37,7 @@ dependencies = [
     "pooch>=1.7.0",
     "pydantic>=2.3.0",
     "pyssht>=1.5.2",
-    "s2wav@git+https://github.com/astro-informatics/s2wav.git@main#egg=s2wav",
+    "pys2let>=2.2.6",
     "scipy>=1.10.1",
     "seaborn>=0.12.2",
     "tomli>=2.0.1",
@@ -122,8 +122,7 @@ isort = {known-first-party = [
     "local-folder",
 ], sections = {"astro-info" = [
     "pyssht",
-    "s2fft",
-    "s2wav",
+    "pys2let",
 ]}}
 per-file-ignores = {"examples/*" = [
     "D100",

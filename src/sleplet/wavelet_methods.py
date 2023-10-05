@@ -2,7 +2,7 @@
 import numpy as np
 import numpy.typing as npt
 
-import s2fft
+import pyssht as ssht
 import s2wav
 
 import sleplet._convolution_methods

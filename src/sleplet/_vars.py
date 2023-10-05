@@ -1,6 +1,6 @@
 import numpy as np
 
-EXECUTION_MODE = "jax"
+
 PHI_0 = np.pi
 PHI_MAX_DEFAULT = 2 * np.pi
 PHI_MIN_DEFAULT = 0.0
