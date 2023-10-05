@@ -20,10 +20,10 @@ _SOUTH_AMERICA_BETA = np.deg2rad(108)
 _SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
-def _create_spherical_harmonic(L: int, ell: int, m: int) -> npt.NDArray[np.complex_]:
+def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
     """Create a spherical harmonic in harmonic space for the given index."""
     flm = np.zeros(L**2, dtype=np.complex_)
-    flm[ell, L - 1 + m] = 1
+    flm[ind] = 1
     return flm
 
 

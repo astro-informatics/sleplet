@@ -161,7 +161,11 @@ def _create_africa_mask(
         Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=True,
     )
-    thetas, _ = ssht.sample_positions(L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME)
+    thetas, _ = ssht.sample_positions(
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+    )
     return (thetas <= _AFRICA_RANGE) & (earth_f >= 0)
 
 

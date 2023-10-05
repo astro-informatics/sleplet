@@ -29,8 +29,8 @@ class Africa(Flm):
         return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun,
             self.L,
-            Reality=self.reality,
-            Spin=self.spin,
+            reality=self.reality,
+            spin=self.spin,
         )
 
     def _create_name(self) -> str:

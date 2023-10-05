@@ -197,8 +197,8 @@ def _boost_field(  # noqa: PLR0913
         flm,
         L,
         resolution,
-        Reality=reality,
-        Spin=spin,
+        reality=reality,
+        spin=spin,
     )
 
 
