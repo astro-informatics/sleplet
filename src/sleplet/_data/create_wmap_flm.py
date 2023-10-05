@@ -23,12 +23,14 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
         sigma = np.sqrt(2 * np.pi / (ell * (ell + 1)) * cl[ell - 2])
         flm[ell, L - 1] = sigma * rng.standard_normal()
         for m in range(1, ell + 1):
-            flm[ell, L - 1 + m] = (
+            ind_pm = L - 1 + m
+            ind_nm = L - 1 - m
+            flm[ell, ind_pm] = (
                 sigma
                 / np.sqrt(2)
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
-            flm[ell, L - 1 - m] = (-1) ** m * flm[ell, L - 1 + m].conj()
+            flm[ell, ind_nm] = (-1) ** m * flm[ell, ind_pm].conj()
     return flm
 
 

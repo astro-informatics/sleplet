@@ -74,10 +74,11 @@ class Ridgelets(Flm):
             (kappas.shape[0], *s2fft.samples.flm_shape(self.L)),
             dtype=np.complex_,
         )
+        ind_m0 = self.L - 1
         for ell in range(self.L):
-            wavelets[0, ell, self.L - 1] = kappas[0, ell] * ring_lm[ell, self.L - 1]
-            wavelets[1:, ell, self.L - 1] = (
-                kappas[1:, ell] * ring_lm[ell, self.L - 1] / np.sqrt(2 * np.pi)
+            wavelets[0, ell, ind_m0] = kappas[0, ell] * ring_lm[ell, ind_m0]
+            wavelets[1:, ell, ind_m0] = (
+                kappas[1:, ell] * ring_lm[ell, ind_m0] / np.sqrt(2 * np.pi)
             )
         return wavelets
 

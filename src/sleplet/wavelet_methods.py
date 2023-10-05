@@ -81,7 +81,8 @@ def axisymmetric_wavelet_forward(
     for ell in range(L):
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1].conj()
         for m in range(-ell, ell + 1):
-            w[:, ell, L - 1 + m] = wav_0 * flm[ell, L - 1 + m]
+            ind_pm = L - 1 + m
+            w[:, ell, ind_pm] = wav_0 * flm[ell, ind_pm]
     return w
 
 
@@ -105,7 +106,8 @@ def axisymmetric_wavelet_inverse(
     for ell in range(L):
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1]
         for m in range(-ell, ell + 1):
-            flm[ell, L - 1 + m] = (wav_coeffs[:, ell, L - 1 + m] * wav_0).sum()
+            ind_pm = L - 1 + m
+            flm[ell, ind_pm] = (wav_coeffs[:, ell, ind_pm] * wav_0).sum()
     return flm
 
 

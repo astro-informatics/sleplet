@@ -20,7 +20,9 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
     # fill in negative m components so as to avoid confusion with zero values
     for ell in range(1, L):
         for m in range(1, ell + 1):
-            flm[ell, L - 1 - m] = (-1) ** m * flm[ell, L - 1 + m].conj()
+            ind_pm = L - 1 + m
+            ind_nm = L - 1 - m
+            flm[ell, ind_nm] = (-1) ** m * flm[ell, ind_pm].conj()
 
     # invert dataset as Earth backwards
     flm = flm.conj()

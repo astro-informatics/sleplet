@@ -82,12 +82,14 @@ def _create_noise(
     for ell in range(L):
         nlm[ell, L - 1] = sigma_noise * rng.standard_normal()
         for m in range(1, ell + 1):
-            nlm[ell, L - 1 + m] = (
+            ind_pm = L - 1 + m
+            ind_nm = L - 1 - m
+            nlm[ell, ind_pm] = (
                 sigma_noise
                 / np.sqrt(2)
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
-            nlm[ell, L - 1 - m] = (-1) ** m * nlm[ell, L - 1 + m].conj()
+            nlm[ell, ind_nm] = (-1) ** m * nlm[ell, ind_pm].conj()
     return nlm
 
 
