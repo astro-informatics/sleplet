@@ -69,7 +69,7 @@ class PlotSphere:
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f,
             self.resolution,
-            method=sleplet._vars.SAMPLING_SCHEME,
+            sampling=sleplet._vars.SAMPLING_SCHEME,
         )
 
         if isinstance(self.region, sleplet.slepian.region.Region):
@@ -210,8 +210,8 @@ class PlotSphere:
             f,
             self.L,
             self.resolution,
-            reality=self.reality,
-            spin=self.spin,
+            Reality=self.reality,
+            Spin=self.spin,
             upsample=self.upsample,
         )
         field_space = sleplet.plot_methods._create_plot_type(

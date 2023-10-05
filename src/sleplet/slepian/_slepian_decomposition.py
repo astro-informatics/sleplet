@@ -56,10 +56,10 @@ class SlepianDecomposition:
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
         """
-        s_p = s2fft.inverse(
+        s_p = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
             self.L,
-            method=sleplet._vars.EXECUTION_MODE,
+            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
@@ -77,10 +77,10 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
         """
-        s_p = s2fft.inverse(
+        s_p = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
             self.L,
-            method=sleplet._vars.EXECUTION_MODE,
+            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)

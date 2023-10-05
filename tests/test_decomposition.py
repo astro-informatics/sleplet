@@ -7,10 +7,10 @@ import sleplet
 
 def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
     """Tests that all three methods produce the same coefficients for polar cap."""
-    field = s2fft.inverse(
+    field = ssht.inverse(
         s2fft.samples.flm_1d_to_2d(earth_polar_cap.coefficients, earth_polar_cap.L),
         slepian_polar_cap.L,
-        method=sleplet._vars.EXECUTION_MODE,
+        
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     harmonic_sum_p = sleplet.slepian_methods.slepian_forward(
@@ -46,10 +46,10 @@ def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> No
     Tests that all three methods produce the same coefficients for
     limited latitude longitude region.
     """
-    field = s2fft.inverse(
+    field = ssht.inverse(
         s2fft.samples.flm_1d_to_2d(earth_lim_lat_lon.coefficients, earth_lim_lat_lon.L),
         slepian_lim_lat_lon.L,
-        method=sleplet._vars.EXECUTION_MODE,
+        
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     harmonic_sum_p = sleplet.slepian_methods.slepian_forward(
@@ -95,10 +95,10 @@ def test_equality_to_harmonic_transform_polar(
         slepian_polar_cap.L,
         slepian_polar_cap,
     )
-    f_harmonic = s2fft.inverse(
+    f_harmonic = ssht.inverse(
         s2fft.samples.flm_1d_to_2d(earth_polar_cap.coefficients, earth_polar_cap.L),
         slepian_polar_cap.L,
-        method=sleplet._vars.EXECUTION_MODE,
+        
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     mask = sleplet._mask_methods.create_mask_region(
@@ -123,10 +123,10 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
         slepian_lim_lat_lon.L,
         slepian_lim_lat_lon,
     )
-    f_harmonic = s2fft.inverse(
+    f_harmonic = ssht.inverse(
         s2fft.samples.flm_1d_to_2d(earth_lim_lat_lon.coefficients, earth_lim_lat_lon.L),
         slepian_lim_lat_lon.L,
-        method=sleplet._vars.EXECUTION_MODE,
+        
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     mask = sleplet._mask_methods.create_mask_region(

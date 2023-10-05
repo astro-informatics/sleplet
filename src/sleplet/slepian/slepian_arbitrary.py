@@ -158,10 +158,10 @@ class SlepianArbitrary(SlepianFunctions):
         integral = self._integral(i, i)
         D_r[i][i] = integral.real
         D_i[i][i] = integral.imag
-        _, m_i = s2fft.samples.ind2elm(i)
+        _, m_i = ssht.ind2elm(i)
 
         for j in range(i + 1, D_r.shape[0]):
-            ell_j, m_j = s2fft.samples.ind2elm(j)
+            ell_j, m_j = ssht.ind2elm(j)
             # if possible to use previous calculations
             if m_i == 0 and m_j != 0 and ell_j < self.L:
                 # if positive m then use conjugate relation
@@ -169,7 +169,7 @@ class SlepianArbitrary(SlepianFunctions):
                     integral = self._integral(j, i)
                     D_r[j][i] = integral.real
                     D_i[j][i] = integral.imag
-                    k = s2fft.samples.elm2ind(ell_j, -m_j)
+                    k = ssht.elm2ind(ell_j, -m_j)
                     D_r[k][i] = (-1) ** m_j * D_r[j][i]
                     D_i[k][i] = (-1) ** (m_j + 1) * D_i[j][i]
             else:
@@ -180,14 +180,14 @@ class SlepianArbitrary(SlepianFunctions):
     def _integral(self, i: int, j: int) -> complex:
         """Calculates the D integral between two spherical harmonics."""
         if i not in self._fields:
-            ell, m = s2fft.samples.ind2elm(i)
+            ell, m = ssht.ind2elm(i)
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, ell, m),
                 self.L,
                 self.resolution,
             )
         if j not in self._fields:
-            ell, m = s2fft.samples.ind2elm(j)
+            ell, m = ssht.ind2elm(j)
             self._fields[j] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, ell, m),
                 self.L,

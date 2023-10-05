@@ -82,7 +82,7 @@ def axisymmetric_wavelet_forward(
     for ell in range(L):
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1].conj()
         for m in range(-ell, ell + 1):
-            w[:, ell, L - 1 + m] = wav_0 * flm[s2fft.samples.elm2ind(ell, m)]
+            w[:, ell, L - 1 + m] = wav_0 * flm[ssht.elm2ind(ell, m)]
     return np.array([s2fft.samples.flm_2d_to_1d(wav, L) for wav in w])
 
 
@@ -141,15 +141,8 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
     Returns:
         The Slepian wavelet generating functions.
     """
-    kappa, kappa0 = s2wav.filter_factory.filters.filters_axisym(
-        xlim,
-        J_min=j_min,
-        lam=B,
-    )
-    kappas = np.concatenate((kappa0[np.newaxis], kappa[j_min:]))
-    # this step is required when migrating from S2LET to S2WAV
-    kappas[kappas == np.inf] = 1
-    return kappas
+    kappa0, kappa = pys2let.axisym_wav_l(B, xlim, j_min)
+    return np.concatenate((kappa0[np.newaxis], kappa.T))
 
 
 def find_non_zero_wavelet_coefficients(

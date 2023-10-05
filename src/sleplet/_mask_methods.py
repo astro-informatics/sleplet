@@ -86,24 +86,24 @@ def ensure_masked_flm_bandlimited(
     spin: int,
 ) -> npt.NDArray[np.complex_]:
     """Ensures the coefficients is bandlimited for a given region."""
-    field = s2fft.inverse(
+    field = ssht.inverse(
         s2fft.samples.flm_1d_to_2d(flm, L),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=reality,
+        
+        Reality=reality,
         sampling=sleplet._vars.SAMPLING_SCHEME,
-        spin=spin,
+        Spin=spin,
     )
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
     return s2fft.samples.flm_2d_to_1d(
-        s2fft.forward(
+        ssht.forward(
             field,
             L,
-            method=sleplet._vars.EXECUTION_MODE,
-            reality=reality,
+            
+            Reality=reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
-            spin=spin,
+            Spin=spin,
         ),
         L,
     )
@@ -163,11 +163,11 @@ def _create_africa_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, L)
-    earth_f = s2fft.inverse(
+    earth_f = ssht.inverse(
         s2fft.samples.flm_1d_to_2d(rot_flm, L),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=True,
+        
+        Reality=True,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas = np.tile(
@@ -183,11 +183,11 @@ def _create_south_america_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(earth_flm, L)
-    earth_f = s2fft.inverse(
+    earth_f = ssht.inverse(
         s2fft.samples.flm_1d_to_2d(rot_flm, L),
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=True,
+        
+        Reality=True,
         sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas = np.tile(

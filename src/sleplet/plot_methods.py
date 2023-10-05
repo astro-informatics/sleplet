@@ -102,10 +102,10 @@ def find_max_amplitude(
             function.slepian,
         )
     else:
-        field = s2fft.inverse(
+        field = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(function.coefficients, function.L),
             function.L,
-            method=sleplet._vars.EXECUTION_MODE,
+            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
 
@@ -117,8 +117,8 @@ def find_max_amplitude(
         field,
         function.L,
         resolution,
-        reality=function.reality,
-        spin=function.spin,
+        Reality=function.reality,
+        Spin=function.spin,
         upsample=upsample,
     )
 
@@ -189,13 +189,13 @@ def _boost_field(  # noqa: PLR0913
     if not upsample:
         return field
     flm = s2fft.samples.flm_2d_to_1d(
-        s2fft.forward(
+        ssht.forward(
             field,
             L,
-            method=sleplet._vars.EXECUTION_MODE,
-            reality=reality,
+            
+            Reality=reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
-            spin=spin,
+            Spin=spin,
         ),
         L,
     )
@@ -203,8 +203,8 @@ def _boost_field(  # noqa: PLR0913
         flm,
         L,
         resolution,
-        reality=reality,
-        spin=spin,
+        Reality=reality,
+        Spin=spin,
     )
 
 
@@ -266,12 +266,12 @@ def _coefficients_to_field_sphere(
     return (
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, "slepian")
-        else s2fft.inverse(
+        else ssht.inverse(
             s2fft.samples.flm_1d_to_2d(coefficients, f.L),
             f.L,
-            method=sleplet._vars.EXECUTION_MODE,
-            reality=f.reality,
+            
+            Reality=f.reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
-            spin=f.spin,
+            Spin=f.spin,
         )
     )

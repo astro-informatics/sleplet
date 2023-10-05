@@ -26,8 +26,8 @@ class SouthAmerica(Flm):
         return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun,
             self.L,
-            reality=self.reality,
-            spin=self.spin,
+            Reality=self.reality,
+            Spin=self.spin,
         )
 
     def _create_name(self) -> str:
@@ -61,11 +61,11 @@ class SouthAmerica(Flm):
             earth_flm,
             self.L,
         )
-        earth_f = s2fft.inverse(
+        earth_f = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(rot_flm, self.L),
             self.L,
-            method=sleplet._vars.EXECUTION_MODE,
-            reality=self.reality,
+            
+            Reality=self.reality,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         mask_name = f"{self.name}_L{self.L}.npy"

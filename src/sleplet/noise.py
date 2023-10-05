@@ -99,10 +99,10 @@ def _create_slepian_noise(
 ) -> npt.NDArray[np.complex_]:
     """Computes Gaussian white noise in Slepian space."""
     flm = s2fft.samples.flm_2d_to_1d(
-        s2fft.forward(
+        ssht.forward(
             sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
             L,
-            method=sleplet._vars.EXECUTION_MODE,
+            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         ),
         L,
@@ -142,18 +142,18 @@ def harmonic_hard_thresholding(
     _logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
         _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
-        f = s2fft.inverse(
+        f = ssht.inverse(
             s2fft.samples.flm_1d_to_2d(coefficient, L),
             L,
-            method=sleplet._vars.EXECUTION_MODE,
+            
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = s2fft.samples.flm_2d_to_1d(
-            s2fft.forward(
+            ssht.forward(
                 f_thresholded,
                 L,
-                method=sleplet._vars.EXECUTION_MODE,
+                
                 sampling=sleplet._vars.SAMPLING_SCHEME,
             ),
             L,
