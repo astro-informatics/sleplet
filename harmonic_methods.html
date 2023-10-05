@@ -32,6 +32,24 @@
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="sleplet.harmonic_methods.compute_random_signal"><code class="name flex">
+<span>def <span class="ident">compute_random_signal</span></span>(<span>L: int, rng: numpy.random._generator.Generator, *, var_signal: float) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a normally distributed random signal of a
+complex signal with mean <code>0</code> and variance <code>1</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>L</code></strong></dt>
+<dd>The spherical harmonic bandlimit.</dd>
+<dt><strong><code>rng</code></strong></dt>
+<dd>The random number generator object.</dd>
+<dt><strong><code>var_signal</code></strong></dt>
+<dd>The variance of the signal.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The coefficients of a random signal on the sphere.</p></div>
+</dd>
 <dt id="sleplet.harmonic_methods.invert_flm_boosted"><code class="name flex">
 <span>def <span class="ident">invert_flm_boosted</span></span>(<span>flm: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]], L: int, resolution: int, *, reality: bool = False, spin: int = 0) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
@@ -131,6 +149,7 @@
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="sleplet.harmonic_methods.compute_random_signal" href="#sleplet.harmonic_methods.compute_random_signal">compute_random_signal</a></code></li>
 <li><code><a title="sleplet.harmonic_methods.invert_flm_boosted" href="#sleplet.harmonic_methods.invert_flm_boosted">invert_flm_boosted</a></code></li>
 <li><code><a title="sleplet.harmonic_methods.mesh_forward" href="#sleplet.harmonic_methods.mesh_forward">mesh_forward</a></code></li>
 <li><code><a title="sleplet.harmonic_methods.mesh_inverse" href="#sleplet.harmonic_methods.mesh_inverse">mesh_inverse</a></code></li>
