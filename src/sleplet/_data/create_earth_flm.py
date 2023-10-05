@@ -20,8 +20,10 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
     # fill in negative m components so as to avoid confusion with zero values
     for ell in range(1, L):
         for m in range(1, ell + 1):
-            # invert dataset as Earth backwards
-            flm[ell, L - 1 + m] = (-1) ** m * flm[ell, L - 1 - m].conj()
+            flm[ell, L - 1 - m] = (-1) ** m * flm[ell, L - 1 + m].conj()
+
+    # invert dataset as Earth backwards
+    flm = flm.conj()
 
     if isinstance(smoothing, int):
         flm = sleplet._smoothing.apply_gaussian_smoothing(flm, L, smoothing)
