@@ -38,9 +38,4 @@ def _load_flm() -> tuple[npt.NDArray[np.complex_], int]:
             "EGM2008_Topography_flms_L2190.mat",
         ),
     )
-    L = int(mat_contents["L"])
-    flm = s2fft.samples.flm_1d_to_2d(
-        np.ascontiguousarray(mat_contents["flm"][:, 0]),
-        L,
-    )
-    return flm, L
+    return np.ascontiguousarray(mat_contents["flm"][:, 0])

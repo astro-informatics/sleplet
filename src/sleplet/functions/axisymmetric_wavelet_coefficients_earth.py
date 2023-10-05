@@ -77,7 +77,7 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
 
     @pydantic.validator("j")
     def _check_j(cls, v, values):  # noqa: N805
-        j_max = s2wav.utils.shapes.j_max(
+        j_max = pys2let.pys2let_j_max(
             values["L"],
             values["B"],
         )
