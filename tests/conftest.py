@@ -2,8 +2,6 @@ import numpy as np
 import numpy.typing as npt
 import pytest
 
-import s2fft
-
 import sleplet
 
 ARRAY_DIM = 10
@@ -107,14 +105,17 @@ def slepian_wavelets_lim_lat_lon(
 @pytest.fixture(scope="session")
 def random_flm() -> npt.NDArray[np.complex_]:
     """Creates random flm."""
-    return s2fft.utils.signal_generator.generate_flm(RNG, L)
+    return sleplet.harmonic_methods.compute_random_signal(L, RNG, var_signal=1)
 
 
 @pytest.fixture(scope="session")
 def random_nd_flm() -> npt.NDArray[np.complex_]:
     """Creates multiple random flm."""
     return np.array(
-        [s2fft.utils.signal_generator.generate_flm(RNG, L) for _ in range(ARRAY_DIM)],
+        [
+            sleplet.harmonic_methods.compute_random_signal(L, RNG, var_signal=1)
+            for _ in range(ARRAY_DIM)
+        ],
     )
 
 

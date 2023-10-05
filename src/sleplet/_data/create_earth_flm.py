@@ -3,7 +3,7 @@ import numpy as np
 import numpy.typing as npt
 import scipy.io as sio
 
-import s2fft
+import pyssht as ssht
 
 import sleplet._data.setup_pooch
 import sleplet._smoothing
@@ -14,18 +14,16 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
     # load in data
     flm = _load_flm()
 
-    # don't take the full L, and convert to 2D
-    flm = s2fft.samples.flm_1d_to_2d(flm[: L**2], L)
-
     # fill in negative m components so as to avoid confusion with zero values
     for ell in range(1, L):
         for m in range(1, ell + 1):
-            ind_pm = L - 1 + m
-            ind_nm = L - 1 - m
-            flm[ell, ind_nm] = (-1) ** m * flm[ell, ind_pm].conj()
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            flm_pm = flm[ind_pm]
+            flm[ind_nm] = (-1) ** m * flm_pm.conj()
 
-    # invert dataset as Earth backwards
-    flm = flm.conj()
+    # don't take the full L, invert dataset as Earth backwards
+    flm = flm[: L**2].conj()
 
     if isinstance(smoothing, int):
         flm = sleplet._smoothing.apply_gaussian_smoothing(flm, L, smoothing)

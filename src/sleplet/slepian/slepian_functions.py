@@ -6,8 +6,6 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
-import s2fft
-
 import sleplet._validation
 
 _logger = logging.getLogger(__name__)
@@ -29,10 +27,7 @@ class SlepianFunctions:
         _logger.info(f"Shannon number N={self.N}")
         self.matrix_location = self._create_matrix_location()
         _logger.info("start solving eigenproblem")
-        self.eigenvalues, evecs = self._solve_eigenproblem()
-        self.eigenvectors = np.array(
-            [s2fft.samples.flm_1d_to_2d(e, self.L) for e in evecs],
-        )
+        self.eigenvalues, self.eigenvectors = self._solve_eigenproblem()
         _logger.info("finished solving eigenproblem")
 
     @abc.abstractmethod

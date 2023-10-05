@@ -1,12 +1,11 @@
 import dataclasses
 import logging
 
-import jax
 import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
-import s2fft
+import pyssht as ssht
 
 import sleplet._integration_methods
 import sleplet._validation
@@ -21,8 +20,8 @@ class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
     _: dataclasses.KW_ONLY
-    f: jax.Array | npt.NDArray[np.complex_] | None = None
-    flm: jax.Array | npt.NDArray[np.complex_ | np.float_] | None = None
+    f: npt.NDArray[np.complex_] | None = None
+    flm: npt.NDArray[np.complex_ | np.float_] | None = None
     mask: npt.NDArray[np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
@@ -56,11 +55,10 @@ class SlepianDecomposition:
         \int\limits_{R} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
         """
-        s_p = s2fft.inverse(
+        s_p = ssht.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
-            method=sleplet._vars.EXECUTION_MODE,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
         integration = sleplet._integration_methods.integrate_region_sphere(
@@ -77,11 +75,10 @@ class SlepianDecomposition:
         \int\limits_{S^{2}} \dd{\Omega(\omega)}
         f(\omega) \overline{S_{p}(\omega)}.
         """
-        s_p = s2fft.inverse(
+        s_p = ssht.inverse(
             self.slepian.eigenvectors[rank],
             self.L,
-            method=sleplet._vars.EXECUTION_MODE,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
         weight = sleplet._integration_methods.calc_integration_weight(self.L)
         return sleplet._integration_methods.integrate_whole_sphere(

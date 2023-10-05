@@ -3,7 +3,7 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
-import s2fft
+import pyssht as ssht
 
 import sleplet._string_methods
 import sleplet._validation
@@ -18,9 +18,10 @@ class DiracDelta(Flm):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        flm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
+        flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
-            flm[ell, self.L - 1] = np.sqrt((2 * ell + 1) / (4 * np.pi))
+            ind = ssht.elm2ind(ell, 0)
+            flm[ind] = np.sqrt((2 * ell + 1) / (4 * np.pi))
         return flm
 
     def _create_name(self) -> str:

@@ -1,16 +1,15 @@
 import numpy as np
 import numpy.typing as npt
 
-import s2fft
+import pyssht as ssht
 
 import sleplet
 
 B = 3
-EXECUTION_MODE = "jax"
 J_MIN = 2
 L = 128
 RANDOM_SEED = 30
-SAMPLING_SCHEME = "mwss"
+SAMPLING_SCHEME = "MWSS"
 
 
 def _compute_wavelet_covariance(
@@ -19,7 +18,7 @@ def _compute_wavelet_covariance(
     var_signal: float,
 ) -> npt.NDArray[np.float_]:
     """Computes the theoretical covariance of the wavelet coefficients."""
-    covar_theory = (np.abs(wavelets) ** 2).sum(axis=(1, 2))
+    covar_theory = (np.abs(wavelets) ** 2).sum(axis=1)
     return covar_theory * var_signal
 
 
@@ -76,20 +75,15 @@ def axisymmetric_wavelet_covariance(
     for i in range(runs):
         print(f"start run: {i+1}/{runs}")
 
-        # Generate random complex signal
-        flm = s2fft.utils.signal_generator.generate_flm(rng, L)
+        # Generate normally distributed random complex signal
+        flm = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=var_flm)
 
         # compute wavelet coefficients
         wlm = sleplet.wavelet_methods.axisymmetric_wavelet_forward(L, flm, aw.wavelets)
 
         # compute covariance from data
         for j, coefficient in enumerate(wlm):
-            f_wav_j = s2fft.inverse(
-                coefficient,
-                L,
-                method=EXECUTION_MODE,
-                sampling=SAMPLING_SCHEME,
-            )
+            f_wav_j = ssht.inverse(coefficient, L, Method=SAMPLING_SCHEME)
             covar_data[i, j] = (
                 f_wav_j.var() if _is_ergodic(j_min, j=j) else f_wav_j[0, 0]
             )

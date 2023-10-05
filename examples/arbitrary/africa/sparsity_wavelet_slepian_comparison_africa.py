@@ -43,11 +43,7 @@ def _plot_axisymmetric_coefficients(shannon: int) -> None:
     awc = sleplet.functions.AxisymmetricWaveletCoefficientsAfrica(L, B=B, j_min=J_MIN)
 
     # find sorted coefficients
-    w_lm = np.sort(np.sort(np.abs(awc.wavelet_coefficients), axis=1), axis=2)[
-        :,
-        ::-1,
-        ::-1,
-    ]
+    w_lm = np.sort(np.abs(awc.wavelet_coefficients), axis=1)[:, ::-1]
 
     # perform plot
     plt.plot(w_lm[0, :shannon], "--", label=r"$|W^{{\phi}}_{\ell m}|$")

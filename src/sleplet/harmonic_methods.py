@@ -6,7 +6,6 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-import s2fft
 
 import sleplet._data.create_earth_flm
 import sleplet._integration_methods
@@ -21,10 +20,10 @@ _SOUTH_AMERICA_BETA = np.deg2rad(108)
 _SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
-def _create_spherical_harmonic(L: int, ell: int, m: int) -> npt.NDArray[np.complex_]:
+def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
     """Create a spherical harmonic in harmonic space for the given index."""
-    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
-    flm[ell, L - 1 + m] = 1
+    flm = np.zeros(L**2, dtype=np.complex_)
+    flm[ind] = 1
     return flm
 
 
@@ -58,17 +57,13 @@ def invert_flm_boosted(
         The boosted field value.
     """
     boost = resolution**2 - L**2
-    flm = s2fft.samples.flm_1d_to_2d(
-        _boost_coefficient_resolution(s2fft.samples.flm_2d_to_1d(flm, L), boost),
-        resolution,
-    )
-    return s2fft.inverse(
+    flm = _boost_coefficient_resolution(flm, boost)
+    return ssht.inverse(
         flm,
         resolution,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
-        spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+        Reality=reality,
+        Spin=spin,
     )
 
 
@@ -86,22 +81,18 @@ def _ensure_f_bandlimited(
     If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     """
-    thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
-    ).T
-    phis = np.tile(
-        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
+    thetas, phis = ssht.sample_positions(
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     f = grid_fun(thetas, phis)
-    return s2fft.forward(
+    return ssht.forward(
         f,
         L,
-        method=sleplet._vars.EXECUTION_MODE,
-        reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
-        spin=spin,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+        Reality=reality,
+        Spin=spin,
     )
 
 
@@ -115,6 +106,29 @@ def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
         emm[k : k + M] = np.arange(-ell, ell + 1)
         k += M
     return emm
+
+
+def compute_random_signal(
+    L: int,
+    rng: np.random.Generator,
+    *,
+    var_signal: float,
+) -> npt.NDArray[np.complex_]:
+    """
+    Generates a normally distributed random signal of a
+    complex signal with mean `0` and variance `1`.
+
+    Args:
+        L: The spherical harmonic bandlimit.
+        rng: The random number generator object.
+        var_signal: The variance of the signal.
+
+    Returns:
+        The coefficients of a random signal on the sphere.
+    """
+    return np.sqrt(var_signal / 2) * (
+        rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
+    )
 
 
 def mesh_forward(
@@ -173,14 +187,11 @@ def rotate_earth_to_south_america(
     Returns:
         The spherical harmonic coefficients of the Earth centered on South America.
     """
-    return s2fft.samples.flm_1d_to_2d(
-        ssht.rotate_flms(
-            s2fft.samples.flm_2d_to_1d(earth_flm, L),
-            _SOUTH_AMERICA_ALPHA,
-            _SOUTH_AMERICA_BETA,
-            _SOUTH_AMERICA_GAMMA,
-            L,
-        ),
+    return ssht.rotate_flms(
+        earth_flm,
+        _SOUTH_AMERICA_ALPHA,
+        _SOUTH_AMERICA_BETA,
+        _SOUTH_AMERICA_GAMMA,
         L,
     )
 
@@ -199,13 +210,4 @@ def rotate_earth_to_africa(
     Returns:
         The spherical harmonic coefficients of the Earth centered on Africa.
     """
-    return s2fft.samples.flm_1d_to_2d(
-        ssht.rotate_flms(
-            s2fft.samples.flm_2d_to_1d(earth_flm, L),
-            _AFRICA_ALPHA,
-            _AFRICA_BETA,
-            _AFRICA_GAMMA,
-            L,
-        ),
-        L,
-    )
+    return ssht.rotate_flms(earth_flm, _AFRICA_ALPHA, _AFRICA_BETA, _AFRICA_GAMMA, L)
