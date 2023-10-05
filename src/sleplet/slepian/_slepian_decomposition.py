@@ -57,7 +57,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}.
         """
         s_p = s2fft.inverse(
-            s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
+            self.slepian.eigenvectors[rank],
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
@@ -78,7 +78,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}.
         """
         s_p = s2fft.inverse(
-            s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
+            self.slepian.eigenvectors[rank],
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
@@ -97,10 +97,7 @@ class SlepianDecomposition:
         \sum\limits_{m=-\ell}^{\ell}
         f_{\ell m} (S_{p})_{\ell m}^{*}.
         """
-        return (
-            self.flm
-            * s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank].conj(), self.L)
-        ).sum()
+        return (self.flm * self.slepian.eigenvectors[rank].conj()).sum()
 
     def _detect_method(self) -> None:
         """Detects what method is used to perform the decomposition."""

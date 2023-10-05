@@ -3,6 +3,8 @@ import numpy as np
 import numpy.typing as npt
 import seaborn as sns
 
+import s2fft
+
 import sleplet
 
 sns.set(context="paper")
@@ -18,7 +20,7 @@ def _earth_region_harmonic_coefficients(
     """Harmonic coefficients of the Earth for the polar cap region."""
     region = sleplet.slepian.Region(theta_max=np.deg2rad(theta_max))
     earth = sleplet.functions.Earth(L, region=region)
-    coefficients = np.abs(earth.coefficients)
+    coefficients = np.abs(s2fft.samples.flm_2d_to_1d(earth.coefficients, L))
     coefficients[::-1].sort()
     return coefficients
 

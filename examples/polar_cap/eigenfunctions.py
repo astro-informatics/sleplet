@@ -4,8 +4,6 @@ import numpy.typing as npt
 import pooch
 import seaborn as sns
 
-import s2fft
-
 import sleplet
 
 sns.set(context="paper")
@@ -63,7 +61,7 @@ def _helper(
     flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
     f = sleplet.harmonic_methods.invert_flm_boosted(
-        s2fft.samples.flm_1d_to_2d(flm, L),
+        flm,
         L,
         RESOLUTION,
     ).real
