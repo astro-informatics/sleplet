@@ -19,7 +19,7 @@ from sleplet.functions.coefficients import Coefficients
 class Fp(Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.region: sleplet.slepian.region.Region | None = (
             self.region
             if isinstance(self.region, sleplet.slepian.region.Region)
@@ -29,7 +29,7 @@ class Fp(Coefficients):
             self.L,
             self.region,
         )
-        super().__post_init_post_parse__()
+        super().__post_init__()
 
     def rotate(  # noqa: D102
         self,

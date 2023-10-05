@@ -34,9 +34,9 @@ class SlepianArbitrary(SlepianFunctions):
     mask_name: str
     """The name of the mask of the arbitrary region."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.resolution = _SAMPLES * self.L
-        super().__post_init_post_parse__()
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"

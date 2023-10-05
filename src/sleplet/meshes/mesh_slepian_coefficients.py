@@ -14,9 +14,9 @@ from sleplet.meshes.mesh_coefficients import MeshCoefficients
 class MeshSlepianCoefficients(MeshCoefficients):
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.mesh_slepian = sleplet.meshes.mesh_slepian.MeshSlepian(self.mesh)
-        super().__post_init_post_parse__()
+        super().__post_init__()
 
     def _add_noise_to_signal(
         self,

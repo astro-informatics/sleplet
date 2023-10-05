@@ -41,7 +41,7 @@ class PlotMesh:
     region: bool = False
     """Whether to set the field values outside of the region to zero."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         if self.normalise:
             self.filename += "_norm"
 

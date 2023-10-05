@@ -20,8 +20,8 @@ _logger = logging.getLogger(__name__)
 class SlepianDiracDelta(Fp):
     """Creates a Dirac delta of the Slepian coefficients."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()

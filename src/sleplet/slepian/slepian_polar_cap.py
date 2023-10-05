@@ -42,8 +42,8 @@ class SlepianPolarCap(SlepianFunctions):
     computed. In the Slepian eigenproblem formulation this simplifies the
     mathematical formulation."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.region.name_ending}"
