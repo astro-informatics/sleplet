@@ -217,7 +217,7 @@ def _compute_sigma_j(
 ) -> npt.NDArray[np.float_]:
     """Compute sigma_j for wavelets used in denoising the signal."""
     sigma_noise = compute_sigma_noise(signal, snr_in)
-    wavelet_power = (np.abs(psi_j) ** 2).sum(axis=(1, 2))
+    wavelet_power = (np.abs(psi_j) ** 2).sum(axis=1)
     return sigma_noise * np.sqrt(wavelet_power)
 
 

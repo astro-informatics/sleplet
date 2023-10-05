@@ -18,7 +18,7 @@ def _compute_wavelet_covariance(
     var_signal: float,
 ) -> npt.NDArray[np.float_]:
     """Computes the theoretical covariance of the wavelet coefficients."""
-    covar_theory = (np.abs(wavelets) ** 2).sum(axis=(1, 2))
+    covar_theory = (np.abs(wavelets) ** 2).sum(axis=1)
     return covar_theory * var_signal
 
 
