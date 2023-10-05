@@ -1,7 +1,7 @@
 """Contains the `Gaussian` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import pyssht as ssht
 
@@ -10,7 +10,7 @@ import sleplet._validation
 from sleplet.functions.flm import Flm
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Gaussian(Flm):
     r"""Creates a Gaussian \(\exp(-\frac{{\ell}^{2}}{2\sigma^{2}})\)."""
 

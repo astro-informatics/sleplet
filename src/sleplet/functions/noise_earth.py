@@ -1,7 +1,7 @@
 """Contains the `NoiseEarth` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import sleplet._string_methods
 import sleplet._validation
@@ -10,7 +10,7 @@ import sleplet.noise
 from sleplet.functions.flm import Flm
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class NoiseEarth(Flm):
     """Creates a noised signal of the topographic map of the Earth."""
 

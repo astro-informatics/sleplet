@@ -1,7 +1,7 @@
 """Contains the `MeshSlepianField` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import sleplet._validation
 import sleplet.meshes.mesh_field
@@ -9,7 +9,7 @@ import sleplet.slepian_methods
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshSlepianField(MeshSlepianCoefficients):
     """
     Creates a field on a given mesh computed from a Slepian region of the mesh.

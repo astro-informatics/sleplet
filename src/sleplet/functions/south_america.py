@@ -1,7 +1,7 @@
 """Contains the `SouthAmerica` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import pyssht as ssht
 
@@ -15,7 +15,7 @@ import sleplet.harmonic_methods
 from sleplet.functions.flm import Flm
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SouthAmerica(Flm):
     """Creates the South America region of the topographic map of the Earth."""
 

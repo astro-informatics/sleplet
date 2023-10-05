@@ -3,7 +3,8 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
+import pydantic.v1 as pydantic_v1
 
 import pys2let
 
@@ -18,7 +19,7 @@ from sleplet.functions.fp import Fp
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SlepianWaveletCoefficientsSouthAmerica(Fp):
     """Creates Slepian wavelet coefficients of the South America region."""
 
@@ -89,8 +90,8 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
         )
         return wavelets, wavelet_coefficients
 
-    @pydantic.validator("j")
-    def _check_j(cls, v, values):  # noqa: N805
+    @pydantic.field_validator("j")
+    def _check_j(cls, v, values):
         j_max = pys2let.pys2let_j_max(values["B"], values["L"] ** 2, values["j_min"])
         if v is not None and v < 0:
             raise ValueError("j should be positive")

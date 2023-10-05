@@ -7,7 +7,7 @@ import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -20,7 +20,7 @@ from sleplet.meshes.mesh import Mesh
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation)
 class MeshSlepian:
     """Creates Slepian object of a given mesh."""
 

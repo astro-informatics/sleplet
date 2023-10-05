@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import pyssht as ssht
 
@@ -19,7 +19,7 @@ import sleplet.slepian.region
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation)
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 

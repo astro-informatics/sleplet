@@ -3,7 +3,8 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
+import pydantic.v1 as pydantic_v1
 
 import sleplet._validation
 import sleplet.slepian_methods
@@ -12,7 +13,7 @@ from sleplet.functions.fp import Fp
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class Slepian(Fp):
     """Creates Slepian functions of the selected region."""
 
@@ -72,8 +73,8 @@ class Slepian(Fp):
             if self.extra_args[0] >= limit:
                 raise ValueError(f"rank should be less than {limit}")
 
-    @pydantic.validator("rank")
-    def _check_rank(cls, v):  # noqa: N805
+    @pydantic.field_validator("rank")
+    def _check_rank(cls, v):
         if not isinstance(v, int):
             raise TypeError("rank should be an integer")
         if v < 0:

@@ -1,14 +1,14 @@
 """Contains the `Mesh` class."""
 import dataclasses
 
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation)
 class Mesh:
     """Creates a mesh object."""
 

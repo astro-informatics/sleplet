@@ -9,7 +9,8 @@ import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
-import pydantic.v1 as pydantic
+import pydantic
+import pydantic.v1 as pydantic_v1
 
 import pyssht as ssht
 
@@ -26,7 +27,7 @@ _logger = logging.getLogger(__name__)
 _L_SAVE_ALL = 16
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation)
 class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
@@ -383,14 +384,14 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @pydantic.validator("order")
-    def _check_order(cls, v, values):  # noqa: N805
+    @pydantic.field_validator("order")
+    def _check_order(cls, v, values):
         if v is not None and (np.abs(v) >= values["L"]).any():
             raise ValueError(f"Order magnitude should be less than {values['L']}")
         return v
 
-    @pydantic.validator("theta_max")
-    def _check_theta_max(cls, v):  # noqa: N805
+    @pydantic.field_validator("theta_max")
+    def _check_theta_max(cls, v):
         if v == 0:
             raise ValueError("theta_max cannot be zero")
         return v

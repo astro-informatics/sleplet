@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
-import pydantic.v1 as pydantic
+import pydantic.v1 as pydantic_v1
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -23,7 +23,7 @@ _MESH_CBAR_FONT_SIZE = 32
 _MESH_UNSEEN = -1e5  # kaleido bug
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation)
 class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 

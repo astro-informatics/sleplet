@@ -1,7 +1,8 @@
 """Contains the `SphericalHarmonic` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
+import pydantic.v1 as pydantic_v1
 
 import pyssht as ssht
 
@@ -11,7 +12,7 @@ import sleplet.harmonic_methods
 from sleplet.functions.flm import Flm
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic_v1.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
 class SphericalHarmonic(Flm):
     """Creates spherical harmonic functions."""
 
@@ -44,8 +45,8 @@ class SphericalHarmonic(Flm):
                 raise ValueError(f"The number of extra arguments should be {num_args}")
             self.ell, self.m = self.extra_args
 
-    @pydantic.validator("ell")
-    def _check_ell(cls, v, values):  # noqa: N805
+    @pydantic.field_validator("ell")
+    def _check_ell(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("ell should be an integer")
         if v < 0:
@@ -54,8 +55,8 @@ class SphericalHarmonic(Flm):
             raise ValueError("ell should be less than or equal to L")
         return v
 
-    @pydantic.validator("m")
-    def _check_m(cls, v, values):  # noqa: N805
+    @pydantic.field_validator("m")
+    def _check_m(cls, v, values):
         if not isinstance(v, int):
             raise TypeError("m should be an integer")
         if abs(v) > values["ell"]:
