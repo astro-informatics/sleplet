@@ -155,12 +155,7 @@ def _create_africa_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, L)
-    earth_f = ssht.inverse(
-        rot_flm,
-        L,
-        Method=sleplet._vars.SAMPLING_SCHEME,
-        Reality=True,
-    )
+    earth_f = ssht.inverse(rot_flm, L, Method=sleplet._vars.SAMPLING_SCHEME, Reality=True)
     thetas, _ = ssht.sample_positions(
         L,
         Grid=True,
@@ -175,12 +170,7 @@ def _create_south_america_mask(
 ) -> npt.NDArray[np.float_]:
     """Creates the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(earth_flm, L)
-    earth_f = ssht.inverse(
-        rot_flm,
-        L,
-        Method=sleplet._vars.SAMPLING_SCHEME,
-        Reality=True,
-    )
+    earth_f = ssht.inverse(rot_flm, L, Method=sleplet._vars.SAMPLING_SCHEME, Reality=True)
     thetas, _ = ssht.sample_positions(
         L,
         Grid=True,

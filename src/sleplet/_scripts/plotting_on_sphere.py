@@ -255,9 +255,9 @@ def plot(  # noqa: PLR0913
         annotations=annotation,
         normalise=normalise,
         plot_type=plot_type,
-        Reality=f.reality,
+        reality=f.reality,
         region=f.region if hasattr(f, "slepian") else None,
-        Spin=f.spin,
+        spin=f.spin,
         upsample=upsample,
     ).execute()
 

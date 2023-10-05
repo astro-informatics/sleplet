@@ -6,7 +6,6 @@ import pyssht as ssht
 import sleplet
 
 B = 3
-
 J_MIN = 2
 L = 128
 RANDOM_SEED = 30
