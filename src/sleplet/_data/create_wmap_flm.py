@@ -19,14 +19,17 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
     flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(2, L):
         sigma = np.sqrt(2 * np.pi / (ell * (ell + 1)) * cl[ell - 2])
-        flm[ell, L - 1] = sigma * rng.standard_normal()
+        ind = ssht.elm2ind(ell, 0)
+        flm[ind] = sigma * rng.standard_normal()
         for m in range(1, ell + 1):
-            flm[ell, L - 1 + m] = (
+            ind_pm = ssht.elm2ind(ell, m)
+            ind_nm = ssht.elm2ind(ell, -m)
+            flm[ind_pm] = (
                 sigma
                 / np.sqrt(2)
                 * (rng.standard_normal() + 1j * rng.standard_normal())
             )
-            flm[ell, L - 1 - m] = (-1) ** m * flm[ell, L - 1 + m].conj()
+            flm[ind_nm] = (-1) ** m * flm[ind_pm].conj()
     return flm
 
 

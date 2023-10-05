@@ -80,7 +80,7 @@ import sleplet
 
 f = sleplet.functions.Earth(128)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
-f_sphere = f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
+f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_2").execute()
 ```
 
@@ -132,7 +132,7 @@ import sleplet
 # a
 f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_south_america(f.coefficients, f.L)
-f_sphere = f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
+f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_3_a", normalise=False).execute()
 # b
 region = sleplet.slepian.Region(mask_name="south_america")
@@ -288,7 +288,7 @@ import sleplet
 # a
 f = sleplet.functions.Earth(128, smoothing=2)
 flm = sleplet.harmonic_methods.rotate_earth_to_africa(f.coefficients, f.L)
-f_sphere = f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
+f_sphere = ssht.inverse(flm, f.L, Method="MWSS")
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_9_a", normalise=False).execute()
 # b
 region = sleplet.slepian.Region(mask_name="africa")

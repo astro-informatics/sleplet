@@ -161,10 +161,7 @@ def _create_africa_mask(
         Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=True,
     )
-    thetas = np.tile(
-        s2fft.samples.thetas(L, Method=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, Method=sleplet._vars.SAMPLING_SCHEME), 1),
-    ).T
+    thetas, _ = ssht.sample_positions(L, Grid=True, Method=sleplet._vars.SAMPLING_SCHEME)
     return (thetas <= _AFRICA_RANGE) & (earth_f >= 0)
 
 
