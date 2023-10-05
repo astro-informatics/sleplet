@@ -57,7 +57,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}.
         """
         s_p = ssht.inverse(
-            s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
+            self.slepian.eigenvectors[rank],
             self.L,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )
@@ -77,7 +77,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}.
         """
         s_p = ssht.inverse(
-            s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
+            self.slepian.eigenvectors[rank],
             self.L,
             sampling=sleplet._vars.SAMPLING_SCHEME,
         )

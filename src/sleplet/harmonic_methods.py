@@ -81,13 +81,10 @@ def _ensure_f_bandlimited(
     If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
     """
-    thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
-    ).T
-    phis = np.tile(
-        s2fft.samples.phis_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
+    thetas, phis = ssht.sample_positions(
+        L,
+        Grid=True,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     f = grid_fun(thetas, phis)
     return s2fft.samples.flm_2d_to_1d(
