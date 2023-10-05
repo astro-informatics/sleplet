@@ -5,6 +5,8 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
+import pys2let
+
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.slepian_south_america

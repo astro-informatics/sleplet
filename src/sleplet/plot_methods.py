@@ -116,8 +116,8 @@ def find_max_amplitude(
         field,
         function.L,
         resolution,
-        Reality=function.reality,
-        Spin=function.spin,
+        reality=function.reality,
+        spin=function.spin,
         upsample=upsample,
     )
 
@@ -188,12 +188,12 @@ def _boost_field(  # noqa: PLR0913
     if not upsample:
         return field
     flm = ssht.forward(
-            field,
-            L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
-            Reality=reality,
-            Spin=spin,
-        )
+        field,
+        L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+        Reality=reality,
+        Spin=spin,
+    )
     return sleplet.harmonic_methods.invert_flm_boosted(
         flm,
         L,

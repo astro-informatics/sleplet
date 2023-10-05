@@ -1,5 +1,7 @@
 import numpy as np
 
+import pys2let
+
 import sleplet
 
 B = 2

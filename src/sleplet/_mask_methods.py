@@ -93,12 +93,12 @@ def ensure_masked_flm_bandlimited(
     mask = create_mask_region(L, region)
     field = np.where(mask, field, 0)
     return ssht.forward(
-            field,
-            L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
-            Reality=reality,
-            Spin=spin,
-        )
+        field,
+        L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+        Reality=reality,
+        Spin=spin,
+    )
 
 
 def create_default_region() -> "sleplet.slepian.region.Region":

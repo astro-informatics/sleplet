@@ -68,7 +68,7 @@ class PlotSphere:
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f,
             self.resolution,
-            Method=sleplet._vars.SAMPLING_SCHEME,
+            method=sleplet._vars.SAMPLING_SCHEME,
         )
 
         if isinstance(self.region, sleplet.slepian.region.Region):
@@ -142,14 +142,7 @@ class PlotSphere:
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
 
-        thetas = np.tile(
-            s2fft.samples.thetas(resolution, Method=method),
-            (s2fft.samples.nphi_equiang(resolution, Method=method), 1),
-        ).T
-        phis = np.tile(
-            s2fft.samples.phis_equiang(resolution, Method=method),
-            (s2fft.samples.ntheta(resolution, Method=method), 1),
-        )
+        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
             raise AttributeError("Bandlimit L deos not match that of f")
@@ -179,7 +172,7 @@ class PlotSphere:
 
         # Close plot.
         if close:
-            n_phi = s2fft.samples.nphi_equiang(resolution, Method=method)
+            _, n_phi = ssht.sample_shape(resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(
@@ -209,8 +202,8 @@ class PlotSphere:
             f,
             self.L,
             self.resolution,
-            Reality=self.reality,
-            Spin=self.spin,
+            reality=self.reality,
+            spin=self.spin,
             upsample=self.upsample,
         )
         field_space = sleplet.plot_methods._create_plot_type(

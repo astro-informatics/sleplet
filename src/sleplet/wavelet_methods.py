@@ -2,8 +2,9 @@
 import numpy as np
 import numpy.typing as npt
 
-import pyssht as ssht
 import pys2let
+import pyssht as ssht
+
 import sleplet._convolution_methods
 import sleplet.slepian_methods
 

@@ -88,12 +88,12 @@ def _ensure_f_bandlimited(
     )
     f = grid_fun(thetas, phis)
     return ssht.forward(
-            f,
-            L,
-            Method=sleplet._vars.SAMPLING_SCHEME,
-            Reality=reality,
-            Spin=spin,
-        )
+        f,
+        L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
+        Reality=reality,
+        Spin=spin,
+    )
 
 
 def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:

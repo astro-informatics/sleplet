@@ -6,6 +6,8 @@ import numpy.typing as npt
 import pydantic.v1 as pydantic
 import scipy.special
 
+import pys2let
+
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.wavelet_methods
