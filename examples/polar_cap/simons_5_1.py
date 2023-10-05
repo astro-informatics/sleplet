@@ -3,6 +3,8 @@ import numpy as np
 import numpy.typing as npt
 import seaborn as sns
 
+import s2fft
+
 import sleplet
 
 sns.set(context="paper")
@@ -60,7 +62,11 @@ def _helper(  # noqa: PLR0913
     axs = ax[order, rank]
     flm = slepian.eigenvectors[rank] * SIGNS[order][rank]
     lam = slepian.eigenvalues[rank]
-    f = sleplet.harmonic_methods.invert_flm_boosted(flm, L, resolution).real
+    f = sleplet.harmonic_methods.invert_flm_boosted(
+        s2fft.samples.flm_1d_to_2d(flm, L),
+        L,
+        resolution,
+    ).real
     if rank == 0:
         axs.set_ylabel(rf"$m={{{order}}}$")
     if order == 0:

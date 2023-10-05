@@ -4,6 +4,8 @@ import numpy.typing as npt
 import pooch
 import seaborn as sns
 
+import s2fft
+
 import sleplet
 
 sns.set(context="paper")
@@ -60,7 +62,11 @@ def _helper(
     print(f"plotting rank={rank}")
     flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
-    f = sleplet.harmonic_methods.invert_flm_boosted(flm, L, RESOLUTION).real
+    f = sleplet.harmonic_methods.invert_flm_boosted(
+        s2fft.samples.flm_1d_to_2d(flm, L),
+        L,
+        RESOLUTION,
+    ).real
     if rank > COLUMNS - 1:
         ax.set_xlabel(r"colatitude $\theta$")
     ax.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])
