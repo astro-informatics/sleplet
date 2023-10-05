@@ -25,7 +25,7 @@ def _create_spherical_harmonic(L: int, ell: int, m: int) -> npt.NDArray[np.compl
     """Create a spherical harmonic in harmonic space for the given index."""
     flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
     flm[ell, L - 1 + m] = 1
-    return s2fft.samples.flm_2d_to_1d(flm, L)
+    return flm
 
 
 def _boost_coefficient_resolution(
@@ -58,9 +58,12 @@ def invert_flm_boosted(
         The boosted field value.
     """
     boost = resolution**2 - L**2
-    flm = _boost_coefficient_resolution(flm, boost)
+    flm = s2fft.samples.flm_1d_to_2d(
+        _boost_coefficient_resolution(s2fft.samples.flm_2d_to_1d(flm, L), boost),
+        resolution,
+    )
     return s2fft.inverse(
-        s2fft.samples.flm_1d_to_2d(flm, resolution),
+        flm,
         resolution,
         method=sleplet._vars.EXECUTION_MODE,
         reality=reality,
@@ -92,16 +95,13 @@ def _ensure_f_bandlimited(
         (s2fft.samples.ntheta(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
     )
     f = grid_fun(thetas, phis)
-    return s2fft.samples.flm_2d_to_1d(
-        s2fft.forward(
-            f,
-            L,
-            method=sleplet._vars.EXECUTION_MODE,
-            reality=reality,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
-            spin=spin,
-        ),
+    return s2fft.forward(
+        f,
         L,
+        method=sleplet._vars.EXECUTION_MODE,
+        reality=reality,
+        sampling=sleplet._vars.SAMPLING_SCHEME,
+        spin=spin,
     )
 
 
@@ -115,29 +115,6 @@ def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
         emm[k : k + M] = np.arange(-ell, ell + 1)
         k += M
     return emm
-
-
-def compute_random_signal(
-    L: int,
-    rng: np.random.Generator,
-    *,
-    var_signal: float,
-) -> npt.NDArray[np.complex_]:
-    """
-    Generates a normally distributed random signal of a
-    complex signal with mean `0` and variance `1`.
-
-    Args:
-        L: The spherical harmonic bandlimit.
-        rng: The random number generator object.
-        var_signal: The variance of the signal.
-
-    Returns:
-        The coefficients of a random signal on the sphere.
-    """
-    return np.sqrt(var_signal / 2) * (
-        rng.standard_normal(L**2) + 1j * rng.standard_normal(L**2)
-    )
 
 
 def mesh_forward(
@@ -196,11 +173,14 @@ def rotate_earth_to_south_america(
     Returns:
         The spherical harmonic coefficients of the Earth centered on South America.
     """
-    return ssht.rotate_flms(
-        earth_flm,
-        _SOUTH_AMERICA_ALPHA,
-        _SOUTH_AMERICA_BETA,
-        _SOUTH_AMERICA_GAMMA,
+    return s2fft.samples.flm_1d_to_2d(
+        ssht.rotate_flms(
+            s2fft.samples.flm_2d_to_1d(earth_flm, L),
+            _SOUTH_AMERICA_ALPHA,
+            _SOUTH_AMERICA_BETA,
+            _SOUTH_AMERICA_GAMMA,
+            L,
+        ),
         L,
     )
 
@@ -219,4 +199,13 @@ def rotate_earth_to_africa(
     Returns:
         The spherical harmonic coefficients of the Earth centered on Africa.
     """
-    return ssht.rotate_flms(earth_flm, _AFRICA_ALPHA, _AFRICA_BETA, _AFRICA_GAMMA, L)
+    return s2fft.samples.flm_1d_to_2d(
+        ssht.rotate_flms(
+            s2fft.samples.flm_2d_to_1d(earth_flm, L),
+            _AFRICA_ALPHA,
+            _AFRICA_BETA,
+            _AFRICA_GAMMA,
+            L,
+        ),
+        L,
+    )

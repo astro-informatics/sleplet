@@ -31,10 +31,11 @@ class HarmonicGaussian(Flm):
         for ell in range(self.L):
             upsilon_l = np.exp(-((ell / self.l_sigma) ** 2) / 2)
             for m in range(-ell, ell + 1):
-                flm[ell, self.L - 1 + m] = upsilon_l * np.exp(
+                ind_pm = self.L - 1 + m
+                flm[ell, ind_pm] = upsilon_l * np.exp(
                     -((m / self.m_sigma) ** 2) / 2,
                 )
-        return s2fft.samples.flm_2d_to_1d(flm, self.L)
+        return flm
 
     def _create_name(self) -> str:
         return (

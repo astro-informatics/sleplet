@@ -3,6 +3,8 @@ import sys
 
 import numpy as np
 
+import s2fft
+
 import sleplet
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
@@ -38,8 +40,11 @@ def main() -> None:
     rng = np.random.default_rng(RANDOM_SEED)
 
     for i in range(RUNS):
-        # Generate normally distributed random complex signal
-        f_p = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=VAR_FP)
+        # Generate random complex signal
+        f_p = s2fft.samples.flm_2d_to_1d(
+            s2fft.utils.signal_generator.generate_flm(rng, L),
+            L,
+        )
 
         # compute wavelet coefficients
         w_p = sleplet.wavelet_methods.slepian_wavelet_forward(

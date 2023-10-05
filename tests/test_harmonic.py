@@ -11,11 +11,14 @@ L_SMALL = 16
 def test_harmonic_coefficients_padded(random_flm) -> None:
     """Tests that harmonic coefficients are zero padded for plotting."""
     boost = L_LARGE**2 - L_SMALL**2
-    flm_boosted = sleplet.harmonic_methods._boost_coefficient_resolution(
-        random_flm,
-        boost,
+    flm_boosted = s2fft.samples.flm_1d_to_2d(
+        sleplet.harmonic_methods._boost_coefficient_resolution(
+            s2fft.samples.flm_2d_to_1d(random_flm, L_SMALL),
+            boost,
+        ),
+        L_LARGE,
     )
-    np.testing.assert_equal(len(flm_boosted), L_LARGE**2)
+    np.testing.assert_equal(flm_boosted.shape, s2fft.samples.flm_shape(L_LARGE))
 
 
 def test_invert_flm_and_boost(random_flm) -> None:

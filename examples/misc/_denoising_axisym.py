@@ -61,10 +61,5 @@ def denoising_axisym(  # noqa: PLR0913
         else flm
     )
 
-    f = s2fft.inverse(
-        s2fft.samples.flm_1d_to_2d(flm, signal.L),
-        signal.L,
-        method=EXECUTION_MODE,
-        sampling=SAMPLING_SCHEME,
-    )
+    f = s2fft.inverse(flm, signal.L, method=EXECUTION_MODE, sampling=SAMPLING_SCHEME)
     return f, noised_signal.snr, denoised_snr

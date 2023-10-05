@@ -6,6 +6,7 @@ import numpy.typing as npt
 import pydantic.v1 as pydantic
 
 import pyssht as ssht
+import s2fft
 
 import sleplet._validation
 import sleplet.noise
@@ -26,14 +27,26 @@ class Flm(Coefficients):
         *,
         gamma: float = 0,
     ) -> npt.NDArray[np.complex_]:
-        return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
+        return s2fft.samples.flm_1d_to_2d(
+            ssht.rotate_flms(
+                s2fft.samples.flm_2d_to_1d(self.coefficients, self.L),
+                alpha,
+                beta,
+                gamma,
+                self.L,
+            ),
+            self.L,
+        )
 
     def _translation_helper(
         self,
         alpha: float,
         beta: float,
     ) -> npt.NDArray[np.complex_]:
-        return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
+        return s2fft.samples.flm_1d_to_2d(
+            ssht.create_ylm(beta, alpha, self.L).conj().flatten(),
+            self.L,
+        )
 
     def _add_noise_to_signal(
         self,

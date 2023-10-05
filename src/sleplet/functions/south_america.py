@@ -62,7 +62,7 @@ class SouthAmerica(Flm):
             self.L,
         )
         earth_f = s2fft.inverse(
-            s2fft.samples.flm_1d_to_2d(rot_flm, self.L),
+            rot_flm,
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             reality=self.reality,

@@ -22,7 +22,7 @@ class SlepianDecomposition:
     slepian: SlepianFunctions
     _: dataclasses.KW_ONLY
     f: jax.Array | npt.NDArray[np.complex_] | None = None
-    flm: npt.NDArray[np.complex_ | np.float_] | None = None
+    flm: jax.Array | npt.NDArray[np.complex_ | np.float_] | None = None
     mask: npt.NDArray[np.float_] | None = None
 
     def __post_init_post_parse__(self) -> None:
@@ -57,7 +57,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}.
         """
         s_p = s2fft.inverse(
-            s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
+            self.slepian.eigenvectors[rank],
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
@@ -78,7 +78,7 @@ class SlepianDecomposition:
         f(\omega) \overline{S_{p}(\omega)}.
         """
         s_p = s2fft.inverse(
-            s2fft.samples.flm_1d_to_2d(self.slepian.eigenvectors[rank], self.L),
+            self.slepian.eigenvectors[rank],
             self.L,
             method=sleplet._vars.EXECUTION_MODE,
             sampling=sleplet._vars.SAMPLING_SCHEME,
