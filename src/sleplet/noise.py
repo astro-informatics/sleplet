@@ -73,7 +73,7 @@ def _create_noise(
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # initialise
-    nlm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
+    nlm = np.zeros(L**2, dtype=np.complex_)
 
     # std dev of the noise
     sigma_noise = compute_sigma_noise(signal, snr_in)
@@ -98,14 +98,11 @@ def _create_slepian_noise(
     snr_in: float,
 ) -> npt.NDArray[np.complex_]:
     """Computes Gaussian white noise in Slepian space."""
-    flm = s2fft.samples.flm_2d_to_1d(
-        ssht.forward(
+    flm = ssht.forward(
             sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
             L,
             sampling=sleplet._vars.SAMPLING_SCHEME,
-        ),
-        L,
-    )
+        )
     nlm = _create_noise(L, flm, snr_in)
     return sleplet.slepian_methods.slepian_forward(L, slepian, flm=nlm)
 

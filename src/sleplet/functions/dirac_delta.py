@@ -16,7 +16,7 @@ class DiracDelta(Flm):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        flm = np.zeros(s2fft.samples.flm_shape(self.L), dtype=np.complex_)
+        flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
             flm[ell, self.L - 1] = np.sqrt((2 * ell + 1) / (4 * np.pi))
         return flm

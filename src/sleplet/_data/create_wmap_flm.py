@@ -16,7 +16,7 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # Simulate CMB in harmonic space.
-    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
+    flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(2, L):
         sigma = np.sqrt(2 * np.pi / (ell * (ell + 1)) * cl[ell - 2])
         flm[ell, L - 1] = sigma * rng.standard_normal()

@@ -3,7 +3,7 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-
+import pys2let
 import sleplet._convolution_methods
 import sleplet.slepian_methods
 
@@ -76,13 +76,14 @@ def axisymmetric_wavelet_forward(
     Returns:
         Axisymmetric wavelets coefficients.
     """
-    wavelets = np.array([s2fft.samples.flm_1d_to_2d(wav, L) for wav in wavelets])
     w = np.zeros(wavelets.shape, dtype=np.complex_)
     for ell in range(L):
-        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1].conj()
+        ind_m0 = ssht.elm2ind(ell, 0)
+        wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0].conj()
         for m in range(-ell, ell + 1):
-            w[:, ell, L - 1 + m] = wav_0 * flm[ssht.elm2ind(ell, m)]
-    return np.array([s2fft.samples.flm_2d_to_1d(wav, L) for wav in w])
+            ind = ssht.elm2ind(ell, m)
+            w[:, ind] = wav_0 * flm[ind]
+    return w
 
 
 def axisymmetric_wavelet_inverse(
@@ -101,9 +102,7 @@ def axisymmetric_wavelet_inverse(
     Returns:
         Spherical harmonic coefficients of the signal.
     """
-    flm = np.zeros(s2fft.samples.flm_shape(L), dtype=np.complex_)
-    wavelets = np.array([s2fft.samples.flm_1d_to_2d(w, L) for w in wavelets])
-    wav_coeffs = np.array([s2fft.samples.flm_1d_to_2d(wc, L) for wc in wav_coeffs])
+    flm = np.zeros(L**2, dtype=np.complex_)
     for ell in range(L):
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ell, L - 1]
         for m in range(-ell, ell + 1):
