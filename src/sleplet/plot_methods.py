@@ -152,7 +152,7 @@ def _set_outside_region_to_minimum(
     mask = sleplet._mask_methods.create_mask_region(L, region)
 
     # adapt for closed plot
-    n_phi = s2fft.samples.nphi_equiang(L, Method=sleplet._vars.SAMPLING_SCHEME)
+    _, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     closed_mask = np.insert(mask, n_phi, mask[:, 0], axis=1)
 
     # set values outside mask to negative infinity

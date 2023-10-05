@@ -180,16 +180,14 @@ class SlepianArbitrary(SlepianFunctions):
     def _integral(self, i: int, j: int) -> complex:
         """Calculates the D integral between two spherical harmonics."""
         if i not in self._fields:
-            ell, m = ssht.ind2elm(i)
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
-                sleplet.harmonic_methods._create_spherical_harmonic(self.L, ell, m),
+                sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),
                 self.L,
                 self.resolution,
             )
         if j not in self._fields:
-            ell, m = ssht.ind2elm(j)
             self._fields[j] = sleplet.harmonic_methods.invert_flm_boosted(
-                sleplet.harmonic_methods._create_spherical_harmonic(self.L, ell, m),
+                sleplet.harmonic_methods._create_spherical_harmonic(self.L, j),
                 self.L,
                 self.resolution,
             )

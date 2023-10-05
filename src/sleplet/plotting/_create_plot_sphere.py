@@ -82,12 +82,10 @@ class PlotSphere:
         camera = sleplet._plotly_methods.create_camera(-0.1, -0.1, 10, 7.88)
 
         # pick largest tick max value
-        tick_mark = float(
-            sleplet._plotly_methods.create_tick_mark(
-                vmin,
-                vmax,
-                amplitude=self.amplitude,
-            ),
+        tick_mark = sleplet._plotly_methods.create_tick_mark(
+            vmin,
+            vmax,
+            amplitude=self.amplitude,
         )
 
         data = [
