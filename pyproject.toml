@@ -120,9 +120,8 @@ isort = {known-first-party = [
     "first-party",
     "local-folder",
 ], sections = {"astro-info" = [
+    "pys2let",
     "pyssht",
-    "s2fft",
-    "s2wav",
 ]}}
 per-file-ignores = {"examples/*" = [
     "D100",

@@ -3,6 +3,8 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
+import pyssht as ssht
+
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.harmonic_methods
@@ -19,11 +21,8 @@ class SphericalHarmonic(Flm):
     r"""Order \(\leq |\ell|\)"""
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return sleplet.harmonic_methods._create_spherical_harmonic(
-            self.L,
-            self.ell,
-            self.m,
-        )
+        ind = ssht.elm2ind(self.ell, self.m)
+        return sleplet.harmonic_methods._create_spherical_harmonic(self.L, ind)
 
     def _create_name(self) -> str:
         return (

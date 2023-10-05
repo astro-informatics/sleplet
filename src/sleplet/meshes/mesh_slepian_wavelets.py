@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
-import s2wav
+import pys2let
 
 import sleplet._string_methods
 import sleplet._validation
@@ -62,9 +62,10 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
 
     @pydantic.validator("j")
     def _check_j(cls, v, values) -> int | None:  # noqa: N805
-        j_max = s2wav.utils.shapes.j_max(
-            values["mesh"].mesh_eigenvalues.shape[0],
+        j_max = pys2let.pys2let_j_max(
             values["B"],
+            values["mesh"].mesh_eigenvalues.shape[0],
+            values["j_min"],
         )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
