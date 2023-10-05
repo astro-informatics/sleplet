@@ -7,6 +7,7 @@ import pydantic.v1 as pydantic
 import scipy.special
 
 import pys2let
+import pyssht as ssht
 
 import sleplet._string_methods
 import sleplet._validation

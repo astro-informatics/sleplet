@@ -16,10 +16,7 @@ class Identity(Flm):
         super().__post_init_post_parse__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        return s2fft.samples.flm_2d_to_1d(
-            np.ones(s2fft.samples.flm_shape(self.L), dtype=np.complex_),
-            self.L,
-        )
+        return np.ones(self.L**2, dtype=np.complex_)
 
     def _create_name(self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(
