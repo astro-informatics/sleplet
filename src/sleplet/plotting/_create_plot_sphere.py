@@ -68,7 +68,7 @@ class PlotSphere:
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f,
             self.resolution,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
 
         if isinstance(self.region, sleplet.slepian.region.Region):
@@ -143,12 +143,12 @@ class PlotSphere:
             parametric_scaling = [0.0, 0.5]
 
         thetas = np.tile(
-            s2fft.samples.thetas(resolution, sampling=method),
-            (s2fft.samples.nphi_equiang(resolution, sampling=method), 1),
+            s2fft.samples.thetas(resolution, Method=method),
+            (s2fft.samples.nphi_equiang(resolution, Method=method), 1),
         ).T
         phis = np.tile(
-            s2fft.samples.phis_equiang(resolution, sampling=method),
-            (s2fft.samples.ntheta(resolution, sampling=method), 1),
+            s2fft.samples.phis_equiang(resolution, Method=method),
+            (s2fft.samples.ntheta(resolution, Method=method), 1),
         )
 
         if thetas.size != f.size:
@@ -179,7 +179,7 @@ class PlotSphere:
 
         # Close plot.
         if close:
-            n_phi = s2fft.samples.nphi_equiang(resolution, sampling=method)
+            n_phi = s2fft.samples.nphi_equiang(resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(

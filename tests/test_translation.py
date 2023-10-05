@@ -59,7 +59,7 @@ def test_slepian_translation_changes_max_polar(slepian_dirac_delta_polar_cap) ->
     thetas, _ = ssht.sample_positions(
         slepian_dirac_delta_polar_cap.L,
         Grid=True,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     np.testing.assert_raises(
         AssertionError,
@@ -92,7 +92,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     thetas, _ = ssht.sample_positions(
         slepian_dirac_delta_lim_lat_lon.L,
         Grid=True,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
+        Method=sleplet._vars.SAMPLING_SCHEME,
     )
     np.testing.assert_raises(
         AssertionError,

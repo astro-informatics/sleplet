@@ -61,8 +61,8 @@ def invert_flm_boosted(
     return ssht.inverse(
         flm,
         resolution,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
         Spin=spin,
     )
 
@@ -90,8 +90,8 @@ def _ensure_f_bandlimited(
     return ssht.forward(
             f,
             L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
             Reality=reality,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
             Spin=spin,
         )
 

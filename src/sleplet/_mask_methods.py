@@ -86,8 +86,8 @@ def ensure_masked_flm_bandlimited(
     field = ssht.inverse(
         flm,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=reality,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
         Spin=spin,
     )
     mask = create_mask_region(L, region)
@@ -95,8 +95,8 @@ def ensure_masked_flm_bandlimited(
     return ssht.forward(
             field,
             L,
+            Method=sleplet._vars.SAMPLING_SCHEME,
             Reality=reality,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
             Spin=spin,
         )
 
@@ -158,12 +158,12 @@ def _create_africa_mask(
     earth_f = ssht.inverse(
         rot_flm,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=True,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
+        s2fft.samples.thetas(L, Method=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.nphi_equiang(L, Method=sleplet._vars.SAMPLING_SCHEME), 1),
     ).T
     return (thetas <= _AFRICA_RANGE) & (earth_f >= 0)
 
@@ -177,12 +177,12 @@ def _create_south_america_mask(
     earth_f = ssht.inverse(
         rot_flm,
         L,
+        Method=sleplet._vars.SAMPLING_SCHEME,
         Reality=True,
-        sampling=sleplet._vars.SAMPLING_SCHEME,
     )
     thetas = np.tile(
-        s2fft.samples.thetas(L, sampling=sleplet._vars.SAMPLING_SCHEME),
-        (s2fft.samples.nphi_equiang(L, sampling=sleplet._vars.SAMPLING_SCHEME), 1),
+        s2fft.samples.thetas(L, Method=sleplet._vars.SAMPLING_SCHEME),
+        (s2fft.samples.nphi_equiang(L, Method=sleplet._vars.SAMPLING_SCHEME), 1),
     ).T
     return (thetas <= _SOUTH_AMERICA_RANGE) & (earth_f >= 0)
 
