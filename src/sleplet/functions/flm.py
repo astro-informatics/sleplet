@@ -26,7 +26,13 @@ class Flm(Coefficients):
         *,
         gamma: float = 0,
     ) -> npt.NDArray[np.complex_]:
-        return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
+        return ssht.rotate_flms(
+            self.coefficients,
+            alpha,
+            beta,
+            gamma,
+            self.L,
+        )
 
     def _translation_helper(
         self,

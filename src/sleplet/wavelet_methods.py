@@ -55,7 +55,7 @@ def slepian_wavelet_inverse(
     wavelets_shannon = wavelets[: len(wav_coeffs)]
     wavelet_reconstruction = sleplet._convolution_methods.sifting_convolution(
         wavelets_shannon,
-        wav_coeffs.T,
+        wav_coeffs,
         shannon=shannon,
     )
     return wavelet_reconstruction.sum(axis=0)

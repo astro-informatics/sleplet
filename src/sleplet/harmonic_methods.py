@@ -210,4 +210,10 @@ def rotate_earth_to_africa(
     Returns:
         The spherical harmonic coefficients of the Earth centered on Africa.
     """
-    return ssht.rotate_flms(earth_flm, _AFRICA_ALPHA, _AFRICA_BETA, _AFRICA_GAMMA, L)
+    return ssht.rotate_flms(
+        earth_flm,
+        _AFRICA_ALPHA,
+        _AFRICA_BETA,
+        _AFRICA_GAMMA,
+        L,
+    )
