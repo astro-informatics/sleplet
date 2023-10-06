@@ -10,6 +10,10 @@
     ":enablePreCommit"
   ],
   "commitMessageAction": "Renovate:",
-  "commitMessageExtra": "{{{replace 'to' '@' commitMessageExtra}}}",
-  "commitMessageTopic": "{{depName}}"
+  "packageRules": [
+    {
+      "commitMessageTopic": "{{depName}}",
+      "matchManagers": ["github-actions", "pre-commit"]
+    }
+  ]
 }
