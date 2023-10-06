@@ -3,7 +3,7 @@ import numpy as np
 import numpy.typing as npt
 import pydantic.v1 as pydantic
 
-import s2fft
+import pyssht as ssht
 
 import sleplet._data.create_earth_flm
 import sleplet._data.setup_pooch
@@ -61,12 +61,11 @@ class Africa(Flm):
             smoothing=self.smoothing,
         )
         rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, self.L)
-        earth_f = s2fft.inverse(
-            s2fft.samples.flm_1d_to_2d(rot_flm, self.L),
+        earth_f = ssht.inverse(
+            rot_flm,
             self.L,
-            method=sleplet._vars.EXECUTION_MODE,
-            reality=self.reality,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME,
+            Reality=self.reality,
         )
         mask_name = f"{self.name}_L{self.L}.npy"
         mask_location = sleplet._data.setup_pooch.find_on_pooch_then_local(

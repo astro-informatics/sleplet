@@ -4,7 +4,14 @@ on:
   push:
     branches:
       - main
+      - "renovate/**"
   pull_request:
+
+concurrency:
+  cancel-in-progress: true
+  group: >-
+    ${{ github.workflow }}-
+    ${{ github.event.pull_request.number || github.ref }}
 
 jobs:
   codeblocks:

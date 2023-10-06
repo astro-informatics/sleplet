@@ -2,7 +2,6 @@ import dataclasses
 import logging
 
 import cmocean
-import jax
 import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
@@ -10,7 +9,6 @@ import plotly.io as pio
 import pydantic.v1 as pydantic
 
 import pyssht as ssht
-import s2fft
 
 import sleplet._plotly_methods
 import sleplet._validation
@@ -25,7 +23,7 @@ _logger = logging.getLogger(__name__)
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 
-    f: jax.Array | npt.NDArray[np.complex_ | np.float_]
+    f: npt.NDArray[np.complex_ | np.float_]
     """The field value sampled on the sphere."""
     L: int
     """The spherical harmonic bandlimit."""
@@ -84,12 +82,10 @@ class PlotSphere:
         camera = sleplet._plotly_methods.create_camera(-0.1, -0.1, 10, 7.88)
 
         # pick largest tick max value
-        tick_mark = float(
-            sleplet._plotly_methods.create_tick_mark(
-                vmin,
-                vmax,
-                amplitude=self.amplitude,
-            ),
+        tick_mark = sleplet._plotly_methods.create_tick_mark(
+            vmin,
+            vmax,
+            amplitude=self.amplitude,
         )
 
         data = [
@@ -126,7 +122,7 @@ class PlotSphere:
         f: npt.NDArray[np.float_],
         resolution: int,
         *,
-        method: str = "mw",
+        method: str = "MW",
         close: bool = True,
         parametric: bool = False,
         parametric_scaling: list[float] | None = None,
@@ -143,14 +139,7 @@ class PlotSphere:
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
 
-        thetas = np.tile(
-            s2fft.samples.thetas(resolution, sampling=method),
-            (s2fft.samples.nphi_equiang(resolution, sampling=method), 1),
-        ).T
-        phis = np.tile(
-            s2fft.samples.phis_equiang(resolution, sampling=method),
-            (s2fft.samples.ntheta(resolution, sampling=method), 1),
-        )
+        thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
             raise AttributeError("Bandlimit L deos not match that of f")
@@ -180,7 +169,7 @@ class PlotSphere:
 
         # Close plot.
         if close:
-            n_phi = s2fft.samples.nphi_equiang(resolution, sampling=method)
+            _, n_phi = ssht.sample_shape(resolution, Method=method)
             f_plot = np.insert(f_plot, n_phi, f[:, 0], axis=1)
             if parametric:
                 f_normalised = np.insert(

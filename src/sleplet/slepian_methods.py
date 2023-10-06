@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 
 import pyssht as ssht
-import s2fft
 
 import sleplet._vars
 import sleplet.harmonic_methods
@@ -137,16 +136,15 @@ def compute_s_p_omega(
     Returns:
         The complex \(S_{p}(\omega)\) values.
     """
-    n_theta, n_phi = s2fft.samples.f_shape(L, sampling=sleplet._vars.SAMPLING_SCHEME)
+    n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
     for p in range(slepian.N):
         if p % L == 0:
             _logger.info(f"compute Sp(omega) p={p+1}/{slepian.N}")
-        sp[p] = s2fft.inverse(
-            s2fft.samples.flm_1d_to_2d(slepian.eigenvectors[p], L),
+        sp[p] = ssht.inverse(
+            slepian.eigenvectors[p],
             L,
-            method=sleplet._vars.EXECUTION_MODE,
-            sampling=sleplet._vars.SAMPLING_SCHEME,
+            Method=sleplet._vars.SAMPLING_SCHEME,
         )
     return sp
 
@@ -159,8 +157,8 @@ def _compute_s_p_omega_prime(
 ) -> npt.NDArray[np.complex_]:
     """Method to pick out the desired angle from Sp(omega)."""
     sp_omega = compute_s_p_omega(L, slepian)
-    p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME.upper())
-    q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME.upper())
+    p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
+    q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
     sp_omega_prime = sp_omega[:, p, q]
     # pad with zeros so it has the expected shape
     boost = L**2 - slepian.N
