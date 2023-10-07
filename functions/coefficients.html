@@ -36,7 +36,7 @@
 <dl>
 <dt id="sleplet.functions.coefficients.Coefficients"><code class="flex name class">
 <span>class <span class="ident">Coefficients</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract parent class to handle harmonic/Slepian coefficients on the
@@ -52,14 +52,26 @@ sphere.</p></div>
 <dd>
 <div class="desc"><p>The spherical harmonic bandlimit.</p></div>
 </dd>
+<dt id="sleplet.functions.coefficients.Coefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="sleplet.functions.coefficients.Coefficients.extra_args"><code class="name">var <span class="ident">extra_args</span> : list[int] | None</code></dt>
 <dd>
 <div class="desc"><p>Control the extra arguments for the given set of spherical
 coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 </dd>
+<dt id="sleplet.functions.coefficients.Coefficients.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="sleplet.functions.coefficients.Coefficients.noise"><code class="name">var <span class="ident">noise</span> : float | None</code></dt>
 <dd>
 <div class="desc"><p>How much to noise the data.</p></div>
+</dd>
+<dt id="sleplet.functions.coefficients.Coefficients.reality"><code class="name">var <span class="ident">reality</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.region"><code class="name">var <span class="ident">region</span> : <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None</code></dt>
 <dd>
@@ -68,6 +80,26 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <dt id="sleplet.functions.coefficients.Coefficients.smoothing"><code class="name">var <span class="ident">smoothing</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>How much to smooth the topographic map of the Earth by.</p></div>
+</dd>
+<dt id="sleplet.functions.coefficients.Coefficients.snr"><code class="name">var <span class="ident">snr</span> : float | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.functions.coefficients.Coefficients.spin"><code class="name">var <span class="ident">spin</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.functions.coefficients.Coefficients.unnoised_coefficients"><code class="name">var <span class="ident">unnoised_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]] | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.functions.coefficients.Coefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.functions.coefficients.Coefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -143,15 +175,23 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <ul>
 <li>
 <h4><code><a title="sleplet.functions.coefficients.Coefficients" href="#sleplet.functions.coefficients.Coefficients">Coefficients</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="sleplet.functions.coefficients.Coefficients.L" href="#sleplet.functions.coefficients.Coefficients.L">L</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.coefficients" href="#sleplet.functions.coefficients.Coefficients.coefficients">coefficients</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.convolve" href="#sleplet.functions.coefficients.Coefficients.convolve">convolve</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.extra_args" href="#sleplet.functions.coefficients.Coefficients.extra_args">extra_args</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.name" href="#sleplet.functions.coefficients.Coefficients.name">name</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.noise" href="#sleplet.functions.coefficients.Coefficients.noise">noise</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.reality" href="#sleplet.functions.coefficients.Coefficients.reality">reality</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.region" href="#sleplet.functions.coefficients.Coefficients.region">region</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.rotate" href="#sleplet.functions.coefficients.Coefficients.rotate">rotate</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.smoothing" href="#sleplet.functions.coefficients.Coefficients.smoothing">smoothing</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.snr" href="#sleplet.functions.coefficients.Coefficients.snr">snr</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.spin" href="#sleplet.functions.coefficients.Coefficients.spin">spin</a></code></li>
 <li><code><a title="sleplet.functions.coefficients.Coefficients.translate" href="#sleplet.functions.coefficients.Coefficients.translate">translate</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.unnoised_coefficients" href="#sleplet.functions.coefficients.Coefficients.unnoised_coefficients">unnoised_coefficients</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.wavelet_coefficients" href="#sleplet.functions.coefficients.Coefficients.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.functions.coefficients.Coefficients.wavelets" href="#sleplet.functions.coefficients.Coefficients.wavelets">wavelets</a></code></li>
 </ul>
 </li>
 </ul>

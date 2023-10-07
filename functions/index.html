@@ -159,7 +159,7 @@
 <dl>
 <dt id="sleplet.functions.Africa"><code class="flex name class">
 <span>class <span class="ident">Africa</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a topographic map of the Earth setting everything outide of the
@@ -187,7 +187,7 @@ Africa region to zero.</p></div>
 </dd>
 <dt id="sleplet.functions.AxisymmetricWaveletCoefficientsAfrica"><code class="flex name class">
 <span>class <span class="ident">AxisymmetricWaveletCoefficientsAfrica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates axisymmetric wavelet coefficients of the Africa region.</p></div>
@@ -230,7 +230,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.AxisymmetricWaveletCoefficientsEarth"><code class="flex name class">
 <span>class <span class="ident">AxisymmetricWaveletCoefficientsEarth</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates axisymmetric wavelet coefficients of the Earth.</p></div>
@@ -273,7 +273,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica"><code class="flex name class">
 <span>class <span class="ident">AxisymmetricWaveletCoefficientsSouthAmerica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates axisymmetric wavelet coefficients of the South America region.</p></div>
@@ -316,7 +316,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.AxisymmetricWavelets"><code class="flex name class">
 <span>class <span class="ident">AxisymmetricWavelets</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates scale-discretised axisymmetric wavelets. As
@@ -360,7 +360,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.DiracDelta"><code class="flex name class">
 <span>class <span class="ident">DiracDelta</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a Dirac delta.</p></div>
@@ -387,7 +387,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.Earth"><code class="flex name class">
 <span>class <span class="ident">Earth</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates the topographic map of the Earth.</p></div>
@@ -414,7 +414,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.ElongatedGaussian"><code class="flex name class">
 <span>class <span class="ident">ElongatedGaussian</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, p_sigma: float = 0.1, t_sigma: float = 1)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an elongated Gaussian
@@ -455,7 +455,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.Gaussian"><code class="flex name class">
 <span>class <span class="ident">Gaussian</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, sigma: float = 10)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a Gaussian <span><span class="MathJax_Preview">\exp(-\frac{{\ell}^{2}}{2\sigma^{2}})</span><script type="math/tex">\exp(-\frac{{\ell}^{2}}{2\sigma^{2}})</script></span>.</p></div>
@@ -489,7 +489,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.HarmonicGaussian"><code class="flex name class">
 <span>class <span class="ident">HarmonicGaussian</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, l_sigma: float = 10, m_sigma: float = 10)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a harmonic Gaussian
@@ -530,7 +530,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.Identity"><code class="flex name class">
 <span>class <span class="ident">Identity</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an identity function.</p></div>
@@ -557,7 +557,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.NoiseEarth"><code class="flex name class">
 <span>class <span class="ident">NoiseEarth</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = 10)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a noised signal of the topographic map of the Earth.</p></div>
@@ -592,7 +592,7 @@ data.</p></div>
 </dd>
 <dt id="sleplet.functions.Ridgelets"><code class="flex name class">
 <span>class <span class="ident">Ridgelets</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None, spin: int = 2)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Crates scale-discretised wavelets. As seen in
@@ -640,7 +640,7 @@ whereas would correspond to the selected <code>j_min</code>.</p></div>
 </dd>
 <dt id="sleplet.functions.Slepian"><code class="flex name class">
 <span>class <span class="ident">Slepian</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, rank: int = 0)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates Slepian functions of the selected region.</p></div>
@@ -675,7 +675,7 @@ selects a given Slepian function from the spectrum (p in the papers).</p></div>
 </dd>
 <dt id="sleplet.functions.SlepianAfrica"><code class="flex name class">
 <span>class <span class="ident">SlepianAfrica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a Slepian region on the topographic map of the Earth of the
@@ -703,7 +703,7 @@ Africa region.</p></div>
 </dd>
 <dt id="sleplet.functions.SlepianDiracDelta"><code class="flex name class">
 <span>class <span class="ident">SlepianDiracDelta</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a Dirac delta of the Slepian coefficients.</p></div>
@@ -730,7 +730,7 @@ Africa region.</p></div>
 </dd>
 <dt id="sleplet.functions.SlepianIdentity"><code class="flex name class">
 <span>class <span class="ident">SlepianIdentity</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an identify function in the Slepian region.</p></div>
@@ -757,7 +757,7 @@ Africa region.</p></div>
 </dd>
 <dt id="sleplet.functions.SlepianNoiseAfrica"><code class="flex name class">
 <span>class <span class="ident">SlepianNoiseAfrica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = -10)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a noised Slepian region on the topographic map of the Earth of
@@ -793,7 +793,7 @@ data.</p></div>
 </dd>
 <dt id="sleplet.functions.SlepianNoiseSouthAmerica"><code class="flex name class">
 <span>class <span class="ident">SlepianNoiseSouthAmerica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, SNR: float = -10)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a noised Slepian region on the topographic map of the Earth of the
@@ -829,7 +829,7 @@ data.</p></div>
 </dd>
 <dt id="sleplet.functions.SlepianSouthAmerica"><code class="flex name class">
 <span>class <span class="ident">SlepianSouthAmerica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a Slepian region on the topographic map of the Earth of the
@@ -857,7 +857,7 @@ South America region.</p></div>
 </dd>
 <dt id="sleplet.functions.SlepianWaveletCoefficientsAfrica"><code class="flex name class">
 <span>class <span class="ident">SlepianWaveletCoefficientsAfrica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates Slepian wavelet coefficients of the Africa region.</p></div>
@@ -900,7 +900,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.SlepianWaveletCoefficientsSouthAmerica"><code class="flex name class">
 <span>class <span class="ident">SlepianWaveletCoefficientsSouthAmerica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates Slepian wavelet coefficients of the South America region.</p></div>
@@ -943,7 +943,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.SlepianWavelets"><code class="flex name class">
 <span>class <span class="ident">SlepianWavelets</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, B: int = 3, j_min: int = 2, j: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates the Slepian wavelets.</p></div>
@@ -986,7 +986,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.SouthAmerica"><code class="flex name class">
 <span>class <span class="ident">SouthAmerica</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates the South America region of the topographic map of the Earth.</p></div>
@@ -1013,7 +1013,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.SphericalHarmonic"><code class="flex name class">
 <span>class <span class="ident">SphericalHarmonic</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, ell: int = 0, m: int = 0)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates spherical harmonic functions.</p></div>
@@ -1051,7 +1051,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.SquashedGaussian"><code class="flex name class">
 <span>class <span class="ident">SquashedGaussian</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None, freq: float = 0.1, t_sigma: float = 1)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a squashed Gaussian
@@ -1092,7 +1092,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </dd>
 <dt id="sleplet.functions.Wmap"><code class="flex name class">
 <span>class <span class="ident">Wmap</span></span>
-<span>(</span><span>L: int, *, extra_args: list[int] | None = None, noise: float | None = None, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, smoothing: int | None = None)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates the WMAP data.</p></div>

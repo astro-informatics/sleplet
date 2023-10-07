@@ -36,7 +36,7 @@
 <dl>
 <dt id="sleplet.slepian.slepian_functions.SlepianFunctions"><code class="flex name class">
 <span>class <span class="ident">SlepianFunctions</span></span>
-<span>(</span><span>L: int)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract parent class of creating the different Slepian regions on the sphere.</p></div>
@@ -51,6 +51,38 @@
 <dt id="sleplet.slepian.slepian_functions.SlepianFunctions.L"><code class="name">var <span class="ident">L</span> : int</code></dt>
 <dd>
 <div class="desc"><p>The spherical harmonic bandlimit.</p></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.N"><code class="name">var <span class="ident">N</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.eigenvalues"><code class="name">var <span class="ident">eigenvalues</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.eigenvectors"><code class="name">var <span class="ident">eigenvectors</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.mask"><code class="name">var <span class="ident">mask</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.matrix_location"><code class="name">var <span class="ident">matrix_location</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.region"><code class="name">var <span class="ident">region</span> : <a title="sleplet.slepian.region.Region" href="region.html#sleplet.slepian.region.Region">Region</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.slepian.slepian_functions.SlepianFunctions.resolution"><code class="name">var <span class="ident">resolution</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -72,8 +104,16 @@
 <ul>
 <li>
 <h4><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.L" href="#sleplet.slepian.slepian_functions.SlepianFunctions.L">L</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.N" href="#sleplet.slepian.slepian_functions.SlepianFunctions.N">N</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.eigenvalues" href="#sleplet.slepian.slepian_functions.SlepianFunctions.eigenvalues">eigenvalues</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.eigenvectors" href="#sleplet.slepian.slepian_functions.SlepianFunctions.eigenvectors">eigenvectors</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.mask" href="#sleplet.slepian.slepian_functions.SlepianFunctions.mask">mask</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.matrix_location" href="#sleplet.slepian.slepian_functions.SlepianFunctions.matrix_location">matrix_location</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.name" href="#sleplet.slepian.slepian_functions.SlepianFunctions.name">name</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.region" href="#sleplet.slepian.slepian_functions.SlepianFunctions.region">region</a></code></li>
+<li><code><a title="sleplet.slepian.slepian_functions.SlepianFunctions.resolution" href="#sleplet.slepian.slepian_functions.SlepianFunctions.resolution">resolution</a></code></li>
 </ul>
 </li>
 </ul>

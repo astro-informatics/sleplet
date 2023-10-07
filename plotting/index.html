@@ -36,7 +36,7 @@
 <dl>
 <dt id="sleplet.plotting.PlotMesh"><code class="flex name class">
 <span>class <span class="ident">PlotMesh</span></span>
-<span>(</span><span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="../meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>, filename: str, f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, amplitude: float | None = None, normalise: bool = True, region: bool = False)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates surface mesh plot via <code>plotly</code>.</p></div>
@@ -84,7 +84,7 @@
 </dd>
 <dt id="sleplet.plotting.PlotSphere"><code class="flex name class">
 <span>class <span class="ident">PlotSphere</span></span>
-<span>(</span><span>f: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], L: int, filename: str, *, amplitude: float | None = None, annotations: list[dict] = &lt;factory&gt;, normalise: bool = True, plot_type: str = 'real', reality: bool = False, region: <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None = None, spin: int = 0, upsample: bool = True)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates surface sphere plot via <code>plotly</code>.</p></div>
@@ -125,6 +125,10 @@
 <dt id="sleplet.plotting.PlotSphere.region"><code class="name">var <span class="ident">region</span> : <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None</code></dt>
 <dd>
 <div class="desc"><p>Whether to set the field values outside of a given region to zero.</p></div>
+</dd>
+<dt id="sleplet.plotting.PlotSphere.resolution"><code class="name">var <span class="ident">resolution</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 <dt id="sleplet.plotting.PlotSphere.spin"><code class="name">var <span class="ident">spin</span> : int</code></dt>
 <dd>
@@ -186,6 +190,7 @@
 <li><code><a title="sleplet.plotting.PlotSphere.plot_type" href="#sleplet.plotting.PlotSphere.plot_type">plot_type</a></code></li>
 <li><code><a title="sleplet.plotting.PlotSphere.reality" href="#sleplet.plotting.PlotSphere.reality">reality</a></code></li>
 <li><code><a title="sleplet.plotting.PlotSphere.region" href="#sleplet.plotting.PlotSphere.region">region</a></code></li>
+<li><code><a title="sleplet.plotting.PlotSphere.resolution" href="#sleplet.plotting.PlotSphere.resolution">resolution</a></code></li>
 <li><code><a title="sleplet.plotting.PlotSphere.spin" href="#sleplet.plotting.PlotSphere.spin">spin</a></code></li>
 <li><code><a title="sleplet.plotting.PlotSphere.upsample" href="#sleplet.plotting.PlotSphere.upsample">upsample</a></code></li>
 </ul>

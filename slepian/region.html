@@ -36,7 +36,7 @@
 <dl>
 <dt id="sleplet.slepian.region.Region"><code class="flex name class">
 <span>class <span class="ident">Region</span></span>
-<span>(</span><span>*, gap: bool = False, mask_name: str = '', phi_max: float = 6.283185307179586, phi_min: float = 0.0, theta_max: float = 3.141592653589793, theta_min: float = 0)</span>
+<span>(</span><span>*args: Any, **kwargs: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Identifies and creates the appropriate Slepian region for the sphere.</p></div>
@@ -53,6 +53,10 @@ other angles are at their default values.</p></div>
 <div class="desc"><p>The name of the mask of the arbitrary region, set by the <code>SLEPIAN_MASK</code>
 environment variable. Current options are <code>africa</code> and <code>south_america</code>.</p></div>
 </dd>
+<dt id="sleplet.slepian.region.Region.name_ending"><code class="name">var <span class="ident">name_ending</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="sleplet.slepian.region.Region.phi_max"><code class="name">var <span class="ident">phi_max</span> : float</code></dt>
 <dd>
 <div class="desc"><p>For a limited latitude longitude region, set by the <code>PHI_MAX</code> environment
@@ -62,6 +66,10 @@ variable.</p></div>
 <dd>
 <div class="desc"><p>For a limited latitude longitude region, set by the <code>PHI_MIN</code> environment
 variable.</p></div>
+</dd>
+<dt id="sleplet.slepian.region.Region.region_type"><code class="name">var <span class="ident">region_type</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 <dt id="sleplet.slepian.region.Region.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
@@ -97,8 +105,10 @@ variable.</p></div>
 <ul class="two-column">
 <li><code><a title="sleplet.slepian.region.Region.gap" href="#sleplet.slepian.region.Region.gap">gap</a></code></li>
 <li><code><a title="sleplet.slepian.region.Region.mask_name" href="#sleplet.slepian.region.Region.mask_name">mask_name</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.name_ending" href="#sleplet.slepian.region.Region.name_ending">name_ending</a></code></li>
 <li><code><a title="sleplet.slepian.region.Region.phi_max" href="#sleplet.slepian.region.Region.phi_max">phi_max</a></code></li>
 <li><code><a title="sleplet.slepian.region.Region.phi_min" href="#sleplet.slepian.region.Region.phi_min">phi_min</a></code></li>
+<li><code><a title="sleplet.slepian.region.Region.region_type" href="#sleplet.slepian.region.Region.region_type">region_type</a></code></li>
 <li><code><a title="sleplet.slepian.region.Region.theta_max" href="#sleplet.slepian.region.Region.theta_max">theta_max</a></code></li>
 <li><code><a title="sleplet.slepian.region.Region.theta_min" href="#sleplet.slepian.region.Region.theta_min">theta_min</a></code></li>
 </ul>
