@@ -58,7 +58,7 @@ class MeshSlepianDecomposition:
             self.mesh_slepian.slepian_functions[rank],
         )
         integration = sleplet._integration_methods.integrate_region_mesh(
-            self.mesh_slepian.mesh.region,
+            self.mesh_slepian.mesh.mesh_region,
             self.mesh_slepian.mesh.vertices,
             self.mesh_slepian.mesh.faces,
             self.u,

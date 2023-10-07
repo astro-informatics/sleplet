@@ -46,7 +46,7 @@ class Mesh:
         init_var=False,
         repr=False,
     )
-    region: npt.NDArray[np.bool_] = pydantic.Field(
+    mesh_region: npt.NDArray[np.bool_] = pydantic.Field(
         default_factory=lambda: np.empty(0, dtype=np.bool_),
         init_var=False,
         repr=False,
@@ -74,7 +74,7 @@ class Mesh:
             else mesh_config["DEFAULT_COLOURBAR_POS"]
         )
         self.vertices, self.faces = sleplet._mesh_methods.read_mesh(mesh_config)
-        self.region = sleplet._mesh_methods.create_mesh_region(
+        self.mesh_region = sleplet._mesh_methods.create_mesh_region(
             mesh_config,
             self.vertices,
         )

@@ -7,7 +7,7 @@ import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -27,16 +27,21 @@ _logger = logging.getLogger(__name__)
 _SAMPLES = 2
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
     """The name of the mask of the arbitrary region."""
+    weight: npt.NDArray[np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.resolution = _SAMPLES * self.L
-        super().__post_init_post_parse__()
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"

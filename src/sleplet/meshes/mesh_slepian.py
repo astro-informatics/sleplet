@@ -137,7 +137,7 @@ class MeshSlepian:
     def _integral(self, i: int, j: int) -> float:
         """Calculates the D integral between two mesh basis functions."""
         return sleplet._integration_methods.integrate_region_mesh(
-            self.mesh.region,
+            self.mesh.mesh_region,
             self.mesh.vertices,
             self.mesh.faces,
             self.mesh.basis_functions[i],
