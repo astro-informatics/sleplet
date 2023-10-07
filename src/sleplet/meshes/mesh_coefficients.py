@@ -41,6 +41,11 @@ class MeshCoefficients:
         init_var=False,
         repr=False,
     )
+    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
     wavelets: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
