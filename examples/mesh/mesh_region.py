@@ -22,7 +22,7 @@ def main(mesh_name: str) -> None:
 
     # create region masking
     field = np.zeros(mesh.vertices.shape[0])
-    field[mesh.region] = 1
+    field[mesh.mesh_region] = 1
 
     name = f"{mesh_name}_region"
     sleplet.plotting.PlotMesh(mesh, name, field, region=True).execute(cmocean.cm.haline)

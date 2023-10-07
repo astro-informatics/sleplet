@@ -1,6 +1,5 @@
 """Contains the abstract `Fp` class."""
 import abc
-import dataclasses
 
 import numpy as np
 import numpy.typing as npt
@@ -20,12 +19,12 @@ from sleplet.functions.coefficients import Coefficients
 class Fp(Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions = dataclasses.field(
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions = pydantic.Field(
         default_factory=lambda: sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
             0,
             theta_max=1,
         ),
+        init_var=False,
         repr=False,
     )
 

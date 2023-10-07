@@ -70,7 +70,7 @@ class AxisymmetricWavelets(Flm):
         )
 
     @pydantic.field_validator("j")
-    def _check_j(cls, v, info: pydantic.FieldValidationInfo):
+    def _check_j(cls, v: int | None, info: pydantic.ValidationInfo) -> int | None:
         j_max = pys2let.pys2let_j_max(
             info.data["B"],
             info.data["L"],

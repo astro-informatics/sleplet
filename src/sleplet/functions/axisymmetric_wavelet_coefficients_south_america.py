@@ -1,5 +1,4 @@
 """Contains the `AxisymmetricWaveletCoefficientsSouthAmerica` class."""
-import dataclasses
 import logging
 
 import numpy as np
@@ -28,9 +27,9 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    _south_america: SouthAmerica = dataclasses.field(
+    _south_america: SouthAmerica = pydantic.Field(
         default_factory=lambda: SouthAmerica(1),
+        init_var=False,
         repr=False,
     )
 
@@ -86,7 +85,7 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
         return wavelets, wavelet_coefficients
 
     @pydantic.field_validator("j")
-    def _check_j(cls, v, info: pydantic.FieldValidationInfo):
+    def _check_j(cls, v: int | None, info: pydantic.ValidationInfo) -> int | None:
         j_max = pys2let.pys2let_j_max(
             info.data["B"],
             info.data["L"],

@@ -1,6 +1,5 @@
 """Contains the `MeshSlepian` class."""
 import concurrent.futures
-import dataclasses
 import logging
 import os
 
@@ -27,14 +26,15 @@ class MeshSlepian:
 
     mesh: Mesh
     """A mesh object."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    N: int = dataclasses.field(default=0, repr=False)
-    slepian_eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
+    N: int = pydantic.Field(default=0, init_var=False, repr=False)
+    slepian_eigenvalues: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
-    slepian_functions: npt.NDArray[np.float_] = dataclasses.field(
+    slepian_functions: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
 
@@ -137,7 +137,7 @@ class MeshSlepian:
     def _integral(self, i: int, j: int) -> float:
         """Calculates the D integral between two mesh basis functions."""
         return sleplet._integration_methods.integrate_region_mesh(
-            self.mesh.region,
+            self.mesh.mesh_region,
             self.mesh.vertices,
             self.mesh.faces,
             self.mesh.basis_functions[i],

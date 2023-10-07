@@ -29,21 +29,21 @@ class MeshCoefficients:
     """How much to noise the data."""
     region: bool = False
     """Whether to set a region or not, used in the Slepian case."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty((697, 2790)),
-        repr=False,
-    )
-    name: str = dataclasses.field(default="", repr=False)
-    snr: float | None = dataclasses.field(default=None, repr=False)
-    unnoised_coefficients: npt.NDArray[
-        np.complex_ | np.float_
-    ] | None = dataclasses.field(
-        default=None,
-        repr=False,
-    )
-    wavelets: npt.NDArray[np.float_] = dataclasses.field(
+    coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
+    name: str = pydantic.Field(default="", init_var=False, repr=False)
+    snr: float | None = pydantic.Field(default=None, init_var=False, repr=False)
+    unnoised_coefficients: npt.NDArray[np.complex_ | np.float_] | None = pydantic.Field(
+        default=None,
+        init_var=False,
+        repr=False,
+    )
+    wavelets: npt.NDArray[np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
 
@@ -62,18 +62,6 @@ class MeshCoefficients:
             self.name += f"{sleplet._string_methods.filename_args(self.noise, 'noise')}"
         if self.mesh.zoom:
             self.name += "_zoom"
-
-    @pydantic.field_validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, info: pydantic.FieldValidationInfo):
-        if (
-            info.data["region"]
-            and _COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
-        ):
-            v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
-                info.data["mesh"],
-                v,
-            )
-        return v
 
     @abc.abstractmethod
     def _add_noise_to_signal(

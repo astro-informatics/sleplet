@@ -1,5 +1,4 @@
 """Contains the `Region` class."""
-import dataclasses
 import logging
 
 import pydantic
@@ -36,9 +35,8 @@ class Region:
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
     """For a limited latitude longitude region, set by the `THETA_MIN` environment
     variable."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    name_ending: str = dataclasses.field(default="", repr=False)
-    region_type: str = dataclasses.field(default="", repr=False)
+    name_ending: str = pydantic.Field(default="", init_var=False, repr=False)
+    region_type: str = pydantic.Field(default="", init_var=False, repr=False)
 
     def __post_init__(self) -> None:
         self._identify_region()
@@ -91,7 +89,7 @@ class Region:
             )
 
     @pydantic.field_validator("phi_max")
-    def _check_phi_max(cls, v):
+    def _check_phi_max(cls, v: float) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError("phi_max cannot be negative")
         if v > sleplet._vars.PHI_MAX_DEFAULT:
@@ -102,7 +100,7 @@ class Region:
         return v
 
     @pydantic.field_validator("phi_min")
-    def _check_phi_min(cls, v):
+    def _check_phi_min(cls, v: float) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             raise ValueError("phi_min cannot be negative")
         if v > sleplet._vars.PHI_MAX_DEFAULT:
@@ -113,7 +111,7 @@ class Region:
         return v
 
     @pydantic.field_validator("theta_max")
-    def _check_theta_max(cls, v):
+    def _check_theta_max(cls, v: float) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError("theta_max cannot be negative")
         if v > sleplet._vars.THETA_MAX_DEFAULT:
@@ -124,7 +122,7 @@ class Region:
         return v
 
     @pydantic.field_validator("theta_min")
-    def _check_theta_min(cls, v):
+    def _check_theta_min(cls, v: float) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             raise ValueError("theta_min cannot be negative")
         if v > sleplet._vars.THETA_MAX_DEFAULT:

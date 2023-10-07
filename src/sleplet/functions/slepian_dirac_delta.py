@@ -1,5 +1,4 @@
 """Contains the `SlepianDiracDelta` class."""
-import dataclasses
 import logging
 
 import numpy as np
@@ -21,9 +20,8 @@ _logger = logging.getLogger(__name__)
 class SlepianDiracDelta(Fp):
     """Creates a Dirac delta of the Slepian coefficients."""
 
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    _alpha: float = dataclasses.field(default=0, repr=False)
-    _beta: float = dataclasses.field(default=0, repr=False)
+    _alpha: float = pydantic.Field(default=0, init_var=False, repr=False)
+    _beta: float = pydantic.Field(default=0, init_var=False, repr=False)
 
     def __post_init__(self) -> None:
         super().__post_init__()

@@ -1,6 +1,5 @@
 """Contains the abstract `MeshSlepianCoefficients` class."""
 import abc
-import dataclasses
 
 import numpy as np
 import numpy.typing as npt
@@ -17,9 +16,10 @@ from sleplet.meshes.mesh_slepian import MeshSlepian
 class MeshSlepianCoefficients(MeshCoefficients):
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    mesh_slepian: MeshSlepian = dataclasses.field(
+    mesh_slepian: MeshSlepian = pydantic.Field(
         default_factory=lambda: MeshSlepian(Mesh("bird")),
+        init_var=False,
+        repr=False,
     )
 
     def __post_init__(self) -> None:

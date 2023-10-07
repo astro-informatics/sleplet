@@ -20,8 +20,7 @@ class MeshSlepianDecomposition:
     mask: bool = False
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None
     u: npt.NDArray[np.complex_ | np.float_] | None = None
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    method: str = dataclasses.field(default="", repr=False)
+    method: str = pydantic.Field(default="", init_var=False, repr=False)
 
     def __post_init__(self) -> None:
         self._detect_method()
@@ -59,7 +58,7 @@ class MeshSlepianDecomposition:
             self.mesh_slepian.slepian_functions[rank],
         )
         integration = sleplet._integration_methods.integrate_region_mesh(
-            self.mesh_slepian.mesh.region,
+            self.mesh_slepian.mesh.mesh_region,
             self.mesh_slepian.mesh.vertices,
             self.mesh_slepian.mesh.faces,
             self.u,

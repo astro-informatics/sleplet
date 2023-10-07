@@ -32,7 +32,7 @@ class PlotSphere:
     _: dataclasses.KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
-    annotations: list[dict] = dataclasses.field(default_factory=list)
+    annotations: list[dict] = pydantic.Field(default_factory=list)
     """Whether to display any annotations on the surface plot or not."""
     normalise: bool = True
     """Whether to normalise the plot or not."""
@@ -46,6 +46,7 @@ class PlotSphere:
     """Spin value."""
     upsample: bool = True
     """Whether to upsample the current field."""
+    resolution: int = pydantic.Field(default=0, init_var=False, repr=False)
 
     def __post_init__(self) -> None:
         self.resolution = (

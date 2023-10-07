@@ -19,7 +19,6 @@ class SlepianFunctions:
 
     L: int
     """The spherical harmonic bandlimit."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
     eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         kw_only=True,
@@ -43,7 +42,11 @@ class SlepianFunctions:
         kw_only=True,
         repr=False,
     )
-    resolution: int = dataclasses.field(default=0, kw_only=True, repr=False)
+    resolution: int = dataclasses.field(
+        default=0,
+        kw_only=True,
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         self.region = self._create_region()

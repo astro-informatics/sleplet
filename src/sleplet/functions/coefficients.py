@@ -34,27 +34,28 @@ class Coefficients:
     """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
-        default_factory=lambda: np.empty(0, dtype=np.complex_),
+    coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
-    name: str = dataclasses.field(default="", repr=False)
-    reality: bool = dataclasses.field(default=False, repr=False)
-    snr: float | None = dataclasses.field(default=None, repr=False)
-    spin: int = dataclasses.field(default=0, repr=False)
-    unnoised_coefficients: npt.NDArray[
-        np.complex_ | np.float_
-    ] | None = dataclasses.field(
+    name: str = pydantic.Field(default="", init_var=False, repr=False)
+    reality: bool = pydantic.Field(default=False, init_var=False, repr=False)
+    snr: float | None = pydantic.Field(default=None, init_var=False, repr=False)
+    spin: int = pydantic.Field(default=0, init_var=False, repr=False)
+    unnoised_coefficients: npt.NDArray[np.complex_ | np.float_] | None = pydantic.Field(
         default=None,
+        init_var=False,
         repr=False,
     )
-    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
+    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
-    wavelets: npt.NDArray[np.complex_ | np.float_] = dataclasses.field(
+    wavelets: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
 
@@ -135,21 +136,6 @@ class Coefficients:
                 f"{sleplet._string_methods.filename_args(self.smoothing, 'smoothed')}"
             )
         self.name += f"_L{self.L}"
-
-    @pydantic.field_validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, info: pydantic.FieldValidationInfo):
-        if (
-            info.data["region"]
-            and not set(info.data["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
-        ):
-            v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
-                v,
-                info.data["L"],
-                info.data["region"],
-                reality=info.data["reality"],
-                spin=info.data["spin"],
-            )
-        return v
 
     @abc.abstractmethod
     def rotate(

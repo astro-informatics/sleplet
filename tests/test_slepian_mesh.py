@@ -46,7 +46,7 @@ def test_forward_inverse_transform_slepian(mesh_slepian, mesh_field_region) -> N
         mesh_field_region.coefficients,
     )
     np.testing.assert_allclose(
-        np.abs(f_slepian - f_harmonic)[mesh_slepian.mesh.region].mean(),
+        np.abs(f_slepian - f_harmonic)[mesh_slepian.mesh.mesh_region].mean(),
         0,
         atol=7e-3,
     )

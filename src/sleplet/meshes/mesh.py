@@ -25,30 +25,35 @@ class Mesh:
     zoom: bool = False
     """Whether to zoom in on the pre-selected region of the mesh in the
     plots."""
-    # TODO: adjust once https://github.com/pydantic/pydantic/issues/5470 fixed
-    basis_functions: npt.NDArray[np.float_] = dataclasses.field(
+    basis_functions: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
-    camera_view: go.layout.scene.Camera = dataclasses.field(
+    camera_view: go.layout.scene.Camera = pydantic.Field(
         default_factory=lambda: go.layout.scene.Camera(),
+        init_var=False,
         repr=False,
     )
-    colourbar_pos: float = dataclasses.field(default=0, repr=False)
-    faces: npt.NDArray[np.float_] = dataclasses.field(
+    colourbar_pos: float = pydantic.Field(default=0, init_var=False, repr=False)
+    faces: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
-    mesh_eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
+    mesh_eigenvalues: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
-    region: npt.NDArray[np.bool_] = dataclasses.field(
+    mesh_region: npt.NDArray[np.bool_] = pydantic.Field(
         default_factory=lambda: np.empty(0, dtype=np.bool_),
+        init_var=False,
         repr=False,
     )
-    vertices: npt.NDArray[np.float_] = dataclasses.field(
+    vertices: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
+        init_var=False,
         repr=False,
     )
 
@@ -69,7 +74,7 @@ class Mesh:
             else mesh_config["DEFAULT_COLOURBAR_POS"]
         )
         self.vertices, self.faces = sleplet._mesh_methods.read_mesh(mesh_config)
-        self.region = sleplet._mesh_methods.create_mesh_region(
+        self.mesh_region = sleplet._mesh_methods.create_mesh_region(
             mesh_config,
             self.vertices,
         )
