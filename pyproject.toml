@@ -176,7 +176,7 @@ target-version = "py310"
 mccabe.max-complexity = 18
 pep8-naming.classmethod-decorators = [
     "classmethod",
-    "pydantic.validator",
+    "pydantic.field_validator",
 ]
 
 [tool.setuptools_scm]

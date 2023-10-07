@@ -2,19 +2,19 @@
 import igl
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._validation
 import sleplet.harmonic_methods
 from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshField(MeshHarmonicCoefficients):
     """Creates a per-vertex normals field on a given mesh."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""

@@ -7,7 +7,7 @@ import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -20,14 +20,25 @@ from sleplet.meshes.mesh import Mesh
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepian:
     """Creates Slepian object of a given mesh."""
 
     mesh: Mesh
     """A mesh object."""
+    N: int = pydantic.Field(default=0, init_var=False, repr=False)
+    slepian_eigenvalues: npt.NDArray[np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
+    slepian_functions: npt.NDArray[np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 
@@ -126,7 +137,7 @@ class MeshSlepian:
     def _integral(self, i: int, j: int) -> float:
         """Calculates the D integral between two mesh basis functions."""
         return sleplet._integration_methods.integrate_region_mesh(
-            self.mesh.region,
+            self.mesh.mesh_region,
             self.mesh.vertices,
             self.mesh.faces,
             self.mesh.basis_functions[i],

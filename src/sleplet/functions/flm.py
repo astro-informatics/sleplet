@@ -3,7 +3,7 @@ import abc
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -12,12 +12,12 @@ import sleplet.noise
 from sleplet.functions.coefficients import Coefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Flm(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def rotate(  # noqa: D102
         self,

@@ -134,7 +134,7 @@ def ensure_masked_bandlimit_mesh_signal(
 ) -> npt.NDArray[np.float_]:
     """Ensures that signal in pixel space is bandlimited."""
     field = sleplet.harmonic_methods.mesh_inverse(mesh, u_i)
-    masked_field = np.where(mesh.region, field, 0)
+    masked_field = np.where(mesh.mesh_region, field, 0)
     return sleplet.harmonic_methods.mesh_forward(mesh, masked_field)
 
 
@@ -142,7 +142,7 @@ def convert_region_on_vertices_to_faces(
     mesh: "sleplet.meshes.mesh.Mesh",
 ) -> npt.NDArray[np.float_]:
     """Converts the region on vertices to faces."""
-    region_reshape = np.argwhere(mesh.region).reshape(-1)
+    region_reshape = np.argwhere(mesh.mesh_region).reshape(-1)
     faces_in_region = np.isin(mesh.faces, region_reshape).all(axis=1)
     region_on_faces = np.zeros(mesh.faces.shape[0])
     region_on_faces[faces_in_region] = 1

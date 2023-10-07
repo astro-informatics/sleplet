@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import pys2let
 
@@ -11,11 +11,12 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.wavelet_methods
 from sleplet.functions.flm import Flm
+from sleplet.functions.south_america import SouthAmerica
 
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
     """Creates axisymmetric wavelet coefficients of the South America region."""
 
@@ -26,9 +27,14 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
+    _south_america: SouthAmerica = pydantic.Field(
+        default_factory=lambda: SouthAmerica(1),
+        init_var=False,
+        repr=False,
+    )
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         _logger.info("start computing wavelet coefficients")
@@ -78,14 +84,18 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
         )
         return wavelets, wavelet_coefficients
 
-    @pydantic.validator("j")
-    def _check_j(cls, v, values):  # noqa: N805
-        j_max = pys2let.pys2let_j_max(values["B"], values["L"], values["j_min"])
+    @pydantic.field_validator("j")
+    def _check_j(cls, v: int | None, info: pydantic.ValidationInfo) -> int | None:
+        j_max = pys2let.pys2let_j_max(
+            info.data["B"],
+            info.data["L"],
+            info.data["j_min"],
+        )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
-        if v is not None and v > j_max - values["j_min"]:
+        if v is not None and v > j_max - info.data["j_min"]:
             raise ValueError(
                 "j should be less than j_max - j_min: "
-                f"{j_max - values['j_min'] + 1}",
+                f"{j_max - info.data['j_min'] + 1}",
             )
         return v

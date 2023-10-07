@@ -1,7 +1,7 @@
 """Contains the `MeshSlepianField` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._validation
 import sleplet.meshes.mesh_field
@@ -9,15 +9,15 @@ import sleplet.slepian_methods
 from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepianField(MeshSlepianCoefficients):
     """
     Creates a field on a given mesh computed from a Slepian region of the mesh.
     The default field is the per-vertex normals of the mesh.
     """
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""

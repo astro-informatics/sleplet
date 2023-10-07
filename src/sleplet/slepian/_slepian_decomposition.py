@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -15,7 +15,7 @@ from sleplet.slepian.slepian_functions import SlepianFunctions
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
@@ -23,8 +23,9 @@ class SlepianDecomposition:
     f: npt.NDArray[np.complex_] | None = None
     flm: npt.NDArray[np.complex_ | np.float_] | None = None
     mask: npt.NDArray[np.float_] | None = None
+    method: str = pydantic.Field(default="", init_var=False, repr=False)
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._detect_method()
 
     def decompose(self, rank: int) -> complex:

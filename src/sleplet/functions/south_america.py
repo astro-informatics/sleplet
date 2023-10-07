@@ -1,7 +1,7 @@
 """Contains the `SouthAmerica` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -15,12 +15,12 @@ import sleplet.harmonic_methods
 from sleplet.functions.flm import Flm
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SouthAmerica(Flm):
     """Creates the South America region of the topographic map of the Earth."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return sleplet.harmonic_methods._ensure_f_bandlimited(

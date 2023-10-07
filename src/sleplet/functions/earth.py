@@ -1,7 +1,7 @@
 """Contains the `Earth` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._data.create_earth_flm
 import sleplet._string_methods
@@ -9,12 +9,12 @@ import sleplet._validation
 from sleplet.functions.flm import Flm
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Earth(Flm):
     """Creates the topographic map of the Earth."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return sleplet._data.create_earth_flm.create_flm(
