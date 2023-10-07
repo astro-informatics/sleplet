@@ -11,6 +11,7 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.africa
 import sleplet.wavelet_methods
+from sleplet.functions.africa import Africa
 from sleplet.functions.flm import Flm
 
 _logger = logging.getLogger(__name__)
@@ -27,6 +28,11 @@ class AxisymmetricWaveletCoefficientsAfrica(Flm):
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
+    _africa: Africa = pydantic.Field(
+        default_factory=lambda: Africa(1),
+        init_var=False,
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -68,13 +74,13 @@ class AxisymmetricWaveletCoefficientsAfrica(Flm):
             self.B,
             self.j_min,
         )
-        self.africa = sleplet.functions.africa.Africa(
+        self._africa = sleplet.functions.africa.Africa(
             self.L,
             smoothing=self.smoothing,
         )
         wavelet_coefficients = sleplet.wavelet_methods.axisymmetric_wavelet_forward(
             self.L,
-            self.africa.coefficients,
+            self._africa.coefficients,
             wavelets,
         )
         return wavelets, wavelet_coefficients
