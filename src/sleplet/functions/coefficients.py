@@ -34,6 +34,13 @@ class Coefficients:
     """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
+    _unnoised_coefficients: npt.NDArray[
+        np.complex_ | np.float_
+    ] | None = pydantic.Field(
+        default=None,
+        init_var=False,
+        repr=False,
+    )
     coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
@@ -43,11 +50,6 @@ class Coefficients:
     reality: bool = pydantic.Field(default=False, init_var=False, repr=False)
     snr: float | None = pydantic.Field(default=None, init_var=False, repr=False)
     spin: int = pydantic.Field(default=0, init_var=False, repr=False)
-    unnoised_coefficients: npt.NDArray[np.complex_ | np.float_] | None = pydantic.Field(
-        default=None,
-        init_var=False,
-        repr=False,
-    )
     wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
@@ -66,7 +68,7 @@ class Coefficients:
         self.reality = self._set_reality()
         self.coefficients = self._create_coefficients()
         self._add_details_to_name()
-        self.unnoised_coefficients, self.snr = self._add_noise_to_signal()
+        self._unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def translate(
         self,

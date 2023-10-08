@@ -215,8 +215,8 @@ def compute_amplitude_for_noisy_mesh_plots(
         The noise adjusted maximum amplitude.
     """
     return (
-        np.abs(_coefficients_to_field_mesh(f, f.unnoised_coefficients)).max()
-        if f.unnoised_coefficients is not None
+        np.abs(_coefficients_to_field_mesh(f, f._unnoised_coefficients)).max()
+        if f._unnoised_coefficients is not None
         else None
     )
 
@@ -246,8 +246,8 @@ def compute_amplitude_for_noisy_sphere_plots(
         The noise adjusted maximum amplitude value.
     """
     return (
-        np.abs(_coefficients_to_field_sphere(f, f.unnoised_coefficients)).max()
-        if f.unnoised_coefficients is not None
+        np.abs(_coefficients_to_field_sphere(f, f._unnoised_coefficients)).max()
+        if f._unnoised_coefficients is not None
         else None
     )
 
