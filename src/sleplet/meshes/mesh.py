@@ -26,7 +26,7 @@ class Mesh:
     """Whether to zoom in on the pre-selected region of the mesh in the
     plots."""
     _camera_view: go.layout.scene.Camera = pydantic.Field(
-        default_factory=lambda: go.layout.scene.Camera(),
+        default=go.layout.scene.Camera(),
         init_var=False,
         repr=False,
     )

@@ -29,7 +29,7 @@ class AxisymmetricWaveletCoefficientsAfrica(Flm):
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
     _africa: Africa = pydantic.Field(
-        default_factory=lambda: Africa(1),
+        default=Africa(1),
         init_var=False,
         repr=False,
     )

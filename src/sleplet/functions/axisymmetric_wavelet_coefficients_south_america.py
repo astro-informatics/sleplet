@@ -28,7 +28,7 @@ class AxisymmetricWaveletCoefficientsSouthAmerica(Flm):
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
     _south_america: SouthAmerica = pydantic.Field(
-        default_factory=lambda: SouthAmerica(1),
+        default=SouthAmerica(1),
         init_var=False,
         repr=False,
     )
