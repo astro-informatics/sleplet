@@ -21,7 +21,7 @@ class SlepianIdentity(Fp):
     def _create_name(self) -> str:
         return (
             f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"_{self.slepian.region.name_ending}"
+            f"_{self.slepian.region._name_ending}"
         )
 
     def _set_reality(self) -> bool:

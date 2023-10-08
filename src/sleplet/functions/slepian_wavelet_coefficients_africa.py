@@ -34,7 +34,7 @@ class SlepianWaveletCoefficientsAfrica(Fp):
         super().__post_init__()
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
-            and self.region.name_ending != "africa"
+            and self.region._name_ending != "africa"
         ):
             raise RuntimeError("Slepian region selected must be 'africa'")
 

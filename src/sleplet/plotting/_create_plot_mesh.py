@@ -86,7 +86,7 @@ class PlotMesh:
                     tick_mark,
                     normalise=self.normalise,
                     bar_len=_MESH_CBAR_LEN,
-                    bar_pos=self.mesh.colourbar_pos,
+                    bar_pos=self.mesh._colourbar_pos,
                     font_size=_MESH_CBAR_FONT_SIZE,
                 ),
                 colorscale=sleplet.plot_methods._convert_colourscale(colour),
@@ -95,7 +95,7 @@ class PlotMesh:
             ),
         ]
 
-        layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
+        layout = sleplet._plotly_methods.create_layout(self.mesh._camera_view)
 
         fig = go.Figure(data=data, layout=layout)
 

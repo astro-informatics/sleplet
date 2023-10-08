@@ -38,7 +38,7 @@ def create_mask_region(
         Method=sleplet._vars.SAMPLING_SCHEME,
     )
 
-    match region.region_type:
+    match region._region_type:
         case "arbitrary":
             _logger.info("loading and checking shape of provided mask")
             name = f"{region.mask_name}_L{L}.npy"

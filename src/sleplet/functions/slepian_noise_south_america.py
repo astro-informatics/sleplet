@@ -26,7 +26,7 @@ class SlepianNoiseSouthAmerica(Fp):
         super().__post_init__()
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
-            and self.region.name_ending != "south_america"
+            and self.region._name_ending != "south_america"
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 

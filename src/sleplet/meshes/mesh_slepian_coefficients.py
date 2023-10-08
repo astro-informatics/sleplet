@@ -17,7 +17,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
     mesh_slepian: MeshSlepian = pydantic.Field(
-        default_factory=lambda: MeshSlepian(Mesh("bird")),
+        default=MeshSlepian(Mesh("bird")),
         init_var=False,
         repr=False,
     )

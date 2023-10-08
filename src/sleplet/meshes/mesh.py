@@ -25,17 +25,17 @@ class Mesh:
     zoom: bool = False
     """Whether to zoom in on the pre-selected region of the mesh in the
     plots."""
+    _camera_view: go.layout.scene.Camera = pydantic.Field(
+        default=go.layout.scene.Camera(),
+        init_var=False,
+        repr=False,
+    )
+    _colourbar_pos: float = pydantic.Field(default=0, init_var=False, repr=False)
     basis_functions: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
     )
-    camera_view: go.layout.scene.Camera = pydantic.Field(
-        default_factory=lambda: go.layout.scene.Camera(),
-        init_var=False,
-        repr=False,
-    )
-    colourbar_pos: float = pydantic.Field(default=0, init_var=False, repr=False)
     faces: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
@@ -59,7 +59,7 @@ class Mesh:
 
     def __post_init__(self) -> None:
         mesh_config = sleplet._mesh_methods.extract_mesh_config(self.name)
-        self.camera_view = sleplet._plotly_methods.create_camera(
+        self._camera_view = sleplet._plotly_methods.create_camera(
             mesh_config["CAMERA_X"],
             mesh_config["CAMERA_Y"],
             mesh_config["CAMERA_Z"],
@@ -68,7 +68,7 @@ class Mesh:
             y_center=mesh_config["CENTER_Y"] if self.zoom else 0,
             z_center=mesh_config["CENTER_Z"] if self.zoom else 0,
         )
-        self.colourbar_pos = (
+        self._colourbar_pos = (
             mesh_config["REGION_COLOURBAR_POS"]
             if self.zoom
             else mesh_config["DEFAULT_COLOURBAR_POS"]

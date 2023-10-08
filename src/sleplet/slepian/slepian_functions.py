@@ -42,7 +42,7 @@ class SlepianFunctions:
         kw_only=True,
         repr=False,
     )
-    resolution: int = dataclasses.field(
+    _resolution: int = dataclasses.field(
         default=0,
         kw_only=True,
         repr=False,

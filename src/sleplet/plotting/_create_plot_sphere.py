@@ -46,16 +46,16 @@ class PlotSphere:
     """Spin value."""
     upsample: bool = True
     """Whether to upsample the current field."""
-    resolution: int = pydantic.Field(default=0, init_var=False, repr=False)
+    _resolution: int = pydantic.Field(default=0, init_var=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.resolution = (
+        self._resolution = (
             sleplet.plot_methods.calc_plot_resolution(self.L)
             if self.upsample
             else self.L
         )
         if self.upsample:
-            self.filename += f"_res{self.resolution}"
+            self.filename += f"_res{self._resolution}"
         self.filename += f"_{self.plot_type}"
         if self.normalise:
             self.filename += "_norm"
@@ -67,7 +67,7 @@ class PlotSphere:
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f,
-            self.resolution,
+            self._resolution,
             method=sleplet._vars.SAMPLING_SCHEME,
         )
 
@@ -75,7 +75,7 @@ class PlotSphere:
             # make plot area clearer
             f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
                 f_plot,
-                self.resolution,
+                self._resolution,
                 self.region,
             )
 
@@ -199,7 +199,7 @@ class PlotSphere:
         boosted_field = sleplet.plot_methods._boost_field(
             f,
             self.L,
-            self.resolution,
+            self._resolution,
             reality=self.reality,
             spin=self.spin,
             upsample=self.upsample,
