@@ -33,7 +33,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     mask_name: str
     """The name of the mask of the arbitrary region."""
-    weight: npt.NDArray[np.float_] = pydantic.Field(
+    _weight: npt.NDArray[np.float_] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
@@ -53,10 +53,10 @@ class SlepianArbitrary(SlepianFunctions):
         return sleplet._mask_methods.create_mask_region(self.resolution, self.region)
 
     def _calculate_area(self) -> float:
-        self.weight = sleplet._integration_methods.calc_integration_weight(
+        self._weight = sleplet._integration_methods.calc_integration_weight(
             self.resolution,
         )
-        return (self.mask * self.weight).sum()
+        return (self.mask * self._weight).sum()
 
     def _create_matrix_location(self) -> str:
         return f"slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}"
@@ -198,7 +198,7 @@ class SlepianArbitrary(SlepianFunctions):
             )
         return sleplet._integration_methods.integrate_region_sphere(
             self.mask,
-            self.weight,
+            self._weight,
             self._fields[i],
             self._fields[j].conj(),
         )
