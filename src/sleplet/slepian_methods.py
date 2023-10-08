@@ -37,7 +37,7 @@ def choose_slepian_method(
     Returns:
         The given Slepian object.
     """
-    match region.region_type:
+    match region._region_type:
         case "polar":
             _logger.info("polar cap region detected")
             return sleplet.slepian.slepian_polar_cap.SlepianPolarCap(
@@ -64,7 +64,7 @@ def choose_slepian_method(
             )
 
         case _:
-            raise ValueError(f"{region.region_type} is an invalid region type")
+            raise ValueError(f"{region._region_type} is an invalid region type")
 
 
 def slepian_inverse(
