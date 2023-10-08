@@ -35,7 +35,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         super().__post_init__()
 
     def _create_fn_name(self) -> str:
-        return f"slepian_{self.region.name_ending}"
+        return f"slepian_{self.region._name_ending}"
 
     def _create_region(self) -> "sleplet.slepian.region.Region":
         return sleplet.slepian.region.Region(
@@ -54,7 +54,9 @@ class SlepianLimitLatLon(SlepianFunctions):
         )
 
     def _create_matrix_location(self) -> str:
-        return f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
+        return (
+            f"slepian_eigensolutions_D_{self.region._name_ending}_L{self.L}_N{self.N}"
+        )
 
     def _solve_eigenproblem(
         self,

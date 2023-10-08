@@ -128,7 +128,7 @@ class Coefficients:
             isinstance(self.region, sleplet.slepian.region.Region)
             and not set(self.name.split("_")) & _COEFFICIENTS_TO_NOT_MASK
         ):
-            self.name += f"_{self.region.name_ending}"
+            self.name += f"_{self.region._name_ending}"
         if self.noise is not None:
             self.name += f"{sleplet._string_methods.filename_args(self.noise, 'noise')}"
         if self.smoothing is not None:

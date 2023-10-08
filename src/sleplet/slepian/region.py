@@ -35,7 +35,7 @@ class Region:
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
     """For a limited latitude longitude region, set by the `THETA_MIN` environment
     variable."""
-    name_ending: str = pydantic.Field(default="", init_var=False, repr=False)
+    _name_ending: str = pydantic.Field(default="", init_var=False, repr=False)
     _region_type: str = pydantic.Field(default="", init_var=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -59,7 +59,7 @@ class Region:
             self.theta_max,
         ):
             self._region_type = "polar"
-            self.name_ending = (
+            self._name_ending = (
                 f"polar{'_gap' if self.gap else ''}"
                 f"{sleplet._string_methods.angle_as_degree(self.theta_max)}"
             )
@@ -71,7 +71,7 @@ class Region:
             self.theta_max,
         ):
             self._region_type = "lim_lat_lon"
-            self.name_ending = (
+            self._name_ending = (
                 f"theta{sleplet._string_methods.angle_as_degree(self.theta_min)}"
                 f"-{sleplet._string_methods.angle_as_degree(self.theta_max)}"
                 f"_phi{sleplet._string_methods.angle_as_degree(self.phi_min)}"
@@ -80,7 +80,7 @@ class Region:
 
         elif self.mask_name:
             self._region_type = "arbitrary"
-            self.name_ending = self.mask_name
+            self._name_ending = self.mask_name
 
         else:
             raise AttributeError(

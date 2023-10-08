@@ -46,7 +46,7 @@ class SlepianPolarCap(SlepianFunctions):
         super().__post_init__()
 
     def _create_fn_name(self) -> str:
-        return f"slepian_{self.region.name_ending}"
+        return f"slepian_{self.region._name_ending}"
 
     def _create_region(self) -> "sleplet.slepian.region.Region":
         return sleplet.slepian.region.Region(gap=self.gap, theta_max=self.theta_max)
@@ -58,7 +58,9 @@ class SlepianPolarCap(SlepianFunctions):
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
     def _create_matrix_location(self) -> str:
-        return f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
+        return (
+            f"slepian_eigensolutions_D_{self.region._name_ending}_L{self.L}_N{self.N}"
+        )
 
     def _solve_eigenproblem(
         self,
