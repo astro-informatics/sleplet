@@ -40,7 +40,7 @@ class SlepianArbitrary(SlepianFunctions):
     )
 
     def __post_init__(self) -> None:
-        self.resolution = _SAMPLES * self.L
+        self._resolution = _SAMPLES * self.L
         super().__post_init__()
 
     def _create_fn_name(self) -> str:
@@ -50,11 +50,11 @@ class SlepianArbitrary(SlepianFunctions):
         return sleplet.slepian.region.Region(mask_name=self.mask_name)
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
-        return sleplet._mask_methods.create_mask_region(self.resolution, self.region)
+        return sleplet._mask_methods.create_mask_region(self._resolution, self.region)
 
     def _calculate_area(self) -> float:
         self._weight = sleplet._integration_methods.calc_integration_weight(
-            self.resolution,
+            self._resolution,
         )
         return (self.mask * self._weight).sum()
 
@@ -188,13 +188,13 @@ class SlepianArbitrary(SlepianFunctions):
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),
                 self.L,
-                self.resolution,
+                self._resolution,
             )
         if j not in self._fields:
             self._fields[j] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, j),
                 self.L,
-                self.resolution,
+                self._resolution,
             )
         return sleplet._integration_methods.integrate_region_sphere(
             self.mask,
