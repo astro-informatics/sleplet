@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import pys2let
 
@@ -18,7 +18,7 @@ from sleplet.functions.fp import Fp
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation, kw_only=True)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SlepianWaveletCoefficientsSouthAmerica(Fp):
     """Creates Slepian wavelet coefficients of the South America region."""
 
@@ -30,11 +30,11 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
-            and self.region.name_ending != "south_america"
+            and self.region._name_ending != "south_america"
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 
@@ -89,14 +89,18 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
         )
         return wavelets, wavelet_coefficients
 
-    @pydantic.validator("j")
-    def _check_j(cls, v, values):  # noqa: N805
-        j_max = pys2let.pys2let_j_max(values["B"], values["L"] ** 2, values["j_min"])
+    @pydantic.field_validator("j")
+    def _check_j(cls, v: int | None, info: pydantic.ValidationInfo) -> int | None:
+        j_max = pys2let.pys2let_j_max(
+            info.data["B"],
+            info.data["L"] ** 2,
+            info.data["j_min"],
+        )
         if v is not None and v < 0:
             raise ValueError("j should be positive")
-        if v is not None and v > j_max - values["j_min"]:
+        if v is not None and v > j_max - info.data["j_min"]:
             raise ValueError(
                 "j should be less than j_max - j_min: "
-                f"{j_max - values['j_min'] + 1}",
+                f"{j_max - info.data['j_min'] + 1}",
             )
         return v

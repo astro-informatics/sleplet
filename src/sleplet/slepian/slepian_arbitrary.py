@@ -7,7 +7,7 @@ import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -27,16 +27,21 @@ _logger = logging.getLogger(__name__)
 _SAMPLES = 2
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianArbitrary(SlepianFunctions):
     """Class to create an arbitrary Slepian region on the sphere."""
 
     mask_name: str
     """The name of the mask of the arbitrary region."""
+    _weight: npt.NDArray[np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
 
-    def __post_init_post_parse__(self) -> None:
-        self.resolution = _SAMPLES * self.L
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        self._resolution = _SAMPLES * self.L
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
         return f"slepian_{self.mask_name}"
@@ -45,13 +50,13 @@ class SlepianArbitrary(SlepianFunctions):
         return sleplet.slepian.region.Region(mask_name=self.mask_name)
 
     def _create_mask(self) -> npt.NDArray[np.float_]:
-        return sleplet._mask_methods.create_mask_region(self.resolution, self.region)
+        return sleplet._mask_methods.create_mask_region(self._resolution, self.region)
 
     def _calculate_area(self) -> float:
-        self.weight = sleplet._integration_methods.calc_integration_weight(
-            self.resolution,
+        self._weight = sleplet._integration_methods.calc_integration_weight(
+            self._resolution,
         )
-        return (self.mask * self.weight).sum()
+        return (self.mask * self._weight).sum()
 
     def _create_matrix_location(self) -> str:
         return f"slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}"
@@ -183,17 +188,17 @@ class SlepianArbitrary(SlepianFunctions):
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),
                 self.L,
-                self.resolution,
+                self._resolution,
             )
         if j not in self._fields:
             self._fields[j] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, j),
                 self.L,
-                self.resolution,
+                self._resolution,
             )
         return sleplet._integration_methods.integrate_region_sphere(
             self.mask,
-            self.weight,
+            self._weight,
             self._fields[i],
             self._fields[j].conj(),
         )

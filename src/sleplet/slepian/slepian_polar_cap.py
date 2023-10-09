@@ -9,7 +9,7 @@ import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -26,7 +26,7 @@ _logger = logging.getLogger(__name__)
 _L_SAVE_ALL = 16
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
@@ -42,11 +42,11 @@ class SlepianPolarCap(SlepianFunctions):
     computed. In the Slepian eigenproblem formulation this simplifies the
     mathematical formulation."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_fn_name(self) -> str:
-        return f"slepian_{self.region.name_ending}"
+        return f"slepian_{self.region._name_ending}"
 
     def _create_region(self) -> "sleplet.slepian.region.Region":
         return sleplet.slepian.region.Region(gap=self.gap, theta_max=self.theta_max)
@@ -58,7 +58,9 @@ class SlepianPolarCap(SlepianFunctions):
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
     def _create_matrix_location(self) -> str:
-        return f"slepian_eigensolutions_D_{self.region.name_ending}_L{self.L}_N{self.N}"
+        return (
+            f"slepian_eigensolutions_D_{self.region._name_ending}_L{self.L}_N{self.N}"
+        )
 
     def _solve_eigenproblem(
         self,
@@ -383,14 +385,18 @@ class SlepianPolarCap(SlepianFunctions):
 
         return eigenvalues, eigenvectors
 
-    @pydantic.validator("order")
-    def _check_order(cls, v, values):  # noqa: N805
-        if v is not None and (np.abs(v) >= values["L"]).any():
-            raise ValueError(f"Order magnitude should be less than {values['L']}")
+    @pydantic.field_validator("order")
+    def _check_order(
+        cls,
+        v: int | npt.NDArray[np.int_] | None,
+        info: pydantic.ValidationInfo,
+    ) -> int | npt.NDArray[np.int_] | None:
+        if v is not None and (np.abs(v) >= info.data["L"]).any():
+            raise ValueError(f"Order magnitude should be less than {info.data['L']}")
         return v
 
-    @pydantic.validator("theta_max")
-    def _check_theta_max(cls, v):  # noqa: N805
+    @pydantic.field_validator("theta_max")
+    def _check_theta_max(cls, v: float) -> float:
         if v == 0:
             raise ValueError("theta_max cannot be zero")
         return v

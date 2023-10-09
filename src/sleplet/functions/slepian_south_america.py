@@ -1,7 +1,7 @@
 """Contains the `SlepianSouthAmerica` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._string_methods
 import sleplet._validation
@@ -10,18 +10,18 @@ import sleplet.slepian.region
 from sleplet.functions.fp import Fp
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianSouthAmerica(Fp):
     """
     Creates a Slepian region on the topographic map of the Earth of the
     South America region.
     """
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
-            and self.region.name_ending != "south_america"
+            and self.region._name_ending != "south_america"
         ):
             raise RuntimeError("Slepian region selected must be 'south_america'")
 

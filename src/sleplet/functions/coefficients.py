@@ -4,7 +4,7 @@ import dataclasses
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._convolution_methods
 import sleplet._mask_methods
@@ -15,7 +15,7 @@ import sleplet.slepian.region
 _COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Coefficients:
     """
     Abstract parent class to handle harmonic/Slepian coefficients on the
@@ -34,15 +34,41 @@ class Coefficients:
     """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
+    _unnoised_coefficients: npt.NDArray[
+        np.complex_ | np.float_
+    ] | None = pydantic.Field(
+        default=None,
+        init_var=False,
+        repr=False,
+    )
+    coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
+    name: str = pydantic.Field(default="", init_var=False, repr=False)
+    reality: bool = pydantic.Field(default=False, init_var=False, repr=False)
+    snr: float | None = pydantic.Field(default=None, init_var=False, repr=False)
+    spin: int = pydantic.Field(default=0, init_var=False, repr=False)
+    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
+    wavelets: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.spin = self._set_spin()
         self.reality = self._set_reality()
         self.coefficients = self._create_coefficients()
         self._add_details_to_name()
-        self.unnoised_coefficients, self.snr = self._add_noise_to_signal()
+        self._unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def translate(
         self,
@@ -104,7 +130,7 @@ class Coefficients:
             isinstance(self.region, sleplet.slepian.region.Region)
             and not set(self.name.split("_")) & _COEFFICIENTS_TO_NOT_MASK
         ):
-            self.name += f"_{self.region.name_ending}"
+            self.name += f"_{self.region._name_ending}"
         if self.noise is not None:
             self.name += f"{sleplet._string_methods.filename_args(self.noise, 'noise')}"
         if self.smoothing is not None:
@@ -112,21 +138,6 @@ class Coefficients:
                 f"{sleplet._string_methods.filename_args(self.smoothing, 'smoothed')}"
             )
         self.name += f"_L{self.L}"
-
-    @pydantic.validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, values):  # noqa: N805
-        if (
-            values["region"]
-            and not set(values["name"].split("_")) & _COEFFICIENTS_TO_NOT_MASK
-        ):
-            v = sleplet._mask_methods.ensure_masked_flm_bandlimited(
-                v,
-                values["L"],
-                values["region"],
-                reality=values["reality"],
-                spin=values["spin"],
-            )
-        return v
 
     @abc.abstractmethod
     def rotate(

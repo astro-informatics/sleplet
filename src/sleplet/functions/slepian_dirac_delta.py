@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -16,12 +16,15 @@ from sleplet.functions.fp import Fp
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianDiracDelta(Fp):
     """Creates a Dirac delta of the Slepian coefficients."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    _alpha: float = pydantic.Field(default=0, init_var=False, repr=False)
+    _beta: float = pydantic.Field(default=0, init_var=False, repr=False)
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         self._compute_angles()
@@ -35,7 +38,7 @@ class SlepianDiracDelta(Fp):
     def _create_name(self) -> str:
         return (
             f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"_{self.slepian.region.name_ending}"
+            f"_{self.slepian.region._name_ending}"
         )
 
     def _set_reality(self) -> bool:

@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._integration_methods
 import sleplet._validation
@@ -13,22 +13,23 @@ from sleplet.meshes.mesh_slepian import MeshSlepian
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: dataclasses.KW_ONLY
     mask: bool = False
     u_i: npt.NDArray[np.complex_ | np.float_] | None = None
     u: npt.NDArray[np.complex_ | np.float_] | None = None
+    _method: str = pydantic.Field(default="", init_var=False, repr=False)
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._detect_method()
 
     def decompose(self, rank: int) -> float:
         """Decompose the signal into its Slepian coefficients via the given method."""
         self._validate_rank(rank)
 
-        match self.method:
+        match self._method:
             case "harmonic_sum":
                 return self._harmonic_sum(rank)
             case "integrate_mesh":
@@ -36,7 +37,7 @@ class MeshSlepianDecomposition:
             case "integrate_region":
                 return self._integrate_region(rank)
             case _:
-                raise ValueError(f"'{self.method}' is not a valid method")
+                raise ValueError(f"'{self._method}' is not a valid method")
 
     def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.float_]:
         """Decompose all ranks of the Slepian coefficients."""
@@ -57,7 +58,7 @@ class MeshSlepianDecomposition:
             self.mesh_slepian.slepian_functions[rank],
         )
         integration = sleplet._integration_methods.integrate_region_mesh(
-            self.mesh_slepian.mesh.region,
+            self.mesh_slepian.mesh.mesh_region,
             self.mesh_slepian.mesh.vertices,
             self.mesh_slepian.mesh.faces,
             self.u,
@@ -94,14 +95,14 @@ class MeshSlepianDecomposition:
         """Detects what method is used to perform the decomposition."""
         if self.u_i is not None:
             _logger.info("harmonic sum method selected")
-            self.method = "harmonic_sum"
+            self._method = "harmonic_sum"
         elif self.u is not None:
             if self.mask:
                 _logger.info("integrating a region on the mesh method selected")
-                self.method = "integrate_region"
+                self._method = "integrate_region"
             else:
                 _logger.info("integrating the whole mesh method selected")
-                self.method = "integrate_mesh"
+                self._method = "integrate_mesh"
         else:
             raise RuntimeError(
                 "need to pass one off harmonic coefficients, real pixels "

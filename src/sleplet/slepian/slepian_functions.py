@@ -1,24 +1,54 @@
 """Contains the abstract `SlepianFunctions` class."""
 import abc
+import dataclasses
 import logging
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._validation
+from sleplet.slepian.region import Region
 
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianFunctions:
     """Abstract parent class of creating the different Slepian regions on the sphere."""
 
     L: int
     """The spherical harmonic bandlimit."""
+    eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        kw_only=True,
+        repr=True,
+    )
+    eigenvectors: npt.NDArray[np.complex_] = dataclasses.field(
+        default_factory=lambda: np.empty(0, dtype=np.complex_),
+        kw_only=True,
+        repr=True,
+    )
+    mask: npt.NDArray[np.float_] = dataclasses.field(
+        default_factory=lambda: np.empty(0),
+        kw_only=True,
+        repr=False,
+    )
+    matrix_location: str = dataclasses.field(default="", kw_only=True, repr=False)
+    N: int = dataclasses.field(default=0, kw_only=True, repr=False)
+    name: str = dataclasses.field(default="", kw_only=True, repr=False)
+    region: Region = dataclasses.field(
+        default_factory=lambda: Region(theta_max=0),
+        kw_only=True,
+        repr=False,
+    )
+    _resolution: int = dataclasses.field(
+        default=0,
+        kw_only=True,
+        repr=False,
+    )
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self.region = self._create_region()
         self.mask = self._create_mask()
         self.name = self._create_fn_name()

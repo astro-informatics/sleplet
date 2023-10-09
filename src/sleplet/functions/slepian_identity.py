@@ -1,19 +1,19 @@
 """Contains the `SlepianIdentity` class."""
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._string_methods
 import sleplet._validation
 from sleplet.functions.fp import Fp
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianIdentity(Fp):
     """Creates an identify function in the Slepian region."""
 
-    def __post_init_post_parse__(self) -> None:
-        super().__post_init_post_parse__()
+    def __post_init__(self) -> None:
+        super().__post_init__()
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         return np.ones(self.L**2, dtype=np.complex_)
@@ -21,7 +21,7 @@ class SlepianIdentity(Fp):
     def _create_name(self) -> str:
         return (
             f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"_{self.slepian.region.name_ending}"
+            f"_{self.slepian.region._name_ending}"
         )
 
     def _set_reality(self) -> bool:

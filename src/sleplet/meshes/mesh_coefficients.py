@@ -4,7 +4,7 @@ import dataclasses
 
 import numpy as np
 import numpy.typing as npt
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._mask_methods
 import sleplet._string_methods
@@ -15,7 +15,7 @@ from sleplet.meshes.mesh import Mesh
 _COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshCoefficients:
     """Abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 
@@ -29,13 +29,37 @@ class MeshCoefficients:
     """How much to noise the data."""
     region: bool = False
     """Whether to set a region or not, used in the Slepian case."""
+    _unnoised_coefficients: npt.NDArray[
+        np.complex_ | np.float_
+    ] | None = pydantic.Field(
+        default=None,
+        init_var=False,
+        repr=False,
+    )
+    coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
+    name: str = pydantic.Field(default="", init_var=False, repr=False)
+    snr: float | None = pydantic.Field(default=None, init_var=False, repr=False)
+    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
+    wavelets: npt.NDArray[np.float_] = pydantic.Field(
+        default_factory=lambda: np.empty(0),
+        init_var=False,
+        repr=False,
+    )
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.coefficients = self._create_coefficients()
         self._add_details_to_name()
-        self.unnoised_coefficients, self.snr = self._add_noise_to_signal()
+        self._unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def _add_details_to_name(self) -> None:
         """Adds region to the name if present if not a Slepian function."""
@@ -45,18 +69,6 @@ class MeshCoefficients:
             self.name += f"{sleplet._string_methods.filename_args(self.noise, 'noise')}"
         if self.mesh.zoom:
             self.name += "_zoom"
-
-    @pydantic.validator("coefficients", check_fields=False)
-    def _check_coefficients(cls, v, values):  # noqa: N805
-        if (
-            values["region"]
-            and _COEFFICIENTS_TO_NOT_MASK not in cls.__class__.__name__.lower()
-        ):
-            v = sleplet._mask_methods.ensure_masked_bandlimit_mesh_signal(
-                values["mesh"],
-                v,
-            )
-        return v
 
     @abc.abstractmethod
     def _add_noise_to_signal(

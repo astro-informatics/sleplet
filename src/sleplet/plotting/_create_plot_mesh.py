@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
-import pydantic.v1 as pydantic
+import pydantic
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -23,7 +23,7 @@ _MESH_CBAR_FONT_SIZE = 32
 _MESH_UNSEEN = -1e5  # kaleido bug
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotMesh:
     """Creates surface mesh plot via `plotly`."""
 
@@ -41,7 +41,7 @@ class PlotMesh:
     region: bool = False
     """Whether to set the field values outside of the region to zero."""
 
-    def __post_init_post_parse__(self) -> None:
+    def __post_init__(self) -> None:
         if self.normalise:
             self.filename += "_norm"
 
@@ -86,7 +86,7 @@ class PlotMesh:
                     tick_mark,
                     normalise=self.normalise,
                     bar_len=_MESH_CBAR_LEN,
-                    bar_pos=self.mesh.colourbar_pos,
+                    bar_pos=self.mesh._colourbar_pos,
                     font_size=_MESH_CBAR_FONT_SIZE,
                 ),
                 colorscale=sleplet.plot_methods._convert_colourscale(colour),
@@ -95,7 +95,7 @@ class PlotMesh:
             ),
         ]
 
-        layout = sleplet._plotly_methods.create_layout(self.mesh.camera_view)
+        layout = sleplet._plotly_methods.create_layout(self.mesh._camera_view)
 
         fig = go.Figure(data=data, layout=layout)
 

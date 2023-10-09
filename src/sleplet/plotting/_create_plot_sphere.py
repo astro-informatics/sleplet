@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
-import pydantic.v1 as pydantic
+import pydantic
 
 import pyssht as ssht
 
@@ -19,7 +19,7 @@ import sleplet.slepian.region
 _logger = logging.getLogger(__name__)
 
 
-@pydantic.dataclasses.dataclass(config=sleplet._validation.Validation)
+@pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotSphere:
     """Creates surface sphere plot via `plotly`."""
 
@@ -32,7 +32,7 @@ class PlotSphere:
     _: dataclasses.KW_ONLY
     amplitude: float | None = None
     """Whether to customise the amplitude range of the colour bar."""
-    annotations: list[dict] = dataclasses.field(default_factory=list)
+    annotations: list[dict] = pydantic.Field(default_factory=list)
     """Whether to display any annotations on the surface plot or not."""
     normalise: bool = True
     """Whether to normalise the plot or not."""
@@ -46,15 +46,16 @@ class PlotSphere:
     """Spin value."""
     upsample: bool = True
     """Whether to upsample the current field."""
+    _resolution: int = pydantic.Field(default=0, init_var=False, repr=False)
 
-    def __post_init_post_parse__(self) -> None:
-        self.resolution = (
+    def __post_init__(self) -> None:
+        self._resolution = (
             sleplet.plot_methods.calc_plot_resolution(self.L)
             if self.upsample
             else self.L
         )
         if self.upsample:
-            self.filename += f"_res{self.resolution}"
+            self.filename += f"_res{self._resolution}"
         self.filename += f"_{self.plot_type}"
         if self.normalise:
             self.filename += "_norm"
@@ -66,7 +67,7 @@ class PlotSphere:
         # get values from the setup
         x, y, z, f_plot, vmin, vmax = self._setup_plot(
             f,
-            self.resolution,
+            self._resolution,
             method=sleplet._vars.SAMPLING_SCHEME,
         )
 
@@ -74,7 +75,7 @@ class PlotSphere:
             # make plot area clearer
             f_plot = sleplet.plot_methods._set_outside_region_to_minimum(
                 f_plot,
-                self.resolution,
+                self._resolution,
                 self.region,
             )
 
@@ -198,7 +199,7 @@ class PlotSphere:
         boosted_field = sleplet.plot_methods._boost_field(
             f,
             self.L,
-            self.resolution,
+            self._resolution,
             reality=self.reality,
             spin=self.spin,
             upsample=self.upsample,
