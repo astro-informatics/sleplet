@@ -13,6 +13,7 @@
   "commitMessageAction": "Renovate:",
   "packageRules": [
     {
+      "description": "Shortern commit titles",
       "commitMessageTopic": "{{depName}}",
       "matchManagers": ["github-actions", "pre-commit"]
     }
