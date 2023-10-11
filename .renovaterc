@@ -10,6 +10,7 @@
     ":disableDependencyDashboard",
     ":enablePreCommit"
   ],
+  "assignees": ["paddyroddy"],
   "commitMessageAction": "Renovate:",
   "packageRules": [
     {
