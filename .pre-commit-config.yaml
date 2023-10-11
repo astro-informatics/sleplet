@@ -1,5 +1,5 @@
 repos:
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
+  - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.0.292
     hooks:
       - id: ruff
@@ -47,3 +47,7 @@ repos:
     rev: v2.2.6
     hooks:
       - id: codespell
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 37.13.0
+    hooks:
+      - id: renovate-config-validator
