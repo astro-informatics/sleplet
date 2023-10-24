@@ -276,7 +276,7 @@ def _rotation_helper(
     )
     filename += (
         "_rotate_"
-        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"  # noqa: E501
+        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
     )
 
     # calculate angles
