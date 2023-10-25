@@ -55,7 +55,6 @@ keywords = [
 ]
 name = "sleplet"
 optional-dependencies = {dev = [
-    "black",
     "build",
     "mypy",
     "pre-commit",
