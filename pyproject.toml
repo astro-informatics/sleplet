@@ -55,7 +55,6 @@ keywords = [
 ]
 name = "sleplet"
 optional-dependencies = {dev = [
-    "black",
     "build",
     "mypy",
     "pre-commit",
@@ -98,17 +97,27 @@ testpaths = [
 fix = true
 force-exclude = true
 ignore = [
+    "COM812",
+    "COM819",
     "D105",
     "D203",
     "D205",
+    "D206",
     "D212",
     "D401",
     "D407",
     "D417",
+    "E501",
     "EM101",
     "EM102",
+    "ISC001",
     "N803",
     "N806",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "W191",
 ]
 isort = {known-first-party = [
     "sleplet",

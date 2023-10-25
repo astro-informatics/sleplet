@@ -34,9 +34,9 @@ class Coefficients:
     """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
-    _unnoised_coefficients: npt.NDArray[
-        np.complex_ | np.float_
-    ] | None = pydantic.Field(
+    _unnoised_coefficients: (
+        npt.NDArray[np.complex_ | np.float_] | None
+    ) = pydantic.Field(
         default=None,
         init_var=False,
         repr=False,
