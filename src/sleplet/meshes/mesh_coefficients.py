@@ -29,9 +29,9 @@ class MeshCoefficients:
     """How much to noise the data."""
     region: bool = False
     """Whether to set a region or not, used in the Slepian case."""
-    _unnoised_coefficients: npt.NDArray[
-        np.complex_ | np.float_
-    ] | None = pydantic.Field(
+    _unnoised_coefficients: (
+        npt.NDArray[np.complex_ | np.float_] | None
+    ) = pydantic.Field(
         default=None,
         init_var=False,
         repr=False,

@@ -5,19 +5,10 @@ on:
     - cron: "0 3 1 1 *"
 
 jobs:
-  update-license-year:
+  update-licence-year:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: paddyroddy/.github/actions/licence@v0.16.0
         with:
-          fetch-depth: 0
-
-      - uses: FantasticFiasco/action-update-license-year@v3
-        with:
-          path: LICENCE.md
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Merge pull request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr merge --merge --delete-branch
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          licence-file: ./LICENCE.md
