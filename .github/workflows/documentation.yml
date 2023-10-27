@@ -9,27 +9,12 @@ jobs:
   documentation:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout source
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
-      - name: Set up python
-        uses: actions/setup-python@v4
+      - uses: paddyroddy/.github/actions/python/pdoc@v0.7.0
         with:
-          python-version: "3.x"
-          cache: "pip"
-          cache-dependency-path: "pyproject.toml"
-
-      - name: Install dependencies
-        run: python -m pip install -e .[docs]
-
-      - name: Create documentation
-        run: pdoc --html src/sleplet --template-dir documentation
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./html/sleplet
-          publish_branch: gh-pages
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
+          docs-dependency-section: .[docs]
+          gh-pages-publish-directory: ./html/sleplet
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          project-directory: ./src/sleplet
+          pyproject-toml: ./pyproject.toml
+          python-version: "3.11"
+          template-directory: ./documentation
