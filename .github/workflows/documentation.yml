@@ -9,11 +9,12 @@ jobs:
   documentation:
     runs-on: ubuntu-latest
     steps:
-      - uses: paddyroddy/.github/actions/python/pdoc@v0.6.0
+      - uses: paddyroddy/.github/actions/python/pdoc@v0.7.0
         with:
           docs-dependency-section: .[docs]
           gh-pages-publish-directory: ./html/sleplet
           github-token: ${{ secrets.GITHUB_TOKEN }}
           project-directory: ./src/sleplet
           pyproject-toml: ./pyproject.toml
+          python-version: "3.11"
           template-directory: ./documentation
