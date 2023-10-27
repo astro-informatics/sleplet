@@ -13,5 +13,5 @@ jobs:
         with:
           pypi-api-token: ${{ secrets.PYPI_API_TOKEN }}
           pyproject-toml: ./pyproject.toml
-          python-version: "3.11"
+          python-version: "3.12"
           test-pypi-api-token: ${{ secrets.TEST_PYPI_API_TOKEN }}
