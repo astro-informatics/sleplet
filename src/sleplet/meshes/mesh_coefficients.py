@@ -63,7 +63,7 @@ class MeshCoefficients:
         self._unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def _add_details_to_name(self: typing_extensions.Self) -> None:
-        """Adds region to the name if present if not a Slepian function."""
+        """Add region to the name if present if not a Slepian function."""
         if self.region and "slepian" not in self.mesh.name:
             self.name += "_region"
         if self.noise is not None:
@@ -75,25 +75,25 @@ class MeshCoefficients:
     def _add_noise_to_signal(
         self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """Adds Gaussian white noise to the signal."""
+        """Add Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
-        """Creates the flm on the north pole."""
+        """Create the flm on the north pole."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_name(self: typing_extensions.Self) -> str:
-        """Creates the name of the function."""
+        """Create the name of the function."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _setup_args(self: typing_extensions.Self) -> None:
         """
-        Initialises function specific args
+        Initialise function specific args
         either default value or user input.
         """
         raise NotImplementedError

@@ -11,13 +11,13 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Identity(Flm):
-    """Creates an identity function."""
+    """Create an identity function."""
 
     def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         return np.ones(self.L**2, dtype=np.complex_)
 
@@ -34,6 +34,5 @@ class Identity(Flm):
 
     def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

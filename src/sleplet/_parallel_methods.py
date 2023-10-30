@@ -14,7 +14,7 @@ def split_arr_into_chunks(arr_max: int, ncpu: int) -> list[npt.NDArray[np.int_]]
 def create_shared_memory_array(
     array: npt.NDArray[np.float_],
 ) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
-    """Creates a shared memory array to be used in a parallel function."""
+    """Create a shared memory array to be used in a parallel function."""
     ext_shared_memory = multiprocess.shared_memory.SharedMemory(
         create=True,
         size=array.nbytes,
@@ -31,7 +31,7 @@ def attach_to_shared_memory_block(
     array: npt.NDArray[np.float_],
     ext_shared_memory: multiprocess.shared_memory.SharedMemory,
 ) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
-    """Used within the parallel function to attach an array to the shared memory."""
+    """Attach an array to the shared memory within the parallel function."""
     int_shared_memory = multiprocess.shared_memory.SharedMemory(
         name=ext_shared_memory.name,
     )
@@ -44,7 +44,7 @@ def attach_to_shared_memory_block(
 
 
 def free_shared_memory(*shared_memory: multiprocess.shared_memory.SharedMemory) -> None:
-    """Closes the shared memory object."""
+    """Close the shared memory object."""
     for shm in shared_memory:
         shm.close()
 

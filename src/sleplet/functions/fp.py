@@ -43,9 +43,10 @@ class Fp(Coefficients):
         alpha: float,
         beta: float,
         *,
-        gamma: float = 0,
+        gamma: float = 0,  # noqa: ARG002
     ) -> npt.NDArray[np.complex_]:
-        raise NotImplementedError("Slepian rotation is not defined")
+        msg = "Slepian rotation is not defined"
+        raise NotImplementedError(msg)
 
     def _translation_helper(
         self: typing_extensions.Self,
@@ -62,7 +63,7 @@ class Fp(Coefficients):
     def _add_noise_to_signal(
         self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """Adds Gaussian white noise converted to Slepian space."""
+        """Add Gaussian white noise converted to Slepian space."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
@@ -79,7 +80,7 @@ class Fp(Coefficients):
 
     @abc.abstractmethod
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 

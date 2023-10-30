@@ -13,13 +13,13 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class DiracDelta(Flm):
-    """Creates a Dirac delta."""
+    """Create a Dirac delta."""
 
     def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
@@ -40,6 +40,5 @@ class DiracDelta(Flm):
 
     def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

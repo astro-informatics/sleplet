@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshSlepianWavelets(MeshSlepianCoefficients):
-    """Creates Slepian wavelets of a given mesh."""
+    """Create Slepian wavelets of a given mesh."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -32,7 +32,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
@@ -52,11 +52,12 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
         if isinstance(self.extra_args, list):
             num_args = 3
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
-        """Creates Slepian wavelets of the mesh."""
+        """Create Slepian wavelets of the mesh."""
         return sleplet.wavelet_methods.create_kappas(
             self.mesh.mesh_eigenvalues.shape[0],
             self.B,
@@ -71,10 +72,12 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             info.data["j_min"],
         )
         if v is not None and v < 0:
-            raise ValueError("j should be positive")
+            msg = "j should be positive"
+            raise ValueError(msg)
         if v is not None and v > j_max - info.data["j_min"]:
-            raise ValueError(
+            msg = (
                 "j should be less than j_max - j_min: "
-                f"{j_max - info.data['j_min'] + 1}",
+                f"{j_max - info.data['j_min'] + 1}"
             )
+            raise ValueError(msg)
         return v

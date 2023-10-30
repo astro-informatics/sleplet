@@ -14,7 +14,7 @@ from sleplet.functions.flm import Flm
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class ElongatedGaussian(Flm):
     r"""
-    Creates an elongated Gaussian
+    Create an elongated Gaussian
     \(\exp(-(\frac{{(\theta-\overline{\theta})}^{2}}{2\sigma_{\theta}^{2}}
     + \frac{{(\phi-\overline{\phi})}^{2}}{2\sigma_{\phi}^{2}}))\).
     """
@@ -28,7 +28,7 @@ class ElongatedGaussian(Flm):
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun,
@@ -54,7 +54,8 @@ class ElongatedGaussian(Flm):
         if isinstance(self.extra_args, list):
             num_args = 2
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.t_sigma, self.p_sigma = (
                 np.float_power(10, x) for x in self.extra_args
             )
@@ -64,7 +65,7 @@ class ElongatedGaussian(Flm):
         theta: npt.NDArray[np.float_],
         phi: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """Function on the grid."""
+        """Define the function on the grid."""
         return np.exp(
             -(
                 ((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2

@@ -15,7 +15,7 @@ THETA_RANGE = {10: (0, 0), 20: (0, 1), 30: (1, 0), 40: (1, 1)}
 
 
 def main() -> None:
-    """Creates a plot of Slepian eigenvalues against rank."""
+    """Create a plot of Slepian eigenvalues against rank."""
     x = len(THETA_RANGE) // 2
     _, ax = plt.subplots(x, x, sharex="col", sharey="row")
     for theta_max, position in THETA_RANGE.items():
@@ -29,7 +29,7 @@ def main() -> None:
 
 
 def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> None:
-    """Helper method which actually makes the plot."""
+    """Create the plot."""
     print(f"theta_max={theta_max}")
     slepian = sleplet.slepian.SlepianPolarCap(L, np.deg2rad(theta_max))
     axs = ax[position]

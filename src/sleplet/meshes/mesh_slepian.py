@@ -23,7 +23,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepian:
-    """Creates Slepian object of a given mesh."""
+    """Create Slepian object of a given mesh."""
 
     mesh: Mesh
     """A mesh object."""
@@ -44,7 +44,7 @@ class MeshSlepian:
         self._compute_slepian_functions()
 
     def _compute_slepian_functions(self: typing_extensions.Self) -> None:
-        """Computes the Slepian functions of the mesh."""
+        """Compute the Slepian functions of the mesh."""
         _logger.info("computing slepian functions of mesh")
 
         # create filenames
@@ -66,7 +66,9 @@ class MeshSlepian:
             self._compute_slepian_functions_from_scratch(eval_loc, evec_loc)
 
     def _compute_slepian_functions_from_scratch(
-        self: typing_extensions.Self, eval_loc, evec_loc
+        self: typing_extensions.Self,
+        eval_loc,
+        evec_loc,
     ):
         D = self._create_D_matrix()
         msg = (
@@ -91,7 +93,7 @@ class MeshSlepian:
         )
 
     def _create_D_matrix(self: typing_extensions.Self) -> npt.NDArray[np.float_]:  # noqa: N802
-        """Computes the D matrix for the mesh eigenfunctions."""
+        """Compute the D matrix for the mesh eigenfunctions."""
         D = np.zeros(
             (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0]),
         )
@@ -136,7 +138,9 @@ class MeshSlepian:
         return D
 
     def _fill_D_elements(
-        self: typing_extensions.Self, D: npt.NDArray[np.float_], i: int
+        self: typing_extensions.Self,
+        D: npt.NDArray[np.float_],
+        i: int,
     ) -> None:
         """Fill in the D matrix elements using symmetries."""
         D[i][i] = self._integral(i, i)
@@ -144,7 +148,7 @@ class MeshSlepian:
             D[j][i] = self._integral(j, i)
 
     def _integral(self: typing_extensions.Self, i: int, j: int) -> float:
-        """Calculates the D integral between two mesh basis functions."""
+        """Calculate the D integral between two mesh basis functions."""
         return sleplet._integration_methods.integrate_region_mesh(
             self.mesh.mesh_region,
             self.mesh.vertices,

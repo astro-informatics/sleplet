@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class Slepian(Fp):
-    """Creates Slepian functions of the selected region."""
+    """Create Slepian functions of the selected region."""
 
     rank: int = 0
     r"""Slepian eigenvalues are ordered in decreasing value. The option `rank`
@@ -41,7 +41,7 @@ class Slepian(Fp):
         )
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         msg = (
             f"Shannon number: {self.slepian.N}\n"
@@ -64,22 +64,24 @@ class Slepian(Fp):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(
-                    f"The number of extra arguments should be 1 or {num_args}",
-                )
+                msg = f"The number of extra arguments should be 1 or {num_args}"
+                raise ValueError(msg)
             self.rank = self.extra_args[0]
 
     def _validate_rank(self: typing_extensions.Self) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.L**2
             if self.extra_args[0] >= limit:
-                raise ValueError(f"rank should be less than {limit}")
+                msg = f"rank should be less than {limit}"
+                raise ValueError(msg)
 
     @pydantic.field_validator("rank")
     def _check_rank(cls, v: int) -> int:
         if not isinstance(v, int):
-            raise TypeError("rank should be an integer")
+            msg = "rank should be an integer"
+            raise TypeError(msg)
         if v < 0:
-            raise ValueError("rank cannot be negative")
+            msg = "rank cannot be negative"
+            raise ValueError(msg)
         return v

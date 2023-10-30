@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
-    """Creates the eigenfunctions of the Laplacian of the mesh."""
+    """Create the eigenfunctions of the Laplacian of the mesh."""
 
     rank: int = 0
     """Slepian eigenvalues are ordered in decreasing value. The option `rank`
@@ -26,7 +26,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
         msg = (
@@ -51,22 +51,24 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(
-                    f"The number of extra arguments should be 1 or {num_args}",
-                )
+                msg = f"The number of extra arguments should be 1 or {num_args}"
+                raise ValueError(msg)
             self.rank = self.extra_args[0]
 
     def _validate_rank(self: typing_extensions.Self) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] > limit:
-                raise ValueError(f"rank should be less than or equal to {limit}")
+                msg = f"rank should be less than or equal to {limit}"
+                raise ValueError(msg)
 
     @pydantic.field_validator("rank")
     def _check_rank(cls, v: int) -> int:
         if not isinstance(v, int):
-            raise TypeError("rank should be an integer")
+            msg = "rank should be an integer"
+            raise TypeError(msg)
         if v < 0:
-            raise ValueError("rank cannot be negative")
+            msg = "rank cannot be negative"
+            raise ValueError(msg)
         return v

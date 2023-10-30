@@ -13,7 +13,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepianField(MeshSlepianCoefficients):
     """
-    Creates a field on a given mesh computed from a Slepian region of the mesh.
+    Create a field on a given mesh computed from a Slepian region of the mesh.
     The default field is the per-vertex normals of the mesh.
     """
 
@@ -21,7 +21,7 @@ class MeshSlepianField(MeshSlepianCoefficients):
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
         mf = sleplet.meshes.mesh_field.MeshField(
@@ -38,6 +38,5 @@ class MeshSlepianField(MeshSlepianCoefficients):
 
     def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

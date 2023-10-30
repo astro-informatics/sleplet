@@ -14,7 +14,7 @@ import sleplet._validation
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Mesh:
-    """Creates a mesh object."""
+    """Create a mesh object."""
 
     name: str
     """The name of the mesh. Current options `bird`, `cheetah`, `cube`, `dragon`

@@ -38,10 +38,12 @@ class MeshSlepianDecomposition:
             case "integrate_region":
                 return self._integrate_region(rank)
             case _:
-                raise ValueError(f"'{self._method}' is not a valid method")
+                msg = f"'{self._method}' is not a valid method"
+                raise ValueError(msg)
 
     def decompose_all(
-        self: typing_extensions.Self, n_coefficients: int
+        self: typing_extensions.Self,
+        n_coefficients: int,
     ) -> npt.NDArray[np.float_]:
         """Decompose all ranks of the Slepian coefficients."""
         coefficients = np.zeros(n_coefficients)
@@ -95,7 +97,7 @@ class MeshSlepianDecomposition:
         return (self.u_i * self.mesh_slepian.slepian_functions[rank]).sum()
 
     def _detect_method(self: typing_extensions.Self) -> None:
-        """Detects what method is used to perform the decomposition."""
+        """Detect what method is used to perform the decomposition."""
         if self.u_i is not None:
             _logger.info("harmonic sum method selected")
             self._method = "harmonic_sum"
@@ -107,19 +109,23 @@ class MeshSlepianDecomposition:
                 _logger.info("integrating the whole mesh method selected")
                 self._method = "integrate_mesh"
         else:
-            raise RuntimeError(
+            msg = (
                 "need to pass one off harmonic coefficients, real pixels "
-                "or real pixels with a mask",
+                "or real pixels with a mask"
             )
+            raise RuntimeError(msg)
 
     def _validate_rank(self: typing_extensions.Self, rank: int) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if not isinstance(rank, int):
-            raise TypeError("rank should be an integer")
+            msg = "rank should be an integer"
+            raise TypeError(msg)
         if rank < 0:
-            raise ValueError("rank cannot be negative")
+            msg = "rank cannot be negative"
+            raise ValueError(msg)
         if rank >= self.mesh_slepian.mesh.number_basis_functions:
-            raise ValueError(
+            msg = (
                 "rank should be less than "
-                f"{self.mesh_slepian.mesh.number_basis_functions}",
+                f"{self.mesh_slepian.mesh.number_basis_functions}"
             )
+            raise ValueError(msg)

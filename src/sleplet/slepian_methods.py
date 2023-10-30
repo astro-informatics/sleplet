@@ -64,7 +64,8 @@ def choose_slepian_method(
             )
 
         case _:
-            raise ValueError(f"{region._region_type} is an invalid region type")
+            msg = f"{region._region_type} is an invalid region type"
+            raise ValueError(msg)
 
 
 def slepian_inverse(
@@ -73,7 +74,7 @@ def slepian_inverse(
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
-    Computes the Slepian inverse transform up to the Shannon number.
+    Compute the Slepian inverse transform up to the Shannon number.
 
     Args:
         f_p: The Slepian coefficients.
@@ -98,7 +99,7 @@ def slepian_forward(  # noqa: PLR0913
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.complex_]:
     """
-    Computes the Slepian forward transform for all coefficients.
+    Compute the Slepian forward transform for all coefficients.
 
     Args:
         L: The spherical harmonic bandlimit.
@@ -127,7 +128,7 @@ def compute_s_p_omega(
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     r"""
-    Computes \(S_{p}(\omega)\) for a given region.
+    Compute \(S_{p}(\omega)\) for a given region.
 
     Args:
         L: The spherical harmonic bandlimit.
@@ -156,7 +157,7 @@ def _compute_s_p_omega_prime(
     beta: float,
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
-    """Method to pick out the desired angle from Sp(omega)."""
+    """Pick out the desired angle from Sp(omega)."""
     sp_omega = compute_s_p_omega(L, slepian)
     p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
     q = ssht.phi_to_index(alpha, L, Method=sleplet._vars.SAMPLING_SCHEME)
@@ -175,7 +176,7 @@ def slepian_mesh_forward(
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.float_]:
     """
-    Computes the Slepian forward transform for all coefficients on the mesh.
+    Compute the Slepian forward transform for all coefficients on the mesh.
 
     Args:
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
@@ -202,7 +203,7 @@ def slepian_mesh_inverse(
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Computes the Slepian inverse transform on the mesh up to the Shannon number.
+    Compute the Slepian inverse transform on the mesh up to the Shannon number.
 
     Args:
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
@@ -219,7 +220,7 @@ def slepian_mesh_inverse(
 def _compute_mesh_s_p_pixel(
     mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
 ) -> npt.NDArray[np.float_]:
-    """Method to calculate Sp(omega) for a given region."""
+    """Calculate Sp(omega) for a given region."""
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
     for p in range(mesh_slepian.N):
         sp[p] = sleplet.harmonic_methods.mesh_inverse(

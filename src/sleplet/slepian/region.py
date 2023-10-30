@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class Region:
-    """Identifies and creates the appropriate Slepian region for the sphere."""
+    """Identify and create the appropriate Slepian region for the sphere."""
 
     gap: bool = False
     """Whether to enable a double ended polar cap, set by the `POLAR_GAP`
@@ -84,51 +84,60 @@ class Region:
             self._name_ending = self.mask_name
 
         else:
-            raise AttributeError(
+            msg = (
                 "need to specify either a polar cap, a limited latitude "
                 "longitude region, or a file with a mask",
             )
+            raise AttributeError(msg)
 
     @pydantic.field_validator("phi_max")
     def _check_phi_max(cls, v: float) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
-            raise ValueError("phi_max cannot be negative")
+            msg = "phi_max cannot be negative"
+            raise ValueError(msg)
         if v > sleplet._vars.PHI_MAX_DEFAULT:
-            raise ValueError(
+            msg = (
                 f"phi_max cannot be greater than "
-                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}",
+                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}"
             )
+            raise ValueError(msg)
         return v
 
     @pydantic.field_validator("phi_min")
     def _check_phi_min(cls, v: float) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
-            raise ValueError("phi_min cannot be negative")
+            msg = "phi_min cannot be negative"
+            raise ValueError(msg)
         if v > sleplet._vars.PHI_MAX_DEFAULT:
-            raise ValueError(
+            msg = (
                 f"phi_min cannot be greater than "
-                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}",
+                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.PHI_MAX_DEFAULT)}"
             )
+            raise ValueError(msg)
         return v
 
     @pydantic.field_validator("theta_max")
     def _check_theta_max(cls, v: float) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
-            raise ValueError("theta_max cannot be negative")
+            msg = "theta_max cannot be negative"
+            raise ValueError(msg)
         if v > sleplet._vars.THETA_MAX_DEFAULT:
-            raise ValueError(
+            msg = (
                 "theta_max cannot be greater than "
-                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}",
+                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}"
             )
+            raise ValueError(msg)
         return v
 
     @pydantic.field_validator("theta_min")
     def _check_theta_min(cls, v: float) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
-            raise ValueError("theta_min cannot be negative")
+            msg = "theta_min cannot be negative"
+            raise ValueError(msg)
         if v > sleplet._vars.THETA_MAX_DEFAULT:
-            raise ValueError(
+            msg = (
                 "theta_min cannot be greater than "
-                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}",
+                f"{sleplet._string_methods.multiples_of_pi(sleplet._vars.THETA_MAX_DEFAULT)}"
             )
+            raise ValueError(msg)
         return v

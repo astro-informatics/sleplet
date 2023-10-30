@@ -21,7 +21,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
     def _add_noise_to_signal(
         self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """Adds Gaussian white noise to the signal."""
+        """Add Gaussian white noise to the signal."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
@@ -33,7 +33,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
 
     @abc.abstractmethod
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 

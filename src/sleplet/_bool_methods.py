@@ -22,7 +22,7 @@ def is_limited_lat_lon(
     theta_min: float,
     theta_max: float,
 ) -> bool:
-    """A region defined by angles, just need one to not be the default."""
+    """Define a region by angles, just need one to not be the default."""
     return (
         not is_polar_cap(phi_min, phi_max, theta_min, theta_max)
         and phi_min != sleplet._vars.PHI_MIN_DEFAULT

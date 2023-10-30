@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SlepianWavelets(Fp):
-    """Creates the Slepian wavelets."""
+    """Create the Slepian wavelets."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -32,7 +32,7 @@ class SlepianWavelets(Fp):
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
@@ -59,11 +59,12 @@ class SlepianWavelets(Fp):
         if isinstance(self.extra_args, list):
             num_args = 3
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
-        """Computes wavelets in Slepian space."""
+        """Compute wavelets in Slepian space."""
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
     @pydantic.field_validator("j")
@@ -74,10 +75,12 @@ class SlepianWavelets(Fp):
             info.data["j_min"],
         )
         if v is not None and v < 0:
-            raise ValueError("j should be positive")
+            msg = "j should be positive"
+            raise ValueError(msg)
         if v is not None and v > j_max - info.data["j_min"]:
-            raise ValueError(
+            msg = (
                 "j should be less than j_max - j_min: "
-                f"{j_max - info.data['j_min'] + 1}",
+                f"{j_max - info.data['j_min'] + 1}"
             )
+            raise ValueError(msg)
         return v

@@ -14,7 +14,7 @@ def compute_slepian_wavelet_covariance(
     *,
     var_signal: float,
 ) -> npt.NDArray[np.float_]:
-    """Computes the theoretical covariance of the wavelet coefficients."""
+    """Compute the theoretical covariance of the wavelet coefficients."""
     s_p = sleplet.slepian_methods.compute_s_p_omega(L, slepian_wavelets.slepian)
     wavelets_reshape = slepian_wavelets.wavelets[
         :,

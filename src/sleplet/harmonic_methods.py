@@ -31,7 +31,7 @@ def _boost_coefficient_resolution(
     flm: npt.NDArray[typing.Any],
     boost: int,
 ) -> npt.NDArray[typing.Any]:
-    """Calculates a boost in resolution for given flm."""
+    """Calculate a boost in resolution for given flm."""
     return np.pad(flm, (0, boost), "constant")
 
 
@@ -115,7 +115,7 @@ def compute_random_signal(
     var_signal: float,
 ) -> npt.NDArray[np.complex_]:
     """
-    Generates a normally distributed random signal of a
+    Generate a normally distributed random signal of a
     complex signal with mean `0` and variance `1`.
 
     Args:
@@ -136,7 +136,7 @@ def mesh_forward(
     u: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
-    Computes the mesh forward transform from pixel space to Fourier space.
+    Compute the mesh forward transform from pixel space to Fourier space.
 
     Args:
         mesh: The given mesh object.
@@ -161,7 +161,7 @@ def mesh_inverse(
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Computes the mesh inverse transform from Fourier space to pixel space.
+    Compute the mesh inverse transform from Fourier space to pixel space.
 
     Args:
         mesh: The given mesh object.

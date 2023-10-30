@@ -14,7 +14,7 @@ STEP = 0.01
 
 
 def main() -> None:
-    """Plots the tiling of the harmonic line."""
+    """Plot the tiling of the harmonic line."""
     xlim = L
     x = np.arange(xlim)
     xi = np.arange(0, xlim - 1 + STEP, STEP)

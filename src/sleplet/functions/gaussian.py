@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class Gaussian(Flm):
-    r"""Creates a Gaussian \(\exp(-\frac{{\ell}^{2}}{2\sigma^{2}})\)."""
+    r"""Create a Gaussian \(\exp(-\frac{{\ell}^{2}}{2\sigma^{2}})\)."""
 
     sigma: float = 10
     r"""Sets the \(\sigma\) value."""
@@ -22,7 +22,7 @@ class Gaussian(Flm):
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         flm = np.zeros(self.L**2, dtype=np.complex_)
         for ell in range(self.L):
@@ -46,5 +46,6 @@ class Gaussian(Flm):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.sigma = np.float_power(10, self.extra_args[0])

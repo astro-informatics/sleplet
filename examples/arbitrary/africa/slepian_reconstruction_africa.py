@@ -6,7 +6,7 @@ SMOOTHING = 2
 
 
 def main() -> None:
-    """The reconstruction of a signal in Slepian space."""
+    """Reconstruct a signal in Slepian space."""
     region = sleplet.slepian.Region(mask_name="africa")
     slepian = sleplet.slepian_methods.choose_slepian_method(L, region)
     africa = sleplet.functions.SlepianAfrica(L, region=region, smoothing=SMOOTHING)

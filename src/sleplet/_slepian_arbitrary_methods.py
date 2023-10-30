@@ -35,7 +35,7 @@ def clean_evals_and_evecs(
 
 
 def compute_mesh_shannon(mesh: "sleplet.meshes.mesh.Mesh") -> int:
-    """Computes the effective Shannon number for a region of a mesh."""
+    """Compute the effective Shannon number for a region of a mesh."""
     num_basis_fun = mesh.mesh_eigenvalues.shape[0]
     region_vertices = mesh.mesh_region.sum()
     total_vertices = mesh.mesh_region.shape[0]

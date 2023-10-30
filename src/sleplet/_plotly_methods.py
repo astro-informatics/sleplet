@@ -20,7 +20,7 @@ def create_camera(  # noqa: PLR0913
     y_center: float = 0,
     z_center: float = 0,
 ) -> go.layout.scene.Camera:
-    """Creates default camera view with a zoom factor."""
+    """Create default camera view with a zoom factor."""
     return go.layout.scene.Camera(
         eye=go.layout.scene.camera.Eye(x=x_eye / zoom, y=y_eye / zoom, z=z_eye / zoom),
         center=go.layout.scene.camera.Center(x=x_center, y=y_center, z=z_center),
@@ -32,7 +32,7 @@ def create_layout(
     *,
     annotations: list[dict] | None = None,
 ) -> go.Layout:
-    """Default plotly layout."""
+    """Create the default plotly layout."""
     return go.Layout(
         scene=go.layout.Scene(
             dragmode="orbit",
@@ -54,7 +54,7 @@ def create_tick_mark(
     *,
     amplitude: float | None = None,
 ) -> float:
-    """Creates tick mark to use when using a non-normalised plot."""
+    """Create tick mark to use when using a non-normalised plot."""
     return amplitude if amplitude is not None else max(abs(fmin), abs(fmax))
 
 
@@ -66,7 +66,7 @@ def create_colour_bar(
     bar_pos: float = 0.97,
     font_size: int = 38,
 ) -> dict:
-    """Default plotly colour bar."""
+    """Create the default plotly colour bar."""
     return {
         "x": bar_pos,
         "len": bar_len,

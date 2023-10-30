@@ -11,13 +11,13 @@ from sleplet.functions.fp import Fp
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianIdentity(Fp):
-    """Creates an identify function in the Slepian region."""
+    """Create an identify function in the Slepian region."""
 
     def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
     def _create_coefficients(
-        self: typing_extensions.Self
+        self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         return np.ones(self.L**2, dtype=np.complex_)
 
@@ -35,6 +35,5 @@ class SlepianIdentity(Fp):
 
     def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)
