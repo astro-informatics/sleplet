@@ -101,7 +101,7 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="sleplet.functions.coefficients.Coefficients.convolve"><code class="name flex">
-<span>def <span class="ident">convolve</span></span>(<span>self, f_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], g_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">convolve</span></span>(<span>self: Self, f_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], g_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform the sifting convolution of the two inputs.</p>
@@ -109,7 +109,7 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <dl>
 <dt><strong><code>f_coefficient</code></strong></dt>
 <dd>Input harmonic/Slepian coefficients.</dd>
-<dt><strong><code>g_coefficien</code></strong></dt>
+<dt><strong><code>g_coefficient</code></strong></dt>
 <dd>Input harmonic/Slepian coefficients.</dd>
 <dt><strong><code>shannon</code></strong></dt>
 <dd>The Shannon number, only used in the Slepian case.</dd>
@@ -118,7 +118,7 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <p>The sifting convolution of the two inputs.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.rotate"><code class="name flex">
-<span>def <span class="ident">rotate</span></span>(<span>self, alpha: float, beta: float, *, gamma: float = 0) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">rotate</span></span>(<span>self: Self, alpha: float, beta: float, *, gamma: float = 0) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Rotates given flm on the sphere by alpha/beta/gamma.</p>
@@ -135,10 +135,10 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <p>The rotated spherical harmonic coefficients.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.translate"><code class="name flex">
-<span>def <span class="ident">translate</span></span>(<span>self, alpha: float, beta: float, *, shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">translate</span></span>(<span>self: Self, alpha: float, beta: float, *, shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Performs the translation of the coefficients, used in the sifting convolution.</p>
+<div class="desc"><p>Perform the translation of the coefficients, used in the sifting convolution.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>alpha</code></strong></dt>

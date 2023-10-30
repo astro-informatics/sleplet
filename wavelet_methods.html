@@ -36,7 +36,7 @@
 <span>def <span class="ident">axisymmetric_wavelet_forward</span></span>(<span>L: int, flm: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Computes the coefficients of the axisymmetric wavelets.</p>
+<div class="desc"><p>Compute the coefficients of the axisymmetric wavelets.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>L</code></strong></dt>
@@ -53,7 +53,7 @@
 <span>def <span class="ident">axisymmetric_wavelet_inverse</span></span>(<span>L: int, wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]], wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Computes the inverse axisymmetric wavelet transform.</p>
+<div class="desc"><p>Compute the inverse axisymmetric wavelet transform.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>L</code></strong></dt>
@@ -70,7 +70,7 @@
 <span>def <span class="ident">create_kappas</span></span>(<span>xlim: int, B: int, j_min: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Computes the Slepian wavelets.</p>
+<div class="desc"><p>Compute the Slepian wavelets.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>xlim</code></strong></dt>
@@ -87,7 +87,7 @@
 <span>def <span class="ident">find_non_zero_wavelet_coefficients</span></span>(<span>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], *, axis: int | tuple[int, ...]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Finds the coefficients within the shannon number to speed up computations.</p>
+<div class="desc"><p>Find the coefficients within the shannon number to speed up computations.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>wav_coeffs</code></strong></dt>
@@ -102,7 +102,7 @@
 <span>def <span class="ident">slepian_wavelet_forward</span></span>(<span>f_p: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]], shannon: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Computes the coefficients of the given tiling function in Slepian space.</p>
+<div class="desc"><p>Compute the coefficients of the given tiling function in Slepian space.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>f_p</code></strong></dt>
@@ -119,7 +119,7 @@
 <span>def <span class="ident">slepian_wavelet_inverse</span></span>(<span>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]], wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]], shannon: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Computes the inverse wavelet transform in Slepian space.</p>
+<div class="desc"><p>Compute the inverse wavelet transform in Slepian space.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>wav_coeffs</code></strong></dt>
