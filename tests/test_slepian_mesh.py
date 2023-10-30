@@ -59,7 +59,7 @@ def test_forward_inverse_transform_slepian(
 
 
 def test_synthesis_mesh(
-    mesh_slepian_wavelets: sleplet.meshes.mesh_slepian.MeshSlepianWavelets,
+    mesh_slepian_wavelets: sleplet.meshes.mesh_slepian_wavelets.MeshSlepianWavelets,
     mesh_field_region: sleplet.meshes.mesh_field.MeshField,
 ) -> None:
     """Test that Slepian polar wavelet synthesis matches the coefficients."""
