@@ -154,9 +154,9 @@ class SlepianArbitrary(SlepianFunctions):
         i: int,
     ) -> None:
         """
-        Used in both serial and parallel calculations.
+        Use in both serial and parallel calculations.
 
-        the hack with splitting into real and imaginary parts
+        The hack with splitting into real and imaginary parts
         is not required for the serial case but here for ease
         """
         # fill in diagonal components

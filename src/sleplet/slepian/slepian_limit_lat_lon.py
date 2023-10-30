@@ -109,7 +109,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex_)
 
         def helper(row: int, col: int, S: float) -> None:
-            """Using conjugate symmetry property to reduce the number of iterations."""
+            """Use conjugate symmetry property to reduce the number of iterations."""
             try:
                 Q = (1 / (col**2 - 1)) * (
                     np.exp(1j * col * self.theta_min)

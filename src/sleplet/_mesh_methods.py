@@ -20,7 +20,7 @@ def average_functions_on_vertices_to_faces(
     functions_on_vertices: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
-    The integrals require all functions to be defined on faces
+    Require all functions to be defined on faces
     this method handles an arbitrary number of functions.
     """
     _logger.info("converting function on vertices to faces")

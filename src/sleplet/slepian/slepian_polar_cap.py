@@ -239,7 +239,7 @@ class SlepianPolarCap(SlepianFunctions):
         Pl: npt.NDArray[np.float_],
         ell: npt.NDArray[np.int_],
     ) -> None:
-        """Used in both serial and parallel calculations."""
+        """Use in both serial and parallel calculations."""
         el = int(lvec[i])
         for j in range(i, self.L - m):
             p = int(lvec[j])

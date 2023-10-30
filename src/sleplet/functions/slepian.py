@@ -65,7 +65,7 @@ class Slepian(Fp):
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.L**2
             if self.extra_args[0] >= limit:
