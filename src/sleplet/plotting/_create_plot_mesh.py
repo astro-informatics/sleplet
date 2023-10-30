@@ -8,6 +8,7 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic
+import typing_extensions
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -41,12 +42,12 @@ class PlotMesh:
     region: bool = False
     """Whether to set the field values outside of the region to zero."""
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         if self.normalise:
             self.filename += "_norm"
 
     def execute(
-        self,
+        self: typing_extensions.Self,
         colour: mpl.colors.LinearSegmentedColormap = cmocean.cm.ice,
     ) -> None:
         """
@@ -103,7 +104,7 @@ class PlotMesh:
         pio.show(fig, config={"toImageButtonOptions": {"filename": self.filename}})
 
     def _prepare_field(
-        self,
+        self: typing_extensions.Self,
         f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
         """Scales the field before plotting."""
@@ -116,7 +117,7 @@ class PlotMesh:
         )
 
     def _set_outside_region_to_minimum(
-        self,
+        self: typing_extensions.Self,
         f: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
         """

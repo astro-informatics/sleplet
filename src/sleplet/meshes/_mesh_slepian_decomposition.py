@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._integration_methods
 import sleplet._validation
@@ -22,10 +23,10 @@ class MeshSlepianDecomposition:
     u: npt.NDArray[np.complex_ | np.float_] | None = None
     _method: str = pydantic.Field(default="", init_var=False, repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._detect_method()
 
-    def decompose(self, rank: int) -> float:
+    def decompose(self: typing_extensions.Self, rank: int) -> float:
         """Decompose the signal into its Slepian coefficients via the given method."""
         self._validate_rank(rank)
 
@@ -39,14 +40,16 @@ class MeshSlepianDecomposition:
             case _:
                 raise ValueError(f"'{self._method}' is not a valid method")
 
-    def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.float_]:
+    def decompose_all(
+        self: typing_extensions.Self, n_coefficients: int
+    ) -> npt.NDArray[np.float_]:
         """Decompose all ranks of the Slepian coefficients."""
         coefficients = np.zeros(n_coefficients)
         for rank in range(n_coefficients):
             coefficients[rank] = self.decompose(rank)
         return coefficients
 
-    def _integrate_region(self, rank: int) -> float:
+    def _integrate_region(self: typing_extensions.Self, rank: int) -> float:
         r"""
         F_{p} =
         \frac{1}{\lambda_{p}}
@@ -66,7 +69,7 @@ class MeshSlepianDecomposition:
         )
         return integration / self.mesh_slepian.slepian_eigenvalues[rank]
 
-    def _integrate_mesh(self, rank: int) -> float:
+    def _integrate_mesh(self: typing_extensions.Self, rank: int) -> float:
         r"""
         F_{p} =
         \int\limits_{x} \dd{x}
@@ -83,7 +86,7 @@ class MeshSlepianDecomposition:
             s_p,
         )
 
-    def _harmonic_sum(self, rank: int) -> float:
+    def _harmonic_sum(self: typing_extensions.Self, rank: int) -> float:
         r"""
         F_{p} =
         \sum\limits_{i=0}^{K}
@@ -91,7 +94,7 @@ class MeshSlepianDecomposition:
         """
         return (self.u_i * self.mesh_slepian.slepian_functions[rank]).sum()
 
-    def _detect_method(self) -> None:
+    def _detect_method(self: typing_extensions.Self) -> None:
         """Detects what method is used to perform the decomposition."""
         if self.u_i is not None:
             _logger.info("harmonic sum method selected")
@@ -109,7 +112,7 @@ class MeshSlepianDecomposition:
                 "or real pixels with a mask",
             )
 
-    def _validate_rank(self, rank: int) -> None:
+    def _validate_rank(self: typing_extensions.Self, rank: int) -> None:
         """Checks the requested rank is valid."""
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")

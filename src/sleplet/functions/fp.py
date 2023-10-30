@@ -4,6 +4,7 @@ import abc
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._mask_methods
 import sleplet._validation
@@ -25,7 +26,7 @@ class Fp(Coefficients):
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self.region: sleplet.slepian.region.Region | None = (
             self.region
             if isinstance(self.region, sleplet.slepian.region.Region)
@@ -38,7 +39,7 @@ class Fp(Coefficients):
         super().__post_init__()
 
     def rotate(  # noqa: D102
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
         *,
@@ -47,7 +48,7 @@ class Fp(Coefficients):
         raise NotImplementedError("Slepian rotation is not defined")
 
     def _translation_helper(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
     ) -> npt.NDArray[np.complex_]:
@@ -59,7 +60,7 @@ class Fp(Coefficients):
         ).conj()
 
     def _add_noise_to_signal(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """Adds Gaussian white noise converted to Slepian space."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
@@ -77,21 +78,23 @@ class Fp(Coefficients):
         return None, None
 
     @abc.abstractmethod
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_reality(self) -> bool:
+    def _set_reality(self: typing_extensions.Self) -> bool:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_spin(self) -> int:
+    def _set_spin(self: typing_extensions.Self) -> int:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         raise NotImplementedError

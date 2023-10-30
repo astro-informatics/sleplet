@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import pys2let
 
@@ -34,17 +35,19 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         _logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         _logger.info("finish computing wavelet coefficients")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelet_coefficients[jth]
 
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         return (
             f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{sleplet._string_methods.filename_args(self.B, 'B')}"
@@ -52,13 +55,13 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
             f"{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}"
         )
 
-    def _set_reality(self) -> bool:
+    def _set_reality(self: typing_extensions.Self) -> bool:
         return False
 
-    def _set_spin(self) -> int:
+    def _set_spin(self: typing_extensions.Self) -> int:
         return 0
 
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
             num_args = 3
             if len(self.extra_args) != num_args:
@@ -66,7 +69,7 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelet_coefficients(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
         """Computes wavelet coefficients of the Earth."""
         wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(

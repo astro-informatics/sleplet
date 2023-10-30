@@ -8,6 +8,7 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
@@ -39,30 +40,30 @@ class SlepianArbitrary(SlepianFunctions):
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._resolution = _SAMPLES * self.L
         super().__post_init__()
 
-    def _create_fn_name(self) -> str:
+    def _create_fn_name(self: typing_extensions.Self) -> str:
         return f"slepian_{self.mask_name}"
 
-    def _create_region(self) -> "sleplet.slepian.region.Region":
+    def _create_region(self: typing_extensions.Self) -> "sleplet.slepian.region.Region":
         return sleplet.slepian.region.Region(mask_name=self.mask_name)
 
-    def _create_mask(self) -> npt.NDArray[np.float_]:
+    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
         return sleplet._mask_methods.create_mask_region(self._resolution, self.region)
 
-    def _calculate_area(self) -> float:
+    def _calculate_area(self: typing_extensions.Self) -> float:
         self._weight = sleplet._integration_methods.calc_integration_weight(
             self._resolution,
         )
         return (self.mask * self._weight).sum()
 
-    def _create_matrix_location(self) -> str:
+    def _create_matrix_location(self: typing_extensions.Self) -> str:
         return f"slepian_eigensolutions_D_{self.mask_name}_L{self.L}_N{self.N}"
 
     def _solve_eigenproblem(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
@@ -79,7 +80,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _solve_D_matrix(  # noqa: N802
-        self,
+        self: typing_extensions.Self,
         eval_loc,
         evec_loc,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
@@ -97,7 +98,7 @@ class SlepianArbitrary(SlepianFunctions):
         np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
-    def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
+    def _create_D_matrix(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:  # noqa: N802
         """Computes the D matrix in parallel."""
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
@@ -148,7 +149,7 @@ class SlepianArbitrary(SlepianFunctions):
         return D
 
     def _matrix_helper(
-        self,
+        self: typing_extensions.Self,
         D_r: npt.NDArray[np.float_],
         D_i: npt.NDArray[np.float_],
         i: int,
@@ -182,7 +183,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D_r[j][i] = integral.real
                 D_i[j][i] = integral.imag
 
-    def _integral(self, i: int, j: int) -> complex:
+    def _integral(self: typing_extensions.Self, i: int, j: int) -> complex:
         """Calculates the D integral between two spherical harmonics."""
         if i not in self._fields:
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(

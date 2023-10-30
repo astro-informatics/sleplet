@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
 import pydantic
+import typing_extensions
 
 import sleplet._mesh_methods
 import sleplet._plotly_methods
@@ -57,7 +58,7 @@ class Mesh:
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         mesh_config = sleplet._mesh_methods.extract_mesh_config(self.name)
         self._camera_view = sleplet._plotly_methods.create_camera(
             mesh_config["CAMERA_X"],

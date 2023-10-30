@@ -132,54 +132,18 @@ isort = {known-first-party = [
     "pys2let",
     "pyssht",
 ]}}
-per-file-ignores = {"examples/*" = [
+per-file-ignores = {"examples*" = [
     "D100",
     "T201",
-], "test_*" = [
-    "S101",
-], "tests/*" = [
+], "src*" = [
+    "SLF001",
+], "tests*" = [
     "D100",
+    "S101",
+    "SLF001",
 ]}
 select = [
-    "A",
-    "ARG",
-    "B",
-    "BLE",
-    "C",
-    "COM",
-    "D",
-    "DJ",
-    "DTZ",
-    "E",
-    "EM",
-    "ERA",
-    "EXE",
-    "F",
-    "FBT",
-    "I",
-    "ICN",
-    "ISC",
-    "N",
-    "NPY",
-    "PD",
-    "PGH",
-    "PIE",
-    "PL",
-    "PT",
-    "PTH",
-    "PYI",
-    "Q",
-    "RET",
-    "RSE",
-    "RUF",
-    "S",
-    "SIM",
-    "T",
-    "TCH",
-    "TID",
-    "UP",
-    "W",
-    "YTT",
+    "ALL",
 ]
 target-version = "py310"
 mccabe.max-complexity = 18

@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._validation
 import sleplet.slepian_methods
@@ -20,10 +21,12 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
     """Slepian eigenvalues are ordered in decreasing value. The option `rank`
     selects a given Slepian function from the spectrum (p in the papers)."""
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
         _logger.info(
             f"Slepian eigenvalue {self.rank}: "
@@ -35,7 +38,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
             u_i=s_p_i,
         )
 
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         return (
             (
                 f"slepian_{self.mesh.name}_rank{self.rank}_"
@@ -45,7 +48,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
             .replace("+", "")
         )
 
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
@@ -54,7 +57,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
                 )
             self.rank = self.extra_args[0]
 
-    def _validate_rank(self) -> None:
+    def _validate_rank(self: typing_extensions.Self) -> None:
         """Checks the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
