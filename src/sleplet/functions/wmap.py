@@ -11,7 +11,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Wmap(Flm):
-    """Creates the WMAP data."""
+    """Create the WMAP data."""
 
     def __post_init__(self) -> None:
         super().__post_init__()

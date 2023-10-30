@@ -21,7 +21,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotSphere:
-    """Creates surface sphere plot via `plotly`."""
+    """Create surface sphere plot via `plotly`."""
 
     f: npt.NDArray[np.complex_ | np.float_]
     """The field value sampled on the sphere."""

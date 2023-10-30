@@ -10,7 +10,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Identity(Flm):
-    """Creates an identity function."""
+    """Create an identity function."""
 
     def __post_init__(self) -> None:
         super().__post_init__()

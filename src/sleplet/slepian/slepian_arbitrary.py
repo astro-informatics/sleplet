@@ -1,4 +1,4 @@
-"""Contains the `SlepianArbitrary` class."""
+"""Contain the `SlepianArbitrary` class."""
 import concurrent.futures
 import logging
 import os
@@ -98,7 +98,7 @@ class SlepianArbitrary(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
-        """Computes the D matrix in parallel."""
+        """Compute the D matrix in parallel."""
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
 
@@ -183,7 +183,7 @@ class SlepianArbitrary(SlepianFunctions):
                 D_i[j][i] = integral.imag
 
     def _integral(self, i: int, j: int) -> complex:
-        """Calculates the D integral between two spherical harmonics."""
+        """Calculate the D integral between two spherical harmonics."""
         if i not in self._fields:
             self._fields[i] = sleplet.harmonic_methods.invert_flm_boosted(
                 sleplet.harmonic_methods._create_spherical_harmonic(self.L, i),

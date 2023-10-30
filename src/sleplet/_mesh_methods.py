@@ -43,7 +43,7 @@ def create_mesh_region(
     mesh_config: dict,
     vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
-    """Creates a boolean region for the given mesh."""
+    """Create a boolean region for the given mesh."""
     return (
         (vertices[:, 0] >= mesh_config["XMIN"])
         & (vertices[:, 0] <= mesh_config["XMAX"])
@@ -71,7 +71,7 @@ def mesh_eigendecomposition(
     number_basis_functions: int | None = None,
 ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_], int]:
     """
-    Computes the eigendecomposition of the mesh represented
+    Compute the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data.
     """
     # determine number of basis functions
@@ -121,7 +121,7 @@ def _mesh_laplacian(
     vertices: npt.NDArray[np.float_],
     faces: npt.NDArray[np.int_],
 ) -> npt.NDArray[np.float_]:
-    """Computes the cotagent mesh laplacian."""
+    """Compute the cotagent mesh laplacian."""
     return -igl.cotmatrix(vertices, faces)
 
 

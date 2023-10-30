@@ -73,7 +73,7 @@ def slepian_inverse(
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     """
-    Computes the Slepian inverse transform up to the Shannon number.
+    Compute the Slepian inverse transform up to the Shannon number.
 
     Args:
         f_p: The Slepian coefficients.
@@ -98,7 +98,7 @@ def slepian_forward(  # noqa: PLR0913
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.complex_]:
     """
-    Computes the Slepian forward transform for all coefficients.
+    Compute the Slepian forward transform for all coefficients.
 
     Args:
         L: The spherical harmonic bandlimit.
@@ -127,7 +127,7 @@ def compute_s_p_omega(
     slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex_]:
     r"""
-    Computes \(S_{p}(\omega)\) for a given region.
+    Compute \(S_{p}(\omega)\) for a given region.
 
     Args:
         L: The spherical harmonic bandlimit.
@@ -174,7 +174,7 @@ def slepian_mesh_forward(
     n_coeffs: int | None = None,
 ) -> npt.NDArray[np.float_]:
     """
-    Computes the Slepian forward transform for all coefficients on the mesh.
+    Compute the Slepian forward transform for all coefficients on the mesh.
 
     Args:
         mesh_slepian: The Slepian mesh object containing the eigensolutions.
@@ -201,7 +201,7 @@ def slepian_mesh_inverse(
     f_p: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Computes the Slepian inverse transform on the mesh up to the Shannon number.
+    Compute the Slepian inverse transform on the mesh up to the Shannon number.
 
     Args:
         mesh_slepian: The Slepian mesh object containing the eigensolutions.

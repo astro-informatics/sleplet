@@ -12,7 +12,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class NoiseEarth(Flm):
-    """Creates a noised signal of the topographic map of the Earth."""
+    """Create a noised signal of the topographic map of the Earth."""
 
     SNR: float = 10
     """A parameter which controls the level of signal-to-noise in the noised

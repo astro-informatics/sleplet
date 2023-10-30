@@ -1,4 +1,4 @@
-"""Contains the `Region` class."""
+"""Contain the `Region` class."""
 import logging
 
 import pydantic
@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class Region:
-    """Identifies and creates the appropriate Slepian region for the sphere."""
+    """Identify and create the appropriate Slepian region for the sphere."""
 
     gap: bool = False
     """Whether to enable a double ended polar cap, set by the `POLAR_GAP`

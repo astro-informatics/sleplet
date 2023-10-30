@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 
 
 def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:
-    """Computes the power of the signal."""
+    """Compute the power of the signal."""
     return (np.abs(signal) ** 2).sum()
 
 
@@ -26,7 +26,7 @@ def compute_snr(
     signal_type: str,
 ) -> float:
     """
-    Computes the signal to noise ratio.
+    Compute the signal to noise ratio.
 
     Args:
         signal: The unnoised signal.
@@ -68,7 +68,7 @@ def _create_noise(
     signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.complex_]:
-    """Computes Gaussian white noise."""
+    """Compute Gaussian white noise."""
     # set random seed
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
@@ -100,7 +100,7 @@ def _create_slepian_noise(
     slepian: SlepianFunctions,
     snr_in: float,
 ) -> npt.NDArray[np.complex_]:
-    """Computes Gaussian white noise in Slepian space."""
+    """Compute Gaussian white noise in Slepian space."""
     flm = ssht.forward(
         sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
         L,
@@ -240,7 +240,7 @@ def _create_mesh_noise(
     u_i: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """Computes Gaussian white noise."""
+    """Compute Gaussian white noise."""
     # set random seed
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
@@ -261,7 +261,7 @@ def _create_slepian_mesh_noise(
     slepian_signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """Computes Gaussian white noise in Slepian space."""
+    """Compute Gaussian white noise in Slepian space."""
     u_i = sleplet.harmonic_methods.mesh_forward(
         mesh_slepian.mesh,
         sleplet.slepian_methods.slepian_mesh_inverse(

@@ -1,4 +1,4 @@
-"""Contains the `MeshSlepianWaveletCoefficients` class."""
+"""Contain the `MeshSlepianWaveletCoefficients` class."""
 import logging
 
 import numpy as np
@@ -19,7 +19,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
-    """Creates Slepian wavelet coefficients of a given mesh."""
+    """Create Slepian wavelet coefficients of a given mesh."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -57,7 +57,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        """Computes wavelet coefficients in Slepian space."""
+        """Compute wavelet coefficients in Slepian space."""
         smw = sleplet.meshes.mesh_slepian_wavelets.MeshSlepianWavelets(
             self.mesh,
             B=self.B,

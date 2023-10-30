@@ -25,7 +25,7 @@ _MESH_UNSEEN = -1e5  # kaleido bug
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotMesh:
-    """Creates surface mesh plot via `plotly`."""
+    """Create surface mesh plot via `plotly`."""
 
     mesh: sleplet.meshes.mesh.Mesh
     """The given mesh object."""

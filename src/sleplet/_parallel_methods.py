@@ -14,7 +14,7 @@ def split_arr_into_chunks(arr_max: int, ncpu: int) -> list[npt.NDArray[np.int_]]
 def create_shared_memory_array(
     array: npt.NDArray[np.float_],
 ) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
-    """Creates a shared memory array to be used in a parallel function."""
+    """Create a shared memory array to be used in a parallel function."""
     ext_shared_memory = multiprocess.shared_memory.SharedMemory(
         create=True,
         size=array.nbytes,

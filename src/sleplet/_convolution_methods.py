@@ -8,7 +8,7 @@ def sifting_convolution(
     *,
     shannon: int | None = None,
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """Computes the sifting convolution between two multipoles."""
+    """Compute the sifting convolution between two multipoles."""
     n = shannon if shannon is not None else np.newaxis
     # change shape if the sizes don't match
     g_reshape = (

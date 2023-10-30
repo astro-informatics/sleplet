@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SphericalHarmonic(Flm):
-    """Creates spherical harmonic functions."""
+    """Create spherical harmonic functions."""
 
     ell: int = 0
     r"""Degree \(\ell \geq 0\)."""

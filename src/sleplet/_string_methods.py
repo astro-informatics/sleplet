@@ -69,7 +69,7 @@ def multiples_of_pi(angle: float) -> str:
 
 
 def angle_as_degree(radian: float) -> int:
-    """Converts radian angle to integer degree."""
+    """Convert radian angle to integer degree."""
     return round(np.rad2deg(radian))
 
 
@@ -79,7 +79,7 @@ def wavelet_ending(j_min: int, j: int | None) -> str:
 
 
 def _convert_camel_case_to_snake_case(name: str) -> str:
-    """Converts a string in camel case to snake case."""
+    """Convert a string in camel case to snake case."""
     return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
 
 
@@ -88,7 +88,7 @@ def convert_classes_list_to_snake_case(
     *,
     word_to_remove: str = "",
 ) -> list[str]:
-    """Converts a list of classes to snake case."""
+    """Convert a list of classes to snake case."""
     return [
         _convert_camel_case_to_snake_case(c.__name__.removeprefix(word_to_remove))
         for c in classes

@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SlepianWavelets(Fp):
-    """Creates the Slepian wavelets."""
+    """Create the Slepian wavelets."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -60,7 +60,7 @@ class SlepianWavelets(Fp):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.float_]:
-        """Computes wavelets in Slepian space."""
+        """Compute wavelets in Slepian space."""
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 
     @pydantic.field_validator("j")

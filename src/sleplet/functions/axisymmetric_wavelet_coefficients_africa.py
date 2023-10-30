@@ -1,4 +1,4 @@
-"""Contains the `AxisymmetricWaveletCoefficientsAfrica` class."""
+"""Contain the `AxisymmetricWaveletCoefficientsAfrica` class."""
 import logging
 
 import numpy as np
@@ -19,7 +19,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class AxisymmetricWaveletCoefficientsAfrica(Flm):
-    """Creates axisymmetric wavelet coefficients of the Africa region."""
+    """Create axisymmetric wavelet coefficients of the Africa region."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -68,7 +68,7 @@ class AxisymmetricWaveletCoefficientsAfrica(Flm):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
-        """Computes wavelet coefficients of Africa."""
+        """Compute wavelet coefficients of Africa."""
         wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,
             self.B,

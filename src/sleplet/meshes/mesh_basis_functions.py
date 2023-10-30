@@ -1,4 +1,4 @@
-"""Contains the `MeshBasisFunctions` class."""
+"""Contain the `MeshBasisFunctions` class."""
 import logging
 
 import numpy as np
@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshBasisFunctions(MeshHarmonicCoefficients):
-    """Creates the eigenfunctions of the Laplacian of the mesh."""
+    """Create the eigenfunctions of the Laplacian of the mesh."""
 
     rank: int = 0
     """Slepian eigenvalues are ordered in decreasing value. The option `rank`
@@ -53,7 +53,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
             self.rank = self.extra_args[0]
 
     def _validate_rank(self) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if isinstance(self.extra_args, list):
             limit = self.mesh.mesh_eigenvalues.shape[0]
             if self.extra_args[0] > limit:

@@ -1,4 +1,4 @@
-"""Contains the abstract `SlepianFunctions` class."""
+"""Contain the abstract `SlepianFunctions` class."""
 import abc
 import dataclasses
 import logging
@@ -62,32 +62,32 @@ class SlepianFunctions:
 
     @abc.abstractmethod
     def _create_fn_name(self) -> str:
-        """Creates the name for plotting."""
+        """Create the name for plotting."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_region(self) -> "sleplet.slepian.region.Region":
-        """Creates a region object for area of interest."""
+        """Create a region object for area of interest."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_mask(self) -> npt.NDArray[np.float_]:
-        """Creates a mask of the region of interest."""
+        """Create a mask of the region of interest."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _calculate_area(self) -> float:
-        """Calculates area of region."""
+        """Calculate area of region."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_matrix_location(self) -> str:
-        """Creates the name of the matrix binary."""
+        """Create the name of the matrix binary."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _solve_eigenproblem(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """Solves the eigenproblem for the given function."""
+        """Solve the eigenproblem for the given function."""
         raise NotImplementedError

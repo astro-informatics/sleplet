@@ -12,7 +12,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class DiracDelta(Flm):
-    """Creates a Dirac delta."""
+    """Create a Dirac delta."""
 
     def __post_init__(self) -> None:
         super().__post_init__()

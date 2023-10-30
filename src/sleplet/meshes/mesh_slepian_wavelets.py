@@ -1,4 +1,4 @@
-"""Contains the `MeshSlepianWavelets` class."""
+"""Contain the `MeshSlepianWavelets` class."""
 import logging
 
 import numpy as np
@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshSlepianWavelets(MeshSlepianCoefficients):
-    """Creates Slepian wavelets of a given mesh."""
+    """Create Slepian wavelets of a given mesh."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -53,7 +53,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.float_]:
-        """Creates Slepian wavelets of the mesh."""
+        """Create Slepian wavelets of the mesh."""
         return sleplet.wavelet_methods.create_kappas(
             self.mesh.mesh_eigenvalues.shape[0],
             self.B,

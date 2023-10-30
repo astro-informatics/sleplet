@@ -1,4 +1,4 @@
-"""Contains the `AxisymmetricWaveletCoefficientsEarth` class."""
+"""Contain the `AxisymmetricWaveletCoefficientsEarth` class."""
 import logging
 
 import numpy as np
@@ -19,7 +19,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class AxisymmetricWaveletCoefficientsEarth(Flm):
-    """Creates axisymmetric wavelet coefficients of the Earth."""
+    """Create axisymmetric wavelet coefficients of the Earth."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -68,7 +68,7 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
-        """Computes wavelet coefficients of the Earth."""
+        """Compute wavelet coefficients of the Earth."""
         wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,
             self.B,

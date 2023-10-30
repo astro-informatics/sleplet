@@ -1,4 +1,4 @@
-"""Contains the abstract `Coefficients` class."""
+"""Contain the abstract `Coefficients` class."""
 import abc
 import dataclasses
 
@@ -178,12 +178,12 @@ class Coefficients:
 
     @abc.abstractmethod
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """Creates the flm on the north pole."""
+        """Create the flm on the north pole."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_name(self) -> str:
-        """Creates the name of the function."""
+        """Create the name of the function."""
         raise NotImplementedError
 
     @abc.abstractmethod

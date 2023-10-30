@@ -11,7 +11,7 @@ LENGTH = 0.512
 
 
 def main() -> None:
-    """Plots a Dirac impulse and it's Fourier transform."""
+    """Plot a Dirac impulse and it's Fourier transform."""
     size = int(LENGTH / DELTA_T)
     amplitude = np.zeros(size * len(FREQUENCIES))
     for c, f in enumerate(FREQUENCIES):
@@ -27,7 +27,7 @@ def main() -> None:
 
 
 def _ricker(freq: float) -> npt.NDArray[np.float_]:
-    """Creates a Ricker wavelet."""
+    """Create a Ricker wavelet."""
     t = np.arange(-LENGTH / 2, (LENGTH - DELTA_T) / 2, DELTA_T)
     return (1.0 - 2.0 * (np.pi**2) * (freq**2) * (t**2)) * np.exp(
         -(np.pi**2) * (freq**2) * (t**2),

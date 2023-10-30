@@ -15,7 +15,7 @@ THETA_MAX = 40
 
 
 def main() -> None:
-    """Creates a plot of Slepian coefficients against rank."""
+    """Create a plot of Slepian coefficients against rank."""
     region = sleplet.slepian.Region(theta_max=np.deg2rad(THETA_MAX))
     earth = sleplet.functions.Earth(L, region=region)
     field = ssht.inverse(earth.coefficients, L, Method=SAMPLING_SCHEME)

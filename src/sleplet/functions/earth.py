@@ -11,7 +11,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Earth(Flm):
-    """Creates the topographic map of the Earth."""
+    """Create the topographic map of the Earth."""
 
     def __post_init__(self) -> None:
         super().__post_init__()

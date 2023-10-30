@@ -116,7 +116,7 @@ class SlepianDecomposition:
             )
 
     def _validate_rank(self, rank: int) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:

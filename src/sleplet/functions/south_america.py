@@ -17,7 +17,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SouthAmerica(Flm):
-    """Creates the South America region of the topographic map of the Earth."""
+    """Create the South America region of the topographic map of the Earth."""
 
     def __post_init__(self) -> None:
         super().__post_init__()

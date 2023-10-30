@@ -27,7 +27,7 @@ def _earth_region_slepian_coefficients(
     L: int,
     theta_max: int,
 ) -> npt.NDArray[np.float_]:
-    """Computes the Slepian coefficients."""
+    """Compute the Slepian coefficients."""
     region = sleplet.slepian.Region(theta_max=np.deg2rad(theta_max))
     earth = sleplet.functions.Earth(L, region=region)
     slepian = sleplet.slepian_methods.choose_slepian_method(L, region)
@@ -37,7 +37,7 @@ def _earth_region_slepian_coefficients(
 
 
 def main() -> None:
-    """Creates a plot of Slepian coefficients against rank."""
+    """Create a plot of Slepian coefficients against rank."""
     N = sleplet.slepian.SlepianPolarCap(L, np.deg2rad(THETA_MAX)).N
     flm = _earth_region_harmonic_coefficients(L, THETA_MAX)[:N]
     f_p = np.sort(_earth_region_slepian_coefficients(L, THETA_MAX))[::-1]

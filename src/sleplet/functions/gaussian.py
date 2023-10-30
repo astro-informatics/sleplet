@@ -12,7 +12,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class Gaussian(Flm):
-    r"""Creates a Gaussian \(\exp(-\frac{{\ell}^{2}}{2\sigma^{2}})\)."""
+    r"""Create a Gaussian \(\exp(-\frac{{\ell}^{2}}{2\sigma^{2}})\)."""
 
     sigma: float = 10
     r"""Sets the \(\sigma\) value."""

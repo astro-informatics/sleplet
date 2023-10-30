@@ -20,7 +20,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SlepianWaveletCoefficientsSouthAmerica(Fp):
-    """Creates Slepian wavelet coefficients of the South America region."""
+    """Create Slepian wavelet coefficients of the South America region."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -69,7 +69,7 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        """Computes wavelet coefficients in Slepian space."""
+        """Compute wavelet coefficients in Slepian space."""
         sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
             self.L,
             B=self.B,

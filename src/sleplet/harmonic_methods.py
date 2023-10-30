@@ -136,7 +136,7 @@ def mesh_forward(
     u: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
-    Computes the mesh forward transform from pixel space to Fourier space.
+    Compute the mesh forward transform from pixel space to Fourier space.
 
     Args:
         mesh: The given mesh object.
@@ -161,7 +161,7 @@ def mesh_inverse(
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Computes the mesh inverse transform from Fourier space to pixel space.
+    Compute the mesh inverse transform from Fourier space to pixel space.
 
     Args:
         mesh: The given mesh object.

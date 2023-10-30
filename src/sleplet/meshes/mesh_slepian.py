@@ -1,4 +1,4 @@
-"""Contains the `MeshSlepian` class."""
+"""Contain the `MeshSlepian` class."""
 import concurrent.futures
 import logging
 import os
@@ -22,7 +22,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepian:
-    """Creates Slepian object of a given mesh."""
+    """Create Slepian object of a given mesh."""
 
     mesh: Mesh
     """A mesh object."""
@@ -43,7 +43,7 @@ class MeshSlepian:
         self._compute_slepian_functions()
 
     def _compute_slepian_functions(self) -> None:
-        """Computes the Slepian functions of the mesh."""
+        """Compute the Slepian functions of the mesh."""
         _logger.info("computing slepian functions of mesh")
 
         # create filenames
@@ -87,7 +87,7 @@ class MeshSlepian:
         )
 
     def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
-        """Computes the D matrix for the mesh eigenfunctions."""
+        """Compute the D matrix for the mesh eigenfunctions."""
         D = np.zeros(
             (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0]),
         )
@@ -135,7 +135,7 @@ class MeshSlepian:
             D[j][i] = self._integral(j, i)
 
     def _integral(self, i: int, j: int) -> float:
-        """Calculates the D integral between two mesh basis functions."""
+        """Calculate the D integral between two mesh basis functions."""
         return sleplet._integration_methods.integrate_region_mesh(
             self.mesh.mesh_region,
             self.mesh.vertices,

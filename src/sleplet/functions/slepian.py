@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class Slepian(Fp):
-    """Creates Slepian functions of the selected region."""
+    """Create Slepian functions of the selected region."""
 
     rank: int = 0
     r"""Slepian eigenvalues are ordered in decreasing value. The option `rank`

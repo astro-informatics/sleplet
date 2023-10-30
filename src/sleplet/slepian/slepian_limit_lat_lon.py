@@ -1,4 +1,4 @@
-"""Contains the `SlepianLimitLatLon` class."""
+"""Contain the `SlepianLimitLatLon` class."""
 
 import numba
 import numpy as np
@@ -78,7 +78,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
-        """Computes the K matrix."""
+        """Compute the K matrix."""
         # Compute sub-integral matrix
         G = self._slepian_integral()
 

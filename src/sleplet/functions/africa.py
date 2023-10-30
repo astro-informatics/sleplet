@@ -1,4 +1,4 @@
-"""Contains the `Africa` class."""
+"""Contain the `Africa` class."""
 import numpy as np
 import numpy.typing as npt
 import pydantic

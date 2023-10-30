@@ -1,4 +1,4 @@
-"""Contains the abstract `MeshSlepianCoefficients` class."""
+"""Contain the abstract `MeshSlepianCoefficients` class."""
 import abc
 
 import numpy as np
@@ -29,7 +29,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """Adds Gaussian white noise converted to Slepian space."""
+        """Add Gaussian white noise converted to Slepian space."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()

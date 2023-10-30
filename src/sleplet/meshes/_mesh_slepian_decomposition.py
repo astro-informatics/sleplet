@@ -92,7 +92,7 @@ class MeshSlepianDecomposition:
         return (self.u_i * self.mesh_slepian.slepian_functions[rank]).sum()
 
     def _detect_method(self) -> None:
-        """Detects what method is used to perform the decomposition."""
+        """Detect what method is used to perform the decomposition."""
         if self.u_i is not None:
             _logger.info("harmonic sum method selected")
             self._method = "harmonic_sum"
@@ -110,7 +110,7 @@ class MeshSlepianDecomposition:
             )
 
     def _validate_rank(self, rank: int) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if not isinstance(rank, int):
             raise TypeError("rank should be an integer")
         if rank < 0:
