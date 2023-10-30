@@ -1,4 +1,4 @@
-"""Contain the `MeshNoiseField` class."""
+"""Contains the `MeshNoiseField` class."""
 import numpy as np
 import numpy.typing as npt
 import pydantic

@@ -1,4 +1,4 @@
-"""Contain the `MeshBasisFunctions` class."""
+"""Contains the `MeshBasisFunctions` class."""
 import logging
 
 import numpy as np

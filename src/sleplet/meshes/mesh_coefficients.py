@@ -1,4 +1,4 @@
-"""Contain the abstract `MeshCoefficients` class."""
+"""Contains the abstract `MeshCoefficients` class."""
 import abc
 import dataclasses
 

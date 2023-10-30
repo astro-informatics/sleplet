@@ -1,4 +1,4 @@
-"""Contain the `SlepianPolarCap` class."""
+"""Contains the `SlepianPolarCap` class."""
 import concurrent.futures
 import dataclasses
 import logging

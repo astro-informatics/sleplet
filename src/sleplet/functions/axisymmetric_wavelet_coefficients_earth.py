@@ -1,4 +1,4 @@
-"""Contain the `AxisymmetricWaveletCoefficientsEarth` class."""
+"""Contains the `AxisymmetricWaveletCoefficientsEarth` class."""
 import logging
 
 import numpy as np

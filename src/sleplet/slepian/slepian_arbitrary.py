@@ -1,4 +1,4 @@
-"""Contain the `SlepianArbitrary` class."""
+"""Contains the `SlepianArbitrary` class."""
 import concurrent.futures
 import logging
 import os

@@ -1,4 +1,4 @@
-"""Contain the `MeshSlepianWaveletCoefficients` class."""
+"""Contains the `MeshSlepianWaveletCoefficients` class."""
 import logging
 
 import numpy as np

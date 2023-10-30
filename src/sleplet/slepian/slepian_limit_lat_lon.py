@@ -1,4 +1,4 @@
-"""Contain the `SlepianLimitLatLon` class."""
+"""Contains the `SlepianLimitLatLon` class."""
 
 import numba
 import numpy as np

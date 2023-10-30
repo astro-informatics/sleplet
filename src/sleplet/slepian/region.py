@@ -1,4 +1,4 @@
-"""Contain the `Region` class."""
+"""Contains the `Region` class."""
 import logging
 
 import pydantic

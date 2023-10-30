@@ -1,4 +1,4 @@
-"""Contain the `MeshSlepianField` class."""
+"""Contains the `MeshSlepianField` class."""
 import numpy as np
 import numpy.typing as npt
 import pydantic

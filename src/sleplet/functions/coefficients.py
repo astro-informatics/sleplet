@@ -1,4 +1,4 @@
-"""Contain the abstract `Coefficients` class."""
+"""Contains the abstract `Coefficients` class."""
 import abc
 import dataclasses
 
