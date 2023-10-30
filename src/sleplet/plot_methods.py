@@ -45,7 +45,7 @@ def _convert_colourscale(
     *,
     pl_entries: int = 255,
 ) -> list[tuple[float, str]]:
-    """Converts cmocean colourscale to a plotly colourscale."""
+    """Convert cmocean colourscale to a plotly colourscale."""
     h = 1 / (pl_entries - 1)
     pl_colorscale = []
 
@@ -128,7 +128,7 @@ def _create_plot_type(
     field: npt.NDArray[np.complex_ | np.float_],
     plot_type: str,
 ) -> npt.NDArray[np.float_]:
-    """Gets the given plot type of the field."""
+    """Get the given plot type of the field."""
     _logger.info(f"plotting type: '{plot_type}'")
     plot_dict = {
         "abs": np.abs(field),
@@ -225,7 +225,7 @@ def _coefficients_to_field_mesh(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """Computes the field over the whole mesh from the harmonic/Slepian coefficients."""
+    """Compute the field over the whole mesh from the harmonic/Slepian coefficients."""
     return (
         sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, coefficients)
         if hasattr(f, "mesh_slepian")
@@ -256,7 +256,7 @@ def _coefficients_to_field_sphere(
     f: sleplet.functions.coefficients.Coefficients,
     coefficients: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.complex_ | np.float_]:
-    """Computes the field over the samples from the harmonic/Slepian coefficients."""
+    """Compute the field over the samples from the harmonic/Slepian coefficients."""
     return (
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)
         if hasattr(f, "slepian")

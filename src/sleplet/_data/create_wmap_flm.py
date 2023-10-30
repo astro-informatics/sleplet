@@ -10,7 +10,7 @@ import sleplet._vars
 
 
 def create_flm(L: int) -> npt.NDArray[np.complex_]:
-    """Creates the flm for the whole CMB."""
+    """Create the flm for the whole CMB."""
     # load in data
     cl = _load_cl()
 

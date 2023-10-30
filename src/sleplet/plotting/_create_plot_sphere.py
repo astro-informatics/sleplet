@@ -21,7 +21,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotSphere:
-    """Creates surface sphere plot via `plotly`."""
+    """Create surface sphere plot via `plotly`."""
 
     f: npt.NDArray[np.complex_ | np.float_]
     """The field value sampled on the sphere."""
@@ -61,7 +61,7 @@ class PlotSphere:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """Performs the plot."""
+        """Perform the plot."""
         f = self._prepare_field(self.f)
 
         # get values from the setup
@@ -136,14 +136,15 @@ class PlotSphere:
         float,
         float,
     ]:
-        """Function which creates the data for the matplotlib/plotly plot."""
+        """Create the data for the matplotlib/plotly plot."""
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
 
         thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
-            raise AttributeError("Bandlimit L deos not match that of f")
+            msg = "Bandlimit L deos not match that of f"
+            raise AttributeError(msg)
 
         f_plot = f.copy()
 

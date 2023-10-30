@@ -12,7 +12,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class DiracDelta(Flm):
-    """Creates a Dirac delta."""
+    """Create a Dirac delta."""
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -37,6 +37,5 @@ class DiracDelta(Flm):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

@@ -13,7 +13,7 @@ from sleplet.functions.fp import Fp
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianSouthAmerica(Fp):
     """
-    Creates a Slepian region on the topographic map of the Earth of the
+    Create a Slepian region on the topographic map of the Earth of the
     South America region.
     """
 
@@ -23,7 +23,8 @@ class SlepianSouthAmerica(Fp):
             isinstance(self.region, sleplet.slepian.region.Region)
             and self.region._name_ending != "south_america"
         ):
-            raise RuntimeError("Slepian region selected must be 'south_america'")
+            msg = "Slepian region selected must be 'south_america'"
+            raise RuntimeError(msg)
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.south_america.SouthAmerica(
@@ -49,6 +50,5 @@ class SlepianSouthAmerica(Fp):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

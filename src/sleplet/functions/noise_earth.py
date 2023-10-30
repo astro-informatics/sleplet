@@ -12,7 +12,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class NoiseEarth(Flm):
-    """Creates a noised signal of the topographic map of the Earth."""
+    """Create a noised signal of the topographic map of the Earth."""
 
     SNR: float = 10
     """A parameter which controls the level of signal-to-noise in the noised
@@ -43,5 +43,6 @@ class NoiseEarth(Flm):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.SNR = self.extra_args[0]

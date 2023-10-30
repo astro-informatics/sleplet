@@ -10,7 +10,7 @@ import sleplet._smoothing
 
 
 def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex_]:
-    """Creates the flm for the whole Earth."""
+    """Create the flm for the whole Earth."""
     # load in data
     flm = _load_flm()
 

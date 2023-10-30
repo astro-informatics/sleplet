@@ -20,7 +20,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SlepianWaveletCoefficientsAfrica(Fp):
-    """Creates Slepian wavelet coefficients of the Africa region."""
+    """Create Slepian wavelet coefficients of the Africa region."""
 
     B: int = 3
     r"""The wavelet parameter. Represented as \(\lambda\) in the papers."""
@@ -36,7 +36,8 @@ class SlepianWaveletCoefficientsAfrica(Fp):
             isinstance(self.region, sleplet.slepian.region.Region)
             and self.region._name_ending != "africa"
         ):
-            raise RuntimeError("Slepian region selected must be 'africa'")
+            msg = "Slepian region selected must be 'africa'"
+            raise RuntimeError(msg)
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         _logger.info("start computing wavelet coefficients")
@@ -63,13 +64,14 @@ class SlepianWaveletCoefficientsAfrica(Fp):
         if isinstance(self.extra_args, list):
             num_args = 3
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelet_coefficients(
         self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
-        """Computes wavelet coefficients in Slepian space."""
+        """Compute wavelet coefficients in Slepian space."""
         sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
             self.L,
             B=self.B,
@@ -97,10 +99,12 @@ class SlepianWaveletCoefficientsAfrica(Fp):
             info.data["j_min"],
         )
         if v is not None and v < 0:
-            raise ValueError("j should be positive")
+            msg = "j should be positive"
+            raise ValueError(msg)
         if v is not None and v > j_max - info.data["j_min"]:
-            raise ValueError(
+            msg = (
                 "j should be less than j_max - j_min: "
-                f"{j_max - info.data['j_min'] + 1}",
+                f"{j_max - info.data['j_min'] + 1}"
             )
+            raise ValueError(msg)
         return v

@@ -12,7 +12,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshNoiseField(MeshHarmonicCoefficients):
-    """Creates a noised per-vertex normals field on a given mesh."""
+    """Create a noised per-vertex normals field on a given mesh."""
 
     SNR: float = 10
     """A parameter which controls the level of signal-to-noise in the noised
@@ -43,5 +43,6 @@ class MeshNoiseField(MeshHarmonicCoefficients):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.SNR = self.extra_args[0]

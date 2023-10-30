@@ -10,7 +10,7 @@ from sleplet.functions.fp import Fp
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianIdentity(Fp):
-    """Creates an identify function in the Slepian region."""
+    """Create an identify function in the Slepian region."""
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -32,6 +32,5 @@ class SlepianIdentity(Fp):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

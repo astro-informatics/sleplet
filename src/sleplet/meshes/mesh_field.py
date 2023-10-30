@@ -11,7 +11,7 @@ from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshField(MeshHarmonicCoefficients):
-    """Creates a per-vertex normals field on a given mesh."""
+    """Create a per-vertex normals field on a given mesh."""
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -26,6 +26,5 @@ class MeshField(MeshHarmonicCoefficients):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

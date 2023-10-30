@@ -11,13 +11,13 @@ THETA_MAX = 2 * np.pi / 9
 
 
 def test_polar_cap_region() -> None:
-    """Tests that a polar cap is created."""
+    """Test that a polar cap is created."""
     region = sleplet.slepian.Region(theta_max=THETA_MAX)
     np.testing.assert_equal(region._region_type, "polar")
 
 
 def test_lim_lat_lon_region() -> None:
-    """Tests that a limited latitude longitude region is created."""
+    """Test that a limited latitude longitude region is created."""
     region = sleplet.slepian.Region(
         theta_min=THETA_0,
         theta_max=THETA_1,
@@ -28,19 +28,19 @@ def test_lim_lat_lon_region() -> None:
 
 
 def test_arbitrary_region() -> None:
-    """Tests that an arbitrary region is created."""
+    """Test that an arbitrary region is created."""
     region = sleplet.slepian.Region(mask_name=MASK)
     np.testing.assert_equal(region._region_type, "arbitrary")
 
 
 def test_polar_hierarchy_over_arbitrary() -> None:
-    """Ensures polar cap is made instead of arbitrary."""
+    """Ensure polar cap is made instead of arbitrary."""
     region = sleplet.slepian.Region(theta_max=THETA_MAX, mask_name=MASK)
     np.testing.assert_equal(region._region_type, "polar")
 
 
 def test_lim_lat_lon_hierarchy_over_arbitrary() -> None:
-    """Ensures limited latitude longitude region is made instead of arbitrary."""
+    """Ensure limited latitude longitude region is made instead of arbitrary."""
     region = sleplet.slepian.Region(
         theta_min=THETA_0,
         theta_max=THETA_1,

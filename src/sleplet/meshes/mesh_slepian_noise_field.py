@@ -13,7 +13,7 @@ from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class MeshSlepianNoiseField(MeshSlepianCoefficients):
     """
-    Creates a noisedfield on a given mesh computed from a Slepian region of the
+    Create a noisedfield on a given mesh computed from a Slepian region of the
     mesh. The default field is the per-vertex normals of the mesh.
     """
 
@@ -53,5 +53,6 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.SNR = self.extra_args[0]

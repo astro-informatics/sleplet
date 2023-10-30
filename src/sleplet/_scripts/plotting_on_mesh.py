@@ -16,7 +16,8 @@ def valid_meshes(mesh_name: str) -> str:
     """Check if valid mesh name."""
     if mesh_name in sleplet._class_lists.MESHES:
         return mesh_name
-    raise ValueError(f"'{mesh_name}' is not a valid mesh name to plot")
+    msg = f"'{mesh_name}' is not a valid mesh name to plot"
+    raise ValueError(msg)
 
 
 def valid_methods(method_name: str) -> str:
@@ -26,11 +27,12 @@ def valid_methods(method_name: str) -> str:
         word_to_remove="Mesh",
     ):
         return method_name
-    raise ValueError(f"'{method_name}' is not a valid method to plot")
+    msg = f"'{method_name}' is not a valid method to plot"
+    raise ValueError(msg)
 
 
 def read_args() -> argparse.Namespace:
-    """Method to read args from the command line."""
+    """Read args from the command line."""
     parser = argparse.ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",

@@ -56,7 +56,7 @@ def _helper(
     i: int,
     rank: int,
 ) -> None:
-    """Helper which plots the required order and specified ranks."""
+    """Plot the required order and specified ranks."""
     print(f"plotting rank={rank}")
     flm = slepian.eigenvectors[rank] * SIGNS[rank]
     lam = slepian.eigenvalues[rank]
@@ -75,7 +75,7 @@ def _helper(
 
 
 def _find_p_value(rank: int, shannon: int) -> int:
-    """Method to find the effective p rank of the Slepian function."""
+    """Find the effective p rank of the Slepian function."""
     pooch_registry = pooch.create(
         path=pooch.os_cache("sleplet"),
         base_url=f"doi:{ZENODO_DATA_DOI}/",

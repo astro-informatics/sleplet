@@ -18,7 +18,7 @@ from sleplet.functions.flm import Flm
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Africa(Flm):
     """
-    Creates a topographic map of the Earth setting everything outide of the
+    Create a topographic map of the Earth setting everything outide of the
     Africa region to zero.
     """
 
@@ -46,16 +46,15 @@ class Africa(Flm):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)
 
     def _grid_fun(
         self,
         theta: npt.NDArray[np.float_],  # noqa: ARG002
         phi: npt.NDArray[np.float_],  # noqa: ARG002
     ) -> npt.NDArray[np.float_]:
-        """Function on the grid."""
+        """Define the function on the grid."""
         earth_flm = sleplet._data.create_earth_flm.create_flm(
             self.L,
             smoothing=self.smoothing,

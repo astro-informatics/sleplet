@@ -31,7 +31,7 @@ class SlepianPolarCap(SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
     theta_max: float
-    """Sets the size of the polar cap region."""
+    """Set the size of the polar cap region."""
     _: dataclasses.KW_ONLY
     gap: bool = False
     """Whether to enable a double ended polar cap."""
@@ -88,7 +88,7 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc: str,
         order_loc: str,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """Solves eigenproblem with files already saved."""
+        """Solve eigenproblem with files already saved."""
         eigenvalues = np.load(
             sleplet._data.setup_pooch.find_on_pooch_then_local(eval_loc),
         )
@@ -109,7 +109,7 @@ class SlepianPolarCap(SlepianFunctions):
         evec_loc: str,
         order_loc: str,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """Solves eigenproblem from scratch and then saves the files."""
+        """Solve eigenproblem from scratch and then saves the files."""
         if isinstance(self.order, int):
             return self._solve_eigenproblem_order(self.order)
 
@@ -136,7 +136,7 @@ class SlepianPolarCap(SlepianFunctions):
         self,
         m: int,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
-        """Solves the eigenproblem for a given order m."""
+        """Solve the eigenproblem for a given order m."""
         emm = sleplet.harmonic_methods._create_emm_vector(self.L)
         Dm = self._create_Dm_matrix(abs(m), emm)
         eigenvalues, gl = LA.eigh(Dm)
@@ -149,7 +149,7 @@ class SlepianPolarCap(SlepianFunctions):
         eigenvectors: npt.NDArray[np.complex_],
         orders: npt.NDArray[np.int_],
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_], npt.NDArray[np.int_]]:
-        """Sorts all eigenvalues and eigenvectors for all orders."""
+        """Sort all eigenvalues and eigenvectors for all orders."""
         idx = eigenvalues.argsort()[::-1]
         eigenvalues = eigenvalues[idx]
         eigenvectors = eigenvectors[idx]
@@ -239,7 +239,7 @@ class SlepianPolarCap(SlepianFunctions):
         Pl: npt.NDArray[np.float_],
         ell: npt.NDArray[np.int_],
     ) -> None:
-        """Used in both serial and parallel calculations."""
+        """Use in both serial and parallel calculations."""
         el = int(lvec[i])
         for j in range(i, self.L - m):
             p = int(lvec[j])
@@ -293,7 +293,8 @@ class SlepianPolarCap(SlepianFunctions):
             or 2 * m2 != np.floor(2 * m2)
             or 2 * m3 != np.floor(2 * m3)
         ):
-            raise ValueError("Arguments must either be integer or half-integer!")
+            msg = "Arguments must either be integer or half-integer!"
+            raise ValueError(msg)
 
         if (
             m1 + m2 + m3 != 0
@@ -392,11 +393,13 @@ class SlepianPolarCap(SlepianFunctions):
         info: pydantic.ValidationInfo,
     ) -> int | npt.NDArray[np.int_] | None:
         if v is not None and (np.abs(v) >= info.data["L"]).any():
-            raise ValueError(f"Order magnitude should be less than {info.data['L']}")
+            msg = f"Order magnitude should be less than {info.data['L']}"
+            raise ValueError(msg)
         return v
 
     @pydantic.field_validator("theta_max")
     def _check_theta_max(cls, v: float) -> float:
         if v == 0:
-            raise ValueError("theta_max cannot be zero")
+            msg = "theta_max cannot be zero"
+            raise ValueError(msg)
         return v

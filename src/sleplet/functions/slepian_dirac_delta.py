@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianDiracDelta(Fp):
-    """Creates a Dirac delta of the Slepian coefficients."""
+    """Create a Dirac delta of the Slepian coefficients."""
 
     _alpha: float = pydantic.Field(default=0, init_var=False, repr=False)
     _beta: float = pydantic.Field(default=0, init_var=False, repr=False)
@@ -49,12 +49,11 @@ class SlepianDiracDelta(Fp):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)
 
     def _compute_angles(self) -> None:
-        """Computes alpha/beta if not provided."""
+        """Compute alpha/beta if not provided."""
         thetas, phis = ssht.sample_positions(
             self.L,
             Grid=True,

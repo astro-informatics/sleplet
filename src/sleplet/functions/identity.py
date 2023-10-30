@@ -10,7 +10,7 @@ from sleplet.functions.flm import Flm
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Identity(Flm):
-    """Creates an identity function."""
+    """Create an identity function."""
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -31,6 +31,5 @@ class Identity(Flm):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

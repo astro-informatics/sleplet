@@ -40,7 +40,8 @@ class SlepianDecomposition:
             case "integrate_region":
                 return self._integrate_region(rank)
             case _:
-                raise ValueError(f"'{self._method}' is not a valid method")
+                msg = f"'{self._method}' is not a valid method"
+                raise ValueError(msg)
 
     def decompose_all(self, n_coefficients: int) -> npt.NDArray[np.complex_]:
         """Decompose all ranks of the Slepian coefficients."""
@@ -98,7 +99,7 @@ class SlepianDecomposition:
         return (self.flm * self.slepian.eigenvectors[rank].conj()).sum()
 
     def _detect_method(self) -> None:
-        """Detects what method is used to perform the decomposition."""
+        """Detect what method is used to perform the decomposition."""
         if self.flm is not None:
             _logger.info("harmonic sum method selected")
             self._method = "harmonic_sum"
@@ -110,16 +111,20 @@ class SlepianDecomposition:
                 _logger.info("integrating a region on the sphere method selected")
                 self._method = "integrate_region"
         else:
-            raise RuntimeError(
+            msg = (
                 "need to pass one off harmonic coefficients, real pixels "
-                "or real pixels with a mask",
+                "or real pixels with a mask"
             )
+            raise RuntimeError(msg)
 
     def _validate_rank(self, rank: int) -> None:
-        """Checks the requested rank is valid."""
+        """Check the requested rank is valid."""
         if not isinstance(rank, int):
-            raise TypeError("rank should be an integer")
+            msg = "rank should be an integer"
+            raise TypeError(msg)
         if rank < 0:
-            raise ValueError("rank cannot be negative")
+            msg = "rank cannot be negative"
+            raise ValueError(msg)
         if rank >= self.L**2:
-            raise ValueError(f"rank should be less than {self.L**2}")
+            msg = f"rank should be less than {self.L**2}"
+            raise ValueError(msg)
