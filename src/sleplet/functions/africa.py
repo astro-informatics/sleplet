@@ -54,7 +54,7 @@ class Africa(Flm):
         theta: npt.NDArray[np.float_],  # noqa: ARG002
         phi: npt.NDArray[np.float_],  # noqa: ARG002
     ) -> npt.NDArray[np.float_]:
-        """Function on the grid."""
+        """Define the function on the grid."""
         earth_flm = sleplet._data.create_earth_flm.create_flm(
             self.L,
             smoothing=self.smoothing,

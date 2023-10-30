@@ -55,7 +55,7 @@ def _helper(  # noqa: PLR0913
     order: int,
     rank: int,
 ) -> None:
-    """Helper which plots the required order and specified ranks."""
+    """Plot the required order and specified ranks."""
     print(f"plotting order={order}, rank={rank}")
     axs = ax[order, rank]
     flm = slepian.eigenvectors[rank] * SIGNS[order][rank]

@@ -29,7 +29,7 @@ def main() -> None:
 
 
 def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> None:
-    """Helper method which actually makes the plot."""
+    """Create the plot."""
     print(f"theta_max={theta_max}")
     slepian = sleplet.slepian.SlepianPolarCap(L, np.deg2rad(theta_max))
     axs = ax[position]

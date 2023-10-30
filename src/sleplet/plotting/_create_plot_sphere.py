@@ -136,7 +136,7 @@ class PlotSphere:
         float,
         float,
     ]:
-        """Function which creates the data for the matplotlib/plotly plot."""
+        """Create the data for the matplotlib/plotly plot."""
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
 

@@ -3,7 +3,9 @@ import numpy as np
 import sleplet
 
 
-def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
+def test_inverse_forward_transform_recovery(
+    mesh_field_region: sleplet.meshes.mesh_field.MeshField,
+) -> None:
     """
     Tests that a given function is recovered after an
     inverse and forward transform on the mesh.
@@ -20,7 +22,7 @@ def test_inverse_forward_transform_recovery(mesh_field_region) -> None:
     )
 
 
-def test_orthonormality_over_mesh_full(mesh) -> None:
+def test_orthonormality_over_mesh_full(mesh: sleplet.meshes.mesh.Mesh) -> None:
     """
     For the computation of the Slepian D matrix the basis
     functions must be orthornomal over the whole mesh.

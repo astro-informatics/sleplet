@@ -11,7 +11,10 @@ L_SMALL = 16
 VAR_SIGNAL = 1
 
 
-def test_synthesis_polar(slepian_wavelets_polar_cap, earth_polar_cap) -> None:
+def test_synthesis_polar(
+    slepian_wavelets_polar_cap: sleplet.functions.slepian_wavelets.SlepianWavelets,
+    earth_polar_cap: sleplet.functions.earth.Earth,
+) -> None:
     """Test that Slepian polar wavelet synthesis matches the coefficients."""
     coefficients = sleplet.slepian_methods.slepian_forward(
         slepian_wavelets_polar_cap.L,
@@ -31,7 +34,10 @@ def test_synthesis_polar(slepian_wavelets_polar_cap, earth_polar_cap) -> None:
     np.testing.assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-14)
 
 
-def test_synthesis_lim_lat_lon(slepian_wavelets_lim_lat_lon, earth_lim_lat_lon) -> None:
+def test_synthesis_lim_lat_lon(
+    slepian_wavelets_lim_lat_lon: sleplet.functions.slepian_wavelets.SlepianWavelets,
+    earth_lim_lat_lon: sleplet.functions.earth.Earth,
+) -> None:
     """Test that Slepian lim_lat_lon wavelet synthesis matches the coefficients."""
     coefficients = sleplet.slepian_methods.slepian_forward(
         slepian_wavelets_lim_lat_lon.L,

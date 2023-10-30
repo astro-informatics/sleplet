@@ -20,7 +20,7 @@ def _pi_in_filename(numerator: int, denominator: int) -> str:
 
 
 def filename_args(value: float, arg_name: str) -> str:
-    """Used to add an extra argument to filename."""
+    """Add an extra argument to filename."""
     filename = "_"
     num, dem = _get_angle_num_dem(value)
     filename += f"{num}{arg_name}"
@@ -61,7 +61,7 @@ def filename_angle(
 
 def multiples_of_pi(angle: float) -> str:
     """
-    Prints the unicode pi with a prefix of the multiple unless it's 1
+    Print the unicode pi with a prefix of the multiple unless it's 1
     i.e. pi, 2pi, 3pi.
     """
     multiple = int(angle / np.pi)
@@ -74,7 +74,7 @@ def angle_as_degree(radian: float) -> int:
 
 
 def wavelet_ending(j_min: int, j: int | None) -> str:
-    """The ending name of the given wavelet."""
+    """Create the ending name of the given wavelet."""
     return "_scaling" if j is None else f"{filename_args(j + j_min, 'j')}"
 
 

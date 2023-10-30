@@ -62,5 +62,5 @@ def integrate_region_mesh(
 
 
 def _multiply_args(*args: npt.NDArray[typing.Any]) -> npt.NDArray[typing.Any]:
-    """Method to multiply an unknown number of arguments."""
+    """Multiply an unknown number of arguments."""
     return functools.reduce((lambda x, y: x * y), args)

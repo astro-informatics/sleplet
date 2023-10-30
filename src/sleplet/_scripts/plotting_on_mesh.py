@@ -32,7 +32,7 @@ def valid_methods(method_name: str) -> str:
 
 
 def read_args() -> argparse.Namespace:
-    """Method to read args from the command line."""
+    """Read args from the command line."""
     parser = argparse.ArgumentParser(description="Create mesh plot")
     parser.add_argument(
         "function",

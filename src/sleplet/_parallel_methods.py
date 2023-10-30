@@ -31,7 +31,7 @@ def attach_to_shared_memory_block(
     array: npt.NDArray[np.float_],
     ext_shared_memory: multiprocess.shared_memory.SharedMemory,
 ) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
-    """Used within the parallel function to attach an array to the shared memory."""
+    """Attach an array to the shared memory within the parallel function."""
     int_shared_memory = multiprocess.shared_memory.SharedMemory(
         name=ext_shared_memory.name,
     )
@@ -44,7 +44,7 @@ def attach_to_shared_memory_block(
 
 
 def free_shared_memory(*shared_memory: multiprocess.shared_memory.SharedMemory) -> None:
-    """Closes the shared memory object."""
+    """Close the shared memory object."""
     for shm in shared_memory:
         shm.close()
 

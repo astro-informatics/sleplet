@@ -67,7 +67,7 @@ def create_mask_region(
 
 
 def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
-    """Attempts to read the mask from the config file."""
+    """Attempt to read the mask from the config file."""
     mask = sleplet._data.setup_pooch.find_on_pooch_then_local(
         f"slepian_masks_{mask_name}",
     )
@@ -82,7 +82,7 @@ def ensure_masked_flm_bandlimited(
     reality: bool,
     spin: int,
 ) -> npt.NDArray[np.complex_]:
-    """Ensures the coefficients is bandlimited for a given region."""
+    """Ensure the coefficients is bandlimited for a given region."""
     field = ssht.inverse(
         flm,
         L,
@@ -132,7 +132,7 @@ def ensure_masked_bandlimit_mesh_signal(
     mesh: "sleplet.meshes.mesh.Mesh",
     u_i: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """Ensures that signal in pixel space is bandlimited."""
+    """Ensure that signal in pixel space is bandlimited."""
     field = sleplet.harmonic_methods.mesh_inverse(mesh, u_i)
     masked_field = np.where(mesh.mesh_region, field, 0)
     return sleplet.harmonic_methods.mesh_forward(mesh, masked_field)

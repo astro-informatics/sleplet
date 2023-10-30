@@ -53,7 +53,7 @@ def valid_plotting(func_name: str) -> str:
 
 
 def read_args() -> argparse.Namespace:
-    """Method to read args from the command line."""
+    """Read args from the command line."""
     parser = argparse.ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
         "function",
@@ -278,7 +278,7 @@ def _rotation_helper(
     )
     filename += (
         "_rotate_"
-        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
+        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"  # noqa: E501
     )
 
     # calculate angles

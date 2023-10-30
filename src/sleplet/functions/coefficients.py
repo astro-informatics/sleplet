@@ -107,7 +107,7 @@ class Coefficients:
 
         Args:
             f_coefficient: Input harmonic/Slepian coefficients.
-            g_coefficien: Input harmonic/Slepian coefficients.
+            g_coefficient: Input harmonic/Slepian coefficients.
             shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
@@ -188,18 +188,15 @@ class Coefficients:
 
     @abc.abstractmethod
     def _set_reality(self) -> bool:
-        """Sets the reality flag to speed up computations."""
+        """Set the reality flag to speed up computations."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _set_spin(self) -> int:
-        """Sets the spin value in computations."""
+        """Set the spin value in computations."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _setup_args(self) -> None:
-        """
-        Initialises function specific args
-        either default value or user input.
-        """
+        """Initialise function specific args either default value or user input."""
         raise NotImplementedError

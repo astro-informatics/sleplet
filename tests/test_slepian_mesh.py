@@ -3,7 +3,10 @@ import numpy as np
 import sleplet
 
 
-def test_decompose_all_mesh(mesh_slepian, mesh_field_region) -> None:
+def test_decompose_all_mesh(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_field_region: sleplet.meshes.mesh_field.MeshField,
+) -> None:
     """Test that all three methods produce the same coefficients for the mesh."""
     field = sleplet.harmonic_methods.mesh_inverse(
         mesh_slepian.mesh,
@@ -34,7 +37,10 @@ def test_decompose_all_mesh(mesh_slepian, mesh_field_region) -> None:
     )
 
 
-def test_forward_inverse_transform_slepian(mesh_slepian, mesh_field_region) -> None:
+def test_forward_inverse_transform_slepian(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_field_region: sleplet.meshes.mesh_field.MeshField,
+) -> None:
     """Test that the Slepian forward and inverse transforms recover the field."""
     f_p = sleplet.slepian_methods.slepian_mesh_forward(
         mesh_slepian,
@@ -52,7 +58,10 @@ def test_forward_inverse_transform_slepian(mesh_slepian, mesh_field_region) -> N
     )
 
 
-def test_synthesis_mesh(mesh_slepian_wavelets, mesh_field_region) -> None:
+def test_synthesis_mesh(
+    mesh_slepian_wavelets: sleplet.meshes.mesh_slepian.MeshSlepianWavelets,
+    mesh_field_region: sleplet.meshes.mesh_field.MeshField,
+) -> None:
     """Test that Slepian polar wavelet synthesis matches the coefficients."""
     coefficients = sleplet.slepian_methods.slepian_mesh_forward(
         mesh_slepian_wavelets.mesh_slepian,

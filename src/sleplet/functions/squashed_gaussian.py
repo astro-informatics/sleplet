@@ -60,7 +60,7 @@ class SquashedGaussian(Flm):
         theta: npt.NDArray[np.float_],
         phi: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
-        """Function on the grid."""
+        """Define the function on the grid."""
         return np.exp(
             -(((theta - sleplet._vars.THETA_0) / self.t_sigma) ** 2) / 2,
         ) * np.sin(self.freq * phi)

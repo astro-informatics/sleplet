@@ -5,7 +5,10 @@ import pyssht as ssht
 import sleplet
 
 
-def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
+def test_decompose_all_polar(
+    slepian_polar_cap: sleplet.slepian.slepian_polar_cap.SlepianPolarCap,
+    earth_polar_cap: sleplet.functions.earth.Earth,
+) -> None:
     """Test that all three methods produce the same coefficients for polar cap."""
     field = ssht.inverse(
         earth_polar_cap.coefficients,
@@ -40,7 +43,10 @@ def test_decompose_all_polar(slepian_polar_cap, earth_polar_cap) -> None:
     )
 
 
-def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> None:
+def test_decompose_all_lim_lat_lon(
+    slepian_lim_lat_lon: sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon,
+    earth_lim_lat_lon: sleplet.functions.earth.Earth,
+) -> None:
     """
     Tests that all three methods produce the same coefficients for
     limited latitude longitude region.
@@ -79,8 +85,8 @@ def test_decompose_all_lim_lat_lon(slepian_lim_lat_lon, earth_lim_lat_lon) -> No
 
 
 def test_equality_to_harmonic_transform_polar(
-    slepian_polar_cap,
-    earth_polar_cap,
+    slepian_polar_cap: sleplet.slepian.slepian_polar_cap.SlepianPolarCap,
+    earth_polar_cap: sleplet.functions.earth.Earth,
 ) -> None:
     """Test that fp*Sp up to N is roughly equal to flm*Ylm."""
     f_p = sleplet.slepian_methods.slepian_forward(
@@ -106,8 +112,8 @@ def test_equality_to_harmonic_transform_polar(
 
 
 def test_equality_to_harmonic_transform_lim_lat_lon(
-    slepian_lim_lat_lon,
-    earth_lim_lat_lon,
+    slepian_lim_lat_lon: sleplet.slepian.slepian_limit_lat_lon.SlepianLimitLatLon,
+    earth_lim_lat_lon: sleplet.functions.earth.Earth,
 ) -> None:
     """Test that fp*Sp up to N is roughly equal to flm*Ylm."""
     f_p = sleplet.slepian_methods.slepian_forward(
@@ -132,7 +138,10 @@ def test_equality_to_harmonic_transform_lim_lat_lon(
     np.testing.assert_allclose(np.abs(f_slepian - f_harmonic)[mask].mean(), 0, atol=248)
 
 
-def test_pass_rank_higher_than_available(slepian_polar_cap, earth_polar_cap) -> None:
+def test_pass_rank_higher_than_available(
+    slepian_polar_cap: sleplet.slepian.slepian_polar_cap.SlepianPolarCap,
+    earth_polar_cap: sleplet.functions.earth.Earth,
+) -> None:
     """Test that asking for a Slepian coefficients above the limit fails."""
     sd = sleplet.slepian._slepian_decomposition.SlepianDecomposition(
         slepian_polar_cap.L,
@@ -142,7 +151,9 @@ def test_pass_rank_higher_than_available(slepian_polar_cap, earth_polar_cap) -> 
     np.testing.assert_raises(ValueError, sd.decompose, slepian_polar_cap.L**2)
 
 
-def test_no_method_found_for_decomposition(slepian_polar_cap) -> None:
+def test_no_method_found_for_decomposition(
+    slepian_polar_cap: sleplet.slepian.slepian_polar_cap.SlepianPolarCap,
+) -> None:
     """Check that no method has been found when inputs haven't been set."""
     np.testing.assert_raises(
         RuntimeError,

@@ -32,7 +32,7 @@ def create_layout(
     *,
     annotations: list[dict] | None = None,
 ) -> go.Layout:
-    """Default plotly layout."""
+    """Create the default plotly layout."""
     return go.Layout(
         scene=go.layout.Scene(
             dragmode="orbit",
@@ -66,7 +66,7 @@ def create_colour_bar(
     bar_pos: float = 0.97,
     font_size: int = 38,
 ) -> dict:
-    """Default plotly colour bar."""
+    """Create the default plotly colour bar."""
     return {
         "x": bar_pos,
         "len": bar_len,
