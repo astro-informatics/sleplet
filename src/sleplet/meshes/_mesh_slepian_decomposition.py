@@ -107,7 +107,7 @@ class MeshSlepianDecomposition:
         else:
             msg = (
                 "need to pass one off harmonic coefficients, real pixels "
-                "or real pixels with a mask",
+                "or real pixels with a mask"
             )
             raise RuntimeError(msg)
 
