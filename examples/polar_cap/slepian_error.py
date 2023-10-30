@@ -55,7 +55,7 @@ def _helper_sphere(
     f: npt.NDArray[np.complex_],
     flm: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
-    """Calcukate the difference in Slepian coefficients by integration of the sphere."""
+    """Calculate the difference in Slepian coefficients by integration of the sphere."""
     slepian = sleplet.slepian_methods.choose_slepian_method(L, region)
     output = np.abs(sleplet.slepian_methods.slepian_forward(L, slepian, f=f))
     desired = np.abs(sleplet.slepian_methods.slepian_forward(L, slepian, flm=flm))
