@@ -2,6 +2,7 @@
 import logging
 
 import pydantic
+import typing_extensions
 
 import sleplet._bool_methods
 import sleplet._string_methods
@@ -38,12 +39,12 @@ class Region:
     _name_ending: str = pydantic.Field(default="", init_var=False, repr=False)
     _region_type: str = pydantic.Field(default="", init_var=False, repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._identify_region()
 
-    def _identify_region(self) -> None:
+    def _identify_region(self: typing_extensions.Self) -> None:
         """Identify region type based on the angle inputs or a mask name."""
-        _logger.info(
+        msg = (
             "Slepian region values detected: "
             f"POLAR_GAP={self.gap}, "
             f"THETA_MAX={self.theta_max}, "
@@ -52,6 +53,7 @@ class Region:
             f"PHI_MIN={self.phi_min}, "
             f"SLEPIAN_MASK={self.mask_name}.",
         )
+        _logger.info(msg)
         if sleplet._bool_methods.is_polar_cap(
             self.phi_min,
             self.phi_max,
@@ -90,7 +92,7 @@ class Region:
             raise AttributeError(msg)
 
     @pydantic.field_validator("phi_max")
-    def _check_phi_max(cls, v: float) -> float:
+    def _check_phi_max(cls, v: float) -> float:  # noqa: ANN101
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             msg = "phi_max cannot be negative"
             raise ValueError(msg)
@@ -103,7 +105,7 @@ class Region:
         return v
 
     @pydantic.field_validator("phi_min")
-    def _check_phi_min(cls, v: float) -> float:
+    def _check_phi_min(cls, v: float) -> float:  # noqa: ANN101
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             msg = "phi_min cannot be negative"
             raise ValueError(msg)
@@ -116,7 +118,7 @@ class Region:
         return v
 
     @pydantic.field_validator("theta_max")
-    def _check_theta_max(cls, v: float) -> float:
+    def _check_theta_max(cls, v: float) -> float:  # noqa: ANN101
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             msg = "theta_max cannot be negative"
             raise ValueError(msg)
@@ -129,7 +131,7 @@ class Region:
         return v
 
     @pydantic.field_validator("theta_min")
-    def _check_theta_min(cls, v: float) -> float:
+    def _check_theta_min(cls, v: float) -> float:  # noqa: ANN101
         if v < sleplet._vars.THETA_MIN_DEFAULT:
             msg = "theta_min cannot be negative"
             raise ValueError(msg)

@@ -6,6 +6,7 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
@@ -31,13 +32,13 @@ class SlepianLimitLatLon(SlepianFunctions):
     theta_min: float = sleplet._vars.THETA_MIN_DEFAULT
     r"""Minimum \(\theta\) value."""
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
-    def _create_fn_name(self) -> str:
+    def _create_fn_name(self: typing_extensions.Self) -> str:
         return f"slepian_{self.region._name_ending}"
 
-    def _create_region(self) -> "sleplet.slepian.region.Region":
+    def _create_region(self: typing_extensions.Self) -> "sleplet.slepian.region.Region":
         return sleplet.slepian.region.Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,
@@ -45,21 +46,21 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_max=self.phi_max,
         )
 
-    def _create_mask(self) -> npt.NDArray[np.float_]:
+    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
         return sleplet._mask_methods.create_mask_region(self.L, self.region)
 
-    def _calculate_area(self) -> float:
+    def _calculate_area(self: typing_extensions.Self) -> float:
         return (self.phi_max - self.phi_min) * (
             np.cos(self.theta_min) - np.cos(self.theta_max)
         )
 
-    def _create_matrix_location(self) -> str:
+    def _create_matrix_location(self: typing_extensions.Self) -> str:
         return (
             f"slepian_eigensolutions_D_{self.region._name_ending}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
@@ -77,7 +78,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
-    def _create_K_matrix(self) -> npt.NDArray[np.complex_]:  # noqa: N802
+    def _create_K_matrix(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:  # noqa: N802
         """Compute the K matrix."""
         # Compute sub-integral matrix
         G = self._slepian_integral()
@@ -89,7 +90,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         return K
 
-    def _slepian_integral(self) -> npt.NDArray[np.complex_]:
+    def _slepian_integral(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:
         """
         Syntax:
         G = _slepian_integral().

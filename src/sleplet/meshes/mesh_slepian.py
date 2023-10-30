@@ -8,6 +8,7 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
+import typing_extensions
 
 import sleplet._array_methods
 import sleplet._data.setup_pooch
@@ -38,11 +39,11 @@ class MeshSlepian:
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self.N = sleplet._slepian_arbitrary_methods.compute_mesh_shannon(self.mesh)
         self._compute_slepian_functions()
 
-    def _compute_slepian_functions(self) -> None:
+    def _compute_slepian_functions(self: typing_extensions.Self) -> None:
         """Compute the Slepian functions of the mesh."""
         _logger.info("computing slepian functions of mesh")
 
@@ -64,13 +65,18 @@ class MeshSlepian:
         except TypeError:
             self._compute_slepian_functions_from_scratch(eval_loc, evec_loc)
 
-    def _compute_slepian_functions_from_scratch(self, eval_loc, evec_loc):
+    def _compute_slepian_functions_from_scratch(
+        self: typing_extensions.Self,
+        eval_loc: str,
+        evec_loc: str,
+    ) -> None:
         D = self._create_D_matrix()
-        _logger.info(
+        msg = (
             f"Shannon number from vertices: {self.N}, "
             f"Trace of D matrix: {round(D.trace())}, "
             f"difference: {round(np.abs(self.N - D.trace()))}",
         )
+        _logger.info(msg)
 
         # fill in remaining triangle section
         sleplet._array_methods.fill_upper_triangle_of_hermitian_matrix(D)
@@ -86,7 +92,7 @@ class MeshSlepian:
             self.slepian_functions[: self.N],
         )
 
-    def _create_D_matrix(self) -> npt.NDArray[np.float_]:  # noqa: N802
+    def _create_D_matrix(self: typing_extensions.Self) -> npt.NDArray[np.float_]:  # noqa: N802
         """Compute the D matrix for the mesh eigenfunctions."""
         D = np.zeros(
             (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0]),
@@ -102,15 +108,18 @@ class MeshSlepian:
             )
 
             for i in chunk:
-                _logger.info(f"start basis function: {i}")
+                msg = f"start basis function: {i}"
+                _logger.info(msg)
                 self._fill_D_elements(D_int, i)
-                _logger.info(f"finish basis function: {i}")
+                msg = f"finish basis function: {i}"
+                _logger.info(msg)
 
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise efficiency
         ncpu = int(os.getenv("NCPU", "4"))
-        _logger.info(f"Number of CPU={ncpu}")
+        msg = f"Number of CPU={ncpu}"
+        _logger.info(msg)
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.mesh.mesh_eigenvalues.shape[0],
             ncpu,
@@ -128,13 +137,17 @@ class MeshSlepian:
         sleplet._parallel_methods.release_shared_memory(shm_ext)
         return D
 
-    def _fill_D_elements(self, D: npt.NDArray[np.float_], i: int) -> None:  # noqa: N802
+    def _fill_D_elements(  # noqa: N802
+        self: typing_extensions.Self,
+        D: npt.NDArray[np.float_],
+        i: int,
+    ) -> None:
         """Fill in the D matrix elements using symmetries."""
         D[i][i] = self._integral(i, i)
         for j in range(i + 1, self.mesh.mesh_eigenvalues.shape[0]):
             D[j][i] = self._integral(j, i)
 
-    def _integral(self, i: int, j: int) -> float:
+    def _integral(self: typing_extensions.Self, i: int, j: int) -> float:
         """Calculate the D integral between two mesh basis functions."""
         return sleplet._integration_methods.integrate_region_mesh(
             self.mesh.mesh_region,

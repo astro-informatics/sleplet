@@ -7,6 +7,7 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
@@ -48,7 +49,7 @@ class PlotSphere:
     """Whether to upsample the current field."""
     _resolution: int = pydantic.Field(default=0, init_var=False, repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._resolution = (
             sleplet.plot_methods.calc_plot_resolution(self.L)
             if self.upsample
@@ -60,7 +61,7 @@ class PlotSphere:
         if self.normalise:
             self.filename += "_norm"
 
-    def execute(self) -> None:
+    def execute(self: typing_extensions.Self) -> None:
         """Perform the plot."""
         f = self._prepare_field(self.f)
 
@@ -115,7 +116,8 @@ class PlotSphere:
 
         fig = go.Figure(data=data, layout=layout)
 
-        _logger.info(f"Opening: {self.filename}")
+        msg = f"Opening: {self.filename}"
+        _logger.info(msg)
         pio.show(fig, config={"toImageButtonOptions": {"filename": self.filename}})
 
     @staticmethod
@@ -193,7 +195,7 @@ class PlotSphere:
         return x, y, z, f_plot, vmin, vmax
 
     def _prepare_field(
-        self,
+        self: typing_extensions.Self,
         f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
         """Boosts, forces plot type and then scales the field before plotting."""

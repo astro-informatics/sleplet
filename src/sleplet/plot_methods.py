@@ -71,7 +71,8 @@ def _calc_nearest_grid_point(
     pix_j = np.abs(phis - alpha_pi_fraction * np.pi).argmin()
     pix_i = np.abs(thetas - beta_pi_fraction * np.pi).argmin()
     alpha, beta = phis[pix_j], thetas[pix_i]
-    _logger.info(f"grid point: (alpha, beta)=({alpha:e}, {beta:e})")
+    msg = f"grid point: (alpha, beta)=({alpha:e}, {beta:e})"
+    _logger.info(msg)
     return alpha, beta
 
 
@@ -129,7 +130,8 @@ def _create_plot_type(
     plot_type: str,
 ) -> npt.NDArray[np.float_]:
     """Get the given plot type of the field."""
-    _logger.info(f"plotting type: '{plot_type}'")
+    msg = f"plotting type: '{plot_type}'"
+    _logger.info(msg)
     plot_dict = {
         "abs": np.abs(field),
         "imag": field.imag,

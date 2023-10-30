@@ -97,11 +97,13 @@ testpaths = [
 fix = true
 force-exclude = true
 ignore = [
+    "COM812",
     "D105",
     "D203",
     "D205",
     "D212",
     "D407",
+    "ISC001",
     "N803",
     "N806",
 ]
@@ -120,52 +122,19 @@ isort = {known-first-party = [
 ]}}
 per-file-ignores = {"examples*" = [
     "D100",
+    "D104",
+    "SLF001",
     "T201",
-], "test_*" = [
-    "S101",
+], "src*" = [
+    "SLF001",
 ], "tests*" = [
     "D100",
+    "D104",
+    "S101",
+    "SLF001",
 ]}
 select = [
-    "A",
-    "ARG",
-    "B",
-    "BLE",
-    "C",
-    "COM",
-    "D",
-    "DJ",
-    "DTZ",
-    "E",
-    "EM",
-    "ERA",
-    "EXE",
-    "F",
-    "FBT",
-    "I",
-    "ICN",
-    "ISC",
-    "N",
-    "NPY",
-    "PD",
-    "PGH",
-    "PIE",
-    "PL",
-    "PT",
-    "PTH",
-    "PYI",
-    "Q",
-    "RET",
-    "RSE",
-    "RUF",
-    "S",
-    "SIM",
-    "T",
-    "TCH",
-    "TID",
-    "UP",
-    "W",
-    "YTT",
+    "ALL",
 ]
 target-version = "py310"
 mccabe.max-complexity = 18

@@ -10,6 +10,7 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
@@ -42,28 +43,28 @@ class SlepianPolarCap(SlepianFunctions):
     computed. In the Slepian eigenproblem formulation this simplifies the
     mathematical formulation."""
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
-    def _create_fn_name(self) -> str:
+    def _create_fn_name(self: typing_extensions.Self) -> str:
         return f"slepian_{self.region._name_ending}"
 
-    def _create_region(self) -> "sleplet.slepian.region.Region":
+    def _create_region(self: typing_extensions.Self) -> "sleplet.slepian.region.Region":
         return sleplet.slepian.region.Region(gap=self.gap, theta_max=self.theta_max)
 
-    def _create_mask(self) -> npt.NDArray[np.float_]:
+    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
         return sleplet._mask_methods.create_mask_region(self.L, self.region)
 
-    def _calculate_area(self) -> float:
+    def _calculate_area(self: typing_extensions.Self) -> float:
         return 2 * np.pi * (1 - np.cos(self.theta_max))
 
-    def _create_matrix_location(self) -> str:
+    def _create_matrix_location(self: typing_extensions.Self) -> str:
         return (
             f"slepian_eigensolutions_D_{self.region._name_ending}_L{self.L}_N{self.N}"
         )
 
     def _solve_eigenproblem(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
@@ -83,7 +84,7 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_files(
-        self,
+        self: typing_extensions.Self,
         eval_loc: str,
         evec_loc: str,
         order_loc: str,
@@ -104,7 +105,7 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_from_scratch(
-        self,
+        self: typing_extensions.Self,
         eval_loc: str,
         evec_loc: str,
         order_loc: str,
@@ -133,7 +134,7 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(
-        self,
+        self: typing_extensions.Self,
         m: int,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """Solve the eigenproblem for a given order m."""
@@ -144,7 +145,7 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors
 
     def _sort_all_evals_and_evecs(
-        self,
+        self: typing_extensions.Self,
         eigenvalues: npt.NDArray[np.float_],
         eigenvectors: npt.NDArray[np.complex_],
         orders: npt.NDArray[np.int_],
@@ -157,7 +158,7 @@ class SlepianPolarCap(SlepianFunctions):
         return eigenvalues, eigenvectors, orders
 
     def _create_Dm_matrix(  # noqa: N802
-        self,
+        self: typing_extensions.Self,
         m: int,
         emm: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
@@ -193,15 +194,18 @@ class SlepianPolarCap(SlepianFunctions):
 
             # deal with chunk
             for i in chunk:
-                _logger.info(f"start ell: {i}")
+                msg = f"start ell: {i}"
+                _logger.info(msg)
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
-                _logger.info(f"finish ell: {i}")
+                msg = f"finish ell: {i}"
+                _logger.info(msg)
 
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise efficiency
         ncpu = int(os.getenv("NCPU", "4"))
-        _logger.info(f"Number of CPU={ncpu}")
+        msg = f"Number of CPU={ncpu}"
+        _logger.info(msg)
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L - m,
             ncpu,
@@ -220,7 +224,7 @@ class SlepianPolarCap(SlepianFunctions):
         return Dm
 
     def _create_legendre_polynomials_table(
-        self,
+        self: typing_extensions.Self,
         emm: npt.NDArray[np.float_],
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
         """Create Legendre polynomials table for matrix calculation."""
@@ -231,7 +235,7 @@ class SlepianPolarCap(SlepianFunctions):
         return Pl, ell
 
     def _dm_matrix_helper(  # noqa: PLR0913
-        self,
+        self: typing_extensions.Self,
         Dm: npt.NDArray[np.float_],
         i: int,
         m: int,
@@ -351,7 +355,11 @@ class SlepianPolarCap(SlepianFunctions):
             )
         return s
 
-    def _polar_gap_modification(self, ell1: int, ell2: int) -> int:
+    def _polar_gap_modification(
+        self: typing_extensions.Self,
+        ell1: int,
+        ell2: int,
+    ) -> int:
         """
         Eq 67 - Spherical Slepian functions and the polar gap in geodesy
         multiply by 1 + (-1)*(ell+ell').
@@ -359,7 +367,7 @@ class SlepianPolarCap(SlepianFunctions):
         return 1 + self.gap * (-1) ** (ell1 + ell2)
 
     def _clean_evals_and_evecs(
-        self,
+        self: typing_extensions.Self,
         eigenvalues: npt.NDArray[np.float_],
         gl: npt.NDArray[np.float_],
         emm: npt.NDArray[np.float_],
@@ -388,7 +396,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     @pydantic.field_validator("order")
     def _check_order(
-        cls,
+        cls,  # noqa: ANN101
         v: int | npt.NDArray[np.int_] | None,
         info: pydantic.ValidationInfo,
     ) -> int | npt.NDArray[np.int_] | None:
@@ -398,7 +406,7 @@ class SlepianPolarCap(SlepianFunctions):
         return v
 
     @pydantic.field_validator("theta_max")
-    def _check_theta_max(cls, v: float) -> float:
+    def _check_theta_max(cls, v: float) -> float:  # noqa: ANN101
         if v == 0:
             msg = "theta_max cannot be zero"
             raise ValueError(msg)

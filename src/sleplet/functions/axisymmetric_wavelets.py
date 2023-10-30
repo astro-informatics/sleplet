@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import pys2let
 
@@ -30,17 +31,19 @@ class AxisymmetricWavelets(Flm):
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
         _logger.info("finish computing wavelets")
         jth = 0 if self.j is None else self.j + 1
         return self.wavelets[jth]
 
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         return (
             f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
             f"{sleplet._string_methods.filename_args(self.B, 'B')}"
@@ -48,13 +51,13 @@ class AxisymmetricWavelets(Flm):
             f"{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}"
         )
 
-    def _set_reality(self) -> bool:
+    def _set_reality(self: typing_extensions.Self) -> bool:
         return True
 
-    def _set_spin(self) -> int:
+    def _set_spin(self: typing_extensions.Self) -> int:
         return 0
 
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
             num_args = 3
             if len(self.extra_args) != num_args:
@@ -62,7 +65,7 @@ class AxisymmetricWavelets(Flm):
                 raise ValueError(msg)
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self) -> npt.NDArray[np.complex_]:
+    def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:
         """Compute all wavelets."""
         return sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,
@@ -71,7 +74,7 @@ class AxisymmetricWavelets(Flm):
         )
 
     @pydantic.field_validator("j")
-    def _check_j(cls, v: int | None, info: pydantic.ValidationInfo) -> int | None:
+    def _check_j(cls, v: int | None, info: pydantic.ValidationInfo) -> int | None:  # noqa: ANN101
         j_max = pys2let.pys2let_j_max(
             info.data["B"],
             info.data["L"],

@@ -4,6 +4,7 @@ import abc
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
@@ -16,11 +17,11 @@ from sleplet.functions.coefficients import Coefficients
 class Flm(Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
     def rotate(  # noqa: D102
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
         *,
@@ -29,14 +30,14 @@ class Flm(Coefficients):
         return ssht.rotate_flms(self.coefficients, alpha, beta, gamma, self.L)
 
     def _translation_helper(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
     ) -> npt.NDArray[np.complex_]:
         return ssht.create_ylm(beta, alpha, self.L).conj().flatten()
 
     def _add_noise_to_signal(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """Add Gaussian white noise to the signal."""
         self.coefficients: npt.NDArray[np.complex_ | np.float_]
@@ -49,21 +50,23 @@ class Flm(Coefficients):
         return None, None
 
     @abc.abstractmethod
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_reality(self) -> bool:
+    def _set_reality(self: typing_extensions.Self) -> bool:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_spin(self) -> int:
+    def _set_spin(self: typing_extensions.Self) -> int:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         raise NotImplementedError

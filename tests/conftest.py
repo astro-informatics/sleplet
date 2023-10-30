@@ -40,13 +40,17 @@ def slepian_arbitrary() -> sleplet.slepian.SlepianArbitrary:
 
 
 @pytest.fixture(scope="session")
-def earth_polar_cap(slepian_polar_cap) -> sleplet.functions.Earth:
+def earth_polar_cap(
+    slepian_polar_cap: sleplet.slepian.SlepianPolarCap,
+) -> sleplet.functions.Earth:
     """Earth with polar cap region."""
     return sleplet.functions.Earth(slepian_polar_cap.L, region=slepian_polar_cap.region)
 
 
 @pytest.fixture(scope="session")
-def earth_lim_lat_lon(slepian_lim_lat_lon) -> sleplet.functions.Earth:
+def earth_lim_lat_lon(
+    slepian_lim_lat_lon: sleplet.slepian.SlepianLimitLatLon,
+) -> sleplet.functions.Earth:
     """Earth with limited latitude longitude region."""
     return sleplet.functions.Earth(
         slepian_lim_lat_lon.L,
@@ -55,14 +59,16 @@ def earth_lim_lat_lon(slepian_lim_lat_lon) -> sleplet.functions.Earth:
 
 
 @pytest.fixture(scope="session")
-def south_america_arbitrary(slepian_arbitrary) -> sleplet.functions.SouthAmerica:
+def south_america_arbitrary(
+    slepian_arbitrary: sleplet.slepian.SlepianLimitLatLon,
+) -> sleplet.functions.SouthAmerica:
     """South America already has region."""
     return sleplet.functions.SouthAmerica(slepian_arbitrary.L)
 
 
 @pytest.fixture(scope="session")
 def slepian_dirac_delta_polar_cap(
-    slepian_polar_cap,
+    slepian_polar_cap: sleplet.slepian.SlepianPolarCap,
 ) -> sleplet.functions.SlepianDiracDelta:
     """Create a polar cap Slepian Dirac delta."""
     return sleplet.functions.SlepianDiracDelta(
@@ -73,7 +79,7 @@ def slepian_dirac_delta_polar_cap(
 
 @pytest.fixture(scope="session")
 def slepian_dirac_delta_lim_lat_lon(
-    slepian_lim_lat_lon,
+    slepian_lim_lat_lon: sleplet.slepian.SlepianLimitLatLon,
 ) -> sleplet.functions.SlepianDiracDelta:
     """Create a limited latitude longitude Slepian Dirac delta."""
     return sleplet.functions.SlepianDiracDelta(
@@ -83,7 +89,9 @@ def slepian_dirac_delta_lim_lat_lon(
 
 
 @pytest.fixture(scope="session")
-def slepian_wavelets_polar_cap(slepian_polar_cap) -> sleplet.functions.SlepianWavelets:
+def slepian_wavelets_polar_cap(
+    slepian_polar_cap: sleplet.slepian.SlepianPolarCap,
+) -> sleplet.functions.SlepianWavelets:
     """Compute the Slepian wavelets for the polar cap region."""
     return sleplet.functions.SlepianWavelets(
         slepian_polar_cap.L,
@@ -93,7 +101,7 @@ def slepian_wavelets_polar_cap(slepian_polar_cap) -> sleplet.functions.SlepianWa
 
 @pytest.fixture(scope="session")
 def slepian_wavelets_lim_lat_lon(
-    slepian_lim_lat_lon,
+    slepian_lim_lat_lon: sleplet.slepian.SlepianLimitLatLon,
 ) -> sleplet.functions.SlepianWavelets:
     """Compute the Slepian wavelets for the lim_lat_lon region."""
     return sleplet.functions.SlepianWavelets(
@@ -126,18 +134,20 @@ def mesh() -> sleplet.meshes.Mesh:
 
 
 @pytest.fixture(scope="session")
-def mesh_slepian(mesh) -> sleplet.meshes.MeshSlepian:
+def mesh_slepian(mesh: sleplet.meshes.Mesh) -> sleplet.meshes.MeshSlepian:
     """Create a Slepian bird mesh."""
     return sleplet.meshes.MeshSlepian(mesh)
 
 
 @pytest.fixture(scope="session")
-def mesh_field_region(mesh) -> sleplet.meshes.MeshField:
+def mesh_field_region(mesh: sleplet.meshes.Mesh) -> sleplet.meshes.MeshField:
     """Create a field on the mesh."""
     return sleplet.meshes.MeshField(mesh, region=True)
 
 
 @pytest.fixture(scope="session")
-def mesh_slepian_wavelets(mesh) -> sleplet.meshes.MeshSlepianWavelets:
+def mesh_slepian_wavelets(
+    mesh: sleplet.meshes.Mesh,
+) -> sleplet.meshes.MeshSlepianWavelets:
     """Create a field on the mesh."""
     return sleplet.meshes.MeshSlepianWavelets(mesh)

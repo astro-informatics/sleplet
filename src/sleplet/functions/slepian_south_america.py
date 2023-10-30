@@ -2,6 +2,7 @@
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
@@ -17,7 +18,7 @@ class SlepianSouthAmerica(Fp):
     South America region.
     """
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
         if (
             isinstance(self.region, sleplet.slepian.region.Region)
@@ -26,7 +27,9 @@ class SlepianSouthAmerica(Fp):
             msg = "Slepian region selected must be 'south_america'"
             raise RuntimeError(msg)
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.south_america.SouthAmerica(
             self.L,
             smoothing=self.smoothing,
@@ -37,18 +40,18 @@ class SlepianSouthAmerica(Fp):
             flm=sa.coefficients,
         )
 
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(
             self.__class__.__name__,
         )
 
-    def _set_reality(self) -> bool:
+    def _set_reality(self: typing_extensions.Self) -> bool:
         return False
 
-    def _set_spin(self) -> int:
+    def _set_spin(self: typing_extensions.Self) -> int:
         return 0
 
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
             msg = f"{self.__class__.__name__} does not support extra arguments"
-            raise AttributeError(msg)
+            raise TypeError(msg)

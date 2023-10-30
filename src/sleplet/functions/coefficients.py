@@ -5,6 +5,7 @@ import dataclasses
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._convolution_methods
 import sleplet._mask_methods
@@ -61,7 +62,7 @@ class Coefficients:
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.spin = self._set_spin()
@@ -71,7 +72,7 @@ class Coefficients:
         self._unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def translate(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
         *,
@@ -96,7 +97,7 @@ class Coefficients:
         )
 
     def convolve(
-        self,
+        self: typing_extensions.Self,
         f_coefficient: npt.NDArray[np.complex_ | np.float_],
         g_coefficient: npt.NDArray[np.complex_ | np.float_],
         *,
@@ -121,7 +122,7 @@ class Coefficients:
             shannon=shannon,
         )
 
-    def _add_details_to_name(self) -> None:
+    def _add_details_to_name(self: typing_extensions.Self) -> None:
         """
         Add region to the name if present if not a Slepian function
         adds noise/smoothing if appropriate and bandlimit.
@@ -141,7 +142,7 @@ class Coefficients:
 
     @abc.abstractmethod
     def rotate(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
         *,
@@ -162,7 +163,7 @@ class Coefficients:
 
     @abc.abstractmethod
     def _translation_helper(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
     ) -> npt.NDArray[np.complex_]:
@@ -171,32 +172,34 @@ class Coefficients:
 
     @abc.abstractmethod
     def _add_noise_to_signal(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
         """Add Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         """Create the flm on the north pole."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         """Create the name of the function."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_reality(self) -> bool:
+    def _set_reality(self: typing_extensions.Self) -> bool:
         """Set the reality flag to speed up computations."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_spin(self) -> int:
+    def _set_spin(self: typing_extensions.Self) -> int:
         """Set the spin value in computations."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         """Initialise function specific args either default value or user input."""
         raise NotImplementedError
