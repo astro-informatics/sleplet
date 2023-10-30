@@ -92,8 +92,5 @@ class MeshCoefficients:
 
     @abc.abstractmethod
     def _setup_args(self: typing_extensions.Self) -> None:
-        """
-        Initialise function specific args
-        either default value or user input.
-        """
+        """Initialise function specific args either default value or user input."""
         raise NotImplementedError
