@@ -38,7 +38,8 @@ def valid_maps(map_name: str) -> str:
         sleplet._class_lists.MAPS_LM,
     ):
         return map_name
-    raise ValueError(f"{map_name} is not a valid map to convolve")
+    msg = f"{map_name} is not a valid map to convolve"
+    raise ValueError(msg)
 
 
 def valid_plotting(func_name: str) -> str:
@@ -47,7 +48,8 @@ def valid_plotting(func_name: str) -> str:
         sleplet._class_lists.COEFFICIENTS,
     ):
         return func_name
-    raise ValueError(f"{func_name} is not a valid function to plot")
+    msg = f"{func_name} is not a valid function to plot"
+    raise ValueError(msg)
 
 
 def read_args() -> argparse.Namespace:

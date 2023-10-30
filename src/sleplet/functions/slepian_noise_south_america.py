@@ -28,7 +28,8 @@ class SlepianNoiseSouthAmerica(Fp):
             isinstance(self.region, sleplet.slepian.region.Region)
             and self.region._name_ending != "south_america"
         ):
-            raise RuntimeError("Slepian region selected must be 'south_america'")
+            msg = "Slepian region selected must be 'south_america'"
+            raise RuntimeError(msg)
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         sa = sleplet.functions.slepian_south_america.SlepianSouthAmerica(
@@ -61,5 +62,6 @@ class SlepianNoiseSouthAmerica(Fp):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.SNR = self.extra_args[0]

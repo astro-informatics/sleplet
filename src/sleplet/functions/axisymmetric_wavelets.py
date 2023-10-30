@@ -58,7 +58,8 @@ class AxisymmetricWavelets(Flm):
         if isinstance(self.extra_args, list):
             num_args = 3
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.B, self.j_min, self.j = self.extra_args
 
     def _create_wavelets(self) -> npt.NDArray[np.complex_]:
@@ -77,10 +78,12 @@ class AxisymmetricWavelets(Flm):
             info.data["j_min"],
         )
         if v is not None and v < 0:
-            raise ValueError("j should be positive")
+            msg = "j should be positive"
+            raise ValueError(msg)
         if v is not None and v > j_max - info.data["j_min"]:
-            raise ValueError(
+            msg = (
                 "j should be less than j_max - j_min: "
-                f"{j_max - info.data['j_min'] + 1}",
+                f"{j_max - info.data['j_min'] + 1}"
             )
+            raise ValueError(msg)
         return v

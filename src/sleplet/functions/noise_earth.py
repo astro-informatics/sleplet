@@ -43,5 +43,6 @@ class NoiseEarth(Flm):
         if isinstance(self.extra_args, list):
             num_args = 1
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.SNR = self.extra_args[0]

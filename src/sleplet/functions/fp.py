@@ -44,7 +44,8 @@ class Fp(Coefficients):
         *,
         gamma: float = 0,
     ) -> npt.NDArray[np.complex_]:
-        raise NotImplementedError("Slepian rotation is not defined")
+        msg = "Slepian rotation is not defined"
+        raise NotImplementedError(msg)
 
     def _translation_helper(
         self,

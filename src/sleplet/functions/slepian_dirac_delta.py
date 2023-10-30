@@ -49,9 +49,8 @@ class SlepianDiracDelta(Fp):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)
 
     def _compute_angles(self) -> None:
         """Compute alpha/beta if not provided."""

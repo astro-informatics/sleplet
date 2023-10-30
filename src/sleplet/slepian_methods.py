@@ -64,7 +64,8 @@ def choose_slepian_method(
             )
 
         case _:
-            raise ValueError(f"{region._region_type} is an invalid region type")
+            msg = f"{region._region_type} is an invalid region type"
+            raise ValueError(msg)
 
 
 def slepian_inverse(

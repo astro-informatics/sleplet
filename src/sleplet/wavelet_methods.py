@@ -150,7 +150,7 @@ def find_non_zero_wavelet_coefficients(
     axis: int | tuple[int, ...],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Finds the coefficients within the shannon number to speed up computations.
+    Find the coefficients within the shannon number to speed up computations.
 
     Args:
         wav_coeffs: The wavelet coefficients.

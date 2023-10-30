@@ -24,7 +24,8 @@ class SlepianAfrica(Fp):
             isinstance(self.region, sleplet.slepian.region.Region)
             and self.region._name_ending != "africa"
         ):
-            raise RuntimeError("Slepian region selected must be 'africa'")
+            msg = "Slepian region selected must be 'africa'"
+            raise RuntimeError(msg)
 
     def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
         a = sleplet.functions.africa.Africa(self.L, smoothing=self.smoothing)
@@ -47,6 +48,5 @@ class SlepianAfrica(Fp):
 
     def _setup_args(self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise AttributeError(msg)

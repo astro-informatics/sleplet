@@ -51,7 +51,8 @@ class SquashedGaussian(Flm):
         if isinstance(self.extra_args, list):
             num_args = 2
             if len(self.extra_args) != num_args:
-                raise ValueError(f"The number of extra arguments should be {num_args}")
+                msg = f"The number of extra arguments should be {num_args}"
+                raise ValueError(msg)
             self.t_sigma, self.freq = (np.float_power(10, x) for x in self.extra_args)
 
     def _grid_fun(

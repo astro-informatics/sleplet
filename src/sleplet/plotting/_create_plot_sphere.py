@@ -143,7 +143,8 @@ class PlotSphere:
         thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
-            raise AttributeError("Bandlimit L deos not match that of f")
+            msg = "Bandlimit L deos not match that of f"
+            raise AttributeError(msg)
 
         f_plot = f.copy()
 

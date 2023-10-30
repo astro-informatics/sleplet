@@ -197,6 +197,7 @@ def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
     elif mask_name == f"south_america_L{L}.npy":
         mask = _create_south_america_mask(L, earth_flm)
     else:
-        raise ValueError(f"Mask name {mask_name} not recognised")
+        msg = f"Mask name {mask_name} not recognised"
+        raise ValueError(msg)
     np.save(platformdirs.user_data_path() / f"slepian_masks_{mask_name}", mask)
     return mask

@@ -293,7 +293,8 @@ class SlepianPolarCap(SlepianFunctions):
             or 2 * m2 != np.floor(2 * m2)
             or 2 * m3 != np.floor(2 * m3)
         ):
-            raise ValueError("Arguments must either be integer or half-integer!")
+            msg = "Arguments must either be integer or half-integer!"
+            raise ValueError(msg)
 
         if (
             m1 + m2 + m3 != 0
@@ -392,11 +393,13 @@ class SlepianPolarCap(SlepianFunctions):
         info: pydantic.ValidationInfo,
     ) -> int | npt.NDArray[np.int_] | None:
         if v is not None and (np.abs(v) >= info.data["L"]).any():
-            raise ValueError(f"Order magnitude should be less than {info.data['L']}")
+            msg = f"Order magnitude should be less than {info.data['L']}"
+            raise ValueError(msg)
         return v
 
     @pydantic.field_validator("theta_max")
     def _check_theta_max(cls, v: float) -> float:
         if v == 0:
-            raise ValueError("theta_max cannot be zero")
+            msg = "theta_max cannot be zero"
+            raise ValueError(msg)
         return v
