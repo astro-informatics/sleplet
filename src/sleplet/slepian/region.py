@@ -44,7 +44,7 @@ class Region:
 
     def _identify_region(self: typing_extensions.Self) -> None:
         """Identify region type based on the angle inputs or a mask name."""
-        _logger.info(
+        msg = (
             "Slepian region values detected: "
             f"POLAR_GAP={self.gap}, "
             f"THETA_MAX={self.theta_max}, "
@@ -53,6 +53,7 @@ class Region:
             f"PHI_MIN={self.phi_min}, "
             f"SLEPIAN_MASK={self.mask_name}.",
         )
+        _logger.info(msg)
         if sleplet._bool_methods.is_polar_cap(
             self.phi_min,
             self.phi_max,

@@ -39,7 +39,7 @@ def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
 
 
 def test_slepian_translation_changes_max_polar(
-    slepian_dirac_delta_polar_cap: sleplet.functions.slepian_dirac_delta.SlepianDiracDelta,
+    slepian_dirac_delta_polar_cap: sleplet.functions.slepian_dirac_delta.SlepianDiracDelta,  # noqa: E501
 ) -> None:
     """Test to ensure the location of the maximum of a field moves when translated."""
     _, beta = sleplet.plot_methods._calc_nearest_grid_point(
@@ -72,7 +72,7 @@ def test_slepian_translation_changes_max_polar(
 
 
 def test_slepian_translation_changes_max_lim_lat_lon(
-    slepian_dirac_delta_lim_lat_lon: sleplet.functions.slepian_dirac_delta.SlepianDiracDelta,
+    slepian_dirac_delta_lim_lat_lon: sleplet.functions.slepian_dirac_delta.SlepianDiracDelta,  # noqa: E501
 ) -> None:
     """Test to ensure the location of the maximum of a field moves when translated."""
     _, beta = sleplet.plot_methods._calc_nearest_grid_point(

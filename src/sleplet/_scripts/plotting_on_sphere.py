@@ -274,10 +274,11 @@ def _rotation_helper(
     gamma_pi_frac: float,
 ) -> tuple[npt.NDArray[np.complex_], str]:
     """Perform the rotation specific steps."""
-    _logger.info(
+    msg = (
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
     )
+    _logger.info(msg)
     filename += (
         "_rotate_"
         f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"  # noqa: E501
