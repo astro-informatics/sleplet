@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SquashedGaussian(Flm):
     r"""
-    Creates a squashed Gaussian
+    Create a squashed Gaussian
     \(\exp(-\frac{1}{2}{(\frac{\theta-\overline{\theta}}{\sigma_{\theta}})}^{2})
     \sin{(\nu_{\phi}\phi)}\).
     """

@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class ElongatedGaussian(Flm):
     r"""
-    Creates an elongated Gaussian
+    Create an elongated Gaussian
     \(\exp(-(\frac{{(\theta-\overline{\theta})}^{2}}{2\sigma_{\theta}^{2}}
     + \frac{{(\phi-\overline{\phi})}^{2}}{2\sigma_{\phi}^{2}}))\).
     """

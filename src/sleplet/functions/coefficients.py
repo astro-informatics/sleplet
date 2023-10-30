@@ -78,7 +78,7 @@ class Coefficients:
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         r"""
-        Performs the translation of the coefficients, used in the sifting convolution.
+        Perform the translation of the coefficients, used in the sifting convolution.
 
         Args:
             alpha: The point on the 2-sphere to translate to, i.e. the \(\phi\) value.
@@ -123,7 +123,7 @@ class Coefficients:
 
     def _add_details_to_name(self) -> None:
         """
-        Adds region to the name if present if not a Slepian function
+        Add region to the name if present if not a Slepian function
         adds noise/smoothing if appropriate and bandlimit.
         """
         if (
@@ -173,7 +173,7 @@ class Coefficients:
     def _add_noise_to_signal(
         self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """Adds Gaussian white noise to the signal."""
+        """Add Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abc.abstractmethod

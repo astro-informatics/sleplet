@@ -50,7 +50,7 @@ class PlotMesh:
         colour: mpl.colors.LinearSegmentedColormap = cmocean.cm.ice,
     ) -> None:
         """
-        Performs the plot.
+        Perform the plot.
 
         Args:
             colour: From the `cmocean.cm` module

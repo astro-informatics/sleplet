@@ -61,7 +61,7 @@ class PlotSphere:
             self.filename += "_norm"
 
     def execute(self) -> None:
-        """Performs the plot."""
+        """Perform the plot."""
         f = self._prepare_field(self.f)
 
         # get values from the setup

@@ -31,7 +31,7 @@ def _boost_coefficient_resolution(
     flm: npt.NDArray[typing.Any],
     boost: int,
 ) -> npt.NDArray[typing.Any]:
-    """Calculates a boost in resolution for given flm."""
+    """Calculate a boost in resolution for given flm."""
     return np.pad(flm, (0, boost), "constant")
 
 
@@ -115,7 +115,7 @@ def compute_random_signal(
     var_signal: float,
 ) -> npt.NDArray[np.complex_]:
     """
-    Generates a normally distributed random signal of a
+    Generate a normally distributed random signal of a
     complex signal with mean `0` and variance `1`.
 
     Args:

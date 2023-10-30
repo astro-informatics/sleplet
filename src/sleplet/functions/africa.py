@@ -18,7 +18,7 @@ from sleplet.functions.flm import Flm
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Africa(Flm):
     """
-    Creates a topographic map of the Earth setting everything outide of the
+    Create a topographic map of the Earth setting everything outide of the
     Africa region to zero.
     """
 

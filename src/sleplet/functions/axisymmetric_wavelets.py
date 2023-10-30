@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class AxisymmetricWavelets(Flm):
     """
-    Creates scale-discretised axisymmetric wavelets. As
+    Create scale-discretised axisymmetric wavelets. As
     seen in <https://doi.org/10.1051/0004-6361/201220729>.
     """
 

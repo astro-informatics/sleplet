@@ -14,7 +14,7 @@ from sleplet.functions.fp import Fp
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class SlepianAfrica(Fp):
     """
-    Creates a Slepian region on the topographic map of the Earth of the
+    Create a Slepian region on the topographic map of the Earth of the
     Africa region.
     """
 

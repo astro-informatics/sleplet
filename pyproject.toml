@@ -98,6 +98,7 @@ fix = true
 force-exclude = true
 ignore = [
     "D105",
+    "D203",
     "D212",
     "D407",
     "N803",

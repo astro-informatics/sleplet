@@ -13,7 +13,7 @@ from sleplet.functions.flm import Flm
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class HarmonicGaussian(Flm):
     r"""
-    Creates a harmonic Gaussian
+    Create a harmonic Gaussian
     \(\exp(-(\frac{{\ell}^{2}}{2\sigma_{\ell}^{2}}
     + \frac{{m}^{2}}{2\sigma_{m}^{2}}))\).
     """

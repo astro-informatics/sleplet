@@ -55,7 +55,7 @@ def create_mesh_region(
 
 
 def extract_mesh_config(mesh_name: str) -> dict:
-    """Reads in the given mesh region settings file."""
+    """Read in the given mesh region settings file."""
     with pathlib.Path.open(
         _data_path / f"meshes_regions_{mesh_name}.toml",
         "rb",
@@ -110,7 +110,7 @@ def mesh_eigendecomposition(
 
 
 def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
-    """Reads in the given mesh."""
+    """Read in the given mesh."""
     vertices, faces = igl.read_triangle_mesh(
         str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}"),
     )

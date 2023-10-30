@@ -128,7 +128,7 @@ def _create_plot_type(
     field: npt.NDArray[np.complex_ | np.float_],
     plot_type: str,
 ) -> npt.NDArray[np.float_]:
-    """Gets the given plot type of the field."""
+    """Get the given plot type of the field."""
     _logger.info(f"plotting type: '{plot_type}'")
     plot_dict = {
         "abs": np.abs(field),

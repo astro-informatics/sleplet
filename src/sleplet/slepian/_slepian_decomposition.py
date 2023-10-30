@@ -99,7 +99,7 @@ class SlepianDecomposition:
         return (self.flm * self.slepian.eigenvectors[rank].conj()).sum()
 
     def _detect_method(self) -> None:
-        """Detects what method is used to perform the decomposition."""
+        """Detect what method is used to perform the decomposition."""
         if self.flm is not None:
             _logger.info("harmonic sum method selected")
             self._method = "harmonic_sum"

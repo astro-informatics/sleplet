@@ -271,7 +271,7 @@ def _rotation_helper(
     beta_pi_frac: float,
     gamma_pi_frac: float,
 ) -> tuple[npt.NDArray[np.complex_], str]:
-    """Performs the rotation specific steps."""
+    """Perform the rotation specific steps."""
     _logger.info(
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
@@ -301,7 +301,7 @@ def _translation_helper(
     beta_pi_frac: float,
     shannon: int | None,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
-    """Performs the translation specific steps."""
+    """Perform the translation specific steps."""
     _logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
     # don't add gamma if translation
     filename += (
@@ -337,7 +337,7 @@ def _convolution_helper(
     shannon: int | None,
     filename: str,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str]:
-    """Performs the convolution specific steps."""
+    """Perform the convolution specific steps."""
     g_coefficients = (
         sleplet.slepian_methods.slepian_forward(f.L, f.slepian, flm=g.coefficients)
         if hasattr(f, "slepian")
