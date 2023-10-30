@@ -1,4 +1,3 @@
-# noqa: D100
 import logging
 import os
 

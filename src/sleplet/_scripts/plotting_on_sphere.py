@@ -1,4 +1,3 @@
-# noqa: D100
 import argparse
 import logging
 
@@ -353,7 +352,7 @@ def _convolution_helper(
     return coefficients, filename
 
 
-def main() -> None:  # noqa: D103
+def main() -> None:
     args = read_args()
 
     mask = sleplet._mask_methods.create_default_region() if args.region else None

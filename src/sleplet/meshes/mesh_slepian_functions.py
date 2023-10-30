@@ -66,7 +66,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
                 raise ValueError(msg)
 
     @pydantic.field_validator("rank")
-    def _check_rank(cls, v: int) -> int:
+    def _check_rank(cls, v: int) -> int:  # noqa: ANN101
         if not isinstance(v, int):
             msg = "rank should be an integer"
             raise TypeError(msg)

@@ -81,8 +81,8 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _solve_D_matrix(  # noqa: N802
         self: typing_extensions.Self,
-        eval_loc,
-        evec_loc,
+        eval_loc: str,
+        evec_loc: str,
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         D = self._create_D_matrix()
 

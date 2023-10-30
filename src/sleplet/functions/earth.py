@@ -39,4 +39,4 @@ class Earth(Flm):
     def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
             msg = f"{self.__class__.__name__} does not support extra arguments"
-            raise AttributeError(msg)
+            raise TypeError(msg)

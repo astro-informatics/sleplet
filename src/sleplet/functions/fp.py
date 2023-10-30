@@ -40,8 +40,8 @@ class Fp(Coefficients):
 
     def rotate(  # noqa: D102
         self: typing_extensions.Self,
-        alpha: float,
-        beta: float,
+        alpha: float,  # noqa: ARG002
+        beta: float,  # noqa: ARG002
         *,
         gamma: float = 0,  # noqa: ARG002
     ) -> npt.NDArray[np.complex_]:

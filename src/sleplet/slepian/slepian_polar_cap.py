@@ -396,7 +396,7 @@ class SlepianPolarCap(SlepianFunctions):
 
     @pydantic.field_validator("order")
     def _check_order(
-        cls,
+        cls,  # noqa: ANN101
         v: int | npt.NDArray[np.int_] | None,
         info: pydantic.ValidationInfo,
     ) -> int | npt.NDArray[np.int_] | None:
@@ -406,7 +406,7 @@ class SlepianPolarCap(SlepianFunctions):
         return v
 
     @pydantic.field_validator("theta_max")
-    def _check_theta_max(cls, v: float) -> float:
+    def _check_theta_max(cls, v: float) -> float:  # noqa: ANN101
         if v == 0:
             msg = "theta_max cannot be zero"
             raise ValueError(msg)

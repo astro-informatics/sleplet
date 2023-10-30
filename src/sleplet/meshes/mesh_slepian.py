@@ -67,9 +67,9 @@ class MeshSlepian:
 
     def _compute_slepian_functions_from_scratch(
         self: typing_extensions.Self,
-        eval_loc,
-        evec_loc,
-    ):
+        eval_loc: str,
+        evec_loc: str,
+    ) -> None:
         D = self._create_D_matrix()
         msg = (
             f"Shannon number from vertices: {self.N}, "
@@ -137,7 +137,7 @@ class MeshSlepian:
         sleplet._parallel_methods.release_shared_memory(shm_ext)
         return D
 
-    def _fill_D_elements(
+    def _fill_D_elements(  # noqa: N802
         self: typing_extensions.Self,
         D: npt.NDArray[np.float_],
         i: int,

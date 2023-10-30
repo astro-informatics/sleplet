@@ -122,6 +122,7 @@ isort = {known-first-party = [
 ]}}
 per-file-ignores = {"examples*" = [
     "D100",
+    "D104",
     "SLF001",
     "T201",
 ], "src*" = [

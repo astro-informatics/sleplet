@@ -22,7 +22,10 @@ def valid_betas() -> hypothesis.strategies.SearchStrategy[float]:
 @hypothesis.seed(sleplet._vars.RANDOM_SEED)
 @hypothesis.settings(max_examples=8, deadline=None)
 @hypothesis.given(alpha_pi_frac=valid_alphas(), beta_pi_frac=valid_betas())
-def test_dirac_delta_rotate_translate(alpha_pi_frac, beta_pi_frac) -> None:
+def test_dirac_delta_rotate_translate(
+    alpha_pi_frac: hypothesis.strategies.SearchStrategy[float],
+    beta_pi_frac: hypothesis.strategies.SearchStrategy[float],
+) -> None:
     """
     Test to ensure that rotation and translation
     give the same result for the Dirac delta.
