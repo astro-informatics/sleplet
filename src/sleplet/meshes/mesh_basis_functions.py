@@ -29,10 +29,11 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         self: typing_extensions.Self
     ) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
-        _logger.info(
+        msg = (
             f"Mesh eigenvalue {self.rank}: "
             f"{self.mesh.mesh_eigenvalues[self.rank]:e}",
         )
+        _logger.info(msg)
         basis_function = self.mesh.basis_functions[self.rank]
         return sleplet.harmonic_methods.mesh_forward(self.mesh, basis_function)
 

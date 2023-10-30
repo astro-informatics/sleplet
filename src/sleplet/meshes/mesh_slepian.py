@@ -69,11 +69,12 @@ class MeshSlepian:
         self: typing_extensions.Self, eval_loc, evec_loc
     ):
         D = self._create_D_matrix()
-        _logger.info(
+        msg = (
             f"Shannon number from vertices: {self.N}, "
             f"Trace of D matrix: {round(D.trace())}, "
             f"difference: {round(np.abs(self.N - D.trace()))}",
         )
+        _logger.info(msg)
 
         # fill in remaining triangle section
         sleplet._array_methods.fill_upper_triangle_of_hermitian_matrix(D)
@@ -105,15 +106,18 @@ class MeshSlepian:
             )
 
             for i in chunk:
-                _logger.info(f"start basis function: {i}")
+                msg = f"start basis function: {i}"
+                _logger.info(msg)
                 self._fill_D_elements(D_int, i)
-                _logger.info(f"finish basis function: {i}")
+                msg = f"finish basis function: {i}"
+                _logger.info(msg)
 
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise efficiency
         ncpu = int(os.getenv("NCPU", "4"))
-        _logger.info(f"Number of CPU={ncpu}")
+        msg = f"Number of CPU={ncpu}"
+        _logger.info(msg)
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.mesh.mesh_eigenvalues.shape[0],
             ncpu,

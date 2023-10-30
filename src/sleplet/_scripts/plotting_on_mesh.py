@@ -106,7 +106,8 @@ def plot(
 
 def main() -> None:  # noqa: D103
     args = read_args()
-    _logger.info(f"mesh: '{args.function}', plotting method: '{args.method}'")
+    msg = f"mesh: '{args.function}', plotting method: '{args.method}'"
+    _logger.info(msg)
 
     # function to plot
     mesh = sleplet.meshes.mesh.Mesh(args.function, zoom=args.zoom)

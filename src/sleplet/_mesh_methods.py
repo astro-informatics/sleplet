@@ -77,10 +77,11 @@ def mesh_eigendecomposition(
     # determine number of basis functions
     if number_basis_functions is None:
         number_basis_functions = vertices.shape[0] // 4
-    _logger.info(
+    msg = (
         f"finding {number_basis_functions}/{vertices.shape[0]} "
         f"basis functions of {name} mesh",
     )
+    _logger.info(msg)
 
     # create filenames
     eigd_loc = f"meshes_laplacians_basis_functions_{name}_b{number_basis_functions}"

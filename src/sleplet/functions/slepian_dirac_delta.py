@@ -71,9 +71,9 @@ class SlepianDiracDelta(Fp):
         idx = tuple(np.argwhere(sp == sp.max())[0])
         self._alpha = phis[idx]
         self._beta = thetas[idx]
-        _logger.info(
+        msg = (
             f"angles: (alpha, beta) = ({self._alpha/np.pi:.5f},{self._beta/np.pi:.5f})",
         )
-        _logger.info(
-            f"grid point: (alpha, beta) = ({self._alpha:e},{self._beta:e})",
-        )
+        _logger.info(msg)
+        msg = (f"grid point: (alpha, beta) = ({self._alpha:e},{self._beta:e})",)
+        _logger.info(msg)

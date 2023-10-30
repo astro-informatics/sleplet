@@ -43,10 +43,11 @@ class Slepian(Fp):
     def _create_coefficients(
         self: typing_extensions.Self
     ) -> npt.NDArray[np.complex_ | np.float_]:
-        _logger.info(f"Shannon number: {self.slepian.N}")
-        _logger.info(
-            f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}",
+        msg = (
+            f"Shannon number: {self.slepian.N}\n"
+            f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}"
         )
+        _logger.info(msg)
         return sleplet.slepian_methods.slepian_forward(
             self.L,
             self.slepian,

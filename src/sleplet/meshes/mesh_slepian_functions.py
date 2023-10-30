@@ -28,10 +28,11 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         self: typing_extensions.Self
     ) -> npt.NDArray[np.complex_ | np.float_]:
         """Compute field on the vertices of the mesh."""
-        _logger.info(
+        msg = (
             f"Slepian eigenvalue {self.rank}: "
             f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",
         )
+        _logger.info(msg)
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]
         return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,

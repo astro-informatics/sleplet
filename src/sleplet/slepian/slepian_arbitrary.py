@@ -122,15 +122,18 @@ class SlepianArbitrary(SlepianFunctions):
             ) = sleplet._parallel_methods.attach_to_shared_memory_block(D_i, shm_i_ext)
 
             for i in chunk:
-                _logger.info(f"start ell: {i}")
+                msg = f"start ell: {i}"
+                _logger.info(msg)
                 self._matrix_helper(D_r_int, D_i_int, i)
-                _logger.info(f"finish ell: {i}")
+                msg = f"finish ell: {i}"
+                _logger.info(msg)
 
             sleplet._parallel_methods.free_shared_memory(shm_r_int, shm_i_int)
 
         # split up L range to maximise efficiency
         ncpu = int(os.getenv("NCPU", "4"))
-        _logger.info(f"Number of CPU={ncpu}")
+        msg = f"Number of CPU={ncpu}"
+        _logger.info(msg)
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L**2,
             ncpu,

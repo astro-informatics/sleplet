@@ -194,15 +194,18 @@ class SlepianPolarCap(SlepianFunctions):
 
             # deal with chunk
             for i in chunk:
-                _logger.info(f"start ell: {i}")
+                msg = f"start ell: {i}"
+                _logger.info(msg)
                 self._dm_matrix_helper(Dm_int, i, m, lvec, Pl, ell)
-                _logger.info(f"finish ell: {i}")
+                msg = f"finish ell: {i}"
+                _logger.info(msg)
 
             sleplet._parallel_methods.free_shared_memory(shm_int)
 
         # split up L range to maximise efficiency
         ncpu = int(os.getenv("NCPU", "4"))
-        _logger.info(f"Number of CPU={ncpu}")
+        msg = f"Number of CPU={ncpu}"
+        _logger.info(msg)
         chunks = sleplet._parallel_methods.split_arr_into_chunks(
             self.L - m,
             ncpu,
