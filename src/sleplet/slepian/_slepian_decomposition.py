@@ -112,8 +112,8 @@ class SlepianDecomposition:
                 self._method = "integrate_region"
         else:
             msg = (
-                "need to pass one off harmonic coefficients, "
-                "or real pixels or real pixels with a mask"
+                "need to pass one off harmonic coefficients, real pixels "
+                "or real pixels with a mask"
             )
             raise RuntimeError(msg)
 
