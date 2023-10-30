@@ -11,8 +11,11 @@ L_SMALL = 16
 VAR_SIGNAL = 1
 
 
-def test_synthesis_polar(slepian_wavelets_polar_cap, earth_polar_cap) -> None:
-    """Tests that Slepian polar wavelet synthesis matches the coefficients."""
+def test_synthesis_polar(
+    slepian_wavelets_polar_cap: sleplet.functions.slepian_wavelets.SlepianWavelets,
+    earth_polar_cap: sleplet.functions.earth.Earth,
+) -> None:
+    """Test that Slepian polar wavelet synthesis matches the coefficients."""
     coefficients = sleplet.slepian_methods.slepian_forward(
         slepian_wavelets_polar_cap.L,
         slepian_wavelets_polar_cap.slepian,
@@ -31,8 +34,11 @@ def test_synthesis_polar(slepian_wavelets_polar_cap, earth_polar_cap) -> None:
     np.testing.assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-14)
 
 
-def test_synthesis_lim_lat_lon(slepian_wavelets_lim_lat_lon, earth_lim_lat_lon) -> None:
-    """Tests that Slepian lim_lat_lon wavelet synthesis matches the coefficients."""
+def test_synthesis_lim_lat_lon(
+    slepian_wavelets_lim_lat_lon: sleplet.functions.slepian_wavelets.SlepianWavelets,
+    earth_lim_lat_lon: sleplet.functions.earth.Earth,
+) -> None:
+    """Test that Slepian lim_lat_lon wavelet synthesis matches the coefficients."""
     coefficients = sleplet.slepian_methods.slepian_forward(
         slepian_wavelets_lim_lat_lon.L,
         slepian_wavelets_lim_lat_lon.slepian,
@@ -52,7 +58,7 @@ def test_synthesis_lim_lat_lon(slepian_wavelets_lim_lat_lon, earth_lim_lat_lon) 
 
 
 def test_axisymmetric_synthesis_earth() -> None:
-    """Tests that the axisymmetric wavelet synthesis recoveres the coefficients."""
+    """Test that the axisymmetric wavelet synthesis recoveres the coefficients."""
     awc = sleplet.functions.AxisymmetricWaveletCoefficientsEarth(
         L_SMALL,
         B=B,
@@ -71,7 +77,7 @@ def test_axisymmetric_synthesis_earth() -> None:
 
 
 def test_axisymmetric_synthesis_south_america() -> None:
-    """Tests that the axisymmetric wavelet synthesis recoveres the coefficients."""
+    """Test that the axisymmetric wavelet synthesis recoveres the coefficients."""
     awc = sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica(
         L_SMALL,
         B=B,
@@ -90,7 +96,7 @@ def test_axisymmetric_synthesis_south_america() -> None:
 
 
 def test_only_wavelet_coefficients_within_shannon_returned() -> None:
-    """Verifies that only the non-zero wavelet coefficients are returned."""
+    """Verify that only the non-zero wavelet coefficients are returned."""
     coeffs_in = np.array([[3], [2], [1], [0]])
     coeffs_out = np.array([[3], [2], [1]])
     shannon_coeffs = sleplet.wavelet_methods.find_non_zero_wavelet_coefficients(
@@ -101,7 +107,7 @@ def test_only_wavelet_coefficients_within_shannon_returned() -> None:
 
 
 def test_create_kappas() -> None:
-    """Checks that the method creates the scaling function and wavelets."""
+    """Check that the method creates the scaling function and wavelets."""
     wavelets = sleplet.wavelet_methods.create_kappas(L_LARGE**2, B, J_MIN)
     j_max = pys2let.pys2let_j_max(B, L_LARGE**2, J_MIN)
     np.testing.assert_equal(j_max - J_MIN + 2, wavelets.shape[0])

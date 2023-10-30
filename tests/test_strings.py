@@ -20,7 +20,7 @@ def test_add_extra_args_to_filename() -> None:
 
 
 def test_add_angle_to_filename() -> None:
-    """Tests angle added to filename."""
+    """Test angle added to filename."""
     arguments = [(0.75, 0.125, 0), (0.1, 0.2, 0.3), (0.9, 0, 0), (0, 0.8, 0), (0, 0, 0)]
     output = [
         "alpha3pi4_beta1pi8",
@@ -37,7 +37,7 @@ def test_add_angle_to_filename() -> None:
 
 
 def test_print_multiple_of_pi() -> None:
-    """Tests that the pi prefix is added."""
+    """Test that the pi prefix is added."""
     arguments = [0, 1, 2, 2.5]
     output = ["0\u03C0", "\u03C0", "2\u03C0", "2\u03C0"]
     for c, arg in enumerate(arguments):
@@ -48,7 +48,7 @@ def test_print_multiple_of_pi() -> None:
 
 
 def test_convert_angle_to_degrees() -> None:
-    """Verifies angles is converted to degree."""
+    """Verify angles is converted to degree."""
     arguments = [PHI_0, PHI_1, THETA_MAX]
     output = [30, 60, 40]
     for c, arg in enumerate(arguments):

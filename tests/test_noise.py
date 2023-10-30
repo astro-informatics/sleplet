@@ -10,7 +10,7 @@ SNR_IN = 10
 
 
 def test_adding_noise_changes_flm() -> None:
-    """Tests the addition of Gaussian noise changes the coefficients."""
+    """Test the addition of Gaussian noise changes the coefficients."""
     earth = sleplet.functions.Earth(L)
     earth_noised = sleplet.functions.Earth(L, noise=SNR_IN)
     np.testing.assert_raises(
