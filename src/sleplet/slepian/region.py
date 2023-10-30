@@ -92,7 +92,7 @@ class Region:
             raise AttributeError(msg)
 
     @pydantic.field_validator("phi_max")
-    def _check_phi_max(cls: "Region", v: float) -> float:
+    def _check_phi_max(cls, v: float) -> float:  # noqa: ANN101
         if v < sleplet._vars.PHI_MIN_DEFAULT:
             msg = "phi_max cannot be negative"
             raise ValueError(msg)
