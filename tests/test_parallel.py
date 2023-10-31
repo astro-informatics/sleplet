@@ -7,7 +7,8 @@ L_SMALL = 16
 NCPU = 4
 
 
-def test_split_L_into_chunks() -> None:  # noqa: N802
+def test_split_L_into_chunks(  # noqa: N802
+) -> None:
     """Ensure vector L split into appropriate number of chunks."""
     chunks = sleplet._parallel_methods.split_arr_into_chunks(L_SMALL, NCPU)
     np.testing.assert_equal(len(chunks), NCPU)

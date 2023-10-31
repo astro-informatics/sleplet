@@ -92,7 +92,9 @@ class MeshSlepian:
             self.slepian_functions[: self.N],
         )
 
-    def _create_D_matrix(self: typing_extensions.Self) -> npt.NDArray[np.float_]:  # noqa: N802
+    def _create_D_matrix(  # noqa: N802
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.float_]:
         """Compute the D matrix for the mesh eigenfunctions."""
         D = np.zeros(
             (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0]),
