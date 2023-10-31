@@ -406,7 +406,10 @@ class SlepianPolarCap(SlepianFunctions):
         return v
 
     @pydantic.field_validator("theta_max")
-    def _check_theta_max(cls, v: float) -> float:  # noqa: ANN101
+    def _check_theta_max(
+        cls,  # noqa: ANN101
+        v: float,
+    ) -> float:
         if v == 0:
             msg = "theta_max cannot be zero"
             raise ValueError(msg)
