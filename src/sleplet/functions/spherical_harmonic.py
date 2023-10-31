@@ -49,7 +49,11 @@ class SphericalHarmonic(Flm):
             self.ell, self.m = self.extra_args
 
     @pydantic.field_validator("ell")
-    def _check_ell(cls, v: int, info: pydantic.ValidationInfo) -> int:  # noqa: ANN101
+    def _check_ell(
+        cls,  # noqa: ANN101
+        v: int,
+        info: pydantic.ValidationInfo,
+    ) -> int:
         if not isinstance(v, int):
             msg = "ell should be an integer"
             raise TypeError(msg)
@@ -62,7 +66,11 @@ class SphericalHarmonic(Flm):
         return v
 
     @pydantic.field_validator("m")
-    def _check_m(cls, v: int, info: pydantic.ValidationInfo) -> int:  # noqa: ANN101
+    def _check_m(
+        cls,  # noqa: ANN101
+        v: int,
+        info: pydantic.ValidationInfo,
+    ) -> int:
         if not isinstance(v, int):
             msg = "m should be an integer"
             raise TypeError(msg)

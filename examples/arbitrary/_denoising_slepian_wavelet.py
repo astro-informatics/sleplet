@@ -21,7 +21,7 @@ def denoising_slepian_wavelet(
     )
 
     # compute wavelet noise
-    sigma_j = sleplet.noise._compute_slepian_sigma_j(
+    sigma_j = sleplet.noise._compute_slepian_sigma_j(  # noqa: SLF001
         signal.L,
         signal.coefficients,
         slepian_wavelets.wavelets,
