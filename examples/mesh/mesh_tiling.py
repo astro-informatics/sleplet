@@ -23,7 +23,7 @@ STEP = 0.01
 
 
 def main(mesh_name: str) -> None:
-    """Plots the tiling of the Slepian line."""
+    """Plot the tiling of the Slepian line."""
     # initialise mesh and Slepian mesh
     mesh = sleplet.meshes.Mesh(mesh_name)
     mesh_slepian = sleplet.meshes.MeshSlepian(mesh)

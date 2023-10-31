@@ -30,7 +30,7 @@ def denoising_axisym(  # noqa: PLR0913
     )
 
     # compute wavelet noise
-    sigma_j = sleplet.noise._compute_sigma_j(
+    sigma_j = sleplet.noise._compute_sigma_j(  # noqa: SLF001
         signal.coefficients,
         axisymmetric_wavelets.wavelets[1:],
         snr_in,

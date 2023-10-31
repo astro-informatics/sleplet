@@ -20,7 +20,7 @@ def average_functions_on_vertices_to_faces(
     functions_on_vertices: npt.NDArray[np.complex_ | np.float_],
 ) -> npt.NDArray[np.float_]:
     """
-    The integrals require all functions to be defined on faces
+    Require all functions to be defined on faces
     this method handles an arbitrary number of functions.
     """
     _logger.info("converting function on vertices to faces")
@@ -43,7 +43,7 @@ def create_mesh_region(
     mesh_config: dict,
     vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
-    """Creates a boolean region for the given mesh."""
+    """Create a boolean region for the given mesh."""
     return (
         (vertices[:, 0] >= mesh_config["XMIN"])
         & (vertices[:, 0] <= mesh_config["XMAX"])
@@ -55,7 +55,7 @@ def create_mesh_region(
 
 
 def extract_mesh_config(mesh_name: str) -> dict:
-    """Reads in the given mesh region settings file."""
+    """Read in the given mesh region settings file."""
     with pathlib.Path.open(
         _data_path / f"meshes_regions_{mesh_name}.toml",
         "rb",
@@ -71,16 +71,17 @@ def mesh_eigendecomposition(
     number_basis_functions: int | None = None,
 ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_], int]:
     """
-    Computes the eigendecomposition of the mesh represented
+    Compute the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data.
     """
     # determine number of basis functions
     if number_basis_functions is None:
         number_basis_functions = vertices.shape[0] // 4
-    _logger.info(
+    msg = (
         f"finding {number_basis_functions}/{vertices.shape[0]} "
         f"basis functions of {name} mesh",
     )
+    _logger.info(msg)
 
     # create filenames
     eigd_loc = f"meshes_laplacians_basis_functions_{name}_b{number_basis_functions}"
@@ -110,7 +111,7 @@ def mesh_eigendecomposition(
 
 
 def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
-    """Reads in the given mesh."""
+    """Read in the given mesh."""
     vertices, faces = igl.read_triangle_mesh(
         str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}"),
     )
@@ -121,7 +122,7 @@ def _mesh_laplacian(
     vertices: npt.NDArray[np.float_],
     faces: npt.NDArray[np.int_],
 ) -> npt.NDArray[np.float_]:
-    """Computes the cotagent mesh laplacian."""
+    """Compute the cotagent mesh laplacian."""
     return -igl.cotmatrix(vertices, faces)
 
 

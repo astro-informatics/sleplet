@@ -1,4 +1,3 @@
-# noqa: D100
 import argparse
 import logging
 
@@ -38,7 +37,8 @@ def valid_maps(map_name: str) -> str:
         sleplet._class_lists.MAPS_LM,
     ):
         return map_name
-    raise ValueError(f"{map_name} is not a valid map to convolve")
+    msg = f"{map_name} is not a valid map to convolve"
+    raise ValueError(msg)
 
 
 def valid_plotting(func_name: str) -> str:
@@ -47,11 +47,12 @@ def valid_plotting(func_name: str) -> str:
         sleplet._class_lists.COEFFICIENTS,
     ):
         return func_name
-    raise ValueError(f"{func_name} is not a valid function to plot")
+    msg = f"{func_name} is not a valid function to plot"
+    raise ValueError(msg)
 
 
 def read_args() -> argparse.Namespace:
-    """Method to read args from the command line."""
+    """Read args from the command line."""
     parser = argparse.ArgumentParser(description="Create SSHT plot")
     parser.add_argument(
         "function",
@@ -190,13 +191,15 @@ def plot(  # noqa: PLR0913
     coefficients = f.coefficients
 
     # turn off annotation if needed
-    _logger.info(f"annotations on: {annotations}")
+    msg = f"annotations on: {annotations}"
+    _logger.info(msg)
     annotation = []
 
     # Shannon number for Slepian coefficients
     shannon = f.slepian.N if hasattr(f, "slepian") else None
 
-    _logger.info(f"plotting method: '{method}'")
+    msg = f"plotting method: '{method}'"
+    _logger.info(msg)
     match method:
         case "rotate":
             coefficients, filename = _rotation_helper(
@@ -269,14 +272,15 @@ def _rotation_helper(
     beta_pi_frac: float,
     gamma_pi_frac: float,
 ) -> tuple[npt.NDArray[np.complex_], str]:
-    """Performs the rotation specific steps."""
-    _logger.info(
+    """Perform the rotation specific steps."""
+    msg = (
         "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
     )
+    _logger.info(msg)
     filename += (
         "_rotate_"
-        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"
+        f"{sleplet._string_methods.filename_angle(alpha_pi_frac, beta_pi_frac, gamma_pi_frac)}"  # noqa: E501
     )
 
     # calculate angles
@@ -299,8 +303,9 @@ def _translation_helper(
     beta_pi_frac: float,
     shannon: int | None,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
-    """Performs the translation specific steps."""
-    _logger.info(f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})")
+    """Perform the translation specific steps."""
+    msg = f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})"
+    _logger.info(msg)
     # don't add gamma if translation
     filename += (
         "_translate_"
@@ -335,7 +340,7 @@ def _convolution_helper(
     shannon: int | None,
     filename: str,
 ) -> tuple[npt.NDArray[np.complex_ | np.float_], str]:
-    """Performs the convolution specific steps."""
+    """Perform the convolution specific steps."""
     g_coefficients = (
         sleplet.slepian_methods.slepian_forward(f.L, f.slepian, flm=g.coefficients)
         if hasattr(f, "slepian")
@@ -347,7 +352,7 @@ def _convolution_helper(
     return coefficients, filename
 
 
-def main() -> None:  # noqa: D103
+def main() -> None:
     args = read_args()
 
     mask = sleplet._mask_methods.create_default_region() if args.region else None

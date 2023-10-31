@@ -10,7 +10,7 @@ THETA_MAX = np.pi / 3
 
 
 def test_resolution_values() -> None:
-    """Verifies the correct resolution is chosen for a given bandlimit."""
+    """Verify the correct resolution is chosen for a given bandlimit."""
     arguments = [1, 10, 100, 1000]
     output = [64, 80, 800, 2000]
     for c, arg in enumerate(arguments):

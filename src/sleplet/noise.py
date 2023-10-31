@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 
 
 def _signal_power(signal: npt.NDArray[np.complex_ | np.float_]) -> float:
-    """Computes the power of the signal."""
+    """Compute the power of the signal."""
     return (np.abs(signal) ** 2).sum()
 
 
@@ -26,7 +26,7 @@ def compute_snr(
     signal_type: str,
 ) -> float:
     """
-    Computes the signal to noise ratio.
+    Compute the signal to noise ratio.
 
     Args:
         signal: The unnoised signal.
@@ -37,7 +37,8 @@ def compute_snr(
         The signal-to-noise value of the noised signal.
     """
     snr = 10 * np.log10(_signal_power(signal) / _signal_power(noise))
-    _logger.info(f"{signal_type} SNR: {snr:.2f}")
+    msg = f"{signal_type} SNR: {snr:.2f}"
+    _logger.info(msg)
     return snr
 
 
@@ -68,7 +69,7 @@ def _create_noise(
     signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.complex_]:
-    """Computes Gaussian white noise."""
+    """Compute Gaussian white noise."""
     # set random seed
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
@@ -100,7 +101,7 @@ def _create_slepian_noise(
     slepian: SlepianFunctions,
     snr_in: float,
 ) -> npt.NDArray[np.complex_]:
-    """Computes Gaussian white noise in Slepian space."""
+    """Compute Gaussian white noise in Slepian space."""
     flm = ssht.forward(
         sleplet.slepian_methods.slepian_inverse(slepian_signal, L, slepian),
         L,
@@ -140,7 +141,8 @@ def harmonic_hard_thresholding(
     """
     _logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
-        _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)-1}")
+        msg = f"start Psi^{j + 1}/{len(wav_coeffs)-1}"
+        _logger.info(msg)
         f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j + 1] = ssht.forward(
@@ -173,7 +175,8 @@ def slepian_wavelet_hard_thresholding(
     """
     _logger.info("begin Slepian hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
-        _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
+        msg = f"start Psi^{j + 1}/{len(wav_coeffs)}"
+        _logger.info(msg)
         f = sleplet.slepian_methods.slepian_inverse(coefficient, L, slepian)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j] = sleplet.slepian_methods.slepian_forward(
@@ -240,7 +243,7 @@ def _create_mesh_noise(
     u_i: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """Computes Gaussian white noise."""
+    """Compute Gaussian white noise."""
     # set random seed
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
@@ -261,7 +264,7 @@ def _create_slepian_mesh_noise(
     slepian_signal: npt.NDArray[np.complex_ | np.float_],
     snr_in: float,
 ) -> npt.NDArray[np.float_]:
-    """Computes Gaussian white noise in Slepian space."""
+    """Compute Gaussian white noise in Slepian space."""
     u_i = sleplet.harmonic_methods.mesh_forward(
         mesh_slepian.mesh,
         sleplet.slepian_methods.slepian_mesh_inverse(
@@ -325,7 +328,8 @@ def slepian_mesh_hard_thresholding(
     """
     _logger.info("begin Slepian mesh hard thresholding")
     for j, coefficient in enumerate(wav_coeffs):
-        _logger.info(f"start Psi^{j + 1}/{len(wav_coeffs)}")
+        msg = f"start Psi^{j + 1}/{len(wav_coeffs)}"
+        _logger.info(msg)
         f = sleplet.slepian_methods.slepian_mesh_inverse(mesh_slepian, coefficient)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)
         wav_coeffs[j] = sleplet.slepian_methods.slepian_mesh_forward(

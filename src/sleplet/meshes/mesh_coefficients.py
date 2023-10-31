@@ -5,6 +5,7 @@ import dataclasses
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._mask_methods
 import sleplet._string_methods
@@ -54,15 +55,15 @@ class MeshCoefficients:
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.coefficients = self._create_coefficients()
         self._add_details_to_name()
         self._unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
-    def _add_details_to_name(self) -> None:
-        """Adds region to the name if present if not a Slepian function."""
+    def _add_details_to_name(self: typing_extensions.Self) -> None:
+        """Add region to the name if present if not a Slepian function."""
         if self.region and "slepian" not in self.mesh.name:
             self.name += "_region"
         if self.noise is not None:
@@ -72,25 +73,24 @@ class MeshCoefficients:
 
     @abc.abstractmethod
     def _add_noise_to_signal(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """Adds Gaussian white noise to the signal."""
+        """Add Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """Creates the flm on the north pole."""
+    def _create_coefficients(
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
+        """Create the flm on the north pole."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_name(self) -> str:
-        """Creates the name of the function."""
+    def _create_name(self: typing_extensions.Self) -> str:
+        """Create the name of the function."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _setup_args(self) -> None:
-        """
-        Initialises function specific args
-        either default value or user input.
-        """
+    def _setup_args(self: typing_extensions.Self) -> None:
+        """Initialise function specific args either default value or user input."""
         raise NotImplementedError

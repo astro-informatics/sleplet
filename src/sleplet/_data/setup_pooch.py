@@ -1,4 +1,3 @@
-# noqa: D100
 import logging
 import os
 
@@ -20,10 +19,13 @@ _POOCH.load_registry_from_doi()
 def find_on_pooch_then_local(filename: str) -> os.PathLike | None:
     """Find a file on POOCH first and if not look in data folder."""
     if filename in _POOCH.registry:
-        _logger.info(f"Found {filename} at https://doi.org/{_ZENODO_DATA_DOI}")
+        msg = f"Found {filename} at https://doi.org/{_ZENODO_DATA_DOI}"
+        _logger.info(msg)
         return _POOCH.fetch(filename, progressbar=True)
     if (platformdirs.user_data_path() / filename).exists():
-        _logger.info(f"Found {filename} at {platformdirs.user_data_path() / filename}")
+        msg = f"Found {filename} at {platformdirs.user_data_path() / filename}"
+        _logger.info(msg)
         return platformdirs.user_data_path() / filename
-    _logger.info(f"No {filename} found, calculating...")
+    msg = f"No {filename} found, calculating..."
+    _logger.info(msg)
     return None

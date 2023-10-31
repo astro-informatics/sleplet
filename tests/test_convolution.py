@@ -30,8 +30,8 @@ def test_earth_harmonic_gaussian_convolution() -> None:
 
 
 def test_south_america_slepian_identity_convolution(
-    slepian_arbitrary,
-    south_america_arbitrary,
+    slepian_arbitrary: sleplet.slepian.slepian_arbitrary.SlepianArbitrary,
+    south_america_arbitrary: sleplet.functions.south_america.SouthAmerica,
 ) -> None:
     """
     Test to ensure that the convolving with the Slepian

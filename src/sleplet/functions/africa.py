@@ -2,6 +2,7 @@
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
@@ -18,14 +19,16 @@ from sleplet.functions.flm import Flm
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Africa(Flm):
     """
-    Creates a topographic map of the Earth setting everything outide of the
+    Create a topographic map of the Earth setting everything outide of the
     Africa region to zero.
     """
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         super().__post_init__()
 
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
+    def _create_coefficients(
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
         return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun,
             self.L,
@@ -33,29 +36,28 @@ class Africa(Flm):
             spin=self.spin,
         )
 
-    def _create_name(self) -> str:
+    def _create_name(self: typing_extensions.Self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(
             self.__class__.__name__,
         )
 
-    def _set_reality(self) -> bool:
+    def _set_reality(self: typing_extensions.Self) -> bool:
         return True
 
-    def _set_spin(self) -> int:
+    def _set_spin(self: typing_extensions.Self) -> int:
         return 0
 
-    def _setup_args(self) -> None:
+    def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):
-            raise AttributeError(
-                f"{self.__class__.__name__} does not support extra arguments",
-            )
+            msg = f"{self.__class__.__name__} does not support extra arguments"
+            raise TypeError(msg)
 
     def _grid_fun(
-        self,
+        self: typing_extensions.Self,
         theta: npt.NDArray[np.float_],  # noqa: ARG002
         phi: npt.NDArray[np.float_],  # noqa: ARG002
     ) -> npt.NDArray[np.float_]:
-        """Function on the grid."""
+        """Define the function on the grid."""
         earth_flm = sleplet._data.create_earth_flm.create_flm(
             self.L,
             smoothing=self.smoothing,

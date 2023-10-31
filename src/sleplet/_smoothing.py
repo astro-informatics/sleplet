@@ -14,7 +14,7 @@ def apply_gaussian_smoothing(
     smoothing_factor: int,
 ) -> npt.NDArray[np.complex_]:
     """
-    Applies Gaussian smoothing to the given signal.
+    Apply Gaussian smoothing to the given signal.
 
     s_lm = exp(-ell^2 sigma^2)
     s(omega) = exp(-theta^2 / sigma^2)
@@ -22,5 +22,6 @@ def apply_gaussian_smoothing(
     """
     sigma = np.pi / (smoothing_factor * L)
     fwhm = 2 * np.sqrt(np.log(2)) * sigma
-    _logger.info(f"FWHM = {np.rad2deg(fwhm):.2f}degrees")
+    msg = f"FWHM = {np.rad2deg(fwhm):.2f}degrees"
+    _logger.info(msg)
     return ssht.gaussian_smoothing(flm, L, sigma)

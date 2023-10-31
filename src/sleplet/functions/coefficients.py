@@ -5,6 +5,7 @@ import dataclasses
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._convolution_methods
 import sleplet._mask_methods
@@ -61,7 +62,7 @@ class Coefficients:
         repr=False,
     )
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._setup_args()
         self.name = self._create_name()
         self.spin = self._set_spin()
@@ -71,14 +72,14 @@ class Coefficients:
         self._unnoised_coefficients, self.snr = self._add_noise_to_signal()
 
     def translate(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
         *,
         shannon: int | None = None,
     ) -> npt.NDArray[np.complex_ | np.float_]:
         r"""
-        Performs the translation of the coefficients, used in the sifting convolution.
+        Perform the translation of the coefficients, used in the sifting convolution.
 
         Args:
             alpha: The point on the 2-sphere to translate to, i.e. the \(\phi\) value.
@@ -96,7 +97,7 @@ class Coefficients:
         )
 
     def convolve(
-        self,
+        self: typing_extensions.Self,
         f_coefficient: npt.NDArray[np.complex_ | np.float_],
         g_coefficient: npt.NDArray[np.complex_ | np.float_],
         *,
@@ -107,7 +108,7 @@ class Coefficients:
 
         Args:
             f_coefficient: Input harmonic/Slepian coefficients.
-            g_coefficien: Input harmonic/Slepian coefficients.
+            g_coefficient: Input harmonic/Slepian coefficients.
             shannon: The Shannon number, only used in the Slepian case.
 
         Returns:
@@ -121,9 +122,9 @@ class Coefficients:
             shannon=shannon,
         )
 
-    def _add_details_to_name(self) -> None:
+    def _add_details_to_name(self: typing_extensions.Self) -> None:
         """
-        Adds region to the name if present if not a Slepian function
+        Add region to the name if present if not a Slepian function
         adds noise/smoothing if appropriate and bandlimit.
         """
         if (
@@ -141,7 +142,7 @@ class Coefficients:
 
     @abc.abstractmethod
     def rotate(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
         *,
@@ -162,7 +163,7 @@ class Coefficients:
 
     @abc.abstractmethod
     def _translation_helper(
-        self,
+        self: typing_extensions.Self,
         alpha: float,
         beta: float,
     ) -> npt.NDArray[np.complex_]:
@@ -171,35 +172,34 @@ class Coefficients:
 
     @abc.abstractmethod
     def _add_noise_to_signal(
-        self,
+        self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
-        """Adds Gaussian white noise to the signal."""
+        """Add Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_coefficients(self) -> npt.NDArray[np.complex_ | np.float_]:
-        """Creates the flm on the north pole."""
+    def _create_coefficients(
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_ | np.float_]:
+        """Create the flm on the north pole."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_name(self) -> str:
-        """Creates the name of the function."""
+    def _create_name(self: typing_extensions.Self) -> str:
+        """Create the name of the function."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_reality(self) -> bool:
-        """Sets the reality flag to speed up computations."""
+    def _set_reality(self: typing_extensions.Self) -> bool:
+        """Set the reality flag to speed up computations."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _set_spin(self) -> int:
-        """Sets the spin value in computations."""
+    def _set_spin(self: typing_extensions.Self) -> int:
+        """Set the spin value in computations."""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _setup_args(self) -> None:
-        """
-        Initialises function specific args
-        either default value or user input.
-        """
+    def _setup_args(self: typing_extensions.Self) -> None:
+        """Initialise function specific args either default value or user input."""
         raise NotImplementedError

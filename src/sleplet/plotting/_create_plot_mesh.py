@@ -8,6 +8,7 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic
+import typing_extensions
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -25,7 +26,7 @@ _MESH_UNSEEN = -1e5  # kaleido bug
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotMesh:
-    """Creates surface mesh plot via `plotly`."""
+    """Create surface mesh plot via `plotly`."""
 
     mesh: sleplet.meshes.mesh.Mesh
     """The given mesh object."""
@@ -41,16 +42,16 @@ class PlotMesh:
     region: bool = False
     """Whether to set the field values outside of the region to zero."""
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         if self.normalise:
             self.filename += "_norm"
 
     def execute(
-        self,
+        self: typing_extensions.Self,
         colour: mpl.colors.LinearSegmentedColormap = cmocean.cm.ice,
     ) -> None:
         """
-        Performs the plot.
+        Perform the plot.
 
         Args:
             colour: From the `cmocean.cm` module
@@ -99,11 +100,12 @@ class PlotMesh:
 
         fig = go.Figure(data=data, layout=layout)
 
-        _logger.info(f"Opening: {self.filename}")
+        msg = f"Opening: {self.filename}"
+        _logger.info(msg)
         pio.show(fig, config={"toImageButtonOptions": {"filename": self.filename}})
 
     def _prepare_field(
-        self,
+        self: typing_extensions.Self,
         f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
         """Scales the field before plotting."""
@@ -116,7 +118,7 @@ class PlotMesh:
         )
 
     def _set_outside_region_to_minimum(
-        self,
+        self: typing_extensions.Self,
         f: npt.NDArray[np.float_],
     ) -> npt.NDArray[np.float_]:
         """

@@ -99,26 +99,14 @@ fix = true
 force-exclude = true
 ignore = [
     "COM812",
-    "COM819",
     "D105",
     "D203",
     "D205",
-    "D206",
     "D212",
-    "D401",
     "D407",
-    "D417",
-    "E501",
-    "EM101",
-    "EM102",
     "ISC001",
     "N803",
     "N806",
-    "Q000",
-    "Q001",
-    "Q002",
-    "Q003",
-    "W191",
 ]
 isort = {known-first-party = [
     "sleplet",
@@ -133,54 +121,18 @@ isort = {known-first-party = [
     "pys2let",
     "pyssht",
 ]}}
-per-file-ignores = {"examples/*" = [
+per-file-ignores = {"examples*" = [
     "D100",
     "T201",
-], "test_*" = [
-    "S101",
-], "tests/*" = [
+], "src*" = [
+    "SLF001",
+], "tests*" = [
     "D100",
+    "S101",
+    "SLF001",
 ]}
 select = [
-    "A",
-    "ARG",
-    "B",
-    "BLE",
-    "C",
-    "COM",
-    "D",
-    "DJ",
-    "DTZ",
-    "E",
-    "EM",
-    "ERA",
-    "EXE",
-    "F",
-    "FBT",
-    "I",
-    "ICN",
-    "ISC",
-    "N",
-    "NPY",
-    "PD",
-    "PGH",
-    "PIE",
-    "PL",
-    "PT",
-    "PTH",
-    "PYI",
-    "Q",
-    "RET",
-    "RSE",
-    "RUF",
-    "S",
-    "SIM",
-    "T",
-    "TCH",
-    "TID",
-    "UP",
-    "W",
-    "YTT",
+    "ALL",
 ]
 target-version = "py310"
 mccabe.max-complexity = 18

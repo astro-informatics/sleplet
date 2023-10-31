@@ -15,7 +15,7 @@ def slepian_wavelet_forward(
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Computes the coefficients of the given tiling function in Slepian space.
+    Compute the coefficients of the given tiling function in Slepian space.
 
     Args:
         f_p: The Slepian coefficients.
@@ -41,7 +41,7 @@ def slepian_wavelet_inverse(
     shannon: int,
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Computes the inverse wavelet transform in Slepian space.
+    Compute the inverse wavelet transform in Slepian space.
 
     Args:
         wav_coeffs: The Slepian wavelet coefficients.
@@ -67,7 +67,7 @@ def axisymmetric_wavelet_forward(
     wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
     """
-    Computes the coefficients of the axisymmetric wavelets.
+    Compute the coefficients of the axisymmetric wavelets.
 
     Args:
         L: The spherical harmonic bandlimit.
@@ -93,7 +93,7 @@ def axisymmetric_wavelet_inverse(
     wavelets: npt.NDArray[np.complex_],
 ) -> npt.NDArray[np.complex_]:
     """
-    Computes the inverse axisymmetric wavelet transform.
+    Compute the inverse axisymmetric wavelet transform.
 
     Args:
         L: The spherical harmonic bandlimit.
@@ -118,7 +118,7 @@ def _create_axisymmetric_wavelets(
     B: int,
     j_min: int,
 ) -> npt.NDArray[np.complex_]:
-    """Computes the axisymmetric wavelets."""
+    """Compute the axisymmetric wavelets."""
     kappas = create_kappas(L, B, j_min)
     wavelets = np.zeros((kappas.shape[0], L**2), dtype=np.complex_)
     for ell in range(L):
@@ -130,7 +130,7 @@ def _create_axisymmetric_wavelets(
 
 def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
     r"""
-    Computes the Slepian wavelets.
+    Compute the Slepian wavelets.
 
     Args:
         xlim: The x-axis value. \(L\) or \(L^2\) in the harmonic or Slepian case.
@@ -150,7 +150,7 @@ def find_non_zero_wavelet_coefficients(
     axis: int | tuple[int, ...],
 ) -> npt.NDArray[np.complex_ | np.float_]:
     """
-    Finds the coefficients within the shannon number to speed up computations.
+    Find the coefficients within the shannon number to speed up computations.
 
     Args:
         wav_coeffs: The wavelet coefficients.

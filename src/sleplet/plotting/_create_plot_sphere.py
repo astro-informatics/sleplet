@@ -7,6 +7,7 @@ import numpy.typing as npt
 import plotly.graph_objs as go
 import plotly.io as pio
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
@@ -21,7 +22,7 @@ _logger = logging.getLogger(__name__)
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class PlotSphere:
-    """Creates surface sphere plot via `plotly`."""
+    """Create surface sphere plot via `plotly`."""
 
     f: npt.NDArray[np.complex_ | np.float_]
     """The field value sampled on the sphere."""
@@ -48,7 +49,7 @@ class PlotSphere:
     """Whether to upsample the current field."""
     _resolution: int = pydantic.Field(default=0, init_var=False, repr=False)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self: typing_extensions.Self) -> None:
         self._resolution = (
             sleplet.plot_methods.calc_plot_resolution(self.L)
             if self.upsample
@@ -60,8 +61,8 @@ class PlotSphere:
         if self.normalise:
             self.filename += "_norm"
 
-    def execute(self) -> None:
-        """Performs the plot."""
+    def execute(self: typing_extensions.Self) -> None:
+        """Perform the plot."""
         f = self._prepare_field(self.f)
 
         # get values from the setup
@@ -115,7 +116,8 @@ class PlotSphere:
 
         fig = go.Figure(data=data, layout=layout)
 
-        _logger.info(f"Opening: {self.filename}")
+        msg = f"Opening: {self.filename}"
+        _logger.info(msg)
         pio.show(fig, config={"toImageButtonOptions": {"filename": self.filename}})
 
     @staticmethod
@@ -136,14 +138,15 @@ class PlotSphere:
         float,
         float,
     ]:
-        """Function which creates the data for the matplotlib/plotly plot."""
+        """Create the data for the matplotlib/plotly plot."""
         if parametric_scaling is None:
             parametric_scaling = [0.0, 0.5]
 
         thetas, phis = ssht.sample_positions(resolution, Grid=True, Method=method)
 
         if thetas.size != f.size:
-            raise AttributeError("Bandlimit L deos not match that of f")
+            msg = "Bandlimit L deos not match that of f"
+            raise AttributeError(msg)
 
         f_plot = f.copy()
 
@@ -192,7 +195,7 @@ class PlotSphere:
         return x, y, z, f_plot, vmin, vmax
 
     def _prepare_field(
-        self,
+        self: typing_extensions.Self,
         f: npt.NDArray[np.complex_ | np.float_],
     ) -> npt.NDArray[np.float_]:
         """Boosts, forces plot type and then scales the field before plotting."""
