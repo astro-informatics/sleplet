@@ -78,7 +78,9 @@ class SlepianLimitLatLon(SlepianFunctions):
             np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
-    def _create_K_matrix(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:  # noqa: N802
+    def _create_K_matrix(  # noqa: N802
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_]:
         """Compute the K matrix."""
         # Compute sub-integral matrix
         G = self._slepian_integral()

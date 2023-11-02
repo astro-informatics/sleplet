@@ -98,7 +98,9 @@ class SlepianArbitrary(SlepianFunctions):
         np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
-    def _create_D_matrix(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:  # noqa: N802
+    def _create_D_matrix(  # noqa: N802
+        self: typing_extensions.Self,
+    ) -> npt.NDArray[np.complex_]:
         """Compute the D matrix in parallel."""
         # create dictionary for the integrals
         self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
