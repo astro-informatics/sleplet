@@ -127,6 +127,7 @@ per-file-ignores = {"examples*" = [
     "SLF001",
 ], "tests*" = [
     "D100",
+    "INP001",
     "S101",
     "SLF001",
 ]}
