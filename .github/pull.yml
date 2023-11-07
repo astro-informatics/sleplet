@@ -2,5 +2,5 @@ version: "1"
 rules:
   - base: main
     upstream: astro-informatics:main
-    mergeMethod: squash
+    mergeMethod: hardreset
     mergeUnstable: true
