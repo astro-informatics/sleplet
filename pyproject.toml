@@ -89,7 +89,11 @@ plugins = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--color=yes -v"
+addopts = """
+    --color=yes
+    --import-mode=importlib
+    --verbose
+"""
 testpaths = [
     "tests",
 ]
@@ -123,11 +127,13 @@ isort = {known-first-party = [
 ]}}
 per-file-ignores = {"examples*" = [
     "D100",
+    "INP001",
     "T201",
 ], "src*" = [
     "SLF001",
 ], "tests*" = [
     "D100",
+    "INP001",
     "S101",
     "SLF001",
 ]}
