@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: paddyroddy/.github/actions/python/deployment@19b19e930f3c18ea1a0317b831047b1c038e098a # v0
+      - uses: paddyroddy/.github/actions/python/deployment@2875a6d0e8cde7569a844579e5528338cffae08f # v0
         with:
           pypi-api-token: ${{ secrets.PYPI_API_TOKEN }}
           pyproject-toml: ./pyproject.toml
