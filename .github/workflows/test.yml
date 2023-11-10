@@ -46,7 +46,11 @@ jobs:
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # v2
         with:
           parallel-finished: true
-          carryforward: "run-macos-latest-3.10,\
+          carryforward: "\
+            run-macos-latest-3.10,\
             run-ubuntu-latest-3.10,\
             run-macos-latest-3.11,\
-            run-ubuntu-latest-3.11"
+            run-ubuntu-latest-3.11,\
+            run-macos-latest-3.12,\
+            run-ubuntu-latest-3.12\
+            "
