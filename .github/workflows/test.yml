@@ -20,32 +20,48 @@ jobs:
         python-version:
           - "3.10"
           - "3.11"
+    outputs:
+      matrix-values: ${{ steps.set-matrix-values.outputs.matrix-values }}
     steps:
-      - uses: paddyroddy/.github/actions/python/tox@d847296ec70e63ba26408f9b354de8a40ce2f006 # v0
-        with:
-          cache-path: |-
-            .tox
-            ~/.cache/sleplet
-          operating-system: ${{ matrix.os }}
-          pyproject-toml: ./pyproject.toml
-          python-version: ${{ matrix.python-version }}
+      #   - uses: paddyroddy/.github/actions/python/tox@d847296ec70e63ba26408f9b354de8a40ce2f006 # v0
+      #     with:
+      #       cache-path: |-
+      #         .tox
+      #         ~/.cache/sleplet
+      #       operating-system: ${{ matrix.os }}
+      #       pyproject-toml: ./pyproject.toml
+      #       python-version: ${{ matrix.python-version }}
 
-      - name: Coveralls Parallel
-        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # v2
-        with:
-          flag-name: run-${{ matrix.os }}-${{ matrix.python-version }}
-          parallel: true
+      - name: Set matrix values
+        id: set-matrix-values
+        run: >-
+          echo matrix-values=run-${{ matrix.os }}-${{ matrix.python-version }}
+          >> $GITHUB_OUTPUT
+
+    #   - name: Coveralls Parallel
+    #     uses: coverallsapp/github-action@v2
+    #     with:
+    #       flag-name: ${{ steps.set-matrix-values.outputs.matrix-values }}
+    #       parallel: true
 
   finish:
     needs: test
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # v2
-        with:
-          parallel-finished: true
-          carryforward: "run-macos-latest-3.10,\
-            run-ubuntu-latest-3.10,\
-            run-macos-latest-3.11,\
-            run-ubuntu-latest-3.11"
+      - name: Set carryforward
+        id: set-carryforward
+        run: >-
+          echo carryforward=${{ needs.test.outputs.matrix-values }}
+          >> $GITHUB_OUTPUT
+
+      - run: echo ${{ steps.set-carryforward.outputs.carryforward }}
+
+    #   - name: Coveralls Finished
+    #     uses: coverallsapp/github-action@v2
+    #     with:
+    #       parallel-finished: true
+    #       carryforward: "run-macos-latest-3.10,\
+    #         run-ubuntu-latest-3.10,\
+    #         run-macos-latest-3.11,\
+    #         run-ubuntu-latest-3.11"
