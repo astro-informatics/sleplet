@@ -9,7 +9,7 @@ jobs:
   documentation:
     runs-on: ubuntu-latest
     steps:
-      - uses: paddyroddy/.github/actions/python/pdoc@d847296ec70e63ba26408f9b354de8a40ce2f006 # v0
+      - uses: paddyroddy/.github/actions/python/pdoc@a5fa225f79b16f86bd36bbaf64d0efa9b5f6a78a # v0
         with:
           docs-dependency-section: .[docs]
           gh-pages-publish-directory: ./html/sleplet
