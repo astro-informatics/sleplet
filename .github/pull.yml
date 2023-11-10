@@ -1,0 +1,8 @@
+version: "1"
+rules:
+  - base: main
+    upstream: astro-informatics:main
+    mergeMethod: hardreset
+  - base: gh-pages
+    upstream: astro-informatics:gh-pages
+    mergeMethod: hardreset
