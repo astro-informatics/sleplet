@@ -48,11 +48,14 @@ jobs:
     needs: test
     if: ${{ always() }}
     runs-on: ubuntu-latest
+    env:
+      CARRYFORWARD: ""
     steps:
       - name: Set carryforward
         id: set-carryforward
         run: >-
-          echo carryforward=${{ join(needs.test.outputs.matrix-values, ',') }}
+          echo carryforward=${{ env.CARRYFORWARD }}
+          ${{ needs.test.outputs.matrix-values }},
           >> $GITHUB_OUTPUT
 
       - run: echo ${{ steps.set-carryforward.outputs.carryforward }}
