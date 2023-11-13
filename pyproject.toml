@@ -88,7 +88,9 @@ license.file = "LICENCE.md"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
-run = {branch = true, parallel = true, source = ["sleplet"]}
+run = {branch = true, parallel = true, source = [
+    "sleplet",
+]}
 paths.source = [
     "src",
     ".tox*/*/lib/python*/site-packages",
