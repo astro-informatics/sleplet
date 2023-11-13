@@ -139,7 +139,6 @@ per-file-ignores = {"examples*" = [
 select = [
     "ALL",
 ]
-target-version = "py310"
 mccabe.max-complexity = 18
 pep8-naming.classmethod-decorators = [
     "classmethod",
