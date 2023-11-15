@@ -57,7 +57,6 @@ name = "sleplet"
 optional-dependencies = {dev = [
     "build",
     "mypy",
-    "pre-commit",
     "ruff",
     "tox",
     "twine",
