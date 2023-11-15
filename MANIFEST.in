@@ -1,0 +1,4 @@
+prune documentation
+prune examples
+prune paper
+prune tests
