@@ -1,3 +1,5 @@
+exclude .*
+prune .*
 prune documentation
 prune examples
 prune paper
