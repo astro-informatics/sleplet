@@ -9,11 +9,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/deployment@16317a64109e3a2f8351ec767bfad16bd78007c0 # v0
+      - uses: paddyroddy/.github/actions/python/deployment@cb2aa7136f05f811c95116b2fb404a7f299102d9 # v0
         with:
-          pypi-api-token: ${{ secrets.PYPI_API_TOKEN }}
           pyproject-toml: ./pyproject.toml
           python-version: "3.11"
-          test-pypi-api-token: ${{ secrets.TEST_PYPI_API_TOKEN }}
