@@ -85,6 +85,11 @@ urls = {Code = """
 """}
 license.file = "LICENCE.md"
 
+[tool.check-manifest]
+ignore = [
+    "src/sleplet/_version.py",
+]
+
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
 run = {branch = true, parallel = true, source = [
