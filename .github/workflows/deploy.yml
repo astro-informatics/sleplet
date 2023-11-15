@@ -1,5 +1,6 @@
 name: Deploy
 
+# yamllint disable-line rule:truthy
 on:
   push:
     tags:
@@ -9,7 +10,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: paddyroddy/.github/actions/python/deployment@a5fa225f79b16f86bd36bbaf64d0efa9b5f6a78a # v0
+      # yamllint disable-line rule:line-length
+      - uses: paddyroddy/.github/actions/python/deployment@7958ff821536746ea7a65cd1fa8737d05fa9b870 # v0
         with:
           pypi-api-token: ${{ secrets.PYPI_API_TOKEN }}
           pyproject-toml: ./pyproject.toml

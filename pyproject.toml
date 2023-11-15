@@ -32,7 +32,7 @@ dependencies = [
     "multiprocess~=0.0",
     "numba~=0.0",
     "numpy~=1.0",
-    "platformdirs~=3.0",
+    "platformdirs~=4.0",
     "plotly~=5.0",
     "pooch~=1.0",
     "pydantic~=2.0",
@@ -69,13 +69,29 @@ optional-dependencies = {dev = [
 ]}
 readme = "README.md"
 requires-python = ">=3.10"
-scripts = {mesh = "sleplet._scripts.plotting_on_mesh:main", sphere = "sleplet._scripts.plotting_on_sphere:main"}
-urls = {Code = "https://github.com/astro-informatics/sleplet", Documentation = "https://astro-informatics.github.io/sleplet", Download = "https://pypi.org/project/sleplet", Homepage = "https://github.com/astro-informatics/sleplet", Issues = "https://github.com/astro-informatics/sleplet/issues"}
+scripts = {mesh = """
+    sleplet._scripts.plotting_on_mesh:main
+    """, sphere = """
+    sleplet._scripts.plotting_on_sphere:main
+"""}
+urls = {Code = """
+    https://github.com/astro-informatics/sleplet
+    """, Documentation = """
+    https://astro-informatics.github.io/sleplet
+    """, Download = """
+    https://pypi.org/project/sleplet
+    """, Homepage = """
+    https://github.com/astro-informatics/sleplet
+    """, Issues = """
+    https://github.com/astro-informatics/sleplet/issues
+"""}
 license.file = "LICENCE.md"
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
-run = {branch = true, parallel = true, source = ["sleplet"]}
+run = {branch = true, parallel = true, source = [
+    "sleplet",
+]}
 paths.source = [
     "src",
     ".tox*/*/lib/python*/site-packages",
@@ -140,7 +156,6 @@ per-file-ignores = {"examples*" = [
 select = [
     "ALL",
 ]
-target-version = "py310"
 mccabe.max-complexity = 18
 pep8-naming.classmethod-decorators = [
     "classmethod",

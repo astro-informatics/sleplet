@@ -1,5 +1,6 @@
 name: Test
 
+# yamllint disable-line rule:truthy
 on:
   push:
     branches:
@@ -22,7 +23,8 @@ jobs:
           - "3.11"
           - "3.12"
     steps:
-      - uses: paddyroddy/.github/actions/python/tox@a5fa225f79b16f86bd36bbaf64d0efa9b5f6a78a # v0
+      # yamllint disable-line rule:line-length
+      - uses: paddyroddy/.github/actions/python/tox@7958ff821536746ea7a65cd1fa8737d05fa9b870 # v0
         with:
           cache-path: |-
             .tox
@@ -32,6 +34,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Coveralls Parallel
+        # yamllint disable-line rule:line-length
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # v2
         with:
           flag-name: run-${{ matrix.os }}-${{ matrix.python-version }}
@@ -43,6 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
+        # yamllint disable-line rule:line-length
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # v2
         with:
           parallel-finished: true
