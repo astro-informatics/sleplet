@@ -1,3 +1,5 @@
+import typing
+
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
@@ -47,7 +49,7 @@ def main() -> None:
 
 
 def _helper(  # noqa: PLR0913
-    ax: npt.NDArray,
+    ax: npt.NDArray[typing.Any],
     slepian: sleplet.slepian.SlepianPolarCap,
     resolution: int,
     x: npt.NDArray[np.float_],
