@@ -149,7 +149,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         return G
 
     @staticmethod
-    @numba.njit(parallel=True, fastmath=True)  # type: ignore[misc]
+    @numba.njit(parallel=True, fastmath=True)
     def _slepian_matrix(
         dl: npt.NDArray[np.float_],
         L: int,
