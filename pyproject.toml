@@ -103,7 +103,6 @@ paths.source = [
 ]
 
 [tool.mypy]
-disallow_any_generics = false
 disallow_subclassing_any = false
 disallow_untyped_decorators = false
 explicit_package_bases = true
