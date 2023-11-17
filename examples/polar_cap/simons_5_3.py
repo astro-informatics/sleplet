@@ -1,3 +1,5 @@
+import typing
+
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
@@ -28,7 +30,9 @@ def main() -> None:
     plt.close()
 
 
-def _create_plot(ax: npt.NDArray, position: tuple[int, int], theta_max: int) -> None:
+def _create_plot(
+    ax: npt.NDArray[typing.Any], position: tuple[int, int], theta_max: int
+) -> None:
     """Create the plot."""
     print(f"theta_max={theta_max}")
     slepian = sleplet.slepian.SlepianPolarCap(L, np.deg2rad(theta_max))
