@@ -56,7 +56,7 @@ def main(mesh_name: str) -> None:
 
     # format plot
     plt.xlim(1, xlim)
-    ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
+    ticks = list(2 ** np.arange(np.log2(xlim) + 1, dtype=int))
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.legend()
