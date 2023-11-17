@@ -1,3 +1,4 @@
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
@@ -50,7 +51,7 @@ def main() -> None:
 
 
 def _helper(
-    ax: plt.Axes,
+    ax: mpl.axes.Axes,
     slepian: sleplet.slepian.SlepianPolarCap,
     x: npt.NDArray[np.float_],
     i: int,

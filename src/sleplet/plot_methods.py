@@ -41,7 +41,7 @@ def calc_plot_resolution(L: int) -> int:
 
 
 def _convert_colourscale(
-    cmap: mpl.colors,
+    cmap: mpl.colors.LinearSegmentedColormap,
     *,
     pl_entries: int = 255,
 ) -> list[tuple[float, str]]:
