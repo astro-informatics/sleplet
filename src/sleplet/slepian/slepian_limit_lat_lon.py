@@ -205,14 +205,14 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: tuple,
+        eigendecomposition: tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]],
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
         """Need eigenvalues and eigenvectors to be in a certain format."""
         # access values
-        eigenvalues, eigenvectors = eigendecomposition
+        eigenvalues_complex, eigenvectors = eigendecomposition
 
         # eigenvalues should be real
-        eigenvalues = eigenvalues.real
+        eigenvalues = eigenvalues_complex.real
 
         # Sort eigenvalues and eigenvectors in descending order of eigenvalues
         idx = eigenvalues.argsort()[::-1]

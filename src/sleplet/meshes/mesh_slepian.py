@@ -161,7 +161,7 @@ class MeshSlepian:
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: tuple,
+        eigendecomposition: tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]],
     ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
         """Need eigenvalues and eigenvectors to be in a certain format."""
         # access values

@@ -58,6 +58,7 @@ optional-dependencies = {dev = [
     "build",
     "mypy",
     "pre-commit",
+    "pytest",
     "ruff",
     "tox",
     "twine",
@@ -102,7 +103,6 @@ paths.source = [
 ]
 
 [tool.mypy]
-disallow_any_generics = false
 disallow_subclassing_any = false
 explicit_package_bases = true
 ignore_missing_imports = true
