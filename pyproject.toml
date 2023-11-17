@@ -58,6 +58,7 @@ optional-dependencies = {dev = [
     "build",
     "mypy",
     "pre-commit",
+    "pytest",
     "ruff",
     "tox",
     "twine",
