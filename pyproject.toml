@@ -68,18 +68,23 @@ optional-dependencies = {dev = [
 ]}
 readme = "README.md"
 requires-python = ">=3.10"
+scripts = {mesh = """\
+    sleplet._scripts.plotting_on_mesh:main\
+    """, sphere = """\
+    sleplet._scripts.plotting_on_sphere:main\
+    """}
+urls = {Code = """\
+    https://github.com/astro-informatics/sleplet\
+    """, Documentation = """\
+    https://astro-informatics.github.io/sleplet\
+    """, Download = """\
+    https://pypi.org/project/sleplet\
+    """, Homepage = """\
+    https://github.com/astro-informatics/sleplet\
+    """, Issues = """\
+    https://github.com/astro-informatics/sleplet/issues\
+    """}
 license.file = "LICENCE.md"
-
-[project.scripts]
-mesh = "sleplet._scripts.plotting_on_mesh:main"
-sphere = "sleplet._scripts.plotting_on_sphere:main"
-
-[project.urls]
-Code = "https://github.com/astro-informatics/sleplet"
-Documentation = "https://astro-informatics.github.io/sleplet"
-Download = "https://pypi.org/project/sleplet"
-Homepage = "https://github.com/astro-informatics/sleplet"
-Issues = "https://github.com/astro-informatics/sleplet/issues"
 
 [tool.check-manifest]
 ignore = [
