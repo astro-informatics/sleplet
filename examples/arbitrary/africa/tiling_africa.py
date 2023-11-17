@@ -35,7 +35,7 @@ def main() -> None:
         annotation_clip=False,
     )
     plt.xlim(1, xlim)
-    ticks = 2 ** np.arange(np.log2(xlim) + 1, dtype=int)
+    ticks = list(2 ** np.arange(np.log2(xlim) + 1, dtype=int))
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.legend()

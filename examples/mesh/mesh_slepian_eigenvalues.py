@@ -35,7 +35,7 @@ def main(mesh_name: str, num_basis_fun: int) -> None:
         textcoords="offset points",
         annotation_clip=False,
     )
-    ticks = 2 ** np.arange(np.log2(mesh.number_basis_functions) + 1, dtype=int)
+    ticks = list(2 ** np.arange(np.log2(mesh.number_basis_functions) + 1, dtype=int))
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")
