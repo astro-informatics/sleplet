@@ -59,6 +59,7 @@ optional-dependencies = {dev = [
     "build",
     "mypy",
     "pre-commit",
+    "pytest",
     "ruff",
     "tox",
     "twine",
@@ -69,23 +70,28 @@ optional-dependencies = {dev = [
 ]}
 readme = "README.md"
 requires-python = ">=3.10"
-scripts = {mesh = """
-    sleplet._scripts.plotting_on_mesh:main
-    """, sphere = """
-    sleplet._scripts.plotting_on_sphere:main
-"""}
-urls = {Code = """
-    https://github.com/astro-informatics/sleplet
-    """, Documentation = """
-    https://astro-informatics.github.io/sleplet
-    """, Download = """
-    https://pypi.org/project/sleplet
-    """, Homepage = """
-    https://github.com/astro-informatics/sleplet
-    """, Issues = """
-    https://github.com/astro-informatics/sleplet/issues
-"""}
+scripts = {mesh = """\
+    sleplet._scripts.plotting_on_mesh:main\
+    """, sphere = """\
+    sleplet._scripts.plotting_on_sphere:main\
+    """}
+urls = {Code = """\
+    https://github.com/astro-informatics/sleplet\
+    """, Documentation = """\
+    https://astro-informatics.github.io/sleplet\
+    """, Download = """\
+    https://pypi.org/project/sleplet\
+    """, Homepage = """\
+    https://github.com/astro-informatics/sleplet\
+    """, Issues = """\
+    https://github.com/astro-informatics/sleplet/issues\
+    """}
 license.file = "LICENCE.md"
+
+[tool.check-manifest]
+ignore = [
+    "src/sleplet/_version.py",
+]
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
@@ -98,11 +104,16 @@ paths.source = [
 ]
 
 [tool.mypy]
+disallow_subclassing_any = false
+disallow_untyped_decorators = false
 explicit_package_bases = true
+ignore_missing_imports = true
 plugins = [
     "numpy.typing.mypy_plugin",
     "pydantic.mypy",
 ]
+strict = true
+warn_return_any = false
 
 [tool.pytest.ini_options]
 addopts = """

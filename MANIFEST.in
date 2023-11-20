@@ -1,0 +1,11 @@
+exclude .*
+exclude *.in
+include *.cff
+include *.md
+prune .*
+prune documentation
+prune examples
+prune paper
+prune tests
+recursive-include src *.off
+recursive-include src *.toml

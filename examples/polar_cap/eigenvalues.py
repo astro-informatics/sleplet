@@ -24,7 +24,7 @@ def main() -> None:
         textcoords="offset points",
         annotation_clip=False,
     )
-    ticks = 2 ** np.arange(np.log2(L**2) + 1, dtype=int)
+    ticks = list(2 ** np.arange(np.log2(L**2) + 1, dtype=int))
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")

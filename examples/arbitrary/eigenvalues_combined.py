@@ -35,7 +35,7 @@ def main() -> None:
             annotation_clip=False,
             color=COLOURS[c],
         )
-    ticks = 2 ** np.arange(np.log2(L**2) + 1, dtype=int)
+    ticks = list(2 ** np.arange(np.log2(L**2) + 1, dtype=int))
     plt.xticks(ticks, ticks)
     plt.xlabel(r"$p$")
     plt.ylabel(r"$\mu$")

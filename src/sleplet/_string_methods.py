@@ -1,7 +1,12 @@
 import fractions
 import re
+import typing
 
 import numpy as np
+
+if typing.TYPE_CHECKING:
+    import sleplet.functions.coefficients
+    import sleplet.meshes.mesh_coefficients
 
 
 def _get_angle_num_dem(angle_fraction: float) -> tuple[int, int]:
@@ -84,7 +89,10 @@ def _convert_camel_case_to_snake_case(name: str) -> str:
 
 
 def convert_classes_list_to_snake_case(
-    classes: list,
+    classes: list[
+        type["sleplet.functions.coefficients.Coefficients"]
+        | type["sleplet.meshes.mesh_coefficients.MeshCoefficients"]
+    ],
     *,
     word_to_remove: str = "",
 ) -> list[str]:

@@ -1,5 +1,6 @@
 import logging
 import pathlib
+import typing
 
 import igl
 import numpy as np
@@ -40,7 +41,7 @@ def average_functions_on_vertices_to_faces(
 
 
 def create_mesh_region(
-    mesh_config: dict,
+    mesh_config: dict[str, typing.Any],
     vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
     """Create a boolean region for the given mesh."""
@@ -54,7 +55,7 @@ def create_mesh_region(
     )
 
 
-def extract_mesh_config(mesh_name: str) -> dict:
+def extract_mesh_config(mesh_name: str) -> dict[str, float | int | str]:
     """Read in the given mesh region settings file."""
     with pathlib.Path.open(
         _data_path / f"meshes_regions_{mesh_name}.toml",
@@ -110,7 +111,9 @@ def mesh_eigendecomposition(
     return eigenvalues, eigenvectors, number_basis_functions
 
 
-def read_mesh(mesh_config: dict) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
+def read_mesh(
+    mesh_config: dict[str, float | int | str]
+) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
     """Read in the given mesh."""
     vertices, faces = igl.read_triangle_mesh(
         str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}"),
