@@ -85,7 +85,7 @@ urls = {Code = """\
     """, Issues = """\
     https://github.com/astro-informatics/sleplet/issues\
     """}
-license.file = "LICENCE.md"
+license.file = "LICENCE.txt"
 
 [tool.check-manifest]
 ignore = [

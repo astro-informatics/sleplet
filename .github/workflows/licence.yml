@@ -14,4 +14,4 @@ jobs:
       - uses: paddyroddy/.github/actions/licence@931cbf5aea2aceae87072826c7053fa2c6491911 # v0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          licence-file: ./LICENCE.md
+          licence-file: ./LICENCE.txt
