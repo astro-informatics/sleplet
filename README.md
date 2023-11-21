@@ -2,6 +2,7 @@
 
 [![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 [![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org)
+[![Licence](https://img.shields.io/github/license/paddyroddy/sleplet)](https://github.com/astro-informatics/sleplet/blob/main/LICENCE.txt)
 [![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
 [![Documentation](https://img.shields.io/badge/Documentation-SLEPLET-blueviolet.svg)](https://astro-informatics.github.io/sleplet)
