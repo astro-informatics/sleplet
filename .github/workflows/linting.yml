@@ -1,3 +1,4 @@
+---
 name: Linting
 
 # yamllint disable-line rule:truthy

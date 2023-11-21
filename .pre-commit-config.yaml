@@ -1,3 +1,4 @@
+---
 repos:
   - repo: https://github.com/paddyroddy/.github
     rev: v0.98.0
