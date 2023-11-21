@@ -1,3 +1,4 @@
+---
 name: Linting
 
 # yamllint disable-line rule:truthy
@@ -13,6 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/linting@c6cc281a113dd0d332c90950662e62b23f1a4dad # v0
+      - uses: paddyroddy/.github/actions/linting@d061da6340db82a52880b8bd9255562adf49de5c # v0
         with:
           pre-commit-config: ./.pre-commit-config.yaml
