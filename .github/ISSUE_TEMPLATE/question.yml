@@ -22,6 +22,5 @@ body:
     type: textarea
     attributes:
       label: Add Your Question Below
-      placeholder: Write your question here
     validations:
       required: true
