@@ -1,5 +1,8 @@
+<!-- markdownlint-disable MD041 -->
+
 Documentation of the `SLEPLET` package. The
-[API documentation](#header-submodules) is included at the end of this page. See
+[API documentation](#header-submodules) <!-- markdownlint-disable MD051 -->
+is included at the end of this page. See
 [PyPI](https://pypi.org/project/sleplet) for more details.
 
 ## Bandlimit
@@ -249,7 +252,8 @@ export SLEPIAN_MASK="south_america"
 sphere slepian_south_america -L 128 -n -10 -s 2 -u
 # b-d
 for s in 2 3 5; do
-    python -m examples.arbitrary.south_america.denoising_slepian_south_america -n -10 -s ${s}
+    python -m examples.arbitrary.south_america.denoising_slepian_south_america \
+    -n -10 -s ${s}
 done
 ```
 
@@ -821,7 +825,9 @@ sleplet.plotting.PlotSphere(g_sphere, f.L, "fig_3_3_b", annotations=[]).execute(
 
 ##### Fig. 3.4
 
-Figs. (c-d) correspond to (a-b) in [Fig. 1 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-1). The following creates Figs. (a-b).
+Figs. (c-d) correspond to (a-b) in
+[Fig. 1 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-1).
+The following creates Figs. (a-b).
 
 ```sh
 for ell in $(seq 2 -1 1); do
@@ -846,16 +852,22 @@ for ell in range(2, 0, -1):
 
 ##### Fig. 3.5
 
-The same as [Fig. 2 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-2).
+The same as
+[Fig. 2 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-2).
 
 ##### Fig. 3.6
 
-The same as [Fig. 3 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-3).
+The same as
+[Fig. 3 of the Sifting Convolution on the Sphere paper](#sifting-convolution-on-the-sphere-fig-3).
 
 #### Chapter 4
 
-The plots here are the same as the [Slepian Scale-Discretised Wavelets on the Sphere paper](#slepian-scale-discretised-wavelets-on-the-sphere) without the Africa examples, i.e. [Fig. 10 onwards](#slepian-scale-discretised-wavelets-on-the-sphere-fig-10).
+The plots here are the same as the
+[Slepian Scale-Discretised Wavelets on the Sphere paper](#slepian-scale-discretised-wavelets-on-the-sphere)
+without the Africa examples, i.e.
+[Fig. 10 onwards](#slepian-scale-discretised-wavelets-on-the-sphere-fig-10).
 
 #### Chapter 5
 
-The plots here are the same as the [Slepian Scale-Discretised Wavelets on Manifolds paper](#slepian-scale-discretised-wavelets-on-manifolds).
+The plots here are the same as the
+[Slepian Scale-Discretised Wavelets on Manifolds paper](#slepian-scale-discretised-wavelets-on-manifolds).
