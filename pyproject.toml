@@ -89,6 +89,10 @@ license.file = "LICENCE.txt"
 
 [tool.check-manifest]
 ignore = [
+    "*.cff",
+    "*.md",
+    "*.off",
+    "*.toml",
     "src/sleplet/_version.py",
 ]
 
