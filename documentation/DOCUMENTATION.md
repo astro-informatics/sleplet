@@ -2,8 +2,26 @@
 
 Documentation of the `SLEPLET` package. The
 [API documentation](#header-submodules) <!-- markdownlint-disable MD051 -->
-is included at the end of this page. See
-[PyPI](https://pypi.org/project/sleplet) for more details.
+is included at the end of this page.
+
+## Background
+
+Many fields in science and engineering measure data that inherently live on
+non-Euclidean geometries, such as the sphere. Techniques developed in the
+Euclidean setting must be extended to other geometries. Due to recent interest
+in geometric deep learning, analogues of Euclidean techniques must also handle
+general manifolds or graphs. Often, data are only observed over partial regions
+of manifolds, and thus standard whole-manifold techniques may not yield accurate
+predictions.
+
+Slepian wavelets are built upon the eigenfunctions of the Slepian concentration
+problem of the manifold - a set of bandlimited functions which are maximally
+concentrated within a given region. Wavelets are constructed through a tiling of
+the Slepian harmonic line by leveraging the existing scale-discretised framework.
+A straightforward denoising formalism demonstrates a boost in signal-to-noise
+for both a spherical and general manifold example. Whilst these wavelets were
+inspired by spherical datasets, like in cosmology, the wavelet construction may
+be utilised for manifold or graph data.
 
 ## Bandlimit
 
