@@ -7,7 +7,29 @@ on:
     branches:
       - main
       - "renovate/**"
+    paths:
+      - "**/*"
+      - "!**/*.cff"
+      - "!**/*.in"
+      - "!**/*.md"
+      - "!**/*.txt"
+      - "!**/.*"
+      - "!.github/ISSUE_TEMPLATES/**"
+      - "!documentation/**"
+      - "!paper/**"
+      - "!tests/**"
   pull_request:
+    paths:
+      - "**/*"
+      - "!**/*.cff"
+      - "!**/*.in"
+      - "!**/*.md"
+      - "!**/*.txt"
+      - "!**/.*"
+      - "!.github/ISSUE_TEMPLATES/**"
+      - "!documentation/**"
+      - "!paper/**"
+      - "!tests/**"
 
 concurrency:
   cancel-in-progress: true
