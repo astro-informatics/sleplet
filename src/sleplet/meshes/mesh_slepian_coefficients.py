@@ -8,7 +8,6 @@ import typing_extensions
 
 import sleplet._validation
 import sleplet.noise
-from sleplet.meshes.mesh import Mesh
 from sleplet.meshes.mesh_coefficients import MeshCoefficients
 from sleplet.meshes.mesh_slepian import MeshSlepian
 
@@ -17,8 +16,8 @@ from sleplet.meshes.mesh_slepian import MeshSlepian
 class MeshSlepianCoefficients(MeshCoefficients):
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
-    mesh_slepian: MeshSlepian = pydantic.Field(
-        default=MeshSlepian(Mesh("bird")),
+    mesh_slepian: MeshSlepian | None = pydantic.Field(
+        default=None,
         init_var=False,
         repr=False,
     )
