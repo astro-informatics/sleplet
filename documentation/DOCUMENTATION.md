@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD041 -->
 
 Documentation of the `SLEPLET` package. The
-[API documentation](#header-submodules) <!-- markdownlint-disable MD051 -->
+[API documentation](#header-submodules) <!-- markdownlint-disable-line MD051 -->
 is included at the end of this page.
 
 ## Background
