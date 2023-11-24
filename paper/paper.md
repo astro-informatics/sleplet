@@ -17,7 +17,9 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 bibliography: paper.bib
 ---
 
-# Summary <!-- markdownlint-disable-line MD025 -->
+<!-- markdownlint-disable MD025 -->
+
+# Summary
 
 Wavelets are widely used in various disciplines to analyse signals both in space
 and scale. Whilst many fields measure data on manifolds (i.e., the sphere),
@@ -33,7 +35,7 @@ include gravitational/magnetic fields in geodesy, ground-based measurements in
 astronomy, measurements of whole-planet properties in planetary science,
 geomagnetism of the Earth, and cosmic microwave background analyses.
 
-# Statement of Need <!-- markdownlint-disable-line MD025 -->
+# Statement of Need
 
 Many fields in science and engineering measure data that inherently live on
 non-Euclidean geometries, such as the sphere. Techniques developed in the
@@ -91,7 +93,7 @@ methods on supercomputers with massive memory and storage. To this end, Slepian
 wavelets may be exploited at present at low resolutions, but further work is
 required for them to be fully scalable.
 
-# Acknowledgements <!-- markdownlint-disable-line MD025 -->
+# Acknowledgements
 
 The author would like to thank Jason D. McEwen for his advice and guidance on
 the mathematics behind `SLEPLET`. Further, the author would like to thank Zubair
@@ -102,4 +104,4 @@ libraries the author would like to acknowledge, in particular, `libigl`
 [@Libigl2017], `NumPy` [@Harris2020], `plotly` [@Plotly2015], `SSHT`
 [@McEwen2011], `S2LET` [@Leistedt2013].
 
-# References <!-- markdownlint-disable-line MD025 -->
+# References
