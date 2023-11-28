@@ -1,3 +1,4 @@
+---
 name: Test
 
 # yamllint disable-line rule:truthy
@@ -24,7 +25,7 @@ jobs:
           - "3.12"
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/tox@c94d3c482e23614da150416f78d829ba9dea1bab # v0
+      - uses: paddyroddy/.github/actions/python/tox@5aa2f0fea5f954ca1f8146d44e9c618c99eb64ca # v0
         with:
           cache-path: |-
             .tox
