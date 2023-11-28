@@ -8,8 +8,8 @@ import pooch
 _logger = logging.getLogger(__name__)
 
 
-_ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 _POOCH = None
+_ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 
 
 def _lazy_load_registry(
