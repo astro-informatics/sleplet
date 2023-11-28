@@ -55,11 +55,10 @@ def _lazy_load_registry(
 @_lazy_load_registry
 def find_on_pooch_then_local(filename: str) -> os.PathLike[str] | None:
     """Find a file on POOCH first and if not look in data folder."""
-    if _POOCH is not None:
-        if filename in _POOCH.registry:
-            msg = f"Found {filename} at https://doi.org/{_ZENODO_DATA_DOI}"
-            _logger.info(msg)
-        return _POOCH.fetch(filename, progressbar=True)
+    if filename in _POOCH.registry:  # type: ignore[union-attr]
+        msg = f"Found {filename} at https://doi.org/{_ZENODO_DATA_DOI}"
+        _logger.info(msg)
+        return _POOCH.fetch(filename, progressbar=True)  # type: ignore[union-attr]
 
     if (platformdirs.user_data_path() / filename).exists():
         msg = f"Found {filename} at {platformdirs.user_data_path() / filename}"
