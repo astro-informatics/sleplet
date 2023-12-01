@@ -24,7 +24,7 @@ jobs:
           - "3.11"
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/tox@5aa2f0fea5f954ca1f8146d44e9c618c99eb64ca # v0
+      - uses: paddyroddy/.github/actions/python/tox@1a3be93a5bbb79658efc285ce792da79745d9d32 # v0
         with:
           cache-path: |-
             .tox
