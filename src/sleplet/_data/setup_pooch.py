@@ -13,7 +13,7 @@ _ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 
 
 def _lazy_load_registry(
-    func: typing.Callable[..., os.PathLike[str] | None]
+    func: typing.Callable[..., os.PathLike[str] | None],
 ) -> typing.Callable[..., os.PathLike[str] | None]:
     """
     Lazily loads POOCH registry before executing a function.
