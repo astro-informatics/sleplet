@@ -112,7 +112,7 @@ def mesh_eigendecomposition(
 
 
 def read_mesh(
-    mesh_config: dict[str, float | int | str]
+    mesh_config: dict[str, float | int | str],
 ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
     """Read in the given mesh."""
     vertices, faces = igl.read_triangle_mesh(
