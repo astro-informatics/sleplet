@@ -1,3 +1,5 @@
+import typing
+
 import plotly.graph_objs as go
 
 _axis = {
@@ -30,7 +32,7 @@ def create_camera(  # noqa: PLR0913
 def create_layout(
     camera: go.layout.scene.Camera,
     *,
-    annotations: list[dict] | None = None,
+    annotations: list[dict[str, float | int]] | None = None,
 ) -> go.Layout:
     """Create the default plotly layout."""
     return go.Layout(
@@ -65,7 +67,7 @@ def create_colour_bar(
     bar_len: float = 0.94,
     bar_pos: float = 0.97,
     font_size: int = 38,
-) -> dict:
+) -> dict[str, typing.Any]:
     """Create the default plotly colour bar."""
     return {
         "x": bar_pos,

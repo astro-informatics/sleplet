@@ -20,8 +20,8 @@ from sleplet.functions.coefficients import Coefficients
 class Fp(Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions = pydantic.Field(
-        default=sleplet.slepian.slepian_polar_cap.SlepianPolarCap(0, theta_max=1),
+    slepian: sleplet.slepian.slepian_functions.SlepianFunctions | None = pydantic.Field(
+        default=None,
         init_var=False,
         repr=False,
     )

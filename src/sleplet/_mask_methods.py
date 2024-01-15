@@ -1,5 +1,6 @@
 import logging
 import os
+import typing
 
 import numpy as np
 import numpy.typing as npt
@@ -114,7 +115,7 @@ def create_default_region() -> "sleplet.slepian.region.Region":
 
 
 def create_mesh_region(
-    mesh_config: dict,
+    mesh_config: dict[str, typing.Any],
     vertices: npt.NDArray[np.float_],
 ) -> npt.NDArray[np.bool_]:
     """Create a boolean region for the given mesh."""

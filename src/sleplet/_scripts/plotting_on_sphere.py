@@ -302,7 +302,7 @@ def _translation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     shannon: int | None,
-) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict]:
+) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict[str, float | int]]:
     """Perform the translation specific steps."""
     msg = f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})"
     _logger.info(msg)

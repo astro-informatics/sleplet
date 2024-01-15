@@ -29,8 +29,8 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
-    _earth: Earth = pydantic.Field(
-        default=Earth(0),
+    _earth: Earth | None = pydantic.Field(
+        default=None,
         init_var=False,
         repr=False,
     )

@@ -58,7 +58,7 @@ def test_synthesis_lim_lat_lon(
 
 
 def test_axisymmetric_synthesis_earth() -> None:
-    """Test that the axisymmetric wavelet synthesis recoveres the coefficients."""
+    """Test that the axisymmetric wavelet synthesis recovers the coefficients."""
     awc = sleplet.functions.AxisymmetricWaveletCoefficientsEarth(
         L_SMALL,
         B=B,
@@ -77,7 +77,7 @@ def test_axisymmetric_synthesis_earth() -> None:
 
 
 def test_axisymmetric_synthesis_south_america() -> None:
-    """Test that the axisymmetric wavelet synthesis recoveres the coefficients."""
+    """Test that the axisymmetric wavelet synthesis recovers the coefficients."""
     awc = sleplet.functions.AxisymmetricWaveletCoefficientsSouthAmerica(
         L_SMALL,
         B=B,
