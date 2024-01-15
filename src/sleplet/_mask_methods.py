@@ -192,12 +192,13 @@ def _create_south_america_mask(
 def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
     """Create the South America region mask."""
     earth_flm = sleplet._data.create_earth_flm.create_flm(L)
-    if mask_name == f"africa_L{L}.npy":
-        mask = _create_africa_mask(L, earth_flm)
-    elif mask_name == f"south_america_L{L}.npy":
-        mask = _create_south_america_mask(L, earth_flm)
-    else:
-        msg = f"Mask name {mask_name} not recognised"
-        raise ValueError(msg)
+    match mask_name:
+        case mask_name.startswith("africa_L"):
+            mask = _create_africa_mask(L, earth_flm)
+        case mask_name.startswith("south_america_L"):
+            mask = _create_south_america_mask(L, earth_flm)
+        case _:
+            msg = f"Mask name {mask_name} not recognised"
+            raise ValueError(msg)
     np.save(platformdirs.user_data_path() / f"slepian_masks_{mask_name}", mask)
     return mask
