@@ -57,5 +57,4 @@ jobs:
             run-macos-latest-3.11,\
             run-ubuntu-latest-3.11,\
             run-macos-latest-3.12,\
-            run-ubuntu-latest-3.12\
-            "
+            run-ubuntu-latest-3.12"
