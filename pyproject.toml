@@ -30,7 +30,7 @@ dependencies = [
     "libigl~=2.0",
     "matplotlib~=3.0",
     "multiprocess~=0.0",
-    "numba~=0.0",
+    "numba==0.60.0dev0",
     "numpy~=1.0",
     "platformdirs~=4.0",
     "plotly~=5.0",
