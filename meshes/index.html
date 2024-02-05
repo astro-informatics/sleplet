@@ -147,10 +147,22 @@ plots.</p></div>
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="sleplet.meshes.MeshBasisFunctions.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="sleplet.meshes.MeshBasisFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Slepian eigenvalues are ordered in decreasing value. The option <code>rank</code>
 selects a given Slepian function from the spectrum (p in the papers).</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshBasisFunctions.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshBasisFunctions.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -176,6 +188,21 @@ selects a given Slepian function from the spectrum (p in the papers).</p></div>
 <li><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></li>
 <li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients" href="mesh_harmonic_coefficients.html#sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients">MeshHarmonicCoefficients</a></b></code>:
@@ -205,6 +232,18 @@ selects a given Slepian function from the spectrum (p in the papers).</p></div>
 <dd>
 <div class="desc"><p>A parameter which controls the level of signal-to-noise in the noised
 data.</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshNoiseField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshNoiseField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshNoiseField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -257,6 +296,21 @@ The default field is the per-vertex normals of the mesh.</p></div>
 <li><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></li>
 <li><a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sleplet.meshes.MeshSlepianField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients" href="mesh_slepian_coefficients.html#sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients">MeshSlepianCoefficients</a></b></code>:
@@ -282,10 +336,22 @@ The default field is the per-vertex normals of the mesh.</p></div>
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="sleplet.meshes.MeshSlepianFunctions.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="sleplet.meshes.MeshSlepianFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Slepian eigenvalues are ordered in decreasing value. The option <code>rank</code>
 selects a given Slepian function from the spectrum (p in the papers).</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianFunctions.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianFunctions.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -319,6 +385,18 @@ mesh. The default field is the per-vertex normals of the mesh.</p></div>
 <div class="desc"><p>A parameter which controls the level of signal-to-noise in the noised
 data.</p></div>
 </dd>
+<dt id="sleplet.meshes.MeshSlepianNoiseField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianNoiseField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianNoiseField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -349,6 +427,10 @@ data.</p></div>
 <dd>
 <div class="desc"><p>The wavelet parameter. Represented as <span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span> in the papers.</p></div>
 </dd>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Option to select a given wavelet. <code>None</code> indicates the scaling function,
@@ -357,6 +439,14 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 <dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
 <dd>
 <div class="desc"><p>The minimum wavelet scale. Represented as <span><span class="MathJax_Preview">J_{0}</span><script type="math/tex">J_{0}</script></span> in the papers.</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -388,6 +478,10 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 <dd>
 <div class="desc"><p>The wavelet parameter. Represented as <span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span> in the papers.</p></div>
 </dd>
+<dt id="sleplet.meshes.MeshSlepianWavelets.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="sleplet.meshes.MeshSlepianWavelets.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Option to select a given wavelet. <code>None</code> indicates the scaling function,
@@ -396,6 +490,14 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 <dt id="sleplet.meshes.MeshSlepianWavelets.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
 <dd>
 <div class="desc"><p>The minimum wavelet scale. Represented as <span><span class="MathJax_Preview">J_{0}</span><script type="math/tex">J_{0}</script></span> in the papers.</p></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWavelets.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sleplet.meshes.MeshSlepianWavelets.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -459,16 +561,27 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 <li>
 <h4><code><a title="sleplet.meshes.MeshBasisFunctions" href="#sleplet.meshes.MeshBasisFunctions">MeshBasisFunctions</a></code></h4>
 <ul class="">
+<li><code><a title="sleplet.meshes.MeshBasisFunctions.coefficients" href="#sleplet.meshes.MeshBasisFunctions.coefficients">coefficients</a></code></li>
 <li><code><a title="sleplet.meshes.MeshBasisFunctions.rank" href="#sleplet.meshes.MeshBasisFunctions.rank">rank</a></code></li>
+<li><code><a title="sleplet.meshes.MeshBasisFunctions.wavelet_coefficients" href="#sleplet.meshes.MeshBasisFunctions.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshBasisFunctions.wavelets" href="#sleplet.meshes.MeshBasisFunctions.wavelets">wavelets</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="sleplet.meshes.MeshField" href="#sleplet.meshes.MeshField">MeshField</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshField.coefficients" href="#sleplet.meshes.MeshField.coefficients">coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshField.wavelet_coefficients" href="#sleplet.meshes.MeshField.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshField.wavelets" href="#sleplet.meshes.MeshField.wavelets">wavelets</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="sleplet.meshes.MeshNoiseField" href="#sleplet.meshes.MeshNoiseField">MeshNoiseField</a></code></h4>
 <ul class="">
 <li><code><a title="sleplet.meshes.MeshNoiseField.SNR" href="#sleplet.meshes.MeshNoiseField.SNR">SNR</a></code></li>
+<li><code><a title="sleplet.meshes.MeshNoiseField.coefficients" href="#sleplet.meshes.MeshNoiseField.coefficients">coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshNoiseField.wavelet_coefficients" href="#sleplet.meshes.MeshNoiseField.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshNoiseField.wavelets" href="#sleplet.meshes.MeshNoiseField.wavelets">wavelets</a></code></li>
 </ul>
 </li>
 <li>
@@ -482,33 +595,50 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 </li>
 <li>
 <h4><code><a title="sleplet.meshes.MeshSlepianField" href="#sleplet.meshes.MeshSlepianField">MeshSlepianField</a></code></h4>
+<ul class="">
+<li><code><a title="sleplet.meshes.MeshSlepianField.coefficients" href="#sleplet.meshes.MeshSlepianField.coefficients">coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianField.wavelet_coefficients" href="#sleplet.meshes.MeshSlepianField.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianField.wavelets" href="#sleplet.meshes.MeshSlepianField.wavelets">wavelets</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="sleplet.meshes.MeshSlepianFunctions" href="#sleplet.meshes.MeshSlepianFunctions">MeshSlepianFunctions</a></code></h4>
 <ul class="">
+<li><code><a title="sleplet.meshes.MeshSlepianFunctions.coefficients" href="#sleplet.meshes.MeshSlepianFunctions.coefficients">coefficients</a></code></li>
 <li><code><a title="sleplet.meshes.MeshSlepianFunctions.rank" href="#sleplet.meshes.MeshSlepianFunctions.rank">rank</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianFunctions.wavelet_coefficients" href="#sleplet.meshes.MeshSlepianFunctions.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianFunctions.wavelets" href="#sleplet.meshes.MeshSlepianFunctions.wavelets">wavelets</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="sleplet.meshes.MeshSlepianNoiseField" href="#sleplet.meshes.MeshSlepianNoiseField">MeshSlepianNoiseField</a></code></h4>
 <ul class="">
 <li><code><a title="sleplet.meshes.MeshSlepianNoiseField.SNR" href="#sleplet.meshes.MeshSlepianNoiseField.SNR">SNR</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianNoiseField.coefficients" href="#sleplet.meshes.MeshSlepianNoiseField.coefficients">coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianNoiseField.wavelet_coefficients" href="#sleplet.meshes.MeshSlepianNoiseField.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianNoiseField.wavelets" href="#sleplet.meshes.MeshSlepianNoiseField.wavelets">wavelets</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients" href="#sleplet.meshes.MeshSlepianWaveletCoefficients">MeshSlepianWaveletCoefficients</a></code></h4>
 <ul class="">
 <li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.B" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.B">B</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.coefficients" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.coefficients">coefficients</a></code></li>
 <li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.j" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.j">j</a></code></li>
 <li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.j_min" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.j_min">j_min</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelet_coefficients" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelets" href="#sleplet.meshes.MeshSlepianWaveletCoefficients.wavelets">wavelets</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="sleplet.meshes.MeshSlepianWavelets" href="#sleplet.meshes.MeshSlepianWavelets">MeshSlepianWavelets</a></code></h4>
 <ul class="">
 <li><code><a title="sleplet.meshes.MeshSlepianWavelets.B" href="#sleplet.meshes.MeshSlepianWavelets.B">B</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWavelets.coefficients" href="#sleplet.meshes.MeshSlepianWavelets.coefficients">coefficients</a></code></li>
 <li><code><a title="sleplet.meshes.MeshSlepianWavelets.j" href="#sleplet.meshes.MeshSlepianWavelets.j">j</a></code></li>
 <li><code><a title="sleplet.meshes.MeshSlepianWavelets.j_min" href="#sleplet.meshes.MeshSlepianWavelets.j_min">j_min</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWavelets.wavelet_coefficients" href="#sleplet.meshes.MeshSlepianWavelets.wavelet_coefficients">wavelet_coefficients</a></code></li>
+<li><code><a title="sleplet.meshes.MeshSlepianWavelets.wavelets" href="#sleplet.meshes.MeshSlepianWavelets.wavelets">wavelets</a></code></li>
 </ul>
 </li>
 </ul>
