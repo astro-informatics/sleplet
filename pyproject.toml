@@ -135,6 +135,7 @@ force-exclude = true
 lint.ignore = [
     "COM812",
     "D105",
+    "D203",
     "D205",
     "D212",
     "D407",
