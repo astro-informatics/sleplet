@@ -31,7 +31,9 @@ def main() -> None:
 
 
 def _create_plot(
-    ax: npt.NDArray[typing.Any], position: tuple[int, int], theta_max: int
+    ax: npt.NDArray[typing.Any],
+    position: tuple[int, int],
+    theta_max: int,
 ) -> None:
     """Create the plot."""
     print(f"theta_max={theta_max}")
