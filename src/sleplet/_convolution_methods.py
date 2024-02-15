@@ -3,11 +3,11 @@ import numpy.typing as npt
 
 
 def sifting_convolution(
-    f_coefficient: npt.NDArray[np.complex_ | np.float_],
-    g_coefficient: npt.NDArray[np.complex_ | np.float_],
+    f_coefficient: npt.NDArray[np.complex128 | np.float64],
+    g_coefficient: npt.NDArray[np.complex128 | np.float64],
     *,
     shannon: int | None = None,
-) -> npt.NDArray[np.complex_ | np.float_]:
+) -> npt.NDArray[np.complex128 | np.float64]:
     """Compute the sifting convolution between two multipoles."""
     n = shannon if shannon is not None else np.newaxis
     # change shape if the sizes don't match

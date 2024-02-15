@@ -14,7 +14,7 @@ THETA_MAX = 40
 def _earth_region_harmonic_coefficients(
     L: int,
     theta_max: int,
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Harmonic coefficients of the Earth for the polar cap region."""
     region = sleplet.slepian.Region(theta_max=np.deg2rad(theta_max))
     earth = sleplet.functions.Earth(L, region=region)
@@ -26,7 +26,7 @@ def _earth_region_harmonic_coefficients(
 def _earth_region_slepian_coefficients(
     L: int,
     theta_max: int,
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Compute the Slepian coefficients."""
     region = sleplet.slepian.Region(theta_max=np.deg2rad(theta_max))
     earth = sleplet.functions.Earth(L, region=region)

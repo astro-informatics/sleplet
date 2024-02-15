@@ -42,7 +42,7 @@ class SlepianWaveletCoefficientsAfrica(Fp):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         _logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         _logger.info("finish computing wavelet coefficients")
@@ -73,7 +73,7 @@ class SlepianWaveletCoefficientsAfrica(Fp):
 
     def _create_wavelet_coefficients(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128 | np.float64]]:
         """Compute wavelet coefficients in Slepian space."""
         sw = sleplet.functions.slepian_wavelets.SlepianWavelets(
             self.L,

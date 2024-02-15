@@ -9,10 +9,10 @@ _logger = logging.getLogger(__name__)
 
 
 def apply_gaussian_smoothing(
-    flm: npt.NDArray[np.complex_],
+    flm: npt.NDArray[np.complex128],
     L: int,
     smoothing_factor: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """
     Apply Gaussian smoothing to the given signal.
 

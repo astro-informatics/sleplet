@@ -6,7 +6,7 @@ import sleplet
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
 
-from _denoising_slepian_wavelet import denoising_slepian_wavelet  # noqa: E402
+from _denoising_slepian_wavelet import denoising_slepian_wavelet
 
 B = 3
 J_MIN = 2

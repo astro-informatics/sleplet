@@ -9,7 +9,7 @@ import pyssht as ssht
 import sleplet._vars
 
 
-def calc_integration_weight(L: int) -> npt.NDArray[np.float_]:
+def calc_integration_weight(L: int) -> npt.NDArray[np.float64]:
     """Compute the spherical Jacobian for the integration."""
     thetas, phis = ssht.sample_positions(
         L,
@@ -22,8 +22,8 @@ def calc_integration_weight(L: int) -> npt.NDArray[np.float_]:
 
 
 def integrate_whole_sphere(
-    weight: npt.NDArray[np.float_],
-    *functions: npt.NDArray[np.complex_],
+    weight: npt.NDArray[np.float64],
+    *functions: npt.NDArray[np.complex128],
 ) -> complex:
     """Compute the integration for the whole sphere."""
     multiplied_inputs = _multiply_args(*functions)
@@ -31,9 +31,9 @@ def integrate_whole_sphere(
 
 
 def integrate_region_sphere(
-    mask: npt.NDArray[np.float_],
-    weight: npt.NDArray[np.float_],
-    *functions: npt.NDArray[np.complex_ | np.float_],
+    mask: npt.NDArray[np.float64],
+    weight: npt.NDArray[np.float64],
+    *functions: npt.NDArray[np.complex128 | np.float64],
 ) -> complex:
     """Compute the integration for a region of the sphere."""
     multiplied_inputs = _multiply_args(*functions)
@@ -41,9 +41,9 @@ def integrate_region_sphere(
 
 
 def integrate_whole_mesh(
-    vertices: npt.NDArray[np.float_],  # noqa: ARG001
+    vertices: npt.NDArray[np.float64],  # noqa: ARG001
     faces: npt.NDArray[np.int_],  # noqa: ARG001
-    *functions: npt.NDArray[np.complex_ | np.float_],
+    *functions: npt.NDArray[np.complex128 | np.float64],
 ) -> float:
     """Compute the integral of functions on the vertices."""
     multiplied_inputs = _multiply_args(*functions)
@@ -52,9 +52,9 @@ def integrate_whole_mesh(
 
 def integrate_region_mesh(
     mask: npt.NDArray[np.bool_],
-    vertices: npt.NDArray[np.float_],  # noqa: ARG001
+    vertices: npt.NDArray[np.float64],  # noqa: ARG001
     faces: npt.NDArray[np.int_],  # noqa: ARG001
-    *functions: npt.NDArray[np.complex_ | np.float_],
+    *functions: npt.NDArray[np.complex128 | np.float64],
 ) -> float:
     """Compute the integral of a region of functions on the vertices."""
     multiplied_inputs = _multiply_args(*functions)

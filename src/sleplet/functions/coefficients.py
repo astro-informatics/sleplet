@@ -36,13 +36,13 @@ class Coefficients:
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
     _unnoised_coefficients: (
-        npt.NDArray[np.complex_ | np.float_] | None
+        npt.NDArray[np.complex128 | np.float64] | None
     ) = pydantic.Field(
         default=None,
         init_var=False,
         repr=False,
     )
-    coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+    coefficients: npt.NDArray[np.complex128 | np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
@@ -51,12 +51,12 @@ class Coefficients:
     reality: bool = pydantic.Field(default=False, init_var=False, repr=False)
     snr: float | None = pydantic.Field(default=None, init_var=False, repr=False)
     spin: int = pydantic.Field(default=0, init_var=False, repr=False)
-    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+    wavelet_coefficients: npt.NDArray[np.complex128 | np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
     )
-    wavelets: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+    wavelets: npt.NDArray[np.complex128 | np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
@@ -77,7 +77,7 @@ class Coefficients:
         beta: float,
         *,
         shannon: int | None = None,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         r"""
         Perform the translation of the coefficients, used in the sifting convolution.
 
@@ -98,11 +98,11 @@ class Coefficients:
 
     def convolve(
         self: typing_extensions.Self,
-        f_coefficient: npt.NDArray[np.complex_ | np.float_],
-        g_coefficient: npt.NDArray[np.complex_ | np.float_],
+        f_coefficient: npt.NDArray[np.complex128 | np.float64],
+        g_coefficient: npt.NDArray[np.complex128 | np.float64],
         *,
         shannon: int | None = None,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         """
         Perform the sifting convolution of the two inputs.
 
@@ -147,7 +147,7 @@ class Coefficients:
         beta: float,
         *,
         gamma: float = 0,
-    ) -> npt.NDArray[np.complex_]:
+    ) -> npt.NDArray[np.complex128]:
         r"""
         Rotates given flm on the sphere by alpha/beta/gamma.
 
@@ -166,21 +166,21 @@ class Coefficients:
         self: typing_extensions.Self,
         alpha: float,
         beta: float,
-    ) -> npt.NDArray[np.complex_]:
+    ) -> npt.NDArray[np.complex128]:
         """Compute the basis function at omega' for translation."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _add_noise_to_signal(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
+    ) -> tuple[npt.NDArray[np.complex128 | np.float64] | None, float | None]:
         """Add Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         """Create the flm on the north pole."""
         raise NotImplementedError
 

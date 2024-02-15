@@ -8,7 +8,7 @@ import sleplet._data.setup_pooch
 import sleplet._smoothing
 
 
-def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex_]:
+def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.complex128]:
     """Create the flm for the whole Earth."""
     # load in data
     flm = _load_flm()
@@ -29,7 +29,7 @@ def create_flm(L: int, *, smoothing: int | None = None) -> npt.NDArray[np.comple
     return flm
 
 
-def _load_flm() -> npt.NDArray[np.complex_]:
+def _load_flm() -> npt.NDArray[np.complex128]:
     """Load coefficients from file."""
     mat_contents = sio.loadmat(
         sleplet._data.setup_pooch.find_on_pooch_then_local(

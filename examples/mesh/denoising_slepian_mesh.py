@@ -26,7 +26,7 @@ def _denoising_mesh_slepian(
     mesh_slepian_wavelets: sleplet.meshes.MeshSlepianWavelets,
     snr_in: float,
     n_sigma: int,
-) -> npt.NDArray[np.complex_ | np.float_]:
+) -> npt.NDArray[np.complex128 | np.float64]:
     """Denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
     w = sleplet.wavelet_methods.slepian_wavelet_forward(

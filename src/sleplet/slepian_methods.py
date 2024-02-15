@@ -69,10 +69,10 @@ def choose_slepian_method(
 
 
 def slepian_inverse(
-    f_p: npt.NDArray[np.complex_ | np.float_],
+    f_p: npt.NDArray[np.complex128 | np.float64],
     L: int,
     slepian: SlepianFunctions,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """
     Compute the Slepian inverse transform up to the Shannon number.
 
@@ -93,11 +93,11 @@ def slepian_forward(  # noqa: PLR0913
     L: int,
     slepian: SlepianFunctions,
     *,
-    f: npt.NDArray[np.complex_] | None = None,
-    flm: npt.NDArray[np.complex_ | np.float_] | None = None,
-    mask: npt.NDArray[np.float_] | None = None,
+    f: npt.NDArray[np.complex128] | None = None,
+    flm: npt.NDArray[np.complex128 | np.float64] | None = None,
+    mask: npt.NDArray[np.float64] | None = None,
     n_coeffs: int | None = None,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """
     Compute the Slepian forward transform for all coefficients.
 
@@ -126,7 +126,7 @@ def slepian_forward(  # noqa: PLR0913
 def compute_s_p_omega(
     L: int,
     slepian: SlepianFunctions,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     r"""
     Compute \(S_{p}(\omega)\) for a given region.
 
@@ -138,7 +138,7 @@ def compute_s_p_omega(
         The complex \(S_{p}(\omega)\) values.
     """
     n_theta, n_phi = ssht.sample_shape(L, Method=sleplet._vars.SAMPLING_SCHEME)
-    sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex_)
+    sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex128)
     for p in range(slepian.N):
         if p % L == 0:
             msg = f"compute Sp(omega) p={p+1}/{slepian.N}"
@@ -156,7 +156,7 @@ def _compute_s_p_omega_prime(
     alpha: float,
     beta: float,
     slepian: SlepianFunctions,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """Pick out the desired angle from Sp(omega)."""
     sp_omega = compute_s_p_omega(L, slepian)
     p = ssht.theta_to_index(beta, L, Method=sleplet._vars.SAMPLING_SCHEME)
@@ -170,11 +170,11 @@ def _compute_s_p_omega_prime(
 def slepian_mesh_forward(
     mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     *,
-    u: npt.NDArray[np.complex_ | np.float_] | None = None,
-    u_i: npt.NDArray[np.complex_ | np.float_] | None = None,
+    u: npt.NDArray[np.complex128 | np.float64] | None = None,
+    u_i: npt.NDArray[np.complex128 | np.float64] | None = None,
     mask: bool = False,
     n_coeffs: int | None = None,
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """
     Compute the Slepian forward transform for all coefficients on the mesh.
 
@@ -200,8 +200,8 @@ def slepian_mesh_forward(
 
 def slepian_mesh_inverse(
     mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
-    f_p: npt.NDArray[np.complex_ | np.float_],
-) -> npt.NDArray[np.complex_ | np.float_]:
+    f_p: npt.NDArray[np.complex128 | np.float64],
+) -> npt.NDArray[np.complex128 | np.float64]:
     """
     Compute the Slepian inverse transform on the mesh up to the Shannon number.
 
@@ -219,7 +219,7 @@ def slepian_mesh_inverse(
 
 def _compute_mesh_s_p_pixel(
     mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Calculate Sp(omega) for a given region."""
     sp = np.zeros((mesh_slepian.N, mesh_slepian.mesh.vertices.shape[0]))
     for p in range(mesh_slepian.N):

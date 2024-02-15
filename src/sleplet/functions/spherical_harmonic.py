@@ -23,7 +23,7 @@ class SphericalHarmonic(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         ind = ssht.elm2ind(self.ell, self.m)
         return sleplet.harmonic_methods._create_spherical_harmonic(self.L, ind)
 

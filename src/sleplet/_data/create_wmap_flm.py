@@ -8,7 +8,7 @@ import sleplet._data.setup_pooch
 import sleplet._vars
 
 
-def create_flm(L: int) -> npt.NDArray[np.complex_]:
+def create_flm(L: int) -> npt.NDArray[np.complex128]:
     """Create the flm for the whole CMB."""
     # load in data
     cl = _load_cl()
@@ -17,7 +17,7 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
     rng = np.random.default_rng(sleplet._vars.RANDOM_SEED)
 
     # Simulate CMB in harmonic space.
-    flm = np.zeros(L**2, dtype=np.complex_)
+    flm = np.zeros(L**2, dtype=np.complex128)
     for ell in range(2, L):
         sigma = np.sqrt(2 * np.pi / (ell * (ell + 1)) * cl[ell - 2])
         ind = ssht.elm2ind(ell, 0)
@@ -37,7 +37,7 @@ def create_flm(L: int) -> npt.NDArray[np.complex_]:
 def _load_cl(
     *,
     file_ending: str = "_lcdm_pl_model_wmap7baoh0",
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """
     Pick coefficients from file options are:
     * _lcdm_pl_model_yr1_v1.mat

@@ -32,7 +32,7 @@ class PlotMesh:
     """The given mesh object."""
     filename: str
     """The output filename of the plot."""
-    f: npt.NDArray[np.complex_ | np.float_]
+    f: npt.NDArray[np.complex128 | np.float64]
     """The field value sampled on the mesh."""
     _: dataclasses.KW_ONLY
     amplitude: float | None = None
@@ -106,8 +106,8 @@ class PlotMesh:
 
     def _prepare_field(
         self: typing_extensions.Self,
-        f: npt.NDArray[np.complex_ | np.float_],
-    ) -> npt.NDArray[np.float_]:
+        f: npt.NDArray[np.complex128 | np.float64],
+    ) -> npt.NDArray[np.float64]:
         """Scales the field before plotting."""
         return sleplet.plot_methods._normalise_function(
             sleplet._mesh_methods.average_functions_on_vertices_to_faces(
@@ -119,8 +119,8 @@ class PlotMesh:
 
     def _set_outside_region_to_minimum(
         self: typing_extensions.Self,
-        f: npt.NDArray[np.float_],
-    ) -> npt.NDArray[np.float_]:
+        f: npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.float64]:
         """
         For the Slepian region set the outside area to negative infinity
         hence it is clear we are only interested in the coloured region.

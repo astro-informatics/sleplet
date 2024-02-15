@@ -7,7 +7,7 @@ import sleplet
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 
-from _denoising_axisym import denoising_axisym  # noqa: E402
+from _denoising_axisym import denoising_axisym
 
 B = 2
 J_MIN = 0

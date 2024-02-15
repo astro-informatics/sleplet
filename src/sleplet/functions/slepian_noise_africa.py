@@ -34,7 +34,7 @@ class SlepianNoiseAfrica(Fp):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         sa = sleplet.functions.slepian_africa.SlepianAfrica(
             self.L,
             region=self.region,

@@ -18,8 +18,8 @@ class Identity(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
-        return np.ones(self.L**2, dtype=np.complex_)
+    ) -> npt.NDArray[np.complex128 | np.float64]:
+        return np.ones(self.L**2, dtype=np.complex128)
 
     def _create_name(self: typing_extensions.Self) -> str:
         return sleplet._string_methods._convert_camel_case_to_snake_case(

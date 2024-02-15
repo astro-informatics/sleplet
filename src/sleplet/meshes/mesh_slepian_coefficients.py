@@ -28,9 +28,9 @@ class MeshSlepianCoefficients(MeshCoefficients):
 
     def _add_noise_to_signal(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
+    ) -> tuple[npt.NDArray[np.complex128 | np.float64] | None, float | None]:
         """Add Gaussian white noise converted to Slepian space."""
-        self.coefficients: npt.NDArray[np.complex_ | np.float_]
+        self.coefficients: npt.NDArray[np.complex128 | np.float64]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
             n_p = sleplet.noise._create_slepian_mesh_noise(
@@ -46,7 +46,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
     @abc.abstractmethod
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         raise NotImplementedError
 
     @abc.abstractmethod
