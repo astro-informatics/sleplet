@@ -22,7 +22,7 @@ class MeshSlepianField(MeshSlepianCoefficients):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         """Compute field on the vertices of the mesh."""
         mf = sleplet.meshes.mesh_field.MeshField(
             self.mesh,

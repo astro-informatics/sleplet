@@ -20,17 +20,17 @@ class SlepianFunctions:
 
     L: int
     """The spherical harmonic bandlimit."""
-    eigenvalues: npt.NDArray[np.float_] = dataclasses.field(
+    eigenvalues: npt.NDArray[np.float64] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         kw_only=True,
         repr=True,
     )
-    eigenvectors: npt.NDArray[np.complex_] = dataclasses.field(
-        default_factory=lambda: np.empty(0, dtype=np.complex_),
+    eigenvectors: npt.NDArray[np.complex128] = dataclasses.field(
+        default_factory=lambda: np.empty(0, dtype=np.complex128),
         kw_only=True,
         repr=True,
     )
-    mask: npt.NDArray[np.float_] = dataclasses.field(
+    mask: npt.NDArray[np.float64] = dataclasses.field(
         default_factory=lambda: np.empty(0),
         kw_only=True,
         repr=False,
@@ -73,7 +73,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
+    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float64]:
         """Create a mask of the region of interest."""
         raise NotImplementedError
 
@@ -90,6 +90,6 @@ class SlepianFunctions:
     @abc.abstractmethod
     def _solve_eigenproblem(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128]]:
         """Solve the eigenproblem for the given function."""
         raise NotImplementedError

@@ -19,7 +19,7 @@ def _denoising_slepian_function(
     noised_signal: sleplet.functions.SlepianSouthAmerica,
     snr_in: float,
     n_sigma: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """Denoising demo using Slepian function."""
     # compute Slepian noise
     sigma_noise = sleplet.noise.compute_sigma_noise(

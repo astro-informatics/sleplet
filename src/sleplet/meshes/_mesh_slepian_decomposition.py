@@ -19,8 +19,8 @@ class MeshSlepianDecomposition:
     mesh_slepian: MeshSlepian
     _: dataclasses.KW_ONLY
     mask: bool = False
-    u_i: npt.NDArray[np.complex_ | np.float_] | None = None
-    u: npt.NDArray[np.complex_ | np.float_] | None = None
+    u_i: npt.NDArray[np.complex128 | np.float64] | None = None
+    u: npt.NDArray[np.complex128 | np.float64] | None = None
     _method: str = pydantic.Field(default="", init_var=False, repr=False)
 
     def __post_init__(self: typing_extensions.Self) -> None:
@@ -44,7 +44,7 @@ class MeshSlepianDecomposition:
     def decompose_all(
         self: typing_extensions.Self,
         n_coefficients: int,
-    ) -> npt.NDArray[np.float_]:
+    ) -> npt.NDArray[np.float64]:
         """Decompose all ranks of the Slepian coefficients."""
         coefficients = np.zeros(n_coefficients)
         for rank in range(n_coefficients):

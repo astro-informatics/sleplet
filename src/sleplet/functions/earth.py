@@ -19,7 +19,7 @@ class Earth(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         return sleplet._data.create_earth_flm.create_flm(
             self.L,
             smoothing=self.smoothing,

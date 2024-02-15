@@ -12,14 +12,14 @@ def split_arr_into_chunks(arr_max: int, ncpu: int) -> list[npt.NDArray[np.int_]]
 
 
 def create_shared_memory_array(
-    array: npt.NDArray[np.float_],
-) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
+    array: npt.NDArray[np.float64],
+) -> tuple[npt.NDArray[np.float64], multiprocess.shared_memory.SharedMemory]:
     """Create a shared memory array to be used in a parallel function."""
     ext_shared_memory = multiprocess.shared_memory.SharedMemory(
         create=True,
         size=array.nbytes,
     )
-    array_ext: npt.NDArray[np.float_] = np.ndarray(
+    array_ext: npt.NDArray[np.float64] = np.ndarray(
         array.shape,
         dtype=array.dtype,
         buffer=ext_shared_memory.buf,
@@ -28,14 +28,14 @@ def create_shared_memory_array(
 
 
 def attach_to_shared_memory_block(
-    array: npt.NDArray[np.float_],
+    array: npt.NDArray[np.float64],
     ext_shared_memory: multiprocess.shared_memory.SharedMemory,
-) -> tuple[npt.NDArray[np.float_], multiprocess.shared_memory.SharedMemory]:
+) -> tuple[npt.NDArray[np.float64], multiprocess.shared_memory.SharedMemory]:
     """Attach an array to the shared memory within the parallel function."""
     int_shared_memory = multiprocess.shared_memory.SharedMemory(
         name=ext_shared_memory.name,
     )
-    array_int: npt.NDArray[np.float_] = np.ndarray(
+    array_int: npt.NDArray[np.float64] = np.ndarray(
         array.shape,
         dtype=array.dtype,
         buffer=int_shared_memory.buf,

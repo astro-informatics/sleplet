@@ -30,7 +30,7 @@ class SlepianAfrica(Fp):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         a = sleplet.functions.africa.Africa(self.L, smoothing=self.smoothing)
         return sleplet.slepian_methods.slepian_forward(
             self.L,

@@ -13,10 +13,10 @@ SAMPLING_SCHEME = "MWSS"
 
 
 def _compute_wavelet_covariance(
-    wavelets: npt.NDArray[np.complex_],
+    wavelets: npt.NDArray[np.complex128],
     *,
     var_signal: float,
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Compute the theoretical covariance of the wavelet coefficients."""
     covar_theory = (np.abs(wavelets) ** 2).sum(axis=1)
     return covar_theory * var_signal
@@ -67,7 +67,7 @@ def axisymmetric_wavelet_covariance(
 
     # initialise matrix
     covar_runs_shape = (runs, *covar_theory.shape)
-    covar_data = np.zeros(covar_runs_shape, dtype=np.complex_)
+    covar_data = np.zeros(covar_runs_shape, dtype=np.complex128)
 
     # set seed
     rng = np.random.default_rng(RANDOM_SEED)

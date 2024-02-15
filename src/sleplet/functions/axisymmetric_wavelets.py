@@ -36,7 +36,7 @@ class AxisymmetricWavelets(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
         _logger.info("finish computing wavelets")
@@ -65,7 +65,7 @@ class AxisymmetricWavelets(Flm):
                 raise ValueError(msg)
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:
+    def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.complex128]:
         """Compute all wavelets."""
         return sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,

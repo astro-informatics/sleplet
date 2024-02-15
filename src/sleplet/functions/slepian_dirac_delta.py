@@ -29,7 +29,7 @@ class SlepianDiracDelta(Fp):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         self._compute_angles()
         return sleplet.slepian_methods._compute_s_p_omega_prime(
             self.L,

@@ -40,7 +40,7 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         _logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         _logger.info("finish computing wavelet coefficients")
@@ -71,7 +71,7 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
 
     def _create_wavelet_coefficients(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]]:
+    ) -> tuple[npt.NDArray[np.complex128], npt.NDArray[np.complex128]]:
         """Compute wavelet coefficients of the Earth."""
         wavelets = sleplet.wavelet_methods._create_axisymmetric_wavelets(
             self.L,

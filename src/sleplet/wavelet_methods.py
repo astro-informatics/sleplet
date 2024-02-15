@@ -10,10 +10,10 @@ import sleplet.slepian_methods
 
 
 def slepian_wavelet_forward(
-    f_p: npt.NDArray[np.complex_ | np.float_],
-    wavelets: npt.NDArray[np.float_],
+    f_p: npt.NDArray[np.complex128 | np.float64],
+    wavelets: npt.NDArray[np.float64],
     shannon: int,
-) -> npt.NDArray[np.complex_ | np.float_]:
+) -> npt.NDArray[np.complex128 | np.float64]:
     """
     Compute the coefficients of the given tiling function in Slepian space.
 
@@ -36,10 +36,10 @@ def slepian_wavelet_forward(
 
 
 def slepian_wavelet_inverse(
-    wav_coeffs: npt.NDArray[np.complex_ | np.float_],
-    wavelets: npt.NDArray[np.float_],
+    wav_coeffs: npt.NDArray[np.complex128 | np.float64],
+    wavelets: npt.NDArray[np.float64],
     shannon: int,
-) -> npt.NDArray[np.complex_ | np.float_]:
+) -> npt.NDArray[np.complex128 | np.float64]:
     """
     Compute the inverse wavelet transform in Slepian space.
 
@@ -63,9 +63,9 @@ def slepian_wavelet_inverse(
 
 def axisymmetric_wavelet_forward(
     L: int,
-    flm: npt.NDArray[np.complex_ | np.float_],
-    wavelets: npt.NDArray[np.complex_],
-) -> npt.NDArray[np.complex_]:
+    flm: npt.NDArray[np.complex128 | np.float64],
+    wavelets: npt.NDArray[np.complex128],
+) -> npt.NDArray[np.complex128]:
     """
     Compute the coefficients of the axisymmetric wavelets.
 
@@ -77,7 +77,7 @@ def axisymmetric_wavelet_forward(
     Returns:
         Axisymmetric wavelets coefficients.
     """
-    w = np.zeros(wavelets.shape, dtype=np.complex_)
+    w = np.zeros(wavelets.shape, dtype=np.complex128)
     for ell in range(L):
         ind_m0 = ssht.elm2ind(ell, 0)
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0].conj()
@@ -89,9 +89,9 @@ def axisymmetric_wavelet_forward(
 
 def axisymmetric_wavelet_inverse(
     L: int,
-    wav_coeffs: npt.NDArray[np.complex_],
-    wavelets: npt.NDArray[np.complex_],
-) -> npt.NDArray[np.complex_]:
+    wav_coeffs: npt.NDArray[np.complex128],
+    wavelets: npt.NDArray[np.complex128],
+) -> npt.NDArray[np.complex128]:
     """
     Compute the inverse axisymmetric wavelet transform.
 
@@ -103,7 +103,7 @@ def axisymmetric_wavelet_inverse(
     Returns:
         Spherical harmonic coefficients of the signal.
     """
-    flm = np.zeros(L**2, dtype=np.complex_)
+    flm = np.zeros(L**2, dtype=np.complex128)
     for ell in range(L):
         ind_m0 = ssht.elm2ind(ell, 0)
         wav_0 = np.sqrt((4 * np.pi) / (2 * ell + 1)) * wavelets[:, ind_m0]
@@ -117,10 +117,10 @@ def _create_axisymmetric_wavelets(
     L: int,
     B: int,
     j_min: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """Compute the axisymmetric wavelets."""
     kappas = create_kappas(L, B, j_min)
-    wavelets = np.zeros((kappas.shape[0], L**2), dtype=np.complex_)
+    wavelets = np.zeros((kappas.shape[0], L**2), dtype=np.complex128)
     for ell in range(L):
         factor = np.sqrt((2 * ell + 1) / (4 * np.pi))
         ind = ssht.elm2ind(ell, 0)
@@ -128,7 +128,7 @@ def _create_axisymmetric_wavelets(
     return wavelets
 
 
-def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
+def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float64]:
     r"""
     Compute the Slepian wavelets.
 
@@ -145,10 +145,10 @@ def create_kappas(xlim: int, B: int, j_min: int) -> npt.NDArray[np.float_]:
 
 
 def find_non_zero_wavelet_coefficients(
-    wav_coeffs: npt.NDArray[np.complex_ | np.float_],
+    wav_coeffs: npt.NDArray[np.complex128 | np.float64],
     *,
     axis: int | tuple[int, ...],
-) -> npt.NDArray[np.complex_ | np.float_]:
+) -> npt.NDArray[np.complex128 | np.float64]:
     """
     Find the coefficients within the shannon number to speed up computations.
 

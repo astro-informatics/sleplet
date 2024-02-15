@@ -10,8 +10,8 @@ _MACHINE_EPSILON = 1e-14
 
 
 def clean_evals_and_evecs(
-    eigendecomposition: tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]],
-) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
+    eigendecomposition: tuple[npt.NDArray[np.complex128], npt.NDArray[np.complex128]],
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128]]:
     """Need eigenvalues and eigenvectors to be in a certain format."""
     # access values
     eigenvalues_complex, eigenvectors = eigendecomposition

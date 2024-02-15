@@ -271,7 +271,7 @@ def _rotation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     gamma_pi_frac: float,
-) -> tuple[npt.NDArray[np.complex_], str]:
+) -> tuple[npt.NDArray[np.complex128], str]:
     """Perform the rotation specific steps."""
     msg = (
         "angles: (alpha, beta, gamma) = "
@@ -302,7 +302,7 @@ def _translation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     shannon: int | None,
-) -> tuple[npt.NDArray[np.complex_ | np.float_], str, dict[str, float | int]]:
+) -> tuple[npt.NDArray[np.complex128 | np.float64], str, dict[str, float | int]]:
     """Perform the translation specific steps."""
     msg = f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})"
     _logger.info(msg)
@@ -336,10 +336,10 @@ def _translation_helper(
 def _convolution_helper(
     f: sleplet.functions.coefficients.Coefficients,
     g: sleplet.functions.coefficients.Coefficients,
-    coefficients: npt.NDArray[np.complex_ | np.float_],
+    coefficients: npt.NDArray[np.complex128 | np.float64],
     shannon: int | None,
     filename: str,
-) -> tuple[npt.NDArray[np.complex_ | np.float_], str]:
+) -> tuple[npt.NDArray[np.complex128 | np.float64], str]:
     """Perform the convolution specific steps."""
     g_coefficients = (
         sleplet.slepian_methods.slepian_forward(f.L, f.slepian, flm=g.coefficients)

@@ -32,17 +32,17 @@ class Mesh:
         repr=False,
     )
     _colourbar_pos: float = pydantic.Field(default=0, init_var=False, repr=False)
-    basis_functions: npt.NDArray[np.float_] = pydantic.Field(
+    basis_functions: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
     )
-    faces: npt.NDArray[np.float_] = pydantic.Field(
+    faces: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
     )
-    mesh_eigenvalues: npt.NDArray[np.float_] = pydantic.Field(
+    mesh_eigenvalues: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
@@ -52,7 +52,7 @@ class Mesh:
         init_var=False,
         repr=False,
     )
-    vertices: npt.NDArray[np.float_] = pydantic.Field(
+    vertices: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,

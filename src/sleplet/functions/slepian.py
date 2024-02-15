@@ -42,7 +42,7 @@ class Slepian(Fp):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         msg = (
             f"Shannon number: {self.slepian.N}\n"
             f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}"

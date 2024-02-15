@@ -46,7 +46,7 @@ class SlepianLimitLatLon(SlepianFunctions):
             phi_max=self.phi_max,
         )
 
-    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
+    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float64]:
         return sleplet._mask_methods.create_mask_region(self.L, self.region)
 
     def _calculate_area(self: typing_extensions.Self) -> float:
@@ -61,7 +61,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     def _solve_eigenproblem(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128]]:
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
         try:
@@ -80,7 +80,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     def _create_K_matrix(  # noqa: N802
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_]:
+    ) -> npt.NDArray[np.complex128]:
         """Compute the K matrix."""
         # Compute sub-integral matrix
         G = self._slepian_integral()
@@ -92,7 +92,7 @@ class SlepianLimitLatLon(SlepianFunctions):
 
         return K
 
-    def _slepian_integral(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:
+    def _slepian_integral(self: typing_extensions.Self) -> npt.NDArray[np.complex128]:
         """
         Syntax:
         G = _slepian_integral().
@@ -109,7 +109,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         colatitude-longitude spatial region" by A. P. Bates, Z. Khalid and R. A.
         Kennedy.
         """
-        G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex_)
+        G = np.zeros((4 * self.L - 3, 4 * self.L - 3), dtype=np.complex128)
 
         def helper(row: int, col: int, S: float) -> None:
             """Use conjugate symmetry property to reduce the number of iterations."""
@@ -151,11 +151,11 @@ class SlepianLimitLatLon(SlepianFunctions):
     @staticmethod
     @numba.njit(parallel=True, fastmath=True)
     def _slepian_matrix(
-        dl: npt.NDArray[np.float_],
+        dl: npt.NDArray[np.float64],
         L: int,
         N: int,
-        G: npt.NDArray[np.complex_],
-    ) -> npt.NDArray[np.complex_]:
+        G: npt.NDArray[np.complex128],
+    ) -> npt.NDArray[np.complex128]:
         """
         Syntax:
         K = _slepian_matrix(dl, L, N, G).
@@ -173,7 +173,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         Analytical formulation for limited colatitude-longitude spatial region"
         by A. P. Bates, Z. Khalid and R. A. Kennedy.
         """
-        K = np.zeros((L**2, L**2), dtype=np.complex_)
+        K = np.zeros((L**2, L**2), dtype=np.complex128)
 
         for ell in numba.prange(L):
             for p in range(ell + 1):
@@ -205,8 +205,10 @@ class SlepianLimitLatLon(SlepianFunctions):
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: tuple[npt.NDArray[np.complex_], npt.NDArray[np.complex_]],
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
+        eigendecomposition: tuple[
+            npt.NDArray[np.complex128], npt.NDArray[np.complex128]
+        ],
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128]]:
         """Need eigenvalues and eigenvectors to be in a certain format."""
         # access values
         eigenvalues_complex, eigenvectors = eigendecomposition

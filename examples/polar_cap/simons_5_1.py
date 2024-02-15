@@ -52,7 +52,7 @@ def _helper(  # noqa: PLR0913
     ax: npt.NDArray[typing.Any],
     slepian: sleplet.slepian.SlepianPolarCap,
     resolution: int,
-    x: npt.NDArray[np.float_],
+    x: npt.NDArray[np.float64],
     i: int,
     order: int,
     rank: int,

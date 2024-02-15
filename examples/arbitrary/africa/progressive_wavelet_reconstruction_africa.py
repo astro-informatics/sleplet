@@ -21,7 +21,7 @@ def main() -> None:
     )
 
     # plot
-    f_p = np.zeros(swc.slepian.N, dtype=np.complex_)
+    f_p = np.zeros(swc.slepian.N, dtype=np.complex128)
     for p, coeff in enumerate(swc.wavelet_coefficients):
         print(f"plot reconstruction: {p}")
         f_p += sleplet.wavelet_methods.slepian_wavelet_inverse(

@@ -11,7 +11,7 @@ def denoising_slepian_wavelet(
     slepian_wavelets: sleplet.functions.SlepianWavelets,
     snr_in: float,
     n_sigma: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """Denoising demo using Slepian wavelets."""
     # compute wavelet coefficients
     w = sleplet.wavelet_methods.slepian_wavelet_forward(

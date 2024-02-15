@@ -40,7 +40,7 @@ class Ridgelets(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
         _logger.info("finish computing wavelets")
@@ -70,20 +70,20 @@ class Ridgelets(Flm):
                 raise ValueError(msg)
             self.B, self.j_min, self.spin, self.j = self.extra_args
 
-    def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:
+    def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.complex128]:
         """Compute all wavelets."""
         ring_lm = self._compute_ring()
         kappas = sleplet.wavelet_methods.create_kappas(self.L, self.B, self.j_min)
-        wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex_)
+        wavelets = np.zeros((kappas.shape[0], self.L**2), dtype=np.complex128)
         for ell in range(self.L):
             ind = ssht.elm2ind(ell, 0)
             wavelets[0, ind] = kappas[0, ell] * ring_lm[ind]
             wavelets[1:, ind] = kappas[1:, ell] * ring_lm[ind] / np.sqrt(2 * np.pi)
         return wavelets
 
-    def _compute_ring(self: typing_extensions.Self) -> npt.NDArray[np.complex_]:
+    def _compute_ring(self: typing_extensions.Self) -> npt.NDArray[np.complex128]:
         """Compute ring in harmonic space."""
-        ring_lm = np.zeros(self.L**2, dtype=np.complex_)
+        ring_lm = np.zeros(self.L**2, dtype=np.complex128)
         for ell in range(abs(self.spin), self.L):
             logp2 = (
                 scipy.special.gammaln(ell + self.spin + 1)
