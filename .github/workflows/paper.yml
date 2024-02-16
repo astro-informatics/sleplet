@@ -1,14 +1,13 @@
 ---
 name: Paper
 
-# yamllint disable-line rule:truthy
 on:
   push:
     branches:
       - main
   pull_request:
     paths:
-      - "paper/**"
+      - paper/**
 
 jobs:
   paper:
