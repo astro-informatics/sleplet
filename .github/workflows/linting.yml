@@ -1,12 +1,11 @@
 ---
 name: Linting
 
-# yamllint disable-line rule:truthy
 on:
   push:
     branches:
       - main
-      - "renovate/**"
+      - renovate/**
   pull_request:
 
 jobs:
