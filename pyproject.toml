@@ -61,6 +61,7 @@ optional-dependencies = {dev = [
     "pytest",
     "ruff",
     "tox",
+    "tox-uv",
     "tuna",
     "twine",
 ], docs = [
