@@ -1,4 +1,5 @@
 """Contains the `Ridgelets` class."""
+
 import logging
 
 import numpy as np

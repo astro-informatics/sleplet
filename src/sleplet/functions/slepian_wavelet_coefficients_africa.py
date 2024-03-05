@@ -1,4 +1,5 @@
 """Contains the `SlepianWaveletCoefficientsAfrica` class."""
+
 import logging
 
 import numpy as np

@@ -1,4 +1,5 @@
 """Contains the abstract `Coefficients` class."""
+
 import abc
 import dataclasses
 
@@ -35,12 +36,12 @@ class Coefficients:
     """Whether to set a region or not, used in the Slepian case."""
     smoothing: int | None = None
     """How much to smooth the topographic map of the Earth by."""
-    _unnoised_coefficients: (
-        npt.NDArray[np.complex128 | np.float64] | None
-    ) = pydantic.Field(
-        default=None,
-        init_var=False,
-        repr=False,
+    _unnoised_coefficients: npt.NDArray[np.complex128 | np.float64] | None = (
+        pydantic.Field(
+            default=None,
+            init_var=False,
+            repr=False,
+        )
     )
     coefficients: npt.NDArray[np.complex128 | np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),

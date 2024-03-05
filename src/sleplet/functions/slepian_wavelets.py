@@ -1,4 +1,5 @@
 """Contains the `SlepianWavelets` class."""
+
 import logging
 
 import numpy as np

@@ -1,4 +1,5 @@
 """Contains the `MeshSlepianFunctions` class."""
+
 import logging
 
 import numpy as np

@@ -1,4 +1,5 @@
 """Contains the `Mesh` class."""
+
 import dataclasses
 
 import numpy as np

@@ -1,4 +1,5 @@
 """Contains the abstract `SlepianFunctions` class."""
+
 import abc
 import dataclasses
 import logging

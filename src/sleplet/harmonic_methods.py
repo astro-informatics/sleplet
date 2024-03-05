@@ -1,4 +1,5 @@
 """Methods to perform operations in Fourier space of the sphere or mesh."""
+
 import collections
 import typing
 

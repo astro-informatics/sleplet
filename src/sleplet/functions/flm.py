@@ -1,4 +1,5 @@
 """Contains the abstract `Flm` class."""
+
 import abc
 
 import numpy as np

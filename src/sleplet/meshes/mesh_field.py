@@ -1,4 +1,5 @@
 """Contains the `MeshField` class."""
+
 import igl
 import numpy as np
 import numpy.typing as npt

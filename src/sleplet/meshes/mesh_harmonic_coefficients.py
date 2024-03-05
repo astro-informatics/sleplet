@@ -1,4 +1,5 @@
 """Contains the abstract `MeshHarmonicCoefficients` class."""
+
 import abc
 
 import numpy as np
