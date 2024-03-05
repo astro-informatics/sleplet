@@ -1,7 +1,7 @@
 ---
 repos:
   - repo: https://github.com/paddyroddy/.github
-    rev: v0.136.0
+    rev: v0.146.0
     hooks:
       - id: general-hooks
       - id: python-hooks
