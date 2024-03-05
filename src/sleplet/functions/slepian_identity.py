@@ -1,4 +1,5 @@
 """Contains the `SlepianIdentity` class."""
+
 import numpy as np
 import numpy.typing as npt
 import pydantic

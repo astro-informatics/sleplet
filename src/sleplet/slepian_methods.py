@@ -1,4 +1,5 @@
 """Methods to work with Slepian coefficients."""
+
 import logging
 
 import numpy as np

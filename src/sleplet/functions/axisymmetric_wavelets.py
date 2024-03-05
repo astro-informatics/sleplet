@@ -1,4 +1,5 @@
 """Contains the `AxisymmetricWavelets` class."""
+
 import logging
 
 import numpy as np

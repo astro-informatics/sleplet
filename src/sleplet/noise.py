@@ -1,4 +1,5 @@
 """Methods to handle noise in Fourier or wavelet space."""
+
 import logging
 
 import numpy as np

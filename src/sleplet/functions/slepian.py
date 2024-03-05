@@ -1,4 +1,5 @@
 """Contains the `Slepian` class."""
+
 import logging
 
 import numpy as np

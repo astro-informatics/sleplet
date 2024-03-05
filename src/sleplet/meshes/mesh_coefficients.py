@@ -1,4 +1,5 @@
 """Contains the abstract `MeshCoefficients` class."""
+
 import abc
 import dataclasses
 
@@ -30,12 +31,12 @@ class MeshCoefficients:
     """How much to noise the data."""
     region: bool = False
     """Whether to set a region or not, used in the Slepian case."""
-    _unnoised_coefficients: (
-        npt.NDArray[np.complex128 | np.float64] | None
-    ) = pydantic.Field(
-        default=None,
-        init_var=False,
-        repr=False,
+    _unnoised_coefficients: npt.NDArray[np.complex128 | np.float64] | None = (
+        pydantic.Field(
+            default=None,
+            init_var=False,
+            repr=False,
+        )
     )
     coefficients: npt.NDArray[np.complex128 | np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),

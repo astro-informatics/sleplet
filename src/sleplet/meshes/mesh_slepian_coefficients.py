@@ -1,4 +1,5 @@
 """Contains the abstract `MeshSlepianCoefficients` class."""
+
 import abc
 
 import numpy as np

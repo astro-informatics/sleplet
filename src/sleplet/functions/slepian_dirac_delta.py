@@ -1,4 +1,5 @@
 """Contains the `SlepianDiracDelta` class."""
+
 import logging
 
 import numpy as np

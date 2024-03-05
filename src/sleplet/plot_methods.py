@@ -1,4 +1,5 @@
 """Methods to help in creating plots."""
+
 import logging
 
 import matplotlib as mpl
