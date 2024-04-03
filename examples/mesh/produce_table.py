@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 
-from denoising_slepian_mesh import main  # noqa: E402
+from denoising_slepian_mesh import main
 
 MESH_SNR_DICT = {
     "cheetah": -8.64,

@@ -7,7 +7,7 @@ import sleplet
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[1]))
 
-from _slepian_wavelet_covariance import compute_slepian_wavelet_covariance  # noqa: E402
+from _slepian_wavelet_covariance import compute_slepian_wavelet_covariance
 
 B = 3
 J_MIN = 2
@@ -32,7 +32,7 @@ def main() -> None:
 
     # initialise matrix
     covar_runs_shape = (RUNS, *covar_theory.shape)
-    covar_data_runs = np.zeros(covar_runs_shape, dtype=np.complex_)
+    covar_data_runs = np.zeros(covar_runs_shape, dtype=np.complex128)
 
     # set seed
     rng = np.random.default_rng(RANDOM_SEED)

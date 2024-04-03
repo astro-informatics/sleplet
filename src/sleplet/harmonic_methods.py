@@ -1,4 +1,5 @@
 """Methods to perform operations in Fourier space of the sphere or mesh."""
+
 import collections
 import typing
 
@@ -19,9 +20,9 @@ _SOUTH_AMERICA_BETA = np.deg2rad(108)
 _SOUTH_AMERICA_GAMMA = np.deg2rad(63)
 
 
-def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex_]:
+def _create_spherical_harmonic(L: int, ind: int) -> npt.NDArray[np.complex128]:
     """Create a spherical harmonic in harmonic space for the given index."""
-    flm = np.zeros(L**2, dtype=np.complex_)
+    flm = np.zeros(L**2, dtype=np.complex128)
     flm[ind] = 1
     return flm
 
@@ -35,13 +36,13 @@ def _boost_coefficient_resolution(
 
 
 def invert_flm_boosted(
-    flm: npt.NDArray[np.complex_],
+    flm: npt.NDArray[np.complex128],
     L: int,
     resolution: int,
     *,
     reality: bool = False,
     spin: int = 0,
-) -> npt.NDArray[np.complex_ | np.float_]:
+) -> npt.NDArray[np.complex128 | np.float64]:
     """
     Upsamples the signal and performs the inverse harmonic transform .
 
@@ -68,14 +69,14 @@ def invert_flm_boosted(
 
 def _ensure_f_bandlimited(
     grid_fun: collections.abc.Callable[
-        [npt.NDArray[np.float_], npt.NDArray[np.float_]],
-        npt.NDArray[np.float_],
+        [npt.NDArray[np.float64], npt.NDArray[np.float64]],
+        npt.NDArray[np.float64],
     ],
     L: int,
     *,
     reality: bool,
     spin: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """
     If the function created is created in pixel space rather than harmonic
     space then need to transform it into harmonic space first before using it.
@@ -95,7 +96,7 @@ def _ensure_f_bandlimited(
     )
 
 
-def _create_emm_vector(L: int) -> npt.NDArray[np.float_]:
+def _create_emm_vector(L: int) -> npt.NDArray[np.float64]:
     """Create vector of m values for a given L."""
     emm = np.zeros(2 * L * 2 * L)
     k = 0
@@ -112,7 +113,7 @@ def compute_random_signal(
     rng: np.random.Generator,
     *,
     var_signal: float,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """
     Generate a normally distributed random signal of a
     complex signal with mean `0` and variance `1`.
@@ -132,8 +133,8 @@ def compute_random_signal(
 
 def mesh_forward(
     mesh: "sleplet.meshes.mesh.Mesh",
-    u: npt.NDArray[np.complex_ | np.float_],
-) -> npt.NDArray[np.float_]:
+    u: npt.NDArray[np.complex128 | np.float64],
+) -> npt.NDArray[np.float64]:
     """
     Compute the mesh forward transform from pixel space to Fourier space.
 
@@ -157,8 +158,8 @@ def mesh_forward(
 
 def mesh_inverse(
     mesh: "sleplet.meshes.mesh.Mesh",
-    u_i: npt.NDArray[np.complex_ | np.float_],
-) -> npt.NDArray[np.complex_ | np.float_]:
+    u_i: npt.NDArray[np.complex128 | np.float64],
+) -> npt.NDArray[np.complex128 | np.float64]:
     """
     Compute the mesh inverse transform from Fourier space to pixel space.
 
@@ -173,9 +174,9 @@ def mesh_inverse(
 
 
 def rotate_earth_to_south_america(
-    earth_flm: npt.NDArray[np.complex_ | np.float_],
+    earth_flm: npt.NDArray[np.complex128 | np.float64],
     L: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """
     Rotates the harmonic coefficients of the Earth to a view centered on South America.
 
@@ -196,9 +197,9 @@ def rotate_earth_to_south_america(
 
 
 def rotate_earth_to_africa(
-    earth_flm: npt.NDArray[np.complex_ | np.float_],
+    earth_flm: npt.NDArray[np.complex128 | np.float64],
     L: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """
     Rotates the harmonic coefficients of the Earth to a view centered on Africa.
 

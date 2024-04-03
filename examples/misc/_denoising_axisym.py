@@ -20,7 +20,7 @@ def denoising_axisym(  # noqa: PLR0913
     n_sigma: int,
     *,
     rotate_to_south_america: bool = False,
-) -> tuple[npt.NDArray[np.complex_], float | None, float]:
+) -> tuple[npt.NDArray[np.complex128], float | None, float]:
     """Reproduce the denoising demo from S2LET paper."""
     # compute wavelet coefficients
     w = sleplet.wavelet_methods.axisymmetric_wavelet_forward(

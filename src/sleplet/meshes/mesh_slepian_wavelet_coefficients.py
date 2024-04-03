@@ -1,4 +1,5 @@
 """Contains the `MeshSlepianWaveletCoefficients` class."""
+
 import logging
 
 import numpy as np
@@ -35,7 +36,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         _logger.info("start computing wavelet coefficients")
         self.wavelets, self.wavelet_coefficients = self._create_wavelet_coefficients()
         _logger.info("finish computing wavelet coefficients")
@@ -60,7 +61,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
 
     def _create_wavelet_coefficients(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_ | np.float_]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128 | np.float64]]:
         """Compute wavelet coefficients in Slepian space."""
         smw = sleplet.meshes.mesh_slepian_wavelets.MeshSlepianWavelets(
             self.mesh,

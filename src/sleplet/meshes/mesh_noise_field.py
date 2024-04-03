@@ -1,4 +1,5 @@
 """Contains the `MeshNoiseField` class."""
+
 import numpy as np
 import numpy.typing as npt
 import pydantic
@@ -24,7 +25,7 @@ class MeshNoiseField(MeshHarmonicCoefficients):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         mf = sleplet.meshes.mesh_slepian.MeshField(self.mesh)
         noise = sleplet.noise._create_mesh_noise(mf.coefficients, self.SNR)
         sleplet.noise.compute_snr(mf.coefficients, noise, "Harmonic")

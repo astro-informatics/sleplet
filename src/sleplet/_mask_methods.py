@@ -24,7 +24,7 @@ _SOUTH_AMERICA_RANGE = np.deg2rad(40)
 def create_mask_region(
     L: int,
     region: "sleplet.slepian.region.Region",
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """
     Create a mask of a region of interested, the output will be based
     on the value of the provided L. The mask could be either:
@@ -67,7 +67,7 @@ def create_mask_region(
     return mask
 
 
-def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
+def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float64]:
     """Attempt to read the mask from the config file."""
     mask = sleplet._data.setup_pooch.find_on_pooch_then_local(
         f"slepian_masks_{mask_name}",
@@ -76,13 +76,13 @@ def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
 
 
 def ensure_masked_flm_bandlimited(
-    flm: npt.NDArray[np.complex_],
+    flm: npt.NDArray[np.complex128],
     L: int,
     region: "sleplet.slepian.region.Region",
     *,
     reality: bool,
     spin: int,
-) -> npt.NDArray[np.complex_]:
+) -> npt.NDArray[np.complex128]:
     """Ensure the coefficients is bandlimited for a given region."""
     field = ssht.inverse(
         flm,
@@ -116,7 +116,7 @@ def create_default_region() -> "sleplet.slepian.region.Region":
 
 def create_mesh_region(
     mesh_config: dict[str, typing.Any],
-    vertices: npt.NDArray[np.float_],
+    vertices: npt.NDArray[np.float64],
 ) -> npt.NDArray[np.bool_]:
     """Create a boolean region for the given mesh."""
     return (
@@ -131,8 +131,8 @@ def create_mesh_region(
 
 def ensure_masked_bandlimit_mesh_signal(
     mesh: "sleplet.meshes.mesh.Mesh",
-    u_i: npt.NDArray[np.complex_ | np.float_],
-) -> npt.NDArray[np.float_]:
+    u_i: npt.NDArray[np.complex128 | np.float64],
+) -> npt.NDArray[np.float64]:
     """Ensure that signal in pixel space is bandlimited."""
     field = sleplet.harmonic_methods.mesh_inverse(mesh, u_i)
     masked_field = np.where(mesh.mesh_region, field, 0)
@@ -141,7 +141,7 @@ def ensure_masked_bandlimit_mesh_signal(
 
 def convert_region_on_vertices_to_faces(
     mesh: "sleplet.meshes.mesh.Mesh",
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Convert the region on vertices to faces."""
     region_reshape = np.argwhere(mesh.mesh_region).reshape(-1)
     faces_in_region = np.isin(mesh.faces, region_reshape).all(axis=1)
@@ -152,8 +152,8 @@ def convert_region_on_vertices_to_faces(
 
 def _create_africa_mask(
     L: int,
-    earth_flm: npt.NDArray[np.complex_],
-) -> npt.NDArray[np.float_]:
+    earth_flm: npt.NDArray[np.complex128],
+) -> npt.NDArray[np.float64]:
     """Create the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_africa(earth_flm, L)
     earth_f = ssht.inverse(
@@ -172,8 +172,8 @@ def _create_africa_mask(
 
 def _create_south_america_mask(
     L: int,
-    earth_flm: npt.NDArray[np.complex_],
-) -> npt.NDArray[np.float_]:
+    earth_flm: npt.NDArray[np.complex128],
+) -> npt.NDArray[np.float64]:
     """Create the Africa region mask."""
     rot_flm = sleplet.harmonic_methods.rotate_earth_to_south_america(earth_flm, L)
     earth_f = ssht.inverse(
@@ -190,7 +190,7 @@ def _create_south_america_mask(
     return (thetas <= _SOUTH_AMERICA_RANGE) & (earth_f >= 0)
 
 
-def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float_]:
+def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float64]:
     """Create the South America region mask."""
     earth_flm = sleplet._data.create_earth_flm.create_flm(L)
     if mask_name == f"africa_L{L}.npy":

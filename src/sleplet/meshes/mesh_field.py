@@ -1,4 +1,5 @@
 """Contains the `MeshField` class."""
+
 import igl
 import numpy as np
 import numpy.typing as npt
@@ -19,7 +20,7 @@ class MeshField(MeshHarmonicCoefficients):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         """Compute field on the vertices of the mesh."""
         field = igl.per_vertex_normals(self.mesh.vertices, self.mesh.faces)[:, 1]
         return sleplet.harmonic_methods.mesh_forward(self.mesh, field)

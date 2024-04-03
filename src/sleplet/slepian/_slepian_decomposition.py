@@ -21,9 +21,9 @@ class SlepianDecomposition:
     L: int
     slepian: SlepianFunctions
     _: dataclasses.KW_ONLY
-    f: npt.NDArray[np.complex_] | None = None
-    flm: npt.NDArray[np.complex_ | np.float_] | None = None
-    mask: npt.NDArray[np.float_] | None = None
+    f: npt.NDArray[np.complex128] | None = None
+    flm: npt.NDArray[np.complex128 | np.float64] | None = None
+    mask: npt.NDArray[np.float64] | None = None
     _method: str = pydantic.Field(default="", init_var=False, repr=False)
 
     def __post_init__(self: typing_extensions.Self) -> None:
@@ -47,9 +47,9 @@ class SlepianDecomposition:
     def decompose_all(
         self: typing_extensions.Self,
         n_coefficients: int,
-    ) -> npt.NDArray[np.complex_]:
+    ) -> npt.NDArray[np.complex128]:
         """Decompose all ranks of the Slepian coefficients."""
-        coefficients = np.zeros(n_coefficients, dtype=np.complex_)
+        coefficients = np.zeros(n_coefficients, dtype=np.complex128)
         for rank in range(n_coefficients):
             coefficients[rank] = self.decompose(rank)
         return coefficients

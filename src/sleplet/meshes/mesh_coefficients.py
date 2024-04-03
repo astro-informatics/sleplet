@@ -1,4 +1,5 @@
 """Contains the abstract `MeshCoefficients` class."""
+
 import abc
 import dataclasses
 
@@ -30,26 +31,26 @@ class MeshCoefficients:
     """How much to noise the data."""
     region: bool = False
     """Whether to set a region or not, used in the Slepian case."""
-    _unnoised_coefficients: (
-        npt.NDArray[np.complex_ | np.float_] | None
-    ) = pydantic.Field(
-        default=None,
-        init_var=False,
-        repr=False,
+    _unnoised_coefficients: npt.NDArray[np.complex128 | np.float64] | None = (
+        pydantic.Field(
+            default=None,
+            init_var=False,
+            repr=False,
+        )
     )
-    coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+    coefficients: npt.NDArray[np.complex128 | np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
     )
     name: str = pydantic.Field(default="", init_var=False, repr=False)
     snr: float | None = pydantic.Field(default=None, init_var=False, repr=False)
-    wavelet_coefficients: npt.NDArray[np.complex_ | np.float_] = pydantic.Field(
+    wavelet_coefficients: npt.NDArray[np.complex128 | np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
     )
-    wavelets: npt.NDArray[np.float_] = pydantic.Field(
+    wavelets: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
@@ -74,14 +75,14 @@ class MeshCoefficients:
     @abc.abstractmethod
     def _add_noise_to_signal(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
+    ) -> tuple[npt.NDArray[np.complex128 | np.float64] | None, float | None]:
         """Add Gaussian white noise to the signal."""
         raise NotImplementedError
 
     @abc.abstractmethod
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         """Create the flm on the north pole."""
         raise NotImplementedError
 

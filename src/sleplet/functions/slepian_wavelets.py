@@ -1,4 +1,5 @@
 """Contains the `SlepianWavelets` class."""
+
 import logging
 
 import numpy as np
@@ -33,7 +34,7 @@ class SlepianWavelets(Fp):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         _logger.info("start computing wavelets")
         self.wavelets = self._create_wavelets()
         _logger.info("finish computing wavelets")
@@ -63,7 +64,7 @@ class SlepianWavelets(Fp):
                 raise ValueError(msg)
             self.B, self.j_min, self.j = self.extra_args
 
-    def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
+    def _create_wavelets(self: typing_extensions.Self) -> npt.NDArray[np.float64]:
         """Compute wavelets in Slepian space."""
         return sleplet.wavelet_methods.create_kappas(self.L**2, self.B, self.j_min)
 

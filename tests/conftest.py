@@ -111,7 +111,7 @@ def slepian_wavelets_lim_lat_lon(
 
 
 @pytest.fixture(scope="session")
-def random_flm() -> npt.NDArray[np.complex_]:
+def random_flm() -> npt.NDArray[np.complex128]:
     """Create random flm."""
     return sleplet.harmonic_methods.compute_random_signal(L, RNG, var_signal=1)
 

@@ -1,4 +1,5 @@
 """Methods to help in creating plots."""
+
 import logging
 
 import matplotlib as mpl
@@ -126,9 +127,9 @@ def find_max_amplitude(
 
 
 def _create_plot_type(
-    field: npt.NDArray[np.complex_ | np.float_],
+    field: npt.NDArray[np.complex128 | np.float64],
     plot_type: str,
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Get the given plot type of the field."""
     msg = f"plotting type: '{plot_type}'"
     _logger.info(msg)
@@ -142,10 +143,10 @@ def _create_plot_type(
 
 
 def _set_outside_region_to_minimum(
-    f_plot: npt.NDArray[np.float_],
+    f_plot: npt.NDArray[np.float64],
     L: int,
     region: sleplet.slepian.region.Region,
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """
     For the Slepian region set the outside area to negative infinity
     hence it is clear we are only interested in the coloured region.
@@ -162,10 +163,10 @@ def _set_outside_region_to_minimum(
 
 
 def _normalise_function(
-    f: npt.NDArray[np.float_],
+    f: npt.NDArray[np.float64],
     *,
     normalise: bool,
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Normalise function between 0 and 1 for visualisation."""
     if not normalise:
         return f
@@ -177,14 +178,14 @@ def _normalise_function(
 
 
 def _boost_field(  # noqa: PLR0913
-    field: npt.NDArray[np.complex_ | np.float_],
+    field: npt.NDArray[np.complex128 | np.float64],
     L: int,
     resolution: int,
     *,
     reality: bool,
     spin: int,
     upsample: bool,
-) -> npt.NDArray[np.complex_ | np.float_]:
+) -> npt.NDArray[np.complex128 | np.float64]:
     """Inverts and then boosts the field before plotting."""
     if not upsample:
         return field
@@ -225,8 +226,8 @@ def compute_amplitude_for_noisy_mesh_plots(
 
 def _coefficients_to_field_mesh(
     f: sleplet.meshes.mesh_coefficients.MeshCoefficients,
-    coefficients: npt.NDArray[np.complex_ | np.float_],
-) -> npt.NDArray[np.complex_ | np.float_]:
+    coefficients: npt.NDArray[np.complex128 | np.float64],
+) -> npt.NDArray[np.complex128 | np.float64]:
     """Compute the field over the whole mesh from the harmonic/Slepian coefficients."""
     return (
         sleplet.slepian_methods.slepian_mesh_inverse(f.mesh_slepian, coefficients)
@@ -256,8 +257,8 @@ def compute_amplitude_for_noisy_sphere_plots(
 
 def _coefficients_to_field_sphere(
     f: sleplet.functions.coefficients.Coefficients,
-    coefficients: npt.NDArray[np.complex_ | np.float_],
-) -> npt.NDArray[np.complex_ | np.float_]:
+    coefficients: npt.NDArray[np.complex128 | np.float64],
+) -> npt.NDArray[np.complex128 | np.float64]:
     """Compute the field over the samples from the harmonic/Slepian coefficients."""
     return (
         sleplet.slepian_methods.slepian_inverse(coefficients, f.L, f.slepian)

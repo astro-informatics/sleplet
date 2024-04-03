@@ -24,7 +24,7 @@ _logger = logging.getLogger(__name__)
 class PlotSphere:
     """Create surface sphere plot via `plotly`."""
 
-    f: npt.NDArray[np.complex_ | np.float_]
+    f: npt.NDArray[np.complex128 | np.float64]
     """The field value sampled on the sphere."""
     L: int
     """The spherical harmonic bandlimit."""
@@ -122,7 +122,7 @@ class PlotSphere:
 
     @staticmethod
     def _setup_plot(  # noqa: PLR0913
-        f: npt.NDArray[np.float_],
+        f: npt.NDArray[np.float64],
         resolution: int,
         *,
         method: str = "MW",
@@ -131,10 +131,10 @@ class PlotSphere:
         parametric_scaling: list[float] | None = None,
         color_range: list[float] | None = None,
     ) -> tuple[
-        npt.NDArray[np.float_],
-        npt.NDArray[np.float_],
-        npt.NDArray[np.float_],
-        npt.NDArray[np.float_],
+        npt.NDArray[np.float64],
+        npt.NDArray[np.float64],
+        npt.NDArray[np.float64],
+        npt.NDArray[np.float64],
         float,
         float,
     ]:
@@ -196,8 +196,8 @@ class PlotSphere:
 
     def _prepare_field(
         self: typing_extensions.Self,
-        f: npt.NDArray[np.complex_ | np.float_],
-    ) -> npt.NDArray[np.float_]:
+        f: npt.NDArray[np.complex128 | np.float64],
+    ) -> npt.NDArray[np.float64]:
         """Boosts, forces plot type and then scales the field before plotting."""
         boosted_field = sleplet.plot_methods._boost_field(
             f,

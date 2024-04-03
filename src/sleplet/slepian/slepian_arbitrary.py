@@ -1,4 +1,5 @@
 """Contains the `SlepianArbitrary` class."""
+
 import concurrent.futures
 import logging
 import os
@@ -34,7 +35,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     mask_name: str
     """The name of the mask of the arbitrary region."""
-    _weight: npt.NDArray[np.float_] = pydantic.Field(
+    _weight: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
@@ -50,7 +51,7 @@ class SlepianArbitrary(SlepianFunctions):
     def _create_region(self: typing_extensions.Self) -> "sleplet.slepian.region.Region":
         return sleplet.slepian.region.Region(mask_name=self.mask_name)
 
-    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float_]:
+    def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float64]:
         return sleplet._mask_methods.create_mask_region(self._resolution, self.region)
 
     def _calculate_area(self: typing_extensions.Self) -> float:
@@ -64,7 +65,7 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _solve_eigenproblem(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128]]:
         eval_loc = f"{self.matrix_location}_eigenvalues.npy"
         evec_loc = f"{self.matrix_location}_eigenvectors.npy"
 
@@ -83,7 +84,7 @@ class SlepianArbitrary(SlepianFunctions):
         self: typing_extensions.Self,
         eval_loc: str,
         evec_loc: str,
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.complex_]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complex128]]:
         D = self._create_D_matrix()
 
         # fill in remaining triangle section
@@ -100,10 +101,10 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _create_D_matrix(  # noqa: N802
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_]:
+    ) -> npt.NDArray[np.complex128]:
         """Compute the D matrix in parallel."""
         # create dictionary for the integrals
-        self._fields: dict[int, npt.NDArray[np.complex_ | np.float_]] = {}
+        self._fields: dict[int, npt.NDArray[np.complex128 | np.float64]] = {}
 
         # initialise real and imaginary matrices
         D_r = np.zeros((self.L**2, self.L**2))
@@ -155,8 +156,8 @@ class SlepianArbitrary(SlepianFunctions):
 
     def _matrix_helper(
         self: typing_extensions.Self,
-        D_r: npt.NDArray[np.float_],
-        D_i: npt.NDArray[np.float_],
+        D_r: npt.NDArray[np.float64],
+        D_i: npt.NDArray[np.float64],
         i: int,
     ) -> None:
         """

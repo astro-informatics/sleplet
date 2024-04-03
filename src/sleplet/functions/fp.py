@@ -1,4 +1,5 @@
 """Contains the abstract `Fp` class."""
+
 import abc
 
 import numpy as np
@@ -44,7 +45,7 @@ class Fp(Coefficients):
         beta: float,  # noqa: ARG002
         *,
         gamma: float = 0,  # noqa: ARG002
-    ) -> npt.NDArray[np.complex_]:
+    ) -> npt.NDArray[np.complex128]:
         msg = "Slepian rotation is not defined"
         raise NotImplementedError(msg)
 
@@ -52,7 +53,7 @@ class Fp(Coefficients):
         self: typing_extensions.Self,
         alpha: float,
         beta: float,
-    ) -> npt.NDArray[np.complex_]:
+    ) -> npt.NDArray[np.complex128]:
         return sleplet.slepian_methods._compute_s_p_omega_prime(
             self.L,
             alpha,
@@ -62,9 +63,9 @@ class Fp(Coefficients):
 
     def _add_noise_to_signal(
         self: typing_extensions.Self,
-    ) -> tuple[npt.NDArray[np.complex_ | np.float_] | None, float | None]:
+    ) -> tuple[npt.NDArray[np.complex128 | np.float64] | None, float | None]:
         """Add Gaussian white noise converted to Slepian space."""
-        self.coefficients: npt.NDArray[np.complex_ | np.float_]
+        self.coefficients: npt.NDArray[np.complex128 | np.float64]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
             n_p = sleplet.noise._create_slepian_noise(
@@ -81,7 +82,7 @@ class Fp(Coefficients):
     @abc.abstractmethod
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         raise NotImplementedError
 
     @abc.abstractmethod

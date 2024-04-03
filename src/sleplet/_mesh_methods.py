@@ -18,8 +18,8 @@ _logger = logging.getLogger(__name__)
 
 def average_functions_on_vertices_to_faces(
     faces: npt.NDArray[np.int_],
-    functions_on_vertices: npt.NDArray[np.complex_ | np.float_],
-) -> npt.NDArray[np.float_]:
+    functions_on_vertices: npt.NDArray[np.complex128 | np.float64],
+) -> npt.NDArray[np.float64]:
     """
     Require all functions to be defined on faces
     this method handles an arbitrary number of functions.
@@ -42,7 +42,7 @@ def average_functions_on_vertices_to_faces(
 
 def create_mesh_region(
     mesh_config: dict[str, typing.Any],
-    vertices: npt.NDArray[np.float_],
+    vertices: npt.NDArray[np.float64],
 ) -> npt.NDArray[np.bool_]:
     """Create a boolean region for the given mesh."""
     return (
@@ -66,11 +66,11 @@ def extract_mesh_config(mesh_name: str) -> dict[str, float | int | str]:
 
 def mesh_eigendecomposition(
     name: str,
-    vertices: npt.NDArray[np.float_],
+    vertices: npt.NDArray[np.float64],
     faces: npt.NDArray[np.int_],
     *,
     number_basis_functions: int | None = None,
-) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_], int]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], int]:
     """
     Compute the eigendecomposition of the mesh represented
     as a graph if already computed then it loads the data.
@@ -113,7 +113,7 @@ def mesh_eigendecomposition(
 
 def read_mesh(
     mesh_config: dict[str, float | int | str],
-) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.int_]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.int_]]:
     """Read in the given mesh."""
     vertices, faces = igl.read_triangle_mesh(
         str(_data_path / f"meshes_polygons_{mesh_config['FILENAME']}"),
@@ -122,18 +122,18 @@ def read_mesh(
 
 
 def _mesh_laplacian(
-    vertices: npt.NDArray[np.float_],
+    vertices: npt.NDArray[np.float64],
     faces: npt.NDArray[np.int_],
-) -> npt.NDArray[np.float_]:
+) -> npt.NDArray[np.float64]:
     """Compute the cotagent mesh laplacian."""
     return -igl.cotmatrix(vertices, faces)
 
 
 def _orthonormalise_basis_functions(
-    vertices: npt.NDArray[np.float_],
+    vertices: npt.NDArray[np.float64],
     faces: npt.NDArray[np.int_],
-    basis_functions: npt.NDArray[np.float_],
-) -> npt.NDArray[np.float_]:
+    basis_functions: npt.NDArray[np.float64],
+) -> npt.NDArray[np.float64]:
     """For computing the Slepian D matrix the basis functions must be orthonormal."""
     _logger.info("orthonormalising basis functions")
     factor = np.zeros(basis_functions.shape[0])

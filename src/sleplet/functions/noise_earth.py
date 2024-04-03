@@ -1,4 +1,5 @@
 """Contains the `NoiseEarth` class."""
+
 import numpy as np
 import numpy.typing as npt
 import pydantic
@@ -24,7 +25,7 @@ class NoiseEarth(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         earth = sleplet.functions.earth.Earth(self.L, smoothing=self.smoothing)
         noise = sleplet.noise._create_noise(self.L, earth.coefficients, self.SNR)
         sleplet.noise.compute_snr(earth.coefficients, noise, "Harmonic")

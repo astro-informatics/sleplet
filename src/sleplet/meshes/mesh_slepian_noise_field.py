@@ -1,4 +1,5 @@
 """Contains the `MeshSlepianNoiseField` class."""
+
 import numpy as np
 import numpy.typing as npt
 import pydantic
@@ -27,7 +28,7 @@ class MeshSlepianNoiseField(MeshSlepianCoefficients):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         smf = sleplet.meshes.mesh_slepian_field.MeshSlepianField(
             self.mesh,
             region=True,

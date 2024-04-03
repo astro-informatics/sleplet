@@ -62,6 +62,7 @@ optional-dependencies = {dev = [
     "pytest",
     "ruff",
     "tox",
+    "tox-uv",
     "tuna",
     "twine",
 ], docs = [
@@ -136,10 +137,12 @@ force-exclude = true
 lint.ignore = [
     "COM812",
     "D105",
+    "D203",
     "D205",
     "D212",
     "D407",
     "D413",
+    "ISC001",
     "N803",
     "N806",
 ]

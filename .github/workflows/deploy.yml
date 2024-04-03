@@ -1,11 +1,10 @@
 ---
 name: Deploy
 
-# yamllint disable-line rule:truthy
 on:
   push:
     tags:
-      - "v*"
+      - v*
 
 jobs:
   deploy:
@@ -14,7 +13,7 @@ jobs:
       id-token: write
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/deployment@5db0473ebf89b7132850d118505c172be8022f97 # v0
+      - uses: paddyroddy/.github/actions/python/deployment@be31e8f5758700dafb58c5852530e750f1ea69d8 # v0
         with:
           pyproject-toml: ./pyproject.toml
           python-version: "3.12"

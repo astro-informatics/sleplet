@@ -39,7 +39,7 @@ def test_add_angle_to_filename() -> None:
 def test_print_multiple_of_pi() -> None:
     """Test that the pi prefix is added."""
     arguments = [0, 1, 2, 2.5]
-    output = ["0\u03C0", "\u03C0", "2\u03C0", "2\u03C0"]
+    output = ["0\u03c0", "\u03c0", "2\u03c0", "2\u03c0"]
     for c, arg in enumerate(arguments):
         np.testing.assert_equal(
             sleplet._string_methods.multiples_of_pi(arg * np.pi),

@@ -1,4 +1,5 @@
 """Contains the `ElongatedGaussian` class."""
+
 import numpy as np
 import numpy.typing as npt
 import pydantic
@@ -29,7 +30,7 @@ class ElongatedGaussian(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         return sleplet.harmonic_methods._ensure_f_bandlimited(
             self._grid_fun,
             self.L,
@@ -62,9 +63,9 @@ class ElongatedGaussian(Flm):
 
     def _grid_fun(
         self: typing_extensions.Self,
-        theta: npt.NDArray[np.float_],
-        phi: npt.NDArray[np.float_],
-    ) -> npt.NDArray[np.float_]:
+        theta: npt.NDArray[np.float64],
+        phi: npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.float64]:
         """Define the function on the grid."""
         return np.exp(
             -(

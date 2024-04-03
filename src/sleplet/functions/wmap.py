@@ -1,4 +1,5 @@
 """Contains the `Wmap` class."""
+
 import numpy as np
 import numpy.typing as npt
 import pydantic
@@ -19,7 +20,7 @@ class Wmap(Flm):
 
     def _create_coefficients(
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.complex_ | np.float_]:
+    ) -> npt.NDArray[np.complex128 | np.float64]:
         return sleplet._data.create_wmap_flm.create_flm(self.L)
 
     def _create_name(self: typing_extensions.Self) -> str:

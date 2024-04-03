@@ -1,4 +1,5 @@
 """Contains the `MeshSlepian` class."""
+
 import concurrent.futures
 import logging
 import os
@@ -28,12 +29,12 @@ class MeshSlepian:
     mesh: Mesh
     """A mesh object."""
     N: int = pydantic.Field(default=0, init_var=False, repr=False)
-    slepian_eigenvalues: npt.NDArray[np.float_] = pydantic.Field(
+    slepian_eigenvalues: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
     )
-    slepian_functions: npt.NDArray[np.float_] = pydantic.Field(
+    slepian_functions: npt.NDArray[np.float64] = pydantic.Field(
         default_factory=lambda: np.empty(0),
         init_var=False,
         repr=False,
@@ -94,7 +95,7 @@ class MeshSlepian:
 
     def _create_D_matrix(  # noqa: N802
         self: typing_extensions.Self,
-    ) -> npt.NDArray[np.float_]:
+    ) -> npt.NDArray[np.float64]:
         """Compute the D matrix for the mesh eigenfunctions."""
         D = np.zeros(
             (self.mesh.mesh_eigenvalues.shape[0], self.mesh.mesh_eigenvalues.shape[0]),
@@ -141,7 +142,7 @@ class MeshSlepian:
 
     def _fill_D_elements(  # noqa: N802
         self: typing_extensions.Self,
-        D: npt.NDArray[np.float_],
+        D: npt.NDArray[np.float64],
         i: int,
     ) -> None:
         """Fill in the D matrix elements using symmetries."""
@@ -161,8 +162,8 @@ class MeshSlepian:
 
     @staticmethod
     def _clean_evals_and_evecs(
-        eigendecomposition: tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]],
-    ) -> tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
+        eigendecomposition: tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]],
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         """Need eigenvalues and eigenvectors to be in a certain format."""
         # access values
         eigenvalues, eigenvectors = eigendecomposition
