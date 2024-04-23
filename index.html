@@ -38,18 +38,18 @@ predictions.</p>
 <p>Slepian wavelets are built upon the eigenfunctions of the Slepian concentration
 problem of the manifold - a set of bandlimited functions which are maximally
 concentrated within a given region. Wavelets are constructed through a tiling of
-the Slepian harmonic line by leveraging the existing scale-discretised framework.
-A straightforward denoising formalism demonstrates a boost in signal-to-noise
-for both a spherical and general manifold example. Whilst these wavelets were
-inspired by spherical datasets, like in cosmology, the wavelet construction may
-be utilised for manifold or graph data.</p>
+the Slepian harmonic line by leveraging the existing scale-discretised
+framework. A straightforward denoising formalism demonstrates a boost in
+signal-to-noise for both a spherical and general manifold example. Whilst these
+wavelets were inspired by spherical datasets, like in cosmology, the wavelet
+construction may be utilised for manifold or graph data.</p>
 <h2 id="bandlimit">Bandlimit</h2>
 <p>The bandlimit is set as <code>L</code> throughout the code and the CLIs. The default value
 is set to <code>L=16</code> and the figures created in <a href="#paper-figures">the figure section</a>
 all use <code>L=128</code>. The pre-computed data exists on
-<a href="https://doi.org/10.5281/zenodo.7767698">Zenodo</a> for powers of two up to <code>L=128</code>.
-Other values will be computed when running the appropriate code (and saved for
-future use). Note that beyond <code>L=32</code> the code can be slow due to the
+<a href="https://doi.org/10.5281/zenodo.7767698">Zenodo</a> for powers of two up to
+<code>L=128</code>. Other values will be computed when running the appropriate code (and
+saved for future use). Note that beyond <code>L=32</code> the code can be slow due to the
 difficulties of computing the Slepian matrix prior to the eigendecomposition, as
 such it is recommended to stick to the powers of two up to <code>L=128</code>.</p>
 <h2 id="environment-variables">Environment Variables</h2>
