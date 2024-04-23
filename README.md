@@ -35,8 +35,8 @@ The recommended way to install `SLEPLET` is via
 pip install sleplet
 ```
 
-To install the latest development version of `SLEPLET` clone this repository
-and run
+To install the latest development version of `SLEPLET` clone this repository and
+run
 
 ```sh
 pip install -e .
@@ -52,11 +52,11 @@ the figures in
 [![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org).
 Windows is not currently supported as `SLEPLET` relies on
 [pyssht](https://pypi.org/project/pyssht) and
-[pys2let](https://pypi.org/project/pys2let) which do not work on Windows.
-These can hopefully be replaced with
+[pys2let](https://pypi.org/project/pys2let) which do not work on Windows. These
+can hopefully be replaced with
 [s2fft](https://github.com/astro-informatics/s2fft) and
-[s2wav](https://github.com/astro-informatics/s2wav) in the future when they
-are available on [PyPI](https://pypi.org).
+[s2wav](https://github.com/astro-informatics/s2wav) in the future when they are
+available on [PyPI](https://pypi.org).
 
 ## Example Usage
 
@@ -128,5 +128,5 @@ If you use `SLEPLET` in your research, please cite the paper.
 
 Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
 `SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394)
-in the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497)
-in the mesh setting.
+in the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497) in
+the mesh setting.

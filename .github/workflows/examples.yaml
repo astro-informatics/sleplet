@@ -63,8 +63,5 @@ jobs:
 
       - name: Run examples in the examples folder
         run: >-
-          find examples -name "*.py"
-          -exec sh -c 'for f;
-          do printf "\n$f\n";
-          python "$f" || exit 1;
-          done' sh {} +
+          find examples -name "*.py" -exec sh -c 'for f; do printf "\n$f\n";
+          python "$f" || exit 1; done' sh {} +

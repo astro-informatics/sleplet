@@ -74,8 +74,8 @@ convert these into real space for visualisation or other intended purposes. The
 construction of the sifting convolution [@Roddy2021] was required to create
 Slepian wavelets. As a result, there are also many examples of functions on the
 sphere in harmonic space (rather than Slepian) that were used to demonstrate its
-effectiveness. `SLEPLET` has been used in the development of
-[@Roddy2021; @Roddy2022; @Roddy2022a; @Roddy2023].
+effectiveness. `SLEPLET` has been used in the development of [@Roddy2021;
+@Roddy2022; @Roddy2022a; @Roddy2023].
 
 Whilst Slepian wavelets may be trivially computed from a set of Slepian
 functions, the computation of the spherical Slepian functions themselves are
