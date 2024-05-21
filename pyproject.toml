@@ -24,7 +24,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "cmocean~=3.0",
+    "cmocean~=4.0",
     "gmpy2~=2.0",
     "hypothesis~=6.0",
     "libigl~=2.0",
