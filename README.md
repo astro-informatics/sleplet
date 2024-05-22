@@ -3,7 +3,7 @@
 [![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
 [![Documentation](https://img.shields.io/badge/Documentation-SLEPLET-blueviolet.svg)](https://astro-informatics.github.io/sleplet)
-[![Licence](https://img.shields.io/github/license/astro-informatics/sleplet)](https://github.com/astro-informatics/sleplet/blob/main/LICENCE.txt)
+[![Licence](https://img.shields.io/github/license/astro-informatics/sleplet)](https://github.com/astro-informatics/sleplet?tab=BSD-3-Clause-1-ov-file#BSD-3-Clause-1-ov-file)
 
 [![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org)
 [![repostatus](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
