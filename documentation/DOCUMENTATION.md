@@ -17,20 +17,20 @@ predictions.
 Slepian wavelets are built upon the eigenfunctions of the Slepian concentration
 problem of the manifold - a set of bandlimited functions which are maximally
 concentrated within a given region. Wavelets are constructed through a tiling of
-the Slepian harmonic line by leveraging the existing scale-discretised framework.
-A straightforward denoising formalism demonstrates a boost in signal-to-noise
-for both a spherical and general manifold example. Whilst these wavelets were
-inspired by spherical datasets, like in cosmology, the wavelet construction may
-be utilised for manifold or graph data.
+the Slepian harmonic line by leveraging the existing scale-discretised
+framework. A straightforward denoising formalism demonstrates a boost in
+signal-to-noise for both a spherical and general manifold example. Whilst these
+wavelets were inspired by spherical datasets, like in cosmology, the wavelet
+construction may be utilised for manifold or graph data.
 
 ## Bandlimit
 
 The bandlimit is set as `L` throughout the code and the CLIs. The default value
 is set to `L=16` and the figures created in [the figure section](#paper-figures)
 all use `L=128`. The pre-computed data exists on
-[Zenodo](https://doi.org/10.5281/zenodo.7767698) for powers of two up to `L=128`.
-Other values will be computed when running the appropriate code (and saved for
-future use). Note that beyond `L=32` the code can be slow due to the
+[Zenodo](https://doi.org/10.5281/zenodo.7767698) for powers of two up to
+`L=128`. Other values will be computed when running the appropriate code (and
+saved for future use). Note that beyond `L=32` the code can be slow due to the
 difficulties of computing the Slepian matrix prior to the eigendecomposition, as
 such it is recommended to stick to the powers of two up to `L=128`.
 
