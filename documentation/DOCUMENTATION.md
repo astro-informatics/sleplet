@@ -92,6 +92,7 @@ for ell in range(2, 0, -1):
         f.L,
         Method="MWSS",
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -122,6 +123,7 @@ f_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -163,6 +165,7 @@ for ell in range(2, 0, -1):
         f.L,
         Method="MWSS",
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -208,6 +211,7 @@ f_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -228,6 +232,7 @@ g_sphere = sleplet.slepian_methods.slepian_inverse(
     g.L,
     g.slepian,
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     g_sphere,
     g.L,
@@ -261,6 +266,7 @@ for p in [0, 9, 24, 49, 99, 199]:
         f.L,
         f.slepian,
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -305,6 +311,7 @@ for j in [None, *list(range(5))]:
         f.L,
         f.slepian,
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -346,6 +353,7 @@ for j in [None, *list(range(5))]:
         f.L,
         f.slepian,
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -389,6 +397,7 @@ f_sphere = sleplet.slepian_methods.slepian_inverse(
 amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(
     f,
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -427,6 +436,7 @@ f_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(f_sphere, f.L, "fig_9_a", normalise=False).execute()
 # b
 region = sleplet.slepian.Region(
@@ -442,6 +452,7 @@ g_sphere = sleplet.slepian_methods.slepian_inverse(
     g.L,
     g.slepian,
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     g_sphere,
     g.L,
@@ -483,6 +494,7 @@ for p in [0, 9, 24, 49, 99, 199]:
         f.L,
         f.slepian,
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -521,6 +533,7 @@ for j in [None, *list(range(6))]:
         f.L,
         f.slepian,
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -560,6 +573,7 @@ for j in [None, *list(range(6))]:
         f.L,
         f.slepian,
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -602,6 +616,7 @@ f_sphere = sleplet.slepian_methods.slepian_inverse(
 amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots(
     f,
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -637,6 +652,7 @@ for r in range(2, 10):
         f.mesh,
         f.coefficients,
     )
+    # creates surface plot on a mesh
     sleplet.plotting.PlotMesh(
         mesh,
         f"fig_2_r_{r}",
@@ -678,6 +694,7 @@ for p in [0, 9, 24, 49, 99, 199]:
         f.mesh_slepian,
         f.coefficients,
     )
+    # creates surface plot on a mesh
     sleplet.plotting.PlotMesh(
         mesh,
         f"fig_6_p_{p}",
@@ -719,6 +736,7 @@ for j in [None, *list(range(5))]:
         f.mesh_slepian,
         f.coefficients,
     )
+    # creates surface plot on a mesh
     sleplet.plotting.PlotMesh(
         mesh,
         f"fig_8_j_{j}",
@@ -747,6 +765,7 @@ f_mesh = sleplet.harmonic_methods.mesh_inverse(
     f.mesh,
     f.coefficients,
 )
+# creates surface plot on a mesh
 sleplet.plotting.PlotMesh(
     mesh,
     "fig_9",
@@ -781,6 +800,7 @@ for j in [None, *list(range(5))]:
         f.mesh_slepian,
         f.coefficients,
     )
+    # creates surface plot on a mesh
     sleplet.plotting.PlotMesh(
         mesh,
         f"fig_10_j_{j}",
@@ -816,6 +836,7 @@ f_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
     f.mesh_slepian,
     f.coefficients,
 )
+# creates surface plot on a mesh
 sleplet.plotting.PlotMesh(
     mesh,
     "fig_11_a",
@@ -835,6 +856,7 @@ g_mesh = sleplet.slepian_methods.slepian_mesh_inverse(
 amplitude = sleplet.plot_methods.compute_amplitude_for_noisy_mesh_plots(
     g,
 )
+# creates surface plot on a mesh
 sleplet.plotting.PlotMesh(
     mesh,
     "fig_11_b",
@@ -891,6 +913,7 @@ for ell in range(5):
             f.L,
             Method="MWSS",
         )
+        # creates surface plot on the sphere
         sleplet.plotting.PlotSphere(
             f_sphere,
             f.L,
@@ -929,6 +952,7 @@ f_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -951,6 +975,7 @@ for a, b, g in [
         f.L,
         Method="MWSS",
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         g_sphere,
         f.L,
@@ -998,6 +1023,7 @@ for j in [None, *list(range(4))]:
         f.L,
         Method="MWSS",
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
@@ -1049,6 +1075,7 @@ f_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -1065,6 +1092,7 @@ g_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     g_sphere,
     f.L,
@@ -1096,6 +1124,7 @@ f_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -1112,6 +1141,7 @@ g_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     g_sphere,
     f.L,
@@ -1143,6 +1173,7 @@ f_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
@@ -1159,6 +1190,7 @@ g_sphere = ssht.inverse(
     f.L,
     Method="MWSS",
 )
+# creates surface plot on the sphere
 sleplet.plotting.PlotSphere(
     g_sphere,
     f.L,
@@ -1194,6 +1226,7 @@ for ell in range(2, 0, -1):
         f.L,
         Method="MWSS",
     )
+    # creates surface plot on the sphere
     sleplet.plotting.PlotSphere(
         f_sphere,
         f.L,
