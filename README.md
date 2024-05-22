@@ -12,7 +12,7 @@
 
 [![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
 [![PyOpenSci](https://tinyurl.com/y22nb8up)](https://github.com/pyOpenSci/software-submission/issues/148)
-[![Citation](https://img.shields.io/badge/cite-SLEPLET-yellow)](#citing)
+[![Citation](https://img.shields.io/badge/cite-SLEPLET-yellow)](https://github.com/astro-informatics/sleplet/blob/main/CITATION.cff)
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Renovate](https://img.shields.io/badge/renovate-enabled-orange?logo=renovatebot)](https://renovatebot.com)
