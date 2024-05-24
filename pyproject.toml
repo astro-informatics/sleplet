@@ -127,13 +127,12 @@ warn_return_any = false
 
 [tool.pytest.ini_options]
 addopts = [
-    "--capture=fd",
     "--color=yes",
     "--import-mode=importlib",
-    "--reportopt=a",
     "--strict-config",
     "--strict-markers",
     "--verbose",
+    "-ra",
 ]
 filterwarnings = [
     "error",
@@ -143,6 +142,7 @@ minversion = 6
 testpaths = [
     "tests",
 ]
+xfail_strict = true
 
 [tool.ruff]
 fix = true
