@@ -117,9 +117,6 @@ class MeshSlepianDecomposition:
 
     def _validate_rank(self: typing_extensions.Self, rank: int) -> None:
         """Check the requested rank is valid."""
-        if not isinstance(rank, int):
-            msg = "rank should be an integer"
-            raise TypeError(msg)
         if rank < 0:
             msg = "rank cannot be negative"
             raise ValueError(msg)
