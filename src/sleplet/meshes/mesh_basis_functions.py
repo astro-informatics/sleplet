@@ -69,9 +69,6 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
         cls,  # noqa: ANN101
         v: int,
     ) -> int:
-        if not isinstance(v, int):
-            msg = "rank should be an integer"
-            raise TypeError(msg)
         if v < 0:
             msg = "rank cannot be negative"
             raise ValueError(msg)

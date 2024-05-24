@@ -110,6 +110,11 @@ paths.source = [
 [tool.mypy]
 disallow_subclassing_any = false
 disallow_untyped_decorators = false
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
 explicit_package_bases = true
 ignore_missing_imports = true
 plugins = [
@@ -118,20 +123,33 @@ plugins = [
 ]
 strict = true
 warn_return_any = false
+warn_unreachable = true
 
 [tool.pytest.ini_options]
-addopts = """
-    --color=yes
-    --import-mode=importlib
-    --verbose
-"""
+addopts = [
+    "--color=yes",
+    "--import-mode=importlib",
+    "--strict-config",
+    "--strict-markers",
+    "--verbose",
+    "-ra",
+]
+filterwarnings = [
+    "error",
+]
+log_cli_level = "INFO"
+minversion = 6
 testpaths = [
     "tests",
 ]
+xfail_strict = true
 
 [tool.ruff]
 fix = true
 force-exclude = true
+src = [
+    "src",
+]
 lint.ignore = [
     "COM812",
     "D105",
