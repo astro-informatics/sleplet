@@ -17,6 +17,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check links
-        uses: paddyroddy/.github/actions/links@v0
+        uses: paddyroddy/.github/actions/links@e59369bbd745ef1eae9b8327fba32a4f87ff13ca # v0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
