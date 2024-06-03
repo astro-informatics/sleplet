@@ -13,6 +13,7 @@ COLUMNS = 3
 L = 16
 ORDER = 0
 PHI_IDX = 0
+POOCH_RETRY = 3
 ROWS = 2
 RESOLUTION = sleplet.plot_methods.calc_plot_resolution(L)
 SIGNS = [1, -1, 1, -1, 1, -1]
@@ -81,6 +82,7 @@ def _find_p_value(rank: int, shannon: int) -> int:
         path=pooch.os_cache("sleplet"),
         base_url=f"doi:{ZENODO_DATA_DOI}/",
         registry=None,
+        retry_if_failed=POOCH_RETRY,
     )
     pooch_registry.load_registry_from_doi()
     orders = np.load(
