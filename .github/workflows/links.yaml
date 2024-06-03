@@ -13,9 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Checkout source
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
-
       # yamllint disable-line rule:line-length
       - uses: paddyroddy/.github/actions/links@e59369bbd745ef1eae9b8327fba32a4f87ff13ca # v0
         with:
