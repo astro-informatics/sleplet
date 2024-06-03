@@ -9,6 +9,7 @@ _logger = logging.getLogger(__name__)
 
 
 _POOCH = None
+_POOCH_RETRY = 3
 _ZENODO_DATA_DOI = "10.5281/zenodo.7767698"
 
 
@@ -45,6 +46,7 @@ def _lazy_load_registry(
                 path=pooch.os_cache("sleplet"),
                 base_url=f"doi:{_ZENODO_DATA_DOI}/",
                 registry=None,
+                retry_if_failed=_POOCH_RETRY,
             )
             _POOCH.load_registry_from_doi()
         return func(*args, **kwargs)
