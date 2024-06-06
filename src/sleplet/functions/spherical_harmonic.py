@@ -55,9 +55,6 @@ class SphericalHarmonic(Flm):
         v: int,
         info: pydantic.ValidationInfo,
     ) -> int:
-        if not isinstance(v, int):
-            msg = "ell should be an integer"
-            raise TypeError(msg)
         if v < 0:
             msg = "ell should be positive"
             raise ValueError(msg)
@@ -72,9 +69,6 @@ class SphericalHarmonic(Flm):
         v: int,
         info: pydantic.ValidationInfo,
     ) -> int:
-        if not isinstance(v, int):
-            msg = "m should be an integer"
-            raise TypeError(msg)
         if abs(v) > info.data["ell"]:
             msg = "the magnitude of m should be less than ell"
             raise ValueError(msg)

@@ -20,7 +20,7 @@ body:
       description: >-
         A minimal working example of code to reproduce the unexpected behaviour,
         this will render as `Python` code so no need for backticks.
-      value: |-
+      value: >-
         import sleplet
 
         ...
