@@ -1,7 +1,6 @@
 ---
 name: Question
 description: General Questions About Using SLEPLET
-title: "[QUESTION]: "
 labels:
   - question
 assignees: paddyroddy
