@@ -1,7 +1,6 @@
 ---
 name: Feature Request
 description: Suggest a Way to Improve This Project
-title: "[FEATURE]: "
 labels:
   - enhancement
 assignees: paddyroddy
