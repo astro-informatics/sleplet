@@ -24,16 +24,12 @@ body:
 
         ...
       render: python
-    validations:
-      required: true
   - id: expected
     type: textarea
     attributes:
       label: Expected Behaviour
       description: >-
         A clear and concise description of what you expected to happen.
-    validations:
-      required: true
   - id: actual
     type: textarea
     attributes:
@@ -41,8 +37,6 @@ body:
       description: >-
         Be a specific and detailed as you can. Paste any output or stack traces
         of errors you receive.
-    validations:
-      required: true
   - id: version
     type: input
     attributes:
