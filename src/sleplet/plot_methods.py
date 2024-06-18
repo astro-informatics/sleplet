@@ -174,7 +174,7 @@ def _normalise_function(
         # if all 0, set to 0
         return f + 0.5
     # if all non-zero, set to 1 otherwise scale from [0, 1]
-    return f / f.max() if np.allclose(f, f.max()) else (f - f.min()) / f.ptp()
+    return f / f.max() if np.allclose(f, f.max()) else (f - f.min()) / np.ptp(f)
 
 
 def _boost_field(  # noqa: PLR0913
