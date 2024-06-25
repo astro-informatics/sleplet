@@ -5,13 +5,15 @@ on:
   push:
     branches:
       - main
+      - renovate/**
+  pull_request:
 
 jobs:
   documentation:
     runs-on: ubuntu-latest
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/pdoc@e59369bbd745ef1eae9b8327fba32a4f87ff13ca # v0
+      - uses: paddyroddy/.github/actions/python/pdoc@04bb8bb45214731576194b75005b94911a7116be # v0
         with:
           docs-dependency-section: .[docs]
           gh-pages-publish-directory: ./html/sleplet
