@@ -5,9 +5,8 @@ on:
   push:
     branches:
       - main
+      - renovate/**
   pull_request:
-    paths:
-      - paper/**
 
 jobs:
   paper:
@@ -23,7 +22,6 @@ jobs:
           paper-path: paper/paper.md
 
       - name: Upload
-
         # yamllint disable-line rule:line-length
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
