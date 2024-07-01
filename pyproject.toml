@@ -25,7 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "cmocean~=4.0",
-    "gmpy2==2.2.0rc1",
+    "gmpy2~=2.0",
     "hypothesis~=6.0",
     "libigl~=2.0",
     "matplotlib~=3.0",
