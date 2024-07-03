@@ -9,6 +9,7 @@
 [![repostatus](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Test](https://github.com/astro-informatics/sleplet/actions/workflows/test.yaml/badge.svg)](https://github.com/astro-informatics/sleplet/actions/workflows/test.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/astro-informatics/sleplet/badge.svg?branch=main)](https://coveralls.io/github/astro-informatics/sleplet?branch=main)
+[![CodeFactor](https://www.codefactor.io/repository/github/astro-informatics/sleplet/badge)](https://www.codefactor.io/repository/github/astro-informatics/sleplet)
 
 [![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
 [![PyOpenSci](https://img.shields.io/badge/PyOpenSci-Peer%20Reviewed-success.svg)](https://github.com/pyOpenSci/software-submission/issues/149)
