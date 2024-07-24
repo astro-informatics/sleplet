@@ -48,9 +48,9 @@ wavelets are built upon the eigenfunctions of the Slepian concentration problem
 of the manifold [@Slepian1961; @Landau1961; @Landau1962]: a set of bandlimited
 functions that are maximally concentrated within a given region. Wavelets are
 constructed through a tiling of the Slepian harmonic line by leveraging the
-existing scale-discretised framework [@Wiaux2008; @Leistedt2013]. Whilst these
-wavelets were inspired by spherical datasets, like in cosmology, the wavelet
-construction may be utilised for manifold or graph data.
+existing scale-discretised framework [@Wiaux2008; @Leistedt2013]. Whilst these wavelets
+were inspired by spherical datasets, like in cosmology, the wavelet construction
+may be utilised for manifold or graph data.
 
 To the author's knowledge, there is no public software that allows one to
 compute Slepian wavelets (or a similar approach) on the sphere or general

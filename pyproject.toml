@@ -98,13 +98,6 @@ ignore = [
     "src/sleplet/_version.py",
 ]
 
-[tool.codeflash]
-ignore-paths = []
-# All paths are relative to this pyproject.toml's directory.
-module-root = "src"
-test-framework = "pytest"
-tests-root = "tests"
-
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
 run = {branch = true, parallel = true, source = [
