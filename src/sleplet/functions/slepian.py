@@ -79,7 +79,7 @@ class Slepian(Fp):
 
     @pydantic.field_validator("rank")
     def _check_rank(
-        cls,  # noqa: ANN101
+        cls,
         v: int,
     ) -> int:
         if v < 0:

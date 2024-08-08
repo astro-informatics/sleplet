@@ -51,7 +51,7 @@ class SphericalHarmonic(Flm):
 
     @pydantic.field_validator("ell")
     def _check_ell(
-        cls,  # noqa: ANN101
+        cls,
         v: int,
         info: pydantic.ValidationInfo,
     ) -> int:
@@ -65,7 +65,7 @@ class SphericalHarmonic(Flm):
 
     @pydantic.field_validator("m")
     def _check_m(
-        cls,  # noqa: ANN101
+        cls,
         v: int,
         info: pydantic.ValidationInfo,
     ) -> int:

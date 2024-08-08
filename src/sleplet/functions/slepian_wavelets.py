@@ -70,7 +70,7 @@ class SlepianWavelets(Fp):
 
     @pydantic.field_validator("j")
     def _check_j(
-        cls,  # noqa: ANN101
+        cls,
         v: int | None,
         info: pydantic.ValidationInfo,
     ) -> int | None:
