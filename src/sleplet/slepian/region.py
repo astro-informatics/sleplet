@@ -94,7 +94,7 @@ class Region:
 
     @pydantic.field_validator("phi_max")
     def _check_phi_max(
-        cls,  # noqa: ANN101
+        cls,
         v: float,
     ) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
@@ -110,7 +110,7 @@ class Region:
 
     @pydantic.field_validator("phi_min")
     def _check_phi_min(
-        cls,  # noqa: ANN101
+        cls,
         v: float,
     ) -> float:
         if v < sleplet._vars.PHI_MIN_DEFAULT:
@@ -126,7 +126,7 @@ class Region:
 
     @pydantic.field_validator("theta_max")
     def _check_theta_max(
-        cls,  # noqa: ANN101
+        cls,
         v: float,
     ) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
@@ -142,7 +142,7 @@ class Region:
 
     @pydantic.field_validator("theta_min")
     def _check_theta_min(
-        cls,  # noqa: ANN101
+        cls,
         v: float,
     ) -> float:
         if v < sleplet._vars.THETA_MIN_DEFAULT:
