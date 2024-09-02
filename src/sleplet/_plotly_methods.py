@@ -18,14 +18,14 @@ def create_camera(  # noqa: PLR0913
     z_eye: float,
     zoom: float,
     *,
-    x_center: float = 0,
-    y_center: float = 0,
-    z_center: float = 0,
+    x_centre: float = 0,
+    y_centre: float = 0,
+    z_centre: float = 0,
 ) -> go.layout.scene.Camera:
     """Create default camera view with a zoom factor."""
     return go.layout.scene.Camera(
         eye=go.layout.scene.camera.Eye(x=x_eye / zoom, y=y_eye / zoom, z=z_eye / zoom),
-        center=go.layout.scene.camera.Center(x=x_center, y=y_center, z=z_center),
+        center=go.layout.scene.camera.Center(x=x_centre, y=y_centre, z=z_centre),
     )
 
 
