@@ -178,14 +178,14 @@ def rotate_earth_to_south_america(
     L: int,
 ) -> npt.NDArray[np.complex128]:
     """
-    Rotates the harmonic coefficients of the Earth to a view centered on South America.
+    Rotates the harmonic coefficients of the Earth to a view centred on South America.
 
     Args:
         earth_flm: The spherical harmonic coefficients of the Earth.
         L: The spherical harmonic bandlimit.
 
     Returns:
-        The spherical harmonic coefficients of the Earth centered on South America.
+        The spherical harmonic coefficients of the Earth centred on South America.
     """
     return ssht.rotate_flms(
         earth_flm,
@@ -201,13 +201,13 @@ def rotate_earth_to_africa(
     L: int,
 ) -> npt.NDArray[np.complex128]:
     """
-    Rotates the harmonic coefficients of the Earth to a view centered on Africa.
+    Rotates the harmonic coefficients of the Earth to a view centred on Africa.
 
     Args:
         earth_flm: The spherical harmonic coefficients of the Earth.
         L: The spherical harmonic bandlimit.
 
     Returns:
-        The spherical harmonic coefficients of the Earth centered on Africa.
+        The spherical harmonic coefficients of the Earth centred on Africa.
     """
     return ssht.rotate_flms(earth_flm, _AFRICA_ALPHA, _AFRICA_BETA, _AFRICA_GAMMA, L)

@@ -66,9 +66,9 @@ class Mesh:
             mesh_config["CAMERA_Y"],
             mesh_config["CAMERA_Z"],
             mesh_config["REGION_ZOOM"] if self.zoom else mesh_config["DEFAULT_ZOOM"],
-            x_center=mesh_config["CENTER_X"] if self.zoom else 0,
-            y_center=mesh_config["CENTER_Y"] if self.zoom else 0,
-            z_center=mesh_config["CENTER_Z"] if self.zoom else 0,
+            x_centre=mesh_config["CENTRE_X"] if self.zoom else 0,
+            y_centre=mesh_config["CENTRE_Y"] if self.zoom else 0,
+            z_centre=mesh_config["CENTRE_Z"] if self.zoom else 0,
         )
         self._colourbar_pos = (
             mesh_config["REGION_COLOURBAR_POS"]
