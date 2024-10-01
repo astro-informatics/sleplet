@@ -230,5 +230,5 @@ legacy_tox_ini = """
 testenv = {commands = [
     "pytest --cov --cov-report=lcov",
 ], deps = [
-    "pytest-cov"
+    "pytest-cov",
 ]}
