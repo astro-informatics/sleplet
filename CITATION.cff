@@ -7,6 +7,7 @@ doi: 10.5281/zenodo.7268074
 message: >-
   If you use this software, please cite our article in the Journal of Open
   Source Software.
+title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
 preferred-citation:
   authors:
     - family-names: Roddy
@@ -24,4 +25,3 @@ preferred-citation:
   type: article
   url: https://joss.theoj.org/papers/10.21105/joss.05221
   volume: 8
-title: "SLEPLET: Slepian Scale-Discretised Wavelets in Python"
