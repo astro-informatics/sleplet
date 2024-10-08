@@ -22,6 +22,7 @@ jobs:
           - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
     steps:
       # yamllint disable-line rule:line-length
       - uses: paddyroddy/.github/actions/python/tox@cae02393710f18f5fbacd9545d1a38f0d661758e # v0
@@ -57,4 +58,6 @@ jobs:
             run-macos-latest-3.11,\
             run-ubuntu-latest-3.11,\
             run-macos-latest-3.12,\
-            run-ubuntu-latest-3.12"
+            run-ubuntu-latest-3.12,\
+            run-macos-latest-3.13,\
+            run-ubuntu-latest-3.13"
