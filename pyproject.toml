@@ -220,5 +220,5 @@ legacy_tox_ini = """
         pytest-cov
 
     [tox]
-    env_list = py{310,311,312}
+    env_list = py{311,312}
 """
