@@ -14,7 +14,6 @@ classifiers = [
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -72,7 +71,7 @@ optional-dependencies = {dev = [
     "pytest-xdist",
 ]}
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 scripts = {mesh = """\
     sleplet._scripts.plotting_on_mesh:main\
     """, sphere = """\
@@ -212,7 +211,6 @@ overrides."tool.ruff.lint.isort.section-order".inline_arrays = false
 legacy_tox_ini = """
     [gh-actions]
     python =
-        3.10: py310
         3.11: py311
         3.12: py312
         3.13: py313
