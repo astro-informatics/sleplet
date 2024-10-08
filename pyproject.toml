@@ -207,6 +207,10 @@ overrides."tool.coverage.paths.source".inline_arrays = false
 overrides."tool.ruff.lint.isort.section-order".inline_arrays = false
 
 [tool.tox]
+env_list = [
+    "py311",
+    "py312",
+]
 legacy_tox_ini = """
     [gh]
     python =
@@ -218,7 +222,4 @@ legacy_tox_ini = """
         pytest --cov --cov-report=lcov
     deps =
         pytest-cov
-
-    [tox]
-    env_list = py{311,312}
 """
