@@ -209,16 +209,11 @@ overrides."tool.ruff.lint.isort.section-order".inline_arrays = false
 
 [tool.tox]
 legacy_tox_ini = """
-    [gh-actions]
+    [gh]
     python =
         3.11: py311
         3.12: py312
         3.13: py313
-
-    [gh-actions:env]
-    OS =
-        ubuntu-latest: linux
-        macos-latest: macos
 
     [testenv]
     commands =
@@ -227,5 +222,5 @@ legacy_tox_ini = """
         pytest-cov
 
     [tox]
-    env_list = py{310,311,312}-{linux,macos}
+    env_list = py{311,312}
 """
