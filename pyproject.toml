@@ -204,20 +204,24 @@ write_to = "src/sleplet/_version.py"
 overrides."project.classifiers".inline_arrays = false
 overrides."tool.coverage.paths.source".inline_arrays = false
 overrides."tool.ruff.lint.isort.section-order".inline_arrays = false
+overrides."tool.tox.env_run_base.commands".inline_arrays = false
 
 [tool.tox]
-legacy_tox_ini = """
-    [gh]
-    python =
-        3.11: py311
-        3.12: py312
-
-    [testenv]
-    commands =
-        pytest --cov --cov-report=lcov
-    deps =
-        pytest-cov
-
-    [tox]
-    env_list = py{311,312}
-"""
+env_list = [
+    "py311",
+    "py312",
+]
+env_run_base = {commands = [
+    [
+        "pytest",
+        "--cov",
+        "--cov-report=lcov",
+    ],
+], deps = [
+    "pytest-cov",
+]}
+gh.python = {"3.11" = [
+    "py311",
+], "3.12" = [
+    "py312",
+]}
