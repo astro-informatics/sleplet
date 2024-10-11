@@ -221,8 +221,8 @@ env_run_base = {commands = [
 ], deps = [
     "pytest-cov",
 ]}
-gh.python = {3.11 = [
+gh.python = {"3.11" = [
     "py311",
-], 3.12 = [
+], "3.12" = [
     "py312",
 ]}
