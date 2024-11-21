@@ -1,5 +1,17 @@
 """.. include:: ./../../documentation/DOCUMENTATION.md"""  # noqa: D400,D415
 
+__all__ = [
+    "functions",
+    "harmonic_methods",
+    "meshes",
+    "noise",
+    "plot_methods",
+    "plotting",
+    "slepian_methods",
+    "slepian",
+    "wavelet_methods",
+]
+
 import logging
 
 from . import (
@@ -14,18 +26,6 @@ from . import (
     wavelet_methods,
 )
 from ._version import __version__  # noqa: F401
-
-__all__ = [
-    "functions",
-    "harmonic_methods",
-    "meshes",
-    "noise",
-    "plot_methods",
-    "plotting",
-    "slepian_methods",
-    "slepian",
-    "wavelet_methods",
-]
 
 _logger = logging.getLogger(__name__)
 
