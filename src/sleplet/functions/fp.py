@@ -41,10 +41,10 @@ class Fp(Coefficients):
 
     def rotate(  # noqa: D102
         self: typing_extensions.Self,
-        alpha: float,  # noqa: ARG002
-        beta: float,  # noqa: ARG002
+        alpha: float,
+        beta: float,
         *,
-        gamma: float = 0,  # noqa: ARG002
+        gamma: float = 0,
     ) -> npt.NDArray[np.complex128]:
         msg = "Slepian rotation is not defined"
         raise NotImplementedError(msg)
