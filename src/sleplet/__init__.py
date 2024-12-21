@@ -7,8 +7,8 @@ __all__ = [
     "noise",
     "plot_methods",
     "plotting",
-    "slepian_methods",
     "slepian",
+    "slepian_methods",
     "wavelet_methods",
 ]
 
