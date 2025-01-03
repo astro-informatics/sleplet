@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/pdoc@cde57fbdb1dcdc4cd2aacb0d34127e1582424621 # v0
+      - uses: paddyroddy/.github/actions/python/pdoc@a572508d17fc531e8ad9c0389c0fe51d522b2204 # v0
         with:
           docs-dependency-section: .[docs]
           gh-pages-publish-directory: ./html/sleplet
