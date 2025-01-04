@@ -35,9 +35,7 @@ def average_functions_on_vertices_to_faces(
         functions_on_faces[i] = igl.average_onto_faces(faces, f)
 
     # put the vector back in 1D form
-    if array_is_1d:
-        functions_on_faces = functions_on_faces.reshape(-1)
-    return functions_on_faces
+    return functions_on_faces.reshape(-1) if array_is_1d else functions_on_faces
 
 
 def create_mesh_region(
