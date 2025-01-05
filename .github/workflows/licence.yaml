@@ -12,5 +12,5 @@ jobs:
       # yamllint disable-line rule:line-length
       - uses: paddyroddy/.github/actions/licence@a572508d17fc531e8ad9c0389c0fe51d522b2204 # v0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           licence-file: ./LICENCE.txt
+          licence-token: ${{ secrets.LICENCE_PAT }}
