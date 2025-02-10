@@ -64,7 +64,7 @@ generalise.
 `SLEPLET` [@Roddy2023a] is a Python package for the construction of Slepian
 wavelets in the spherical and manifold (via meshes) settings. In contrast to the
 aforementioned codes, `SLEPLET` handles any spherical region as well as the
-general manifold setting. The API is documented and easily extendible, designed
+general manifold setting. The API is documented and easily extendable, designed
 in an object-orientated manner. Upon installation, `SLEPLET` comes with two
 command line interfaces - `sphere` and `mesh` - that allow one to easily
 generate plots on the sphere and a set of meshes using `plotly`. Whilst these

@@ -120,9 +120,9 @@ class SlepianPolarCap(SlepianFunctions):
         emm = np.empty(0, dtype=int)
         for m in range(-(self.L - 1), self.L):
             evals_m, evecs_m = self._solve_eigenproblem_order(m)
-            evals_all = np.append(evals_all, evals_m)
+            evals_all = np.append(evals_all, evals_m)  # type: ignore[assignment]
             evecs_all = np.concatenate((evecs_all, evecs_m))
-            emm = np.append(emm, [m] * len(evals_m))
+            emm = np.concatenate((emm, np.full(len(evals_m), m)))
         (
             eigenvalues,
             eigenvectors,

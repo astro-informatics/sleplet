@@ -172,7 +172,7 @@ def _normalise_function(
         return f
     if (f == 0).all():
         # if all 0, set to 0
-        return f + 0.5
+        return (f + 0.5).astype(np.float64)
     # if all non-zero, set to 1 otherwise scale from [0, 1]
     return f / f.max() if np.allclose(f, f.max()) else (f - f.min()) / np.ptp(f)
 
