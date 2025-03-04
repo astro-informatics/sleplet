@@ -72,8 +72,8 @@ class SlepianDiracDelta(Fp):
         self._alpha = phis[idx]
         self._beta = thetas[idx]
         msg = (
-            f"angles: (alpha, beta) = ({self._alpha/np.pi:.5f},"
-            f"{self._beta/np.pi:.5f})\n"
+            f"angles: (alpha, beta) = ({self._alpha / np.pi:.5f},"
+            f"{self._beta / np.pi:.5f})\n"
             f"grid point: (alpha, beta) = ({self._alpha:e},{self._beta:e})"
         )
         _logger.info(msg)

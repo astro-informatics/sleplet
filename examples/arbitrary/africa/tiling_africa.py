@@ -23,7 +23,7 @@ def main() -> None:
     plt.semilogx(xi, yi(xi), label=r"$\Phi_p$")
     for j, k in enumerate(kappas[1:]):
         yi = scipy.interpolate.pchip(x, k)
-        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_p$")
+        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j + J_MIN}}}_p$")
     slepian = sleplet.slepian.SlepianArbitrary(L, "africa")
     plt.axvline(slepian.N, color="k", linestyle="dashed")
     plt.annotate(
