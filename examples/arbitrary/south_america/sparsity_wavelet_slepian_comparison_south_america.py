@@ -32,7 +32,7 @@ def _plot_slepian_coefficients() -> int:
     plt.plot(w_p[0], label=r"$|W^{{\phi}}_{p}|$")
 
     for j, w_j in enumerate(w_p[1:]):
-        plt.plot(w_j, label=rf"$|W^{{\phi^{j+J_MIN}}}_{{p}}|$")
+        plt.plot(w_j, label=rf"$|W^{{\phi^{j + J_MIN}}}_{{p}}|$")
 
     return swc.slepian.N
 
@@ -53,7 +53,7 @@ def _plot_axisymmetric_coefficients(shannon: int) -> None:
     plt.plot(w_lm[0, :shannon], "--", label=r"$|W^{{\phi}}_{\ell m}|$")
 
     for j, w_j in enumerate(w_lm[1:]):
-        plt.plot(w_j[:shannon], "--", label=rf"$|W^{{\phi^{j+J_MIN}}}_{{\ell m}}|$")
+        plt.plot(w_j[:shannon], "--", label=rf"$|W^{{\phi^{j + J_MIN}}}_{{\ell m}}|$")
 
 
 def main(*, limit: bool) -> None:

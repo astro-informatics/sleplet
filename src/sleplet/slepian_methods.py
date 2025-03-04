@@ -142,7 +142,7 @@ def compute_s_p_omega(
     sp = np.zeros((slepian.N, n_theta, n_phi), dtype=np.complex128)
     for p in range(slepian.N):
         if p % L == 0:
-            msg = f"compute Sp(omega) p={p+1}/{slepian.N}"
+            msg = f"compute Sp(omega) p={p + 1}/{slepian.N}"
             _logger.info(msg)
         sp[p] = ssht.inverse(
             slepian.eigenvectors[p],

@@ -50,7 +50,7 @@ def main() -> None:
 
         # compute field values
         for j, coefficient in enumerate(w_p):
-            print(f"run: {i+1}/{RUNS}, compute covariance: {j+1}/{len(w_p)}")
+            print(f"run: {i + 1}/{RUNS}, compute covariance: {j + 1}/{len(w_p)}")
             covar_data_runs[i, j] = sleplet.slepian_methods.slepian_inverse(
                 coefficient,
                 L,
