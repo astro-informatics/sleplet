@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 2
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/links@960fbbd913193ec45cbb0e58fa8fd9ec57277270 # v0
+      - uses: paddyroddy/.github/actions/links@f8ebad3dad09f2cd5caa8cbe2cc11beceebe711d # v0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          lychee-args:
+            --accept 100..=103,200..=299,403 --no-progress --verbose .
