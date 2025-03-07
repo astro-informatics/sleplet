@@ -70,7 +70,7 @@ def _helper(
     ax.text(
         0.39,
         0.92,
-        rf"$\mu_{{{p+1}}}={{{lam:.6f}}}$",
+        rf"$\mu_{{{p + 1}}}={{{lam:.6f}}}$",
         transform=ax.transAxes,
         bbox=TEXT_BOX,
     )
