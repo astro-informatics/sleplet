@@ -45,14 +45,14 @@ def _convert_colourscale(
     cmap: mpl.colors.LinearSegmentedColormap,
     *,
     pl_entries: int = 255,
-) -> list[tuple[float, str]]:
+) -> list[list[float | str]]:
     """Convert cmocean colourscale to a plotly colourscale."""
     h = 1 / (pl_entries - 1)
-    pl_colorscale = []
+    pl_colorscale: list[list[float | str]] = []
 
     for k in range(pl_entries):
         C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
-        pl_colorscale.append((k * h, f"rgb{(C[0], C[1], C[2])}"))
+        pl_colorscale.append([k * h, f"rgb{(C[0], C[1], C[2])}"])
 
     return pl_colorscale
 
