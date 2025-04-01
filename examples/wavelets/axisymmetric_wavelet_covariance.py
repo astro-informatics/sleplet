@@ -73,7 +73,7 @@ def axisymmetric_wavelet_covariance(
     rng = np.random.default_rng(RANDOM_SEED)
 
     for i in range(runs):
-        print(f"start run: {i+1}/{runs}")
+        print(f"start run: {i + 1}/{runs}")
 
         # Generate normally distributed random complex signal
         flm = sleplet.harmonic_methods.compute_random_signal(L, rng, var_signal=var_flm)
