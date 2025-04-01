@@ -142,7 +142,7 @@ def harmonic_hard_thresholding(
     """
     _logger.info("begin harmonic hard thresholding")
     for j, coefficient in enumerate(wav_coeffs[1:]):
-        msg = f"start Psi^{j + 1}/{len(wav_coeffs)-1}"
+        msg = f"start Psi^{j + 1}/{len(wav_coeffs) - 1}"
         _logger.info(msg)
         f = ssht.inverse(coefficient, L, Method=sleplet._vars.SAMPLING_SCHEME)
         f_thresholded = _perform_hard_thresholding(f, sigma_j[j], n_sigma)

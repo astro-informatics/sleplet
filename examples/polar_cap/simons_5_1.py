@@ -66,7 +66,7 @@ def _helper(  # noqa: PLR0913
     if rank == 0:
         axs.set_ylabel(rf"$m={{{order}}}$")
     if order == 0:
-        axs.set_title(rf"$\alpha={{{rank+1}}}$")
+        axs.set_title(rf"$\alpha={{{rank + 1}}}$")
     if order == ORDERS - 1:
         axs.set_xlabel("colatitude")
     axs.plot(x[:i], f[:i, PHI_IDX], x[i:], f[i:, PHI_IDX])

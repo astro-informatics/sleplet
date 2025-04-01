@@ -31,8 +31,7 @@ class MeshBasisFunctions(MeshHarmonicCoefficients):
     ) -> npt.NDArray[np.complex128 | np.float64]:
         """Compute field on the vertices of the mesh."""
         msg = (
-            f"Mesh eigenvalue {self.rank}: "
-            f"{self.mesh.mesh_eigenvalues[self.rank]:e}",
+            f"Mesh eigenvalue {self.rank}: {self.mesh.mesh_eigenvalues[self.rank]:e}",
         )
         _logger.info(msg)
         basis_function = self.mesh.basis_functions[self.rank]

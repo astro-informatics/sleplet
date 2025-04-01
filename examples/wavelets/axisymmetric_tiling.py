@@ -23,7 +23,7 @@ def main() -> None:
     plt.semilogx(xi, yi(xi), label=r"$\Phi_{\ell0}$")
     for j, k in enumerate(kappas[1:]):
         yi = scipy.interpolate.pchip(x, k)
-        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j+J_MIN}}}_{{\ell0}}$")
+        plt.semilogx(xi, yi(xi), label=rf"$\Psi^{{{j + J_MIN}}}_{{\ell0}}$")
     plt.xlim(1, xlim)
     ticks = list(2 ** np.arange(np.log2(xlim) + 1, dtype=int))
     plt.xticks(ticks, ticks)
