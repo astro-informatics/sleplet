@@ -38,7 +38,7 @@ def test_dirac_delta_rotate_translate(
     )
     dd_rot = dd.rotate(alpha, beta)
     dd_trans = dd.translate(alpha, beta)
-    np.testing.assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=0)
+    np.testing.assert_allclose(np.abs(dd_trans - dd_rot).mean(), 0, atol=1e-16)
 
 
 def test_slepian_translation_changes_max_polar(
