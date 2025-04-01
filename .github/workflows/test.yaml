@@ -23,7 +23,7 @@ jobs:
           - "3.12"
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/tox@a572508d17fc531e8ad9c0389c0fe51d522b2204 # v0
+      - uses: paddyroddy/.github/actions/python/tox@960fbbd913193ec45cbb0e58fa8fd9ec57277270 # v0
         with:
           cache-path: |-
             .tox
@@ -33,7 +33,7 @@ jobs:
 
       - name: Coveralls Parallel
         # yamllint disable-line rule:line-length
-        uses: coverallsapp/github-action@cfd0633edbd2411b532b808ba7a8b5e04f76d2c8 # v2
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2
         with:
           flag-name: run-${{ matrix.os }}-${{ matrix.python-version }}
           parallel: true
@@ -45,7 +45,7 @@ jobs:
     steps:
       - name: Coveralls Finished
         # yamllint disable-line rule:line-length
-        uses: coverallsapp/github-action@cfd0633edbd2411b532b808ba7a8b5e04f76d2c8 # v2
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2
         with:
           parallel-finished: true
           # yamllint disable-line rule:quoted-strings

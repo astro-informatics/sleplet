@@ -16,7 +16,7 @@
 [![Citation](https://img.shields.io/badge/cite-SLEPLET-yellow)](https://github.com/astro-informatics/sleplet#citing)
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
-[![Renovate](https://img.shields.io/badge/renovate-enabled-orange?logo=renovatebot)](https://renovatebot.com)
+[![Renovate](https://img.shields.io/badge/renovate-enabled-orange?logo=renovatebot)](https://docs.renovatebot.com)
 
 `SLEPLET` is a Python package for the construction of Slepian wavelets in the
 spherical and manifold (via meshes) settings. The API of `SLEPLET` has been

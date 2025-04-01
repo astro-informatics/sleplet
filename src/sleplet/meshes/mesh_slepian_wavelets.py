@@ -81,8 +81,7 @@ class MeshSlepianWavelets(MeshSlepianCoefficients):
             raise ValueError(msg)
         if v is not None and v > j_max - info.data["j_min"]:
             msg = (
-                "j should be less than j_max - j_min: "
-                f"{j_max - info.data['j_min'] + 1}"
+                f"j should be less than j_max - j_min: {j_max - info.data['j_min'] + 1}"
             )
             raise ValueError(msg)
         return v
