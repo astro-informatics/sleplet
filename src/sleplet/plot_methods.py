@@ -2,7 +2,6 @@
 
 import logging
 
-import matplotlib as mpl
 import numpy as np
 import numpy.typing as npt
 
@@ -39,22 +38,6 @@ def calc_plot_resolution(L: int) -> int:
         ),
         L,
     )
-
-
-def _convert_colourscale(
-    cmap: mpl.colors.LinearSegmentedColormap,
-    *,
-    pl_entries: int = 255,
-) -> list[tuple[float, str]]:
-    """Convert cmocean colourscale to a plotly colourscale."""
-    h = 1 / (pl_entries - 1)
-    pl_colorscale = []
-
-    for k in range(pl_entries):
-        C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
-        pl_colorscale.append((k * h, f"rgb{(C[0], C[1], C[2])}"))
-
-    return pl_colorscale
 
 
 def _calc_nearest_grid_point(
