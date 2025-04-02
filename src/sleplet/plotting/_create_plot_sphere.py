@@ -1,7 +1,6 @@
 import dataclasses
 import logging
 
-import cmocean
 import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
@@ -103,7 +102,7 @@ class PlotSphere:
                     tick_mark,
                     normalise=self.normalise,
                 ),
-                colorscale=sleplet.plot_methods._convert_colourscale(cmocean.cm.ice),
+                colorscale="ice",
                 lighting=go.surface.Lighting(ambient=1),
                 reversescale=True,
             ),

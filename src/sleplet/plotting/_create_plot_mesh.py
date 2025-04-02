@@ -1,8 +1,6 @@
 import dataclasses
 import logging
 
-import cmocean
-import matplotlib as mpl
 import numpy as np
 import numpy.typing as npt
 import plotly.graph_objs as go
@@ -48,13 +46,13 @@ class PlotMesh:
 
     def execute(
         self: typing_extensions.Self,
-        colour: mpl.colors.LinearSegmentedColormap = cmocean.cm.ice,
+        colour: str = "ice",
     ) -> None:
         """
         Perform the plot.
 
         Args:
-            colour: From the `cmocean.cm` module
+            colour: From the `cmocean` package
         """
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)

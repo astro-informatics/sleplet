@@ -1,4 +1,3 @@
-import cmocean
 import numpy as np
 
 import sleplet
@@ -18,15 +17,6 @@ def test_resolution_values() -> None:
             sleplet.plot_methods.calc_plot_resolution(arg),
             output[c],
         )
-
-
-def test_create_colourscale() -> None:
-    """Test creates a plotly compatible colourscale."""
-    colourscale = sleplet.plot_methods._convert_colourscale(
-        cmocean.cm.ice,
-        pl_entries=PL_ENTRIES,
-    )
-    np.testing.assert_equal(len(colourscale), PL_ENTRIES)
 
 
 def test_find_nearest_grid_point() -> None:
