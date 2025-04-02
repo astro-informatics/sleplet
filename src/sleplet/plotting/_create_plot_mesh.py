@@ -88,7 +88,7 @@ class PlotMesh:
                     bar_pos=self.mesh._colourbar_pos,
                     font_size=_MESH_CBAR_FONT_SIZE,
                 ),
-                colorscale=sleplet.plot_methods._convert_colourscale(colour),
+                colorscale=colour,
                 lighting=go.mesh3d.Lighting(ambient=1),
                 reversescale=True,
             ),
