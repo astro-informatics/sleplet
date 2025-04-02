@@ -52,7 +52,7 @@ class PlotMesh:
         Perform the plot.
 
         Args:
-            colour: From the `cmocean` package
+            colour: A built-in colormap name
         """
         vmin, vmax = self.f.min(), self.f.max()
         f = self._prepare_field(self.f)
