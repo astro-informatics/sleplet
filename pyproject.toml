@@ -52,6 +52,9 @@ keywords = [
     "sphere",
     "wavelets",
 ]
+license-files = [
+    "LICENCE.txt",
+]
 name = "sleplet"
 optional-dependencies = {dev = [
     "build",
@@ -85,7 +88,6 @@ urls = {Code = """\
     """, Issues = """\
     https://github.com/astro-informatics/sleplet/issues\
     """}
-license.file = "LICENCE.txt"
 
 [tool.check-manifest]
 ignore = [
