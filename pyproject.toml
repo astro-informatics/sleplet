@@ -51,6 +51,7 @@ keywords = [
     "sphere",
     "wavelets",
 ]
+license = "BSD-3-Clause"
 license-files = [
     "LICENCE.txt",
 ]
