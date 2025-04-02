@@ -4,7 +4,7 @@ import dataclasses
 
 import numpy as np
 import numpy.typing as npt
-import plotly.graph_objs as go
+import plotly.graph_objects as go
 import pydantic
 import typing_extensions
 

@@ -1,6 +1,5 @@
 import argparse
 
-import cmocean
 import numpy as np
 
 import sleplet
@@ -25,7 +24,7 @@ def main(mesh_name: str) -> None:
     field[mesh.mesh_region] = 1
 
     name = f"{mesh_name}_region"
-    sleplet.plotting.PlotMesh(mesh, name, field, region=True).execute(cmocean.cm.haline)
+    sleplet.plotting.PlotMesh(mesh, name, field, region=True).execute("haline")
 
 
 if __name__ == "__main__":
