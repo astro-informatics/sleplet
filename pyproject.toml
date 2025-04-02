@@ -10,7 +10,6 @@ authors = [
     {email = "patrickjamesroddy@gmail.com", name = "Patrick J. Roddy"},
 ]
 classifiers = [
-    "License :: OSI Approved :: BSD License",
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
@@ -53,6 +52,9 @@ keywords = [
     "sphere",
     "wavelets",
 ]
+license-files = [
+    "LICENCE.txt",
+]
 name = "sleplet"
 optional-dependencies = {dev = [
     "build",
@@ -86,7 +88,6 @@ urls = {Code = """\
     """, Issues = """\
     https://github.com/astro-informatics/sleplet/issues\
     """}
-license.file = "LICENCE.txt"
 
 [tool.check-manifest]
 ignore = [
