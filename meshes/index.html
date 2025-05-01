@@ -112,19 +112,19 @@ el.replaceWith(d);
 <div class="desc"><p>Create a mesh object.</p></div>
 <h3>Instance variables</h3>
 <dl>
-<dt id="sleplet.meshes.Mesh.basis_functions"><code class="name">var <span class="ident">basis_functions</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.Mesh.basis_functions"><code class="name">var <span class="ident">basis_functions</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.Mesh.faces"><code class="name">var <span class="ident">faces</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.Mesh.faces"><code class="name">var <span class="ident">faces</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.Mesh.mesh_eigenvalues"><code class="name">var <span class="ident">mesh_eigenvalues</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.Mesh.mesh_eigenvalues"><code class="name">var <span class="ident">mesh_eigenvalues</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.Mesh.mesh_region"><code class="name">var <span class="ident">mesh_region</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.bool]]</code></dt>
+<dt id="sleplet.meshes.Mesh.mesh_region"><code class="name">var <span class="ident">mesh_region</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.bool]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -138,7 +138,7 @@ el.replaceWith(d);
 <div class="desc"><p>The number of basis functions to compute from the Laplacian of the given
 mesh. Defaults to one quarter of the number of vertices o the given mesh.</p></div>
 </dd>
-<dt id="sleplet.meshes.Mesh.vertices"><code class="name">var <span class="ident">vertices</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.Mesh.vertices"><code class="name">var <span class="ident">vertices</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -162,7 +162,7 @@ plots.</p></div>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="sleplet.meshes.MeshBasisFunctions.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshBasisFunctions.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -171,11 +171,11 @@ plots.</p></div>
 <div class="desc"><p>Slepian eigenvalues are ordered in decreasing value. The option <code>rank</code>
 selects a given Slepian function from the spectrum (p in the papers).</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshBasisFunctions.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshBasisFunctions.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshBasisFunctions.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshBasisFunctions.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -205,15 +205,15 @@ selects a given Slepian function from the spectrum (p in the papers).</p></div>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="sleplet.meshes.MeshField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -248,15 +248,15 @@ selects a given Slepian function from the spectrum (p in the papers).</p></div>
 <div class="desc"><p>A parameter which controls the level of signal-to-noise in the noised
 data.</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshNoiseField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshNoiseField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshNoiseField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshNoiseField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshNoiseField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshNoiseField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -289,11 +289,11 @@ data.</p></div>
 <dd>
 <div class="desc"><p>A mesh object.</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepian.slepian_eigenvalues"><code class="name">var <span class="ident">slepian_eigenvalues</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepian.slepian_eigenvalues"><code class="name">var <span class="ident">slepian_eigenvalues</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepian.slepian_functions"><code class="name">var <span class="ident">slepian_functions</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepian.slepian_functions"><code class="name">var <span class="ident">slepian_functions</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -313,15 +313,15 @@ The default field is the per-vertex normals of the mesh.</p></div>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="sleplet.meshes.MeshSlepianField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -351,7 +351,7 @@ The default field is the per-vertex normals of the mesh.</p></div>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="sleplet.meshes.MeshSlepianFunctions.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianFunctions.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -360,11 +360,11 @@ The default field is the per-vertex normals of the mesh.</p></div>
 <div class="desc"><p>Slepian eigenvalues are ordered in decreasing value. The option <code>rank</code>
 selects a given Slepian function from the spectrum (p in the papers).</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianFunctions.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianFunctions.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianFunctions.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianFunctions.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -400,15 +400,15 @@ mesh. The default field is the per-vertex normals of the mesh.</p></div>
 <div class="desc"><p>A parameter which controls the level of signal-to-noise in the noised
 data.</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianNoiseField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianNoiseField.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianNoiseField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianNoiseField.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianNoiseField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianNoiseField.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -442,7 +442,7 @@ data.</p></div>
 <dd>
 <div class="desc"><p>The wavelet parameter. Represented as <span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span> in the papers.</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -455,11 +455,11 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 <dd>
 <div class="desc"><p>The minimum wavelet scale. Represented as <span><span class="MathJax_Preview">J_{0}</span><script type="math/tex">J_{0}</script></span> in the papers.</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -493,7 +493,7 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 <dd>
 <div class="desc"><p>The wavelet parameter. Represented as <span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span> in the papers.</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianWavelets.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianWavelets.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -506,11 +506,11 @@ whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p><
 <dd>
 <div class="desc"><p>The minimum wavelet scale. Represented as <span><span class="MathJax_Preview">J_{0}</span><script type="math/tex">J_{0}</script></span> in the papers.</p></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianWavelets.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianWavelets.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.meshes.MeshSlepianWavelets.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</code></dt>
+<dt id="sleplet.meshes.MeshSlepianWavelets.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>

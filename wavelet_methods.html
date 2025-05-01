@@ -48,7 +48,7 @@ el.replaceWith(d);
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sleplet.wavelet_methods.axisymmetric_wavelet_forward"><code class="name flex">
-<span>def <span class="ident">axisymmetric_wavelet_forward</span></span>(<span>L: int,<br>flm: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">axisymmetric_wavelet_forward</span></span>(<span>L: int,<br>flm: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>wavelets: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the coefficients of the axisymmetric wavelets.</p>
@@ -65,7 +65,7 @@ el.replaceWith(d);
 <p>Axisymmetric wavelets coefficients.</p></div>
 </dd>
 <dt id="sleplet.wavelet_methods.axisymmetric_wavelet_inverse"><code class="name flex">
-<span>def <span class="ident">axisymmetric_wavelet_inverse</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]],<br>wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">axisymmetric_wavelet_inverse</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]],<br>wavelets: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the inverse axisymmetric wavelet transform.</p>
@@ -82,7 +82,7 @@ el.replaceWith(d);
 <p>Spherical harmonic coefficients of the signal.</p></div>
 </dd>
 <dt id="sleplet.wavelet_methods.create_kappas"><code class="name flex">
-<span>def <span class="ident">create_kappas</span></span>(<span>xlim: int, B: int, j_min: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
+<span>def <span class="ident">create_kappas</span></span>(<span>xlim: int, B: int, j_min: int) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the Slepian wavelets.</p>
@@ -99,7 +99,7 @@ el.replaceWith(d);
 <p>The Slepian wavelet generating functions.</p></div>
 </dd>
 <dt id="sleplet.wavelet_methods.find_non_zero_wavelet_coefficients"><code class="name flex">
-<span>def <span class="ident">find_non_zero_wavelet_coefficients</span></span>(<span>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>*,<br>axis: int | tuple[int, ...]) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">find_non_zero_wavelet_coefficients</span></span>(<span>wav_coeffs: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>*,<br>axis: int | tuple[int, ...]) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Find the coefficients within the shannon number to speed up computations.</p>
@@ -114,7 +114,7 @@ el.replaceWith(d);
 <p>The non-zero wavelet coefficients.</p></div>
 </dd>
 <dt id="sleplet.wavelet_methods.slepian_wavelet_forward"><code class="name flex">
-<span>def <span class="ident">slepian_wavelet_forward</span></span>(<span>f_p: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]],<br>shannon: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">slepian_wavelet_forward</span></span>(<span>f_p: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>wavelets: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]],<br>shannon: int) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the coefficients of the given tiling function in Slepian space.</p>
@@ -131,7 +131,7 @@ el.replaceWith(d);
 <p>The Slepian wavelets coefficients of the signal.</p></div>
 </dd>
 <dt id="sleplet.wavelet_methods.slepian_wavelet_inverse"><code class="name flex">
-<span>def <span class="ident">slepian_wavelet_inverse</span></span>(<span>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>wavelets: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]],<br>shannon: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">slepian_wavelet_inverse</span></span>(<span>wav_coeffs: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>wavelets: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]],<br>shannon: int) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the inverse wavelet transform in Slepian space.</p>

@@ -67,7 +67,7 @@ sphere.</p></div>
 <dd>
 <div class="desc"><p>The spherical harmonic bandlimit.</p></div>
 </dd>
-<dt id="sleplet.functions.coefficients.Coefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.functions.coefficients.Coefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -104,11 +104,11 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.functions.coefficients.Coefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.functions.coefficients.Coefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="sleplet.functions.coefficients.Coefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.functions.coefficients.Coefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -116,7 +116,7 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="sleplet.functions.coefficients.Coefficients.convolve"><code class="name flex">
-<span>def <span class="ident">convolve</span></span>(<span>self: Self,<br>f_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>g_coefficient: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>*,<br>shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">convolve</span></span>(<span>self: Self,<br>f_coefficient: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>g_coefficient: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>*,<br>shannon: int | None = None) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform the sifting convolution of the two inputs.</p>
@@ -133,7 +133,7 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <p>The sifting convolution of the two inputs.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.rotate"><code class="name flex">
-<span>def <span class="ident">rotate</span></span>(<span>self: Self, alpha: float, beta: float, *, gamma: float = 0) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">rotate</span></span>(<span>self: Self, alpha: float, beta: float, *, gamma: float = 0) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Rotates given flm on the sphere by alpha/beta/gamma.</p>
@@ -150,7 +150,7 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <p>The rotated spherical harmonic coefficients.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.translate"><code class="name flex">
-<span>def <span class="ident">translate</span></span>(<span>self: Self, alpha: float, beta: float, *, shannon: int | None = None) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">translate</span></span>(<span>self: Self, alpha: float, beta: float, *, shannon: int | None = None) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform the translation of the coefficients, used in the sifting convolution.</p>

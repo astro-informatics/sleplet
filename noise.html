@@ -48,7 +48,7 @@ el.replaceWith(d);
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sleplet.noise.compute_sigma_noise"><code class="name flex">
-<span>def <span class="ident">compute_sigma_noise</span></span>(<span>signal: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>snr_in: float,<br>*,<br>denominator: int | None = None) ‑> float</span>
+<span>def <span class="ident">compute_sigma_noise</span></span>(<span>signal: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>snr_in: float,<br>*,<br>denominator: int | None = None) ‑> float</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the standard deviation of the noise.</p>
@@ -65,7 +65,7 @@ el.replaceWith(d);
 <p>The standard deviation of the noise.</p></div>
 </dd>
 <dt id="sleplet.noise.compute_slepian_mesh_sigma_j"><code class="name flex">
-<span>def <span class="ident">compute_slepian_mesh_sigma_j</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>signal: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>psi_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]],<br>snr_in: float) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]]</span>
+<span>def <span class="ident">compute_slepian_mesh_sigma_j</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>signal: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>psi_j: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]],<br>snr_in: float) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute <span><span class="MathJax_Preview">\sigma_{j}</span><script type="math/tex">\sigma_{j}</script></span> for wavelets used in denoising the signal.</p>
@@ -84,7 +84,7 @@ el.replaceWith(d);
 <p>The standard deviation of the noise.</p></div>
 </dd>
 <dt id="sleplet.noise.compute_snr"><code class="name flex">
-<span>def <span class="ident">compute_snr</span></span>(<span>signal: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>noise: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>signal_type: str) ‑> float</span>
+<span>def <span class="ident">compute_snr</span></span>(<span>signal: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>noise: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>signal_type: str) ‑> float</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the signal to noise ratio.</p>
@@ -101,7 +101,7 @@ el.replaceWith(d);
 <p>The signal-to-noise value of the noised signal.</p></div>
 </dd>
 <dt id="sleplet.noise.harmonic_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">harmonic_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]],<br>sigma_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]],<br>n_sigma: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">harmonic_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]],<br>sigma_j: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]],<br>n_sigma: int) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in harmonic space.</p>
@@ -120,7 +120,7 @@ el.replaceWith(d);
 <p>The thresholded wavelet coefficients.</p></div>
 </dd>
 <dt id="sleplet.noise.slepian_function_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">slepian_function_hard_thresholding</span></span>(<span>L: int,<br>coefficients: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma: float,<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">slepian_function_hard_thresholding</span></span>(<span>L: int,<br>coefficients: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma: float,<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in Slepian space.</p>
@@ -141,7 +141,7 @@ el.replaceWith(d);
 <p>The thresholded Slepian coefficients.</p></div>
 </dd>
 <dt id="sleplet.noise.slepian_mesh_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">slepian_mesh_hard_thresholding</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]],<br>n_sigma: int) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">slepian_mesh_hard_thresholding</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>wav_coeffs: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma_j: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]],<br>n_sigma: int) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in Slepian space of the mesh.</p>
@@ -160,7 +160,7 @@ el.replaceWith(d);
 <p>The thresholded wavelet coefficients of the mesh.</p></div>
 </dd>
 <dt id="sleplet.noise.slepian_wavelet_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">slepian_wavelet_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma_j: numpy.ndarray[typing.Any, numpy.dtype[numpy.float64]],<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[typing.Any, numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">slepian_wavelet_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma_j: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]],<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in Slepian wavelet space.</p>
