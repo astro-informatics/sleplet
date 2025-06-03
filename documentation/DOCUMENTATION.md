@@ -56,8 +56,8 @@ arbitrary region. The default region is the `south_america` arbitrary region.
 ## Paper Figures
 
 To recreate the figures from the below papers, one may use the CLI or the API.
-For those which don't use the `mesh` or `sphere` CLIs, the relevant API code
-isn't provided as it is contained within the
+For those which do not use the `mesh` or `sphere` CLIs, the relevant API code is
+not provided as it is contained within the
 [examples folder](https://github.com/astro-informatics/sleplet/tree/main/examples).
 
 ### Sifting Convolution on the Sphere
