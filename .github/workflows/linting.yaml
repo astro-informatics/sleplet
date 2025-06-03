@@ -18,7 +18,7 @@ jobs:
           pre-commit-config: ./.pre-commit-config.yaml
 
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/vale@232a2f3869501abb249d50e311179f98830c6481 # v0
+      - uses: paddyroddy/.github/actions/vale@d5aea086eaabccae4bcf39786ad5138b629755a6 # v0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           vale-flags: --glob='!.github/styles/*'
