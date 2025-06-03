@@ -16,3 +16,9 @@ jobs:
       - uses: paddyroddy/.github/actions/linting@7193f2d6fda65de74a0d750fd19f53314f899200 # v0
         with:
           pre-commit-config: ./.pre-commit-config.yaml
+
+      # yamllint disable-line rule:line-length
+      - uses: paddyroddy/.github/actions/vale@232a2f3869501abb249d50e311179f98830c6481 # v0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vale-flags: --glob='!.github/styles/*'
