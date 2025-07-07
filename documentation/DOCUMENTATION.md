@@ -62,7 +62,7 @@ not provided as it is contained within the
 
 ### Sifting Convolution on the Sphere
 
-[![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://dx.doi.org/10.1109/LSP.2021.3050961)
+[![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://doi.org/10.1109/LSP.2021.3050961)
 
 #### Sifting Convolution on the Sphere: Fig. 1
 
@@ -175,7 +175,7 @@ for ell in range(2, 0, -1):
 
 ### Slepian Scale-Discretised Wavelets on the Sphere
 
-[![Slepian Scale-Discretised Wavelets on the Sphere](https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg)](https://dx.doi.org/10.1109/TSP.2022.3233309)
+[![Slepian Scale-Discretised Wavelets on the Sphere](https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg)](https://doi.org/10.1109/TSP.2022.3233309)
 
 #### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 2
 
