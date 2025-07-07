@@ -52,6 +52,7 @@ keywords = [
     "sphere",
     "wavelets",
 ]
+license = "BSD-3-Clause"
 license-files = [
     "LICENCE.txt",
 ]
@@ -119,7 +120,6 @@ enable_error_code = [
 explicit_package_bases = true
 ignore_missing_imports = true
 plugins = [
-    "numpy.typing.mypy_plugin",
     "pydantic.mypy",
 ]
 strict = true
