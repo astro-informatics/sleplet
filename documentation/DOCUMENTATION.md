@@ -56,13 +56,13 @@ arbitrary region. The default region is the `south_america` arbitrary region.
 ## Paper Figures
 
 To recreate the figures from the below papers, one may use the CLI or the API.
-For those which don't use the `mesh` or `sphere` CLIs, the relevant API code
-isn't provided as it is contained within the
+For those which do not use the `mesh` or `sphere` CLIs, the relevant API code is
+not provided as it is contained within the
 [examples folder](https://github.com/astro-informatics/sleplet/tree/main/examples).
 
 ### Sifting Convolution on the Sphere
 
-[![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://dx.doi.org/10.1109/LSP.2021.3050961)
+[![Sifting Convolution on the Sphere](https://img.shields.io/badge/DOI-10.1109/LSP.2021.3050961-pink.svg)](https://doi.org/10.1109/LSP.2021.3050961)
 
 #### Sifting Convolution on the Sphere: Fig. 1
 
@@ -175,7 +175,7 @@ for ell in range(2, 0, -1):
 
 ### Slepian Scale-Discretised Wavelets on the Sphere
 
-[![Slepian Scale-Discretised Wavelets on the Sphere](https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg)](https://dx.doi.org/10.1109/TSP.2022.3233309)
+[![Slepian Scale-Discretised Wavelets on the Sphere](https://img.shields.io/badge/DOI-10.1109/TSP.2022.3233309-pink.svg)](https://doi.org/10.1109/TSP.2022.3233309)
 
 #### Slepian Scale-Discretised Wavelets on the Sphere: Fig. 2
 

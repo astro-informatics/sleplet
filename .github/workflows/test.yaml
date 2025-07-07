@@ -21,9 +21,10 @@ jobs:
         python-version:
           - "3.11"
           - "3.12"
+          - "3.13"
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/tox@960fbbd913193ec45cbb0e58fa8fd9ec57277270 # v0
+      - uses: paddyroddy/.github/actions/python/tox@239340ab15e2c96523fba82cb55a509f0a3b0b27 # v0
         with:
           cache-path: |-
             .tox
@@ -53,4 +54,6 @@ jobs:
             run-macos-latest-3.11,\
             run-ubuntu-latest-3.11,\
             run-macos-latest-3.12,\
-            run-ubuntu-latest-3.12"
+            run-ubuntu-latest-3.12,\
+            run-macos-latest-3.13,\
+            run-ubuntu-latest-3.13"

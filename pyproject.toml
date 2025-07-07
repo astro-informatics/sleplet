@@ -10,12 +10,12 @@ authors = [
     {email = "patrickjamesroddy@gmail.com", name = "Patrick J. Roddy"},
 ]
 classifiers = [
-    "License :: OSI Approved :: BSD License",
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Image Processing",
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Physics",
@@ -23,16 +23,15 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "cmocean~=4.0",
     "gmpy2~=2.0",
     "hypothesis~=6.0",
     "libigl~=2.0",
     "matplotlib~=3.0",
     "multiprocess~=0.0",
     "numba~=0.0",
-    "numpy~=1.0",
+    "numpy~=2.0",
     "platformdirs~=4.0",
-    "plotly~=5.0",
+    "plotly~=6.0",
     "pooch~=1.0",
     "pydantic~=2.0",
     "pys2let~=2.0",
@@ -52,6 +51,10 @@ keywords = [
     "slepian-functions",
     "sphere",
     "wavelets",
+]
+license = "BSD-3-Clause"
+license-files = [
+    "LICENCE.txt",
 ]
 name = "sleplet"
 optional-dependencies = {dev = [
@@ -86,7 +89,6 @@ urls = {Code = """\
     """, Issues = """\
     https://github.com/astro-informatics/sleplet/issues\
     """}
-license.file = "LICENCE.txt"
 
 [tool.check-manifest]
 ignore = [
@@ -118,7 +120,6 @@ enable_error_code = [
 explicit_package_bases = true
 ignore_missing_imports = true
 plugins = [
-    "numpy.typing.mypy_plugin",
     "pydantic.mypy",
 ]
 strict = true
@@ -138,7 +139,7 @@ filterwarnings = [
     "error",
 ]
 log_cli_level = "INFO"
-minversion = 6
+minversion = "6"
 testpaths = [
     "tests",
 ]
@@ -210,6 +211,7 @@ overrides."tool.tox.env_run_base.commands".inline_arrays = false
 env_list = [
     "py311",
     "py312",
+    "py313",
 ]
 env_run_base = {commands = [
     [
@@ -224,4 +226,6 @@ gh.python = {"3.11" = [
     "py311",
 ], "3.12" = [
     "py312",
+], "3.13" = [
+    "py313",
 ]}
