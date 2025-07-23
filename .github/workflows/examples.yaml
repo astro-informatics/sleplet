@@ -35,7 +35,7 @@ jobs:
           key: readme-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
-        run: python -m pip install -e '.[readme]'
+        run: python -m pip install --editable . --group readme
 
       - name: Run examples in the README
         run: python -m pytest --codeblocks .github README.md documentation
@@ -60,7 +60,7 @@ jobs:
           key: examples-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
-        run: python -m pip install -e .[docs]
+        run: python -m pip install --group docs .
 
       - name: Run examples in the examples folder
         run: >-

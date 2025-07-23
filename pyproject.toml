@@ -5,6 +5,24 @@ requires = [
     "setuptools-scm",
 ]
 
+[dependency-groups]
+dev = [
+    "build",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "ruff",
+    "tox",
+    "tuna",
+    "twine",
+]
+docs = [
+    "pdoc3",
+]
+readme = [
+    "pytest-codeblocks",
+]
+
 [project]
 authors = [
     {email = "patrickjamesroddy@gmail.com", name = "Patrick J. Roddy"},
@@ -57,20 +75,6 @@ license-files = [
     "LICENCE.txt",
 ]
 name = "sleplet"
-optional-dependencies = {dev = [
-    "build",
-    "mypy",
-    "pre-commit",
-    "pytest",
-    "ruff",
-    "tox",
-    "tuna",
-    "twine",
-], docs = [
-    "pdoc3",
-], readme = [
-    "pytest-codeblocks",
-]}
 readme = "README.md"
 requires-python = ">=3.11"
 scripts = {mesh = """\
