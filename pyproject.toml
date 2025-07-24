@@ -77,22 +77,13 @@ license-files = [
 name = "sleplet"
 readme = "README.md"
 requires-python = ">=3.11"
-scripts = {mesh = """\
-    sleplet._scripts.plotting_on_mesh:main\
-    """, sphere = """\
-    sleplet._scripts.plotting_on_sphere:main\
-    """}
-urls = {Code = """\
-    https://github.com/astro-informatics/sleplet\
-    """, Documentation = """\
-    https://astro-informatics.github.io/sleplet\
-    """, Download = """\
-    https://pypi.org/project/sleplet\
-    """, Homepage = """\
-    https://github.com/astro-informatics/sleplet\
-    """, Issues = """\
-    https://github.com/astro-informatics/sleplet/issues\
-    """}
+scripts.mesh = "sleplet._scripts.plotting_on_mesh:main"
+scripts.sphere = "sleplet._scripts.plotting_on_sphere:main"
+urls.Code = "https://github.com/astro-informatics/sleplet"
+urls.Documentation = "https://astro-informatics.github.io/sleplet"
+urls.Download = "https://pypi.org/project/sleplet"
+urls.Homepage = "https://github.com/astro-informatics/sleplet"
+urls.Issues = "https://github.com/astro-informatics/sleplet/issues"
 
 [tool.check-manifest]
 ignore = [
