@@ -1,0 +1,45 @@
+{
+  "@context": "https://w3id.org/codemeta/3.0",
+  "applicationCategory": "Information Theory",
+  "author": [
+    {
+      "affiliation": {
+        "name": "Centre for Advanced Research Computing, University College London",
+        "type": "Organization"
+      },
+      "email": "patrickjamesroddy@gmail.com",
+      "familyName": "Roddy",
+      "givenName": "Patrick J.",
+      "id": "https://orcid.org/0000-0002-6271-1700",
+      "type": "Person"
+    }
+  ],
+  "codemeta:contIntegration": {
+    "id": "https://github.com/astro-informatics/sleplet/actions"
+  },
+  "codeRepository": "https://github.com/astro-informatics/sleplet.git",
+  "continuousIntegration": "https://github.com/astro-informatics/sleplet/actions",
+  "dateCreated": "2017-10-21",
+  "dateModified": "2025-07-24",
+  "datePublished": "2017-10-31",
+  "description": "SLEPLET is a Python package for the construction of Slepian wavelets in the spherical and manifold (via meshes) settings. The API of SLEPLET has been designed in an object-orientated manner and is easily extendable. Upon installation, SLEPLET comes with two command line interfaces — sphere and mesh — which allows one to easily generate plots on the sphere and a set of meshes using plotly.",
+  "developmentStatus": "active",
+  "downloadUrl": "https://github.com/astro-informatics/sleplet/archive/refs/tags/v1.5.2.tar.gz",
+  "identifier": "10.5281/zenodo.7268074",
+  "issueTracker": "https://github.com/astro-informatics/sleplet/issues",
+  "keywords": [
+    "manifolds",
+    "python",
+    "slepian-functions",
+    "sphere",
+    "wavelets"
+  ],
+  "license": "https://spdx.org/licenses/BSD-3-Clause",
+  "name": "SLEPLET",
+  "operatingSystem": ["Linux", "macOS"],
+  "programmingLanguage": "Python 3",
+  "referencePublication": "https://joss.theoj.org/papers/10.21105/joss.05221",
+  "releaseNotes": "Move optional-dependencies to dependency-groups by @paddyroddy in https://github.com/astro-informatics/sleplet/pull/462",
+  "type": "SoftwareSourceCode",
+  "version": "1.5.2"
+}

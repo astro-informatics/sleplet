@@ -1,5 +1,6 @@
 exclude .*
 exclude *.in
+exclude *.json
 prune .*
 prune documentation
 prune examples
