@@ -29,7 +29,7 @@ def main() -> None:
     x = np.linspace(THETA_MIN_DEFAULT, np.rad2deg(THETA_MAX_DEFAULT), RESOLUTION + 1)
     i = (x < THETA_MAX).sum()
     _, ax = plt.subplots(ORDERS, RANKS, sharex="col", sharey="row")
-    plt.setp(
+    plt.setp(  # typos: ignore
         ax,
         xlim=[0, 180],
         xticks=[0, 40, 180],

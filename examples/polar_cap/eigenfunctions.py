@@ -33,7 +33,7 @@ def main() -> None:
     i = (x < THETA_MAX).sum()
     _, ax = plt.subplots(ROWS, COLUMNS, sharex="col", sharey="row")
     axes = ax.flatten()
-    plt.setp(
+    plt.setp(  # typos: ignore
         ax,
         xlim=[0, 180],
         xticks=[0, 40, 180],
