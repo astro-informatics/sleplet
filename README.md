@@ -2,8 +2,8 @@
 
 [![PyPI](https://badge.fury.io/py/sleplet.svg)](https://pypi.org/project/sleplet)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.7268074.svg)](https://doi.org/10.5281/zenodo.7268074)
-[![Documentation](https://img.shields.io/badge/Documentation-SLEPLET-blueviolet.svg)](https://astro-informatics.github.io/sleplet)
 [![Licence](https://img.shields.io/github/license/astro-informatics/sleplet)](https://github.com/astro-informatics/sleplet?tab=BSD-3-Clause-1-ov-file#readme)
+[![EffVer Versioning](https://img.shields.io/badge/version_scheme-EffVer-0097a7)](https://jacobtomlinson.dev/effver)
 
 [![Python](https://img.shields.io/pypi/pyversions/sleplet)](https://www.python.org)
 [![repostatus](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -11,12 +11,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/astro-informatics/sleplet/badge.svg?branch=main)](https://coveralls.io/github/astro-informatics/sleplet?branch=main)
 [![CodeFactor](https://www.codefactor.io/repository/github/astro-informatics/sleplet/badge)](https://www.codefactor.io/repository/github/astro-informatics/sleplet)
 
+[![Documentation](https://img.shields.io/badge/Documentation-SLEPLET-blueviolet.svg)](https://astro-informatics.github.io/sleplet)
 [![JOSS](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2/status.svg)](https://joss.theoj.org/papers/55d9cf16a27bf2d3141f0f66c676b7f2)
 [![PyOpenSci](https://img.shields.io/badge/PyOpenSci-Peer%20Reviewed-success.svg)](https://github.com/pyOpenSci/software-submission/issues/149)
 [![Citation](https://img.shields.io/badge/cite-SLEPLET-yellow)](https://github.com/astro-informatics/sleplet#citing)
-
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
-[![Renovate](https://img.shields.io/badge/renovate-enabled-orange?logo=renovatebot)](https://docs.renovatebot.com)
 
 `SLEPLET` is a Python package for the construction of Slepian wavelets in the
 spherical and manifold (via meshes) settings. The API of `SLEPLET` has been
