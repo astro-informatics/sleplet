@@ -48,7 +48,7 @@ el.replaceWith(d);
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sleplet.harmonic_methods.compute_random_signal"><code class="name flex">
-<span>def <span class="ident">compute_random_signal</span></span>(<span>L: int, rng: numpy.random._generator.Generator, *, var_signal: float) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">compute_random_signal</span></span>(<span>L: int, rng: numpy.random._generator.Generator, *, var_signal: float) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a normally distributed random signal of a
@@ -66,7 +66,7 @@ complex signal with mean <code>0</code> and variance <code>1</code>.</p>
 <p>The coefficients of a random signal on the sphere.</p></div>
 </dd>
 <dt id="sleplet.harmonic_methods.invert_flm_boosted"><code class="name flex">
-<span>def <span class="ident">invert_flm_boosted</span></span>(<span>flm: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]],<br>L: int,<br>resolution: int,<br>*,<br>reality: bool = False,<br>spin: int = 0) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">invert_flm_boosted</span></span>(<span>flm: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]],<br>L: int,<br>resolution: int,<br>*,<br>reality: bool = False,<br>spin: int = 0) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upsamples the signal and performs the inverse harmonic transform .</p>
@@ -87,7 +87,7 @@ complex signal with mean <code>0</code> and variance <code>1</code>.</p>
 <p>The boosted field value.</p></div>
 </dd>
 <dt id="sleplet.harmonic_methods.mesh_forward"><code class="name flex">
-<span>def <span class="ident">mesh_forward</span></span>(<span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>,<br>u: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float64]]</span>
+<span>def <span class="ident">mesh_forward</span></span>(<span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>,<br>u: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the mesh forward transform from pixel space to Fourier space.</p>
@@ -102,7 +102,7 @@ complex signal with mean <code>0</code> and variance <code>1</code>.</p>
 <p>The basis functions of the mesh in Fourier space.</p></div>
 </dd>
 <dt id="sleplet.harmonic_methods.mesh_inverse"><code class="name flex">
-<span>def <span class="ident">mesh_inverse</span></span>(<span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>,<br>u_i: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">mesh_inverse</span></span>(<span>mesh: <a title="sleplet.meshes.mesh.Mesh" href="meshes/mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a>,<br>u_i: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the mesh inverse transform from Fourier space to pixel space.</p>
@@ -117,7 +117,7 @@ complex signal with mean <code>0</code> and variance <code>1</code>.</p>
 <p>The values on the mesh in pixel space.</p></div>
 </dd>
 <dt id="sleplet.harmonic_methods.rotate_earth_to_africa"><code class="name flex">
-<span>def <span class="ident">rotate_earth_to_africa</span></span>(<span>earth_flm: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>L: int) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">rotate_earth_to_africa</span></span>(<span>earth_flm: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>L: int) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Rotates the harmonic coefficients of the Earth to a view centred on Africa.</p>
@@ -132,7 +132,7 @@ complex signal with mean <code>0</code> and variance <code>1</code>.</p>
 <p>The spherical harmonic coefficients of the Earth centred on Africa.</p></div>
 </dd>
 <dt id="sleplet.harmonic_methods.rotate_earth_to_south_america"><code class="name flex">
-<span>def <span class="ident">rotate_earth_to_south_america</span></span>(<span>earth_flm: numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>L: int) ‑> numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">rotate_earth_to_south_america</span></span>(<span>earth_flm: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>L: int) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Rotates the harmonic coefficients of the Earth to a view centred on South America.</p>
