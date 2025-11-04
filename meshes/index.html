@@ -130,11 +130,13 @@ el.replaceWith(d);
 </dd>
 <dt id="sleplet.meshes.Mesh.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The name of the mesh. Current options <code>bird</code>, <code>cheetah</code>, <code>cube</code>, <code>dragon</code>
+<code>homer</code> and <code>teapot</code>.</p></div>
 </dd>
 <dt id="sleplet.meshes.Mesh.number_basis_functions"><code class="name">var <span class="ident">number_basis_functions</span> : int | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The number of basis functions to compute from the Laplacian of the given
+mesh. Defaults to one quarter of the number of vertices o the given mesh.</p></div>
 </dd>
 <dt id="sleplet.meshes.Mesh.vertices"><code class="name">var <span class="ident">vertices</span> : numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
@@ -142,7 +144,8 @@ el.replaceWith(d);
 </dd>
 <dt id="sleplet.meshes.Mesh.zoom"><code class="name">var <span class="ident">zoom</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Whether to zoom in on the pre-selected region of the mesh in the
+plots.</p></div>
 </dd>
 </dl>
 </dd>
@@ -161,7 +164,8 @@ el.replaceWith(d);
 <dl>
 <dt id="sleplet.meshes.MeshBasisFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Slepian eigenvalues are ordered in decreasing value. The option <code>rank</code>
+selects a given Slepian function from the spectrum (p in the papers).</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -224,7 +228,8 @@ el.replaceWith(d);
 <dl>
 <dt id="sleplet.meshes.MeshNoiseField.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>A parameter which controls the level of signal-to-noise in the noised
+data.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -258,7 +263,7 @@ el.replaceWith(d);
 </dd>
 <dt id="sleplet.meshes.MeshSlepian.mesh"><code class="name">var <span class="ident">mesh</span> : <a title="sleplet.meshes.mesh.Mesh" href="mesh.html#sleplet.meshes.mesh.Mesh">Mesh</a></code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>A mesh object.</p></div>
 </dd>
 <dt id="sleplet.meshes.MeshSlepian.slepian_eigenvalues"><code class="name">var <span class="ident">slepian_eigenvalues</span> : numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
@@ -315,7 +320,8 @@ The default field is the per-vertex normals of the mesh.</p></div>
 <dl>
 <dt id="sleplet.meshes.MeshSlepianFunctions.rank"><code class="name">var <span class="ident">rank</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Slepian eigenvalues are ordered in decreasing value. The option <code>rank</code>
+selects a given Slepian function from the spectrum (p in the papers).</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -352,7 +358,8 @@ mesh. The default field is the per-vertex normals of the mesh.</p></div>
 <dl>
 <dt id="sleplet.meshes.MeshSlepianNoiseField.SNR"><code class="name">var <span class="ident">SNR</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>A parameter which controls the level of signal-to-noise in the noised
+data.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -388,15 +395,16 @@ mesh. The default field is the per-vertex normals of the mesh.</p></div>
 <dl>
 <dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The wavelet parameter. Represented as <span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span> in the papers.</p></div>
 </dd>
 <dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Option to select a given wavelet. <code>None</code> indicates the scaling function,
+whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p></div>
 </dd>
 <dt id="sleplet.meshes.MeshSlepianWaveletCoefficients.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The minimum wavelet scale. Represented as <span><span class="MathJax_Preview">J_{0}</span><script type="math/tex">J_{0}</script></span> in the papers.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -432,15 +440,16 @@ mesh. The default field is the per-vertex normals of the mesh.</p></div>
 <dl>
 <dt id="sleplet.meshes.MeshSlepianWavelets.B"><code class="name">var <span class="ident">B</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The wavelet parameter. Represented as <span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span> in the papers.</p></div>
 </dd>
 <dt id="sleplet.meshes.MeshSlepianWavelets.j"><code class="name">var <span class="ident">j</span> : int | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Option to select a given wavelet. <code>None</code> indicates the scaling function,
+whereas <code>0</code> would correspond to the selected <code>j_min</code>.</p></div>
 </dd>
 <dt id="sleplet.meshes.MeshSlepianWavelets.j_min"><code class="name">var <span class="ident">j_min</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The minimum wavelet scale. Represented as <span><span class="MathJax_Preview">J_{0}</span><script type="math/tex">J_{0}</script></span> in the papers.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>

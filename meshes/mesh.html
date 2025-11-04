@@ -75,11 +75,13 @@ el.replaceWith(d);
 </dd>
 <dt id="sleplet.meshes.mesh.Mesh.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The name of the mesh. Current options <code>bird</code>, <code>cheetah</code>, <code>cube</code>, <code>dragon</code>
+<code>homer</code> and <code>teapot</code>.</p></div>
 </dd>
 <dt id="sleplet.meshes.mesh.Mesh.number_basis_functions"><code class="name">var <span class="ident">number_basis_functions</span> : int | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The number of basis functions to compute from the Laplacian of the given
+mesh. Defaults to one quarter of the number of vertices o the given mesh.</p></div>
 </dd>
 <dt id="sleplet.meshes.mesh.Mesh.vertices"><code class="name">var <span class="ident">vertices</span> : numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]]</code></dt>
 <dd>
@@ -87,7 +89,8 @@ el.replaceWith(d);
 </dd>
 <dt id="sleplet.meshes.mesh.Mesh.zoom"><code class="name">var <span class="ident">zoom</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Whether to zoom in on the pre-selected region of the mesh in the
+plots.</p></div>
 </dd>
 </dl>
 </dd>

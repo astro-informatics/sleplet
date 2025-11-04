@@ -65,7 +65,7 @@ sphere.</p></div>
 <dl>
 <dt id="sleplet.functions.coefficients.Coefficients.L"><code class="name">var <span class="ident">L</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The spherical harmonic bandlimit.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
 <dd>
@@ -73,7 +73,8 @@ sphere.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.extra_args"><code class="name">var <span class="ident">extra_args</span> : list[int] | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Control the extra arguments for the given set of spherical
+coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
 <dd>
@@ -81,7 +82,7 @@ sphere.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.noise"><code class="name">var <span class="ident">noise</span> : float | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>How much to noise the data.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.reality"><code class="name">var <span class="ident">reality</span> : bool</code></dt>
 <dd>
@@ -89,11 +90,11 @@ sphere.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.region"><code class="name">var <span class="ident">region</span> : <a title="sleplet.slepian.region.Region" href="../slepian/region.html#sleplet.slepian.region.Region">Region</a> | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Whether to set a region or not, used in the Slepian case.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.smoothing"><code class="name">var <span class="ident">smoothing</span> : int | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>How much to smooth the topographic map of the Earth by.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.snr"><code class="name">var <span class="ident">snr</span> : float | None</code></dt>
 <dd>

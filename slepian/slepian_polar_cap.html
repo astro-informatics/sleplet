@@ -63,15 +63,18 @@ el.replaceWith(d);
 <dl>
 <dt id="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.gap"><code class="name">var <span class="ident">gap</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Whether to enable a double ended polar cap.</p></div>
 </dd>
 <dt id="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.order"><code class="name">var <span class="ident">order</span> : int | numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.int64]] | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>By default (i.e. <code>None</code>) all orders (i.e. <code>m</code>) will be computed. If
+<code>order</code> is specified by an integer then only a given order <code>m</code> will be
+computed. In the Slepian eigenproblem formulation this simplifies the
+mathematical formulation.</p></div>
 </dd>
 <dt id="sleplet.slepian.slepian_polar_cap.SlepianPolarCap.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Set the size of the polar cap region.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>

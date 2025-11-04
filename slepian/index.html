@@ -82,27 +82,35 @@ el.replaceWith(d);
 <dl>
 <dt id="sleplet.slepian.Region.gap"><code class="name">var <span class="ident">gap</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Whether to enable a double ended polar cap, set by the <code>POLAR_GAP</code>
+environment variable. Only relevant if <code>theta_max</code> is not <code>180</code> and the
+other angles are at their default values.</p></div>
 </dd>
 <dt id="sleplet.slepian.Region.mask_name"><code class="name">var <span class="ident">mask_name</span> : str</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The name of the mask of the arbitrary region, set by the <code>SLEPIAN_MASK</code>
+environment variable. Current options are <code>africa</code> and <code>south_america</code>.</p></div>
 </dd>
 <dt id="sleplet.slepian.Region.phi_max"><code class="name">var <span class="ident">phi_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>For a limited latitude longitude region, set by the <code>PHI_MAX</code> environment
+variable.</p></div>
 </dd>
 <dt id="sleplet.slepian.Region.phi_min"><code class="name">var <span class="ident">phi_min</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>For a limited latitude longitude region, set by the <code>PHI_MIN</code> environment
+variable.</p></div>
 </dd>
 <dt id="sleplet.slepian.Region.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Set by the <code>THETA_MAX</code> environment variable. When set without the
+other angles it controls a polar cap region. When in conjunction with the
+others it is for a limited latitude longitude region.</p></div>
 </dd>
 <dt id="sleplet.slepian.Region.theta_min"><code class="name">var <span class="ident">theta_min</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>For a limited latitude longitude region, set by the <code>THETA_MIN</code> environment
+variable.</p></div>
 </dd>
 </dl>
 </dd>
@@ -120,7 +128,7 @@ el.replaceWith(d);
 <dl>
 <dt id="sleplet.slepian.SlepianArbitrary.mask_name"><code class="name">var <span class="ident">mask_name</span> : str</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>The name of the mask of the arbitrary region.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -153,19 +161,19 @@ el.replaceWith(d);
 <dl>
 <dt id="sleplet.slepian.SlepianLimitLatLon.phi_max"><code class="name">var <span class="ident">phi_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Maximum <span><span class="MathJax_Preview">\phi</span><script type="math/tex">\phi</script></span> value.</p></div>
 </dd>
 <dt id="sleplet.slepian.SlepianLimitLatLon.phi_min"><code class="name">var <span class="ident">phi_min</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Minimum <span><span class="MathJax_Preview">\phi</span><script type="math/tex">\phi</script></span> value.</p></div>
 </dd>
 <dt id="sleplet.slepian.SlepianLimitLatLon.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Maximum <span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span> value.</p></div>
 </dd>
 <dt id="sleplet.slepian.SlepianLimitLatLon.theta_min"><code class="name">var <span class="ident">theta_min</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Minimum <span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span> value.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -198,15 +206,18 @@ el.replaceWith(d);
 <dl>
 <dt id="sleplet.slepian.SlepianPolarCap.gap"><code class="name">var <span class="ident">gap</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Whether to enable a double ended polar cap.</p></div>
 </dd>
 <dt id="sleplet.slepian.SlepianPolarCap.order"><code class="name">var <span class="ident">order</span> : int | numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.int64]] | None</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>By default (i.e. <code>None</code>) all orders (i.e. <code>m</code>) will be computed. If
+<code>order</code> is specified by an integer then only a given order <code>m</code> will be
+computed. In the Slepian eigenproblem formulation this simplifies the
+mathematical formulation.</p></div>
 </dd>
 <dt id="sleplet.slepian.SlepianPolarCap.theta_max"><code class="name">var <span class="ident">theta_max</span> : float</code></dt>
 <dd>
-<div class="desc"><p>The type of the None singleton.</p></div>
+<div class="desc"><p>Set the size of the polar cap region.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
