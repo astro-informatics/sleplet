@@ -129,7 +129,8 @@ If you use `SLEPLET` in your research, please cite the paper.
 }
 ```
 
-Please also cite [S2LET](https://doi.org/10.1051/0004-6361/201220729) upon which
-`SLEPLET` is built, along with [SSHT](https://doi.org/10.1109/TSP.2011.2166394)
-in the spherical setting or [libigl](https://doi.org/10.1145/3134472.3134497) in
-the mesh setting.
+Please also cite
+[S2LET](https://www.aanda.org/articles/aa/full_html/2013/10/aa20729-12/aa20729-12.html)
+upon which `SLEPLET` is built, along with
+[SSHT](https://doi.org/10.1109/TSP.2011.2166394) in the spherical setting or
+[libigl](https://doi.org/10.1145/3134472.3134497) in the mesh setting.
