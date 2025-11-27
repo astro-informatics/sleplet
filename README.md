@@ -43,7 +43,7 @@ To install the latest development version of `SLEPLET` clone this repository and
 run
 
 ```sh
-pip install -e .
+pip sync
 ```
 
 This will install two scripts `sphere` and `mesh` which can be used to generate

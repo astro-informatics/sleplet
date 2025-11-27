@@ -8,13 +8,9 @@ requires = [
 [dependency-groups]
 dev = [
     "build",
-    "mypy",
     "pre-commit",
     "pytest",
-    "ruff",
-    "tox",
-    "tuna",
-    "twine",
+    "pytest-cov",
 ]
 docs = [
     "pdoc3",
