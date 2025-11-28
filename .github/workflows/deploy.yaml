@@ -20,7 +20,7 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@8f1d388b4b83ba56ec25d3787080bc053a2512e8 # v7
         with:
-          python-version: 3.13
+          python-version: 3.14
 
       - name: Install dependencies
         shell: bash
