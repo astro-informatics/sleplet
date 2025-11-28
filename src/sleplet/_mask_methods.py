@@ -1,5 +1,6 @@
 import logging
 import os
+import pathlib
 import typing
 
 import numpy as np
@@ -200,5 +201,7 @@ def create_mask(L: int, mask_name: str) -> npt.NDArray[np.float64]:
     else:
         msg = f"Mask name {mask_name} not recognised"
         raise ValueError(msg)
-    np.save(platformdirs.user_data_path() / f"slepian_masks_{mask_name}", mask)
+    save_path = platformdirs.user_data_path()
+    pathlib.Path(save_path).mkdir(parents=True, exist_ok=True)
+    np.save(save_path / f"slepian_masks_{mask_name}", mask)
     return mask

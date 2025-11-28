@@ -104,8 +104,10 @@ def mesh_eigendecomposition(
         )
         eigenvectors = _orthonormalise_basis_functions(vertices, faces, eigenvectors.T)
         _logger.info("saving binaries...")
-        np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
-        np.save(platformdirs.user_data_path() / evec_loc, eigenvectors)
+        save_path = platformdirs.user_data_path()
+        pathlib.Path(save_path).mkdir(parents=True, exist_ok=True)
+        np.save(save_path / eval_loc, eigenvalues)
+        np.save(save_path / evec_loc, eigenvectors)
     return eigenvalues, eigenvectors, number_basis_functions
 
 

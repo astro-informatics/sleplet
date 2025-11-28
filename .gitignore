@@ -6,7 +6,6 @@ _version.py
 .hypothesis
 .mypy_cache
 .pytest_cache
-.tox
 .vscode
 *.aux
 *.c

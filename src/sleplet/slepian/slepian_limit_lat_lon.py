@@ -1,5 +1,7 @@
 """Contains the `SlepianLimitLatLon` class."""
 
+import pathlib
+
 import numba
 import numpy as np
 import numpy.linalg as LA  # noqa: N812
@@ -74,8 +76,10 @@ class SlepianLimitLatLon(SlepianFunctions):
         except TypeError:
             K = self._create_K_matrix()
             eigenvalues, eigenvectors = self._clean_evals_and_evecs(LA.eigh(K))
-            np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
-            np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
+            save_path = platformdirs.user_data_path()
+            pathlib.Path(save_path).mkdir(parents=True, exist_ok=True)
+            np.save(save_path / eval_loc, eigenvalues)
+            np.save(save_path / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_K_matrix(  # noqa: N802
