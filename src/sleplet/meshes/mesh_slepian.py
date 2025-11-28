@@ -3,6 +3,7 @@
 import concurrent.futures
 import logging
 import os
+import pathlib
 
 import numpy as np
 import numpy.linalg as LA  # noqa: N812
@@ -87,11 +88,10 @@ class MeshSlepian:
             self.slepian_eigenvalues,
             self.slepian_functions,
         ) = self._clean_evals_and_evecs(LA.eigh(D))
-        np.save(platformdirs.user_data_path() / eval_loc, self.slepian_eigenvalues)
-        np.save(
-            platformdirs.user_data_path() / evec_loc,
-            self.slepian_functions[: self.N],
-        )
+        save_path = platformdirs.user_data_path()
+        pathlib.Path(save_path).mkdir(parents=True, exist_ok=True)
+        np.save(save_path / eval_loc, self.slepian_eigenvalues)
+        np.save(save_path / evec_loc, self.slepian_functions[: self.N])
 
     def _create_D_matrix(  # noqa: N802
         self: typing_extensions.Self,
