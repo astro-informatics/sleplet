@@ -4,6 +4,7 @@ import concurrent.futures
 import dataclasses
 import logging
 import os
+import pathlib
 
 import gmpy2 as gp
 import numpy as np
@@ -129,9 +130,11 @@ class SlepianPolarCap(SlepianFunctions):
             self.order,
         ) = self._sort_all_evals_and_evecs(evals_all, evecs_all, emm)
         limit = self.N if self.L > _L_SAVE_ALL else None
-        np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
-        np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[:limit])
-        np.save(platformdirs.user_data_path() / order_loc, self.order)
+        save_path = platformdirs.user_data_path()
+        pathlib.Path(save_path).mkdir(parents=True, exist_ok=True)
+        np.save(save_path / eval_loc, eigenvalues)
+        np.save(save_path / evec_loc, eigenvectors[:limit])
+        np.save(save_path / order_loc, self.order)
         return eigenvalues, eigenvectors
 
     def _solve_eigenproblem_order(

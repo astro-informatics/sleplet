@@ -3,6 +3,7 @@
 import concurrent.futures
 import logging
 import os
+import pathlib
 
 import numpy as np
 import numpy.linalg as LA  # noqa: N812
@@ -95,8 +96,10 @@ class SlepianArbitrary(SlepianFunctions):
             eigenvalues,
             eigenvectors,
         ) = sleplet._slepian_arbitrary_methods.clean_evals_and_evecs(LA.eigh(D))
-        np.save(platformdirs.user_data_path() / eval_loc, eigenvalues)
-        np.save(platformdirs.user_data_path() / evec_loc, eigenvectors[: self.N])
+        save_path = platformdirs.user_data_path()
+        pathlib.Path(save_path).mkdir(parents=True, exist_ok=True)
+        np.save(save_path / eval_loc, eigenvalues)
+        np.save(save_path / evec_loc, eigenvectors[: self.N])
         return eigenvalues, eigenvectors
 
     def _create_D_matrix(  # noqa: N802
