@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@8f1d388b4b83ba56ec25d3787080bc053a2512e8 # v7
+        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
         with:
           python-version: 3.13
 
@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@8f1d388b4b83ba56ec25d3787080bc053a2512e8 # v7
+        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
         with:
           python-version: 3.13
 
