@@ -25,7 +25,7 @@ jobs:
           - "3.14"
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/uv@2900a170a05fafa6d18c036e488235ae8c02fa59 # v0
+      - uses: paddyroddy/.github/actions/python/uv@7ee4f9acacd0d57c3edaed533f34abe4ecb4fbff # v0
         with:
           cache-path: ~/.cache/sleplet
           pyproject-toml: ./pyproject.toml
@@ -33,7 +33,7 @@ jobs:
 
       - name: Coveralls Parallel
         # yamllint disable-line rule:line-length
-        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2
         with:
           flag-name: run-${{ matrix.os }}-${{ matrix.python-version }}
           parallel: true
@@ -45,7 +45,7 @@ jobs:
     steps:
       - name: Coveralls Finished
         # yamllint disable-line rule:line-length
-        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2
         with:
           parallel-finished: true
           carryforward: "\
