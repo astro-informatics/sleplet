@@ -1,18 +1,24 @@
 """Contains the `MeshField` class."""
 
+from __future__ import annotations
+
+import typing
+
 import igl
-import numpy as np
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._validation
 import sleplet.harmonic_methods
-from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
+import sleplet.meshes.mesh_harmonic_coefficients
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class MeshField(MeshHarmonicCoefficients):
+class MeshField(sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients):
     """Create a per-vertex normals field on a given mesh."""
 
     def __post_init__(self: typing_extensions.Self) -> None:

@@ -1,8 +1,12 @@
 """Contains the `Mesh` class."""
 
-import dataclasses
+from __future__ import annotations
 
-import numpy as np
+import dataclasses
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import plotly.graph_objects as go
 import pydantic

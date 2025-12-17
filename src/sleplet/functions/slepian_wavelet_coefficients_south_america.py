@@ -1,8 +1,12 @@
 """Contains the `SlepianWaveletCoefficientsSouthAmerica` class."""
 
-import logging
+from __future__ import annotations
 
-import numpy as np
+import logging
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
@@ -11,17 +15,17 @@ import pys2let
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.functions.fp
 import sleplet.functions.slepian_south_america
 import sleplet.functions.slepian_wavelets
 import sleplet.slepian.region
 import sleplet.wavelet_methods
-from sleplet.functions.fp import Fp
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class SlepianWaveletCoefficientsSouthAmerica(Fp):
+class SlepianWaveletCoefficientsSouthAmerica(sleplet.functions.fp.Fp):
     """Create Slepian wavelet coefficients of the South America region."""
 
     B: int = 3

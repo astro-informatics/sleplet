@@ -1,19 +1,23 @@
 """Contains the abstract `MeshHarmonicCoefficients` class."""
 
-import abc
+from __future__ import annotations
 
-import numpy as np
+import abc
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._validation
+import sleplet.meshes.mesh_coefficients
 import sleplet.noise
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class MeshHarmonicCoefficients(MeshCoefficients):
+class MeshHarmonicCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
     """Abstract parent class to handle Fourier coefficients on the mesh."""
 
     def __post_init__(self: typing_extensions.Self) -> None:

@@ -1,9 +1,11 @@
 """Contains the `SlepianLimitLatLon` class."""
 
+from __future__ import annotations
+
 import pathlib
+import typing
 
 import numba
-import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
@@ -18,11 +20,14 @@ import sleplet._mask_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.slepian.region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet.slepian.slepian_functions
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class SlepianLimitLatLon(SlepianFunctions):
+class SlepianLimitLatLon(sleplet.slepian.slepian_functions.SlepianFunctions):
     """Class to create a limited latitude longitude Slepian region on the sphere."""
 
     phi_max: float = sleplet._vars.PHI_MAX_DEFAULT
@@ -40,7 +45,7 @@ class SlepianLimitLatLon(SlepianFunctions):
     def _create_fn_name(self: typing_extensions.Self) -> str:
         return f"slepian_{self.region._name_ending}"
 
-    def _create_region(self: typing_extensions.Self) -> "sleplet.slepian.region.Region":
+    def _create_region(self: typing_extensions.Self) -> sleplet.slepian.region.Region:
         return sleplet.slepian.region.Region(
             theta_min=self.theta_min,
             theta_max=self.theta_max,

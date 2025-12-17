@@ -1,5 +1,11 @@
+from __future__ import annotations
+
+import typing
+
 import numpy as np
-import numpy.typing as npt
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
 
 
 def sifting_convolution(

@@ -1,8 +1,12 @@
 """Contains the abstract `Flm` class."""
 
-import abc
+from __future__ import annotations
 
-import numpy as np
+import abc
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
@@ -10,12 +14,12 @@ import typing_extensions
 import pyssht as ssht
 
 import sleplet._validation
+import sleplet.functions.coefficients
 import sleplet.noise
-from sleplet.functions.coefficients import Coefficients
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class Flm(Coefficients):
+class Flm(sleplet.functions.coefficients.Coefficients):
     """Abstract parent class to handle harmonic coefficients on the sphere."""
 
     def __post_init__(self: typing_extensions.Self) -> None:

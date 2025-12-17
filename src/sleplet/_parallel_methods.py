@@ -1,6 +1,12 @@
+from __future__ import annotations
+
+import typing
+
 import multiprocess.shared_memory
 import numpy as np
-import numpy.typing as npt
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
 
 
 def split_arr_into_chunks(arr_max: int, ncpu: int) -> list[npt.NDArray[np.int_]]:

@@ -1,10 +1,12 @@
 """Contains the `SlepianPolarCap` class."""
 
+from __future__ import annotations
+
 import concurrent.futures
-import dataclasses
 import logging
 import os
 import pathlib
+import typing
 
 import gmpy2 as gp
 import numpy as np
@@ -22,7 +24,10 @@ import sleplet._parallel_methods
 import sleplet._validation
 import sleplet.harmonic_methods
 import sleplet.slepian.region
-from sleplet.slepian.slepian_functions import SlepianFunctions
+import sleplet.slepian.slepian_functions
+
+if typing.TYPE_CHECKING:
+    import dataclasses
 
 _logger = logging.getLogger(__name__)
 
@@ -30,7 +35,7 @@ _L_SAVE_ALL = 16
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class SlepianPolarCap(SlepianFunctions):
+class SlepianPolarCap(sleplet.slepian.slepian_functions.SlepianFunctions):
     """Class to create a polar cap Slepian region on the sphere."""
 
     theta_max: float
@@ -51,7 +56,7 @@ class SlepianPolarCap(SlepianFunctions):
     def _create_fn_name(self: typing_extensions.Self) -> str:
         return f"slepian_{self.region._name_ending}"
 
-    def _create_region(self: typing_extensions.Self) -> "sleplet.slepian.region.Region":
+    def _create_region(self: typing_extensions.Self) -> sleplet.slepian.region.Region:
         return sleplet.slepian.region.Region(gap=self.gap, theta_max=self.theta_max)
 
     def _create_mask(self: typing_extensions.Self) -> npt.NDArray[np.float64]:

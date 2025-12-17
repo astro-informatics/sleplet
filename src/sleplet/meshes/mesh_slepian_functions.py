@@ -1,21 +1,27 @@
 """Contains the `MeshSlepianFunctions` class."""
 
-import logging
+from __future__ import annotations
 
-import numpy as np
+import logging
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._validation
+import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.slepian_methods
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class MeshSlepianFunctions(MeshSlepianCoefficients):
+class MeshSlepianFunctions(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
     """Create Slepian functions of a given mesh."""
 
     rank: int = 0

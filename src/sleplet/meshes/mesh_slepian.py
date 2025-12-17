@@ -1,11 +1,15 @@
 """Contains the `MeshSlepian` class."""
 
+from __future__ import annotations
+
 import concurrent.futures
 import logging
 import os
 import pathlib
+import typing
 
-import numpy as np
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
@@ -18,7 +22,7 @@ import sleplet._integration_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
-from sleplet.meshes.mesh import Mesh
+import sleplet.meshes.mesh
 
 _logger = logging.getLogger(__name__)
 
@@ -27,7 +31,7 @@ _logger = logging.getLogger(__name__)
 class MeshSlepian:
     """Create Slepian object of a given mesh."""
 
-    mesh: Mesh
+    mesh: sleplet.meshes.mesh.Mesh
     """A mesh object."""
     N: int = pydantic.Field(default=0, init_var=False, repr=False)
     slepian_eigenvalues: npt.NDArray[np.float64] = pydantic.Field(

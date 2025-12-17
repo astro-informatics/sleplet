@@ -1,8 +1,10 @@
 """Contains the `MeshSlepianWaveletCoefficients` class."""
 
-import logging
+from __future__ import annotations
 
-import numpy as np
+import logging
+import typing
+
 import numpy.typing as npt
 import pydantic
 import typing_extensions
@@ -11,16 +13,20 @@ import pys2let
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.meshes.mesh_slepian_field
 import sleplet.meshes.mesh_slepian_wavelets
 import sleplet.wavelet_methods
-from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
+if typing.TYPE_CHECKING:
+    import numpy as np
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
+class MeshSlepianWaveletCoefficients(
+    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
+):
     """Create Slepian wavelet coefficients of a given mesh."""
 
     B: int = 3

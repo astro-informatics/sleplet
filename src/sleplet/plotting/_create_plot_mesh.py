@@ -1,7 +1,13 @@
+from __future__ import annotations
+
 import dataclasses
 import logging
+import typing
 
-import numpy as np
+if typing.TYPE_CHECKING:
+    import numpy as np
+import typing
+
 import numpy.typing as npt
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -14,6 +20,9 @@ import sleplet._plotly_methods
 import sleplet._validation
 import sleplet.meshes.mesh
 import sleplet.plot_methods
+
+if typing.TYPE_CHECKING:
+    import dataclasses
 
 _logger = logging.getLogger(__name__)
 

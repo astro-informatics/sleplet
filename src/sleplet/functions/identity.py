@@ -1,17 +1,22 @@
 """Contains the `Identity` class."""
 
-import numpy as np
+from __future__ import annotations
+
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
-from sleplet.functions.flm import Flm
+import sleplet.functions.flm
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class Identity(Flm):
+class Identity(sleplet.functions.flm.Flm):
     """Create an identity function."""
 
     def __post_init__(self: typing_extensions.Self) -> None:

@@ -1,16 +1,20 @@
+from __future__ import annotations
+
 import logging
 import pathlib
 import typing
 
 import igl
 import numpy as np
-import numpy.typing as npt
 import platformdirs
 import scipy.sparse.linalg as LA_sparse  # noqa: N812
 import tomli
 
 import sleplet._data.setup_pooch
 import sleplet._integration_methods
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
 
 _data_path = pathlib.Path(__file__).resolve().parent / "_data"
 _logger = logging.getLogger(__name__)

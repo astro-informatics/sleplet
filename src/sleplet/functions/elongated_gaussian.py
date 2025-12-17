@@ -1,6 +1,11 @@
 """Contains the `ElongatedGaussian` class."""
 
-import numpy as np
+from __future__ import annotations
+
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
@@ -8,12 +13,12 @@ import typing_extensions
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
+import sleplet.functions.flm
 import sleplet.harmonic_methods
-from sleplet.functions.flm import Flm
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class ElongatedGaussian(Flm):
+class ElongatedGaussian(sleplet.functions.flm.Flm):
     r"""
     Create an elongated Gaussian
     \(\exp(-(\frac{{(\theta-\overline{\theta})}^{2}}{2\sigma_{\theta}^{2}}

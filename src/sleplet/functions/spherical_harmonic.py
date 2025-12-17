@@ -1,6 +1,11 @@
 """Contains the `SphericalHarmonic` class."""
 
-import numpy as np
+from __future__ import annotations
+
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
@@ -9,12 +14,12 @@ import pyssht as ssht
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.functions.flm
 import sleplet.harmonic_methods
-from sleplet.functions.flm import Flm
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class SphericalHarmonic(Flm):
+class SphericalHarmonic(sleplet.functions.flm.Flm):
     """Create spherical harmonic functions."""
 
     ell: int = 0

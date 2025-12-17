@@ -1,13 +1,18 @@
 """Methods to work with wavelet and wavelet coefficients."""
 
+from __future__ import annotations
+
+import typing
+
 import numpy as np
-import numpy.typing as npt
 
 import pys2let
 import pyssht as ssht
 
 import sleplet._convolution_methods
-import sleplet.slepian_methods
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
 
 
 def slepian_wavelet_forward(

@@ -1,24 +1,28 @@
 """Contains the abstract `Fp` class."""
 
-import abc
+from __future__ import annotations
 
-import numpy as np
+import abc
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._mask_methods
 import sleplet._validation
+import sleplet.functions.coefficients
 import sleplet.noise
 import sleplet.slepian.region
 import sleplet.slepian.slepian_functions
 import sleplet.slepian.slepian_polar_cap
 import sleplet.slepian_methods
-from sleplet.functions.coefficients import Coefficients
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class Fp(Coefficients):
+class Fp(sleplet.functions.coefficients.Coefficients):
     """Abstract parent class to handle Slepian coefficients on the sphere."""
 
     slepian: sleplet.slepian.slepian_functions.SlepianFunctions | None = pydantic.Field(

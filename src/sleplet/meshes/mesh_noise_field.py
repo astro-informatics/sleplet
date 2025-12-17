@@ -1,19 +1,26 @@
 """Contains the `MeshNoiseField` class."""
 
-import numpy as np
+from __future__ import annotations
+
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.meshes.mesh_harmonic_coefficients
 import sleplet.meshes.mesh_slepian
 import sleplet.noise
-from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class MeshNoiseField(MeshHarmonicCoefficients):
+class MeshNoiseField(
+    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
+):
     """Create a noised per-vertex normals field on a given mesh."""
 
     SNR: float = 10

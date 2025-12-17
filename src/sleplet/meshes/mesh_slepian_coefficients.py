@@ -1,23 +1,27 @@
 """Contains the abstract `MeshSlepianCoefficients` class."""
 
-import abc
+from __future__ import annotations
 
-import numpy as np
+import abc
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._validation
+import sleplet.meshes.mesh_coefficients
+import sleplet.meshes.mesh_slepian
 import sleplet.noise
-from sleplet.meshes.mesh_coefficients import MeshCoefficients
-from sleplet.meshes.mesh_slepian import MeshSlepian
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class MeshSlepianCoefficients(MeshCoefficients):
+class MeshSlepianCoefficients(sleplet.meshes.mesh_coefficients.MeshCoefficients):
     """Abstract parent class to handle Slepian coefficients on the mesh."""
 
-    mesh_slepian: MeshSlepian | None = pydantic.Field(
+    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian | None = pydantic.Field(
         default=None,
         init_var=False,
         repr=False,

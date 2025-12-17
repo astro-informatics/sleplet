@@ -1,8 +1,12 @@
 """Contains the `Ridgelets` class."""
 
-import logging
+from __future__ import annotations
 
-import numpy as np
+import logging
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import scipy.special
@@ -13,14 +17,14 @@ import pyssht as ssht
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.functions.flm
 import sleplet.wavelet_methods
-from sleplet.functions.flm import Flm
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class Ridgelets(Flm):
+class Ridgelets(sleplet.functions.flm.Flm):
     """
     Crates scale-discretised wavelets. As seen in
     <https://arxiv.org/abs/1510.01595>.

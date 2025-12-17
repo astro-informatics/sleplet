@@ -1,8 +1,12 @@
 """Contains the `AxisymmetricWaveletCoefficientsEarth` class."""
 
-import logging
+from __future__ import annotations
 
-import numpy as np
+import logging
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
@@ -12,15 +16,14 @@ import pys2let
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.earth
+import sleplet.functions.flm
 import sleplet.wavelet_methods
-from sleplet.functions.earth import Earth
-from sleplet.functions.flm import Flm
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class AxisymmetricWaveletCoefficientsEarth(Flm):
+class AxisymmetricWaveletCoefficientsEarth(sleplet.functions.flm.Flm):
     """Create axisymmetric wavelet coefficients of the Earth."""
 
     B: int = 3
@@ -30,7 +33,7 @@ class AxisymmetricWaveletCoefficientsEarth(Flm):
     j: int | None = None
     """Option to select a given wavelet. `None` indicates the scaling function,
     whereas `0` would correspond to the selected `j_min`."""
-    _earth: Earth | None = pydantic.Field(
+    _earth: sleplet.functions.earth.Earth | None = pydantic.Field(
         default=None,
         init_var=False,
         repr=False,

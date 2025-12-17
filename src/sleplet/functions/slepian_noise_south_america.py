@@ -1,20 +1,25 @@
 """Contains the `SlepianNoiseSouthAmerica` class."""
 
-import numpy as np
+from __future__ import annotations
+
+import typing
+
+if typing.TYPE_CHECKING:
+    import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
+import sleplet.functions.fp
 import sleplet.functions.slepian_south_america
 import sleplet.noise
 import sleplet.slepian.region
-from sleplet.functions.fp import Fp
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class SlepianNoiseSouthAmerica(Fp):
+class SlepianNoiseSouthAmerica(sleplet.functions.fp.Fp):
     """
     Create a noised Slepian region on the topographic map of the Earth of the
     South America region.
