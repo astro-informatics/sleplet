@@ -6,8 +6,6 @@ import typing
 
 import numpy as np
 
-
-
 import pyssht as ssht
 
 import sleplet._class_lists
