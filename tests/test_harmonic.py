@@ -11,6 +11,7 @@ import sleplet
 if typing.TYPE_CHECKING:
     import numpy.typing as npt
 
+
 L_LARGE = 128
 L_SMALL = 16
 

@@ -11,6 +11,7 @@ import sleplet._vars
 if typing.TYPE_CHECKING:
     import numpy.typing as npt
 
+
 ARRAY_DIM = 10
 L = 16
 MASK = "south_america"
