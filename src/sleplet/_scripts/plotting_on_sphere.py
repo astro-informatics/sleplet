@@ -4,9 +4,10 @@ import argparse
 import logging
 import typing
 
+import numpy as np
+
 if typing.TYPE_CHECKING:
-    import numpy as np
-import numpy.typing as npt
+    import numpy.typing as npt
 
 import pyssht as ssht
 

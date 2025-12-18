@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import dataclasses
 import logging
 import typing
 
 if typing.TYPE_CHECKING:
-    import numpy as np
+    import dataclasses
+import numpy as np
 import numpy.typing as npt
 import pydantic
 import typing_extensions

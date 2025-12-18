@@ -7,7 +7,7 @@ import typing
 
 if typing.TYPE_CHECKING:
     import numpy as np
-import numpy.typing as npt
+    import numpy.typing as npt
 import pydantic
 import typing_extensions
 

@@ -4,10 +4,7 @@ import dataclasses
 import logging
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy as np
-import typing
-
+import numpy as np
 import numpy.typing as npt
 import plotly.graph_objects as go
 import plotly.io as pio

@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import pathlib
-import typing
 
 import numba
+import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
@@ -21,9 +21,6 @@ import sleplet._validation
 import sleplet._vars
 import sleplet.slepian.region
 import sleplet.slepian.slepian_functions
-
-if typing.TYPE_CHECKING:
-    import numpy as np
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)

@@ -6,8 +6,8 @@ import logging
 import typing
 
 if typing.TYPE_CHECKING:
-    import numpy as np
-import numpy.typing as npt
+    import numpy.typing as npt
+import numpy as np
 import pydantic
 import scipy.special
 import typing_extensions

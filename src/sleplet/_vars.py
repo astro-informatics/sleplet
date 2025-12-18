@@ -1,11 +1,11 @@
-import numpy as np
+import math
 
-PHI_0 = np.pi
-PHI_MAX_DEFAULT = 2 * np.pi
+PHI_0 = math.pi
+PHI_MAX_DEFAULT = 2 * math.pi
 PHI_MIN_DEFAULT = 0.0
 RANDOM_SEED = 30
 SAMPLING_SCHEME = "MWSS"
 SPHERE_UNSEEN = -1.56e30
 THETA_0 = 0.0
-THETA_MAX_DEFAULT = np.pi
+THETA_MAX_DEFAULT = math.pi
 THETA_MIN_DEFAULT = 0
