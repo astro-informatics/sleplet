@@ -1,8 +1,15 @@
+from __future__ import annotations
+
+import typing
+
 import numpy as np
-import numpy.typing as npt
 import pytest
 
 import sleplet
+import sleplet._vars
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
 
 ARRAY_DIM = 10
 L = 16
