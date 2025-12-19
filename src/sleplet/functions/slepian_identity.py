@@ -1,23 +1,17 @@
 """Contains the `SlepianIdentity` class."""
 
-from __future__ import annotations
-
-import typing
-
 import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.functions.fp
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.functions.fp import Fp
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class SlepianIdentity(sleplet.functions.fp.Fp):
+class SlepianIdentity(Fp):
     """Create an identify function in the Slepian region."""
 
     def __post_init__(self: typing_extensions.Self) -> None:

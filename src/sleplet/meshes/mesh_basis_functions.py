@@ -1,28 +1,21 @@
 """Contains the `MeshBasisFunctions` class."""
 
-from __future__ import annotations
-
 import logging
-import typing
 
+import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.meshes.mesh_harmonic_coefficients
-
-if typing.TYPE_CHECKING:
-    import numpy as np
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.meshes.mesh_harmonic_coefficients import MeshHarmonicCoefficients
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class MeshBasisFunctions(
-    sleplet.meshes.mesh_harmonic_coefficients.MeshHarmonicCoefficients
-):
+class MeshBasisFunctions(MeshHarmonicCoefficients):
     """Create the eigenfunctions of the Laplacian of the mesh."""
 
     rank: int = 0

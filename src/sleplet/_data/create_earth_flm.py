@@ -1,12 +1,10 @@
-from __future__ import annotations
-
 import numpy as np
 import numpy.typing as npt
 import scipy.io as sio
 
 import pyssht as ssht
 
-import sleplet._data
+import sleplet._data.setup_pooch
 import sleplet._smoothing
 
 

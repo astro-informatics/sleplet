@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import pathlib
 
-import sleplet._data.setup_pooch
+import sleplet
 
 
 def test_known_file_exists_on_pooch() -> None:

@@ -1,29 +1,24 @@
 """Contains the `Africa` class."""
 
-from __future__ import annotations
-
-import typing
-
 import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
-import sleplet._data
+import sleplet._data.create_earth_flm
+import sleplet._data.setup_pooch
 import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.functions.flm
 import sleplet.harmonic_methods
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.functions.flm import Flm
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class Africa(sleplet.functions.flm.Flm):
+class Africa(Flm):
     """
     Create a topographic map of the Earth setting everything outide of the
     Africa region to zero.

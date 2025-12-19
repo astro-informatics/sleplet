@@ -1,14 +1,9 @@
-from __future__ import annotations
-
 import logging
-import typing
 
 import numpy as np
+import numpy.typing as npt
 
 import pyssht as ssht
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 
 _logger = logging.getLogger(__name__)
 

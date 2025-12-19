@@ -1,30 +1,25 @@
 """Contains the `SlepianDiracDelta` class."""
 
-from __future__ import annotations
-
 import logging
-import typing
 
 import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import pyssht as ssht
 
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.functions.fp
 import sleplet.slepian_methods
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.functions.fp import Fp
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class SlepianDiracDelta(sleplet.functions.fp.Fp):
+class SlepianDiracDelta(Fp):
     """Create a Dirac delta of the Slepian coefficients."""
 
     _alpha: float = pydantic.Field(default=0, init_var=False, repr=False)

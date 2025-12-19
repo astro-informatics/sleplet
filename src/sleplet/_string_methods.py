@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import fractions
 import re
 import typing
@@ -92,10 +90,8 @@ def _convert_camel_case_to_snake_case(name: str) -> str:
 
 def convert_classes_list_to_snake_case(
     classes: list[
-        type[
-            sleplet.functions.coefficients.Coefficients
-            | sleplet.meshes.mesh_coefficients.MeshCoefficients
-        ]
+        type["sleplet.functions.coefficients.Coefficients"]
+        | type["sleplet.meshes.mesh_coefficients.MeshCoefficients"]
     ],
     *,
     word_to_remove: str = "",

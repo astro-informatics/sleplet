@@ -1,10 +1,8 @@
-from __future__ import annotations
-
 import argparse
 import logging
-import typing
 
 import numpy as np
+import numpy.typing as npt
 
 import pyssht as ssht
 
@@ -16,9 +14,6 @@ import sleplet.harmonic_methods
 import sleplet.plot_methods
 import sleplet.plotting._create_plot_sphere
 import sleplet.slepian_methods
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 
 _logger = logging.getLogger(__name__)
 

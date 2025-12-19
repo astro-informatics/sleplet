@@ -1,29 +1,27 @@
 """Contains the abstract `MeshCoefficients` class."""
 
-from __future__ import annotations
-
 import abc
-import typing
+import dataclasses
 
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
+import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes.mesh
+import sleplet._vars
+from sleplet.meshes.mesh import Mesh
 
-if typing.TYPE_CHECKING:
-    import dataclasses
-
-    import typing_extensions
+_COEFFICIENTS_TO_NOT_MASK: str = "slepian"
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshCoefficients:
     """Abstract parent class to handle Fourier/Slepian coefficients on the mesh."""
 
-    mesh: sleplet.meshes.mesh.Mesh
+    mesh: Mesh
     """A mesh object."""
     _: dataclasses.KW_ONLY
     extra_args: list[int] | None = None

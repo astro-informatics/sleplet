@@ -1,21 +1,16 @@
 """Contains the abstract `SlepianFunctions` class."""
 
-from __future__ import annotations
-
 import abc
 import dataclasses
 import logging
-import typing
 
 import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._validation
-import sleplet.slepian.region
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.slepian.region import Region
 
 _logger = logging.getLogger(__name__)
 
@@ -44,8 +39,8 @@ class SlepianFunctions:
     matrix_location: str = dataclasses.field(default="", kw_only=True, repr=False)
     N: int = dataclasses.field(default=0, kw_only=True, repr=False)
     name: str = dataclasses.field(default="", kw_only=True, repr=False)
-    region: sleplet.slepian.region.Region = dataclasses.field(
-        default_factory=lambda: sleplet.slepian.region.Region(theta_max=0),
+    region: Region = dataclasses.field(
+        default_factory=lambda: Region(theta_max=0),
         kw_only=True,
         repr=False,
     )
@@ -74,7 +69,7 @@ class SlepianFunctions:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _create_region(self: typing_extensions.Self) -> sleplet.slepian.region.Region:
+    def _create_region(self: typing_extensions.Self) -> "sleplet.slepian.region.Region":
         """Create a region object for area of interest."""
         raise NotImplementedError
 

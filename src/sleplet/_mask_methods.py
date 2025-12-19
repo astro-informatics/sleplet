@@ -1,23 +1,20 @@
-from __future__ import annotations
-
 import logging
 import os
 import pathlib
 import typing
 
 import numpy as np
+import numpy.typing as npt
 import platformdirs
 
 import pyssht as ssht
 
-import sleplet._data
+import sleplet._data.create_earth_flm
+import sleplet._data.setup_pooch
 import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes.mesh
 import sleplet.slepian.region
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 
 _logger = logging.getLogger(__name__)
 
@@ -27,7 +24,7 @@ _SOUTH_AMERICA_RANGE = np.deg2rad(40)
 
 def create_mask_region(
     L: int,
-    region: sleplet.slepian.region.Region,
+    region: "sleplet.slepian.region.Region",
 ) -> npt.NDArray[np.float64]:
     """
     Create a mask of a region of interested, the output will be based
@@ -82,7 +79,7 @@ def _load_mask(L: int, mask_name: str) -> npt.NDArray[np.float64]:
 def ensure_masked_flm_bandlimited(
     flm: npt.NDArray[np.complex128],
     L: int,
-    region: sleplet.slepian.region.Region,
+    region: "sleplet.slepian.region.Region",
     *,
     reality: bool,
     spin: int,
@@ -106,7 +103,7 @@ def ensure_masked_flm_bandlimited(
     )
 
 
-def create_default_region() -> sleplet.slepian.region.Region:
+def create_default_region() -> "sleplet.slepian.region.Region":
     """Create default region."""
     return sleplet.slepian.region.Region(
         gap=os.getenv("POLAR_GAP", "False").lower() == "true",
@@ -134,7 +131,7 @@ def create_mesh_region(
 
 
 def ensure_masked_bandlimit_mesh_signal(
-    mesh: sleplet.meshes.mesh.Mesh,
+    mesh: "sleplet.meshes.mesh.Mesh",
     u_i: npt.NDArray[np.complex128 | np.float64],
 ) -> npt.NDArray[np.float64]:
     """Ensure that signal in pixel space is bandlimited."""
@@ -144,7 +141,7 @@ def ensure_masked_bandlimit_mesh_signal(
 
 
 def convert_region_on_vertices_to_faces(
-    mesh: sleplet.meshes.mesh.Mesh,
+    mesh: "sleplet.meshes.mesh.Mesh",
 ) -> npt.NDArray[np.float64]:
     """Convert the region on vertices to faces."""
     region_reshape = np.argwhere(mesh.mesh_region).reshape(-1)

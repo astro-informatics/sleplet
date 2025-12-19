@@ -1,17 +1,9 @@
-from __future__ import annotations
-
-import typing
-
 import numpy as np
+import numpy.typing as npt
 
 import pyssht as ssht
 
 import sleplet
-import sleplet._vars
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
-
 
 L_LARGE = 128
 L_SMALL = 16

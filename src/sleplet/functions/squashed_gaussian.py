@@ -1,25 +1,19 @@
 """Contains the `SquashedGaussian` class."""
 
-from __future__ import annotations
-
-import typing
-
 import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
-import sleplet.functions.flm
 import sleplet.harmonic_methods
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.functions.flm import Flm
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class SquashedGaussian(sleplet.functions.flm.Flm):
+class SquashedGaussian(Flm):
     r"""
     Create a squashed Gaussian
     \(\exp(-\frac{1}{2}{(\frac{\theta-\overline{\theta}}{\sigma_{\theta}})}^{2})

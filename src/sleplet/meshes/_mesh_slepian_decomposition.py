@@ -1,28 +1,22 @@
-from __future__ import annotations
-
+import dataclasses
 import logging
-import typing
 
 import numpy as np
 import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._integration_methods
 import sleplet._validation
 import sleplet.harmonic_methods
-import sleplet.meshes.mesh_slepian
-
-if typing.TYPE_CHECKING:
-    import dataclasses
-
-    import typing_extensions
+from sleplet.meshes.mesh_slepian import MeshSlepian
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class MeshSlepianDecomposition:
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian
+    mesh_slepian: MeshSlepian
     _: dataclasses.KW_ONLY
     mask: bool = False
     u_i: npt.NDArray[np.complex128 | np.float64] | None = None

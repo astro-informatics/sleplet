@@ -1,26 +1,20 @@
 """Contains the `SlepianAfrica` class."""
 
-from __future__ import annotations
-
-import typing
-
+import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.africa
-import sleplet.functions.fp
 import sleplet.slepian.region
 import sleplet.slepian_methods
-
-if typing.TYPE_CHECKING:
-    import numpy as np
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.functions.fp import Fp
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
-class SlepianAfrica(sleplet.functions.fp.Fp):
+class SlepianAfrica(Fp):
     """
     Create a Slepian region on the topographic map of the Earth of the
     Africa region.

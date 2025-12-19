@@ -1,27 +1,19 @@
 """Contains the `MeshSlepianNoiseField` class."""
 
-from __future__ import annotations
-
-import typing
-
+import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
-import sleplet.meshes.mesh_slepian_coefficients
 import sleplet.meshes.mesh_slepian_field
 import sleplet.noise
-
-if typing.TYPE_CHECKING:
-    import numpy as np
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.meshes.mesh_slepian_coefficients import MeshSlepianCoefficients
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class MeshSlepianNoiseField(
-    sleplet.meshes.mesh_slepian_coefficients.MeshSlepianCoefficients
-):
+class MeshSlepianNoiseField(MeshSlepianCoefficients):
     """
     Create a noisedfield on a given mesh computed from a Slepian region of the
     mesh. The default field is the per-vertex normals of the mesh.

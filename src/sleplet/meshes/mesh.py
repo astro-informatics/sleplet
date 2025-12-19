@@ -1,22 +1,16 @@
 """Contains the `Mesh` class."""
 
-from __future__ import annotations
-
-import typing
+import dataclasses
 
 import numpy as np
 import numpy.typing as npt
 import plotly.graph_objects as go
 import pydantic
+import typing_extensions
 
 import sleplet._mesh_methods
 import sleplet._plotly_methods
 import sleplet._validation
-
-if typing.TYPE_CHECKING:
-    import dataclasses
-
-    import typing_extensions
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)

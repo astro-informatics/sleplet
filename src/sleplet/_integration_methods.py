@@ -1,16 +1,12 @@
-from __future__ import annotations
-
 import functools
 import typing
 
 import numpy as np
+import numpy.typing as npt
 
 import pyssht as ssht
 
 import sleplet._vars
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 
 
 def calc_integration_weight(L: int) -> npt.NDArray[np.float64]:

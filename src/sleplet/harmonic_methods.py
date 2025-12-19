@@ -1,21 +1,16 @@
 """Methods to perform operations in Fourier space of the sphere or mesh."""
 
-from __future__ import annotations
-
+import collections
 import typing
 
 import numpy as np
+import numpy.typing as npt
 
 import pyssht as ssht
 
 import sleplet._integration_methods
 import sleplet._vars
 import sleplet.meshes.mesh
-
-if typing.TYPE_CHECKING:
-    import collections.abc
-
-    import numpy.typing as npt
 
 _AFRICA_ALPHA = np.deg2rad(44)
 _AFRICA_BETA = np.deg2rad(87)
@@ -137,7 +132,7 @@ def compute_random_signal(
 
 
 def mesh_forward(
-    mesh: sleplet.meshes.mesh.Mesh,
+    mesh: "sleplet.meshes.mesh.Mesh",
     u: npt.NDArray[np.complex128 | np.float64],
 ) -> npt.NDArray[np.float64]:
     """
@@ -162,7 +157,7 @@ def mesh_forward(
 
 
 def mesh_inverse(
-    mesh: sleplet.meshes.mesh.Mesh,
+    mesh: "sleplet.meshes.mesh.Mesh",
     u_i: npt.NDArray[np.complex128 | np.float64],
 ) -> npt.NDArray[np.complex128 | np.float64]:
     """

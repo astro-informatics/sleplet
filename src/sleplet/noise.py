@@ -1,22 +1,17 @@
 """Methods to handle noise in Fourier or wavelet space."""
 
-from __future__ import annotations
-
 import logging
-import typing
 
 import numpy as np
+import numpy.typing as npt
 
 import pyssht as ssht
 
 import sleplet._vars
 import sleplet.harmonic_methods
 import sleplet.meshes.mesh_slepian
-import sleplet.slepian.slepian_functions
 import sleplet.slepian_methods
-
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
+from sleplet.slepian.slepian_functions import SlepianFunctions
 
 _logger = logging.getLogger(__name__)
 
@@ -104,7 +99,7 @@ def _create_noise(
 def _create_slepian_noise(
     L: int,
     slepian_signal: npt.NDArray[np.complex128 | np.float64],
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
     snr_in: float,
 ) -> npt.NDArray[np.complex128]:
     """Compute Gaussian white noise in Slepian space."""
@@ -164,7 +159,7 @@ def slepian_wavelet_hard_thresholding(
     wav_coeffs: npt.NDArray[np.complex128 | np.float64],
     sigma_j: npt.NDArray[np.float64],
     n_sigma: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex128 | np.float64]:
     r"""
     Perform thresholding in Slepian wavelet space.
@@ -198,7 +193,7 @@ def slepian_function_hard_thresholding(
     coefficients: npt.NDArray[np.complex128 | np.float64],
     sigma: float,
     n_sigma: int,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
 ) -> npt.NDArray[np.complex128]:
     r"""
     Perform thresholding in Slepian space.
@@ -235,7 +230,7 @@ def _compute_slepian_sigma_j(
     signal: npt.NDArray[np.complex128 | np.float64],
     psi_j: npt.NDArray[np.float64],
     snr_in: float,
-    slepian: sleplet.slepian.slepian_functions.SlepianFunctions,
+    slepian: SlepianFunctions,
 ) -> npt.NDArray[np.float64]:
     """Compute sigma_j for wavelets used in denoising the signal."""
     sigma_noise = compute_sigma_noise(signal, snr_in, denominator=L**2)
@@ -266,7 +261,7 @@ def _create_mesh_noise(
 
 
 def _create_slepian_mesh_noise(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     slepian_signal: npt.NDArray[np.complex128 | np.float64],
     snr_in: float,
 ) -> npt.NDArray[np.float64]:
@@ -286,7 +281,7 @@ def _create_slepian_mesh_noise(
 
 
 def compute_slepian_mesh_sigma_j(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     signal: npt.NDArray[np.complex128 | np.float64],
     psi_j: npt.NDArray[np.float64],
     snr_in: float,
@@ -315,7 +310,7 @@ def compute_slepian_mesh_sigma_j(
 
 
 def slepian_mesh_hard_thresholding(
-    mesh_slepian: sleplet.meshes.mesh_slepian.MeshSlepian,
+    mesh_slepian: "sleplet.meshes.mesh_slepian.MeshSlepian",
     wav_coeffs: npt.NDArray[np.complex128 | np.float64],
     sigma_j: npt.NDArray[np.float64],
     n_sigma: int,

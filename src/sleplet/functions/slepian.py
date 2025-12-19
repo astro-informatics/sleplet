@@ -1,26 +1,21 @@
 """Contains the `Slepian` class."""
 
-from __future__ import annotations
-
 import logging
-import typing
 
+import numpy as np
+import numpy.typing as npt
 import pydantic
+import typing_extensions
 
 import sleplet._validation
-import sleplet.functions.fp
 import sleplet.slepian_methods
-
-if typing.TYPE_CHECKING:
-    import numpy as np
-    import numpy.typing as npt
-    import typing_extensions
+from sleplet.functions.fp import Fp
 
 _logger = logging.getLogger(__name__)
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
-class Slepian(sleplet.functions.fp.Fp):
+class Slepian(Fp):
     """Create Slepian functions of the selected region."""
 
     rank: int = 0
