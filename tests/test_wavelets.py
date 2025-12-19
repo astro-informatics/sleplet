@@ -24,12 +24,12 @@ def test_synthesis_polar(
     wav_coeffs = sleplet.wavelet_methods.slepian_wavelet_forward(
         coefficients,
         slepian_wavelets_polar_cap.wavelets,
-        slepian_wavelets_polar_cap.slepian.N,
+        slepian_wavelets_polar_cap.slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     f_p = sleplet.wavelet_methods.slepian_wavelet_inverse(
         wav_coeffs,
         slepian_wavelets_polar_cap.wavelets,
-        slepian_wavelets_polar_cap.slepian.N,
+        slepian_wavelets_polar_cap.slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     np.testing.assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=1e-14)
 
@@ -47,12 +47,12 @@ def test_synthesis_lim_lat_lon(
     wav_coeffs = sleplet.wavelet_methods.slepian_wavelet_forward(
         coefficients,
         slepian_wavelets_lim_lat_lon.wavelets,
-        slepian_wavelets_lim_lat_lon.slepian.N,
+        slepian_wavelets_lim_lat_lon.slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     f_p = sleplet.wavelet_methods.slepian_wavelet_inverse(
         wav_coeffs,
         slepian_wavelets_lim_lat_lon.wavelets,
-        slepian_wavelets_lim_lat_lon.slepian.N,
+        slepian_wavelets_lim_lat_lon.slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     np.testing.assert_allclose(np.abs(f_p - coefficients).mean(), 0, atol=0)
 
@@ -70,7 +70,7 @@ def test_axisymmetric_synthesis_earth() -> None:
         awc.wavelets,
     )
     np.testing.assert_allclose(
-        np.abs(flm - awc._earth.coefficients).mean(),
+        np.abs(flm - awc._earth.coefficients).mean(),  # ty: ignore[possibly-missing-attribute]
         0,
         atol=1e-13,
     )
@@ -89,7 +89,7 @@ def test_axisymmetric_synthesis_south_america() -> None:
         awc.wavelets,
     )
     np.testing.assert_allclose(
-        np.abs(flm - awc._south_america.coefficients).mean(),
+        np.abs(flm - awc._south_america.coefficients).mean(),  # ty: ignore[possibly-missing-attribute]
         0,
         atol=1e-14,
     )

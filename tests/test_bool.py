@@ -1,6 +1,8 @@
 import numpy as np
 
 import sleplet
+import sleplet._vars
+import sleplet._bool_methods
 
 J = 2
 J_MIN = 0

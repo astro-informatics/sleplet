@@ -4,6 +4,7 @@ import numpy.typing as npt
 import pyssht as ssht
 
 import sleplet
+import sleplet._vars
 
 L_LARGE = 128
 L_SMALL = 16
