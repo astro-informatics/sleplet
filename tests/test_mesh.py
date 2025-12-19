@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 import sleplet
+import sleplet._integration_methods
 
 
 def test_inverse_forward_transform_recovery(

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-import sleplet
+import sleplet._parallel_methods
 
 L_LARGE = 128
 L_SMALL = 16

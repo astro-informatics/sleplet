@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-import hypothesis
+import hypothesis.strategies
 import numpy as np
 
 import pyssht as ssht
 
 import sleplet
+import sleplet._vars
 
 L = 128
 THETA_MAX = np.pi / 3

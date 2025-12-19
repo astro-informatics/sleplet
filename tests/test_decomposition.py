@@ -5,6 +5,9 @@ import numpy as np
 import pyssht as ssht
 
 import sleplet
+import sleplet.slepian._slepian_decomposition
+import sleplet._mask_methods
+import sleplet._vars
 
 
 def test_decompose_all_polar(

@@ -7,6 +7,7 @@ import numpy as np
 import pyssht as ssht
 
 import sleplet
+import sleplet._vars
 
 if typing.TYPE_CHECKING:
     import numpy.typing as npt
