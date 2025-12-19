@@ -113,12 +113,12 @@ def mesh_eigendecomposition(
 
 def read_mesh(
     mesh_config: dict[str, float | int | str],
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.int_]]:# ty: ignore[invalid-return-type]
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.int_]]:  # ty: ignore[invalid-return-type]
     """Read in the given mesh."""
     vertices, faces = igl.read_triangle_mesh(
         _data_path / f"meshes_polygons_{mesh_config['FILENAME']}",
     )
-    return igl.upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"]) # ty: ignore[invalid-return-type]
+    return igl.upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])  # ty: ignore[invalid-return-type]
 
 
 def _mesh_laplacian(

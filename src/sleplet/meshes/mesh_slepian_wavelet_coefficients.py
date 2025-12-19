@@ -75,7 +75,7 @@ class MeshSlepianWaveletCoefficients(MeshSlepianCoefficients):
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
             smf.coefficients,
             wavelets,
-            self.mesh_slepian.N,# ty: ignore[possibly-missing-attribute]
+            self.mesh_slepian.N,  # ty: ignore[possibly-missing-attribute]
         )
         return wavelets, wavelet_coefficients
 
