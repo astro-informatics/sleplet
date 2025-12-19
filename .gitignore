@@ -4,7 +4,6 @@ _version.py
 .DS_Store
 .envrc
 .hypothesis
-.mypy_cache
 .pytest_cache
 .vscode
 *.aux
