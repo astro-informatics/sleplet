@@ -203,9 +203,7 @@ include = [
     "src/**",
 ]
 rules.invalid-argument-type = "ignore"
-# rules.possibly-missing-attribute = "ignore"
 rules.unresolved-attribute = "ignore"
-rules.unsupported-operator = "ignore"
 
 [[tool.ty.overrides]]
 include = [
