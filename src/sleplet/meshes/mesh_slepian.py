@@ -15,7 +15,7 @@ import pydantic
 import typing_extensions
 
 import sleplet._array_methods
-import sleplet._data.setup_pooch
+import sleplet._data
 import sleplet._integration_methods
 import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods

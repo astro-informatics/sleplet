@@ -5,15 +5,16 @@ from __future__ import annotations
 import logging
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy as np
-    import numpy.typing as npt
 import pydantic
-import typing_extensions
 
 import sleplet._validation
 import sleplet.functions.fp
 import sleplet.slepian_methods
+
+if typing.TYPE_CHECKING:
+    import numpy as np
+    import numpy.typing as npt
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

@@ -5,12 +5,9 @@ from __future__ import annotations
 import logging
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 import numpy as np
 import pydantic
 import scipy.special
-import typing_extensions
 
 import pys2let
 import pyssht as ssht
@@ -19,6 +16,10 @@ import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.flm
 import sleplet.wavelet_methods
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

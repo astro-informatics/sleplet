@@ -4,11 +4,8 @@ from __future__ import annotations
 
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 import numpy as np
 import pydantic
-import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
@@ -16,6 +13,9 @@ import sleplet._vars
 import sleplet.functions.flm
 import sleplet.harmonic_methods
 
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
+    import typing_extensions
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class ElongatedGaussian(sleplet.functions.flm.Flm):

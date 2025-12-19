@@ -18,7 +18,7 @@ import typing_extensions
 
 import pyssht as ssht
 
-import sleplet._data.setup_pooch
+import sleplet._data
 import sleplet._mask_methods
 import sleplet._parallel_methods
 import sleplet._validation

@@ -10,7 +10,7 @@ import platformdirs
 import scipy.sparse.linalg as LA_sparse  # noqa: N812
 import tomli
 
-import sleplet._data.setup_pooch
+import sleplet._data
 import sleplet._integration_methods
 
 if typing.TYPE_CHECKING:

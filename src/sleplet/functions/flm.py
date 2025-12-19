@@ -5,17 +5,18 @@ from __future__ import annotations
 import abc
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy as np
-    import numpy.typing as npt
 import pydantic
-import typing_extensions
 
 import pyssht as ssht
 
 import sleplet._validation
 import sleplet.functions.coefficients
 import sleplet.noise
+
+if typing.TYPE_CHECKING:
+    import numpy as np
+    import numpy.typing as npt
+    import typing_extensions
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)

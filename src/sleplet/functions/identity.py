@@ -4,15 +4,16 @@ from __future__ import annotations
 
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 import numpy as np
 import pydantic
-import typing_extensions
 
 import sleplet._string_methods
 import sleplet._validation
 import sleplet.functions.flm
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
+    import typing_extensions
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)

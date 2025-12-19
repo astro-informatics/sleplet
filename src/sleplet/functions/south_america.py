@@ -4,22 +4,22 @@ from __future__ import annotations
 
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 import numpy as np
 import pydantic
-import typing_extensions
 
 import pyssht as ssht
 
-import sleplet._data.create_earth_flm
-import sleplet._data.setup_pooch
+import sleplet._data
 import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
 import sleplet.functions.flm
 import sleplet.harmonic_methods
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
+    import typing_extensions
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)

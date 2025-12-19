@@ -5,9 +5,6 @@ from __future__ import annotations
 import abc
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy as np
-    import numpy.typing as npt
 import pydantic
 import typing_extensions
 
@@ -17,8 +14,11 @@ import sleplet.functions.coefficients
 import sleplet.noise
 import sleplet.slepian.region
 import sleplet.slepian.slepian_functions
-import sleplet.slepian.slepian_polar_cap
 import sleplet.slepian_methods
+
+if typing.TYPE_CHECKING:
+    import numpy as np
+    import numpy.typing as npt
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
