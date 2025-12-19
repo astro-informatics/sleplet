@@ -93,7 +93,7 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
             wavelets,
             self.slepian.N,
         )
-        return wavelets, wavelet_coefficients
+        return wavelets, wavelet_coefficients  # ty: ignore[invalid-return-type]
 
     @pydantic.field_validator("j")
     def _check_j(
