@@ -1,14 +1,28 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "setuptools-scm"]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+]
 
 [dependency-groups]
-dev = ["build", "pre-commit", "pytest", "pytest-cov"]
-docs = ["pdoc3"]
-readme = ["pytest-codeblocks"]
+dev = [
+    "build",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+]
+docs = [
+    "pdoc3",
+]
+readme = [
+    "pytest-codeblocks",
+]
 
 [project]
-authors = [{email = "patrickjamesroddy@gmail.com", name = "Patrick J. Roddy"}]
+authors = [
+    {email = "patrickjamesroddy@gmail.com", name = "Patrick J. Roddy"},
+]
 classifiers = [
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3",
@@ -42,10 +56,20 @@ dependencies = [
     "tqdm~=4.0",
 ]
 description = "Slepian Scale-Discretised Wavelets in Python"
-dynamic = ["version"]
-keywords = ["manifolds", "python", "slepian-functions", "sphere", "wavelets"]
+dynamic = [
+    "version",
+]
+keywords = [
+    "manifolds",
+    "python",
+    "slepian-functions",
+    "sphere",
+    "wavelets",
+]
 license = "BSD-3-Clause"
-license-files = ["LICENCE.txt"]
+license-files = [
+    "LICENCE.txt",
+]
 name = "sleplet"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -58,19 +82,33 @@ urls.Homepage = "https://github.com/astro-informatics/sleplet"
 urls.Issues = "https://github.com/astro-informatics/sleplet/issues"
 
 [tool.check-manifest]
-ignore = ["*.cff", "*.md", "*.off", "*.toml", "src/sleplet/_version.py"]
+ignore = [
+    "*.cff",
+    "*.md",
+    "*.off",
+    "*.toml",
+    "src/sleplet/_version.py",
+]
 
 [tool.coverage]
 report = {skip_covered = true, sort = "cover"}
-run = {branch = true, parallel = true, source = ["sleplet"]}
+run = {branch = true, parallel = true, source = [
+    "sleplet",
+]}
 
 [tool.mypy]
 disallow_subclassing_any = false
 disallow_untyped_decorators = false
-enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
 explicit_package_bases = true
 ignore_missing_imports = true
-plugins = ["pydantic.mypy"]
+plugins = [
+    "pydantic.mypy",
+]
 strict = true
 warn_return_any = false
 warn_unreachable = true
@@ -84,16 +122,22 @@ addopts = [
     "--verbose",
     "-ra",
 ]
-filterwarnings = ["error"]
+filterwarnings = [
+    "error",
+]
 log_cli_level = "INFO"
 minversion = "6"
-testpaths = ["tests"]
+testpaths = [
+    "tests",
+]
 xfail_strict = true
 
 [tool.ruff]
 fix = true
 force-exclude = true
-src = ["src"]
+src = [
+    "src",
+]
 lint.ignore = [
     "COM812",
     "D105",
@@ -131,7 +175,9 @@ lint.per-file-ignores = {"examples*" = [
     "S101",
     "SLF001",
 ]}
-lint.select = ["ALL"]
+lint.select = [
+    "ALL",
+]
 lint.mccabe.max-complexity = 18
 lint.pep8-naming.classmethod-decorators = [
     "classmethod",
