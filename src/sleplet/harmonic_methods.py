@@ -13,7 +13,7 @@ import sleplet._vars
 import sleplet.meshes.mesh
 
 if typing.TYPE_CHECKING:
-    import collections
+    import collections.abc
 
     import numpy.typing as npt
 
