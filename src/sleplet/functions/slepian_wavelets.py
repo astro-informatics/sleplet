@@ -44,7 +44,7 @@ class SlepianWavelets(Fp):
     def _create_name(self: typing_extensions.Self) -> str:
         return (
             f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"_{self.slepian.region._name_ending}"
+            f"_{self.slepian.region._name_ending}"# ty: ignore[possibly-missing-attribute]
             f"{sleplet._string_methods.filename_args(self.B, 'B')}"
             f"{sleplet._string_methods.filename_args(self.j_min, 'jmin')}"
             f"{sleplet._string_methods.wavelet_ending(self.j_min, self.j)}"

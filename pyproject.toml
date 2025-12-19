@@ -203,8 +203,7 @@ include = [
     "src/**",
 ]
 rules.invalid-argument-type = "ignore"
-rules.not-iterable = "ignore"
-rules.possibly-missing-attribute = "ignore"
+# rules.possibly-missing-attribute = "ignore"
 rules.unresolved-attribute = "ignore"
 rules.unsupported-operator = "ignore"
 

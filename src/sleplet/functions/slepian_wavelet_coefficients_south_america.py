@@ -91,7 +91,7 @@ class SlepianWaveletCoefficientsSouthAmerica(Fp):
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
             sa.coefficients,
             wavelets,
-            self.slepian.N,
+            self.slepian.N, # ty: ignore[possibly-missing-attribute]
         )
         return wavelets, wavelet_coefficients  # ty: ignore[invalid-return-type]
 

@@ -25,7 +25,7 @@ class SlepianIdentity(Fp):
     def _create_name(self: typing_extensions.Self) -> str:
         return (
             f"{sleplet._string_methods._convert_camel_case_to_snake_case(self.__class__.__name__)}"
-            f"_{self.slepian.region._name_ending}"
+            f"_{self.slepian.region._name_ending}" # ty: ignore[possibly-missing-attribute]
         )
 
     def _set_reality(self: typing_extensions.Self) -> bool:

@@ -31,10 +31,10 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         """Compute field on the vertices of the mesh."""
         msg = (
             f"Slepian eigenvalue {self.rank}: "
-            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",
+            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",# ty: ignore[possibly-missing-attribute]
         )
         _logger.info(msg)
-        s_p_i = self.mesh_slepian.slepian_functions[self.rank]
+        s_p_i = self.mesh_slepian.slepian_functions[self.rank]  # ty: ignore[possibly-missing-attribute]
         return sleplet.slepian_methods.slepian_mesh_forward(
             self.mesh_slepian,
             u_i=s_p_i,
@@ -44,7 +44,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         return (
             (
                 f"slepian_{self.mesh.name}_rank{self.rank}_"
-                f"lam{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
+                f"lam{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"# ty: ignore[possibly-missing-attribute]
             )
             .replace(".", "-")
             .replace("+", "")
