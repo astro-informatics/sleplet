@@ -193,21 +193,9 @@ overrides."project.classifiers".inline_arrays = false
 overrides."tool.ruff.lint.isort.section-order".inline_arrays = false
 
 [tool.ty]
+rules.invalid-argument-type = "ignore"
+rules.unresolved-attribute = "ignore"
 src.include = [
     "src",
     "tests",
 ]
-
-[[tool.ty.overrides]]
-include = [
-    "src/**",
-]
-rules.invalid-argument-type = "ignore"
-rules.unresolved-attribute = "ignore"
-
-[[tool.ty.overrides]]
-include = [
-    "tests/**",
-]
-rules.invalid-argument-type = "ignore"
-rules.unresolved-attribute = "ignore"
