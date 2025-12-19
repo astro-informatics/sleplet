@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-import sleplet._array_methods
+import sleplet
 
 
 def test_fill_matrix_using_hermitian_relation() -> None:

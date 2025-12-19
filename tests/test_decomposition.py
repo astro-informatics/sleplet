@@ -5,7 +5,6 @@ import numpy as np
 import pyssht as ssht
 
 import sleplet
-import sleplet._vars
 
 
 def test_decompose_all_polar(
