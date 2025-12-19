@@ -28,7 +28,7 @@ class MeshHarmonicCoefficients(MeshCoefficients):
             unnoised_coefficients = self.coefficients.copy()
             nlm = sleplet.noise._create_mesh_noise(self.coefficients, self.noise)
             snr = sleplet.noise.compute_snr(self.coefficients, nlm, "Harmonic")
-            self.coefficients = self.coefficients + nlm
+            self.coefficients = self.coefficients + nlm  # ty: ignore[invalid-assignment]
             return unnoised_coefficients, snr
         return None, None
 
