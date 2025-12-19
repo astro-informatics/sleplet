@@ -18,6 +18,7 @@ if typing.TYPE_CHECKING:
     import numpy.typing as npt
     import typing_extensions
 
+
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation, kw_only=True)
 class SphericalHarmonic(sleplet.functions.flm.Flm):
     """Create spherical harmonic functions."""

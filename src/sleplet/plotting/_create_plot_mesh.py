@@ -9,7 +9,6 @@ import numpy.typing as npt
 import plotly.graph_objects as go
 import plotly.io as pio
 import pydantic
-import typing_extensions
 
 import sleplet._mask_methods
 import sleplet._mesh_methods
@@ -20,6 +19,8 @@ import sleplet.plot_methods
 
 if typing.TYPE_CHECKING:
     import dataclasses
+
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

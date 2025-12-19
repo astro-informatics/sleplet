@@ -6,7 +6,6 @@ import typing
 
 import numpy as np
 import pydantic
-import typing_extensions
 
 import pyssht as ssht
 
@@ -19,6 +18,7 @@ if typing.TYPE_CHECKING:
     import dataclasses
 
     import numpy.typing as npt
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

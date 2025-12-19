@@ -6,13 +6,13 @@ import concurrent.futures
 import logging
 import os
 import pathlib
+import typing
 
 import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
-import typing_extensions
 
 import pyssht as ssht
 
@@ -26,6 +26,9 @@ import sleplet._validation
 import sleplet.harmonic_methods
 import sleplet.slepian.region
 import sleplet.slepian.slepian_functions
+
+if typing.TYPE_CHECKING:
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

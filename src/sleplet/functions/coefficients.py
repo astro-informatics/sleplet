@@ -8,7 +8,6 @@ import typing
 import numpy as np
 import numpy.typing as npt
 import pydantic
-import typing_extensions
 
 import sleplet._convolution_methods
 import sleplet._string_methods
@@ -17,6 +16,8 @@ import sleplet.slepian.region
 
 if typing.TYPE_CHECKING:
     import dataclasses
+
+    import typing_extensions
 
 _COEFFICIENTS_TO_NOT_MASK: set[str] = {"slepian", "south", "america"}
 

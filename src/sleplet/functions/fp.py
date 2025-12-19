@@ -6,7 +6,6 @@ import abc
 import typing
 
 import pydantic
-import typing_extensions
 
 import sleplet._mask_methods
 import sleplet._validation
@@ -19,6 +18,7 @@ import sleplet.slepian_methods
 if typing.TYPE_CHECKING:
     import numpy as np
     import numpy.typing as npt
+    import typing_extensions
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)

@@ -16,6 +16,7 @@ if typing.TYPE_CHECKING:
     import numpy.typing as npt
     import typing_extensions
 
+
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
 class Earth(sleplet.functions.flm.Flm):
     """Create the topographic map of the Earth."""

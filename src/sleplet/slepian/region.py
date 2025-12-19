@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import logging
+import typing
 
 import pydantic
-import typing_extensions
 
 import sleplet._bool_methods
 import sleplet._string_methods
 import sleplet._validation
 import sleplet._vars
+
+if typing.TYPE_CHECKING:
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

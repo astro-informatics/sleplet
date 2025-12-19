@@ -6,13 +6,13 @@ import concurrent.futures
 import logging
 import os
 import pathlib
+import typing
 
 import numpy as np
 import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
-import typing_extensions
 
 import sleplet._array_methods
 import sleplet._data
@@ -21,6 +21,9 @@ import sleplet._parallel_methods
 import sleplet._slepian_arbitrary_methods
 import sleplet._validation
 import sleplet.meshes.mesh
+
+if typing.TYPE_CHECKING:
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

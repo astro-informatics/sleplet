@@ -7,14 +7,15 @@ import dataclasses
 import logging
 import typing
 
-if typing.TYPE_CHECKING:
-    import numpy.typing as npt
 import numpy as np
 import pydantic
-import typing_extensions
 
 import sleplet._validation
 import sleplet.slepian.region
+
+if typing.TYPE_CHECKING:
+    import numpy.typing as npt
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

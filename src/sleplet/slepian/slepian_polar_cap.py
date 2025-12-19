@@ -14,7 +14,6 @@ import numpy.linalg as LA  # noqa: N812
 import numpy.typing as npt
 import platformdirs
 import pydantic
-import typing_extensions
 
 import pyssht as ssht
 
@@ -28,6 +27,8 @@ import sleplet.slepian.slepian_functions
 
 if typing.TYPE_CHECKING:
     import dataclasses
+
+    import typing_extensions
 
 _logger = logging.getLogger(__name__)
 

@@ -5,20 +5,18 @@ from __future__ import annotations
 import abc
 import typing
 
-if typing.TYPE_CHECKING:
-    import dataclasses
 import numpy as np
 import numpy.typing as npt
 import pydantic
-import typing_extensions
 
-import sleplet._mask_methods
 import sleplet._string_methods
 import sleplet._validation
-import sleplet._vars
 import sleplet.meshes.mesh
 
-_COEFFICIENTS_TO_NOT_MASK: str = "slepian"
+if typing.TYPE_CHECKING:
+    import dataclasses
+
+    import typing_extensions
 
 
 @pydantic.dataclasses.dataclass(config=sleplet._validation.validation)
