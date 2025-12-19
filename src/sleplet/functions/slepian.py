@@ -28,7 +28,7 @@ class Slepian(Fp):
 
     def _create_name(self: typing_extensions.Self) -> str:
         order = (
-            f"_m{self.slepian.order[self.rank]}"
+            f"_m{self.slepian.order[self.rank]}"# ty: ignore[non-subscriptable]
             if hasattr(self.slepian, "order")
             else ""
         )
