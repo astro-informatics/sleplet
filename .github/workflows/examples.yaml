@@ -27,7 +27,7 @@ jobs:
           python-version: 3.13
 
       - name: Cache pooch
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: ~/.cache/sleplet
           key: readme-${{ hashFiles('pyproject.toml') }}
@@ -50,7 +50,7 @@ jobs:
           python-version: 3.13
 
       - name: Cache pooch
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: ~/.cache/sleplet
           key: examples-${{ hashFiles('pyproject.toml') }}
