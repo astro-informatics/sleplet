@@ -10,7 +10,7 @@ on:
 
 jobs:
   linting:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       # yamllint disable-line rule:line-length
       - uses: paddyroddy/.github/actions/linting@fc1f4d5abb1562679c33f38faf171f5cfc81c969 # v0
