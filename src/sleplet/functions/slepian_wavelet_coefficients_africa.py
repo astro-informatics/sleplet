@@ -91,9 +91,9 @@ class SlepianWaveletCoefficientsAfrica(Fp):
         wavelet_coefficients = sleplet.wavelet_methods.slepian_wavelet_forward(
             sa.coefficients,
             wavelets,
-            self.slepian.N,
+            self.slepian.N,  # ty: ignore[possibly-missing-attribute]
         )
-        return wavelets, wavelet_coefficients
+        return wavelets, wavelet_coefficients  # ty: ignore[invalid-return-type]
 
     @pydantic.field_validator("j")
     def _check_j(

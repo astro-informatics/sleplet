@@ -96,23 +96,6 @@ run = {branch = true, parallel = true, source = [
     "sleplet",
 ]}
 
-[tool.mypy]
-disallow_subclassing_any = false
-disallow_untyped_decorators = false
-enable_error_code = [
-    "ignore-without-code",
-    "redundant-expr",
-    "truthy-bool",
-]
-explicit_package_bases = true
-ignore_missing_imports = true
-plugins = [
-    "pydantic.mypy",
-]
-strict = true
-warn_return_any = false
-warn_unreachable = true
-
 [tool.pytest.ini_options]
 addopts = [
     "--color=yes",
@@ -191,3 +174,11 @@ write_to = "src/sleplet/_version.py"
 [tool.tomlsort]
 overrides."project.classifiers".inline_arrays = false
 overrides."tool.ruff.lint.isort.section-order".inline_arrays = false
+
+[tool.ty]
+rules.invalid-argument-type = "ignore"
+rules.unresolved-attribute = "ignore"
+src.include = [
+    "src",
+    "tests",
+]

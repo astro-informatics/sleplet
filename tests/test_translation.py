@@ -1,9 +1,10 @@
-import hypothesis
+import hypothesis.strategies
 import numpy as np
 
 import pyssht as ssht
 
 import sleplet
+import sleplet._vars
 
 L = 128
 THETA_MAX = np.pi / 3
@@ -53,7 +54,7 @@ def test_slepian_translation_changes_max_polar(
     sdd_trans = slepian_dirac_delta_polar_cap.translate(
         slepian_dirac_delta_polar_cap._alpha,
         beta,
-        shannon=slepian_dirac_delta_polar_cap.slepian.N,
+        shannon=slepian_dirac_delta_polar_cap.slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     field = sleplet.slepian_methods.slepian_inverse(
         sdd_trans,
@@ -86,7 +87,7 @@ def test_slepian_translation_changes_max_lim_lat_lon(
     sdd_trans = slepian_dirac_delta_lim_lat_lon.translate(
         slepian_dirac_delta_lim_lat_lon._alpha,
         beta,
-        shannon=slepian_dirac_delta_lim_lat_lon.slepian.N,
+        shannon=slepian_dirac_delta_lim_lat_lon.slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     field = sleplet.slepian_methods.slepian_inverse(
         sdd_trans,
