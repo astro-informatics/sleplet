@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/licence@fc1f4d5abb1562679c33f38faf171f5cfc81c969 # v0
+      - uses: paddyroddy/.github/actions/licence@075fa27ca4210e7ca5535ef3aa67efb0062a6f4f # v0
         with:
           licence-file: ./LICENCE.txt
           licence-token: ${{ secrets.LICENCE_PAT }}
