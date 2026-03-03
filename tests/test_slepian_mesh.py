@@ -70,15 +70,15 @@ def test_synthesis_mesh(
     wav_coeffs = sleplet.wavelet_methods.slepian_wavelet_forward(
         coefficients,
         mesh_slepian_wavelets.wavelets,
-        mesh_slepian_wavelets.mesh_slepian.N,
+        mesh_slepian_wavelets.mesh_slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     f_p = sleplet.wavelet_methods.slepian_wavelet_inverse(
         wav_coeffs,
         mesh_slepian_wavelets.wavelets,
-        mesh_slepian_wavelets.mesh_slepian.N,
+        mesh_slepian_wavelets.mesh_slepian.N,  # ty: ignore[possibly-missing-attribute]
     )
     np.testing.assert_allclose(
-        np.abs(f_p - coefficients)[: mesh_slepian_wavelets.mesh_slepian.N].mean(),
+        np.abs(f_p - coefficients)[: mesh_slepian_wavelets.mesh_slepian.N].mean(),  # ty: ignore[possibly-missing-attribute]
         0,
         atol=1e-16,
     )

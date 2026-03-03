@@ -330,7 +330,7 @@ def _translation_helper(
         "z": z,
         "arrowcolor": _ANNOTATION_COLOUR,
     } | _ARROW_STYLE
-    return coefficients, filename, annotation
+    return coefficients, filename, annotation  # ty: ignore[invalid-return-type]
 
 
 def _convolution_helper(

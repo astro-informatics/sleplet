@@ -1,6 +1,6 @@
 import numpy as np
 
-import sleplet
+import sleplet._array_methods
 
 
 def test_fill_matrix_using_hermitian_relation() -> None:
