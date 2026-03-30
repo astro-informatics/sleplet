@@ -11,6 +11,8 @@ on:
 jobs:
   test:
     name: ${{ matrix.os }} py${{ matrix.python-version }}
+    permissions:
+      contents: read
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -40,6 +42,8 @@ jobs:
   finish:
     needs: test
     if: ${{ always() }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
