@@ -11,7 +11,7 @@ on:
 jobs:
   documentation:
     permissions:
-      contents: read
+      contents: write
     runs-on: ubuntu-slim
     steps:
       # yamllint disable-line rule:line-length
