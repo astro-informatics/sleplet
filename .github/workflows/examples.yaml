@@ -16,10 +16,14 @@ concurrency:
 
 jobs:
   codeblocks:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up uv
         uses: astral-sh/setup-uv@5a095e7a2014a4212f075830d4f7277575a9d098 # v7
@@ -39,10 +43,14 @@ jobs:
         run: uv run pytest --codeblocks .github README.md documentation
 
   examples:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up uv
         uses: astral-sh/setup-uv@5a095e7a2014a4212f075830d4f7277575a9d098 # v7

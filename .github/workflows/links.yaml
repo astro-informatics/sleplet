@@ -10,6 +10,8 @@ on:
 
 jobs:
   links:
+    permissions:
+      contents: read
     runs-on: ubuntu-slim
     timeout-minutes: 2
     steps:

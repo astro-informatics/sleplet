@@ -10,6 +10,8 @@ on:
 
 jobs:
   linting:
+    permissions:
+      contents: read
     runs-on: ubuntu-slim
     steps:
       # yamllint disable-line rule:line-length
