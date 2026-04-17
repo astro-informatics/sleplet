@@ -40,7 +40,7 @@ class MeshSlepianCoefficients(MeshCoefficients):
                 self.noise,
             )
             snr = sleplet.noise.compute_snr(self.coefficients, n_p, "Slepian")
-            self.coefficients = self.coefficients + n_p
+            self.coefficients = self.coefficients + n_p  # ty: ignore[invalid-assignment]
             return unnoised_coefficients, snr
         return None, None
 

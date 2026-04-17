@@ -65,10 +65,10 @@ def find_on_pooch_then_local(filename: str) -> os.PathLike[str] | None:
     Returns:
         The sought after file or nothing if not found
     """
-    if filename in _POOCH.registry:  # type: ignore[union-attr]
+    if filename in _POOCH.registry:
         msg = f"Found {filename} at https://doi.org/{_ZENODO_DATA_DOI}"
         _logger.info(msg)
-        return _POOCH.fetch(filename, progressbar=True)  # type: ignore[union-attr]
+        return _POOCH.fetch(filename, progressbar=True)
 
     if (platformdirs.user_data_path() / filename).exists():
         msg = f"Found {filename} at {platformdirs.user_data_path() / filename}"

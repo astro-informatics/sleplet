@@ -28,14 +28,14 @@ class Slepian(Fp):
 
     def _create_name(self: typing_extensions.Self) -> str:
         order = (
-            f"_m{self.slepian.order[self.rank]}"
+            f"_m{self.slepian.order[self.rank]}"  # ty: ignore[non-subscriptable]
             if hasattr(self.slepian, "order")
             else ""
         )
         return (
             (
-                f"{self.slepian.name}{order}_rank{self.rank}"
-                f"_lam{self.slepian.eigenvalues[self.rank]:e}"
+                f"{self.slepian.name}{order}_rank{self.rank}"  # ty: ignore[possibly-missing-attribute]
+                f"_lam{self.slepian.eigenvalues[self.rank]:e}"  # ty: ignore[possibly-missing-attribute]
             )
             .replace(".", "-")
             .replace("+", "")
@@ -45,14 +45,14 @@ class Slepian(Fp):
         self: typing_extensions.Self,
     ) -> npt.NDArray[np.complex128 | np.float64]:
         msg = (
-            f"Shannon number: {self.slepian.N}\n"
-            f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}"
+            f"Shannon number: {self.slepian.N}\n"  # ty: ignore[possibly-missing-attribute]
+            f"Eigenvalue {self.rank}: {self.slepian.eigenvalues[self.rank]:e}"  # ty: ignore[possibly-missing-attribute]
         )
         _logger.info(msg)
         return sleplet.slepian_methods.slepian_forward(
             self.L,
             self.slepian,
-            flm=self.slepian.eigenvectors[self.rank],
+            flm=self.slepian.eigenvectors[self.rank],  # ty: ignore[possibly-missing-attribute]
         )
 
     def _set_reality(self: typing_extensions.Self) -> bool:
