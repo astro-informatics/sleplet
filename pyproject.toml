@@ -138,6 +138,8 @@ force-exclude = true
 src = [
     "src",
 ]
+format.docstring-code-format = true
+format.preview = true
 lint.ignore = [
     "COM812",
     "D105",
