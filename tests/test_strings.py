@@ -1,6 +1,6 @@
 import numpy as np
 
-import sleplet
+import sleplet._string_methods
 
 J_MIN = 0
 PHI_0 = np.pi / 6

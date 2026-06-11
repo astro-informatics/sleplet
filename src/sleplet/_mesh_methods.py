@@ -118,7 +118,7 @@ def read_mesh(
     vertices, faces = igl.read_triangle_mesh(
         _data_path / f"meshes_polygons_{mesh_config['FILENAME']}",
     )
-    return igl.upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
+    return igl.upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])  # ty: ignore[invalid-return-type]
 
 
 def _mesh_laplacian(
