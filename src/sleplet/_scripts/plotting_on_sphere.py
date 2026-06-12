@@ -302,7 +302,7 @@ def _translation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     shannon: int | None,
-) -> tuple[npt.NDArray[np.complex128 | np.float64], str, dict[str, float | int]]:
+) -> tuple[npt.NDArray[np.complex128 | np.float64], str, dict[str, float | int | str]]:
     """Perform the translation specific steps."""
     msg = f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})"
     _logger.info(msg)
@@ -330,7 +330,7 @@ def _translation_helper(
         "z": z,
         "arrowcolor": _ANNOTATION_COLOUR,
     } | _ARROW_STYLE
-    return coefficients, filename, annotation  # ty: ignore[invalid-return-type]
+    return coefficients, filename, annotation
 
 
 def _convolution_helper(

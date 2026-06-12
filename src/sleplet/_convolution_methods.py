@@ -1,3 +1,5 @@
+import typing
+
 import numpy as np
 import numpy.typing as npt
 
@@ -16,4 +18,7 @@ def sifting_convolution(
         if len(g_coefficient.shape) < len(f_coefficient.shape)
         else g_coefficient
     )
-    return (f_coefficient.T[:n] * g_reshape.conj().T[:n]).T  # ty: ignore[invalid-return-type]
+    return typing.cast(
+        "npt.NDArray[np.complex128 | np.float64]",
+        (f_coefficient.T[:n] * g_reshape.conj().T[:n]).T,
+    )
