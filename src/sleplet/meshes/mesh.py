@@ -1,6 +1,7 @@
 """Contains the `Mesh` class."""
 
 import dataclasses
+import typing
 
 import numpy as np
 import numpy.typing as npt
@@ -70,12 +71,13 @@ class Mesh:
             y_centre=mesh_config["CENTRE_Y"] if self.zoom else 0,
             z_centre=mesh_config["CENTRE_Z"] if self.zoom else 0,
         )
-        self._colourbar_pos = (
+        self._colourbar_pos = typing.cast(
+            "float",
             mesh_config["REGION_COLOURBAR_POS"]
             if self.zoom
-            else mesh_config["DEFAULT_COLOURBAR_POS"]
+            else mesh_config["DEFAULT_COLOURBAR_POS"],
         )
-        self.vertices, self.faces = sleplet._mesh_methods.read_mesh(mesh_config)
+        self.vertices, self.faces = sleplet._mesh_methods.read_mesh(mesh_config)  # ty: ignore[invalid-assignment]
         self.mesh_region = sleplet._mesh_methods.create_mesh_region(
             mesh_config,
             self.vertices,

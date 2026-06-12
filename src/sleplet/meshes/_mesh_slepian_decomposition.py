@@ -120,7 +120,7 @@ class MeshSlepianDecomposition:
         if rank < 0:
             msg = "rank cannot be negative"
             raise ValueError(msg)
-        if rank >= self.mesh_slepian.mesh.number_basis_functions:
+        if rank >= self.mesh_slepian.mesh.number_basis_functions:  # ty: ignore[unsupported-operator]
             msg = (
                 "rank should be less than "
                 f"{self.mesh_slepian.mesh.number_basis_functions}"

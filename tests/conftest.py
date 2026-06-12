@@ -3,6 +3,7 @@ import numpy.typing as npt
 import pytest
 
 import sleplet
+import sleplet._vars
 
 ARRAY_DIM = 10
 L = 16

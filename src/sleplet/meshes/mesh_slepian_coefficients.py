@@ -1,6 +1,7 @@
 """Contains the abstract `MeshSlepianCoefficients` class."""
 
 import abc
+import typing
 
 import numpy as np
 import numpy.typing as npt
@@ -31,7 +32,6 @@ class MeshSlepianCoefficients(MeshCoefficients):
         self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex128 | np.float64] | None, float | None]:
         """Add Gaussian white noise converted to Slepian space."""
-        self.coefficients: npt.NDArray[np.complex128 | np.float64]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
             n_p = sleplet.noise._create_slepian_mesh_noise(
@@ -40,7 +40,10 @@ class MeshSlepianCoefficients(MeshCoefficients):
                 self.noise,
             )
             snr = sleplet.noise.compute_snr(self.coefficients, n_p, "Slepian")
-            self.coefficients = self.coefficients + n_p
+            self.coefficients = typing.cast(
+                "npt.NDArray[np.complex128 | np.float64]",
+                self.coefficients + n_p,
+            )
             return unnoised_coefficients, snr
         return None, None
 
