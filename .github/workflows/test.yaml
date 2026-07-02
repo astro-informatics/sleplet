@@ -32,6 +32,11 @@ jobs:
           pyproject-toml: ./pyproject.toml
           python-version: ${{ matrix.python-version }}
 
+      # https://github.com/coverallsapp/github-action/issues/264
+      - name: Trust Coveralls Homebrew tap
+        if: runner.os == 'macOS'
+        run: brew trust coverallsapp/coveralls
+
       - name: Coveralls Parallel
         # yamllint disable-line rule:line-length
         uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2
