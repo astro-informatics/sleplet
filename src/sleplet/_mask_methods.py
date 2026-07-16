@@ -1,3 +1,9 @@
+__lazy_modules__ = [
+    "numpy",
+    "platformdirs",
+    "pyssht",
+]
+
 import logging
 import os
 import pathlib

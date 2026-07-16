@@ -1,5 +1,11 @@
 """Contains the `MeshField` class."""
 
+__lazy_modules__ = [
+    "igl",
+    "numpy",
+    "typing_extensions",
+]
+
 import igl
 import numpy as np
 import numpy.typing as npt

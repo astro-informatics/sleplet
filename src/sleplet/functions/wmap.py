@@ -1,5 +1,10 @@
 """Contains the `Wmap` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing_extensions",
+]
+
 import numpy as np
 import numpy.typing as npt
 import pydantic

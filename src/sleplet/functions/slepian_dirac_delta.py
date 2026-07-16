@@ -1,5 +1,11 @@
 """Contains the `SlepianDiracDelta` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+    "typing_extensions",
+]
+
 import logging
 
 import numpy as np

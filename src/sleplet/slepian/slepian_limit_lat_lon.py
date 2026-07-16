@@ -1,5 +1,13 @@
 """Contains the `SlepianLimitLatLon` class."""
 
+__lazy_modules__ = [
+    "numba",
+    "numpy",
+    "platformdirs",
+    "pyssht",
+    "typing_extensions",
+]
+
 import pathlib
 
 import numba

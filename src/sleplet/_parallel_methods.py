@@ -1,3 +1,8 @@
+__lazy_modules__ = [
+    "multiprocess",
+    "numpy",
+]
+
 import multiprocess.shared_memory
 import numpy as np
 import numpy.typing as npt

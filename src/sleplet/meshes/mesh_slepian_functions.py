@@ -1,5 +1,10 @@
 """Contains the `MeshSlepianFunctions` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing_extensions",
+]
+
 import logging
 
 import numpy as np

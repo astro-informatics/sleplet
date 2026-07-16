@@ -1,3 +1,8 @@
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+]
+
 import logging
 
 import numpy as np

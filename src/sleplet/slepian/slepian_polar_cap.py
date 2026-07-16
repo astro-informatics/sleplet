@@ -1,5 +1,13 @@
 """Contains the `SlepianPolarCap` class."""
 
+__lazy_modules__ = [
+    "gmpy2",
+    "numpy",
+    "platformdirs",
+    "pyssht",
+    "typing_extensions",
+]
+
 import concurrent.futures
 import dataclasses
 import logging

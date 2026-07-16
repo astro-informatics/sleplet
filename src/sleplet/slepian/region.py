@@ -1,5 +1,9 @@
 """Contains the `Region` class."""
 
+__lazy_modules__ = [
+    "typing_extensions",
+]
+
 import logging
 
 import pydantic

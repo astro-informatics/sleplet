@@ -1,5 +1,11 @@
 """Contains the `Mesh` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "plotly",
+    "typing_extensions",
+]
+
 import dataclasses
 import typing
 

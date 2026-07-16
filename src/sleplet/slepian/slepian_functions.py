@@ -1,5 +1,10 @@
 """Contains the abstract `SlepianFunctions` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing_extensions",
+]
+
 import abc
 import dataclasses
 import logging

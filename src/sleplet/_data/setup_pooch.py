@@ -1,3 +1,8 @@
+__lazy_modules__ = [
+    "platformdirs",
+    "pooch",
+]
+
 import logging
 import os
 import typing

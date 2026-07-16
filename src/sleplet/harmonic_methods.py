@@ -1,5 +1,10 @@
 """Methods to perform operations in Fourier space of the sphere or mesh."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+]
+
 import collections
 import typing
 

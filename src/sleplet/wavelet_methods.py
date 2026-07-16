@@ -1,5 +1,11 @@
 """Methods to work with wavelet and wavelet coefficients."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pys2let",
+    "pyssht",
+]
+
 import numpy as np
 import numpy.typing as npt
 

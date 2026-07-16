@@ -1,5 +1,11 @@
 """Contains the `SouthAmerica` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+    "typing_extensions",
+]
+
 import numpy as np
 import numpy.typing as npt
 import pydantic

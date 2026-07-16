@@ -1,3 +1,8 @@
+__lazy_modules__ = [
+    "numpy",
+    "typing_extensions",
+]
+
 import dataclasses
 import logging
 
