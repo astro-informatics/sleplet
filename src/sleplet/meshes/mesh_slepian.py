@@ -1,5 +1,11 @@
 """Contains the `MeshSlepian` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "platformdirs",
+    "typing_extensions",
+]
+
 import concurrent.futures
 import logging
 import os

@@ -1,5 +1,11 @@
 """Contains the abstract `MeshHarmonicCoefficients` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing",
+    "typing_extensions",
+]
+
 import abc
 import typing
 

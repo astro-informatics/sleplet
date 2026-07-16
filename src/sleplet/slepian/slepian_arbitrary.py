@@ -1,5 +1,12 @@
 """Contains the `SlepianArbitrary` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "platformdirs",
+    "pyssht",
+    "typing_extensions",
+]
+
 import concurrent.futures
 import logging
 import os

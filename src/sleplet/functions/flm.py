@@ -1,5 +1,11 @@
 """Contains the abstract `Flm` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+    "typing_extensions",
+]
+
 import abc
 
 import numpy as np

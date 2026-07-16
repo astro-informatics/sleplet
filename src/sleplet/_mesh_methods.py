@@ -1,3 +1,11 @@
+__lazy_modules__ = [
+    "igl",
+    "numpy",
+    "platformdirs",
+    "scipy",
+    "tomli",
+]
+
 import logging
 import pathlib
 import typing

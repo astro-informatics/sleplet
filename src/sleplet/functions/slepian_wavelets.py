@@ -1,5 +1,11 @@
 """Contains the `SlepianWavelets` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pys2let",
+    "typing_extensions",
+]
+
 import logging
 
 import numpy as np

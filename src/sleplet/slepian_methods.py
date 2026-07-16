@@ -1,5 +1,10 @@
 """Methods to work with Slepian coefficients."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+]
+
 import logging
 
 import numpy as np

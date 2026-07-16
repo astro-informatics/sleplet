@@ -1,3 +1,7 @@
+__lazy_modules__ = [
+    "numpy",
+]
+
 import typing
 
 import numpy as np
