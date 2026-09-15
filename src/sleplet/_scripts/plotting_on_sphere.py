@@ -280,7 +280,7 @@ def _rotation_helper(
     """Perform the rotation specific steps."""
     msg = (
         "angles: (alpha, beta, gamma) = "
-        f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
+        f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
     )
     _logger.info(msg)
     filename += (
