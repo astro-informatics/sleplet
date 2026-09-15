@@ -82,7 +82,7 @@ class MeshSlepian:
         msg = (
             f"Shannon number from vertices: {self.N}, "
             f"Trace of D matrix: {round(D.trace())}, "
-            f"difference: {round(np.abs(self.N - D.trace()))}",
+            f"difference: {round(np.abs(self.N - D.trace()))}"
         )
         _logger.info(msg)
 

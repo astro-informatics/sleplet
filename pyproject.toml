@@ -125,6 +125,7 @@ format.docstring-code-format = true
 format.preview = true
 lint.ignore = [
     "COM812",
+    "CPY001",
     "D105",
     "D203",
     "D205",

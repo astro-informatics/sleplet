@@ -248,7 +248,7 @@ class SlepianPolarCap(SlepianFunctions):
         Pl = np.sqrt((4 * np.pi) / (2 * ell + 1)) * Plm[ind]
         return Pl, ell
 
-    def _dm_matrix_helper(  # noqa: PLR0913
+    def _dm_matrix_helper(  # noqa: PLR0913,PLR0917
         self: typing_extensions.Self,
         Dm: npt.NDArray[np.float64],
         i: int,
@@ -277,7 +277,7 @@ class SlepianPolarCap(SlepianFunctions):
             Dm[j, i] = Dm[i, j]
 
     @staticmethod
-    def _wigner3j(  # noqa: PLR0913
+    def _wigner3j(  # noqa: PLR0913,PLR0917
         l1: int,
         l2: int,
         l3: int,

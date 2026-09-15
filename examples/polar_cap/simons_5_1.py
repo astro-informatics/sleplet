@@ -48,7 +48,7 @@ def main() -> None:
     plt.close()
 
 
-def _helper(  # noqa: PLR0913
+def _helper(  # noqa: PLR0913,PLR0917
     ax: npt.NDArray[typing.Any],
     slepian: sleplet.slepian.SlepianPolarCap,
     resolution: int,

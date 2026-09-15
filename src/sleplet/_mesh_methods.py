@@ -86,7 +86,7 @@ def mesh_eigendecomposition(
         number_basis_functions = vertices.shape[0] // 4
     msg = (
         f"finding {number_basis_functions}/{vertices.shape[0]} "
-        f"basis functions of {name} mesh",
+        f"basis functions of {name} mesh"
     )
     _logger.info(msg)
 
