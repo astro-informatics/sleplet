@@ -279,7 +279,7 @@ def _rotation_helper(
 ) -> tuple[npt.NDArray[np.complex128], str]:
     """Perform the rotation specific steps."""
     msg = (
-        "angles: (alpha, beta, gamma) = ",
+        "angles: (alpha, beta, gamma) = "
         f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
     )
     _logger.info(msg)

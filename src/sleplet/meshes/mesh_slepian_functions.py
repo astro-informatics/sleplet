@@ -35,7 +35,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
     ) -> npt.NDArray[np.complex128 | np.float64]:
         """Compute field on the vertices of the mesh."""
         msg = (
-            f"Slepian eigenvalue {self.rank}: ",
+            f"Slepian eigenvalue {self.rank}: "
             f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",
         )
         _logger.info(msg)
@@ -47,9 +47,13 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
 
     def _create_name(self: typing_extensions.Self) -> str:
         return (
-            f"slepian_{self.mesh.name}_rank{self.rank}_",
-            f"lam{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",
-        ).replace(".", "-").replace("+", "")
+            (
+                f"slepian_{self.mesh.name}_rank{self.rank}_"
+                f"lam{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
+            )
+            .replace(".", "-")
+            .replace("+", "")
+        )
 
     def _setup_args(self: typing_extensions.Self) -> None:
         if isinstance(self.extra_args, list):

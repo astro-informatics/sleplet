@@ -80,8 +80,8 @@ class MeshSlepian:
     ) -> None:
         D = self._create_D_matrix()
         msg = (
-            f"Shannon number from vertices: {self.N}, ",
-            f"Trace of D matrix: {round(D.trace())}, ",
+            f"Shannon number from vertices: {self.N}, "
+            f"Trace of D matrix: {round(D.trace())}, "
             f"difference: {round(np.abs(self.N - D.trace()))}",
         )
         _logger.info(msg)

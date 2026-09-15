@@ -50,12 +50,12 @@ class Region:
     def _identify_region(self: typing_extensions.Self) -> None:
         """Identify region type based on the angle inputs or a mask name."""
         msg = (
-            "Slepian region values detected: ",
-            f"POLAR_GAP={self.gap}, ",
-            f"THETA_MAX={self.theta_max}, ",
-            f"THETA_MIN={self.theta_min}, ",
-            f"PHI_MAX={self.phi_max}, ",
-            f"PHI_MIN={self.phi_min}, ",
+            "Slepian region values detected: "
+            f"POLAR_GAP={self.gap}, "
+            f"THETA_MAX={self.theta_max}, "
+            f"THETA_MIN={self.theta_min}, "
+            f"PHI_MAX={self.phi_max}, "
+            f"PHI_MIN={self.phi_min}, "
             f"SLEPIAN_MASK={self.mask_name}.",
         )
         _logger.info(msg)
@@ -91,7 +91,7 @@ class Region:
 
         else:
             msg = (
-                "need to specify either a polar cap, a limited latitude ",
+                "need to specify either a polar cap, a limited latitude "
                 "longitude region, or a file with a mask",
             )
             raise AttributeError(msg)
