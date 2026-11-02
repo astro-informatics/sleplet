@@ -26,7 +26,7 @@ jobs:
           - "3.13"
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/uv@626ab242bf611add6f1b7af17aa24f8bf12c5521 # v0
+      - uses: paddyroddy/.github/actions/python/uv@67a4ca698e2e983c8a2edd3a970c7a297598b7dd # v0
         with:
           cache-path: ~/.cache/sleplet
           pyproject-toml: ./pyproject.toml
