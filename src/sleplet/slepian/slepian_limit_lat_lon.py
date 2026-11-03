@@ -1,7 +1,6 @@
 """Contains the `SlepianLimitLatLon` class."""
 
 __lazy_modules__ = [
-    "numba",
     "numpy",
     "platformdirs",
     "pyssht",
