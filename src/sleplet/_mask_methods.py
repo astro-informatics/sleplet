@@ -1,5 +1,4 @@
 __lazy_modules__ = [
-    "numpy",
     "platformdirs",
     "pyssht",
 ]
