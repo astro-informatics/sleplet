@@ -52,39 +52,45 @@ el.replaceWith(d);
 </code></dt>
 <dd>
 <div class="desc"><p>Calculate appropriate resolution for given L.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>L</code></strong></dt>
 <dd>The spherical harmonic bandlimit.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The output spherical harmonic bandlimit to boost the resolution.</p></div>
+<p>Returns
+-----=
+The output spherical harmonic bandlimit to boost the resolution.</p></div>
 </dd>
 <dt id="sleplet.plot_methods.compute_amplitude_for_noisy_mesh_plots"><code class="name flex">
 <span>def <span class="ident">compute_amplitude_for_noisy_mesh_plots</span></span>(<span>f: <a title="sleplet.meshes.mesh_coefficients.MeshCoefficients" href="meshes/mesh_coefficients.html#sleplet.meshes.mesh_coefficients.MeshCoefficients">MeshCoefficients</a>) ‑> float | None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>For the noised mesh plots fix the amplitude.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>f</code></strong></dt>
 <dd>The mesh field value.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The noise adjusted maximum amplitude.</p></div>
+<p>Returns
+-----=
+The noise adjusted maximum amplitude.</p></div>
 </dd>
 <dt id="sleplet.plot_methods.compute_amplitude_for_noisy_sphere_plots"><code class="name flex">
 <span>def <span class="ident">compute_amplitude_for_noisy_sphere_plots</span></span>(<span>f: <a title="sleplet.functions.coefficients.Coefficients" href="functions/coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a>) ‑> float | None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>For the noised sphere plots fix the amplitude.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>f</code></strong></dt>
 <dd>The spherical field value.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The noise adjusted maximum amplitude value.</p></div>
+<p>Returns
+-----=
+The noise adjusted maximum amplitude value.</p></div>
 </dd>
 <dt id="sleplet.plot_methods.find_max_amplitude"><code class="name flex">
 <span>def <span class="ident">find_max_amplitude</span></span>(<span>function: <a title="sleplet.functions.coefficients.Coefficients" href="functions/coefficients.html#sleplet.functions.coefficients.Coefficients">Coefficients</a>,<br>*,<br>plot_type: str = 'real',<br>upsample: bool = True) ‑> float</span>
@@ -92,8 +98,9 @@ el.replaceWith(d);
 <dd>
 <div class="desc"><p>For a given set of coefficients it finds the largest absolute value for a
 given plot type such that plots can have the same scale as the input.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>function</code></strong></dt>
 <dd>The <code>Coefficients</code> value to find the amplitude of.</dd>
 <dt><strong><code>plot_type</code></strong></dt>
@@ -101,8 +108,9 @@ given plot type such that plots can have the same scale as the input.</p>
 <dt><strong><code>upsample</code></strong></dt>
 <dd>Whether to upsample the output.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The maximum amplitude value.</p></div>
+<p>Returns
+-----=
+The maximum amplitude value.</p></div>
 </dd>
 </dl>
 </section>

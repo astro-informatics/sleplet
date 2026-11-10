@@ -52,43 +52,47 @@ el.replaceWith(d);
 </code></dt>
 <dd>
 <div class="desc"><p>Initialise Slepian object depending on input.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>L</code></strong></dt>
 <dd>The spherical harmonic bandlimit.</dd>
 <dt><strong><code>region</code></strong></dt>
 <dd>The Slepian region.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
+<dt>Raises</dt>
+<dt>-----=</dt>
 <dt><code>ValueError</code></dt>
 <dd>Invalid <code>region_type</code>, likely cause is invalid <code>mask_name</code>.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The given Slepian object.</p></div>
+<p>Returns
+-----=
+The given Slepian object.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.compute_s_p_omega"><code class="name flex">
-<span>def <span class="ident">compute_s_p_omega</span></span>(<span>L: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">compute_s_p_omega</span></span>(<span>L: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> NDArray[numpy.complex128]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute <span><span class="MathJax_Preview">S_{p}(\omega)</span><script type="math/tex">S_{p}(\omega)</script></span> for a given region.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>L</code></strong></dt>
 <dd>The spherical harmonic bandlimit.</dd>
 <dt><strong><code>slepian</code></strong></dt>
 <dd>The given Slepian object.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The complex <span><span class="MathJax_Preview">S_{p}(\omega)</span><script type="math/tex">S_{p}(\omega)</script></span> values.</p></div>
+<p>Returns
+-----=
+The complex <span><span class="MathJax_Preview">S_{p}(\omega)</span><script type="math/tex">S_{p}(\omega)</script></span> values.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_forward"><code class="name flex">
-<span>def <span class="ident">slepian_forward</span></span>(<span>L: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>,<br>*,<br>f: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]] | None = None,<br>flm: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]] | None = None,<br>mask: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]] | None = None,<br>n_coeffs: int | None = None) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">slepian_forward</span></span>(<span>L: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>,<br>*,<br>f: NDArray[numpy.complex128] | None = None,<br>flm: NDArray[numpy.complex128 | numpy.float64] | None = None,<br>mask: NDArray[numpy.float64] | None = None,<br>n_coeffs: int | None = None) ‑> NDArray[numpy.complex128]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the Slepian forward transform for all coefficients.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>L</code></strong></dt>
 <dd>The spherical harmonic bandlimit.</dd>
 <dt><strong><code>slepian</code></strong></dt>
@@ -102,16 +106,18 @@ el.replaceWith(d);
 <dt><strong><code>n_coeffs</code></strong></dt>
 <dd>The number of Slepian coefficients to use.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The Slepian coefficients of the inputs.</p></div>
+<p>Returns
+-----=
+The Slepian coefficients of the inputs.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_inverse"><code class="name flex">
-<span>def <span class="ident">slepian_inverse</span></span>(<span>f_p: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>L: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">slepian_inverse</span></span>(<span>f_p: NDArray[numpy.complex128 | numpy.float64],<br>L: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> NDArray[numpy.complex128]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the Slepian inverse transform up to the Shannon number.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>f_p</code></strong></dt>
 <dd>The Slepian coefficients.</dd>
 <dt><strong><code>L</code></strong></dt>
@@ -119,16 +125,18 @@ el.replaceWith(d);
 <dt><strong><code>slepian</code></strong></dt>
 <dd>The given Slepian object.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The values on the sphere in pixel space.</p></div>
+<p>Returns
+-----=
+The values on the sphere in pixel space.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_mesh_forward"><code class="name flex">
-<span>def <span class="ident">slepian_mesh_forward</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>*,<br>u: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]] | None = None,<br>u_i: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]] | None = None,<br>mask: bool = False,<br>n_coeffs: int | None = None) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]]</span>
+<span>def <span class="ident">slepian_mesh_forward</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>*,<br>u: NDArray[numpy.complex128 | numpy.float64] | None = None,<br>u_i: NDArray[numpy.complex128 | numpy.float64] | None = None,<br>mask: bool = False,<br>n_coeffs: int | None = None) ‑> NDArray[numpy.float64]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the Slepian forward transform for all coefficients on the mesh.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>mesh_slepian</code></strong></dt>
 <dd>The Slepian mesh object containing the eigensolutions.</dd>
 <dt><strong><code>u</code></strong></dt>
@@ -140,23 +148,26 @@ el.replaceWith(d);
 <dt><strong><code>n_coeffs</code></strong></dt>
 <dd>The number of Slepian coefficients to use.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The Slepian coefficients on the mesh.</p></div>
+<p>Returns
+-----=
+The Slepian coefficients on the mesh.</p></div>
 </dd>
 <dt id="sleplet.slepian_methods.slepian_mesh_inverse"><code class="name flex">
-<span>def <span class="ident">slepian_mesh_inverse</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>f_p: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">slepian_mesh_inverse</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>f_p: NDArray[numpy.complex128 | numpy.float64]) ‑> NDArray[numpy.complex128 | numpy.float64]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the Slepian inverse transform on the mesh up to the Shannon number.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>mesh_slepian</code></strong></dt>
 <dd>The Slepian mesh object containing the eigensolutions.</dd>
 <dt><strong><code>f_p</code></strong></dt>
 <dd>The Slepian wavelet coefficients.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The value of a function on the mesh in pixel space.</p></div>
+<p>Returns
+-----=
+The value of a function on the mesh in pixel space.</p></div>
 </dd>
 </dl>
 </section>

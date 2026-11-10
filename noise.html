@@ -48,12 +48,13 @@ el.replaceWith(d);
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="sleplet.noise.compute_sigma_noise"><code class="name flex">
-<span>def <span class="ident">compute_sigma_noise</span></span>(<span>signal: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>snr_in: float,<br>*,<br>denominator: int | None = None) ‑> float</span>
+<span>def <span class="ident">compute_sigma_noise</span></span>(<span>signal: NDArray[numpy.complex128 | numpy.float64],<br>snr_in: float,<br>*,<br>denominator: int | None = None) ‑> float</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the standard deviation of the noise.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>signal</code></strong></dt>
 <dd>The noised signal.</dd>
 <dt><strong><code>snr_in</code></strong></dt>
@@ -61,16 +62,18 @@ el.replaceWith(d);
 <dt><strong><code>denominator</code></strong></dt>
 <dd>Coefficients to use in computing the noise, defaults to all.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The standard deviation of the noise.</p></div>
+<p>Returns
+-----=
+The standard deviation of the noise.</p></div>
 </dd>
 <dt id="sleplet.noise.compute_slepian_mesh_sigma_j"><code class="name flex">
-<span>def <span class="ident">compute_slepian_mesh_sigma_j</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>signal: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>psi_j: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]],<br>snr_in: float) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]]</span>
+<span>def <span class="ident">compute_slepian_mesh_sigma_j</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>signal: NDArray[numpy.complex128 | numpy.float64],<br>psi_j: NDArray[numpy.float64],<br>snr_in: float) ‑> NDArray[numpy.float64]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute <span><span class="MathJax_Preview">\sigma_{j}</span><script type="math/tex">\sigma_{j}</script></span> for wavelets used in denoising the signal.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>mesh_slepian</code></strong></dt>
 <dd>The Slepian mesh object containing the eigensolutions.</dd>
 <dt><strong><code>signal</code></strong></dt>
@@ -80,16 +83,18 @@ el.replaceWith(d);
 <dt><strong><code>snr_in</code></strong></dt>
 <dd>The parameter controlling the signal-to-noise ratio.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The standard deviation of the noise.</p></div>
+<p>Returns
+-----=
+The standard deviation of the noise.</p></div>
 </dd>
 <dt id="sleplet.noise.compute_snr"><code class="name flex">
-<span>def <span class="ident">compute_snr</span></span>(<span>signal: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>noise: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>signal_type: str) ‑> float</span>
+<span>def <span class="ident">compute_snr</span></span>(<span>signal: NDArray[numpy.complex128 | numpy.float64],<br>noise: NDArray[numpy.complex128 | numpy.float64],<br>signal_type: str) ‑> float</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the signal to noise ratio.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>signal</code></strong></dt>
 <dd>The unnoised signal.</dd>
 <dt><strong><code>noise</code></strong></dt>
@@ -97,16 +102,18 @@ el.replaceWith(d);
 <dt><strong><code>signal_type</code></strong></dt>
 <dd>Specifier to improve logging.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The signal-to-noise value of the noised signal.</p></div>
+<p>Returns
+-----=
+The signal-to-noise value of the noised signal.</p></div>
 </dd>
 <dt id="sleplet.noise.harmonic_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">harmonic_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]],<br>sigma_j: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]],<br>n_sigma: int) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">harmonic_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: NDArray[numpy.complex128],<br>sigma_j: NDArray[numpy.float64],<br>n_sigma: int) ‑> NDArray[numpy.complex128]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in harmonic space.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>L</code></strong></dt>
 <dd>The spherical harmonic bandlimit.</dd>
 <dt><strong><code>wav_coeffs</code></strong></dt>
@@ -116,16 +123,18 @@ el.replaceWith(d);
 <dt><strong><code>n_sigma</code></strong></dt>
 <dd>The number of <span><span class="MathJax_Preview">\sigma_{j}</span><script type="math/tex">\sigma_{j}</script></span> to threshold.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The thresholded wavelet coefficients.</p></div>
+<p>Returns
+-----=
+The thresholded wavelet coefficients.</p></div>
 </dd>
 <dt id="sleplet.noise.slepian_function_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">slepian_function_hard_thresholding</span></span>(<span>L: int,<br>coefficients: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma: float,<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">slepian_function_hard_thresholding</span></span>(<span>L: int,<br>coefficients: NDArray[numpy.complex128 | numpy.float64],<br>sigma: float,<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> NDArray[numpy.complex128]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in Slepian space.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>L</code></strong></dt>
 <dd>The spherical harmonic bandlimit.</dd>
 <dt><strong><code>coefficients</code></strong></dt>
@@ -137,16 +146,18 @@ el.replaceWith(d);
 <dt><strong><code>slepian</code></strong></dt>
 <dd>The given Slepian object.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The thresholded Slepian coefficients.</p></div>
+<p>Returns
+-----=
+The thresholded Slepian coefficients.</p></div>
 </dd>
 <dt id="sleplet.noise.slepian_mesh_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">slepian_mesh_hard_thresholding</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>wav_coeffs: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma_j: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]],<br>n_sigma: int) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">slepian_mesh_hard_thresholding</span></span>(<span>mesh_slepian: <a title="sleplet.meshes.mesh_slepian.MeshSlepian" href="meshes/mesh_slepian.html#sleplet.meshes.mesh_slepian.MeshSlepian">MeshSlepian</a>,<br>wav_coeffs: NDArray[numpy.complex128 | numpy.float64],<br>sigma_j: NDArray[numpy.float64],<br>n_sigma: int) ‑> NDArray[numpy.complex128 | numpy.float64]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in Slepian space of the mesh.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>mesh_slepian</code></strong></dt>
 <dd>The Slepian mesh object containing the eigensolutions.</dd>
 <dt><strong><code>wav_coeffs</code></strong></dt>
@@ -156,16 +167,18 @@ el.replaceWith(d);
 <dt><strong><code>n_sigma</code></strong></dt>
 <dd>The number of <span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span> to threshold.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The thresholded wavelet coefficients of the mesh.</p></div>
+<p>Returns
+-----=
+The thresholded wavelet coefficients of the mesh.</p></div>
 </dd>
 <dt id="sleplet.noise.slepian_wavelet_hard_thresholding"><code class="name flex">
-<span>def <span class="ident">slepian_wavelet_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>sigma_j: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.float64]],<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">slepian_wavelet_hard_thresholding</span></span>(<span>L: int,<br>wav_coeffs: NDArray[numpy.complex128 | numpy.float64],<br>sigma_j: NDArray[numpy.float64],<br>n_sigma: int,<br>slepian: <a title="sleplet.slepian.slepian_functions.SlepianFunctions" href="slepian/slepian_functions.html#sleplet.slepian.slepian_functions.SlepianFunctions">SlepianFunctions</a>) ‑> NDArray[numpy.complex128 | numpy.float64]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform thresholding in Slepian wavelet space.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>L</code></strong></dt>
 <dd>The spherical harmonic bandlimit.</dd>
 <dt><strong><code>wav_coeffs</code></strong></dt>
@@ -177,8 +190,9 @@ el.replaceWith(d);
 <dt><strong><code>slepian</code></strong></dt>
 <dd>The given Slepian object.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The hard thresholded Slepian wavelet coefficients.</p></div>
+<p>Returns
+-----=
+The hard thresholded Slepian wavelet coefficients.</p></div>
 </dd>
 </dl>
 </section>

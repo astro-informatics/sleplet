@@ -67,7 +67,7 @@ sphere.</p></div>
 <dd>
 <div class="desc"><p>The spherical harmonic bandlimit.</p></div>
 </dd>
-<dt id="sleplet.functions.coefficients.Coefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.functions.coefficients.Coefficients.coefficients"><code class="name">var <span class="ident">coefficients</span> : NDArray[numpy.complex128 | numpy.float64]</code></dt>
 <dd>
 <div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
@@ -104,11 +104,11 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <dd>
 <div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
-<dt id="sleplet.functions.coefficients.Coefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.functions.coefficients.Coefficients.wavelet_coefficients"><code class="name">var <span class="ident">wavelet_coefficients</span> : NDArray[numpy.complex128 | numpy.float64]</code></dt>
 <dd>
 <div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
-<dt id="sleplet.functions.coefficients.Coefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</code></dt>
+<dt id="sleplet.functions.coefficients.Coefficients.wavelets"><code class="name">var <span class="ident">wavelets</span> : NDArray[numpy.complex128 | numpy.float64]</code></dt>
 <dd>
 <div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
@@ -116,12 +116,13 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="sleplet.functions.coefficients.Coefficients.convolve"><code class="name flex">
-<span>def <span class="ident">convolve</span></span>(<span>self: Self,<br>f_coefficient: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>g_coefficient: numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]],<br>*,<br>shannon: int | None = None) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">convolve</span></span>(<span>self: Self,<br>f_coefficient: NDArray[numpy.complex128 | numpy.float64],<br>g_coefficient: NDArray[numpy.complex128 | numpy.float64],<br>*,<br>shannon: int | None = None) ‑> NDArray[numpy.complex128 | numpy.float64]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform the sifting convolution of the two inputs.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>f_coefficient</code></strong></dt>
 <dd>Input harmonic/Slepian coefficients.</dd>
 <dt><strong><code>g_coefficient</code></strong></dt>
@@ -129,16 +130,18 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <dt><strong><code>shannon</code></strong></dt>
 <dd>The Shannon number, only used in the Slepian case.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The sifting convolution of the two inputs.</p></div>
+<p>Returns
+-----=
+The sifting convolution of the two inputs.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.rotate"><code class="name flex">
-<span>def <span class="ident">rotate</span></span>(<span>self: Self, alpha: float, beta: float, *, gamma: float = 0) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128]]</span>
+<span>def <span class="ident">rotate</span></span>(<span>self: Self, alpha: float, beta: float, *, gamma: float = 0) ‑> NDArray[numpy.complex128]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Rotates given flm on the sphere by alpha/beta/gamma.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>alpha</code></strong></dt>
 <dd>The third Euler angle, a <span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span> rotation about the z-axis.</dd>
 <dt><strong><code>beta</code></strong></dt>
@@ -146,16 +149,18 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <dt><strong><code>gamma</code></strong></dt>
 <dd>The first Euler angle, a <span><span class="MathJax_Preview">\gamma</span><script type="math/tex">\gamma</script></span> rotation about the z-axis.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The rotated spherical harmonic coefficients.</p></div>
+<p>Returns
+-----=
+The rotated spherical harmonic coefficients.</p></div>
 </dd>
 <dt id="sleplet.functions.coefficients.Coefficients.translate"><code class="name flex">
-<span>def <span class="ident">translate</span></span>(<span>self: Self, alpha: float, beta: float, *, shannon: int | None = None) ‑> numpy.ndarray[tuple[typing.Any, ...], numpy.dtype[numpy.complex128 | numpy.float64]]</span>
+<span>def <span class="ident">translate</span></span>(<span>self: Self, alpha: float, beta: float, *, shannon: int | None = None) ‑> NDArray[numpy.complex128 | numpy.float64]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Perform the translation of the coefficients, used in the sifting convolution.</p>
-<h2 id="args">Args</h2>
 <dl>
+<dt>Args</dt>
+<dt>-----=</dt>
 <dt><strong><code>alpha</code></strong></dt>
 <dd>The point on the 2-sphere to translate to, i.e. the <span><span class="MathJax_Preview">\phi</span><script type="math/tex">\phi</script></span> value.</dd>
 <dt><strong><code>beta</code></strong></dt>
@@ -163,8 +168,9 @@ coefficients. Only to be set by the <code>sphere</code> CLI.</p></div>
 <dt><strong><code>shannon</code></strong></dt>
 <dd>The Shannon number, only used in the Slepian case.</dd>
 </dl>
-<h2 id="returns">Returns</h2>
-<p>The translated spherical harmonic coefficients.</p></div>
+<p>Returns
+-----=
+The translated spherical harmonic coefficients.</p></div>
 </dd>
 </dl>
 </dd>
