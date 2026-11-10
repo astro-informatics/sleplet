@@ -28,6 +28,9 @@ jobs:
     steps:
       # yamllint disable-line rule:line-length
       - uses: paddyroddy/.github/actions/python/uv@67a4ca698e2e983c8a2edd3a970c7a297598b7dd # v0
+        env:
+          CONAN_HOME: ${{ runner.temp }}/conan-home
+          UV_CONCURRENT_BUILDS: "1"
         with:
           cache-path: ~/.cache/sleplet
           pyproject-toml: ./pyproject.toml
