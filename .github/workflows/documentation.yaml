@@ -10,10 +10,12 @@ on:
 
 jobs:
   documentation:
+    permissions:
+      contents: write
     runs-on: ubuntu-slim
     steps:
       # yamllint disable-line rule:line-length
-      - uses: paddyroddy/.github/actions/python/pdoc@075fa27ca4210e7ca5535ef3aa67efb0062a6f4f # v0
+      - uses: paddyroddy/.github/actions/python/pdoc@67a4ca698e2e983c8a2edd3a970c7a297598b7dd # v0
         with:
           docs-dependency-section: docs
           gh-pages-publish-directory: ./html/sleplet

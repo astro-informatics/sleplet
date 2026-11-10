@@ -1,3 +1,8 @@
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+]
+
 import argparse
 import logging
 
@@ -275,7 +280,7 @@ def _rotation_helper(
     """Perform the rotation specific steps."""
     msg = (
         "angles: (alpha, beta, gamma) = "
-        f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})",
+        f"({alpha_pi_frac}, {beta_pi_frac}, {gamma_pi_frac})"
     )
     _logger.info(msg)
     filename += (
@@ -302,7 +307,7 @@ def _translation_helper(
     alpha_pi_frac: float,
     beta_pi_frac: float,
     shannon: int | None,
-) -> tuple[npt.NDArray[np.complex128 | np.float64], str, dict[str, float | int]]:
+) -> tuple[npt.NDArray[np.complex128 | np.float64], str, dict[str, float | int | str]]:
     """Perform the translation specific steps."""
     msg = f"angles: (alpha, beta) = ({alpha_pi_frac}, {beta_pi_frac})"
     _logger.info(msg)

@@ -1,5 +1,9 @@
 """Contains the `Region` class."""
 
+__lazy_modules__ = [
+    "typing_extensions",
+]
+
 import logging
 
 import pydantic
@@ -52,7 +56,7 @@ class Region:
             f"THETA_MIN={self.theta_min}, "
             f"PHI_MAX={self.phi_max}, "
             f"PHI_MIN={self.phi_min}, "
-            f"SLEPIAN_MASK={self.mask_name}.",
+            f"SLEPIAN_MASK={self.mask_name}."
         )
         _logger.info(msg)
         if sleplet._bool_methods.is_polar_cap(
@@ -88,7 +92,7 @@ class Region:
         else:
             msg = (
                 "need to specify either a polar cap, a limited latitude "
-                "longitude region, or a file with a mask",
+                "longitude region, or a file with a mask"
             )
             raise AttributeError(msg)
 

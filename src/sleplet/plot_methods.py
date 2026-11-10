@@ -1,5 +1,10 @@
 """Methods to help in creating plots."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+]
+
 import logging
 
 import numpy as np

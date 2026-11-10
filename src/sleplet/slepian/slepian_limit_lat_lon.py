@@ -1,5 +1,12 @@
 """Contains the `SlepianLimitLatLon` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "platformdirs",
+    "pyssht",
+    "typing_extensions",
+]
+
 import pathlib
 
 import numba
@@ -179,7 +186,7 @@ class SlepianLimitLatLon(SlepianFunctions):
         """
         K = np.zeros((L**2, L**2), dtype=np.complex128)
 
-        for ell in numba.prange(L):
+        for ell in numba.prange(L):  # ty: ignore[not-iterable]
             for p in range(ell + 1):
                 C1 = np.sqrt((2 * ell + 1) * (2 * p + 1)) / (4 * np.pi)
 

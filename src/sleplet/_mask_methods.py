@@ -1,3 +1,8 @@
+__lazy_modules__ = [
+    "platformdirs",
+    "pyssht",
+]
+
 import logging
 import os
 import pathlib

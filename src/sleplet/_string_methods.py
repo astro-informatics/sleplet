@@ -1,3 +1,7 @@
+__lazy_modules__ = [
+    "numpy",
+]
+
 import fractions
 import re
 import typing

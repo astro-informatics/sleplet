@@ -1,5 +1,10 @@
 """Contains the abstract `Fp` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing_extensions",
+]
+
 import abc
 
 import numpy as np

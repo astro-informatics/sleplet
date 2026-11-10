@@ -1,5 +1,10 @@
 """Contains the `MeshSlepianFunctions` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing_extensions",
+]
+
 import logging
 
 import numpy as np
@@ -31,7 +36,7 @@ class MeshSlepianFunctions(MeshSlepianCoefficients):
         """Compute field on the vertices of the mesh."""
         msg = (
             f"Slepian eigenvalue {self.rank}: "
-            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}",
+            f"{self.mesh_slepian.slepian_eigenvalues[self.rank]:e}"
         )
         _logger.info(msg)
         s_p_i = self.mesh_slepian.slepian_functions[self.rank]

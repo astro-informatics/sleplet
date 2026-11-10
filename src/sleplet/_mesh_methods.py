@@ -1,3 +1,11 @@
+__lazy_modules__ = [
+    "igl",
+    "numpy",
+    "platformdirs",
+    "scipy",
+    "tomli",
+]
+
 import logging
 import pathlib
 import typing
@@ -78,7 +86,7 @@ def mesh_eigendecomposition(
         number_basis_functions = vertices.shape[0] // 4
     msg = (
         f"finding {number_basis_functions}/{vertices.shape[0]} "
-        f"basis functions of {name} mesh",
+        f"basis functions of {name} mesh"
     )
     _logger.info(msg)
 
@@ -118,14 +126,17 @@ def read_mesh(
     vertices, faces = igl.read_triangle_mesh(
         _data_path / f"meshes_polygons_{mesh_config['FILENAME']}",
     )
-    return igl.upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"])
+    return typing.cast(
+        "tuple[npt.NDArray[np.float64], npt.NDArray[np.int_]]",
+        igl.upsample(vertices, faces, number_of_subdivs=mesh_config["UPSAMPLE"]),
+    )
 
 
 def _mesh_laplacian(
     vertices: npt.NDArray[np.float64],
     faces: npt.NDArray[np.int_],
 ) -> npt.NDArray[np.float64]:
-    """Compute the cotagent mesh laplacian."""
+    """Compute the cotangent mesh laplacian."""
     return -igl.cotmatrix(vertices, faces)
 
 

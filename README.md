@@ -81,7 +81,7 @@ f_sphere = sleplet.slepian_methods.slepian_inverse(f.coefficients, f.L, f.slepia
 sleplet.plotting.PlotSphere(
     f_sphere,
     f.L,
-    f"slepian_wavelets_south_america_{B}B_{J_MIN}jmin_{J_MIN+J}j_L{L}",
+    f"slepian_wavelets_south_america_{B}B_{J_MIN}jmin_{J_MIN + J}j_L{L}",
     normalise=False,
     region=f.region,
 ).execute()

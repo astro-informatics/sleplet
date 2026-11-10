@@ -1,3 +1,9 @@
+__lazy_modules__ = [
+    "numpy",
+    "plotly",
+    "typing_extensions",
+]
+
 import dataclasses
 import logging
 

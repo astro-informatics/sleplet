@@ -1,3 +1,7 @@
+__lazy_modules__ = [
+    "plotly",
+]
+
 import typing
 
 import plotly.graph_objects as go

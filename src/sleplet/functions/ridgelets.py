@@ -1,5 +1,13 @@
 """Contains the `Ridgelets` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pys2let",
+    "pyssht",
+    "scipy",
+    "typing_extensions",
+]
+
 import logging
 
 import numpy as np

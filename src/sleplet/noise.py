@@ -1,5 +1,10 @@
 """Methods to handle noise in Fourier or wavelet space."""
 
+__lazy_modules__ = [
+    "numpy",
+    "pyssht",
+]
+
 import logging
 
 import numpy as np

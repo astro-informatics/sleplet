@@ -1,5 +1,11 @@
 """Contains the `MeshSlepian` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "platformdirs",
+    "typing_extensions",
+]
+
 import concurrent.futures
 import logging
 import os
@@ -76,7 +82,7 @@ class MeshSlepian:
         msg = (
             f"Shannon number from vertices: {self.N}, "
             f"Trace of D matrix: {round(D.trace())}, "
-            f"difference: {round(np.abs(self.N - D.trace()))}",
+            f"difference: {round(np.abs(self.N - D.trace()))}"
         )
         _logger.info(msg)
 

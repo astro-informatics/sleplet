@@ -1,6 +1,13 @@
 """Contains the abstract `MeshHarmonicCoefficients` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing",
+    "typing_extensions",
+]
+
 import abc
+import typing
 
 import numpy as np
 import numpy.typing as npt
@@ -23,12 +30,14 @@ class MeshHarmonicCoefficients(MeshCoefficients):
         self: typing_extensions.Self,
     ) -> tuple[npt.NDArray[np.complex128 | np.float64] | None, float | None]:
         """Add Gaussian white noise to the signal."""
-        self.coefficients: npt.NDArray[np.complex128 | np.float64]
         if self.noise is not None:
             unnoised_coefficients = self.coefficients.copy()
             nlm = sleplet.noise._create_mesh_noise(self.coefficients, self.noise)
             snr = sleplet.noise.compute_snr(self.coefficients, nlm, "Harmonic")
-            self.coefficients = self.coefficients + nlm
+            self.coefficients = typing.cast(
+                "npt.NDArray[np.complex128 | np.float64]",
+                self.coefficients + nlm,
+            )
             return unnoised_coefficients, snr
         return None, None
 

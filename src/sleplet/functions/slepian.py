@@ -1,5 +1,10 @@
 """Contains the `Slepian` class."""
 
+__lazy_modules__ = [
+    "numpy",
+    "typing_extensions",
+]
+
 import logging
 
 import numpy as np
@@ -28,7 +33,7 @@ class Slepian(Fp):
 
     def _create_name(self: typing_extensions.Self) -> str:
         order = (
-            f"_m{self.slepian.order[self.rank]}"
+            f"_m{self.slepian.order[self.rank]}"  # ty: ignore[not-subscriptable]
             if hasattr(self.slepian, "order")
             else ""
         )
