@@ -37,6 +37,9 @@ jobs:
           key: readme-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
+        env:
+          CONAN_HOME: ${{ runner.temp }}/conan-home
+          UV_CONCURRENT_BUILDS: "1"
         run: uv sync --group readme
 
       - name: Run examples in the README
@@ -64,6 +67,9 @@ jobs:
           key: examples-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
+        env:
+          CONAN_HOME: ${{ runner.temp }}/conan-home
+          UV_CONCURRENT_BUILDS: "1"
         run: uv sync --group docs
 
       - name: Run examples in the examples folder
