@@ -44,7 +44,7 @@ jobs:
     needs: build
     permissions:
       id-token: write
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     steps:
       - name: Download distributions
         # yamllint disable-line rule:line-length
@@ -65,7 +65,7 @@ jobs:
     needs: build
     permissions:
       id-token: write
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     steps:
       - name: Download distributions
         # yamllint disable-line rule:line-length
