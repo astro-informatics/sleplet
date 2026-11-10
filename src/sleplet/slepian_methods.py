@@ -6,6 +6,7 @@ __lazy_modules__ = [
 ]
 
 import logging
+import typing
 
 import numpy as np
 import numpy.typing as npt
@@ -220,7 +221,10 @@ def slepian_mesh_inverse(
     """
     f_p_reshape = f_p[: mesh_slepian.N, np.newaxis]
     s_p = _compute_mesh_s_p_pixel(mesh_slepian)
-    return (f_p_reshape * s_p).sum(axis=0)
+    return typing.cast(
+        "npt.NDArray[np.complex128 | np.float64]",
+        (f_p_reshape * s_p).sum(axis=0),
+    )
 
 
 def _compute_mesh_s_p_pixel(
