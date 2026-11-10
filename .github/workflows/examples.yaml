@@ -28,7 +28,7 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
         with:
-          python-version: 3.13
+          python-version: 3.14
 
       - name: Cache pooch
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
@@ -37,6 +37,9 @@ jobs:
           key: readme-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
+        env:
+          CONAN_HOME: ${{ runner.temp }}/conan-home
+          UV_CONCURRENT_BUILDS: "1"
         run: uv sync --group readme
 
       - name: Run examples in the README
@@ -55,7 +58,7 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
         with:
-          python-version: 3.13
+          python-version: 3.14
 
       - name: Cache pooch
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
@@ -64,6 +67,9 @@ jobs:
           key: examples-${{ hashFiles('pyproject.toml') }}
 
       - name: Install dependencies
+        env:
+          CONAN_HOME: ${{ runner.temp }}/conan-home
+          UV_CONCURRENT_BUILDS: "1"
         run: uv sync --group docs
 
       - name: Run examples in the examples folder

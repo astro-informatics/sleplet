@@ -24,9 +24,13 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
     steps:
       # yamllint disable-line rule:line-length
       - uses: paddyroddy/.github/actions/python/uv@67a4ca698e2e983c8a2edd3a970c7a297598b7dd # v0
+        env:
+          CONAN_HOME: ${{ runner.temp }}/conan-home
+          UV_CONCURRENT_BUILDS: "1"
         with:
           cache-path: ~/.cache/sleplet
           pyproject-toml: ./pyproject.toml
@@ -62,4 +66,6 @@ jobs:
             run-macos-latest-3.12,\
             run-ubuntu-latest-3.12,\
             run-macos-latest-3.13,\
-            run-ubuntu-latest-3.13"
+            run-ubuntu-latest-3.13,\
+            run-macos-latest-3.14,\
+            run-ubuntu-latest-3.14"

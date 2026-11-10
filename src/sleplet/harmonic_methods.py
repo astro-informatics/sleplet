@@ -174,7 +174,10 @@ def mesh_inverse(
     Returns:
         The values on the mesh in pixel space.
     """
-    return (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0)
+    return typing.cast(
+        "npt.NDArray[np.complex128 | np.float64]",
+        (u_i[:, np.newaxis] * mesh.basis_functions).sum(axis=0),
+    )
 
 
 def rotate_earth_to_south_america(

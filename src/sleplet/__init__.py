@@ -1,4 +1,4 @@
-""".. include:: ./../../documentation/DOCUMENTATION.md"""  # noqa: D400,D415
+""".. include:: ./../../documentation/DOCUMENTATION.md"""  # noqa: D400, D415
 
 __all__ = [
     "functions",
